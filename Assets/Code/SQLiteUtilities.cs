@@ -13,10 +13,6 @@ public class SQLiteUtilities : MonoBehaviour {
     void Start()
     {
         dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
-
-        CreateDatabase();
-        //FillTableWithTestData();
-        ReadDatabase();
     }
 
     void CreateDatabase()

@@ -10,3 +10,8 @@ Library/
 obj/
 /*.csproj
 /*.sln
+
+# ===== #
+# Other #
+# ===== #
+Build/
