@@ -68,6 +68,9 @@ public class SQLiteUtilities : MonoBehaviour {
             {
                 cmd.CommandType = CommandType.Text;
 
+                cmd.CommandText = "PRAGMA foreign_keys = ON";
+                cmd.ExecuteNonQuery();
+
                 cmd.CommandText = "INSERT INTO Equipe (EquipeID, Name, Color) VALUES (1, 1, 1);";
                 cmd.ExecuteNonQuery();
 
