@@ -15,6 +15,7 @@ public class Player : NetworkBehaviour
     //this way it will be more universal and only a few scriptable object will be useless instead of entire classes
     string pairedIpAdress;
     int gameStatus;//Might be a scriptable object for the sames reasons
+    public int playerStatus = 0;
 
 
     public override void OnStartLocalPlayer()
@@ -24,12 +25,20 @@ public class Player : NetworkBehaviour
         deviceName = "TestName";
         CmdSetDeviceName(deviceName);
         UITextManager.instance.SetText("OnStartLocalPlayer");
+        GameManager.instance.localPlayer = this;
+        UITextManager.instance.ShowReadyButton();
     }
 
     [Command]
     void CmdSetDeviceName(string dName)
     {
         deviceName = dName;
+    }
+
+    [Command]
+    public void CmdSetPlayerStatus(int id)
+    {
+        playerStatus = id;
     }
 
     [ClientRpc]
