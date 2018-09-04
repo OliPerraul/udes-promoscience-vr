@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class MessageServer : MonoBehaviour {
 
     NetworkServerSimple server = null;
+    NetworkConnection clientConnection = null;
 
     public int serverPort = 9999;
 
@@ -27,11 +28,7 @@ public class MessageServer : MonoBehaviour {
         server = new NetworkServerSimple();
         server.RegisterHandler(MsgType.Connect, OnConnect);
         server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        //server.RegisterHandler(ChatMsg.ChannelJoin, OnChannelJoin);
-        //server.RegisterHandler(ChatMsg.ChannelLeave, OnChannelLeave);
-        //server.RegisterHandler(ChatMsg.ChannelCreate, OnChannelCreate);
-        //server.RegisterHandler(ChatMsg.Talk, OnTalk);
-        //server.RegisterHandler(ChatMsg.Login, OnLogin);
+        server.RegisterHandler(CustomMsgType.Action, OnAction);
 
         server.Listen(serverPort);
     }
@@ -46,11 +43,31 @@ public class MessageServer : MonoBehaviour {
     {
         Debug.Log("Client connect");
         UITextManager.instance.SetMessageText("Client connected!");
+        clientConnection = netMsg.conn;
+        UITextManager.instance.ShowMessageButtonGroup();
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
         Debug.Log("Client disconnect");
         UITextManager.instance.SetMessageText("Client disconnected!");
+        UITextManager.instance.HideMessageButtonGroup();
+        clientConnection = null;
+        StopServer();//Might be changed when need reconnection?
     }
+
+    void OnAction(NetworkMessage netMsg)
+    {
+        ActionMessage msg = netMsg.ReadMessage<ActionMessage>();
+        UITextManager.instance.SetMessageText("Action id: " + msg.actionId);
+    }
+
+    public void SendDirective(int id)
+    {
+        DirectiveMessage directiveMsg = new DirectiveMessage();
+        directiveMsg.directiveId = id;
+
+        clientConnection.Send(CustomMsgType.Directive, directiveMsg);
+    }
+
 }

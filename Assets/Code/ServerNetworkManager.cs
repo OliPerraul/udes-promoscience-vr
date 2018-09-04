@@ -37,6 +37,9 @@ public class ServerNetworkManager : NetworkManager
 
         //temp, should be handle by UI
         GameObject playerLobby = Instantiate(playerLobbyPrefab, new Vector3(0, 0, 0), Quaternion.identity, playerLobbyList.transform);
+
+        //Temp 
+        Debug.Log(conn.address);
     }
 
 }

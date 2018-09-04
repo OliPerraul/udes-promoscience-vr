@@ -17,6 +17,9 @@ public class UITextManager : MonoBehaviour
     [SerializeField]
     GameObject readyButton;
 
+    [SerializeField]
+    GameObject messageButtonGroup;
+
     void Start ()
     {
 	    if(instance == null)
@@ -52,5 +55,15 @@ public class UITextManager : MonoBehaviour
     public void HideReadyButton()
     {
         readyButton.SetActive(false);
+    }
+
+    public void ShowMessageButtonGroup()
+    {
+        messageButtonGroup.SetActive(true);
+    }
+
+    public void HideMessageButtonGroup()
+    {
+        messageButtonGroup.SetActive(false);
     }
 }

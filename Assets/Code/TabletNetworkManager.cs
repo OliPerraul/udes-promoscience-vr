@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 public class TabletNetworkManager : NetworkManager
 {
-    string serverIpAdress = "10.44.88.31";
+    string serverIpAdress =  "192.168.0.102";//"10.44.88.31";
     int serverPort = 7777;
 
     void Start ()
@@ -19,5 +19,6 @@ public class TabletNetworkManager : NetworkManager
     {
         base.OnClientConnect(conn);
         Debug.Log("Client connected to a server");
+        Debug.Log(conn.address);
     }
 }
