@@ -88,6 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224471739830141880}
   - component: {fileID: 222263845088442176}
+  - component: {fileID: 114830058633360720}
   m_Layer: 5
   m_Name: LobbyPlayer
   m_TagString: Untagged
@@ -172,6 +173,24 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114830058633360720
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1793512338798894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581fa33a4de92a24f8244b6a3b566333, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerId: 0
+  players: {fileID: 11400000, guid: a5269fcf74c1b0c478edc99dc7924397, type: 2}
+  image: {fileID: 114918811949441476}
+  nameText: {fileID: 114993567989397778}
+  teamNameText: {fileID: 114127204284644362}
+  color: {fileID: 114197983820621026}
+  statusText: {fileID: 114866498138595326}
 --- !u!114 &114866498138595326
 MonoBehaviour:
   m_ObjectHideFlags: 1
