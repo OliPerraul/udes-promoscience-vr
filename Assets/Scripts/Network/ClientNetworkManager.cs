@@ -18,7 +18,5 @@ public class ClientNetworkManager : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
-        Debug.Log("Client connected to a server");
-        Debug.Log(conn.address);
     }
 }

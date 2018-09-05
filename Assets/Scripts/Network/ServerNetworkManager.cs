@@ -5,8 +5,7 @@ using UnityEngine.Networking;
 
 public class ServerNetworkManager : NetworkManager
 {
-    [SerializeField]
-    ScriptablePlayerList players;
+    public static ServerNetworkManager instance;
 
     [SerializeField]
     GameObject playerLobbyPrefab;
@@ -17,20 +16,23 @@ public class ServerNetworkManager : NetworkManager
     // Use this for initialization
     void Start ()
     {
-        StartServer();
+        if (instance == null)
+        {
+            instance = this;
+            StartServer();
+        }
+        else
+        {
+            Destroy(this);
+        }
 	}
 
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
         GameObject player = (GameObject)Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-        players.AddPlayer(player.GetComponent<Player>());
+        Player p = player.GetComponent<Player>();
+        PlayerList.instance.AddPlayer(p);
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
-
-        //temp, should be handle by UI
-        GameObject playerLobby = Instantiate(playerLobbyPrefab, new Vector3(0, 0, 0), Quaternion.identity, playerLobbyList.transform);
-
-        //Temp 
-        Debug.Log(conn.address);
     }
 
 }

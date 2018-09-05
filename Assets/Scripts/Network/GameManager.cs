@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     {
         if(localPlayer != null)
         {
-            localPlayer.CmdSetPlayerStatus(1);
+            localPlayer.CmdSetPlayerStatus(Constants.READY_STATUS_ID);
             UITextManager.instance.SetText("Ready!");//Should be moved to logic in their respective owner
             UITextManager.instance.HideReadyButton();//Should be moved to logic in their respective owner
         }

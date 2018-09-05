@@ -5,12 +5,7 @@ using UnityEngine.UI;
 
 public class UILobbyPlayer : MonoBehaviour
 {
-    public int playerId;
-
-    Player player;
-
-    [SerializeField]
-    ScriptablePlayerList players;
+    int playerId;
 
     [SerializeField]
     Image image;
@@ -29,20 +24,28 @@ public class UILobbyPlayer : MonoBehaviour
 
     private void OnDestroy()
     {
-        //UnregisterToAllEvents
+        PlayerList.instance.GetPlayerWithId(playerId).deviceNameChangedEvent -= UpdateLobbyPlayerName;
+        PlayerList.instance.GetPlayerWithId(playerId).deviceNameChangedEvent -= UpdateLobbyPlayerImage;
+        PlayerList.instance.GetPlayerWithId(playerId).teamNameChangedEvent -= UpdateLobbyPlayerTeamName;
+        PlayerList.instance.GetPlayerWithId(playerId).teamColorChangedEvent -= UpdateLobbyPlayerColor;
+        PlayerList.instance.GetPlayerWithId(playerId).playerStatusChangedEvent -= UpdateLobbyPlayerStatusText;
     }
 
-    public void SetPlayerId(int id)
+    public void SetPlayer(int id)
     {
         playerId = id;
-        //registers to events
+
+        PlayerList.instance.GetPlayerWithId(playerId).deviceNameChangedEvent += UpdateLobbyPlayerName;
+        PlayerList.instance.GetPlayerWithId(playerId).deviceNameChangedEvent += UpdateLobbyPlayerImage;
+        PlayerList.instance.GetPlayerWithId(playerId).teamNameChangedEvent += UpdateLobbyPlayerTeamName;
+        PlayerList.instance.GetPlayerWithId(playerId).teamColorChangedEvent += UpdateLobbyPlayerColor;
+        PlayerList.instance.GetPlayerWithId(playerId).playerStatusChangedEvent += UpdateLobbyPlayerStatusText;
+
         UpdateLobbyPlayerInformation();
     }
 
     void UpdateLobbyPlayerInformation()
     {
-        Player player = players.GetPlayerWithId(playerId);
-
         UpdateLobbyPlayerImage();
         UpdateLobbyPlayerName();
         UpdateLobbyPlayerTeamName();
@@ -57,26 +60,27 @@ public class UILobbyPlayer : MonoBehaviour
 
     void UpdateLobbyPlayerName()
     {
-        nameText.text = player.deviceName;
+        Debug.Log(PlayerList.instance.GetPlayerWithId(playerId).deviceName);
+        nameText.text = PlayerList.instance.GetPlayerWithId(playerId).deviceName;
     }
 
     void UpdateLobbyPlayerTeamName()
     {
-        teamNameText.text = player.teamName;
+        teamNameText.text = PlayerList.instance.GetPlayerWithId(playerId).teamName;
     }
 
     void UpdateLobbyPlayerColor()
     {
-        color.color = player.teamColor;
+        color.color = PlayerList.instance.GetPlayerWithId(playerId).teamColor;
     }
 
     void UpdateLobbyPlayerStatusText()
     {
-        if(player.playerStatus == 0)
+        if(PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.NOT_READY_STATUS_ID)
         {
             statusText.text = "Not ready";
         }
-        else if (player.playerStatus == 0)
+        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.READY_STATUS_ID)
         {
             statusText.text = "Ready!";
         }
