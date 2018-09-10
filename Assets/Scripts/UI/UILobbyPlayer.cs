@@ -60,7 +60,6 @@ public class UILobbyPlayer : MonoBehaviour
 
     void UpdateLobbyPlayerName()
     {
-        Debug.Log(PlayerList.instance.GetPlayerWithId(playerId).deviceName);
         nameText.text = PlayerList.instance.GetPlayerWithId(playerId).deviceName;
     }
 
@@ -79,6 +78,18 @@ public class UILobbyPlayer : MonoBehaviour
         if(PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.NOT_READY_STATUS_ID)
         {
             statusText.text = "Not ready";
+        }
+        else if(PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.PAIRING)
+        {
+            statusText.text = "Pairing";
+        }
+        else if(PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.NO_ASSOCIATED_PAIR)
+        {
+            statusText.text = "No associated pair";
+        }
+        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.PAIRED)
+        {
+            statusText.text = "Paired";
         }
         else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.READY_STATUS_ID)
         {

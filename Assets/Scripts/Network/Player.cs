@@ -6,10 +6,14 @@ using UnityEngine.Networking;
 
 public class Player : NetworkBehaviour
 {
+    public string deviceUniqueIdentifier = "";
+    public int deviceType = -1;// Could be changed
+
     string mDeviceName = "";
     string mTeamName = "";
     Color mTeamColor = Color.blue;
     int mPlayerStatus = 0;
+
 
     public string deviceName
     {
@@ -87,11 +91,23 @@ public class Player : NetworkBehaviour
     {
         base.OnStartLocalPlayer();
         base.OnStartAuthority();
+        deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
+        CmdSetUniqueIdentifier(deviceUniqueIdentifier);
         deviceName = SystemInfo.deviceModel;
+
+        if(deviceName == Constants.SAMSUNG_TABLET_SMT380)
+        {
+            deviceType = Constants.ANDROID_TABLET;
+        }
+        else if (deviceName == Constants.OCCULUS_GO_PACIFIC)
+        {
+            deviceType = Constants.OCCULUS_GO_HEADSET;
+        }
+        CmdSetDeviceType(deviceType);
+
         CmdSetDeviceName(deviceName);
-        UITextManager.instance.SetText("OnStartLocalPlayer");
-        GameManager.instance.localPlayer = this;
-        UITextManager.instance.ShowReadyButton();
+        CmdSetPlayerStatus(Constants.PAIRING);
+        UITextManager.instance.SetText("OnStartLocalPlayer");//temp
     }
 
     void OnDeviceNameChanged()
@@ -127,6 +143,12 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
+    void CmdSetDeviceType(int dType)
+    {
+        deviceType = dType;
+    }
+
+    [Command]
     void CmdSetDeviceName(string dName)
     {
         deviceName = dName;
@@ -138,6 +160,12 @@ public class Player : NetworkBehaviour
         playerStatus = id;
     }
 
+    [Command]
+    public void CmdSetUniqueIdentifier(string id)
+    {
+        deviceUniqueIdentifier = id;
+    }
+
     [ClientRpc]
     void RpcSetGameStatus(int id)
     {
@@ -146,8 +174,22 @@ public class Player : NetworkBehaviour
 
     //Server send to the owner of the player, is labirintheId
     [TargetRpc]
+    public void TargetSetPlayerStatus(NetworkConnection target, int id)
+    {
+        playerStatus = id;
+    }
+
+    [TargetRpc]
     public void TargetSetLabiryntheData(NetworkConnection target,int id)
     {
         //labiryntheId = id;
+    }
+
+    [TargetRpc]
+    public void TargetSetPairedIpAdress(NetworkConnection target, string ipAdress)
+    {
+        UITextManager.instance.SetText("PairedIP : " + ipAdress);//temp
+        pairedIpAdress.value = ipAdress;
+        CmdSetPlayerStatus(Constants.PAIRED);//Temp?
     }
 }

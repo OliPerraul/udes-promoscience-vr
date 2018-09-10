@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class MessageServer : MonoBehaviour {
+public class MessageServer : MonoBehaviour
+{
+    [SerializeField]
+    ScriptableString pairedIpAdress;
 
     NetworkServerSimple server = null;
     NetworkConnection clientConnection = null;
@@ -12,7 +15,7 @@ public class MessageServer : MonoBehaviour {
 
     private void Start()
     {
-        StartServer();
+        pairedIpAdress.valueChangedEvent += StartServer;
     }
 
     void Update()

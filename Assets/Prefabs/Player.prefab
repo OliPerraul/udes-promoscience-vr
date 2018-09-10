@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4850006067862290}
   - component: {fileID: 114373050470996920}
   - component: {fileID: 114680929369619524}
+  - component: {fileID: 114139707718320092}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -41,6 +42,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114139707718320092
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1012353109663088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d42e07d34cd8141a72b1b64dfd225d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 114680929369619524}
 --- !u!114 &114373050470996920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -84,10 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecacb8fd3d017df45b2f4cf484a1f764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deviceName: 
-  teamName: 
-  teamColor: {r: 0, g: 0, b: 0, a: 0}
-  playerStatus: 0
+  deviceUniqueIdentifier: 
+  deviceType: 0
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
   algorithmId: {fileID: 11400000, guid: 4dcb39e3bf716b84b9e995d8c5e8b985, type: 2}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}

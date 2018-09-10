@@ -5,14 +5,15 @@ using UnityEngine.Networking;
 
 public class MessageClient : MonoBehaviour
 {
-    public string chatServerHost = "10.236.55.233";// "10.44.88.31"
+    [SerializeField]
+    ScriptableString pairedIpAdress;
     public int chatServerPort = 9999;
 
     NetworkClient client = null;
 
     private void Start()
     {
-        StartClient();
+        pairedIpAdress.valueChangedEvent += StartClient;
     }
 
     void StartClient()
@@ -22,7 +23,7 @@ public class MessageClient : MonoBehaviour
         client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
         client.RegisterHandler(CustomMsgType.Directive, OnDirective);
 
-        client.Connect(chatServerHost, chatServerPort);
+        client.Connect(pairedIpAdress.value, chatServerPort);
     }
 
     void StopClient()

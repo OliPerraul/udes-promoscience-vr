@@ -5,15 +5,22 @@ using UnityEngine.Networking;
 
 public class ClientNetworkManager : NetworkManager
 {
-    string serverIpAdress =  "192.168.0.102";//"10.44.88.31";
+    [SerializeField]
+    ScriptableString serverIpAdress;
+
     int serverPort = 7777;
 
-    void Start ()
+    private void Start()
+    {
+        serverIpAdress.valueChangedEvent += StartConnection;
+    }
+
+    public void StartConnection ()
     {
         networkPort = serverPort;
-        networkAddress = serverIpAdress;
-        StartClient();  
-	}
+        networkAddress = serverIpAdress.value;
+        StartClient();
+    }
 
     public override void OnClientConnect(NetworkConnection conn)
     {

@@ -8,7 +8,7 @@ using UnityEngine;
 
 public static class SQLiteUtilities
 {
-    const string fileName = "exampleDatabase.db";
+    const string fileName = "algorintheDatabase.db";
 
     static void CreateDatabase()
     {
@@ -52,12 +52,31 @@ public static class SQLiteUtilities
                                   "PRIMARY KEY(EventID), " +
                                   "FOREIGN KEY(ParcoursID) REFERENCES Parcours(ParcoursID) ); ";
                 cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS DevicePairing ( " +
+                                  "TabletID varchar(255) NOT NULL UNIQUE, " +
+                                  "HeadsetID varchar(255) NOT NULL UNIQUE, " +
+                                  "PRIMARY KEY(TabletID,HeadsetID)); ";
+                cmd.ExecuteNonQuery();
             }
         }
     }
 
+    static void CreateDatabaseIfItDoesntExist()
+    {
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        if (!System.IO.File.Exists(dbPath))
+        {
+            CreateDatabase();
+        }
+    }
+
+
     static void FillTableWithTestData()
     {
+        CreateDatabaseIfItDoesntExist();
+
         string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
         using (SqliteConnection conn = new SqliteConnection(dbPath))
@@ -109,6 +128,8 @@ public static class SQLiteUtilities
 
     static void ReadDatabase()
     {
+        CreateDatabaseIfItDoesntExist();
+
         string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
         using (SqliteConnection conn = new SqliteConnection(dbPath))
@@ -176,12 +197,30 @@ public static class SQLiteUtilities
 
                     reader.Close();
                 }
+
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "SELECT * FROM DevicePairing";
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        Debug.Log("TabletID: " + reader["TabletID"] + "\t HeadsetID: " + reader["HeadsetID"]);
+                    }
+
+                    reader.Close();
+                }
             }
         }
     }
 
+    //Not finished!!
     public static int[,] GetLabyrintheDataWithId(int id)
     {
+        CreateDatabaseIfItDoesntExist();
+
         string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
         int[,] data = new int[4,4];//temps size should be read
         using (SqliteConnection conn = new SqliteConnection(dbPath))
@@ -207,6 +246,102 @@ public static class SQLiteUtilities
             }
         }
         return data;
+    }
+
+    public static string GetPairing(string id, int deviceType)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+        string pairedId = null;
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                if (deviceType == Constants.ANDROID_TABLET)
+                {
+                    cmd.CommandText = "SELECT * FROM DevicePairing WHERE TabletID='" + id + "'";
+                }
+                else if(deviceType == Constants.OCCULUS_GO_HEADSET)
+                {
+                    cmd.CommandText = "SELECT * FROM DevicePairing WHERE HeadsetID='" + id + "'";
+                }
+
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Debug.Log("TabletId : " + reader["TabletID"] + "\t HeadsetId : " + reader["HeadsetID"]);
+                        if (deviceType == Constants.ANDROID_TABLET)
+                        {
+                            pairedId = reader["HeadsetID"].ToString();
+                        }
+                        else if (deviceType == Constants.OCCULUS_GO_HEADSET)
+                        {
+                            pairedId = reader["TabletID"].ToString();
+                        }
+                    }
+
+                    reader.Close();
+                }
+            }
+        }
+        return pairedId;
+    }
+
+    static void RemovePairing(string id,int deviceType)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+;
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                if(deviceType == Constants.ANDROID_TABLET)
+                {
+                    cmd.CommandText = "DELETE FROM DevicePairing WHERE TabletID='" + id + "'";
+                }
+                else if(deviceType == Constants.OCCULUS_GO_HEADSET)
+                {
+                    cmd.CommandText = "DELETE FROM DevicePairing WHERE HeadsetID='" + id + "'";
+                }
+                
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+
+    public static void AddPairing(string tabletId,string headsetId)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        RemovePairing(tabletId, 0);
+        RemovePairing(headsetId, 1);
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "INSERT INTO DevicePairing (TabletID, HeadsetID) VALUES ( '" + tabletId + "', '" + headsetId + "');";
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 
 }

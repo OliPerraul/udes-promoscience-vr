@@ -7,13 +7,6 @@ public class ServerNetworkManager : NetworkManager
 {
     public static ServerNetworkManager instance;
 
-    [SerializeField]
-    GameObject playerLobbyPrefab;
-
-    [SerializeField]
-    GameObject playerLobbyList;
-
-    // Use this for initialization
     void Start ()
     {
         if (instance == null)
@@ -34,5 +27,4 @@ public class ServerNetworkManager : NetworkManager
         PlayerList.instance.AddPlayer(p);
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
     }
-
 }
