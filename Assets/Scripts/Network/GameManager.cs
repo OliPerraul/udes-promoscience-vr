@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;//Still need testing
             //register to game status change
         }
         else

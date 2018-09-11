@@ -95,7 +95,7 @@ public class Player : NetworkBehaviour
         CmdSetUniqueIdentifier(deviceUniqueIdentifier);
         deviceName = SystemInfo.deviceModel;
 
-        if(deviceName == Constants.SAMSUNG_TABLET_SMT380)
+        if (deviceName == Constants.SAMSUNG_TABLET_SMT380)
         {
             deviceType = Constants.ANDROID_TABLET;
         }

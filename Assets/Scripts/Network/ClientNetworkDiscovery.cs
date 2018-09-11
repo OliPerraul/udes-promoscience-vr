@@ -16,9 +16,13 @@ public class ClientNetworkDiscovery : NetworkDiscovery
 
     public override void OnReceivedBroadcast(string fromAddress, string data)
     {
-        //Restarting network transport is a workaround to avoid an error cause by StopBroadcast(), the update function of the network discovery still run for nothing and deleting it cause errors
-        NetworkTransport.Shutdown();
-        NetworkTransport.Init();
+        //Restarting network transport is a workaround to avoid an error cause by StopBroadcast() on pc, the update function of the network discovery still run for nothing and deleting it cause errors
+        //NetworkTransport.Shutdown();
+        //NetworkTransport.Init();
+
+        //Causes an error on all devices but stop updating after the error and doesn't seems to afect other modules
+        StopBroadcast();
+
         serverIpAdress.value = fromAddress;
     }
 }

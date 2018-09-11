@@ -22,4 +22,16 @@ static class Constants
 
     //Server ip adress (temp)
     public const string SERVER_IP_ADRESS = "192.168.0.102";// should use local network discovery
+
+    //Labyrinth tiles
+
+    //0-49 Floors
+    public const int TILE_FLOOR_START_ID = 0;
+    public const int TILE_FLOOR_1_ID = 1;
+
+    //50-99 Walls
+    public const int TILE_WALL_1_ID = 50;
+
+    //100-149 Ends
+    public const int TILE_END_1_ID = 100;
 }

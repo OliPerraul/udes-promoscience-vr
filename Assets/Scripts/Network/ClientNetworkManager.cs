@@ -10,6 +10,8 @@ public class ClientNetworkManager : NetworkManager
 
     int serverPort = 7777;
 
+    int i = 0;//temps
+
     private void Start()
     {
         serverIpAdress.valueChangedEvent += StartConnection;
@@ -25,5 +27,7 @@ public class ClientNetworkManager : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
+        i = i + 1;
+        Debug.Log("OnClientConnect : " + i);
     }
 }
