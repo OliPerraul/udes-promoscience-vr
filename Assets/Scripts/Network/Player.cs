@@ -75,8 +75,8 @@ public class Player : NetworkBehaviour
     [SerializeField]
     ScriptableString pairedIpAdress;
 
-    //[SerializeField]
-    //ScriptableIntMap labyrintheData;
+    [SerializeField]
+    ScriptableLabyrinth labyrinthData;
 
     //Could be change so that the logic is in the scriptable object for the algorithm, doing so will allow to add new algorithm without hardcoding it?
     [SerializeField]
@@ -191,5 +191,24 @@ public class Player : NetworkBehaviour
         UITextManager.instance.SetText("PairedIP : " + ipAdress);//temp
         pairedIpAdress.value = ipAdress;
         CmdSetPlayerStatus(Constants.PAIRED);//Temp?
+    }
+
+    [TargetRpc]
+    public void TargetSetGame(NetworkConnection target, int[,] map, Vector2Int startPos, int labyrinthId, int algorithmIdentifier)
+    {
+        UITextManager.instance.SetText("Game data receive : getting ready to start");//temp
+        labyrinthData.SetLabyrithDataWitId(map, startPos, labyrinthId);
+        algorithmId.value = algorithmIdentifier;
+
+        if(algorithmIdentifier == Constants.TUTORIAL_ALGORITH)
+        {
+            gameState.value = Constants.PLAYING_TUTORIAL;
+            CmdSetPlayerStatus(Constants.PLAYING_TUTORIAL);
+        }
+        else
+        {
+            gameState.value = Constants.PLAYING;
+            CmdSetPlayerStatus(Constants.PLAYING);
+        }
     }
 }

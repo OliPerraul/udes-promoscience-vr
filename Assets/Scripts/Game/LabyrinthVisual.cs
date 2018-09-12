@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class LabyrinthVisual : MonoBehaviour
 {
-    const float sizeOfTiles = 5.0f;
-
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
-    //List of gameObjectPrefab could be load with a resource manager but for now....
+  
     GameObject[,] labyrinthTiles;
 
+    //List of gameObjectPrefab could be load with a resource manager but for now....
     [SerializeField]
     GameObject startTilePrefab;
     [SerializeField]
@@ -23,13 +22,13 @@ public class LabyrinthVisual : MonoBehaviour
 
     void Start ()
     {
-        //Usually should listen to game status but for now let's hijack it
         labyrinthData.valueChangedEvent += GenerateLabyrinthVisual;
-
     }
 
-    void GenerateLabyrinthVisual()
+
+    public void GenerateLabyrinthVisual()
     {
+        //Destroy old labyrinth if there is one
         labyrinthTiles = new GameObject[labyrinthData.GetLabyrithXLenght(), labyrinthData.GetLabyrithYLenght()];
 
         for (int x = 0; x < labyrinthData.GetLabyrithXLenght(); x++)
@@ -70,12 +69,15 @@ public class LabyrinthVisual : MonoBehaviour
     {
         Vector3 worldPos = new Vector3();
 
-        worldPos.x = (x - labyrinthData.GetLabyrithStartPosition().x) * sizeOfTiles;
-        worldPos.y = (y - labyrinthData.GetLabyrithStartPosition().y) * sizeOfTiles;
-        worldPos.z = 0;
+        worldPos.x = (x - labyrinthData.GetLabyrithStartPosition().x) * Constants.tileSize;
+        worldPos.y = 0;
+        worldPos.z = (-y + labyrinthData.GetLabyrithStartPosition().y) * Constants.tileSize;
 
         return worldPos;
     }
 	
-
+    public TileInformation GetLabyrinthTileInfomation(int x, int y)
+    {
+        return labyrinthTiles[x, y].GetComponent<TileInformation>();
+    }
 }
