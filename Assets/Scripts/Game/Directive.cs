@@ -7,6 +7,38 @@ public class Directive : MonoBehaviour
     [SerializeField]
     ScriptableInteger directive;
 
+    [SerializeField]
+    ScriptableInteger currentGameState;
+
+    private void Start()
+    {
+        currentGameState.valueChangedEvent += OnStatusChanged;
+    }
+
+    void OnStatusChanged()
+    {
+        if (currentGameState.value == Constants.PLAYING_TUTORIAL || currentGameState.value == Constants.PLAYING)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child != this.transform)
+                {
+                    child.gameObject.SetActive(true);
+                }
+            }
+        }
+        else
+        {
+            foreach (Transform child in transform)
+            {
+                if (child != this.transform)
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+    }
+
     public void SetDirectiveMoveFoward()
     {
         directive.value = Constants.DIRECTIVE_MOVE_FOWARD;

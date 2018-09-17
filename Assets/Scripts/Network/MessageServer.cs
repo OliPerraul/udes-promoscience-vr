@@ -6,7 +6,13 @@ using UnityEngine.Networking;
 public class MessageServer : MonoBehaviour
 {
     [SerializeField]
+    ScriptableInteger currentGameState;
+
+    [SerializeField]
     ScriptableString pairedIpAdress;
+
+    [SerializeField]
+    ScriptableInteger directive;
 
     NetworkServerSimple server = null;
     NetworkConnection clientConnection = null;
@@ -16,6 +22,7 @@ public class MessageServer : MonoBehaviour
     private void Start()
     {
         pairedIpAdress.valueChangedEvent += StartServer;
+        directive.valueChangedEvent += SendDirective;
     }
 
     void Update()
@@ -45,7 +52,7 @@ public class MessageServer : MonoBehaviour
     void OnConnect(NetworkMessage netMsg)
     {
         clientConnection = netMsg.conn;
-        UITextManager.instance.ShowMessageButtonGroup();//temp
+        currentGameState.value = Constants.READY;
     }
 
     void OnDisconnect(NetworkMessage netMsg)
@@ -62,10 +69,10 @@ public class MessageServer : MonoBehaviour
         UITextManager.instance.SetMessageText("Action id: " + msg.actionId);//temp
     }
 
-    public void SendDirective(int id)
+    public void SendDirective()
     {
         DirectiveMessage directiveMsg = new DirectiveMessage();
-        directiveMsg.directiveId = id;
+        directiveMsg.directiveId = directive.value;
 
         clientConnection.Send(CustomMsgType.Directive, directiveMsg);
     }

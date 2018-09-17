@@ -80,4 +80,15 @@ public class LabyrinthVisual : MonoBehaviour
     {
         return labyrinthTiles[x, y].GetComponent<TileInformation>();
     }
+
+    public void DestroyLabyrinth()//Could also just destroy all children
+    {
+        for (int x = 0; x < labyrinthTiles.GetLength(0); x++)
+        {
+            for (int y = 0; y < labyrinthTiles.GetLength(1); y++)
+            {
+                Destroy(labyrinthTiles[x, y]);
+            }
+        }
+    }
 }

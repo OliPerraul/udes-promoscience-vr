@@ -958,7 +958,7 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 1
-  m_Height: 2.5
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &598001954
@@ -974,7 +974,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 84
   m_CollisionDetection: 0
 --- !u!1001 &625246179
 Prefab:
@@ -1018,6 +1018,10 @@ Prefab:
     - target: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
       propertyPath: m_Name
       value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
@@ -1281,8 +1285,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469a9feaece056a4fa5efcba4d34c7ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
-  directive: {fileID: 0}
+  directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   chatServerPort: 9996
 --- !u!114 &817602603
 MonoBehaviour:
@@ -1400,7 +1405,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &833554370
 GameObject:
@@ -1653,6 +1658,10 @@ Prefab:
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
   m_IsPrefabAsset: 0
@@ -1689,8 +1698,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fba387d0fc4c94b9fc7d874926bbb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinth: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
-  doIt: 0
 --- !u!114 &1092423830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1722,7 +1731,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1233000653
 GameObject:
@@ -1938,7 +1947,7 @@ Transform:
   m_Children:
   - {fileID: 1966013144}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1393991356
 Prefab:
@@ -1982,6 +1991,10 @@ Prefab:
     - target: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
       propertyPath: m_Name
       value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
@@ -2222,7 +2235,11 @@ MonoBehaviour:
   currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinthRoom: {fileID: 27522707}
   lobby: {fileID: 1934809123}
+  controls: {fileID: 1670229885}
   labyrinth: {fileID: 1092423830}
+  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  isEndReached: {fileID: 11400000, guid: 99ed2ad93e9664d489fefc3ea16e70a3, type: 2}
+  cameraTransform: {fileID: 1739980048}
 --- !u!4 &1670229881
 Transform:
   m_ObjectHideFlags: 0
@@ -2234,7 +2251,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1670229882
 MonoBehaviour:
@@ -2257,14 +2274,11 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1670229879}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1b45f71b22c0db4469d734b9e02e56a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 0
-  labyrinth: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
-  labyrinthVisual: {fileID: 1092423830}
   cameraTransform: {fileID: 1739980048}
   centerEyeAnchor: {fileID: 1049012887}
 --- !u!114 &1670229884
@@ -2288,7 +2302,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1670229879}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b22079f9da1ad2e4d9852997ed3503a3, type: 3}
   m_Name: 
@@ -2409,7 +2423,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 126d619cf4daa52469682f85c1378b4a, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 126d619cf4daa52469682f85c1378b4a, type: 2}
       propertyPath: m_LocalPosition.y
@@ -2551,6 +2565,10 @@ Prefab:
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
   m_IsPrefabAsset: 0
@@ -2671,6 +2689,10 @@ Prefab:
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
   m_IsPrefabAsset: 0
@@ -2722,6 +2744,10 @@ Prefab:
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
   m_IsPrefabAsset: 0
@@ -2764,7 +2790,7 @@ RectTransform:
   - {fileID: 516668477}
   - {fileID: 1233000654}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2945,6 +2971,10 @@ Prefab:
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
   m_IsPrefabAsset: 0
@@ -3023,7 +3053,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2080228644
 GameObject:
@@ -3134,11 +3164,11 @@ MonoBehaviour:
   directiveDisplayer: {fileID: 1833387989}
   directiveImage: {fileID: 1833387990}
   cameraTransform: {fileID: 1049012887}
-  fowardImage: {fileID: 0}
-  turnLeftImage: {fileID: 0}
-  turnRightImage: {fileID: 0}
-  uTurnImage: {fileID: 0}
-  stopImage: {fileID: 0}
+  fowardImage: {fileID: 21300000, guid: cda8e35f05ebada4685e4c8493b9d8aa, type: 3}
+  turnLeftImage: {fileID: 21300000, guid: 53bee1f10f30bbd4abfbcd48bc6e99ee, type: 3}
+  turnRightImage: {fileID: 21300000, guid: 53bee1f10f30bbd4abfbcd48bc6e99ee, type: 3}
+  uTurnImage: {fileID: 21300000, guid: 53bee1f10f30bbd4abfbcd48bc6e99ee, type: 3}
+  stopImage: {fileID: 21300000, guid: cda8e35f05ebada4685e4c8493b9d8aa, type: 3}
 --- !u!114 &2133895379
 MonoBehaviour:
   m_ObjectHideFlags: 0

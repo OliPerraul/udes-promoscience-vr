@@ -18,28 +18,29 @@ public class DirectiveDisplay : MonoBehaviour
     Transform cameraTransform;
 
     [SerializeField]
-    Image fowardImage;//temp might change to a ressource manager
+    Sprite fowardImage;//temp might change to a ressource manager
 
     [SerializeField]
-    Image turnLeftImage;//temp might change to a ressource manager
+    Sprite turnLeftImage;//temp might change to a ressource manager
 
     [SerializeField]
-    Image turnRightImage;//temp might change to a ressource manager
+    Sprite turnRightImage;//temp might change to a ressource manager
 
     [SerializeField]
-    Image uTurnImage;//temp might change to a ressource manager
+    Sprite uTurnImage;//temp might change to a ressource manager
 
     [SerializeField]
-    Image stopImage;//temp might change to a ressource manager
+    Sprite stopImage;//temp might change to a ressource manager
 
     float hideTime = 5.0f;
     float hideTimer;
 
-    Vector3 positionFromCamera = new Vector3(0,2,2);
+    Vector3 positionFromCamera = new Vector3(2, 1.5f, 2);
+    Vector3 baseRotation = new Vector3(-45, 0, 0);
 
-    
 
-	void Start ()
+
+    void Start ()
     {
         directive.valueChangedEvent += OnNewDirective;
     }
@@ -55,7 +56,10 @@ public class DirectiveDisplay : MonoBehaviour
             }
             else
             {
-                directiveDisplayer.transform.position = new Vector3(positionFromCamera.x * Mathf.Sin(Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.y), 0, positionFromCamera.z * Mathf.Cos(Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.y)) + cameraTransform.position;
+                directiveDisplayer.transform.position = new Vector3(positionFromCamera.x * Mathf.Sin(Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.y), positionFromCamera.y, positionFromCamera.z * Mathf.Cos(Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.y)) + cameraTransform.position;
+                Quaternion r = new Quaternion();
+                r.eulerAngles = new Vector3(baseRotation.x , cameraTransform.rotation.eulerAngles.y, baseRotation.z);
+                directiveDisplayer.transform.rotation = r;
             }
         }
 	}
@@ -71,23 +75,23 @@ public class DirectiveDisplay : MonoBehaviour
     {
         if(directiveId == Constants.DIRECTIVE_MOVE_FOWARD)
         {
-            directiveImage = fowardImage;
+            directiveImage.sprite = fowardImage;
         }
         else if (directiveId == Constants.DIRECTIVE_TURN_LEFT)
         {
-            directiveImage = turnLeftImage;
+            directiveImage.sprite = turnLeftImage;
         }
         else if (directiveId == Constants.DIRECTIVE_TURN_RIGHT)
         {
-            directiveImage = turnRightImage;
+            directiveImage.sprite = turnRightImage;
         }
         else if (directiveId == Constants.DIRECTIVE_UTURN)
         {
-            directiveImage = uTurnImage;
+            directiveImage.sprite = uTurnImage;
         }
         else if (directiveId == Constants.DIRECTIVE_STOP)
         {
-            directiveImage = stopImage;
+            directiveImage.sprite = stopImage;
         }
     }
 }

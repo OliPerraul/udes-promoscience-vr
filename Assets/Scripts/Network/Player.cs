@@ -90,9 +90,16 @@ public class Player : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        base.OnStartAuthority();
+
+        gameState.valueChangedEvent += SendCmdPlayerGameState;
+
+        ClientInitialize();
+    }
+
+    [Client]
+    void ClientInitialize()
+    {
         deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
-        CmdSetUniqueIdentifier(deviceUniqueIdentifier);
         deviceName = SystemInfo.deviceModel;
 
         if (deviceName == Constants.SAMSUNG_TABLET_SMT380)
@@ -104,10 +111,16 @@ public class Player : NetworkBehaviour
             deviceType = Constants.OCCULUS_GO_HEADSET;
         }
         CmdSetDeviceType(deviceType);
-
         CmdSetDeviceName(deviceName);
-        CmdSetPlayerStatus(Constants.PAIRING);
-        UITextManager.instance.SetText("OnStartLocalPlayer");//temp
+        CmdSetUniqueIdentifier(deviceUniqueIdentifier);
+
+        gameState.value = Constants.PAIRING;
+    }
+
+    [Client]
+    void SendCmdPlayerGameState()
+    {
+        CmdSetPlayerStatus(gameState.value);
     }
 
     void OnDeviceNameChanged()
@@ -155,15 +168,15 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSetPlayerStatus(int id)
-    {
-        playerStatus = id;
-    }
-
-    [Command]
     public void CmdSetUniqueIdentifier(string id)
     {
         deviceUniqueIdentifier = id;
+    }
+
+    [Command]
+    public void CmdSetPlayerStatus(int id)
+    {
+        playerStatus = id;
     }
 
     [ClientRpc]
@@ -190,7 +203,7 @@ public class Player : NetworkBehaviour
     {
         UITextManager.instance.SetText("PairedIP : " + ipAdress);//temp
         pairedIpAdress.value = ipAdress;
-        CmdSetPlayerStatus(Constants.PAIRED);//Temp?
+        gameState.value = Constants.PAIRED;//Temp?
     }
 
     [TargetRpc]
@@ -205,12 +218,10 @@ public class Player : NetworkBehaviour
         if(algorithmIdentifier == Constants.TUTORIAL_ALGORITH)
         {
             gameState.value = Constants.PLAYING_TUTORIAL;
-            CmdSetPlayerStatus(Constants.PLAYING_TUTORIAL);
         }
         else
         {
             gameState.value = Constants.PLAYING;
-            CmdSetPlayerStatus(Constants.PLAYING);
         }
     }
 }

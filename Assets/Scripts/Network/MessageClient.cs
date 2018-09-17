@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 public class MessageClient : MonoBehaviour
 {
     [SerializeField]
+    ScriptableInteger currentGameState;
+
+    [SerializeField]
     ScriptableString pairedIpAdress;
 
     [SerializeField]
@@ -41,8 +44,7 @@ public class MessageClient : MonoBehaviour
 
     void OnConnect(NetworkMessage netMsg)
     {
-        UITextManager.instance.SetMessageText("Client connected!");
-        UITextManager.instance.ShowMessageButtonGroup();
+        currentGameState.value = Constants.READY;
 
         //ScriptableVect2Int.valueChangedEvent += SendAction
     }

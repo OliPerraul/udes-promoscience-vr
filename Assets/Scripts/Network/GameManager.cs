@@ -20,18 +20,30 @@ public class GameManager : MonoBehaviour
     GameObject lobby;//should probably manage it's self or just not exist
 
     //GameComponents
-    //Controls
     //Algorithm for tablet
     //MessageClient or message server
 
     [SerializeField]
+    SlideMovementHeadLookControls controls;
+
+    [SerializeField]
     LabyrinthVisual labyrinth;
+
+    [SerializeField]
+    ScriptableLabyrinth labyrinthData;
+
+    [SerializeField]
+    ScriptableBoolean isEndReached;
+
+    [SerializeField]
+    Transform cameraTransform;
 
     void Start()
     {
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;//Still need testing
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;//Tablet use only
 
         currentGameState.valueChangedEvent += OnGameStateChanged;
+        isEndReached.valueChangedEvent += OnEndReached;
     }
 
     //Game manager could be remove and instead add a status preparing for game and have the module that need it listen to status
@@ -45,10 +57,11 @@ public class GameManager : MonoBehaviour
             labyrinthRoom.GetComponent<Animation>().Play();//Could be moved to a repective module
             lobby.SetActive(false);
 
-            //Activate looping tutorial option
             //Activate algorithm for tablet
-            //Send ready to partner?? on response unlock controls?
-            //Unlock controls
+            if(controls != null)
+            {
+                controls.SetMovementActive(true);
+            }
         }
         else if (currentGameState.value == Constants.PLAYING)
         {
@@ -58,12 +71,49 @@ public class GameManager : MonoBehaviour
             lobby.SetActive(false);
             //Deactivate looping tutorial option so that at the end, go to waiting scene
             //Activate algorithm for tablet
-            //Send ready to partner?? on response unlock controls?
-            //Unlock controls
+            if (controls != null)
+            {
+                controls.SetMovementActive(true);
+            }
         }
         else if (currentGameState.value == Constants.WAITING_FOR_NEXT_ROUND)
         {
 
+
+        }
+    }
+
+    void OnEndReached()
+    {
+        if(isEndReached.value)
+        {
+            if(currentGameState.value == Constants.PLAYING_TUTORIAL)
+            {
+                controls.SetMovementActive(false);
+                controls.StopAllMovement();
+                Vector2Int startPos = labyrinthData.GetLabyrithStartPosition();
+                cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
+                isEndReached.value = false;
+                //Send pos to tablet
+                controls.SetMovementActive(true);
+            }
+            else
+            {
+                controls.SetMovementActive(false);
+                controls.StopAllMovement();
+
+                labyrinth.DestroyLabyrinth();
+                //Not tested yet
+                labyrinthRoom.GetComponent<Animation>().Play();//Could be moved to a repective module
+                labyrinthRoom.GetComponent<Animation>().Stop();//Could be moved to a repective module
+                lobby.SetActive(true);
+
+                Vector2Int startPos = labyrinthData.GetLabyrithStartPosition();
+                cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
+                isEndReached.value = false;
+                //Change for waiting scene (Ui job) 
+                //Sent message to tablet
+            }
         }
     }
 

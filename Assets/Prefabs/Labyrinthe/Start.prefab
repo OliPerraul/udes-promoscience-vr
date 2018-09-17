@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4274673345525540}
   - component: {fileID: 33344648064771502}
   - component: {fileID: 23247523604409146}
-  - component: {fileID: 136230570840814584}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -212,16 +211,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
---- !u!136 &136230570840814584
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1074814951316822}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}

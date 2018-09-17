@@ -5,32 +5,33 @@ using UnityEngine;
 public class LabyrinthFiller : MonoBehaviour
 {
     [SerializeField]
+    ScriptableInteger currentGameState;
+
+    [SerializeField]
     ScriptableLabyrinth labyrinth;
 
     int id = -3;//negative id so that it is not mess up with id of those from the database
     int sizeX = 10;
     int sizeY = 10;
-
-    float time = 0;//temp
-    bool generated = false;//temp
-
-    private void Update()//temp
+    void Start()
     {
-        if(!generated  && time > 5 )
+        currentGameState.valueChangedEvent += OnGameStateChanged;
+    }
+
+    void OnGameStateChanged()
+    {
+        if (currentGameState.value == Constants.READY)
         {
-            generated = true;
-            FillLabyrinth();
-        }
-        else if(!generated)
-        {
-            time += Time.deltaTime;
+            GenerateTutorialLabyrinthData();
+            currentGameState.value = Constants.PLAYING;//Constants.PLAYING_TUTORIAL;
         }
     }
 
-    public void FillLabyrinth()
+    public void GenerateTutorialLabyrinthData()
     {
         int[,] map = new int[sizeX, sizeY];
         Vector2Int startPos = new Vector2Int(1,1);
+
         //Outerwall
         for (int i = 0; i < map.GetLength(0); i++)
         {
@@ -43,8 +44,6 @@ public class LabyrinthFiller : MonoBehaviour
             map[0, j] = Constants.TILE_WALL_1_ID;
             map[sizeX-1, j] = Constants.TILE_WALL_1_ID;
         }
-        
-
 
         //Row 1
         map[1, 1] = Constants.TILE_FLOOR_START_ID;
