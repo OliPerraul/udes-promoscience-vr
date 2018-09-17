@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     //All the logic of the gameManager should be move to their repective owner, 
 
     Player localPlayer;
+<<<<<<< HEAD
 
     ScriptableInteger currentGameState;
 
@@ -18,6 +19,14 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     GameObject lobby;//should probably manage it's self or just not exist
+=======
+>>>>>>> master
+
+    //GameComponents
+    //Controls
+    //Algorithm for tablet
+    //MessageClient or message server
+    LabyrinthVisual labyrinth;
 
     //GameComponents
     //Controls
@@ -39,12 +48,16 @@ public class GameManager : MonoBehaviour
         {
             labyrinth.GenerateLabyrinthVisual();
             //Play animation room collapsing or whatever
+<<<<<<< HEAD
             labyrinthRoom.GetComponent<Animation>().Play();//Could be moved to a repective module
             lobby.SetActive(false);
+=======
+>>>>>>> master
             //Activate looping tutorial option
             //Activate algorithm for tablet
             //Send ready to partner?? on response unlock controls?
             //Unlock controls
+<<<<<<< HEAD
         }
         else if (currentGameState.value == Constants.PLAYING)
         {
@@ -59,6 +72,20 @@ public class GameManager : MonoBehaviour
         }
         else if (currentGameState.value == Constants.WAITING_FOR_NEXT_ROUND)
         {
+=======
+        }
+        else if (currentGameState.value == Constants.PLAYING)
+        {
+            labyrinth.GenerateLabyrinthVisual();
+            //Play animation room collapsing or whatever
+            //Deactivate looping tutorial option so that at the end, go to waiting scene
+            //Activate algorithm for tablet
+            //Send ready to partner?? on response unlock controls?
+            //Unlock controls
+        }
+        else if (currentGameState.value == Constants.WAITING_FOR_NEXT_ROUND)
+        {
+>>>>>>> master
             //Might need a message to partner that it on waiting scene
         }
     }

@@ -194,10 +194,17 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
+<<<<<<< HEAD
     public void TargetSetGame(NetworkConnection target, int[] map, int sizeX,int sizeY, int startPosX, int startPosY, int labyrinthId, int algorithmIdentifier)//Unet permet pas le [,]
     {
         UITextManager.instance.SetText("Game data receive : getting ready to start");//temp
         labyrinthData.SetLabyrithDataWitId(map, sizeX, sizeY, startPosX, startPosY, labyrinthId);
+=======
+    public void TargetSetGame(NetworkConnection target, int[,] map, Vector2Int startPos, int labyrinthId, int algorithmIdentifier)
+    {
+        UITextManager.instance.SetText("Game data receive : getting ready to start");//temp
+        labyrinthData.SetLabyrithDataWitId(map, startPos, labyrinthId);
+>>>>>>> master
         algorithmId.value = algorithmIdentifier;
 
         if(algorithmIdentifier == Constants.TUTORIAL_ALGORITH)
