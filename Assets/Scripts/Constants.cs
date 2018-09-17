@@ -26,12 +26,6 @@ static class Constants
     //Algorith identifier
     public const int TUTORIAL_ALGORITH = 0;
 
-    //Algorith identifier
-    public const int TUTORIAL_ALGORITH = 0;
-
-    //Algorith identifier
-    public const int TUTORIAL_ALGORITH = 0;
-
     //Labyrinth tiles
     public const float tileSize = 5.0f;
 

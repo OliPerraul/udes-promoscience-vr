@@ -1786,8 +1786,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b173631a1188cb4d94bae3f397c30ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinthRoom: {fileID: 2015499311}
   lobby: {fileID: 1795860088}
+  labyrinth: {fileID: 1935275872}
 --- !u!4 &1135340686
 Transform:
   m_ObjectHideFlags: 0

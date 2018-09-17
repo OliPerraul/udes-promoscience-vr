@@ -11,16 +11,19 @@ public class LabyrinthFiller : MonoBehaviour
     int sizeX = 10;
     int sizeY = 10;
 
-    public bool doIt = false;//temp
+    float time = 0;//temp
+    bool generated = false;//temp
 
     private void Update()//temp
     {
-        if(doIt)
+        if(!generated  && time > 5 )
         {
-            doIt = false;
-            Debug.Log("Do It!");//temp
+            generated = true;
             FillLabyrinth();
-            
+        }
+        else if(!generated)
+        {
+            time += Time.deltaTime;
         }
     }
 

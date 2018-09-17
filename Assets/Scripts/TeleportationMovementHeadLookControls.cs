@@ -66,17 +66,12 @@ public class TeleportationMovementHeadLookControls : MonoBehaviour
 
     void RequestMove(int direction)
     {
-<<<<<<< HEAD
         float movement = Constants.tileSize;
-=======
-        float mouvement = Constants.tileSize;
->>>>>>> master
 
         if (CheckIfMovementIsValid(direction))
         { 
             if (direction == 0)
             {
-<<<<<<< HEAD
                 cameraTransform.position += (new Vector3(0, 0, movement));
             }
             else if (direction == 1)
@@ -90,21 +85,6 @@ public class TeleportationMovementHeadLookControls : MonoBehaviour
             else if (direction == 3)
             {
                 cameraTransform.position += (new Vector3(-movement, 0, 0));
-=======
-                cameraTransform.position += (new Vector3(0, 0, mouvement));
-            }
-            else if (direction == 1)
-            {
-                cameraTransform.position += (new Vector3(mouvement, 0, 0));
-            }
-            else if (direction == 2)
-            {
-                cameraTransform.position += (new Vector3(0, 0, -mouvement));
-            }
-            else if (direction == 3)
-            {
-                cameraTransform.position += (new Vector3(-mouvement, 0, 0));
->>>>>>> master
             }
         }
     }

@@ -73,54 +73,34 @@ public class TeleportationMovementArrowsControls : MonoBehaviour
 
     void RequestMove(bool front)
     {
-<<<<<<< HEAD
         float movement = front ? Constants.tileSize : -Constants.tileSize;
-=======
-        float mouvement = front ? Constants.tileSize : -Constants.tileSize;
->>>>>>> master
 
         if (direction == 0)
         {
             if (CheckIfMovementIsValid((front ? 0 : 2)))
             {
-<<<<<<< HEAD
                 cameraTransform.position += (new Vector3(0, 0, movement));
-=======
-                cameraTransform.position += (new Vector3(0, 0, mouvement));
->>>>>>> master
             }
         }
         else if (direction == 1)
         {
             if (CheckIfMovementIsValid((front ? 1 : 3)))
             {
-<<<<<<< HEAD
                 cameraTransform.position += (new Vector3(movement, 0, 0));
-=======
-                cameraTransform.position += (new Vector3(mouvement, 0, 0));
->>>>>>> master
             }
         }
         else if (direction == 2)
         {
             if (CheckIfMovementIsValid((front ? 2 : 0)))
             {
-<<<<<<< HEAD
                 cameraTransform.position += (new Vector3(0, 0, -movement));
-=======
-                cameraTransform.position += (new Vector3(0, 0, -mouvement));
->>>>>>> master
             }
         }
         else if (direction == 3)
         {
             if (CheckIfMovementIsValid((front ? 3 : 1)))
             {
-<<<<<<< HEAD
                 cameraTransform.position += (new Vector3(-movement, 0, 0));
-=======
-                cameraTransform.position += (new Vector3(-mouvement, 0, 0));
->>>>>>> master
             }
         }
     }
