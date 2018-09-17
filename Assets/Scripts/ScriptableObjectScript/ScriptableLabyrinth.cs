@@ -79,5 +79,26 @@ public class ScriptableLabyrinth : ScriptableObject
             OnValueChanged();
         }
     }
+
+    public void SetLabyrithDataWitId(int[] map, int sizeX, int sizeY, int startPosX, int startPosY, int id)
+    {
+        data = new int[sizeX, sizeY];
+        startPosition = new Vector2Int(startPosX, startPosY);
+
+        if (id != currentId)
+        {
+            currentId = id;
+
+            for (int i = 0; i < sizeX; i++)
+            {
+                for (int j = 0; j < sizeY; j++)
+                {
+                    data[i, j] = map[(i*sizeX)+j];
+                }
+            }
+
+            OnValueChanged();
+        }
+    }
 }
 

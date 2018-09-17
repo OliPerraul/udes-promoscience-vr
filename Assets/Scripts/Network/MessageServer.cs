@@ -44,17 +44,14 @@ public class MessageServer : MonoBehaviour
 
     void OnConnect(NetworkMessage netMsg)
     {
-        Debug.Log("Client connect");
-        UITextManager.instance.SetMessageText("Client connected!");
         clientConnection = netMsg.conn;
-        UITextManager.instance.ShowMessageButtonGroup();
+        UITextManager.instance.ShowMessageButtonGroup();//temp
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
-        Debug.Log("Client disconnect");
-        UITextManager.instance.SetMessageText("Client disconnected!");
-        UITextManager.instance.HideMessageButtonGroup();
+
+        UITextManager.instance.HideMessageButtonGroup();//temp
         clientConnection = null;
         StopServer();//Might be changed when need reconnection?
     }
@@ -62,7 +59,7 @@ public class MessageServer : MonoBehaviour
     void OnAction(NetworkMessage netMsg)
     {
         ActionMessage msg = netMsg.ReadMessage<ActionMessage>();
-        UITextManager.instance.SetMessageText("Action id: " + msg.actionId);
+        UITextManager.instance.SetMessageText("Action id: " + msg.actionId);//temp
     }
 
     public void SendDirective(int id)

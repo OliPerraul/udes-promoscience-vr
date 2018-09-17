@@ -7,9 +7,22 @@ public class LabyrinthFiller : MonoBehaviour
     [SerializeField]
     ScriptableLabyrinth labyrinth;
 
-    int id = -2;//negative id so that it is not mess up with id of those from the database
+    int id = -3;//negative id so that it is not mess up with id of those from the database
     int sizeX = 10;
     int sizeY = 10;
+
+    public bool doIt = false;//temp
+
+    private void Update()//temp
+    {
+        if(doIt)
+        {
+            doIt = false;
+            Debug.Log("Do It!");//temp
+            FillLabyrinth();
+            
+        }
+    }
 
     public void FillLabyrinth()
     {

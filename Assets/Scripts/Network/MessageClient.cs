@@ -7,6 +7,13 @@ public class MessageClient : MonoBehaviour
 {
     [SerializeField]
     ScriptableString pairedIpAdress;
+
+    [SerializeField]
+    ScriptableInteger directive;
+
+    [SerializeField]
+    //ScriptableVect2Int action; Might need a other format depending on movement type
+
     public int chatServerPort = 9999;
 
     NetworkClient client = null;
@@ -34,26 +41,35 @@ public class MessageClient : MonoBehaviour
 
     void OnConnect(NetworkMessage netMsg)
     {
-        Debug.Log("Client connected!");
         UITextManager.instance.SetMessageText("Client connected!");
         UITextManager.instance.ShowMessageButtonGroup();
+
+        //ScriptableVect2Int.valueChangedEvent += SendAction
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
-        Debug.Log("Server disconnect");
-        UITextManager.instance.SetMessageText("Server disconnected!");
-        UITextManager.instance.HideMessageButtonGroup();
+        UITextManager.instance.SetMessageText("Server disconnected!");//temp
+        UITextManager.instance.HideMessageButtonGroup();//temp
         StopClient();//Might be changed when need reconnection?
     }
 
     void OnDirective(NetworkMessage netMsg)
     {
         DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
-        UITextManager.instance.SetMessageText("Action id: " + msg.directiveId);
+        directive.value = msg.directiveId;
+        UITextManager.instance.SetMessageText("Action id: " + msg.directiveId);//temp
     }
 
-    public void SendAction(int id)
+    public void SendAction()
+    {
+        ActionMessage actionMsg = new ActionMessage();
+        //actionMsg.actionId = ScriptableVect2Int.value;
+
+        client.Send(CustomMsgType.Action, actionMsg);
+    }
+
+    public void SendAction(int id)//Temp
     {
         ActionMessage actionMsg = new ActionMessage();
         actionMsg.actionId = id;

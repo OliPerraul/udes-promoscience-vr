@@ -75,7 +75,7 @@ public class UILobbyPlayer : MonoBehaviour
 
     void UpdateLobbyPlayerStatusText()
     {
-        if(PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.NOT_READY_STATUS_ID)
+        if(PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.NOT_READY)
         {
             statusText.text = "Not ready";
         }
@@ -91,7 +91,7 @@ public class UILobbyPlayer : MonoBehaviour
         {
             statusText.text = "Paired";
         }
-        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.READY_STATUS_ID)
+        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.READY)
         {
             statusText.text = "Ready!";
         }

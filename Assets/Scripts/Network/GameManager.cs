@@ -9,66 +9,57 @@ public class GameManager : MonoBehaviour
 {
     //All the logic of the gameManager should be move to their repective owner, 
 
-    //GameState
-    ScriptableInteger connectionPhase;
-    ScriptableInteger lobbbyPhase;
-    ScriptableInteger tutorialPhase;
-    ScriptableInteger gamePhase;
-    ScriptableInteger intermissionPhase;
-
-
-    //Might not need to be static if using sciptable object to share data
-    public static GameManager instance;
-
-    public Player localPlayer;
+    Player localPlayer;
 
     ScriptableInteger currentGameState;
 
+    [SerializeField]
+    GameObject labyrinthRoom;
+
+    [SerializeField]
+    GameObject lobby;//should probably manage it's self or just not exist
+
+    //GameComponents
+    //Controls
+    //Algorithm for tablet
+    //MessageClient or message server
+    LabyrinthVisual labyrinth;
+
     void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-            Screen.sleepTimeout = SleepTimeout.NeverSleep;//Still need testing
-            //register to game status change
-        }
-        else
-        {
-            Destroy(this);
-        }
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;//Still need testing
+
+        currentGameState.valueChangedEvent += OnGameStateChanged;
     }
 
-    public void SetReadyStatus()
-    {
-        if(localPlayer != null)
-        {
-            localPlayer.CmdSetPlayerStatus(Constants.READY_STATUS_ID);
-            UITextManager.instance.SetText("Ready!");//Should be moved to logic in their respective owner
-            UITextManager.instance.HideReadyButton();//Should be moved to logic in their respective owner
-        }
-    }
-
+    //Game manager could be remove and instead add a status preparing for game and have the module that need it listen to status
     public void OnGameStateChanged()
     {
-        if(currentGameState.value == connectionPhase.value)
+        if (currentGameState.value == Constants.PLAYING_TUTORIAL)
         {
-
+            labyrinth.GenerateLabyrinthVisual();
+            //Play animation room collapsing or whatever
+            labyrinthRoom.GetComponent<Animation>().Play();//Could be moved to a repective module
+            lobby.SetActive(false);
+            //Activate looping tutorial option
+            //Activate algorithm for tablet
+            //Send ready to partner?? on response unlock controls?
+            //Unlock controls
         }
-        else if(currentGameState.value == tutorialPhase.value)
+        else if (currentGameState.value == Constants.PLAYING)
         {
-
+            labyrinth.GenerateLabyrinthVisual();
+            //Play animation room collapsing or whatever
+            labyrinthRoom.GetComponent<Animation>().Play();//Could be moved to a repective module
+            lobby.SetActive(false);
+            //Deactivate looping tutorial option so that at the end, go to waiting scene
+            //Activate algorithm for tablet
+            //Send ready to partner?? on response unlock controls?
+            //Unlock controls
         }
-        else if (currentGameState.value == lobbbyPhase.value)
+        else if (currentGameState.value == Constants.WAITING_FOR_NEXT_ROUND)
         {
-
-        }
-        else if (currentGameState.value == gamePhase.value)
-        {
-
-        }
-        else if (currentGameState.value == intermissionPhase.value)
-        {
-
+            //Might need a message to partner that it on waiting scene
         }
     }
 
