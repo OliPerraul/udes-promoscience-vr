@@ -45,11 +45,10 @@ public static class SQLiteUtilities
                 cmd.ExecuteNonQuery();
 
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS Event ( " +
-                                  "EventID INTEGER(10) NOT NULL, " +
+                                  "EventID INTEGER PRIMARY KEY ASC, " +
                                   "Type INTEGER(10) NOT NULL, " +
                                   "Time DATETIME NOT NULL, " +
                                   "ParcoursID INTEGER(10) NOT NULL, " +
-                                  "PRIMARY KEY(EventID), " +
                                   "FOREIGN KEY(ParcoursID) REFERENCES Parcours(ParcoursID) ); ";
                 cmd.ExecuteNonQuery();
 
@@ -73,7 +72,7 @@ public static class SQLiteUtilities
     }
 
 
-    static void FillTableWithTestData()
+    public static void FillTableWithTestData()
     {
         CreateDatabaseIfItDoesntExist();
 
@@ -88,19 +87,19 @@ public static class SQLiteUtilities
 
                 cmd.CommandText = "PRAGMA foreign_keys = ON";
                 cmd.ExecuteNonQuery();
-
+                
                 cmd.CommandText = "INSERT INTO Equipe (EquipeID, Name, Color) VALUES (1, 1, 1);";
                 cmd.ExecuteNonQuery();
 
                 cmd.CommandText = "INSERT INTO Equipe (EquipeID, Name, Color) VALUES (2, 2, 2);";
                 cmd.ExecuteNonQuery();
-
+                
                 cmd.CommandText = "INSERT INTO Labyrinthe (LabyrintheID, Specs) VALUES (1, 'ahah1');";
                 cmd.ExecuteNonQuery();
-
+                
                 cmd.CommandText = "INSERT INTO Labyrinthe (LabyrintheID, Specs) VALUES (2, 'ahah2');";
                 cmd.ExecuteNonQuery();
-
+                
                 cmd.CommandText = "INSERT INTO Parcours (ParcoursID, EquipeID, LabyrintheID, NoAlgo) VALUES (1, 2, 1, 55);";
                 cmd.ExecuteNonQuery();
 
@@ -126,7 +125,7 @@ public static class SQLiteUtilities
     }
 
 
-    static void ReadDatabase()
+    public static void ReadDatabase()
     {
         CreateDatabaseIfItDoesntExist();
 
@@ -339,6 +338,67 @@ public static class SQLiteUtilities
                 cmd.CommandType = CommandType.Text;
 
                 cmd.CommandText = "INSERT INTO DevicePairing (TabletID, HeadsetID) VALUES ( '" + tabletId + "', '" + headsetId + "');";
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static void InsertPlayerAction(int teamId, int teamName, int teamColor, int parcoursId, int labyrinthId, int algorithmId, int eventType, string date, string time)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "PRAGMA foreign_keys = ON";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "SELECT Count(*) FROM Equipe WHERE EquipeID='" + teamId + "'";
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        if (reader.GetInt32(0) == 0)
+                        {
+                            Debug.Log("No team with id : " + teamId);
+                            reader.Close();
+                            cmd.CommandText = "INSERT INTO Equipe (EquipeID, Name, Color) VALUES ('" + teamId + "', '" + teamName + "', '" + teamColor + "');";
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    reader.Close();
+                }
+
+                cmd.CommandText = "SELECT Count(*) FROM Parcours WHERE ParcoursID='" + parcoursId
+                    + "' AND EquipeID='" + teamId
+                    + "' AND LabyrintheID='" + labyrinthId
+                    + "' AND NoAlgo='" + algorithmId + "'";
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        if (reader.GetInt32(0) == 0)
+                        {
+                            Debug.Log("No course with specifics");
+                            reader.Close();
+                            cmd.CommandText = "INSERT INTO Parcours (ParcoursID, EquipeID, LabyrintheID, NoAlgo) VALUES ('" + parcoursId + "', '" + teamId + "', '" + labyrinthId + "', '" + algorithmId + "');";
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    reader.Close();
+                }
+
+                cmd.CommandText = "INSERT INTO Event (Type, Time, ParcoursID) VALUES ('" + eventType + "',  DATETIME('" + date + "', '" + time + "'), '" + parcoursId + "'); ";
                 cmd.ExecuteNonQuery();
             }
         }

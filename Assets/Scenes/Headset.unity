@@ -1288,6 +1288,8 @@ MonoBehaviour:
   currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
   directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
+  action: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f, type: 2}
+  headRotation: {fileID: 11400000, guid: 66584e61ec696d8478702ff162f5f1cc, type: 2}
   chatServerPort: 9996
 --- !u!114 &817602603
 MonoBehaviour:
@@ -2214,6 +2216,8 @@ GameObject:
   - component: {fileID: 1670229884}
   - component: {fileID: 1670229883}
   - component: {fileID: 1670229885}
+  - component: {fileID: 1670229886}
+  - component: {fileID: 1670229887}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2234,8 +2238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinthRoom: {fileID: 27522707}
-  lobby: {fileID: 1934809123}
-  controls: {fileID: 1670229885}
+  lobby: {fileID: 0}
+  controls: {fileID: 1670229887}
   labyrinth: {fileID: 1092423830}
   labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
   isEndReached: {fileID: 11400000, guid: 99ed2ad93e9664d489fefc3ea16e70a3, type: 2}
@@ -2302,15 +2306,48 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1670229879}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b22079f9da1ad2e4d9852997ed3503a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  action: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f, type: 2}
   labyrinth: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
   labyrinthVisual: {fileID: 1092423830}
   cameraTransform: {fileID: 1739980048}
   centerEyeAnchor: {fileID: 1049012887}
+--- !u!114 &1670229886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670229879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ccc958fa259e3440819b84927ef8944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headRotation: {fileID: 11400000, guid: 66584e61ec696d8478702ff162f5f1cc, type: 2}
+  headTransform: {fileID: 1049012887}
+--- !u!114 &1670229887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670229879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba910aa323e541c4794246feb8312509, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forwardDirection: {fileID: 11400000, guid: 9d9bde1f7e90c1b46aa5622fe0910c1b, type: 2}
+  action: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f, type: 2}
+  labyrinth: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  labyrinthVisual: {fileID: 1092423830}
+  cameraTransform: {fileID: 1739980048}
+  centerEyeAnchor: {fileID: 1049012887}
+  leftController: {fileID: 1739980051}
+  rightController: {fileID: 1739980050}
 --- !u!1 &1690689392
 GameObject:
   m_ObjectHideFlags: 0
@@ -2465,6 +2502,16 @@ Transform:
 --- !u!20 &1739980049 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 2037080, guid: 126d619cf4daa52469682f85c1378b4a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1739980047}
+--- !u!1 &1739980050 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1018413361562052, guid: 126d619cf4daa52469682f85c1378b4a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1739980047}
+--- !u!1 &1739980051 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1300492981870782, guid: 126d619cf4daa52469682f85c1378b4a,
     type: 2}
   m_PrefabInternal: {fileID: 1739980047}
 --- !u!1001 &1769683194

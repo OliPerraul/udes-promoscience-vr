@@ -1,21 +1,29 @@
-﻿using UnityEngine.Networking;
+﻿using UnityEngine;
+using UnityEngine.Networking;
+
 
 public class CustomMsgType
 {
     public const short Action = 100;
     public const short Directive = 101;
-    public const short PairingRequest = 102;
-    public const short PairingResult = 103;
+    public const short HeadRotation = 102;
+    public const short PairingRequest = 103;
+    public const short PairingResult = 104;
 }
 
 public class ActionMessage : MessageBase
 {
-    public int actionId;
+    public Vector3 targetPosition;
 }
 
 public class DirectiveMessage : MessageBase
 {
     public int directiveId;
+}
+
+public class HeadRotationMessage : MessageBase
+{
+    public Vector3 rotation;
 }
 
 public class PairingRequestMessage : MessageBase

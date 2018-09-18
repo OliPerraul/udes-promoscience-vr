@@ -1769,6 +1769,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1135340686}
   - component: {fileID: 1135340685}
+  - component: {fileID: 1135340687}
+  - component: {fileID: 1135340688}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1790,7 +1792,11 @@ MonoBehaviour:
   currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinthRoom: {fileID: 2015499311}
   lobby: {fileID: 1795860088}
+  controls: {fileID: 0}
   labyrinth: {fileID: 1935275872}
+  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  isEndReached: {fileID: 11400000, guid: 99ed2ad93e9664d489fefc3ea16e70a3, type: 2}
+  cameraTransform: {fileID: 2118753609}
 --- !u!4 &1135340686
 Transform:
   m_ObjectHideFlags: 0
@@ -1804,6 +1810,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1135340687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1135340684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a09552a22e08c894fba81ef0a820876d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  action: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f, type: 2}
+  cameraTransform: {fileID: 2118753609}
+--- !u!114 &1135340688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1135340684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eafbace0a6cbbf74dafa1b0f7aeb4b06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headRotation: {fileID: 11400000, guid: 66584e61ec696d8478702ff162f5f1cc, type: 2}
+  headTransform: {fileID: 2118753609}
 --- !u!1 &1155942027
 GameObject:
   m_ObjectHideFlags: 0
@@ -3684,6 +3716,8 @@ MonoBehaviour:
   currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
   directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
+  action: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f, type: 2}
+  headRotation: {fileID: 11400000, guid: 66584e61ec696d8478702ff162f5f1cc, type: 2}
   serverPort: 9996
 --- !u!114 &2039186707
 MonoBehaviour:

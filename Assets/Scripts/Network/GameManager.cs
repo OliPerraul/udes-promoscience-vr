@@ -7,9 +7,6 @@ using UnityEngine;
 /// </summary>
 public class GameManager : MonoBehaviour
 {
-    //All the logic of the gameManager should be move to their repective owner, 
-    Player localPlayer;
-
     [SerializeField]
     ScriptableInteger currentGameState;
 
@@ -19,12 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject lobby;//should probably manage it's self or just not exist
 
-    //GameComponents
-    //Algorithm for tablet
-    //MessageClient or message server
-
     [SerializeField]
-    SlideMovementHeadLookControls controls;
+    HeadsetControls controls;
 
     [SerializeField]
     LabyrinthVisual labyrinth;
@@ -55,7 +48,11 @@ public class GameManager : MonoBehaviour
             //Play animation room collapsing or whatever
 
             labyrinthRoom.GetComponent<Animation>().Play();//Could be moved to a repective module
-            lobby.SetActive(false);
+
+            if (lobby != null)
+            {
+                lobby.SetActive(false);
+            }
 
             //Activate algorithm for tablet
             if(controls != null)
@@ -68,7 +65,11 @@ public class GameManager : MonoBehaviour
             labyrinth.GenerateLabyrinthVisual();
             //Play animation room collapsing or whatever
             labyrinthRoom.GetComponent<Animation>().Play();//Could be moved to a repective module
-            lobby.SetActive(false);
+
+            if (lobby != null)
+            {
+                lobby.SetActive(false);
+            }
             //Deactivate looping tutorial option so that at the end, go to waiting scene
             //Activate algorithm for tablet
             if (controls != null)
@@ -106,7 +107,11 @@ public class GameManager : MonoBehaviour
                 //Not tested yet
                 labyrinthRoom.GetComponent<Animation>().Play();//Could be moved to a repective module
                 labyrinthRoom.GetComponent<Animation>().Stop();//Could be moved to a repective module
-                lobby.SetActive(true);
+
+                if (lobby != null)
+                {
+                    lobby.SetActive(true);
+                }
 
                 Vector2Int startPos = labyrinthData.GetLabyrithStartPosition();
                 cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);

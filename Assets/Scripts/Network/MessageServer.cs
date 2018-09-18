@@ -14,6 +14,12 @@ public class MessageServer : MonoBehaviour
     [SerializeField]
     ScriptableInteger directive;
 
+    [SerializeField]
+    ScriptableVector3 action;
+
+    [SerializeField]
+    ScriptableVector3 headRotation;
+
     NetworkServerSimple server = null;
     NetworkConnection clientConnection = null;
 
@@ -39,6 +45,7 @@ public class MessageServer : MonoBehaviour
         server.RegisterHandler(MsgType.Connect, OnConnect);
         server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
         server.RegisterHandler(CustomMsgType.Action, OnAction);
+        server.RegisterHandler(CustomMsgType.HeadRotation, OnHeadRotation);
 
         server.Listen(serverPort);
     }
@@ -57,8 +64,6 @@ public class MessageServer : MonoBehaviour
 
     void OnDisconnect(NetworkMessage netMsg)
     {
-
-        UITextManager.instance.HideMessageButtonGroup();//temp
         clientConnection = null;
         StopServer();//Might be changed when need reconnection?
     }
@@ -66,7 +71,13 @@ public class MessageServer : MonoBehaviour
     void OnAction(NetworkMessage netMsg)
     {
         ActionMessage msg = netMsg.ReadMessage<ActionMessage>();
-        UITextManager.instance.SetMessageText("Action id: " + msg.actionId);//temp
+        action.value = msg.targetPosition;
+    }
+
+    void OnHeadRotation(NetworkMessage netMsg)
+    {
+        HeadRotationMessage msg = netMsg.ReadMessage<HeadRotationMessage>();
+        headRotation.value = msg.rotation;
     }
 
     public void SendDirective()

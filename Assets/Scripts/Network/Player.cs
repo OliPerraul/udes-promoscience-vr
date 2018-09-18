@@ -13,6 +13,7 @@ public class Player : NetworkBehaviour
     string mTeamName = "";
     Color mTeamColor = Color.blue;
     int mPlayerStatus = 0;
+    Vector3 mPlayerAction;
 
 
     public string deviceName
@@ -67,10 +68,24 @@ public class Player : NetworkBehaviour
         }
     }
 
+    public Vector3 playerAction
+    {
+        get
+        {
+            return mPlayerAction;
+        }
+        set
+        {
+            mPlayerAction = value;
+            playerActionChangedEvent();
+        }
+    }
+
     public Action deviceNameChangedEvent;
     public Action teamNameChangedEvent;
     public Action teamColorChangedEvent;
     public Action playerStatusChangedEvent;
+    public Action playerActionChangedEvent;
 
     [SerializeField]
     ScriptableString pairedIpAdress;
@@ -84,7 +99,10 @@ public class Player : NetworkBehaviour
 
     [SerializeField]
     ScriptableInteger gameState;
-   
+
+    [SerializeField]
+    ScriptableVector3 action;
+
 
 
     public override void OnStartLocalPlayer()
@@ -105,6 +123,7 @@ public class Player : NetworkBehaviour
         if (deviceName == Constants.SAMSUNG_TABLET_SMT380)
         {
             deviceType = Constants.ANDROID_TABLET;
+            action.valueChangedEvent += SendCmdPlayerAction;//Is it were it should be?
         }
         else if (deviceName == Constants.OCCULUS_GO_PACIFIC)
         {
@@ -121,6 +140,12 @@ public class Player : NetworkBehaviour
     void SendCmdPlayerGameState()
     {
         CmdSetPlayerStatus(gameState.value);
+    }
+
+    [Client]
+    void SendCmdPlayerAction()
+    {
+        CmdSetPlayerAction(action.value);
     }
 
     void OnDeviceNameChanged()
@@ -177,6 +202,12 @@ public class Player : NetworkBehaviour
     public void CmdSetPlayerStatus(int id)
     {
         playerStatus = id;
+    }
+
+    [Command]
+    public void CmdSetPlayerAction(Vector3 a)
+    {
+        playerAction = a;
     }
 
     [ClientRpc]

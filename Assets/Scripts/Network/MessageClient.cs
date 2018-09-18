@@ -15,7 +15,10 @@ public class MessageClient : MonoBehaviour
     ScriptableInteger directive;
 
     [SerializeField]
-    //ScriptableVect2Int action; Might need a other format depending on movement type
+    ScriptableVector3 action;
+
+    [SerializeField]
+    ScriptableVector3 headRotation;
 
     public int chatServerPort = 9999;
 
@@ -46,13 +49,12 @@ public class MessageClient : MonoBehaviour
     {
         currentGameState.value = Constants.READY;
 
-        //ScriptableVect2Int.valueChangedEvent += SendAction
+        action.valueChangedEvent += SendAction;
+        headRotation.valueChangedEvent += SendHeadRotation;
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
-        UITextManager.instance.SetMessageText("Server disconnected!");//temp
-        UITextManager.instance.HideMessageButtonGroup();//temp
         StopClient();//Might be changed when need reconnection?
     }
 
@@ -66,17 +68,16 @@ public class MessageClient : MonoBehaviour
     public void SendAction()
     {
         ActionMessage actionMsg = new ActionMessage();
-        //actionMsg.actionId = ScriptableVect2Int.value;
+        actionMsg.targetPosition = action.value;
 
         client.Send(CustomMsgType.Action, actionMsg);
     }
 
-    public void SendAction(int id)//Temp
+    public void SendHeadRotation()
     {
-        ActionMessage actionMsg = new ActionMessage();
-        actionMsg.actionId = id;
+        HeadRotationMessage headRotationMsg = new HeadRotationMessage();
+        headRotationMsg.rotation = headRotation.value;
 
-        client.Send(CustomMsgType.Action, actionMsg);
+        client.Send(CustomMsgType.HeadRotation, headRotationMsg);
     }
-
 }

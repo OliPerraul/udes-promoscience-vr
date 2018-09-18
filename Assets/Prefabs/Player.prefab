@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 114373050470996920}
   - component: {fileID: 114680929369619524}
   - component: {fileID: 114139707718320092}
+  - component: {fileID: 114446445933917428}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -86,6 +87,18 @@ MonoBehaviour:
     i15: 178
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114446445933917428
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1012353109663088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a840bd24d947b24198e19e9298437e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 114680929369619524}
 --- !u!114 &114680929369619524
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -100,5 +113,7 @@ MonoBehaviour:
   deviceUniqueIdentifier: 
   deviceType: 0
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
+  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
   algorithmId: {fileID: 11400000, guid: 4dcb39e3bf716b84b9e995d8c5e8b985, type: 2}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  action: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f, type: 2}

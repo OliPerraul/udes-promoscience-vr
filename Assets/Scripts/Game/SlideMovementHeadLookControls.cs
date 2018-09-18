@@ -23,6 +23,9 @@ public class SlideMovementHeadLookControls : MonoBehaviour
     Vector3 trajectoryToTargetPosition;
 
     [SerializeField]
+    ScriptableVector3 action;
+
+    [SerializeField]
     ScriptableLabyrinth labyrinth;
 
     [SerializeField]
@@ -104,6 +107,8 @@ public class SlideMovementHeadLookControls : MonoBehaviour
                     trajectoryToTargetPosition = (targetPosition - cameraTransform.position);
 
                     isMoving = true;
+
+                    action.value = targetPosition;
                 }
             }
         }
