@@ -21,7 +21,7 @@ public class PlayerList : MonoBehaviour
         }
     }
 
-    public List<Player> list = new List<Player>();//should be public
+    public List<Player> list = new List<Player>();//should not be public
 
     public Action addPlayerEvent;
     public Action<int> removePlayerEvent;

@@ -15,7 +15,10 @@ public class MessageServer : MonoBehaviour
     ScriptableInteger directive;
 
     [SerializeField]
-    ScriptableVector3 action;
+    ScriptableInteger action;
+
+    [SerializeField]
+    ScriptableVector3 movementTargetPosition;
 
     [SerializeField]
     ScriptableVector3 headRotation;
@@ -45,6 +48,7 @@ public class MessageServer : MonoBehaviour
         server.RegisterHandler(MsgType.Connect, OnConnect);
         server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
         server.RegisterHandler(CustomMsgType.Action, OnAction);
+        server.RegisterHandler(CustomMsgType.MovementTargetPosition, OnMovementTargetPosition);
         server.RegisterHandler(CustomMsgType.HeadRotation, OnHeadRotation);
 
         server.Listen(serverPort);
@@ -71,7 +75,13 @@ public class MessageServer : MonoBehaviour
     void OnAction(NetworkMessage netMsg)
     {
         ActionMessage msg = netMsg.ReadMessage<ActionMessage>();
-        action.value = msg.targetPosition;
+        action.value = msg.actionId;
+    }
+
+    void OnMovementTargetPosition(NetworkMessage netMsg)
+    {
+        MovementTargetPositionMessage msg = netMsg.ReadMessage<MovementTargetPositionMessage>();
+        movementTargetPosition.value = msg.targetPosition;
     }
 
     void OnHeadRotation(NetworkMessage netMsg)

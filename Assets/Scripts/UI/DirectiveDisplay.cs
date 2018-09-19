@@ -35,8 +35,8 @@ public class DirectiveDisplay : MonoBehaviour
     float hideTime = 5.0f;
     float hideTimer;
 
-    Vector3 positionFromCamera = new Vector3(2, 1.5f, 2);
-    Vector3 baseRotation = new Vector3(-45, 0, 0);
+    Vector3 positionFromCamera = new Vector3(2, 0, 2);
+    Vector3 baseRotation = new Vector3(0, 0, 0);
 
 
 

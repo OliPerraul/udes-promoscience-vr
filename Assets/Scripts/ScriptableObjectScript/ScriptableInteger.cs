@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "Data/Int", order = 1)]
 public class ScriptableInteger : ScriptableObject
 {
+    [SerializeField]
     int mValue;
 
     public Action valueChangedEvent;
@@ -21,7 +22,8 @@ public class ScriptableInteger : ScriptableObject
             OnValueChanged();
         }
     }
-    void OnValueChanged()
+
+    public void OnValueChanged()
     {
         if (valueChangedEvent != null)
         {

@@ -28,16 +28,17 @@ public class ActionSaverComponent : NetworkBehaviour
     {
         if (player.playerStatus == Constants.PLAYING)
         {
-            int teamId = 0;
-            int teamName = 0;
-            int teamColor = 0;
-            int courseId = 0;
-            int labyrithId = 0;
-            int algorithmId = 0;
-            int eventType = 0;
+            //to do
+            int teamId = 1;
+            int teamName = 1;
+            int teamColor = 1;
+            int courseId = 1;
+            int labyrithId = 1;
+            int algorithmId = 1;
+
             System.DateTime now =  System.DateTime.Now;
 
-            SQLiteUtilities.InsertPlayerAction(teamId, teamName, teamColor, courseId, labyrithId, algorithmId, eventType, now.ToString("yyyy-MM-dd"), now.ToString("HH:mm:ss"));
+            SQLiteUtilities.InsertPlayerAction(teamId, teamName, teamColor, courseId, labyrithId, algorithmId, player.playerAction, now.ToString("yyyy-MM-dd"), now.ToString("HH:mm:ss"));
             Debug.Log("Save Action for player : " + player.deviceName);
         }
     }

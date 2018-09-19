@@ -45,4 +45,11 @@ static class Constants
     public const int DIRECTIVE_MOVE_FOWARD = 2;
     public const int DIRECTIVE_UTURN = 3;
     public const int DIRECTIVE_STOP = 4;
+
+    //Actions
+    public const int ACTION_MOVE_UP = 0;//direction 0
+    public const int ACTION_MOVE_RIGHT = 1;//direction 1
+    public const int ACTION_MOVE_DOWN = 2;//direction 2
+    public const int ACTION_MOVE_LEFT = 3;//direction 3
+
 }

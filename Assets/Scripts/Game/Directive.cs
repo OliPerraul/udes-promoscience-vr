@@ -8,16 +8,16 @@ public class Directive : MonoBehaviour
     ScriptableInteger directive;
 
     [SerializeField]
-    ScriptableInteger currentGameState;
+    ScriptableControler controls;
 
     private void Start()
     {
-        currentGameState.valueChangedEvent += OnStatusChanged;
+        controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
     }
 
-    void OnStatusChanged()
+    void OnControlsEnableValueChanged()
     {
-        if (currentGameState.value == Constants.PLAYING_TUTORIAL || currentGameState.value == Constants.PLAYING)
+        if (controls.isControlsEnabled)
         {
             foreach (Transform child in transform)
             {

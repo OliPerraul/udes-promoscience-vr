@@ -19,7 +19,7 @@ public class TeleportationMovementArrowsControls : MonoBehaviour
     ScriptableLabyrinth labyrinth;
 
     [SerializeField]
-    LabyrinthVisual labyrinthVisual;
+    GameLabyrinth labyrinthVisual;
 
     [SerializeField]
     Transform cameraTransform;

@@ -13,7 +13,7 @@ public class Player : NetworkBehaviour
     string mTeamName = "";
     Color mTeamColor = Color.blue;
     int mPlayerStatus = 0;
-    Vector3 mPlayerAction;
+    int mPlayerAction;
 
 
     public string deviceName
@@ -68,7 +68,7 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public Vector3 playerAction
+    public int playerAction
     {
         get
         {
@@ -101,7 +101,7 @@ public class Player : NetworkBehaviour
     ScriptableInteger gameState;
 
     [SerializeField]
-    ScriptableVector3 action;
+    ScriptableInteger action;
 
 
 
@@ -145,7 +145,10 @@ public class Player : NetworkBehaviour
     [Client]
     void SendCmdPlayerAction()
     {
-        CmdSetPlayerAction(action.value);
+        if (gameState.value == Constants.PLAYING)
+        {
+            CmdSetPlayerAction(action.value);
+        }
     }
 
     void OnDeviceNameChanged()
@@ -205,15 +208,9 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSetPlayerAction(Vector3 a)
+    public void CmdSetPlayerAction(int actionId)
     {
-        playerAction = a;
-    }
-
-    [ClientRpc]
-    void RpcSetGameStatus(int id)
-    {
-        gameState.value = id;
+        playerAction = actionId;
     }
 
     //Server send to the owner of the player, is labirintheId

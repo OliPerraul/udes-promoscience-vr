@@ -15,7 +15,7 @@ public class TrackControls : MonoBehaviour
     ScriptableLabyrinth labyrinth;
 
     [SerializeField]
-    LabyrinthVisual labyrinthVisual;
+    GameLabyrinth labyrinthVisual;
 
     [SerializeField]
     Transform cameraTransform;

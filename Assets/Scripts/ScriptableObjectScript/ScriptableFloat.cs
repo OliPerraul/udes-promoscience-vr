@@ -5,6 +5,7 @@ using UnityEngine;
  [CreateAssetMenu(fileName = "Data", menuName = "Data/Float", order = 1)]
  public class ScriptableFloat : ScriptableObject
  {
+    [SerializeField]
     float mValue;
 
     public Action valueChangedEvent;
@@ -21,7 +22,7 @@ using UnityEngine;
             OnValueChanged();
         }
     }
-    void OnValueChanged()
+    public void OnValueChanged()
     {
         if (valueChangedEvent != null)
         {

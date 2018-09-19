@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "Data/Bool", order = 1)]
 public class ScriptableBoolean : ScriptableObject
 {
+    [SerializeField]
     bool mValue;
 
     public Action valueChangedEvent;
@@ -21,7 +22,8 @@ public class ScriptableBoolean : ScriptableObject
             OnValueChanged();
         }
     }
-    void OnValueChanged()
+
+    public void OnValueChanged()
     {
         if (valueChangedEvent != null)
         {

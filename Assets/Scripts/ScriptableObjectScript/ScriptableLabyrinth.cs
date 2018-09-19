@@ -44,7 +44,6 @@ public class ScriptableLabyrinth : ScriptableObject
 
     public Vector2Int GetLabyrithStartPosition()
     {
-        //Could add an out of bound check
         return startPosition;
     }
 
@@ -61,12 +60,11 @@ public class ScriptableLabyrinth : ScriptableObject
     //Use to fill labyrinth wit code instead of getting it in the database
     public void SetLabyrithDataWitId(int[,] map, Vector2Int startPos, int id)
     {
-        data = new int[map.GetLength(0), map.GetLength(1)];
-        startPosition = startPos;
-
         if (id != currentId)
         {
             currentId = id;
+            data = new int[map.GetLength(0), map.GetLength(1)];
+            startPosition = startPos;
 
             for (int i = 0; i < map.GetLength(0); i++)
             {
@@ -82,12 +80,11 @@ public class ScriptableLabyrinth : ScriptableObject
 
     public void SetLabyrithDataWitId(int[] map, int sizeX, int sizeY, int startPosX, int startPosY, int id)
     {
-        data = new int[sizeX, sizeY];
-        startPosition = new Vector2Int(startPosX, startPosY);
-
         if (id != currentId)
         {
             currentId = id;
+            data = new int[sizeX, sizeY];
+            startPosition = new Vector2Int(startPosX, startPosY);
 
             for (int i = 0; i < sizeX; i++)
             {

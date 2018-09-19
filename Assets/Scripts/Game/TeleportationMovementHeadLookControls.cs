@@ -19,7 +19,7 @@ public class TeleportationMovementHeadLookControls : MonoBehaviour
     ScriptableLabyrinth labyrinth;
 
     [SerializeField]
-    LabyrinthVisual labyrinthVisual;
+    GameLabyrinth labyrinthVisual;
 
     [SerializeField]
     Transform cameraTransform;

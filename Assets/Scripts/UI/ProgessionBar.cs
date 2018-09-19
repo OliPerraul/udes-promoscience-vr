@@ -5,19 +5,19 @@ using UnityEngine;
 public class ProgessionBar : MonoBehaviour
 {
     [SerializeField]
-    ScriptableFloat f;
+    ScriptableFloat progressRatio;
 
     [SerializeField]
     GameObject progress;
 
 	void Start ()
     {
-        f.valueChangedEvent += OnValueChanged;
+        progressRatio.valueChangedEvent += OnValueChanged;
 	}
 
 
     void OnValueChanged()
     {
-        progress.transform.localScale = new Vector3(f.value, 1, 1);
+        progress.transform.localScale = new Vector3(progressRatio.value, 1, 1);
     }
 }

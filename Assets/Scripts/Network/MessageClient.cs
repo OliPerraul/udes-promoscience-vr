@@ -15,7 +15,10 @@ public class MessageClient : MonoBehaviour
     ScriptableInteger directive;
 
     [SerializeField]
-    ScriptableVector3 action;
+    ScriptableInteger action;
+
+    [SerializeField]
+    ScriptableVector3 movementTargetPosition;
 
     [SerializeField]
     ScriptableVector3 headRotation;
@@ -50,6 +53,7 @@ public class MessageClient : MonoBehaviour
         currentGameState.value = Constants.READY;
 
         action.valueChangedEvent += SendAction;
+        movementTargetPosition.valueChangedEvent += SendMovementTargetPosition;
         headRotation.valueChangedEvent += SendHeadRotation;
     }
 
@@ -62,13 +66,20 @@ public class MessageClient : MonoBehaviour
     {
         DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
         directive.value = msg.directiveId;
-        UITextManager.instance.SetMessageText("Action id: " + msg.directiveId);//temp
+    }
+
+    public void SendMovementTargetPosition()
+    {
+        MovementTargetPositionMessage actionMsg = new MovementTargetPositionMessage();
+        actionMsg.targetPosition = movementTargetPosition.value;
+
+        client.Send(CustomMsgType.MovementTargetPosition, actionMsg);
     }
 
     public void SendAction()
     {
         ActionMessage actionMsg = new ActionMessage();
-        actionMsg.targetPosition = action.value;
+        actionMsg.actionId = action.value;
 
         client.Send(CustomMsgType.Action, actionMsg);
     }

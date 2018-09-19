@@ -11,3 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 455c954822323ce4685961331bf2d693, type: 3}
   m_Name: IsEndReached
   m_EditorClassIdentifier: 
+  mValue: 0

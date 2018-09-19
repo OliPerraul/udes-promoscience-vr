@@ -29,7 +29,7 @@ public class SlideMovementHeadLookControls : MonoBehaviour
     ScriptableLabyrinth labyrinth;
 
     [SerializeField]
-    LabyrinthVisual labyrinthVisual;
+    GameLabyrinth labyrinthVisual;
 
     [SerializeField]
     Transform cameraTransform;

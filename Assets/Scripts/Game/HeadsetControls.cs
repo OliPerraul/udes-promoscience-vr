@@ -4,28 +4,20 @@ using UnityEngine;
 
 public class HeadsetControls : MonoBehaviour
 {
-    bool isMovementEnabled = false;
+    [SerializeField]
+    ScriptableControler controls;
 
-    bool isMoving = false;
-
-    float movementSpeed = 0.5f;
-
-    float clippingRadius = 0.01f;
-
-    Vector3 targetPosition;
-    Vector3 trajectoryToTargetPosition;
+    [SerializeField]
+    ScriptableInteger action;
 
     [SerializeField]
     ScriptableInteger forwardDirection;
 
     [SerializeField]
-    ScriptableVector3 action;
+    ScriptableVector3 movementTargetPosition;
 
     [SerializeField]
-    ScriptableLabyrinth labyrinth;
-
-    [SerializeField]
-    LabyrinthVisual labyrinthVisual;
+    GameLabyrinth labyrinth;
 
     [SerializeField]
     Transform cameraTransform;
@@ -40,19 +32,36 @@ public class HeadsetControls : MonoBehaviour
     GameObject rightController;
 
 
+    bool isMoving = false;
+
+    float movementSpeed = 0.5f;
+
+    float clippingRadius = 0.01f;
+
+    Vector3 targetPosition;
+    Vector3 trajectoryToTargetPosition;
+
+
+    private void Start()
+    {
+        controls.stopAllMovementEvent += StopAllMovement;
+        controls.stopAllMovementEvent += ResetPositionAndRotation;
+    }
+
     void Update ()
     {
-       if (isMovementEnabled)
+       if (controls.isControlsEnabled)
         {
             if (isMoving)
             {
-                float tileSize = Constants.tileSize;
                 Vector3 movementPosition = cameraTransform.position + (trajectoryToTargetPosition * Time.deltaTime * movementSpeed);
 
-                if (movementPosition.x > targetPosition.x - clippingRadius * tileSize
-                    && movementPosition.x < targetPosition.x + clippingRadius * tileSize
-                    && movementPosition.z > targetPosition.z - clippingRadius * tileSize
-                    && movementPosition.z < targetPosition.z + clippingRadius * tileSize)
+                if ((trajectoryToTargetPosition.x == 0 
+                    || movementPosition.x >= targetPosition.x && trajectoryToTargetPosition.x > 0
+                    || movementPosition.x <= targetPosition.x && trajectoryToTargetPosition.x < 0)
+                   && (trajectoryToTargetPosition.z == 0
+                    || movementPosition.z >= targetPosition.z && trajectoryToTargetPosition.z > 0
+                    || movementPosition.z <= targetPosition.z && trajectoryToTargetPosition.z < 0))
                 {
                     cameraTransform.position = targetPosition;
                     isMoving = false;
@@ -68,7 +77,6 @@ public class HeadsetControls : MonoBehaviour
             }
             else if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
             {
-                //could be changed for invisible target with animation wen targeted
                 if (leftController.activeSelf)
                 {
                     float rotationY = leftController.transform.rotation.eulerAngles.y;
@@ -142,25 +150,29 @@ public class HeadsetControls : MonoBehaviour
             if (direction == 0)
             {
                 targetPosition = cameraTransform.position + (new Vector3(0, 0, tileSize));
+                action.value = Constants.ACTION_MOVE_UP;
             }
             else if (direction == 1)
             {
                 targetPosition = cameraTransform.position + (new Vector3(tileSize, 0, 0));
+                action.value = Constants.ACTION_MOVE_RIGHT;
             }
             else if (direction == 2)
             {
                 targetPosition = cameraTransform.position + (new Vector3(0, 0, -tileSize));
+                action.value = Constants.ACTION_MOVE_DOWN;
             }
             else if (direction == 3)
             {
                 targetPosition = cameraTransform.position + (new Vector3(-tileSize, 0, 0));
+                action.value = Constants.ACTION_MOVE_LEFT;
             }
 
             trajectoryToTargetPosition = (targetPosition - cameraTransform.position);
 
             isMoving = true;
 
-            action.value = targetPosition;
+            movementTargetPosition.value = targetPosition;
         }
     }
 
@@ -212,19 +224,21 @@ public class HeadsetControls : MonoBehaviour
             }
         }
 
-        TileInformation tInfo = labyrinthVisual.GetLabyrinthTileInfomation(posX, posY);
+        TileInformation tInfo = labyrinth.GetLabyrinthTileInfomation(posX, posY);
         isValid = tInfo.isWalkable;
 
         return isValid;
     }
 
-    public void SetMovementActive(bool b)
-    {
-        isMovementEnabled = b;
-    }
-
-    public void StopAllMovement()
+    void StopAllMovement()
     {
         isMoving = false;
+    }
+
+    void ResetPositionAndRotation()
+    {
+        cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
+        cameraTransform.rotation = new Quaternion(0, 0, 0, 0);
+        forwardDirection.value = 0;
     }
 }
