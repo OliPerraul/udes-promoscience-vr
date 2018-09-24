@@ -32,7 +32,7 @@ public class DirectiveDisplay : MonoBehaviour
     [SerializeField]
     Sprite stopImage;//temp might change to a ressource manager
 
-    float hideTime = 5.0f;
+    float hideTime = 3.0f;
     float hideTimer;
 
     Vector3 positionFromCamera = new Vector3(2, 0, 2);

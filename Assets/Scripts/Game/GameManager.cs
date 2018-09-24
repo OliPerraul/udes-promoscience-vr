@@ -30,7 +30,11 @@ public class GameManager : MonoBehaviour
         Screen.sleepTimeout = SleepTimeout.NeverSleep;//Tablet use only
 
         currentGameState.valueChangedEvent += OnGameStateChanged;
-        isEndReached.valueChangedEvent += OnEndReached;
+
+        if (isEndReached != null)
+        {
+            isEndReached.valueChangedEvent += OnEndReached;
+        }
     }
 
     //Game manager could be remove and instead add a status preparing for game and have the module that need it listen to status
@@ -40,9 +44,15 @@ public class GameManager : MonoBehaviour
         {
             labyrinth.GenerateLabyrinthVisual();
 
-            controls.ResetPositionAndRotation();
+            if (controls != null)
+            {
+                controls.ResetPositionAndRotation();
+            }
 
-            labyrinthRoom.GetComponent<Animation>().Play();
+            if (labyrinthRoom != null)
+            {
+                labyrinthRoom.GetComponent<Animation>().Play();
+            }
 
             if (lobby != null)
             {
@@ -50,16 +60,24 @@ public class GameManager : MonoBehaviour
             }
 
             //Activate algorithm for tablet
-
-            controls.isControlsEnabled = true;
+            if (controls != null)
+            {
+                controls.isControlsEnabled = true;
+            }
         }
         else if (currentGameState.value == Constants.PLAYING)
         {
             labyrinth.GenerateLabyrinthVisual();
 
-            controls.ResetPositionAndRotation();
+            if (controls != null)
+            {
+                controls.ResetPositionAndRotation();
+            }
 
-            labyrinthRoom.GetComponent<Animation>().Play();
+            if (labyrinthRoom != null)
+            {
+                labyrinthRoom.GetComponent<Animation>().Play();
+            }
 
             if (lobby != null)
             {
@@ -67,7 +85,10 @@ public class GameManager : MonoBehaviour
             }
 
             //Activate algorithm for tablet
-            controls.isControlsEnabled = true;
+            if (controls != null)
+            {
+                controls.isControlsEnabled = true;
+            }
         }
         else if (currentGameState.value == Constants.WAITING_FOR_NEXT_ROUND)
         {

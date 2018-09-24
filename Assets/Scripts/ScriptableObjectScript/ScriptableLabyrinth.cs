@@ -2,15 +2,11 @@
 using System.Collections;
 using UnityEngine;
 
-
-//For now there all the player use the same labyrinthe so there is no need to keep the data of more then one, 
-//also in that case it will still work but if id is alway changed then the data will always comme from the database directly
  [CreateAssetMenu(fileName = "Data", menuName = "Data/Labyrinth", order = 1)]
 public class ScriptableLabyrinth : ScriptableObject
 {
     int currentId = -1;
     int[,] data;
-    Vector2Int startPosition;//used only if we keep centered on start
 
     public Action valueChangedEvent;
 
@@ -42,11 +38,6 @@ public class ScriptableLabyrinth : ScriptableObject
         return data[x,y];
     }
 
-    public Vector2Int GetLabyrithStartPosition()
-    {
-        return startPosition;
-    }
-
     public int GetLabyrithXLenght()
     {
         return data.GetLength(0);
@@ -58,13 +49,12 @@ public class ScriptableLabyrinth : ScriptableObject
     }
 
     //Use to fill labyrinth wit code instead of getting it in the database
-    public void SetLabyrithDataWitId(int[,] map, Vector2Int startPos, int id)
+    public void SetLabyrithDataWitId(int[,] map, int id)
     {
         if (id != currentId)
         {
             currentId = id;
             data = new int[map.GetLength(0), map.GetLength(1)];
-            startPosition = startPos;
 
             for (int i = 0; i < map.GetLength(0); i++)
             {
@@ -78,13 +68,12 @@ public class ScriptableLabyrinth : ScriptableObject
         }
     }
 
-    public void SetLabyrithDataWitId(int[] map, int sizeX, int sizeY, int startPosX, int startPosY, int id)
+    public void SetLabyrithDataWitId(int[] map, int sizeX, int sizeY, int id)
     {
         if (id != currentId)
         {
             currentId = id;
             data = new int[sizeX, sizeY];
-            startPosition = new Vector2Int(startPosX, startPosY);
 
             for (int i = 0; i < sizeX; i++)
             {

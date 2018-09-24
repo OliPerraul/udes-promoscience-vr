@@ -30,7 +30,6 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
     public void GenerateTutorialLabyrinthData()
     {
         int[,] map = new int[sizeX, sizeY];
-        Vector2Int startPos = new Vector2Int(1,1);
 
         //Outerwall
         for (int i = 0; i < map.GetLength(0); i++)
@@ -46,7 +45,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         }
 
         //Row 1
-        map[1, 1] = Constants.TILE_FLOOR_START_ID;
+        map[1, 1] = Constants.TILE_START_1_ID;
         map[2, 1] = Constants.TILE_FLOOR_1_ID;
         map[3, 1] = Constants.TILE_FLOOR_1_ID;
         map[4, 1] = Constants.TILE_FLOOR_1_ID;
@@ -125,7 +124,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         map[7, 8] = Constants.TILE_FLOOR_1_ID;
         map[8, 8] = Constants.TILE_FLOOR_1_ID;
 
-        labyrinth.SetLabyrithDataWitId( map, startPos, id);
+        labyrinth.SetLabyrithDataWitId( map, id);
     }
 	
 

@@ -8,7 +8,9 @@ public class GameLabyrinth : MonoBehaviour
     ScriptableLabyrinth labyrinthData;
 
     Vector2Int startPosition;
+    Vector2Int endPosition;
 
+    int[,] labyrinth;
     GameObject[,] labyrinthTiles;
 
     //List of gameObjectPrefab could be load with a resource manager but for now....
@@ -22,12 +24,6 @@ public class GameLabyrinth : MonoBehaviour
     GameObject endTilePrefab;
 
 
-    void Start ()
-    {
-       // labyrinthData.valueChangedEvent += GenerateLabyrinthVisual;//no needed anymore because labyrinth is an other layer from labyrinthData, witch mean labyrinth data can be changed will labyrinth is running
-    }
-
-
     public void GenerateLabyrinthVisual()
     {
         if (labyrinthTiles != null)
@@ -35,14 +31,39 @@ public class GameLabyrinth : MonoBehaviour
             DestroyLabyrinth();
         }
 
-        startPosition = labyrinthData.GetLabyrithStartPosition();
-        labyrinthTiles = new GameObject[labyrinthData.GetLabyrithXLenght(), labyrinthData.GetLabyrithYLenght()];
+        SetLabyrith();
 
-        for (int x = 0; x < labyrinthData.GetLabyrithXLenght(); x++)
+        labyrinthTiles = new GameObject[labyrinth.GetLength(0), labyrinth.GetLength(1)];
+
+        for (int x = 0; x < labyrinthTiles.GetLength(0); x++)
         {
-            for (int y = 0; y < labyrinthData.GetLabyrithYLenght(); y++)
+            for (int y = 0; y < labyrinthTiles.GetLength(1); y++)
             {
-                labyrinthTiles[x, y] = InstantiateLabyrithTile(x,y, labyrinthData.GetLabyrithValueAt(x,y));
+                labyrinthTiles[x, y] = InstantiateLabyrithTile(x,y, labyrinth[x,y]);
+            }
+        }
+    }
+
+    void SetLabyrith()
+    {
+        labyrinth = new int[labyrinthData.GetLabyrithXLenght(), labyrinthData.GetLabyrithYLenght()];
+
+        for (int x = 0; x < labyrinth.GetLength(0); x++)
+        {
+            for (int y = 0; y < labyrinth.GetLength(1); y++)
+            {
+                labyrinth[x,y] = labyrinthData.GetLabyrithValueAt(x, y);
+
+                if (labyrinth[x, y] >= Constants.TILE_START_START_ID && labyrinth[x, y] <= Constants.TILE_START_END_ID)
+                {
+                    startPosition.x = x;
+                    startPosition.y = y;
+                }
+                else if (labyrinth[x, y] >= Constants.TILE_END_START_ID && labyrinth[x, y] <= Constants.TILE_END_END_ID)
+                {
+                    endPosition.x = x;
+                    endPosition.y = y;
+                }
             }
         }
     }
@@ -52,7 +73,7 @@ public class GameLabyrinth : MonoBehaviour
         GameObject tile = null;
         Vector3 tilePosition = GetWorldPosition(x, y);
 
-        if(tileId == Constants.TILE_FLOOR_START_ID)
+        if(tileId == Constants.TILE_START_1_ID)
         {
             tile = (GameObject) Instantiate(startTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
         }
@@ -88,19 +109,36 @@ public class GameLabyrinth : MonoBehaviour
         return startPosition;
     }
 
+    public Vector2Int GetLabyrithEndPosition()
+    {
+        return endPosition;
+    }
+
     public int GetLabyrithXLenght()
     {
-        return labyrinthTiles.GetLength(0);
+        return labyrinth.GetLength(0);
     }
 
     public int GetLabyrithYLenght()
     {
-        return labyrinthTiles.GetLength(1);
+        return labyrinth.GetLength(1);
     }
 
-    public TileInformation GetLabyrinthTileInfomation(int x, int y)
+    public bool GetIsTileWalkable(int x, int y)
     {
-        return labyrinthTiles[x, y].GetComponent<TileInformation>();
+        bool isWalkable = false;
+
+        if (x >= 0 && x < labyrinth.GetLength(0) && y >= 0 && y < labyrinth.GetLength(1))
+        {
+            if ((labyrinth[x, y] >= Constants.TILE_FLOOR_START_ID && labyrinth[x, y] <= Constants.TILE_FLOOR_END_ID)
+                || (labyrinth[x, y] >= Constants.TILE_START_START_ID && labyrinth[x, y] <= Constants.TILE_START_END_ID)
+                || (labyrinth[x, y] >= Constants.TILE_END_START_ID && labyrinth[x, y] <= Constants.TILE_END_END_ID))
+            {
+                isWalkable = true;
+            }
+        }
+
+        return isWalkable;
     }
 
     public void DestroyLabyrinth()

@@ -16,10 +16,7 @@ public class TeleportationMovementArrowsControls : MonoBehaviour
     public int direction = 0;//0 == 0 degree, 1 == 90 degree, 2 == 180 degree, 3 == 270 degree
 
     [SerializeField]
-    ScriptableLabyrinth labyrinth;
-
-    [SerializeField]
-    GameLabyrinth labyrinthVisual;
+    GameLabyrinth labyrinth;
 
     [SerializeField]
     Transform cameraTransform;
@@ -112,7 +109,6 @@ public class TeleportationMovementArrowsControls : MonoBehaviour
 
     bool CheckIfMovementIsValid(int d)
     {
-        bool isValid = false;
         int posX = Mathf.RoundToInt((cameraTransform.position.x / 5)) + labyrinth.GetLabyrithStartPosition().x;
         int posY = Mathf.RoundToInt((-cameraTransform.position.z / 5)) + labyrinth.GetLabyrithStartPosition().y;
 
@@ -145,10 +141,7 @@ public class TeleportationMovementArrowsControls : MonoBehaviour
             }
         }
 
-        TileInformation tInfo = labyrinthVisual.GetLabyrinthTileInfomation(posX, posY);
-        isValid = tInfo.isWalkable;
-
-        return isValid;
+        return labyrinth.GetIsTileWalkable(posX, posY);
     }
 
     void TurnCamera(bool right)

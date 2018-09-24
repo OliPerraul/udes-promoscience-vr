@@ -225,10 +225,7 @@ public class HeadsetControls : MonoBehaviour
             }
         }
 
-        TileInformation tInfo = labyrinth.GetLabyrinthTileInfomation(posX, posY);
-        isValid = tInfo.isWalkable;
-
-        return isValid;
+        return labyrinth.GetIsTileWalkable(posX,posY);
     }
 
     void StopAllMovement()

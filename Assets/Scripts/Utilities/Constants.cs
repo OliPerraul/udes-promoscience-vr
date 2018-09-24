@@ -25,19 +25,33 @@ static class Constants
 
     //Algorith identifier
     public const int TUTORIAL_ALGORITH = 0;
+    public const int RIGHT_HAND_ALGORITH = 0;
+    public const int SHORTEST_FLIGHT_DISTANCE_ALGORITH = 1;
+    public const int LONGEST_STRAIGHT_ALGORITH = 2;
+    public const int STANDARD_RECURSIVE_ALGORITH = 3;
 
     //Labyrinth tiles
     public const float tileSize = 5.0f;
 
     //0-49 Floors
     public const int TILE_FLOOR_START_ID = 0;
-    public const int TILE_FLOOR_1_ID = 1;
+    public const int TILE_FLOOR_1_ID = 0;
+    public const int TILE_FLOOR_END_ID = 0;
 
     //50-99 Walls
+    public const int TILE_WALL_START_ID = 50;
     public const int TILE_WALL_1_ID = 50;
+    public const int TILE_WALL_END_ID = 99;
 
-    //100-149 Ends
-    public const int TILE_END_1_ID = 100;
+    //100-149 Starts
+    public const int TILE_START_START_ID = 100;
+    public const int TILE_START_1_ID = 100;
+    public const int TILE_START_END_ID = 149;
+
+    //150-199 Ends
+    public const int TILE_END_START_ID = 150;
+    public const int TILE_END_1_ID = 150;
+    public const int TILE_END_END_ID = 199;
 
     //Directives
     public const int DIRECTIVE_TURN_RIGHT = 0;

@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "Data/PlayerList", order = 1)]
 public class ScriptablePlayerList : ScriptableObject
 {
-    public List<Player> list = new List<Player>();//should be public
+    public List<Player> list = new List<Player>();
 
     public Action addPlayerEvent;
     public Action<int> removePlayerEvent;
