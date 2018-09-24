@@ -130,7 +130,8 @@ public class HeadsetControls : MonoBehaviour
                     }
                 }
             }
-            else if (OVRInput.GetDown(OVRInput.Button.Left))
+
+            if (OVRInput.GetDown(OVRInput.Button.Left))
             {
                 CameraTurnLeft();
             }

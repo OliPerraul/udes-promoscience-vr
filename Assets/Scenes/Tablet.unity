@@ -1286,12 +1286,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23de6df00f508ed459950192477278cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 0}
+  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   algorithId: {fileID: 11400000, guid: 4dcb39e3bf716b84b9e995d8c5e8b985, type: 2}
-  action: {fileID: 0}
+  action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}
   algorithRespect: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
-  labyrinth: {fileID: 0}
-  algorithRespectBar: {fileID: 0}
+  labyrinth: {fileID: 1935275872}
+  algorithRespectBar: {fileID: 1300671083}
 --- !u!1 &923872063
 GameObject:
   m_ObjectHideFlags: 0
