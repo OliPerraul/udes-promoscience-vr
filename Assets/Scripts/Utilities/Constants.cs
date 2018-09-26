@@ -28,6 +28,8 @@ static class Constants
 
     //Labyrinth tiles
     public const float tileSize = 5.0f;
+    public const float movementSpeed = 0.5f;
+    public const float turningSpeed = 0.5f;
 
     //0-49 Floors
     public const int TILE_FLOOR_START_ID = 0;

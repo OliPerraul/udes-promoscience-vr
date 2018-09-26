@@ -14,32 +14,22 @@ public class HeadsetControls : MonoBehaviour
     ScriptableInteger forwardDirection;
 
     [SerializeField]
-    ScriptableVector3 movementTargetPosition;
-
-    [SerializeField]
     GameLabyrinth labyrinth;
 
     [SerializeField]
     Transform cameraTransform;
 
-    [SerializeField]
-    Transform centerEyeAnchor;
-
-    [SerializeField]
-    GameObject leftController;
-
-    [SerializeField]
-    GameObject rightController;
-
-
     bool isMoving = false;
     bool isTurning = false;
 
-    float movementSpeed = 0.5f;
-    float turningSpeed = 0.5f;
+    float lerpValue = 0;
 
     Vector3 targetPosition;
-    Vector3 trajectoryToTargetPosition;
+    Vector3 fromPosition;
+
+    Quaternion fromRotation;
+    Quaternion targetRotation;
+
 
 
     private void Start()
@@ -54,26 +44,33 @@ public class HeadsetControls : MonoBehaviour
         {
             if (isMoving)
             {
-                Vector3 movementPosition = cameraTransform.position + (trajectoryToTargetPosition * Time.deltaTime * movementSpeed);
+                lerpValue += Time.deltaTime * Constants.movementSpeed;
 
-                if ((trajectoryToTargetPosition.x == 0 
-                    || movementPosition.x >= targetPosition.x && trajectoryToTargetPosition.x > 0
-                    || movementPosition.x <= targetPosition.x && trajectoryToTargetPosition.x < 0)
-                   && (trajectoryToTargetPosition.z == 0
-                    || movementPosition.z >= targetPosition.z && trajectoryToTargetPosition.z > 0
-                    || movementPosition.z <= targetPosition.z && trajectoryToTargetPosition.z < 0))
+                if (lerpValue >= 1)
                 {
                     cameraTransform.position = targetPosition;
+                    lerpValue = 0;
                     isMoving = false;
                 }
                 else
                 {
-                    cameraTransform.position = movementPosition;
+                    cameraTransform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                 }
             }
             else if (isTurning)
             {
+                lerpValue += Time.deltaTime * Constants.turningSpeed;
 
+                if (lerpValue >= 1)
+                {
+                    cameraTransform.rotation = targetRotation;
+                    lerpValue = 0;
+                    isTurning = false;
+                }
+                else
+                {
+                    cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
+                }
             }
             else if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
             {
@@ -87,64 +84,6 @@ public class HeadsetControls : MonoBehaviour
             {
                 CameraTurnRight();
             }
-            /* Trigger movements, removed
-            else if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
-            {
-                if (leftController.activeSelf)
-                {
-                    float rotationY = leftController.transform.rotation.eulerAngles.y;
-                    int direction;
-
-                    if (rotationY < 45 && rotationY >= 0 || rotationY <= 360 && rotationY > 315)
-                    {
-                        direction = 2;
-                        RequestMovementInDirection(direction);
-                    }
-                    else if (rotationY > 45 && rotationY < 135)
-                    {
-                        direction = 3;
-                        RequestMovementInDirection(direction);
-                    }
-                    else if (rotationY > 135 && rotationY < 225)
-                    {
-                        direction = 0;
-                        RequestMovementInDirection(direction);
-                    }
-                    else if (rotationY > 225 && rotationY < 315)
-                    {
-                        direction = 1;
-                        RequestMovementInDirection(direction);
-                    }
-                }
-                else if (rightController.activeSelf)
-                {
-                    float rotationY = rightController.transform.rotation.eulerAngles.y;
-                    int direction;
-
-                    if (rotationY < 45 && rotationY >= 0 || rotationY <= 360 && rotationY > 315)
-                    {
-                        direction =  2;
-                        RequestMovementInDirection(direction);
-                    }
-                    else if (rotationY > 45 && rotationY < 135)
-                    {
-                        direction = 3;
-                        RequestMovementInDirection(direction);
-                    }
-                    else if (rotationY > 135 && rotationY < 225)
-                    {
-                        direction = 0;
-                        RequestMovementInDirection(direction);
-                    }
-                    else if (rotationY > 225 && rotationY < 315)
-                    {
-                        direction = 1;
-                        RequestMovementInDirection(direction);
-                    }
-                }
-            }*/
-
-
         }
     }
 
@@ -152,50 +91,54 @@ public class HeadsetControls : MonoBehaviour
     {
         if (CheckIfMovementIsValid(direction))
         {
-            float tileSize = Constants.tileSize;
+            fromPosition = cameraTransform.position;
 
             if (direction == 0)
             {
-                targetPosition = cameraTransform.position + (new Vector3(0, 0, tileSize));
+                targetPosition = fromPosition + (new Vector3(0, 0, Constants.tileSize));
                 action.value = Constants.ACTION_MOVE_UP;
             }
             else if (direction == 1)
             {
-                targetPosition = cameraTransform.position + (new Vector3(tileSize, 0, 0));
+                targetPosition = fromPosition + (new Vector3(Constants.tileSize, 0, 0));
                 action.value = Constants.ACTION_MOVE_RIGHT;
             }
             else if (direction == 2)
             {
-                targetPosition = cameraTransform.position + (new Vector3(0, 0, -tileSize));
+                targetPosition = fromPosition + (new Vector3(0, 0, -Constants.tileSize));
                 action.value = Constants.ACTION_MOVE_DOWN;
             }
             else if (direction == 3)
             {
-                targetPosition = cameraTransform.position + (new Vector3(-tileSize, 0, 0));
+                targetPosition = fromPosition + (new Vector3(-Constants.tileSize, 0, 0));
                 action.value = Constants.ACTION_MOVE_LEFT;
             }
-
-            trajectoryToTargetPosition = (targetPosition - cameraTransform.position);
-
+            
             isMoving = true;
-
-            movementTargetPosition.value = targetPosition;
         }
     }
 
     void CameraTurnLeft()
     {
-        cameraTransform.Rotate(new Vector3(0, -90, 0));
+        Quaternion trajectory = new Quaternion();
+        trajectory.eulerAngles += new Vector3(0, -90, 0);
+        fromRotation = cameraTransform.rotation;
+        targetRotation = fromRotation * trajectory;
+
+        isTurning = true;
         forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
-        //isTurning = true;
         action.value = Constants.ACTION_TURN_LEFT;
     }
 
     void CameraTurnRight()
     {
-        cameraTransform.Rotate(new Vector3(0, 90, 0));
+        Quaternion trajectory = new Quaternion();
+        trajectory.eulerAngles += new Vector3(0, 90, 0);
+        fromRotation = cameraTransform.rotation;
+        targetRotation = fromRotation * trajectory;
+
+        isTurning = true;
         forwardDirection.value = (forwardDirection.value + 1) % 4;
-        //isTurning = true;
         action.value = Constants.ACTION_TURN_RIGHT;
     }
 
@@ -240,6 +183,8 @@ public class HeadsetControls : MonoBehaviour
     void StopAllMovement()
     {
         isMoving = false;
+        isTurning = false;
+        lerpValue = 0;
     }
 
     void ResetPositionAndRotation()

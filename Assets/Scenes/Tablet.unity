@@ -2128,7 +2128,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1135340684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a09552a22e08c894fba81ef0a820876d, type: 3}
   m_Name: 
@@ -2162,7 +2162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}
-  cameraBaseTransform: {fileID: 1700386059}
+  cameraTransform: {fileID: 1700386059}
 --- !u!1 &1155942027
 GameObject:
   m_ObjectHideFlags: 0

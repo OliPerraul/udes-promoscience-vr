@@ -72,7 +72,7 @@ public class RightHandAlgorithm : MonoBehaviour
 
         bool asReachedTheEnd = false;
 
-        int direction = 1;//Hardcoded start direction,  doit être bien choisis si non dépendant des labyrinth on peut tourner en rond!
+        int direction = 0;//Hardcoded start direction,  doit être bien choisis si non dépendant des labyrinth on peut tourner en rond! Importe peu car on commence dans un cul de sac
         Vector2Int position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
         algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
