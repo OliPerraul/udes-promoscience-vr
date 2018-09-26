@@ -21,8 +21,7 @@ public class HeadRotation : MonoBehaviour
         {
             Quaternion rotation = new Quaternion();
             rotation.eulerAngles = headRotation.value;
-            // rotation.eulerAngles = new Vector3(0, headRotation.value.y);
-            headTransform.rotation = rotation;
+            headTransform.localRotation = rotation;
         }
 	}
 }

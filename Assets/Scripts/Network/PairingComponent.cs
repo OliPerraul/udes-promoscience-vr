@@ -30,7 +30,7 @@ public class PairingComponent : NetworkBehaviour
     {
         if (player.playerStatus == Constants.PAIRING)
         {
-            pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.deviceType);
+            pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.sDeviceType);
 
             if(pairedId == null)
             {

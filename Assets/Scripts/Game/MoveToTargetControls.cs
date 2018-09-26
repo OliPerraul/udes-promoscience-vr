@@ -15,7 +15,6 @@ public class MoveToTargetControls : MonoBehaviour
 
     bool isMoving = false;
 
-    float clippingRadius = 0.01f;
     float movementSpeed = 0.5f;
 
     Vector3 trajectoryToTargetPosition;
@@ -27,7 +26,7 @@ public class MoveToTargetControls : MonoBehaviour
     void Start ()
     {
         controls.stopAllMovementEvent += StopAllMovement;
-        controls.stopAllMovementEvent += ResetPositionAndRotation;
+        controls.stopAllMovementEvent += ResetPosition;
         action.valueChangedEvent += AddTargetPosition;
 	}
 	
@@ -77,9 +76,8 @@ public class MoveToTargetControls : MonoBehaviour
         isMoving = false;
     }
 
-    void ResetPositionAndRotation()
+    void ResetPosition()
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
-        cameraTransform.rotation = new Quaternion(0, 0, 0, 0);
     }
 }

@@ -55,7 +55,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         map[8, 1] = Constants.TILE_FLOOR_1_ID;
 
         //Row 2
-        map[1, 2] = Constants.TILE_FLOOR_1_ID;
+        map[1, 2] = Constants.TILE_WALL_1_ID;
         map[2, 2] = Constants.TILE_WALL_1_ID;
         map[3, 2] = Constants.TILE_FLOOR_1_ID;
         map[4, 2] = Constants.TILE_WALL_1_ID;

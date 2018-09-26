@@ -16,12 +16,8 @@ static class Constants
     public const int WAITING_FOR_NEXT_ROUND = 7;
 
     //Device types
-    public const int ANDROID_TABLET = 0;
-    public const int OCCULUS_GO_HEADSET = 1;
-
-    //Device names
-    public const string SAMSUNG_TABLET_SMT380 = "samsung SM-T380";
-    public const string OCCULUS_GO_PACIFIC = "Oculus Pacific";
+    public const int DEVICE_TABLET = 0;
+    public const int DEVICE_HEADSET = 1;
 
     //Algorith identifier
     public const int TUTORIAL_ALGORITH = 0;
@@ -65,5 +61,7 @@ static class Constants
     public const int ACTION_MOVE_RIGHT = 1;//direction 1
     public const int ACTION_MOVE_DOWN = 2;//direction 2
     public const int ACTION_MOVE_LEFT = 3;//direction 3
+    public const int ACTION_TURN_LEFT = 4;
+    public const int ACTION_TURN_RIGHT = 5;
 
 }

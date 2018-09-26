@@ -8,6 +8,9 @@ public class PairingClient : MonoBehaviour
     [SerializeField]
     ScriptableString serverIpAdress;
 
+    [SerializeField]
+    ScriptableDeviceType deviceType;
+
     public int serverPort = 9995;
 
     NetworkClient client = null;
@@ -55,6 +58,7 @@ public class PairingClient : MonoBehaviour
         else
         {
             UITextManager.instance.SetText("Pairing : " + msg.message);//Should be changed when UI changed
+            StopClient();
         }
     }
 
@@ -65,13 +69,13 @@ public class PairingClient : MonoBehaviour
 
         string deviceName = SystemInfo.deviceModel;
 
-        if (deviceName == Constants.SAMSUNG_TABLET_SMT380)//Could be refactored if more devices are added, repeated in Player
+        if (deviceType.value == Constants.DEVICE_TABLET)
         {
-            pairingRequestMsg.deviceType = Constants.ANDROID_TABLET;
+            pairingRequestMsg.deviceType = Constants.DEVICE_TABLET;
         }
-        else if (deviceName == Constants.OCCULUS_GO_PACIFIC)
+        else if (deviceType.value == Constants.DEVICE_HEADSET)
         {
-            pairingRequestMsg.deviceType = Constants.OCCULUS_GO_HEADSET;
+            pairingRequestMsg.deviceType = Constants.DEVICE_HEADSET;
         }
 
         client.Send(CustomMsgType.PairingRequest, pairingRequestMsg);

@@ -29,8 +29,6 @@ public class RightHandAlgorithm : MonoBehaviour
             isDirectionWalkable[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]);
 
 
-            if (direction >= 0 && direction <= 3)
-            {
                 if (isDirectionWalkable[direction] && !isDirectionWalkable[(direction + 1) % 4])
                 {
                     position.x += xByDirection[direction];
@@ -58,7 +56,6 @@ public class RightHandAlgorithm : MonoBehaviour
                     position.y += yByDirection[direction];
                     algorithmSteps.Add(direction);
                 }
-            }
             else//case when direction isn't determined at start
             {
                 //Si tu est sur un 4 fourche au départ et que la direction n'est pas déterminé par défaut l'algo va planté
@@ -75,19 +72,15 @@ public class RightHandAlgorithm : MonoBehaviour
 
         bool asReachedTheEnd = false;
 
-        int direction = 0;//Hardcoded start direction
+        int direction = 1;//Hardcoded start direction,  doit être bien choisis si non dépendant des labyrinth on peut tourner en rond!
         Vector2Int position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
         algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
 
         while (!asReachedTheEnd)
         {
-            iterCount++;
-            Debug.Log("Position : " + position + " Direction : " + direction);
-            if ((position.x == endPosition.x && position.y == endPosition.y)|| iterCount > 50)
-            {
-                asReachedTheEnd = true;
-            }
+            iterCount++;//temp
+
 
             bool[] isDirectionWalkable = new bool[4];
             isDirectionWalkable[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]);
@@ -98,36 +91,33 @@ public class RightHandAlgorithm : MonoBehaviour
                 if (isDirectionWalkable[direction % 4] && !isDirectionWalkable[(direction + 1) % 4])
                 {
                     direction = direction % 4;
-                    position.x += xByDirection[direction];
-                    position.y += yByDirection[direction];
-                    algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
                 }
                 else if (isDirectionWalkable[(direction + 1) % 4])
                 {
                     direction = (direction + 1) % 4;
-                    position.x += xByDirection[direction];
-                    position.y += yByDirection[direction];
-                    algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
                 }
                 else if (isDirectionWalkable[(direction + 3) % 4])
                 {
                     direction = (direction + 3) % 4;
-                    position.x += xByDirection[direction];
-                    position.y += yByDirection[direction];
-                    algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
                 }
                 else if (isDirectionWalkable[(direction + 2) % 4])
                 {
                     direction = (direction + 2) % 4;
-                    position.x += xByDirection[direction];
-                    position.y += yByDirection[direction];
-                    algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
                 }
              else//case when direction isn't determined at start
              {
                 Debug.Log("Aucune solution possible!");
                 //Si tu est sur un 4 fourche au départ et que la direction n'est pas déterminé par défaut l'algo va planté
              }
+
+            position.x += xByDirection[direction];
+            position.y += yByDirection[direction];
+            algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+
+            if ((position.x == endPosition.x && position.y == endPosition.y) || iterCount > 50)
+            {
+                asReachedTheEnd = true;
+            }
         }
 
         return algorithmStepsPosition;

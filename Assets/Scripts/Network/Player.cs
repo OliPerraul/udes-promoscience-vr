@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class Player : NetworkBehaviour
 {
     public string deviceUniqueIdentifier = "";
-    public int deviceType = -1;// Could be changed
+    public int sDeviceType;
 
     string mDeviceName = "";
     string mTeamName = "";
@@ -88,12 +88,14 @@ public class Player : NetworkBehaviour
     public Action playerActionChangedEvent;
 
     [SerializeField]
+    ScriptableDeviceType deviceType;
+
+    [SerializeField]
     ScriptableString pairedIpAdress;
 
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
 
-    //Could be change so that the logic is in the scriptable object for the algorithm, doing so will allow to add new algorithm without hardcoding it?
     [SerializeField]
     ScriptableInteger algorithmId;
 
@@ -120,16 +122,12 @@ public class Player : NetworkBehaviour
         deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
         deviceName = SystemInfo.deviceModel;
 
-        if (deviceName == Constants.SAMSUNG_TABLET_SMT380)
+        if (deviceType.value == Constants.DEVICE_TABLET)
         {
-            deviceType = Constants.ANDROID_TABLET;
             action.valueChangedEvent += SendCmdPlayerAction;//Is it were it should be?
         }
-        else if (deviceName == Constants.OCCULUS_GO_PACIFIC)
-        {
-            deviceType = Constants.OCCULUS_GO_HEADSET;
-        }
-        CmdSetDeviceType(deviceType);
+
+        CmdSetDeviceType(deviceType.value);
         CmdSetDeviceName(deviceName);
         CmdSetUniqueIdentifier(deviceUniqueIdentifier);
 
@@ -186,7 +184,7 @@ public class Player : NetworkBehaviour
     [Command]
     void CmdSetDeviceType(int dType)
     {
-        deviceType = dType;
+        sDeviceType = dType;
     }
 
     [Command]

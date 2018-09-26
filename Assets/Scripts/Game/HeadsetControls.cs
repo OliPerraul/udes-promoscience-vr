@@ -33,10 +33,10 @@ public class HeadsetControls : MonoBehaviour
 
 
     bool isMoving = false;
+    bool isTurning = false;
 
     float movementSpeed = 0.5f;
-
-    float clippingRadius = 0.01f;
+    float turningSpeed = 0.5f;
 
     Vector3 targetPosition;
     Vector3 trajectoryToTargetPosition;
@@ -71,10 +71,23 @@ public class HeadsetControls : MonoBehaviour
                     cameraTransform.position = movementPosition;
                 }
             }
+            else if (isTurning)
+            {
+
+            }
             else if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
             {
                 RequestMovementInDirection(forwardDirection.value);
             }
+            else if (OVRInput.GetDown(OVRInput.Button.Left))
+            {
+                CameraTurnLeft();
+            }
+            else if (OVRInput.GetDown(OVRInput.Button.Right))
+            {
+                CameraTurnRight();
+            }
+            /* Trigger movements, removed
             else if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
             {
                 if (leftController.activeSelf)
@@ -129,16 +142,9 @@ public class HeadsetControls : MonoBehaviour
                         RequestMovementInDirection(direction);
                     }
                 }
-            }
+            }*/
 
-            if (OVRInput.GetDown(OVRInput.Button.Left))
-            {
-                CameraTurnLeft();
-            }
-            else if (OVRInput.GetDown(OVRInput.Button.Right))
-            {
-                CameraTurnRight();
-            }
+
         }
     }
 
@@ -181,18 +187,21 @@ public class HeadsetControls : MonoBehaviour
     {
         cameraTransform.Rotate(new Vector3(0, -90, 0));
         forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
+        //isTurning = true;
+        action.value = Constants.ACTION_TURN_LEFT;
     }
 
     void CameraTurnRight()
     {
         cameraTransform.Rotate(new Vector3(0, 90, 0));
         forwardDirection.value = (forwardDirection.value + 1) % 4;
+        //isTurning = true;
+        action.value = Constants.ACTION_TURN_RIGHT;
     }
 
 
     bool CheckIfMovementIsValid(int d)
     {
-        bool isValid = false;
         int posX = Mathf.RoundToInt((cameraTransform.position.x / 5)) + labyrinth.GetLabyrithStartPosition().x;
         int posY = Mathf.RoundToInt((-cameraTransform.position.z / 5)) + labyrinth.GetLabyrithStartPosition().y;
 

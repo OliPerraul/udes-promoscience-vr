@@ -260,11 +260,11 @@ public static class SQLiteUtilities
             using (SqliteCommand cmd = conn.CreateCommand())
             {
                 cmd.CommandType = CommandType.Text;
-                if (deviceType == Constants.ANDROID_TABLET)
+                if (deviceType == Constants.DEVICE_TABLET)
                 {
                     cmd.CommandText = "SELECT * FROM DevicePairing WHERE TabletID='" + id + "'";
                 }
-                else if(deviceType == Constants.OCCULUS_GO_HEADSET)
+                else if(deviceType == Constants.DEVICE_HEADSET)
                 {
                     cmd.CommandText = "SELECT * FROM DevicePairing WHERE HeadsetID='" + id + "'";
                 }
@@ -276,11 +276,11 @@ public static class SQLiteUtilities
                     while (reader.Read())
                     {
                         Debug.Log("TabletId : " + reader["TabletID"] + "\t HeadsetId : " + reader["HeadsetID"]);
-                        if (deviceType == Constants.ANDROID_TABLET)
+                        if (deviceType == Constants.DEVICE_TABLET)
                         {
                             pairedId = reader["HeadsetID"].ToString();
                         }
-                        else if (deviceType == Constants.OCCULUS_GO_HEADSET)
+                        else if (deviceType == Constants.DEVICE_HEADSET)
                         {
                             pairedId = reader["TabletID"].ToString();
                         }
@@ -306,11 +306,11 @@ public static class SQLiteUtilities
             using (SqliteCommand cmd = conn.CreateCommand())
             {
                 cmd.CommandType = CommandType.Text;
-                if(deviceType == Constants.ANDROID_TABLET)
+                if(deviceType == Constants.DEVICE_TABLET)
                 {
                     cmd.CommandText = "DELETE FROM DevicePairing WHERE TabletID='" + id + "'";
                 }
-                else if(deviceType == Constants.OCCULUS_GO_HEADSET)
+                else if(deviceType == Constants.DEVICE_HEADSET)
                 {
                     cmd.CommandText = "DELETE FROM DevicePairing WHERE HeadsetID='" + id + "'";
                 }

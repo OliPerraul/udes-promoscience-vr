@@ -8,6 +8,9 @@ public class PairingServer : MonoBehaviour
     NetworkServerSimple server = null;
     List<NetworkConnection> clientConnectionList = new List<NetworkConnection>();
 
+
+    NetworkConnection tabletConnection = null;
+    NetworkConnection headsetConnection = null;
     string tabletId = null;
     string headsetId = null;
 
@@ -45,62 +48,76 @@ public class PairingServer : MonoBehaviour
     void OnConnect(NetworkMessage netMsg)
     {
         Debug.Log("Pairing Client connect");//to be deleted
-        if(clientConnectionList.Count<2)
-        {
-            clientConnectionList.Add(netMsg.conn);
-        }
-        else
-        {
-            SendPairingResult(false, "Pairing failed : Already 2 device pairing!");
-        }
+        clientConnectionList.Add(netMsg.conn);
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
         clientConnectionList.Remove(netMsg.conn);
-        if (clientConnectionList.Count == 0)
+        if (netMsg.conn == tabletConnection)
         {
             tabletId = null;
+            tabletConnection = null;
+        }
+        else if (netMsg.conn == headsetConnection)
+        {
             headsetId = null;
+            headsetConnection = null;
         }
     }
 
     void OnPairingRequest(NetworkMessage netMsg)
     {
         PairingRequestMessage msg = netMsg.ReadMessage<PairingRequestMessage>();
-        if(msg.deviceType == Constants.ANDROID_TABLET)
+        if(msg.deviceType == Constants.DEVICE_TABLET && tabletId == null)
         {
             tabletId = msg.deviceId;
+            tabletConnection = netMsg.conn;
             Debug.Log("Pairing request tablet!");//to be deleted
+            Pairing();
         }
-        else if (msg.deviceType == Constants.OCCULUS_GO_HEADSET)
+        else if (msg.deviceType == Constants.DEVICE_HEADSET && headsetId == null)
         {
             headsetId = msg.deviceId;
+            headsetConnection = netMsg.conn;
             Debug.Log("Pairing request headset!");//to be deleted
+            Pairing();
         }
+        else
+        {
+            SendTargetPairingResult(netMsg.conn, false, "Pairing failed : Already device type pairing!");
+        }
+    }
 
-        if(tabletId != null && headsetId != null)
+    void Pairing()
+    {
+        if (tabletId != null && headsetId != null)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             SQLiteUtilities.AddPairing(tabletId, headsetId);
 #endif
-            tabletId = null;
-            headsetId = null;
             SendPairingResult(true, "Pairing was a success!");
             Debug.Log("Pairing success!");//to be deleted
         }
     }
 
-    public void SendPairingResult(bool isPairingSuccess,string message)
+    public void SendPairingResult(bool isPairingSuccess, string message)
     {
         PairingResultMessage pairingResultMsg = new PairingResultMessage();
         pairingResultMsg.isPairingSucess = isPairingSuccess;
         pairingResultMsg.message = message;
 
-        foreach (NetworkConnection conn in clientConnectionList)
-        {
-            conn.Send(CustomMsgType.PairingResult, pairingResultMsg);
-        }
+        tabletConnection.Send(CustomMsgType.PairingResult, pairingResultMsg);
+        headsetConnection.Send(CustomMsgType.PairingResult, pairingResultMsg);
+    }
+
+    public void SendTargetPairingResult(NetworkConnection target, bool isPairingSuccess,string message)
+    {
+        PairingResultMessage pairingResultMsg = new PairingResultMessage();
+        pairingResultMsg.isPairingSucess = isPairingSuccess;
+        pairingResultMsg.message = message;
+
+        target.Send(CustomMsgType.PairingResult, pairingResultMsg);
     }
 
 }

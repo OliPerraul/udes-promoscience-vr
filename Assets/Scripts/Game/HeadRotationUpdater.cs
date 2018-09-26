@@ -14,7 +14,7 @@ public class HeadRotationUpdater : MonoBehaviour
     {
 		if(headTransform.rotation.eulerAngles != headRotation.value)
         {
-            headRotation.value = headTransform.rotation.eulerAngles;
+            headRotation.value = headTransform.localRotation.eulerAngles;
         }
 	}
 }
