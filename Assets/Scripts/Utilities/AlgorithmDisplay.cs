@@ -34,7 +34,7 @@ public class AlgorithmDisplay : MonoBehaviour
 		if (isFire)
         {
             isFire = false;
-            GenerateVisualForAlgorithmWithId(Constants.LONGEST_STRAIGHT_ALGORITH);
+            GenerateVisualForAlgorithmWithId(Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH);
         }
 	}
 
