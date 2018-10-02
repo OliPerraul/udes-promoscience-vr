@@ -43,15 +43,21 @@ public class AlgorithmRespect : MonoBehaviour
 
     float ratioLostPerExtraActions = 0.02f;
 
-    List<int> algorithmSteps = new List<int>();
-    List<int> playerSteps = new List<int>();
-    //List<Step> algorithmSteps;
-    //List<Step> playerSteps;
+    bool isDiverging;
+
+    int errorCounter;
+
+    const float E = 2.71828f;
+    Vector2Int currentPosition;
+
+    List<Vector2Int> algorithmSteps = new List<Vector2Int>();
+    List<Vector2Int> playerSteps = new List<Vector2Int>();
+
 
     void Start()
     {
-       // currentGameState.valueChangedEvent += OnGameStateChanged;
-       // action.valueChangedEvent += OnAction;
+       currentGameState.valueChangedEvent += OnGameStateChanged;
+       action.valueChangedEvent += OnAction;
     }
 
 
@@ -59,8 +65,13 @@ public class AlgorithmRespect : MonoBehaviour
     {
         if (currentGameState.value == Constants.PLAYING_TUTORIAL || currentGameState.value == Constants.PLAYING)
         {
+            errorCounter = 0;
+            isDiverging = false;
             algorithmRespect.value = 1.0f;
             SetAlgorithmStepsWithId(algorithmId.value);
+            playerSteps.Clear();
+            currentPosition = labyrinth.GetLabyrithStartPosition();
+            playerSteps.Add(new Vector2Int(currentPosition.x, currentPosition.y));
             algorithRespectBar.SetActive(true);
         }
         else if (currentGameState.value == Constants.WAITING_FOR_NEXT_ROUND)
@@ -71,15 +82,55 @@ public class AlgorithmRespect : MonoBehaviour
 
     void OnAction()
     {
-        //Modifie algorithm respect depending on algorithm id and action?
-        playerSteps.Add(action.value);
-
-        UpdateAlgorithmRespect();
+        if(action.value == Constants.ACTION_MOVE_UP)
+        {
+            currentPosition += new Vector2Int(0, -1);
+            UpdateAlgorithmRespect();
+        }
+        else if (action.value == Constants.ACTION_MOVE_RIGHT)
+        {
+            currentPosition += new Vector2Int(1, 0);
+            UpdateAlgorithmRespect();
+        }
+        else if (action.value == Constants.ACTION_MOVE_DOWN)
+        {
+            currentPosition += new Vector2Int(0, 1);
+            UpdateAlgorithmRespect();
+        }
+        else if (action.value == Constants.ACTION_MOVE_LEFT)
+        {
+            currentPosition += new Vector2Int(-1, 0);
+            UpdateAlgorithmRespect();
+        }
     }
 
-    void UpdateAlgorithmRespect()
+    void UpdateAlgorithmRespect()// Quand reset pour le tutorial, le playerSteps n'est pas ressetté? c,est une cause mais pas la seul
     {
-
+        if (!isDiverging)
+        {
+            if (currentPosition != algorithmSteps[playerSteps.Count])
+            {
+                isDiverging = true;
+                errorCounter++;
+                algorithmRespect.value = 1.0f - 0.05f * ((playerSteps[playerSteps.Count - 1] - currentPosition).magnitude);
+            }
+            else
+            {
+                playerSteps.Add(new Vector2Int(currentPosition.x, currentPosition.y));
+            }
+        }
+        else
+        {
+            if (currentPosition == playerSteps[playerSteps.Count - 1])
+            {
+                isDiverging = false;
+                algorithmRespect.value = 1.0f;
+            }
+            else
+            {
+                algorithmRespect.value = 1.0f - 0.05f*((playerSteps[playerSteps.Count - 1] - currentPosition).magnitude);
+            }
+        }
     }
 
     void SetAlgorithmStepsWithId(int id)
@@ -90,7 +141,7 @@ public class AlgorithmRespect : MonoBehaviour
         }
         else if (id == Constants.LONGEST_STRAIGHT_ALGORITH)
         {
-            algorithmSteps = longestStraightAlgorithm.GetAlgorithmSteps();
+           // algorithmSteps = longestStraightAlgorithm.GetAlgorithmSteps();
         }
         else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH)
         {
@@ -98,7 +149,12 @@ public class AlgorithmRespect : MonoBehaviour
         }
         else if (id == Constants.STANDARD_RECURSIVE_ALGORITH)
         {
-            algorithmSteps = standardRecursiveAlgorithm.GetAlgorithmSteps();
+           // algorithmSteps = standardRecursiveAlgorithm.GetAlgorithmSteps();
         }
+    }
+
+    float MathFunction(float x)
+    {
+        return (1 - Mathf.Pow(E, -x));
     }
 }

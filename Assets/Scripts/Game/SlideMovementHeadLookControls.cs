@@ -41,7 +41,7 @@ public class SlideMovementHeadLookControls : MonoBehaviour
         {
             if (isMoving)
             {
-                float tileSize = Constants.tileSize;
+                float tileSize = Constants.TILE_SIZE;
                 Vector3 movementPosition = cameraTransform.position + (trajectoryToTargetPosition * Time.deltaTime * movementSpeed);
 
                 if (movementPosition.x > targetPosition.x - clippingRadius * tileSize 
@@ -82,7 +82,7 @@ public class SlideMovementHeadLookControls : MonoBehaviour
 
                 if(CheckIfMovementIsValid(direction))
                 {
-                    float tileSize = Constants.tileSize;
+                    float tileSize = Constants.TILE_SIZE;
 
                     if (direction == 0)
                     {

@@ -63,7 +63,7 @@ public class MessageServer : MonoBehaviour
     void OnConnect(NetworkMessage netMsg)
     {
         clientConnection = netMsg.conn;
-        currentGameState.value = Constants.READY;
+        currentGameState.value = Constants.READY_TUTORIAL;
     }
 
     void OnDisconnect(NetworkMessage netMsg)

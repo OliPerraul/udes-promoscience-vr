@@ -88,7 +88,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 8c3252923815ed243a1b62c8ed502b6b, type: 2}
+  - {fileID: 2100000, guid: 30a19ffa8d063ed4bb180ae2e0bd5afa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -139,8 +139,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 23748767082141850}
-  greyMaterial: {fileID: 2100000, guid: 8c3252923815ed243a1b62c8ed502b6b, type: 2}
-  orangeMaterial: {fileID: 2100000, guid: 910c09608ba6f184f9bed01ed81609bc, type: 2}
+  greyMaterial: {fileID: 2100000, guid: 30a19ffa8d063ed4bb180ae2e0bd5afa, type: 2}
+  redMaterial: {fileID: 2100000, guid: 0bcda1d6d9c49b94b836685410be2c47, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 001acaf6e745051479b2819975c03bc3, type: 2}
 --- !u!114 &114788203356728730
 MonoBehaviour:
   m_ObjectHideFlags: 1

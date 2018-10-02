@@ -10,14 +10,7 @@ public class RightHandAlgorithm : MonoBehaviour
     int[] xByDirection = { 0, 1, 0, -1 };
     int[] yByDirection = { -1, 0, 1, 0 };
 
-    public List<int> GetAlgorithmSteps()
-    {
-        List<int> algorithmSteps = new List<int>();
-
-        return algorithmSteps;
-    }
-
-    public List<Vector2Int> GetAlgorithmStepsPosition()
+    public List<Vector2Int> GetAlgorithmSteps()
     {
         int iterCount = 0;
         List<Vector2Int> algorithmStepsPosition = new List<Vector2Int>();

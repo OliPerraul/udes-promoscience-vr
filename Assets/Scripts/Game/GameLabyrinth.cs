@@ -5,6 +5,9 @@ using UnityEngine;
 public class GameLabyrinth : MonoBehaviour
 {
     [SerializeField]
+    ScriptableInteger currentGameState;
+
+    [SerializeField]
     ScriptableLabyrinth labyrinthData;
 
     Vector2Int startPosition;
@@ -23,8 +26,26 @@ public class GameLabyrinth : MonoBehaviour
     [SerializeField]
     GameObject endTilePrefab;
 
+    private void Start()
+    {
+        currentGameState.valueChangedEvent += OnGameStateChanged;
+    }
 
-    public void GenerateLabyrinthVisual()
+    public void OnGameStateChanged()
+    {
+        if(currentGameState.value == Constants.TUTORIAL_LABYRITH_READY)
+        {
+            GenerateLabyrinthVisual();
+            currentGameState.value = Constants.PLAYING_TUTORIAL;
+        }
+        else if (currentGameState.value == Constants.LABYRITH_READY)
+        {
+            GenerateLabyrinthVisual();
+            currentGameState.value = Constants.PLAYING;
+        }
+    }
+
+        public void GenerateLabyrinthVisual()
     {
         if (labyrinthTiles != null)
         {
@@ -97,9 +118,9 @@ public class GameLabyrinth : MonoBehaviour
     {
         Vector3 worldPos = new Vector3();
 
-        worldPos.x = (x - startPosition.x) * Constants.tileSize;
+        worldPos.x = (x - startPosition.x) * Constants.TILE_SIZE;
         worldPos.y = 0;
-        worldPos.z = (-y + startPosition.y) * Constants.tileSize;
+        worldPos.z = (-y + startPosition.y) * Constants.TILE_SIZE;
 
         return worldPos;
     }
@@ -113,6 +134,10 @@ public class GameLabyrinth : MonoBehaviour
     {
         return endPosition;
     }
+    public Vector3 GetLabyrithEndPositionInWorldPosition()
+    {
+        return GetWorldPosition(endPosition.x, endPosition.y);
+    }
 
     public int GetLabyrithXLenght()
     {
@@ -122,6 +147,16 @@ public class GameLabyrinth : MonoBehaviour
     public int GetLabyrithYLenght()
     {
         return labyrinth.GetLength(1);
+    }
+
+    public GameObject GetTile(Vector2Int position)
+    {
+        return labyrinthTiles[position.x, position.y];
+    }
+
+    public GameObject GetTile(int x, int y)
+    {
+        return labyrinthTiles[x, y];
     }
 
     public bool GetIsTileWalkable(int x, int y)

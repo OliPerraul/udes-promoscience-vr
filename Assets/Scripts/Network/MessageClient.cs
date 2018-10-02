@@ -50,7 +50,7 @@ public class MessageClient : MonoBehaviour
 
     void OnConnect(NetworkMessage netMsg)
     {
-        currentGameState.value = Constants.READY;
+        currentGameState.value = Constants.READY_TUTORIAL;
 
         action.valueChangedEvent += SendAction;
         movementTargetPosition.valueChangedEvent += SendMovementTargetPosition;

@@ -63,7 +63,7 @@ public class TeleportationMovementHeadLookControls : MonoBehaviour
 
     void RequestMove(int direction)
     {
-        float movement = Constants.tileSize;
+        float movement = Constants.TILE_SIZE;
 
         if (CheckIfMovementIsValid(direction))
         { 

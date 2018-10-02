@@ -44,7 +44,7 @@ public class HeadsetControls : MonoBehaviour
         {
             if (isMoving)
             {
-                lerpValue += Time.deltaTime * Constants.movementSpeed;
+                lerpValue += Time.deltaTime * Constants.MOVEMENT_SPEED;
 
                 if (lerpValue >= 1)
                 {
@@ -59,7 +59,7 @@ public class HeadsetControls : MonoBehaviour
             }
             else if (isTurning)
             {
-                lerpValue += Time.deltaTime * Constants.turningSpeed;
+                lerpValue += Time.deltaTime * Constants.TURNIN_SPEED;
 
                 if (lerpValue >= 1)
                 {
@@ -84,6 +84,11 @@ public class HeadsetControls : MonoBehaviour
             {
                 CameraTurnRight();
             }
+
+            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+            {
+                PaintCurrentPositionTile();
+            }
         }
     }
 
@@ -95,22 +100,22 @@ public class HeadsetControls : MonoBehaviour
 
             if (direction == 0)
             {
-                targetPosition = fromPosition + (new Vector3(0, 0, Constants.tileSize));
+                targetPosition = fromPosition + (new Vector3(0, 0, Constants.TILE_SIZE));
                 action.value = Constants.ACTION_MOVE_UP;
             }
             else if (direction == 1)
             {
-                targetPosition = fromPosition + (new Vector3(Constants.tileSize, 0, 0));
+                targetPosition = fromPosition + (new Vector3(Constants.TILE_SIZE, 0, 0));
                 action.value = Constants.ACTION_MOVE_RIGHT;
             }
             else if (direction == 2)
             {
-                targetPosition = fromPosition + (new Vector3(0, 0, -Constants.tileSize));
+                targetPosition = fromPosition + (new Vector3(0, 0, -Constants.TILE_SIZE));
                 action.value = Constants.ACTION_MOVE_DOWN;
             }
             else if (direction == 3)
             {
-                targetPosition = fromPosition + (new Vector3(-Constants.tileSize, 0, 0));
+                targetPosition = fromPosition + (new Vector3(-Constants.TILE_SIZE, 0, 0));
                 action.value = Constants.ACTION_MOVE_LEFT;
             }
             
@@ -145,8 +150,8 @@ public class HeadsetControls : MonoBehaviour
 
     bool CheckIfMovementIsValid(int d)
     {
-        int posX = Mathf.RoundToInt((cameraTransform.position.x / 5)) + labyrinth.GetLabyrithStartPosition().x;
-        int posY = Mathf.RoundToInt((-cameraTransform.position.z / 5)) + labyrinth.GetLabyrithStartPosition().y;
+        int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
+        int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
 
         if (d == 2)
         {
@@ -178,6 +183,19 @@ public class HeadsetControls : MonoBehaviour
         }
 
         return labyrinth.GetIsTileWalkable(posX,posY);
+    }
+    //Fleche end direction, est-ce qu'on enleve la composante qui permet de voir si on se rapproche de la fin? la flèche se penche vers la fin au lieu on pourrais rajouter la hauter de lafleche
+    void PaintCurrentPositionTile()
+    {
+        int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
+        int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
+        GameObject tile = labyrinth.GetTile(posX, posY);
+        FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
+        if(floorPainter != null)
+        {
+            floorPainter.PaintFloor();
+            action.value = Constants.ACTION_PAINT_FLOOR;
+        }
     }
 
     void StopAllMovement()

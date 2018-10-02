@@ -42,8 +42,6 @@ public class GameManager : MonoBehaviour
     {
         if (currentGameState.value == Constants.PLAYING_TUTORIAL)
         {
-            labyrinth.GenerateLabyrinthVisual();
-
             if (controls != null)
             {
                 controls.ResetPositionAndRotation();

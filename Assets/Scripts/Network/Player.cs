@@ -243,11 +243,11 @@ public class Player : NetworkBehaviour
 
         if(algorithmIdentifier == Constants.TUTORIAL_ALGORITH)
         {
-            gameState.value = Constants.PLAYING_TUTORIAL;
+            gameState.value = Constants.READY_TUTORIAL;
         }
         else
         {
-            gameState.value = Constants.PLAYING;
+            gameState.value = Constants.LABYRITH_READY;
         }
     }
 }

@@ -40,7 +40,7 @@ public class TabletControls : MonoBehaviour
         {
             if (isMoving)
             {
-                lerpValue += Time.deltaTime * Constants.movementSpeed;
+                lerpValue += Time.deltaTime * Constants.MOVEMENT_SPEED;
 
                 if (lerpValue >= 1)
                 {
@@ -55,7 +55,7 @@ public class TabletControls : MonoBehaviour
             }
             else if (isTurning)
             {
-                lerpValue += Time.deltaTime * Constants.turningSpeed;
+                lerpValue += Time.deltaTime * Constants.TURNIN_SPEED;
 
                 if (lerpValue >= 1)
                 {
@@ -89,25 +89,25 @@ public class TabletControls : MonoBehaviour
                 else if (actionsList[0] == Constants.ACTION_MOVE_UP)
                 {
                     fromPosition = cameraTransform.position;
-                    targetPosition = fromPosition + (new Vector3(0, 0, Constants.tileSize));
+                    targetPosition = fromPosition + (new Vector3(0, 0, Constants.TILE_SIZE));
                     isMoving = true;
                 }
                 else if (actionsList[0] == Constants.ACTION_MOVE_RIGHT)
                 {
                     fromPosition = cameraTransform.position;
-                    targetPosition = fromPosition + (new Vector3(Constants.tileSize, 0, 0));
+                    targetPosition = fromPosition + (new Vector3(Constants.TILE_SIZE, 0, 0));
                     isMoving = true;
                 }
                 else if (actionsList[0] == Constants.ACTION_MOVE_DOWN)
                 {
                     fromPosition = cameraTransform.position;
-                    targetPosition = fromPosition + (new Vector3(0, 0, -Constants.tileSize));
+                    targetPosition = fromPosition + (new Vector3(0, 0, -Constants.TILE_SIZE));
                     isMoving = true;
                 }
                 else if (actionsList[0] == Constants.ACTION_MOVE_LEFT)
                 {
                     fromPosition = cameraTransform.position;
-                    targetPosition = fromPosition + (new Vector3(-Constants.tileSize, 0, 0));
+                    targetPosition = fromPosition + (new Vector3(-Constants.TILE_SIZE, 0, 0));
                     isMoving = true;
                 }
 

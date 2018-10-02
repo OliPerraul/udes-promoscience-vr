@@ -75,7 +75,7 @@ public class TeleportationMovementArrowsControls : MonoBehaviour
 
     void RequestMove(bool front)
     {
-        float movement = front ? Constants.tileSize : -Constants.tileSize;
+        float movement = front ? Constants.TILE_SIZE : -Constants.TILE_SIZE;
 
         if (direction == 0)
         {

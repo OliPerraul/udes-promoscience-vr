@@ -11,14 +11,29 @@ public class FloorPainter : MonoBehaviour
     Material greyMaterial;
 
     [SerializeField]
-    Material orangeMaterial;
+    Material redMaterial;
 
-    public void PaintGrey()
+    [SerializeField]
+    Material greenMaterial;
+
+    int currentColorId = 0;
+
+    public void PaintFloor()
     {
-        meshRenderer.material = greyMaterial;
-    }
-    public void PaintOrange()
-    {
-        meshRenderer.material = orangeMaterial;
+        if (currentColorId == 0)
+        {
+            currentColorId = 1;
+            meshRenderer.material = redMaterial;
+        }
+        else if (currentColorId == 1)
+        {
+            currentColorId = 2;
+            meshRenderer.material = greenMaterial;
+        }
+        else if (currentColorId == 2)
+        {
+            currentColorId = 0;
+            meshRenderer.material = greyMaterial;
+        }
     }
 }

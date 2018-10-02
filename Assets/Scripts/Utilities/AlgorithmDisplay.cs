@@ -34,7 +34,7 @@ public class AlgorithmDisplay : MonoBehaviour
 		if (isFire)
         {
             isFire = false;
-            GenerateVisualForAlgorithmWithId(Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH);
+            GenerateVisualForAlgorithmWithId(Constants.LONGEST_STRAIGHT_ALGORITH);
         }
 	}
 
@@ -42,15 +42,15 @@ public class AlgorithmDisplay : MonoBehaviour
     {
         if (id == Constants.RIGHT_HAND_ALGORITH)
         {
-            algorithmStepsPosition = rightHandAlgorithm.GetAlgorithmStepsPosition();
+            algorithmStepsPosition = rightHandAlgorithm.GetAlgorithmSteps();
         }
         else if (id == Constants.LONGEST_STRAIGHT_ALGORITH)
         {
-            algorithmStepsPosition = longestStraightAlgorithm.GetAlgorithmStepsPosition();
+            algorithmStepsPosition = longestStraightAlgorithm.GetAlgorithmSteps();
         }
         else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH)
         {
-            algorithmStepsPosition = shortestFlighDistanceAlgorithm.GetAlgorithmStepsPosition();
+            algorithmStepsPosition = shortestFlighDistanceAlgorithm.GetAlgorithmSteps();
         }
 
         for (int i = 0; i < algorithmStepsPosition.Count; i++)
@@ -66,9 +66,9 @@ public class AlgorithmDisplay : MonoBehaviour
 
         Vector2Int startPosition = labyrinth.GetLabyrithStartPosition();
 
-        worldPos.x = (x - startPosition.x) * Constants.tileSize;
+        worldPos.x = (x - startPosition.x) * Constants.TILE_SIZE;
         worldPos.y = 0.5f;
-        worldPos.z = (-y + startPosition.y) * Constants.tileSize;
+        worldPos.z = (-y + startPosition.y) * Constants.TILE_SIZE;
 
         return worldPos;
     }

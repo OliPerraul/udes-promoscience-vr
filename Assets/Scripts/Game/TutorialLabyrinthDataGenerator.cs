@@ -20,10 +20,10 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
 
     void OnGameStateChanged()
     {
-        if (currentGameState.value == Constants.READY)
+        if (currentGameState.value == Constants.READY_TUTORIAL)
         {
             GenerateTutorialLabyrinthData();
-            currentGameState.value = Constants.PLAYING_TUTORIAL;
+            currentGameState.value = Constants.TUTORIAL_LABYRITH_READY;
         }
     }
 

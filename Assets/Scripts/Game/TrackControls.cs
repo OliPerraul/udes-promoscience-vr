@@ -59,7 +59,7 @@ public class TrackControls : MonoBehaviour
 
     void RequestMove(int direction)
     {
-        float mouvement = Constants.tileSize;
+        float mouvement = Constants.TILE_SIZE;
 
         if (CheckIfMovementIsValid(direction))
         { 

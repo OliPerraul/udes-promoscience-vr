@@ -7,13 +7,16 @@ static class Constants
 {
     //Game states and player status
     public const int NOT_READY = 0;
-    public const int PAIRING = 2;
-    public const int NO_ASSOCIATED_PAIR = 3;
-    public const int PAIRED = 4;
-    public const int READY = 1;
-    public const int PLAYING_TUTORIAL = 5;
-    public const int PLAYING = 6;
-    public const int WAITING_FOR_NEXT_ROUND = 7;
+    public const int PAIRING = 1;
+    public const int NO_ASSOCIATED_PAIR = 2;
+    public const int PAIRED = 3;
+    public const int READY = 4;
+    public const int READY_TUTORIAL = 5;
+    public const int LABYRITH_READY = 6;
+    public const int TUTORIAL_LABYRITH_READY = 7;
+    public const int PLAYING_TUTORIAL = 8;
+    public const int PLAYING = 9;
+    public const int WAITING_FOR_NEXT_ROUND = 10;
 
     //Device types
     public const int DEVICE_TABLET = 0;
@@ -27,9 +30,9 @@ static class Constants
     public const int STANDARD_RECURSIVE_ALGORITH = 3;
 
     //Labyrinth tiles
-    public const float tileSize = 5.0f;
-    public const float movementSpeed = 0.5f;
-    public const float turningSpeed = 0.5f;
+    public const float TILE_SIZE = 5.0f;
+    public const float MOVEMENT_SPEED = 0.5f;
+    public const float TURNIN_SPEED = 0.5f;
 
     //0-49 Floors
     public const int TILE_FLOOR_START_ID = 0;
@@ -59,11 +62,12 @@ static class Constants
     public const int DIRECTIVE_STOP = 4;
 
     //Actions
-    public const int ACTION_MOVE_UP = 0;//direction 0
-    public const int ACTION_MOVE_RIGHT = 1;//direction 1
-    public const int ACTION_MOVE_DOWN = 2;//direction 2
-    public const int ACTION_MOVE_LEFT = 3;//direction 3
+    public const int ACTION_MOVE_UP = 0;
+    public const int ACTION_MOVE_RIGHT = 1;
+    public const int ACTION_MOVE_DOWN = 2;
+    public const int ACTION_MOVE_LEFT = 3;
     public const int ACTION_TURN_LEFT = 4;
     public const int ACTION_TURN_RIGHT = 5;
+    public const int ACTION_PAINT_FLOOR = 6;
 
 }

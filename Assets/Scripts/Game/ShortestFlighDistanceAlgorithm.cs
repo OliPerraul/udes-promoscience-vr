@@ -10,15 +10,7 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
     int[] xByDirection = { 0, 1, 0, -1 };
     int[] yByDirection = { -1, 0, 1, 0 };
 
-    public List<int> GetAlgorithmSteps()
-    {
-        List<int> algorithmSteps = new List<int>();
-      
-
-        return algorithmSteps;
-    }
-
-    public List<Vector2Int> GetAlgorithmStepsPosition()
+    public List<Vector2Int> GetAlgorithmSteps()
     {
         int iterCount = 0;
         List<Vector2Int> algorithmStepsPosition = new List<Vector2Int>();
@@ -46,8 +38,7 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
             if (!alreadyVisitedTile[position.x, position.y])//Should be changed if we don't start in a deadend
             {
                 if (isDirectionWalkable[direction] && isDirectionWalkable[(direction + 1) % 4]
-                    || isDirectionWalkable[direction] && isDirectionWalkable[(direction + 3) % 4]
-                    || isDirectionWalkable[(direction + 1) % 4] && isDirectionWalkable[(direction + 3) % 4])
+                    || isDirectionWalkable[direction] && isDirectionWalkable[(direction + 3) % 4])
                 {
                     lastVisitedIntersection.Add(new Vector2Int(position.x, position.y));
                 }
