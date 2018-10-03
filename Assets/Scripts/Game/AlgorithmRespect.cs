@@ -35,9 +35,11 @@ public class AlgorithmRespect : MonoBehaviour
     [SerializeField]
     GameObject algorithRespectBar;
 
+    [SerializeField]
+    ScriptableBoolean isDiverging;
+
     float ratioLostPerExtraActions = 0.02f;
 
-    bool isDiverging;
 
     int errorCounter;
 
@@ -60,7 +62,7 @@ public class AlgorithmRespect : MonoBehaviour
         if (currentGameState.value == Constants.PLAYING_TUTORIAL || currentGameState.value == Constants.PLAYING)
         {
             errorCounter = 0;
-            isDiverging = false;
+            isDiverging.value = false;
             algorithmRespect.value = 1.0f;
             SetAlgorithmStepsWithId(algorithmId.value);
             playerSteps.Clear();
@@ -100,11 +102,11 @@ public class AlgorithmRespect : MonoBehaviour
 
     void UpdateAlgorithmRespect()// Quand reset pour le tutorial, le playerSteps n'est pas ressetté? c,est une cause mais pas la seul
     {
-        if (!isDiverging)
+        if (!isDiverging.value)
         {
             if (currentPosition != algorithmSteps[playerSteps.Count])
             {
-                isDiverging = true;
+                isDiverging.value = true;
                 errorCounter++;
                 algorithmRespect.value = 1.0f - MathFunction((playerSteps[playerSteps.Count - 1] - currentPosition).magnitude);
             }
@@ -117,7 +119,7 @@ public class AlgorithmRespect : MonoBehaviour
         {
             if (currentPosition == playerSteps[playerSteps.Count - 1])
             {
-                isDiverging = false;
+                isDiverging.value = false;
                 algorithmRespect.value = 1.0f;
             }
             else
@@ -157,5 +159,12 @@ public class AlgorithmRespect : MonoBehaviour
         playerSteps.Clear();
         currentPosition = labyrinth.GetLabyrithStartPosition();
         playerSteps.Add(new Vector2Int(currentPosition.x, currentPosition.y));
+    }
+
+    public void ReturnToDivergencePoint()
+    {
+        //Update real player position
+        currentPosition = playerSteps[playerSteps.Count - 1];
+        UpdateAlgorithmRespect();
     }
 }
