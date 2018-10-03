@@ -14,7 +14,7 @@ public class ServerStatus : MonoBehaviour
 
             if(player.playerStatus == Constants.PLAYING_TUTORIAL|| player.playerStatus == Constants.WAITING_FOR_NEXT_ROUND)
             {
-                player.TargetSetPlayerStatus(player.connectionToClient, Constants.PLAYING);
+                player.TargetSetPlayerStatus(player.connectionToClient, Constants.READY);
             }
         }
     }

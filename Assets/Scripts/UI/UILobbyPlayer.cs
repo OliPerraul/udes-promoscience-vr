@@ -93,7 +93,19 @@ public class UILobbyPlayer : MonoBehaviour
         }
         else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.READY)
         {
-            statusText.text = "Ready!";
+            statusText.text = "Ready";
+        }
+        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.PLAYING_TUTORIAL)
+        {
+            statusText.text = "Playing tutorial";
+        }
+        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.PLAYING)
+        {
+            statusText.text = "Playing";
+        }
+        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.WAITING_FOR_NEXT_ROUND)
+        {
+            statusText.text = "Waiting for next round";
         }
     }
 }

@@ -11,7 +11,7 @@ public class Player : NetworkBehaviour
 
     string mDeviceName = "";
     string mTeamName = "";
-    Color mTeamColor = Color.blue;
+    Color mTeamColor = Color.white;
     int mPlayerStatus = 0;
     int mPlayerAction;
 
@@ -211,7 +211,6 @@ public class Player : NetworkBehaviour
         playerAction = actionId;
     }
 
-    //Server send to the owner of the player, is labirintheId
     [TargetRpc]
     public void TargetSetPlayerStatus(NetworkConnection target, int id)
     {
@@ -233,7 +232,6 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-
     public void TargetSetGame(NetworkConnection target, int[] map, int sizeX,int sizeY, int labyrinthId, int algorithmIdentifier)//Unet permet pas le [,]
     {
         UITextManager.instance.SetText("Game data receive : getting ready to start");//temp

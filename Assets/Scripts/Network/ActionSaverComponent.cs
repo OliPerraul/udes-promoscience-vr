@@ -29,10 +29,10 @@ public class ActionSaverComponent : NetworkBehaviour
         if (player.playerStatus == Constants.PLAYING)
         {
             //to do
-            int teamId = 1;
-            int teamName = 1;
-            int teamColor = 1;
-            int courseId = 1;
+            int teamId = 1;// Should only keep one of the 3
+            int teamName = 1;// Should only keep one of the 3
+            int teamColor = 1;// Should only keep one of the 3
+            int courseId = 1;//Should be the key to get the replay of the round
             int labyrithId = 1;
             int algorithmId = 1;
 

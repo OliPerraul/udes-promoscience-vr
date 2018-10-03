@@ -8,6 +8,9 @@ public class PairingComponent : NetworkBehaviour
     [SerializeField]
     Player player;
 
+    [SerializeField]
+    ScriptableTeamList teamList;
+
     string pairedId = null;
 
     void Start ()
@@ -47,16 +50,16 @@ public class PairingComponent : NetworkBehaviour
     IEnumerator PairingDeviceCoroutine()
     {
         string pairedIpAdress = null;
-
+        Player otherPlayer = null;
         while (pairedIpAdress == null)
         {
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
-                Player p = PlayerList.instance.GetPlayerWithId(i);//Could be optimised to only look for unpared player?
+                otherPlayer = PlayerList.instance.GetPlayerWithId(i);//Could be optimised to only look for unpared player?
 
-                if (pairedId == p.deviceUniqueIdentifier)
+                if (pairedId == otherPlayer.deviceUniqueIdentifier)
                 {
-                    pairedIpAdress = p.connectionToClient.address;
+                    pairedIpAdress = otherPlayer.connectionToClient.address;
                     break;
                 }
             }
@@ -64,6 +67,15 @@ public class PairingComponent : NetworkBehaviour
         }
 
         player.TargetSetPairedIpAdress(player.connectionToClient, pairedIpAdress);
+
+        if(player.sDeviceType == Constants.DEVICE_TABLET)
+        {
+            ScriptableTeam scriptableTeam = teamList.GetScriptableTeam();
+            player.teamName = scriptableTeam.teamName;
+            player.teamColor = scriptableTeam.teamColor;
+            otherPlayer.teamName = scriptableTeam.teamName;
+            otherPlayer.teamColor = scriptableTeam.teamColor;
+        }
     }
 #endif
 }

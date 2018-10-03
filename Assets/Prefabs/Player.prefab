@@ -55,6 +55,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 114680929369619524}
+  teamList: {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682, type: 2}
 --- !u!114 &114373050470996920
 MonoBehaviour:
   m_ObjectHideFlags: 1
