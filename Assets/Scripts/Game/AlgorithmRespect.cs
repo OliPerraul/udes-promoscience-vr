@@ -106,7 +106,7 @@ public class AlgorithmRespect : MonoBehaviour
             {
                 isDiverging = true;
                 errorCounter++;
-                algorithmRespect.value = 1.0f - 0.05f * ((playerSteps[playerSteps.Count - 1] - currentPosition).magnitude);
+                algorithmRespect.value = 1.0f - MathFunction((playerSteps[playerSteps.Count - 1] - currentPosition).magnitude);
             }
             else
             {
@@ -122,7 +122,7 @@ public class AlgorithmRespect : MonoBehaviour
             }
             else
             {
-                algorithmRespect.value = 1.0f - 0.05f*((playerSteps[playerSteps.Count - 1] - currentPosition).magnitude);
+                algorithmRespect.value = 1.0f - MathFunction((playerSteps[playerSteps.Count - 1] - currentPosition).magnitude);
             }
         }
     }
@@ -149,6 +149,13 @@ public class AlgorithmRespect : MonoBehaviour
 
     float MathFunction(float x)
     {
-        return (1 - Mathf.Pow(E, -x));
+        return (1 - Mathf.Pow(E, -x/Constants.TILE_SIZE));
+    }
+
+    public void ResetPlayerSteps()
+    {
+        playerSteps.Clear();
+        currentPosition = labyrinth.GetLabyrithStartPosition();
+        playerSteps.Add(new Vector2Int(currentPosition.x, currentPosition.y));
     }
 }

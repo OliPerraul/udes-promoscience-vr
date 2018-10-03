@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
     GameLabyrinth labyrinth;
 
     [SerializeField]
+    AlgorithmRespect algorithmRespect;
+
+    [SerializeField]
     ScriptableBoolean isEndReached;
 
     void Start()
@@ -57,7 +60,6 @@ public class GameManager : MonoBehaviour
                 lobby.SetActive(false);
             }
 
-            //Activate algorithm for tablet
             if (controls != null)
             {
                 controls.isControlsEnabled = true;
@@ -104,6 +106,11 @@ public class GameManager : MonoBehaviour
                 controls.isControlsEnabled = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
+
+                if (algorithmRespect != null)
+                {
+                    algorithmRespect.ResetPlayerSteps();
+                }
 
                 isEndReached.value = false;
                 controls.isControlsEnabled = true;

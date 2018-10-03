@@ -2323,6 +2323,7 @@ MonoBehaviour:
   lobby: {fileID: 1795860088}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   labyrinth: {fileID: 1935275872}
+  algorithmRespect: {fileID: 918548872}
   isEndReached: {fileID: 11400000, guid: 99ed2ad93e9664d489fefc3ea16e70a3, type: 2}
 --- !u!4 &1135340686
 Transform:
