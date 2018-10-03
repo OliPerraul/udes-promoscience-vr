@@ -27,7 +27,7 @@ static class Constants
     public const int RIGHT_HAND_ALGORITH = 0;
     public const int SHORTEST_FLIGHT_DISTANCE_ALGORITH = 1;
     public const int LONGEST_STRAIGHT_ALGORITH = 2;
-    public const int STANDARD_RECURSIVE_ALGORITH = 3;
+    public const int STANDARD_ALGORITH = 3;
 
     //Labyrinth tiles
     public const float TILE_SIZE = 5.0f;

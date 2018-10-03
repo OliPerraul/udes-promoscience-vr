@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class AlgorithmDisplay : MonoBehaviour
 {
+
+    [SerializeField]
+    ScriptableInteger currentGameState;
+
     [SerializeField]
     RightHandAlgorithm rightHandAlgorithm;
 
@@ -14,7 +18,7 @@ public class AlgorithmDisplay : MonoBehaviour
     ShortestFlighDistanceAlgorithm shortestFlighDistanceAlgorithm;
 
     [SerializeField]
-    StandardRecursiveAlgorithm standardRecursiveAlgorithm;
+    StandardAlgorithm standardAlgorithm;
 
     [SerializeField]
     GameLabyrinth labyrinth;
@@ -25,18 +29,20 @@ public class AlgorithmDisplay : MonoBehaviour
     List<GameObject> objectList = new List<GameObject>();
 
     List<Vector2Int> algorithmStepsPosition = new List<Vector2Int>();
-    Vector2Int startPosition;
 
-    public bool isFire = false;
-
-    void Update ()
+    void Start()
     {
-		if (isFire)
+        currentGameState.valueChangedEvent += OnGameStateChanged;
+    }
+
+
+    void OnGameStateChanged()
+    {
+        if (currentGameState.value == Constants.PLAYING_TUTORIAL || currentGameState.value == Constants.PLAYING)
         {
-            isFire = false;
-            GenerateVisualForAlgorithmWithId(Constants.LONGEST_STRAIGHT_ALGORITH);
+            GenerateVisualForAlgorithmWithId(Constants.STANDARD_ALGORITH);
         }
-	}
+    }
 
     void GenerateVisualForAlgorithmWithId(int id)
     {
@@ -51,6 +57,10 @@ public class AlgorithmDisplay : MonoBehaviour
         else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH)
         {
             algorithmStepsPosition = shortestFlighDistanceAlgorithm.GetAlgorithmSteps();
+        }
+        else if (id == Constants.STANDARD_ALGORITH)
+        {
+            algorithmStepsPosition = standardAlgorithm.GetAlgorithmSteps();
         }
 
         for (int i = 0; i < algorithmStepsPosition.Count; i++)

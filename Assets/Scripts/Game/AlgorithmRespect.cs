@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class AlgorithmRespect : MonoBehaviour
 {
-    struct Step
-    {
-        public int action;
-        public int posX;
-        public int posY;
-    }
 
     [SerializeField]
     ScriptableInteger currentGameState;
@@ -36,7 +30,7 @@ public class AlgorithmRespect : MonoBehaviour
     ShortestFlighDistanceAlgorithm shortestFlighDistanceAlgorithm;
 
     [SerializeField]
-    StandardRecursiveAlgorithm standardRecursiveAlgorithm;
+    StandardAlgorithm standardAlgorithm;
 
     [SerializeField]
     GameObject algorithRespectBar;
@@ -141,15 +135,15 @@ public class AlgorithmRespect : MonoBehaviour
         }
         else if (id == Constants.LONGEST_STRAIGHT_ALGORITH)
         {
-           // algorithmSteps = longestStraightAlgorithm.GetAlgorithmSteps();
+            algorithmSteps = longestStraightAlgorithm.GetAlgorithmSteps();
         }
         else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH)
         {
             algorithmSteps = shortestFlighDistanceAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.STANDARD_RECURSIVE_ALGORITH)
+        else if (id == Constants.STANDARD_ALGORITH)
         {
-           // algorithmSteps = standardRecursiveAlgorithm.GetAlgorithmSteps();
+            algorithmSteps = standardAlgorithm.GetAlgorithmSteps();
         }
     }
 

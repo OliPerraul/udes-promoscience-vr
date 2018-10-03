@@ -248,6 +248,7 @@ GameObject:
   - component: {fileID: 1144186331}
   - component: {fileID: 1144186334}
   - component: {fileID: 1144186335}
+  - component: {fileID: 1144186336}
   m_Layer: 0
   m_Name: Algorithm
   m_TagString: Untagged
@@ -278,13 +279,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ebe2e2aafc35b4cb7c375dd2998b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   rightHandAlgorithm: {fileID: 1144186331}
   longestStraightAlgorithm: {fileID: 1144186335}
   shortestFlighDistanceAlgorithm: {fileID: 1144186334}
-  standardRecursiveAlgorithm: {fileID: 0}
+  standardAlgorithm: {fileID: 1144186336}
   labyrinth: {fileID: 1935275872}
   sphere: {fileID: 1214235401783604, guid: 1a5d2996e2f64ab43ac167395ac63dc2, type: 2}
-  isFire: 0
 --- !u!4 &1144186333
 Transform:
   m_ObjectHideFlags: 0
@@ -319,6 +320,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28d7e87d475152f4491eaf4d4314d01b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  labyrinth: {fileID: 1935275872}
+--- !u!114 &1144186336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1144186330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 924bccfa740b4ba438f821e1fc97525d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   labyrinth: {fileID: 1935275872}

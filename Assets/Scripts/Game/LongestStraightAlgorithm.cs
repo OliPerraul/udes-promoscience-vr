@@ -14,7 +14,7 @@ public class LongestStraightAlgorithm : MonoBehaviour
     {
         int iterCount = 0;
         List<Vector2Int> algorithmStepsPosition = new List<Vector2Int>();
-        List<Vector2Int> lastVisitedIntersection = new List<Vector2Int>();
+        List<Vector3Int> lastVisitedIntersection = new List<Vector3Int>();
 
         bool[,] alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
 
@@ -46,22 +46,24 @@ public class LongestStraightAlgorithm : MonoBehaviour
                     position.y += yByDirection[direction];
 
 
-                    bool[] isDirectionWalkable = new bool[4];
-                    isDirectionWalkable[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]);
-                    isDirectionWalkable[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]);
-                    isDirectionWalkable[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]);
-                    isDirectionWalkable[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]);
+                    bool[] isDirectionWalkableAndNotVisited = new bool[4];
+                    isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
+                    isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]];
+                    isDirectionWalkableAndNotVisited[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]) && !alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]];
+                    isDirectionWalkableAndNotVisited[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]) && !alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]];
 
                     if (!alreadyVisitedTile[position.x, position.y])//Should be changed if we don't start in a deadend
                     {
-                        if (isDirectionWalkable[direction] && isDirectionWalkable[(direction + 1) % 4]
-                            || isDirectionWalkable[direction] && isDirectionWalkable[(direction + 3) % 4])
+                        if ((isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 1) % 4])
+                           || (isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 3) % 4])
+                           || (isDirectionWalkableAndNotVisited[(direction + 1) % 4] && isDirectionWalkableAndNotVisited[(direction + 3) % 4]))
                         {
-                            lastVisitedIntersection.Add(new Vector2Int(position.x, position.y));
+                            lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmStepsPosition.Count - 1));
                         }
+
+                        alreadyVisitedTile[position.x, position.y] = true;
                     }
 
-                    alreadyVisitedTile[position.x, position.y] = true;
                     algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
                   
                      
@@ -83,24 +85,25 @@ public class LongestStraightAlgorithm : MonoBehaviour
                     position.x += xByDirection[direction];
                     position.y += yByDirection[direction];
 
-                    bool[] isDirectionWalkable = new bool[4];
-                    isDirectionWalkable[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]);
-                    isDirectionWalkable[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]);
-                    isDirectionWalkable[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]);
-                    isDirectionWalkable[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]);
+                    bool[] isDirectionWalkableAndNotVisited = new bool[4];
+                    isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
+                    isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]]; ;
+                    isDirectionWalkableAndNotVisited[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]) && !alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]]; ;
+                    isDirectionWalkableAndNotVisited[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]) && !alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]]; ;
 
                     if (!alreadyVisitedTile[position.x, position.y])//Should be changed if we don't start in a deadend
                     {
-                        if (isDirectionWalkable[direction] && isDirectionWalkable[(direction + 1) % 4]
-                            || isDirectionWalkable[direction] && isDirectionWalkable[(direction + 3) % 4])
+                        if ((isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 1) % 4])
+                           || (isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 3) % 4])
+                           || (isDirectionWalkableAndNotVisited[(direction + 1) % 4] && isDirectionWalkableAndNotVisited[(direction + 3) % 4]))
                         {
-                            lastVisitedIntersection.Add(new Vector2Int(position.x, position.y));
+                            lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmStepsPosition.Count));
                         }
+
+                        alreadyVisitedTile[position.x, position.y] = true;
                     }
 
-                    alreadyVisitedTile[position.x, position.y] = true;
                     algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
-                    Debug.Log("position : " + position + " direction : " + direction);//temp
 
                     iterCount++;//temp
                     if ((position.x == endPosition.x && position.y == endPosition.y) || iterCount > 100)
@@ -120,24 +123,25 @@ public class LongestStraightAlgorithm : MonoBehaviour
                     position.x += xByDirection[direction];
                     position.y += yByDirection[direction];
 
-                    bool[] isDirectionWalkable = new bool[4];
-                    isDirectionWalkable[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]);
-                    isDirectionWalkable[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]);
-                    isDirectionWalkable[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]);
-                    isDirectionWalkable[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]);
+                    bool[] isDirectionWalkableAndNotVisited = new bool[4];
+                    isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
+                    isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]]; ;
+                    isDirectionWalkableAndNotVisited[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]) && !alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]]; ;
+                    isDirectionWalkableAndNotVisited[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]) && !alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]]; ;
 
                     if (!alreadyVisitedTile[position.x, position.y])//Should be changed if we don't start in a deadend
                     {
-                        if (isDirectionWalkable[direction] && isDirectionWalkable[(direction + 1) % 4]
-                            || isDirectionWalkable[direction] && isDirectionWalkable[(direction + 3) % 4])
+                        if ((isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 1) % 4])
+                           || (isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 3) % 4])
+                           || (isDirectionWalkableAndNotVisited[(direction + 1) % 4] && isDirectionWalkableAndNotVisited[(direction + 3) % 4]))
                         {
-                            lastVisitedIntersection.Add(new Vector2Int(position.x, position.y));
+                            lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmStepsPosition.Count));
                         }
+
+                        alreadyVisitedTile[position.x, position.y] = true;
                     }
 
-                    alreadyVisitedTile[position.x, position.y] = true;
                     algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
-                    Debug.Log("position : " + position + " direction : " + direction);//temp
 
                     iterCount++;//temp
                     if ((position.x == endPosition.x && position.y == endPosition.y) || iterCount > 100)
@@ -157,24 +161,25 @@ public class LongestStraightAlgorithm : MonoBehaviour
                     position.x += xByDirection[direction];
                     position.y += yByDirection[direction];
 
-                    bool[] isDirectionWalkable = new bool[4];
-                    isDirectionWalkable[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]);
-                    isDirectionWalkable[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]);
-                    isDirectionWalkable[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]);
-                    isDirectionWalkable[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]);
+                    bool[] isDirectionWalkableAndNotVisited = new bool[4];
+                    isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
+                    isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]]; ;
+                    isDirectionWalkableAndNotVisited[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]) && !alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]]; ;
+                    isDirectionWalkableAndNotVisited[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]) && !alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]]; ;
 
                     if (!alreadyVisitedTile[position.x, position.y])//Should be changed if we don't start in a deadend
                     {
-                        if (isDirectionWalkable[direction] && isDirectionWalkable[(direction + 1) % 4]
-                            || isDirectionWalkable[direction] && isDirectionWalkable[(direction + 3) % 4])
+                        if ((isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 1) % 4])
+                           || (isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 3) % 4])
+                           || (isDirectionWalkableAndNotVisited[(direction + 1) % 4] && isDirectionWalkableAndNotVisited[(direction + 3) % 4]))
                         {
-                            lastVisitedIntersection.Add(new Vector2Int(position.x, position.y));
+                            lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmStepsPosition.Count));
                         }
+
+                        alreadyVisitedTile[position.x, position.y] = true;
                     }
 
-                    alreadyVisitedTile[position.x, position.y] = true;
                     algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
-                    Debug.Log("position : " + position + " direction : " + direction);//temp
 
                     iterCount++;//temp
                     if ((position.x == endPosition.x && position.y == endPosition.y) || iterCount > 100)
@@ -186,13 +191,19 @@ public class LongestStraightAlgorithm : MonoBehaviour
             }
             else
             {
-                if (position == lastVisitedIntersection[lastVisitedIntersection.Count - 1])
+                int i;
+                if (position.x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && position.y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
                 {
+                    i = lastVisitedIntersection[lastVisitedIntersection.Count - 1].z - 1;
                     lastVisitedIntersection.RemoveAt(lastVisitedIntersection.Count - 1);
+                }
+                else
+                {
+                    i = algorithmStepsPosition.Count - 2;
                 }
 
                 bool isReturnedToLastIntersection = false;
-                int i = algorithmStepsPosition.Count - 2;
+               
                 while (!isReturnedToLastIntersection)
                 {
                     if (i < 0)
@@ -203,7 +214,7 @@ public class LongestStraightAlgorithm : MonoBehaviour
 
                     algorithmStepsPosition.Add(algorithmStepsPosition[i]);
 
-                    if (algorithmStepsPosition[i] == lastVisitedIntersection[lastVisitedIntersection.Count - 1])
+                    if (algorithmStepsPosition[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmStepsPosition[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
                     {
                         isReturnedToLastIntersection = true;
                         //direction = (direction + 3) % 4;//Not usefull for position based movement in this case

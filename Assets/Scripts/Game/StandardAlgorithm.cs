@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShortestFlighDistanceAlgorithm : MonoBehaviour
+public class StandardAlgorithm : MonoBehaviour
 {
     [SerializeField]
     GameLabyrinth labyrinth;
@@ -47,48 +47,35 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                 alreadyVisitedTile[position.x, position.y] = true;
             }
 
-            float[] directionDistance = new float[4];
-            directionDistance[0] = isDirectionWalkableAndNotVisited[0] ? (endPosition - new Vector2Int(position.x + xByDirection[0], position.y + yByDirection[0])).magnitude : -1;
-            directionDistance[1] = isDirectionWalkableAndNotVisited[1] ? (endPosition - new Vector2Int(position.x + xByDirection[1], position.y + yByDirection[1])).magnitude : -1;
-            directionDistance[2] = isDirectionWalkableAndNotVisited[2] ? (endPosition - new Vector2Int(position.x + xByDirection[2], position.y + yByDirection[2])).magnitude : -1;
-            directionDistance[3] = isDirectionWalkableAndNotVisited[3] ? (endPosition - new Vector2Int(position.x + xByDirection[3], position.y + yByDirection[3])).magnitude : -1;
-
-
-            if (directionDistance[(direction) % 4] != -1 
-                && (directionDistance[(direction + 1) % 4] == -1 || directionDistance[(direction) % 4] <= directionDistance[(direction + 1) % 4]) 
-                && (directionDistance[(direction + 2) % 4] == -1 || directionDistance[(direction) % 4] <= directionDistance[(direction + 2) % 4]) 
-                && (directionDistance[(direction + 3) % 4] == -1 || directionDistance[(direction) % 4] <= directionDistance[(direction + 3) % 4]))
+            if (isDirectionWalkableAndNotVisited[0])
             {
-                direction = (direction) % 4;
+                direction = 0;
                 position.x += xByDirection[direction];
                 position.y += yByDirection[direction];
                 algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
             }
-            else if (directionDistance[(direction + 1) % 4] != -1
-                && (directionDistance[(direction + 2) % 4] == -1 || directionDistance[(direction + 1) % 4] <= directionDistance[(direction + 2) % 4]) 
-                && (directionDistance[(direction + 3) % 4] == -1 || directionDistance[(direction + 1) % 4] <= directionDistance[(direction + 3) % 4]))
+            else if (isDirectionWalkableAndNotVisited[1])
             {
-                direction = (direction + 1) % 4;
+                direction = 1;
                 position.x += xByDirection[direction];
                 position.y += yByDirection[direction];
                 algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
             }
-            else if (directionDistance[(direction + 2) % 4] != -1
-                && (directionDistance[(direction + 3) % 4] == -1 || directionDistance[(direction + 2) % 4] <= directionDistance[(direction + 3) % 4]))
+            else if (isDirectionWalkableAndNotVisited[2])
             {
-                direction = (direction + 2) % 4;
+                direction = 2;
                 position.x += xByDirection[direction];
                 position.y += yByDirection[direction];
                 algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
             }
-            else if (directionDistance[(direction + 3) % 4] > 0)
+            else if (isDirectionWalkableAndNotVisited[3])
             {
-                direction = (direction + 3) % 4;
+                direction = 3;
                 position.x += xByDirection[direction];
                 position.y += yByDirection[direction];
                 algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
             }
-            else 
+            else
             {
                 int i;
                 if (position.x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && position.y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
@@ -132,5 +119,4 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
 
         return algorithmStepsPosition;
     }
-    
 }

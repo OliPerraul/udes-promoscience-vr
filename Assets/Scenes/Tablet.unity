@@ -1667,7 +1667,7 @@ MonoBehaviour:
   rightHandAlgorithm: {fileID: 918548876}
   longestStraightAlgorithm: {fileID: 918548875}
   shortestFlighDistanceAlgorithm: {fileID: 918548874}
-  standardRecursiveAlgorithm: {fileID: 918548873}
+  standardAlgorithm: {fileID: 918548873}
   algorithRespectBar: {fileID: 1300671083}
 --- !u!114 &918548873
 MonoBehaviour:
