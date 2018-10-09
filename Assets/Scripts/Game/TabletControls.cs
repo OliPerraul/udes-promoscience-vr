@@ -55,7 +55,7 @@ public class TabletControls : MonoBehaviour
             }
             else if (isTurning)
             {
-                lerpValue += Time.deltaTime * Constants.TURNIN_SPEED;
+                lerpValue += Time.deltaTime * Constants.TURNING_SPEED;
 
                 if (lerpValue >= 1)
                 {

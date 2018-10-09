@@ -3108,6 +3108,7 @@ GameObject:
   - component: {fileID: 1670229880}
   - component: {fileID: 1670229886}
   - component: {fileID: 1670229887}
+  - component: {fileID: 1670229882}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3132,7 +3133,7 @@ MonoBehaviour:
   algorithmRespect: {fileID: 0}
   labyrinth: {fileID: 1092423830}
   labyrinthRoom: {fileID: 27522707}
-  lobby: {fileID: 1934809123}
+  lobby: {fileID: 0}
 --- !u!4 &1670229881
 Transform:
   m_ObjectHideFlags: 0
@@ -3146,6 +3147,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1670229882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670229879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 076f85bf6afe2284abf442c7cc891bbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  forwardDirection: {fileID: 11400000, guid: 9d9bde1f7e90c1b46aa5622fe0910c1b, type: 2}
+  labyrinth: {fileID: 1092423830}
+  cameraTransform: {fileID: 1739980048}
 --- !u!114 &1670229886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3165,7 +3182,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1670229879}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba910aa323e541c4794246feb8312509, type: 3}
   m_Name: 
