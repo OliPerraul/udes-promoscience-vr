@@ -1466,8 +1466,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15a85f82e1127d84f8259c011a572310, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
 --- !u!1 &628825622
 GameObject:
   m_ObjectHideFlags: 0
@@ -2084,17 +2084,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23de6df00f508ed459950192477278cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  algorithmId: {fileID: 11400000, guid: 4dcb39e3bf716b84b9e995d8c5e8b985, type: 2}
   action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}
+  algorithmId: {fileID: 11400000, guid: 4dcb39e3bf716b84b9e995d8c5e8b985, type: 2}
   algorithmRespect: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
   labyrinth: {fileID: 1935275872}
   rightHandAlgorithm: {fileID: 918548876}
   longestStraightAlgorithm: {fileID: 918548875}
   shortestFlighDistanceAlgorithm: {fileID: 918548874}
   standardAlgorithm: {fileID: 918548873}
   algorithRespectBar: {fileID: 1300671083}
-  isDiverging: {fileID: 0}
 --- !u!114 &918548873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2787,13 +2787,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b173631a1188cb4d94bae3f397c30ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  isEndReached: {fileID: 11400000, guid: 99ed2ad93e9664d489fefc3ea16e70a3, type: 2}
+  algorithmRespect: {fileID: 918548872}
+  labyrinth: {fileID: 1935275872}
   labyrinthRoom: {fileID: 2015499311}
   lobby: {fileID: 1795860088}
-  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  labyrinth: {fileID: 1935275872}
-  algorithmRespect: {fileID: 918548872}
-  isEndReached: {fileID: 11400000, guid: 99ed2ad93e9664d489fefc3ea16e70a3, type: 2}
 --- !u!4 &1135340686
 Transform:
   m_ObjectHideFlags: 0
@@ -2819,8 +2819,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}
-  cameraTransform: {fileID: 1700386059}
   labyrinth: {fileID: 1935275872}
+  cameraTransform: {fileID: 1700386059}
 --- !u!114 &1135340688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2845,8 +2845,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274d82157fd965944a8cbfdf2219c0e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   cameraTransform: {fileID: 1700386059}
 --- !u!1 &1155942027
 GameObject:
@@ -4835,7 +4835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1788679713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4930,7 +4930,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1795860089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5385,7 +5385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fba387d0fc4c94b9fc7d874926bbb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinth: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
 --- !u!114 &1935275872
 MonoBehaviour:
@@ -5398,7 +5398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1b21d37b36a74e468712048583f6295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
   startTilePrefab: {fileID: 1213397253378824, guid: dd6b3d5434963ad4a972a7780440af19,
     type: 2}
@@ -5540,7 +5540,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -397, y: 290}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1946656224
@@ -5618,7 +5618,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -6011,13 +6011,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895839653b5b36b4f869b5edf3c3cd32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
-  directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}
+  directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  headRotation: {fileID: 11400000, guid: 66584e61ec696d8478702ff162f5f1cc, type: 2}
   movementTargetPosition: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f,
     type: 2}
-  headRotation: {fileID: 11400000, guid: 66584e61ec696d8478702ff162f5f1cc, type: 2}
+  pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
   serverPort: 9996
 --- !u!114 &2039186707
 MonoBehaviour:

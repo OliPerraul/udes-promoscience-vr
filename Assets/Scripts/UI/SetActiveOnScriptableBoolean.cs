@@ -18,7 +18,7 @@ public class SetActiveOnScriptableBoolean : MonoBehaviour
 	
 	void OnScriptableBooleanValueChanged()
     {
-        if(scriptableBoolean == true)
+        if(scriptableBoolean.value == true)
         {
             gameObjectToActivate.SetActive(true);
         }
