@@ -5,15 +5,11 @@ using UnityEngine;
 public class GameLabyrinth : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger currentGameState;
+    ScriptableInteger gameState;
 
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
 
-    Vector2Int startPosition;
-    Vector2Int endPosition;
-
-    int[,] labyrinth;
     GameObject[,] labyrinthTiles;
 
     //List of gameObjectPrefab could be load with a resource manager but for now....
@@ -26,22 +22,27 @@ public class GameLabyrinth : MonoBehaviour
     [SerializeField]
     GameObject endTilePrefab;
 
+    int[,] labyrinth;
+
+    Vector2Int startPosition;
+    Vector2Int endPosition;
+
     private void Start()
     {
-        currentGameState.valueChangedEvent += OnGameStateChanged;
+        gameState.valueChangedEvent += OnGameStateChanged;
     }
 
     public void OnGameStateChanged()
     {
-        if(currentGameState.value == Constants.TUTORIAL_LABYRITH_READY)
+        if(gameState.value == Constants.TUTORIAL_LABYRITH_READY)
         {
             GenerateLabyrinthVisual();
-            currentGameState.value = Constants.PLAYING_TUTORIAL;
+            gameState.value = Constants.PLAYING_TUTORIAL;
         }
-        else if (currentGameState.value == Constants.LABYRITH_READY)
+        else if (gameState.value == Constants.LABYRITH_READY)
         {
             GenerateLabyrinthVisual();
-            currentGameState.value = Constants.PLAYING;
+            gameState.value = Constants.PLAYING;
         }
     }
 
@@ -77,13 +78,11 @@ public class GameLabyrinth : MonoBehaviour
 
                 if (labyrinth[x, y] >= Constants.TILE_START_START_ID && labyrinth[x, y] <= Constants.TILE_START_END_ID)
                 {
-                    startPosition.x = x;
-                    startPosition.y = y;
+                    startPosition = new Vector2Int(x, y);
                 }
                 else if (labyrinth[x, y] >= Constants.TILE_END_START_ID && labyrinth[x, y] <= Constants.TILE_END_END_ID)
                 {
-                    endPosition.x = x;
-                    endPosition.y = y;
+                    endPosition = new Vector2Int(x, y);
                 }
             }
         }

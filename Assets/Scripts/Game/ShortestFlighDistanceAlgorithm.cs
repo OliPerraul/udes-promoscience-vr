@@ -10,10 +10,13 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
     int[] xByDirection = { 0, 1, 0, -1 };
     int[] yByDirection = { -1, 0, 1, 0 };
 
+    Vector2Int position;
+
+    List<Vector2Int> algorithmStepsPosition;
+
     public List<Vector2Int> GetAlgorithmSteps()
     {
-        int iterCount = 0;
-        List<Vector2Int> algorithmStepsPosition = new List<Vector2Int>();
+        algorithmStepsPosition = new List<Vector2Int>();
         List<Vector3Int> lastVisitedIntersection = new List<Vector3Int>();
 
         bool[,] alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
@@ -21,14 +24,12 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
         bool asReachedTheEnd = false;
 
         int direction = 0;//Hardcoded start direction, could be get from deadend start exist to optimise
-        Vector2Int position = labyrinth.GetLabyrithStartPosition();
+        position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
         algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
 
         while (!asReachedTheEnd)
         {
-            iterCount++;//temp
-
             bool[] isDirectionWalkableAndNotVisited = new bool[4];
             isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
             isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]];
@@ -60,33 +61,25 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                 && (directionDistance[(direction + 3) % 4] == -1 || directionDistance[(direction) % 4] <= directionDistance[(direction + 3) % 4]))
             {
                 direction = (direction) % 4;
-                position.x += xByDirection[direction];
-                position.y += yByDirection[direction];
-                algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+                MoveInDirection(direction);
             }
             else if (directionDistance[(direction + 1) % 4] != -1
                 && (directionDistance[(direction + 2) % 4] == -1 || directionDistance[(direction + 1) % 4] <= directionDistance[(direction + 2) % 4]) 
                 && (directionDistance[(direction + 3) % 4] == -1 || directionDistance[(direction + 1) % 4] <= directionDistance[(direction + 3) % 4]))
             {
                 direction = (direction + 1) % 4;
-                position.x += xByDirection[direction];
-                position.y += yByDirection[direction];
-                algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+                MoveInDirection(direction);
             }
             else if (directionDistance[(direction + 2) % 4] != -1
                 && (directionDistance[(direction + 3) % 4] == -1 || directionDistance[(direction + 2) % 4] <= directionDistance[(direction + 3) % 4]))
             {
                 direction = (direction + 2) % 4;
-                position.x += xByDirection[direction];
-                position.y += yByDirection[direction];
-                algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+                MoveInDirection(direction);
             }
             else if (directionDistance[(direction + 3) % 4] > 0)
             {
                 direction = (direction + 3) % 4;
-                position.x += xByDirection[direction];
-                position.y += yByDirection[direction];
-                algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+                MoveInDirection(direction);
             }
             else 
             {
@@ -115,7 +108,6 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                     if (algorithmStepsPosition[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmStepsPosition[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
                     {
                         isReturnedToLastIntersection = true;
-                        //direction = (direction + 3) % 4;//Not usefull for position based movement in this case
                         position.x = algorithmStepsPosition[i].x;
                         position.y = algorithmStepsPosition[i].y;
                     }
@@ -124,7 +116,7 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                 }
             }
 
-            if ((position.x == endPosition.x && position.y == endPosition.y) || iterCount > 100)
+            if (position.x == endPosition.x && position.y == endPosition.y)
             {
                 asReachedTheEnd = true;
             }
@@ -132,5 +124,11 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
 
         return algorithmStepsPosition;
     }
-    
+
+    void MoveInDirection(int direction)
+    {
+        position.x += xByDirection[direction];
+        position.y += yByDirection[direction];
+        algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+    }
 }

@@ -5,10 +5,10 @@ using UnityEngine;
 public class TabletControls : MonoBehaviour
 {
     [SerializeField]
-    ScriptableControler controls;
+    ScriptableInteger action;
 
     [SerializeField]
-    ScriptableInteger action;
+    ScriptableControler controls;
 
     [SerializeField]
     Transform cameraTransform;

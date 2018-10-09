@@ -6,22 +6,22 @@ using UnityEngine.Networking;
 public class MessageClient : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger currentGameState;
-
-    [SerializeField]
-    ScriptableString pairedIpAdress;
+    ScriptableInteger action;
 
     [SerializeField]
     ScriptableInteger directive;
 
     [SerializeField]
-    ScriptableInteger action;
+    ScriptableInteger gameState;
+
+    [SerializeField]
+    ScriptableVector3 headRotation;
 
     [SerializeField]
     ScriptableVector3 movementTargetPosition;
 
     [SerializeField]
-    ScriptableVector3 headRotation;
+    ScriptableString pairedIpAdress;
 
     public int chatServerPort = 9999;
 
@@ -50,7 +50,7 @@ public class MessageClient : MonoBehaviour
 
     void OnConnect(NetworkMessage netMsg)
     {
-        currentGameState.value = Constants.READY_TUTORIAL;
+        gameState.value = Constants.READY_TUTORIAL;
 
         action.valueChangedEvent += SendAction;
         movementTargetPosition.valueChangedEvent += SendMovementTargetPosition;

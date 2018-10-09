@@ -8,10 +8,10 @@ public class TabletTilePainter : MonoBehaviour
     ScriptableInteger action;
 
     [SerializeField]
-    Transform cameraTransform;
+    GameLabyrinth labyrinth;
 
     [SerializeField]
-    GameLabyrinth labyrinth;
+    Transform cameraTransform;
 
     void Start ()
     {

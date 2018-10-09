@@ -8,7 +8,6 @@ public class PairingServer : MonoBehaviour
     NetworkServerSimple server = null;
     List<NetworkConnection> clientConnectionList = new List<NetworkConnection>();
 
-
     NetworkConnection tabletConnection = null;
     NetworkConnection headsetConnection = null;
     string tabletId = null;

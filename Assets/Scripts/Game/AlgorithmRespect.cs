@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class AlgorithmRespect : MonoBehaviour
 {
-
     [SerializeField]
-    ScriptableInteger currentGameState;
+    ScriptableInteger action;
 
     [SerializeField]
     ScriptableInteger algorithmId;
 
     [SerializeField]
-    ScriptableInteger action;
+    ScriptableFloat algorithmRespect;
 
     [SerializeField]
-    ScriptableFloat algorithmRespect;
+    ScriptableInteger gameState;
+
+    [SerializeField]
+    ScriptableBoolean isDiverging;
 
     [SerializeField]
     GameLabyrinth labyrinth;
@@ -35,31 +37,25 @@ public class AlgorithmRespect : MonoBehaviour
     [SerializeField]
     GameObject algorithRespectBar;
 
-    [SerializeField]
-    ScriptableBoolean isDiverging;
-
-    float ratioLostPerExtraActions = 0.02f;
-
-
     int errorCounter;
 
     const float E = 2.71828f;
+
     Vector2Int currentPosition;
 
     List<Vector2Int> algorithmSteps = new List<Vector2Int>();
     List<Vector2Int> playerSteps = new List<Vector2Int>();
 
-
     void Start()
     {
-       currentGameState.valueChangedEvent += OnGameStateChanged;
+       gameState.valueChangedEvent += OnGameStateChanged;
        action.valueChangedEvent += OnAction;
     }
 
 
     void OnGameStateChanged()
     {
-        if (currentGameState.value == Constants.PLAYING_TUTORIAL || currentGameState.value == Constants.PLAYING)
+        if (gameState.value == Constants.PLAYING_TUTORIAL || gameState.value == Constants.PLAYING)
         {
             errorCounter = 0;
             isDiverging.value = false;
@@ -70,7 +66,7 @@ public class AlgorithmRespect : MonoBehaviour
             playerSteps.Add(new Vector2Int(currentPosition.x, currentPosition.y));
             algorithRespectBar.SetActive(true);
         }
-        else if (currentGameState.value == Constants.WAITING_FOR_NEXT_ROUND)
+        else if (gameState.value == Constants.WAITING_FOR_NEXT_ROUND)
         {
             algorithRespectBar.SetActive(false);
         }

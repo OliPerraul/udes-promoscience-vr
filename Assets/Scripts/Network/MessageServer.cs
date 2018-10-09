@@ -6,27 +6,27 @@ using UnityEngine.Networking;
 public class MessageServer : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger currentGameState;
-
-    [SerializeField]
-    ScriptableString pairedIpAdress;
+    ScriptableInteger action;
 
     [SerializeField]
     ScriptableInteger directive;
 
     [SerializeField]
-    ScriptableInteger action;
+    ScriptableInteger gameState;
+
+    [SerializeField]
+    ScriptableVector3 headRotation;
 
     [SerializeField]
     ScriptableVector3 movementTargetPosition;
 
     [SerializeField]
-    ScriptableVector3 headRotation;
+    ScriptableString pairedIpAdress;
+
+    public int serverPort = 9999;
 
     NetworkServerSimple server = null;
     NetworkConnection clientConnection = null;
-
-    public int serverPort = 9999;
 
     private void Start()
     {
@@ -63,7 +63,7 @@ public class MessageServer : MonoBehaviour
     void OnConnect(NetworkMessage netMsg)
     {
         clientConnection = netMsg.conn;
-        currentGameState.value = Constants.READY_TUTORIAL;
+        gameState.value = Constants.READY_TUTORIAL;
     }
 
     void OnDisconnect(NetworkMessage netMsg)

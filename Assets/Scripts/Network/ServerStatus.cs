@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ServerStatus : MonoBehaviour
 {
-    int serverStatus = 0;
-
     public void StartGame()
     {
         for(int i = 0; i < PlayerList.instance.list.Count; i++)

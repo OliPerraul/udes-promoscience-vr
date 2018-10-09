@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 public class PairingClient : MonoBehaviour
 {
     [SerializeField]
-    ScriptableString serverIpAdress;
+    ScriptableDeviceType deviceType;
 
     [SerializeField]
-    ScriptableDeviceType deviceType;
+    ScriptableString serverIpAdress;
 
     public int serverPort = 9995;
 

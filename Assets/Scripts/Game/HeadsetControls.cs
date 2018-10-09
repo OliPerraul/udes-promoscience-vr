@@ -5,10 +5,10 @@ using UnityEngine;
 public class HeadsetControls : MonoBehaviour
 {
     [SerializeField]
-    ScriptableControler controls;
+    ScriptableInteger action;
 
     [SerializeField]
-    ScriptableInteger action;
+    ScriptableControler controls;
 
     [SerializeField]
     ScriptableInteger forwardDirection;
@@ -29,8 +29,6 @@ public class HeadsetControls : MonoBehaviour
 
     Quaternion fromRotation;
     Quaternion targetRotation;
-
-
 
     private void Start()
     {

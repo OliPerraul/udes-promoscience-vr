@@ -5,10 +5,10 @@ using UnityEngine;
 public class Directive : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger directive;
+    ScriptableControler controls;
 
     [SerializeField]
-    ScriptableControler controls;
+    ScriptableInteger directive;
 
     private void Start()
     {

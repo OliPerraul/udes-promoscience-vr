@@ -8,7 +8,19 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger currentGameState;
+    ScriptableControler controls;
+
+    [SerializeField]
+    ScriptableInteger gameState;
+
+    [SerializeField]
+    ScriptableBoolean isEndReached;
+
+    [SerializeField]
+    AlgorithmRespect algorithmRespect;
+
+    [SerializeField]
+    GameLabyrinth labyrinth;
 
     [SerializeField]
     GameObject labyrinthRoom;
@@ -16,23 +28,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject lobby;//should probably manage it's self or just not exist
 
-    [SerializeField]
-    ScriptableControler controls;
-
-    [SerializeField]
-    GameLabyrinth labyrinth;
-
-    [SerializeField]
-    AlgorithmRespect algorithmRespect;
-
-    [SerializeField]
-    ScriptableBoolean isEndReached;
-
     void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;//Tablet use only
 
-        currentGameState.valueChangedEvent += OnGameStateChanged;
+        gameState.valueChangedEvent += OnGameStateChanged;
 
         if (isEndReached != null)
         {
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     //Game manager could be remove and instead add a status preparing for game and have the module that need it listen to status
     public void OnGameStateChanged()
     {
-        if (currentGameState.value == Constants.PLAYING_TUTORIAL)
+        if (gameState.value == Constants.PLAYING_TUTORIAL)
         {
             if (controls != null)
             {
@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
                 controls.isControlsEnabled = true;
             }
         }
-        else if (currentGameState.value == Constants.PLAYING)
+        else if (gameState.value == Constants.PLAYING)
         {
             labyrinth.GenerateLabyrinthVisual();
 
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
                 controls.isControlsEnabled = true;
             }
         }
-        else if (currentGameState.value == Constants.WAITING_FOR_NEXT_ROUND)
+        else if (gameState.value == Constants.WAITING_FOR_NEXT_ROUND)
         {
 
 
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
     {
         if(isEndReached.value)
         {
-            if(currentGameState.value == Constants.PLAYING_TUTORIAL)
+            if(gameState.value == Constants.PLAYING_TUTORIAL)
             {
                 controls.isControlsEnabled = false;
                 controls.StopAllMovement();
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
 
                 isEndReached.value = false;
 
-                currentGameState.value = Constants.WAITING_FOR_NEXT_ROUND;
+                gameState.value = Constants.WAITING_FOR_NEXT_ROUND;
             }
         }
     }
