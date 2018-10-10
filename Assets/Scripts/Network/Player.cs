@@ -218,28 +218,26 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetSetLabiryntheData(NetworkConnection target,int id)
-    {
-        //labiryntheId = id;
-    }
-
-    [TargetRpc]
     public void TargetSetPairedIpAdress(NetworkConnection target, string ipAdress)
     {
-        UITextManager.instance.SetText("PairedIP : " + ipAdress);//temp
         pairedIpAdress.value = ipAdress;
         gameState.value = Constants.PAIRED;//Temp?
     }
 
     [TargetRpc]
-    public void TargetSetGame(NetworkConnection target, int[] map, int sizeX,int sizeY, int labyrinthId, int algorithmIdentifier)//Unet permet pas le [,]
+    public void TargetSetPlayerAlgorithmId(NetworkConnection target, int id)
     {
-        UITextManager.instance.SetText("Game data receive : getting ready to start");//temp
-        labyrinthData.SetLabyrithDataWitId(map, sizeX, sizeY, labyrinthId);
+        algorithmId.value = id;
+    }
 
-        algorithmId.value = algorithmIdentifier;
+    [TargetRpc]
+    public void TargetSetGame(NetworkConnection target, int[] data, int sizeX,int sizeY, int labyrinthId)
+    {
+        labyrinthData.SetLabyrithDataWitId(data, sizeX, sizeY, labyrinthId);
 
-        if(algorithmIdentifier == Constants.TUTORIAL_ALGORITH)
+        algorithmId.value = ((algorithmId.value + 1) % 3) + 1;
+
+        if(algorithmId.value == Constants.TUTORIAL_ALGORITH)
         {
             gameState.value = Constants.READY_TUTORIAL;
         }

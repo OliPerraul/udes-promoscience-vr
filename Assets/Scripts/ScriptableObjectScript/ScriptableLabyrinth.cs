@@ -6,7 +6,9 @@ using UnityEngine;
 public class ScriptableLabyrinth : ScriptableObject
 {
     int currentId = -1;
-    int[,] data;
+    int[] data;
+    int sizeX;
+    int sizeY;
 
     public Action valueChangedEvent;
 
@@ -18,49 +20,50 @@ public class ScriptableLabyrinth : ScriptableObject
         }
     }
 
-    public int[,] GetLabyrithDataWitId(int id)
+    public int[] GetLabyrithDataWitId(int id)
     {
         if(id!= currentId)
         {
-            currentId = id;
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            data = SQLiteUtilities.GetLabyrintheDataWithId(id);
-
+            currentId = id;
+            SQLiteUtilities.SetLabyrintheDataWithId( id, ref sizeX, ref sizeY, ref data);
+            
             OnValueChanged();
 #endif
         }
+
         return data;
     }
 
     public int GetLabyrithValueAt(int x,int y)
     {
         //Could add an out of bound check
-        return data[x,y];
+        return data[(x * sizeX) + y];
     }
 
     public int GetLabyrithXLenght()
     {
-        return data.GetLength(0);
+        return sizeX;
     }
 
     public int GetLabyrithYLenght()
     {
-        return data.GetLength(1);
+        return sizeY;
     }
 
-    //Use to fill labyrinth wit code instead of getting it in the database
+
     public void SetLabyrithDataWitId(int[,] map, int id)
     {
         if (id != currentId)
         {
             currentId = id;
-            data = new int[map.GetLength(0), map.GetLength(1)];
+            data = new int[map.GetLength(0) * map.GetLength(1)];
 
-            for (int i = 0; i < map.GetLength(0); i++)
+            for (int x = 0; x < sizeX; x++)
             {
-                for (int j = 0; j < map.GetLength(1); j++)
+                for (int y = 0; y < sizeY; y++)
                 {
-                    data[i, j] = map[i, j];
+                    data[(x * sizeX) + y] = map[x, y];
                 }
             }
 
@@ -68,20 +71,14 @@ public class ScriptableLabyrinth : ScriptableObject
         }
     }
 
-    public void SetLabyrithDataWitId(int[] map, int sizeX, int sizeY, int id)
+    public void SetLabyrithDataWitId(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
     {
         if (id != currentId)
         {
             currentId = id;
-            data = new int[sizeX, sizeY];
-
-            for (int i = 0; i < sizeX; i++)
-            {
-                for (int j = 0; j < sizeY; j++)
-                {
-                    data[i, j] = map[(i*sizeX)+j];
-                }
-            }
+            data = labyrinthData;
+            sizeX = labyrinthSizeX;
+            sizeY = labyrinthSizeY;
 
             OnValueChanged();
         }

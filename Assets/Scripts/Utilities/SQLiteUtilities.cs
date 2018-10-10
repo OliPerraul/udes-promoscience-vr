@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -215,13 +216,35 @@ public static class SQLiteUtilities
         }
     }
 
-    //Not finished!!
-    public static int[,] GetLabyrintheDataWithId(int id)
+    public static void InsertOrReplaceLabyrinth(int id, int sizeX, int sizeY, int[] data)
+    {
+        CreateDatabaseIfItDoesntExist();
+        string specs = sizeX + " " + sizeY;
+         
+        for (int i = 0; i < sizeX * sizeY; i++)
+        {
+            specs += " " + data[i];
+        }
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = "INSERT OR REPLACE INTO Labyrinthe (LabyrintheID, Specs) VALUES ('" + id + "', '" + specs + "');";
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static void SetLabyrintheDataWithId(int id, ref int sizeX, ref int sizeY, ref int[] data)
     {
         CreateDatabaseIfItDoesntExist();
 
         string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
-        int[,] data = new int[4,4];//temps size should be read
         using (SqliteConnection conn = new SqliteConnection(dbPath))
         {
             conn.Open();
@@ -237,14 +260,23 @@ public static class SQLiteUtilities
                     while (reader.Read())
                     {
                         Debug.Log("LabyrintheID: " + reader["LabyrintheID"] + "\t Specs: " + reader["Specs"]);
-                        //should file the data with the information it gets
+
+                        string[] specs = reader["Specs"].ToString().Split();
+                        int[] labyrinthSpecs = Array.ConvertAll(specs, int.Parse);
+                        sizeX = labyrinthSpecs[0];
+                        sizeY = labyrinthSpecs[1];
+                        data = new int[sizeX * sizeY];
+
+                        for(int i = 0; i < sizeX * sizeY; i++)
+                        {
+                            data[i] = labyrinthSpecs[i + 2];
+                        }
                     }
 
                     reader.Close();
                 }
             }
         }
-        return data;
     }
 
     public static string GetPairing(string id, int deviceType)
@@ -321,7 +353,7 @@ public static class SQLiteUtilities
     }
 
 
-    public static void AddPairing(string tabletId,string headsetId)
+    public static void InsertPairing(string tabletId,string headsetId)
     {
         CreateDatabaseIfItDoesntExist();
 
@@ -403,7 +435,6 @@ public static class SQLiteUtilities
             }
         }
     }
-
 }
 
 #endif

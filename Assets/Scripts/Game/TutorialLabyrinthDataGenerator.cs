@@ -8,7 +8,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
     ScriptableInteger gameState;
 
     [SerializeField]
-    ScriptableLabyrinth labyrinth;
+    ScriptableLabyrinth labyrinthData;
 
     int id = -2;//negative id so that it is not mess up with id of those from the database
     int sizeX = 10;
@@ -124,7 +124,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         map[7, 8] = Constants.TILE_FLOOR_1_ID;
         map[8, 8] = Constants.TILE_FLOOR_1_ID;
 
-        labyrinth.SetLabyrithDataWitId( map, id);
+        labyrinthData.SetLabyrithDataWitId( map, id);
     }
 	
 

@@ -73,8 +73,10 @@ public class PairingComponent : NetworkBehaviour
             ScriptableTeam scriptableTeam = teamList.GetScriptableTeam();
             player.teamName = scriptableTeam.teamName;
             player.teamColor = scriptableTeam.teamColor;
+            player.TargetSetPlayerAlgorithmId(player.connectionToClient, (scriptableTeam.teamId % 3) + 1);
             otherPlayer.teamName = scriptableTeam.teamName;
             otherPlayer.teamColor = scriptableTeam.teamColor;
+            otherPlayer.TargetSetPlayerAlgorithmId(otherPlayer.connectionToClient, (scriptableTeam.teamId % 3) + 1);
         }
     }
 #endif

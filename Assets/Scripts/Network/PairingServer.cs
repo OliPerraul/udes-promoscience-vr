@@ -93,7 +93,7 @@ public class PairingServer : MonoBehaviour
         if (tabletId != null && headsetId != null)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            SQLiteUtilities.AddPairing(tabletId, headsetId);
+            SQLiteUtilities.InsertPairing(tabletId, headsetId);
 #endif
             SendPairingResult(true, "Pairing was a success!");
             Debug.Log("Pairing success!");//to be deleted

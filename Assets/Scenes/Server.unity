@@ -271,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a61c646a5c81347b49bbeeaee99797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
 --- !u!1 &100682424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1149,6 +1150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2a61c646a5c81347b49bbeeaee99797, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  labyrinthData: {fileID: 0}
 --- !u!1 &1329621015
 GameObject:
   m_ObjectHideFlags: 0
