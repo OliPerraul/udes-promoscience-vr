@@ -73,5 +73,6 @@ static class Constants
     public const int ACTION_TURN_LEFT = 4;
     public const int ACTION_TURN_RIGHT = 5;
     public const int ACTION_PAINT_FLOOR = 6;
+    public const int ACTION_DISTANCE_SCANNER = 7;
 
 }

@@ -14,6 +14,9 @@ public class HeadsetControls : MonoBehaviour
     ScriptableInteger forwardDirection;
 
     [SerializeField]
+    ScriptableString straightLength;
+
+    [SerializeField]
     GameLabyrinth labyrinth;
 
     [SerializeField]
@@ -21,6 +24,9 @@ public class HeadsetControls : MonoBehaviour
 
     bool isMoving = false;
     bool isTurning = false;
+
+    readonly int[] xByDirection = { 0, 1, 0, -1 };
+    readonly int[] yByDirection = { -1, 0, 1, 0 };
 
     float lerpValue = 0;
 
@@ -83,9 +89,14 @@ public class HeadsetControls : MonoBehaviour
                 CameraTurnRight();
             }
 
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+            if (OVRInput.GetDown(OVRInput.Button.Back))
             {
                 PaintCurrentPositionTile();
+            }
+
+            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+            {
+                TriggerDistanceScanner();
             }
         }
     }
@@ -146,43 +157,17 @@ public class HeadsetControls : MonoBehaviour
     }
 
 
-    bool CheckIfMovementIsValid(int d)
+    bool CheckIfMovementIsValid(int direction)
     {
         int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
         int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
 
-        if (d == 2)
-        {
-            if (posY + 1 < labyrinth.GetLabyrithYLenght())
-            {
-                posY += 1;
-            }
-        }
-        else if (d == 1)
-        {
-            if (posX + 1 < labyrinth.GetLabyrithXLenght())
-            {
-                posX += 1;
-            }
-        }
-        else if (d == 0)
-        {
-            if (posY - 1 > -1)
-            {
-                posY -= 1;
-            }
-        }
-        else if (d == 3)
-        {
-            if (posX - 1 > -1)
-            {
-                posX -= 1;
-            }
-        }
+        posX += xByDirection[direction];
+        posY += yByDirection[direction];
 
         return labyrinth.GetIsTileWalkable(posX,posY);
     }
-    //Fleche end direction, est-ce qu'on enleve la composante qui permet de voir si on se rapproche de la fin? la flèche se penche vers la fin au lieu on pourrais rajouter la hauter de lafleche
+   
     void PaintCurrentPositionTile()
     {
         int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
@@ -195,6 +180,38 @@ public class HeadsetControls : MonoBehaviour
             action.value = Constants.ACTION_PAINT_FLOOR;
         }
     }
+
+    void TriggerDistanceScanner()
+    {
+        int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
+        int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
+        int length = GetStraightLengthInDirection(posX, posY, forwardDirection.value);
+        if(length < 10)
+        {
+            straightLength.value = "0" + length;
+        }
+        else
+        {
+            straightLength.value = length.ToString();
+        }
+
+        action.value = Constants.ACTION_DISTANCE_SCANNER;
+    }
+
+    int GetStraightLengthInDirection(int posX, int posY, int direction)
+    {
+        int length = 0;
+
+        while (labyrinth.GetIsTileWalkable(posX + xByDirection[(direction) % 4], posY + yByDirection[(direction) % 4]))
+        {
+            length++;
+            posX += xByDirection[direction];
+            posY += yByDirection[direction];
+        }
+
+        return length;
+    }
+
 
     void StopAllMovement()
     {

@@ -8,7 +8,7 @@ public class RaycastInteraction : MonoBehaviour
     ScriptableControler controls;
 
     [SerializeField]
-    ScriptableInteger fowardDirection;
+    ScriptableInteger forwardDirection;
 
     [SerializeField]
     GameLabyrinth labyrinth;
@@ -71,7 +71,7 @@ public class RaycastInteraction : MonoBehaviour
     {
         int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
         int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
-        int distance = GetStraightLenghtInDirection(posX, posY, fowardDirection.value);
+        int distance = GetStraightLenghtInDirection(posX, posY, forwardDirection.value);
     }
 
     int GetStraightLenghtInDirection(int posX, int posY, int direction)

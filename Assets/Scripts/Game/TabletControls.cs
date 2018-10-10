@@ -11,6 +11,9 @@ public class TabletControls : MonoBehaviour
     ScriptableControler controls;
 
     [SerializeField]
+    ScriptableInteger forwardDirection;
+
+    [SerializeField]
     Transform cameraTransform;
 
     List<int> actionsList = new List<int>();
@@ -76,6 +79,7 @@ public class TabletControls : MonoBehaviour
                     trajectory.eulerAngles += new Vector3(0, -90, 0);
                     fromRotation = cameraTransform.rotation;
                     targetRotation = fromRotation * trajectory;
+                    forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
                     isTurning = true;
                 }
                 else if (actionsList[0] == Constants.ACTION_TURN_RIGHT)
@@ -84,6 +88,7 @@ public class TabletControls : MonoBehaviour
                     trajectory.eulerAngles += new Vector3(0, 90, 0);
                     fromRotation = cameraTransform.rotation;
                     targetRotation = fromRotation * trajectory;
+                    forwardDirection.value = (forwardDirection.value + 1) % 4;
                     isTurning = true;
                 }
                 else if (actionsList[0] == Constants.ACTION_MOVE_UP)
