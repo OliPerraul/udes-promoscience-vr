@@ -75,4 +75,9 @@ static class Constants
     public const int ACTION_PAINT_FLOOR = 6;
     public const int ACTION_DISTANCE_SCANNER = 7;
 
+    //Tile color ids
+    public const int GREY_COLOR_ID = 0;
+    public const int RED_COLOR_ID = 1;
+    public const int GREEN_COLOR_ID = 2;
+
 }

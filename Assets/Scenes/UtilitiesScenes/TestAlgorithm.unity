@@ -217,12 +217,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b173631a1188cb4d94bae3f397c30ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  controls: {fileID: 0}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  isEndReached: {fileID: 0}
+  algorithmRespect: {fileID: 0}
+  labyrinth: {fileID: 1935275872}
   labyrinthRoom: {fileID: 0}
   lobby: {fileID: 0}
-  controls: {fileID: 0}
-  labyrinth: {fileID: 1935275872}
-  isEndReached: {fileID: 0}
 --- !u!4 &318307087
 Transform:
   m_ObjectHideFlags: 0
@@ -363,8 +364,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76fba387d0fc4c94b9fc7d874926bbb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  labyrinth: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
 --- !u!114 &1935275872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1b21d37b36a74e468712048583f6295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
   startTilePrefab: {fileID: 1213397253378824, guid: dd6b3d5434963ad4a972a7780440af19,
     type: 2}

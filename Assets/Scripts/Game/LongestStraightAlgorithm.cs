@@ -15,25 +15,32 @@ public class LongestStraightAlgorithm : MonoBehaviour
     bool[] isDirectionWalkableAndNotVisited = new bool[4];
     bool[,] alreadyVisitedTile;
 
+    int tileColor;
+
     Vector2Int position;
     Vector2Int endPosition;
 
-    List<Vector2Int> algorithmStepsPosition;
+    //Steps the two first value are the map position and the third value is the tile color value
+    List<Vector3Int> algorithmSteps;
+    //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
     List<Vector3Int> lastVisitedIntersection;
 
-    public List<Vector2Int> GetAlgorithmSteps()
+    public List<Vector3Int> GetAlgorithmSteps()
     {
-        algorithmStepsPosition = new List<Vector2Int>();
+        algorithmSteps = new List<Vector3Int>();
         lastVisitedIntersection = new List<Vector3Int>();
 
         alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
 
         asReachedTheEnd = false;
 
-        int direction = 0;//Hardcoded start direction
+        int direction = labyrinth.GetStartDirection();
+
+        tileColor = Constants.RED_COLOR_ID;
         position = labyrinth.GetLabyrithStartPosition();
         endPosition = labyrinth.GetLabyrithEndPosition();
-        algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+
+        algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
 
         alreadyVisitedTile[position.x, position.y] = true;
 
@@ -74,8 +81,10 @@ public class LongestStraightAlgorithm : MonoBehaviour
                 }
                 else
                 {
-                    i = algorithmStepsPosition.Count - 2;
+                    i = algorithmSteps.Count - 2;
                 }
+
+                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, Constants.GREEN_COLOR_ID);
 
                 bool isReturnedToLastIntersection = false;
                
@@ -84,16 +93,19 @@ public class LongestStraightAlgorithm : MonoBehaviour
                     if (i < 0)
                     {
                         //Labyrith is impossible!
-                        return algorithmStepsPosition;
+                        return algorithmSteps;
                     }
 
-                    algorithmStepsPosition.Add(algorithmStepsPosition[i]);
-
-                    if (algorithmStepsPosition[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmStepsPosition[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
+                    if (algorithmSteps[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmSteps[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
                     {
                         isReturnedToLastIntersection = true;
-                        position.x = algorithmStepsPosition[i].x;
-                        position.y = algorithmStepsPosition[i].y;
+                        position.x = algorithmSteps[i].x;
+                        position.y = algorithmSteps[i].y;
+                        algorithmSteps.Add(new Vector3Int(position.x, position.y, Constants.RED_COLOR_ID));
+                    }
+                    else
+                    {
+                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, Constants.GREEN_COLOR_ID));
                     }
 
                     i--;
@@ -106,7 +118,7 @@ public class LongestStraightAlgorithm : MonoBehaviour
             }
         }
 
-        return algorithmStepsPosition;
+        return algorithmSteps;
     }
 
     void MoveInDirection(int direction)
@@ -127,13 +139,13 @@ public class LongestStraightAlgorithm : MonoBehaviour
                    || (isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 3) % 4])
                    || (isDirectionWalkableAndNotVisited[(direction + 1) % 4] && isDirectionWalkableAndNotVisited[(direction + 3) % 4]))
                 {
-                    lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmStepsPosition.Count - 1));
+                    lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmSteps.Count));
                 }
 
                 alreadyVisitedTile[position.x, position.y] = true;
             }
 
-            algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+            algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
 
 
             if (position.x == endPosition.x && position.y == endPosition.y)

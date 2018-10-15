@@ -10,16 +10,20 @@ public class RightHandAlgorithm : MonoBehaviour
     int[] xByDirection = { 0, 1, 0, -1 };
     int[] yByDirection = { -1, 0, 1, 0 };
 
-    public List<Vector2Int> GetAlgorithmSteps()
+    public List<Vector3Int> GetAlgorithmSteps()
     {
-        List<Vector2Int> algorithmStepsPosition = new List<Vector2Int>();
+        //Steps the two first value are the map position and the third value is the tile color value
+        List<Vector3Int> algorithmSteps = new List<Vector3Int>();
+
+        bool[,] alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
 
         bool asReachedTheEnd = false;
 
-        int direction = 0;//Hardcoded start direction,  doit être bien choisis si non dépendant des labyrinth on peut tourner en rond! Importe peu car on commence dans un cul de sac
+        int direction = labyrinth.GetStartDirection();
         Vector2Int position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
-        algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+        algorithmSteps.Add(new Vector3Int(position.x, position.y, Constants.RED_COLOR_ID));
+        alreadyVisitedTile[position.x, position.y] = true;
 
         while (!asReachedTheEnd)
         {
@@ -45,15 +49,18 @@ public class RightHandAlgorithm : MonoBehaviour
             {
                 direction = (direction + 2) % 4;
             }
-            else//case when direction isn't determined at start
+            else//case when direction isn't determined at start, or isn't a good one
             {
-                Debug.Log("Aucune solution possible!");
-                //Si tu est sur un 4 fourche au départ et que la direction n'est pas déterminé par défaut l'algo va planté
+                Debug.Log("No possible solution!");//Temp
             }
 
             position.x += xByDirection[direction];
             position.y += yByDirection[direction];
-            algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+            int tileColor = alreadyVisitedTile[position.x, position.y] ? Constants.GREEN_COLOR_ID : Constants.RED_COLOR_ID;
+
+            algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
+
+            alreadyVisitedTile[position.x, position.y] = true;
 
             if (position.x == endPosition.x && position.y == endPosition.y)
             {
@@ -61,7 +68,7 @@ public class RightHandAlgorithm : MonoBehaviour
             }
         }
 
-        return algorithmStepsPosition;
+        return algorithmSteps;
     }
 
 }

@@ -18,7 +18,7 @@ public class PairingComponent : NetworkBehaviour
         if (isServer)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            player.playerStatusChangedEvent += StartPairingDevice;
+            player.sPlayerStatusChangedEvent += StartPairingDevice;
 #endif
         }
         else
@@ -31,13 +31,13 @@ public class PairingComponent : NetworkBehaviour
 
     void StartPairingDevice()
     {
-        if (player.playerStatus == Constants.PAIRING)
+        if (player.sPlayerStatus == Constants.PAIRING)
         {
             pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.sDeviceType);
 
             if(pairedId == null)
             {
-                player.playerStatus = Constants.NO_ASSOCIATED_PAIR;
+                player.sPlayerStatus = Constants.NO_ASSOCIATED_PAIR;
                 player.TargetSetPlayerStatus(player.connectionToClient ,Constants.NO_ASSOCIATED_PAIR);
             }
             else
@@ -71,12 +71,16 @@ public class PairingComponent : NetworkBehaviour
         if(player.sDeviceType == Constants.DEVICE_TABLET)
         {
             ScriptableTeam scriptableTeam = teamList.GetScriptableTeam();
-            player.teamName = scriptableTeam.teamName;
-            player.teamColor = scriptableTeam.teamColor;
-            player.TargetSetPlayerAlgorithmId(player.connectionToClient, (scriptableTeam.teamId % 3) + 1);
-            otherPlayer.teamName = scriptableTeam.teamName;
-            otherPlayer.teamColor = scriptableTeam.teamColor;
-            otherPlayer.TargetSetPlayerAlgorithmId(otherPlayer.connectionToClient, (scriptableTeam.teamId % 3) + 1);
+            int teamId = SQLiteUtilities.GetNextTeamID();
+
+            player.sTeamName = scriptableTeam.teamName;
+            player.sTeamColor = scriptableTeam.teamColor;
+            player.sAlgorithmId = (scriptableTeam.teamId % 3) + 1;
+            player.sTeamId = teamId;
+            otherPlayer.sTeamName = scriptableTeam.teamName;
+            otherPlayer.sTeamColor = scriptableTeam.teamColor;
+            otherPlayer.sAlgorithmId = player.sAlgorithmId;
+            otherPlayer.sTeamId = teamId;
         }
     }
 #endif

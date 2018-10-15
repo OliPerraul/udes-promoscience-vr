@@ -13,7 +13,7 @@ public class ActionSaverComponent : NetworkBehaviour
         if (isServer)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            player.playerActionChangedEvent += SaveActionInDatabase;
+            player.sPlayerActionChangedEvent += SaveActionInDatabase;
 #endif
         }
         else
@@ -26,20 +26,18 @@ public class ActionSaverComponent : NetworkBehaviour
 
     void SaveActionInDatabase()
     {
-        if (player.playerStatus == Constants.PLAYING)
+        if (player.sPlayerStatus == Constants.PLAYING)
         {
-            //to do
-            int teamId = 1;// Should only keep one of the 3
-            int teamName = 1;// Should only keep one of the 3
-            int teamColor = 1;// Should only keep one of the 3
-            int courseId = 1;//Should be the key to get the replay of the round
-            int labyrithId = 1;
-            int algorithmId = 1;
+            int teamId = player.sTeamId;
+            string teamName = player.sTeamName;
+            string teamColor = player.sTeamColor.ToString();
+            int courseId = player.sCourseId;
+            int labyrithId = player.sLabyrinthId;
+            int algorithmId = player.sAlgorithmId;
 
             System.DateTime now =  System.DateTime.Now;
 
-            SQLiteUtilities.InsertPlayerAction(teamId, teamName, teamColor, courseId, labyrithId, algorithmId, player.playerAction, now.ToString("yyyy-MM-dd"), now.ToString("HH:mm:ss"));
-            Debug.Log("Save Action for player : " + player.deviceName);
+            SQLiteUtilities.InsertPlayerAction(teamId, teamName, teamColor, courseId, labyrithId, algorithmId, player.sPlayerAction, now.ToString("yyyy-MM-dd"), now.ToString("HH:mm:ss"));
         }
     }
 #endif

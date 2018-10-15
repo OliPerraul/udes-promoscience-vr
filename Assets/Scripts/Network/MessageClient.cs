@@ -23,7 +23,7 @@ public class MessageClient : MonoBehaviour
     [SerializeField]
     ScriptableString pairedIpAdress;
 
-    public int chatServerPort = 9999;
+    public int serverPort = 9999;
 
     NetworkClient client = null;
 
@@ -39,7 +39,7 @@ public class MessageClient : MonoBehaviour
         client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
         client.RegisterHandler(CustomMsgType.Directive, OnDirective);
 
-        client.Connect(pairedIpAdress.value, chatServerPort);
+        client.Connect(pairedIpAdress.value, serverPort);
     }
 
     void StopClient()

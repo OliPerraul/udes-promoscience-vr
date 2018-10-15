@@ -67,8 +67,6 @@ public class GameManager : MonoBehaviour
         }
         else if (gameState.value == Constants.PLAYING)
         {
-            labyrinth.GenerateLabyrinthVisual();
-
             if (controls != null)
             {
                 controls.ResetPositionAndRotation();
@@ -84,7 +82,6 @@ public class GameManager : MonoBehaviour
                 lobby.SetActive(false);
             }
 
-            //Activate algorithm for tablet
             if (controls != null)
             {
                 controls.isControlsEnabled = true;
@@ -106,20 +103,18 @@ public class GameManager : MonoBehaviour
                 controls.isControlsEnabled = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
-
-                if (algorithmRespect != null)
-                {
-                    algorithmRespect.ResetPlayerSteps();
-                }
-
                 isEndReached.value = false;
-                controls.isControlsEnabled = true;
+
+                labyrinthRoom.transform.position = new Vector3(0, 0, 0);
+
+                gameState.value = Constants.TUTORIAL_LABYRITH_READY;
             }
             else
             {
                 controls.isControlsEnabled = false;
                 controls.StopAllMovement();
-
+                controls.ResetPositionAndRotation();
+                isEndReached.value = false;
 
                 labyrinth.DestroyLabyrinth();
                 labyrinthRoom.transform.position = new Vector3(0, 0, 0);
@@ -128,10 +123,6 @@ public class GameManager : MonoBehaviour
                 {
                     lobby.SetActive(true);
                 }
-
-                controls.ResetPositionAndRotation();
-
-                isEndReached.value = false;
 
                 gameState.value = Constants.WAITING_FOR_NEXT_ROUND;
             }

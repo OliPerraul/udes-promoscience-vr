@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 33726033624132654}
   - component: {fileID: 23699856542656822}
   - component: {fileID: 65779381916808024}
+  - component: {fileID: 114965923192374606}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -184,7 +185,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 8c3252923815ed243a1b62c8ed502b6b, type: 2}
+  - {fileID: 2100000, guid: 30a19ffa8d063ed4bb180ae2e0bd5afa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -266,3 +267,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isWalkable: 1
+--- !u!114 &114965923192374606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1517844238887708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e5b9f5a14fb043499da38275ba10043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 23699856542656822}
+  greyMaterial: {fileID: 2100000, guid: 30a19ffa8d063ed4bb180ae2e0bd5afa, type: 2}
+  redMaterial: {fileID: 2100000, guid: 0bcda1d6d9c49b94b836685410be2c47, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 001acaf6e745051479b2819975c03bc3, type: 2}

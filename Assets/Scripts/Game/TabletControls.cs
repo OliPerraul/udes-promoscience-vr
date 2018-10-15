@@ -14,6 +14,9 @@ public class TabletControls : MonoBehaviour
     ScriptableInteger forwardDirection;
 
     [SerializeField]
+    GameLabyrinth labyrinth;
+
+    [SerializeField]
     Transform cameraTransform;
 
     List<int> actionsList = new List<int>();
@@ -137,6 +140,23 @@ public class TabletControls : MonoBehaviour
     void ResetPositionAndRotation()
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
-        cameraTransform.rotation = new Quaternion(0, 0, 0, 0);
+        forwardDirection.value = labyrinth.GetStartDirection();
+
+        Quaternion rotation = new Quaternion(0, 0, 0, 0);
+
+        if (forwardDirection.value == 1)
+        {
+            rotation.eulerAngles = new Vector3(0, 90, 0);
+        }
+        else if (forwardDirection.value == 2)
+        {
+            rotation.eulerAngles = new Vector3(0, 180, 0);
+        }
+        else if (forwardDirection.value == 3)
+        {
+            rotation.eulerAngles = new Vector3(0, 270, 0);
+        }
+
+        cameraTransform.rotation = rotation;
     }
 }

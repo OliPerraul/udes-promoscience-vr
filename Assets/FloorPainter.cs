@@ -18,22 +18,46 @@ public class FloorPainter : MonoBehaviour
 
     int currentColorId = 0;
 
+    public int GetFloorColorId()
+    {
+        return currentColorId;
+    }
+
     public void PaintFloor()
     {
-        if (currentColorId == 0)
+        if (currentColorId == Constants.GREY_COLOR_ID)
         {
-            currentColorId = 1;
+            currentColorId = Constants.RED_COLOR_ID;
             meshRenderer.material = redMaterial;
         }
-        else if (currentColorId == 1)
+        else if (currentColorId == Constants.RED_COLOR_ID)
         {
-            currentColorId = 2;
+            currentColorId = Constants.GREEN_COLOR_ID;
             meshRenderer.material = greenMaterial;
         }
-        else if (currentColorId == 2)
+        else if (currentColorId == Constants.GREEN_COLOR_ID)
         {
-            currentColorId = 0;
+            currentColorId = Constants.GREY_COLOR_ID;
             meshRenderer.material = greyMaterial;
+        }
+    }
+
+    public void PaintFloorWithColorId(int id)
+    {
+        if (id == Constants.GREY_COLOR_ID)
+        {
+            currentColorId = id;
+            meshRenderer.material = greyMaterial;
+        }
+        else if (id == Constants.RED_COLOR_ID)
+        {
+            currentColorId = id;
+            meshRenderer.material = redMaterial;
+        }
+        else if (id == Constants.GREEN_COLOR_ID)
+        {
+            currentColorId = id;
+            meshRenderer.material = greenMaterial;
         }
     }
 }

@@ -10,23 +10,29 @@ public class StandardAlgorithm : MonoBehaviour
     int[] xByDirection = { 0, 1, 0, -1 };
     int[] yByDirection = { -1, 0, 1, 0 };
 
+    int tileColor;
     Vector2Int position;
 
-    List<Vector2Int> algorithmStepsPosition;
+    //Steps the two first value are the map position and the third value is the tile color value
+    List<Vector3Int> algorithmSteps;
 
-    public List<Vector2Int> GetAlgorithmSteps()
+    public List<Vector3Int> GetAlgorithmSteps()
     {
-        algorithmStepsPosition = new List<Vector2Int>();
+        algorithmSteps = new List<Vector3Int>();
+        //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
         List<Vector3Int> lastVisitedIntersection = new List<Vector3Int>();
 
         bool[,] alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
 
         bool asReachedTheEnd = false;
 
-        int direction = 0;//Hardcoded start direction, could be get from deadend start exist to optimise
+        int direction = labyrinth.GetStartDirection();
+
+        tileColor = Constants.RED_COLOR_ID;
         position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
-        algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+
+        algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
 
         while (!asReachedTheEnd)
         {
@@ -42,7 +48,7 @@ public class StandardAlgorithm : MonoBehaviour
                    || (isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 3) % 4])
                    || (isDirectionWalkableAndNotVisited[(direction + 1) % 4] && isDirectionWalkableAndNotVisited[(direction + 3) % 4]))
                 {
-                    lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmStepsPosition.Count - 1));
+                    lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmSteps.Count - 1));
                 }
 
                 alreadyVisitedTile[position.x, position.y] = true;
@@ -78,8 +84,10 @@ public class StandardAlgorithm : MonoBehaviour
                 }
                 else
                 {
-                    i = algorithmStepsPosition.Count - 2;
+                    i = algorithmSteps.Count - 2;
                 }
+
+                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, Constants.GREEN_COLOR_ID);
 
                 bool isReturnedToLastIntersection = false;
 
@@ -88,16 +96,19 @@ public class StandardAlgorithm : MonoBehaviour
                     if (i < 0)
                     {
                         //Labyrith is impossible!
-                        return algorithmStepsPosition;
+                        return algorithmSteps;
                     }
-                    algorithmStepsPosition.Add(algorithmStepsPosition[i]);
 
-                    if (algorithmStepsPosition[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmStepsPosition[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
+                    if (algorithmSteps[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmSteps[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
                     {
                         isReturnedToLastIntersection = true;
-
-                        position.x = algorithmStepsPosition[i].x;
-                        position.y = algorithmStepsPosition[i].y;
+                        position.x = algorithmSteps[i].x;
+                        position.y = algorithmSteps[i].y;
+                        algorithmSteps.Add(new Vector3Int(position.x, position.y, Constants.RED_COLOR_ID));
+                    }
+                    else
+                    {
+                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, Constants.GREEN_COLOR_ID));
                     }
 
                     i--;
@@ -110,13 +121,13 @@ public class StandardAlgorithm : MonoBehaviour
             }
         }
 
-        return algorithmStepsPosition;
+        return algorithmSteps;
     }
 
     void MoveInDirection(int direction)
     {
         position.x += xByDirection[direction];
         position.y += yByDirection[direction];
-        algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+        algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
     }
 }

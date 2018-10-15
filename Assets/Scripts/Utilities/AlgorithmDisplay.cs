@@ -28,7 +28,7 @@ public class AlgorithmDisplay : MonoBehaviour
 
     List<GameObject> objectList = new List<GameObject>();
 
-    List<Vector2Int> algorithmStepsPosition = new List<Vector2Int>();
+    List<Vector3Int> algorithmStepsPosition = new List<Vector3Int>();
 
     void Start()
     {
@@ -40,7 +40,7 @@ public class AlgorithmDisplay : MonoBehaviour
     {
         if (currentGameState.value == Constants.PLAYING_TUTORIAL || currentGameState.value == Constants.PLAYING)
         {
-            GenerateVisualForAlgorithmWithId(Constants.STANDARD_ALGORITH);
+            GenerateVisualForAlgorithmWithId(Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH);
         }
     }
 
@@ -66,6 +66,11 @@ public class AlgorithmDisplay : MonoBehaviour
         for (int i = 0; i < algorithmStepsPosition.Count; i++)
         {
             GameObject obj = (GameObject)Instantiate(sphere, GetWorldPosition( algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
+            FloorPainter floorPainter = labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<FloorPainter>();
+            if (floorPainter != null)
+            {
+                floorPainter.PaintFloorWithColorId(algorithmStepsPosition[i].z);
+            }
             objectList.Add(obj);
         }
     }

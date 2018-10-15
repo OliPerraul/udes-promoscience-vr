@@ -88,13 +88,11 @@ public class HeadsetControls : MonoBehaviour
             {
                 CameraTurnRight();
             }
-
-            if (OVRInput.GetDown(OVRInput.Button.Back))
+            else if (OVRInput.GetDown(OVRInput.Button.Back))
             {
                 PaintCurrentPositionTile();
             }
-
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+            else if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
             {
                 TriggerDistanceScanner();
             }
@@ -223,7 +221,23 @@ public class HeadsetControls : MonoBehaviour
     void ResetPositionAndRotation()
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
-        cameraTransform.rotation = new Quaternion(0, 0, 0, 0);
-        forwardDirection.value = 0;
+        forwardDirection.value = labyrinth.GetStartDirection();
+
+        Quaternion rotation = new Quaternion(0, 0, 0, 0);
+
+        if (forwardDirection.value == 1)
+        {
+            rotation.eulerAngles = new Vector3(0, 90, 0);
+        }
+        else if (forwardDirection.value == 2)
+        {
+            rotation.eulerAngles = new Vector3(0, 180, 0);
+        }
+        else if (forwardDirection.value == 3)
+        {
+            rotation.eulerAngles = new Vector3(0, 270, 0);
+        }
+
+        cameraTransform.rotation = rotation;
     }
 }

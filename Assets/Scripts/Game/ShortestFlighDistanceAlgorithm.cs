@@ -10,26 +10,36 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
     int[] xByDirection = { 0, 1, 0, -1 };
     int[] yByDirection = { -1, 0, 1, 0 };
 
+    int tileColor;
     Vector2Int position;
 
-    List<Vector2Int> algorithmStepsPosition;
+    //Steps the two first value are the map position and the third value is the tile color value
+    List<Vector3Int> algorithmSteps;
 
-    public List<Vector2Int> GetAlgorithmSteps()
+    public List<Vector3Int> GetAlgorithmSteps()
     {
-        algorithmStepsPosition = new List<Vector2Int>();
+        algorithmSteps = new List<Vector3Int>();
+
+        //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
         List<Vector3Int> lastVisitedIntersection = new List<Vector3Int>();
 
         bool[,] alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
 
         bool asReachedTheEnd = false;
 
-        int direction = 0;//Hardcoded start direction, could be get from deadend start exist to optimise
+        int direction = labyrinth.GetStartDirection();
+
+        tileColor = Constants.RED_COLOR_ID;
         position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
-        algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+
+        algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
+
 
         while (!asReachedTheEnd)
         {
+
+
             bool[] isDirectionWalkableAndNotVisited = new bool[4];
             isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
             isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]];
@@ -42,7 +52,7 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                    || (isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 3) % 4])
                    || (isDirectionWalkableAndNotVisited[(direction + 1) % 4] && isDirectionWalkableAndNotVisited[(direction + 3) % 4]))
                 {
-                    lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmStepsPosition.Count - 1));
+                    lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmSteps.Count - 1));
                 }
 
                 alreadyVisitedTile[position.x, position.y] = true;
@@ -55,30 +65,30 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
             directionDistance[3] = isDirectionWalkableAndNotVisited[3] ? (endPosition - new Vector2Int(position.x + xByDirection[3], position.y + yByDirection[3])).magnitude : -1;
 
 
-            if (directionDistance[(direction) % 4] != -1 
-                && (directionDistance[(direction + 1) % 4] == -1 || directionDistance[(direction) % 4] <= directionDistance[(direction + 1) % 4]) 
-                && (directionDistance[(direction + 2) % 4] == -1 || directionDistance[(direction) % 4] <= directionDistance[(direction + 2) % 4]) 
-                && (directionDistance[(direction + 3) % 4] == -1 || directionDistance[(direction) % 4] <= directionDistance[(direction + 3) % 4]))
+            if (directionDistance[0] != -1 
+                && (directionDistance[1] == -1 || directionDistance[0] <= directionDistance[1]) 
+                && (directionDistance[2] == -1 || directionDistance[0] <= directionDistance[2]) 
+                && (directionDistance[3] == -1 || directionDistance[0] <= directionDistance[3]))
             {
-                direction = (direction) % 4;
+                direction = 0;
                 MoveInDirection(direction);
             }
-            else if (directionDistance[(direction + 1) % 4] != -1
-                && (directionDistance[(direction + 2) % 4] == -1 || directionDistance[(direction + 1) % 4] <= directionDistance[(direction + 2) % 4]) 
-                && (directionDistance[(direction + 3) % 4] == -1 || directionDistance[(direction + 1) % 4] <= directionDistance[(direction + 3) % 4]))
+            else if (directionDistance[1] != -1
+                && (directionDistance[2] == -1 || directionDistance[1] <= directionDistance[2]) 
+                && (directionDistance[3] == -1 || directionDistance[1] <= directionDistance[3]))
             {
-                direction = (direction + 1) % 4;
+                direction = 1;
                 MoveInDirection(direction);
             }
-            else if (directionDistance[(direction + 2) % 4] != -1
-                && (directionDistance[(direction + 3) % 4] == -1 || directionDistance[(direction + 2) % 4] <= directionDistance[(direction + 3) % 4]))
+            else if (directionDistance[2] != -1
+                && (directionDistance[3] == -1 || directionDistance[2] <= directionDistance[3]))
             {
-                direction = (direction + 2) % 4;
+                direction = 2;
                 MoveInDirection(direction);
             }
-            else if (directionDistance[(direction + 3) % 4] > 0)
+            else if (directionDistance[3] != -1)
             {
-                direction = (direction + 3) % 4;
+                direction = 3;
                 MoveInDirection(direction);
             }
             else 
@@ -91,8 +101,10 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                 }
                 else
                 {
-                    i = algorithmStepsPosition.Count - 2;
+                    i = algorithmSteps.Count - 2;
                 }
+
+                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, Constants.GREEN_COLOR_ID);
 
                 bool isReturnedToLastIntersection = false;
 
@@ -101,15 +113,19 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                     if (i < 0)
                     {
                         //Labyrith is impossible!
-                        return algorithmStepsPosition;
+                        return algorithmSteps;
                     }
-                    algorithmStepsPosition.Add(algorithmStepsPosition[i]);
-
-                    if (algorithmStepsPosition[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmStepsPosition[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
+                  
+                    if (algorithmSteps[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmSteps[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
                     {
                         isReturnedToLastIntersection = true;
-                        position.x = algorithmStepsPosition[i].x;
-                        position.y = algorithmStepsPosition[i].y;
+                        position.x = algorithmSteps[i].x;
+                        position.y = algorithmSteps[i].y;
+                        algorithmSteps.Add(new Vector3Int(position.x, position.y, Constants.RED_COLOR_ID));
+                    }
+                    else
+                    {
+                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, Constants.GREEN_COLOR_ID));
                     }
 
                     i--;
@@ -122,13 +138,13 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
             }
         }
 
-        return algorithmStepsPosition;
+        return algorithmSteps;
     }
 
     void MoveInDirection(int direction)
     {
         position.x += xByDirection[direction];
         position.y += yByDirection[direction];
-        algorithmStepsPosition.Add(new Vector2Int(position.x, position.y));
+        algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
     }
 }
