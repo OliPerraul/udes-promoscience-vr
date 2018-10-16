@@ -77,7 +77,7 @@ static class Constants
 
     //Tile color ids
     public const int GREY_COLOR_ID = 0;
-    public const int RED_COLOR_ID = 1;
-    public const int GREEN_COLOR_ID = 2;
+    public const int YELLOW_COLOR_ID = 1;
+    public const int RED_COLOR_ID = 2;
 
 }

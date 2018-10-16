@@ -11,10 +11,10 @@ public class FloorPainter : MonoBehaviour
     Material greyMaterial;
 
     [SerializeField]
-    Material redMaterial;
+    Material yellowMaterial;
 
     [SerializeField]
-    Material greenMaterial;
+    Material redMaterial;
 
     int currentColorId = 0;
 
@@ -27,15 +27,15 @@ public class FloorPainter : MonoBehaviour
     {
         if (currentColorId == Constants.GREY_COLOR_ID)
         {
+            currentColorId = Constants.YELLOW_COLOR_ID;
+            meshRenderer.material = yellowMaterial;
+        }
+        else if (currentColorId == Constants.YELLOW_COLOR_ID)
+        {
             currentColorId = Constants.RED_COLOR_ID;
             meshRenderer.material = redMaterial;
         }
         else if (currentColorId == Constants.RED_COLOR_ID)
-        {
-            currentColorId = Constants.GREEN_COLOR_ID;
-            meshRenderer.material = greenMaterial;
-        }
-        else if (currentColorId == Constants.GREEN_COLOR_ID)
         {
             currentColorId = Constants.GREY_COLOR_ID;
             meshRenderer.material = greyMaterial;
@@ -49,15 +49,15 @@ public class FloorPainter : MonoBehaviour
             currentColorId = id;
             meshRenderer.material = greyMaterial;
         }
+        else if (id == Constants.YELLOW_COLOR_ID)
+        {
+            currentColorId = id;
+            meshRenderer.material = yellowMaterial;
+        }
         else if (id == Constants.RED_COLOR_ID)
         {
             currentColorId = id;
             meshRenderer.material = redMaterial;
-        }
-        else if (id == Constants.GREEN_COLOR_ID)
-        {
-            currentColorId = id;
-            meshRenderer.material = greenMaterial;
         }
     }
 }
