@@ -19,20 +19,24 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
     [SerializeField]
     Transform cameraTransform;
 
+    bool isChainingMovement = false;
     bool isMoving = false;
     bool isTurningLeft = false;
     bool isTurningRight = false;
+
+    readonly int[] xByDirection = { 0, 1, 0, -1 };
+    readonly int[] yByDirection = { -1, 0, 1, 0 };
 
     float lerpValue = 0;
     float moveSpeed = 0;
     float turnSpeed = 0;
 
-    Vector3 targetPosition;
     Vector3 fromPosition;
+    Vector3 targetPosition;
 
     Quaternion fromRotation;
     Quaternion targetRotation;
-    bool isChainingMovement = false;
+
 
     private void Start()
     {
@@ -50,7 +54,7 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
                 {
                     if (isMoving)
                     {
-                        if(CheckIfMovementAttargetPositionIsValid(forwardDirection.value))
+                        if( lerpValue >= 0.5f && CheckIfMovementIsValidInDirectionFromPosition(forwardDirection.value, targetPosition))//Added minimum lerp before chaning is available, need to be tested
                         {
                             isChainingMovement = true;
                         }
@@ -229,28 +233,25 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
 
     void RequestMovementInDirection(int direction)
     {
-        if (CheckIfMovementIsValid(direction))
+        if (CheckIfMovementIsValidInDirectionFromPosition(direction, cameraTransform.position))
         {
             fromPosition = cameraTransform.position;
+            targetPosition = fromPosition + (new Vector3(xByDirection[direction] * Constants.TILE_SIZE, 0, yByDirection[direction] * Constants.TILE_SIZE));
 
             if (direction == 0)
             {
-                targetPosition = fromPosition + (new Vector3(0, 0, Constants.TILE_SIZE));
                 action.value = Constants.ACTION_MOVE_UP;
             }
             else if (direction == 1)
             {
-                targetPosition = fromPosition + (new Vector3(Constants.TILE_SIZE, 0, 0));
                 action.value = Constants.ACTION_MOVE_RIGHT;
             }
             else if (direction == 2)
             {
-                targetPosition = fromPosition + (new Vector3(0, 0, -Constants.TILE_SIZE));
                 action.value = Constants.ACTION_MOVE_DOWN;
             }
             else if (direction == 3)
             {
-                targetPosition = fromPosition + (new Vector3(-Constants.TILE_SIZE, 0, 0));
                 action.value = Constants.ACTION_MOVE_LEFT;
             }
             
@@ -282,87 +283,23 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
         action.value = Constants.ACTION_TURN_RIGHT;
     }
 
-
-    bool CheckIfMovementIsValid(int direction)
+    bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
     {
-        int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
-        int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
+        Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(position.x, position.z);
 
-        if (direction == 2)
-        {
-            if (posY + 1 < labyrinth.GetLabyrithYLenght())
-            {
-                posY += 1;
-            }
-        }
-        else if (direction == 1)
-        {
-            if (posX + 1 < labyrinth.GetLabyrithXLenght())
-            {
-                posX += 1;
-            }
-        }
-        else if (direction == 0)
-        {
-            if (posY - 1 > -1)
-            {
-                posY -= 1;
-            }
-        }
-        else if (direction == 3)
-        {
-            if (posX - 1 > -1)
-            {
-                posX -= 1;
-            }
-        }
+        labyrinthPosition.x += xByDirection[direction];
+        labyrinthPosition.y += yByDirection[direction];
 
-        return labyrinth.GetIsTileWalkable(posX,posY);
-    }
-
-    bool CheckIfMovementAttargetPositionIsValid(int direction)
-    {
-        int posX = Mathf.RoundToInt((targetPosition.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
-        int posY = Mathf.RoundToInt((-targetPosition.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
-
-        if (direction == 2)
-        {
-            if (posY + 1 < labyrinth.GetLabyrithYLenght())
-            {
-                posY += 1;
-            }
-        }
-        else if (direction == 1)
-        {
-            if (posX + 1 < labyrinth.GetLabyrithXLenght())
-            {
-                posX += 1;
-            }
-        }
-        else if (direction == 0)
-        {
-            if (posY - 1 > -1)
-            {
-                posY -= 1;
-            }
-        }
-        else if (direction == 3)
-        {
-            if (posX - 1 > -1)
-            {
-                posX -= 1;
-            }
-        }
-
-        return labyrinth.GetIsTileWalkable(posX, posY);
+        return labyrinth.GetIsTileWalkable(labyrinthPosition);
     }
 
     void PaintCurrentPositionTile()
     {
-        int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
-        int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
-        GameObject tile = labyrinth.GetTile(posX, posY);
+        Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+
+        GameObject tile = labyrinth.GetTile(position.x, position.y);
         FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
+
         if(floorPainter != null)
         {
             floorPainter.PaintFloor();
@@ -374,13 +311,30 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
     {
         isMoving = false;
         isTurningLeft = false;
+        isTurningRight = false;
         lerpValue = 0;
     }
 
     void ResetPositionAndRotation()
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
-        cameraTransform.rotation = new Quaternion(0, 0, 0, 0);
-        forwardDirection.value = 0;
+        forwardDirection.value = labyrinth.GetStartDirection();
+
+        Quaternion rotation = new Quaternion(0, 0, 0, 0);
+
+        if (forwardDirection.value == 1)
+        {
+            rotation.eulerAngles = new Vector3(0, 90, 0);
+        }
+        else if (forwardDirection.value == 2)
+        {
+            rotation.eulerAngles = new Vector3(0, 180, 0);
+        }
+        else if (forwardDirection.value == 3)
+        {
+            rotation.eulerAngles = new Vector3(0, 270, 0);
+        }
+
+        cameraTransform.rotation = rotation;
     }
 }

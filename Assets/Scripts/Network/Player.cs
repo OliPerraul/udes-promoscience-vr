@@ -164,7 +164,7 @@ public class Player : NetworkBehaviour
 
         if (deviceType.value == Constants.DEVICE_TABLET)
         {
-            action.valueChangedEvent += SendCmdPlayerAction;//Is it were it should be?
+            action.valueChangedEvent += SendCmdPlayerAction;
         }
 
         CmdSetDeviceType(deviceType.value);
@@ -237,7 +237,7 @@ public class Player : NetworkBehaviour
     public void TargetSetPairedIpAdress(NetworkConnection target, string ipAdress)
     {
         pairedIpAdress.value = ipAdress;
-        gameState.value = Constants.PAIRED;//Temp?
+        gameState.value = Constants.PAIRED;
     }
 
     [TargetRpc]

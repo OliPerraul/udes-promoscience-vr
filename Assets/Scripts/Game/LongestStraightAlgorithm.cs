@@ -7,14 +7,14 @@ public class LongestStraightAlgorithm : MonoBehaviour
     [SerializeField]
     GameLabyrinth labyrinth;
 
-    int[] xByDirection = { 0, 1, 0, -1 };
-    int[] yByDirection = { -1, 0, 1, 0 };
-    int[] directionStraight = new int[4];
-
     bool asReachedTheEnd;
     bool[] isDirectionWalkableAndNotVisited = new bool[4];
     bool[,] alreadyVisitedTile;
 
+    readonly int[] xByDirection = { 0, 1, 0, -1 };
+    readonly int[] yByDirection = { -1, 0, 1, 0 };
+
+    int[] directionStraight = new int[4];
     int tileColor;
 
     Vector2Int position;

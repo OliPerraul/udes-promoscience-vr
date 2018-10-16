@@ -2183,6 +2183,7 @@ MonoBehaviour:
   shortestFlighDistanceAlgorithm: {fileID: 918548874}
   standardAlgorithm: {fileID: 918548873}
   algorithRespectBar: {fileID: 1300671083}
+  cameraTransform: {fileID: 1700386059}
 --- !u!114 &918548873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2932,6 +2933,7 @@ GameObject:
   - component: {fileID: 1135340688}
   - component: {fileID: 1135340689}
   - component: {fileID: 1135340687}
+  - component: {fileID: 1135340690}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2976,7 +2978,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1135340684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1aac39a0446993f43a6aa719afda5804, type: 3}
   m_Name: 
@@ -3005,9 +3007,25 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1135340684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 274d82157fd965944a8cbfdf2219c0e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  forwardDirection: {fileID: 11400000, guid: 9d9bde1f7e90c1b46aa5622fe0910c1b, type: 2}
+  labyrinth: {fileID: 1935275872}
+  cameraTransform: {fileID: 1700386059}
+--- !u!114 &1135340690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1135340684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f6d3a44e8088843b24af1983e202d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}

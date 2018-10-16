@@ -7,10 +7,11 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
     [SerializeField]
     GameLabyrinth labyrinth;
 
-    int[] xByDirection = { 0, 1, 0, -1 };
-    int[] yByDirection = { -1, 0, 1, 0 };
+    readonly int[] xByDirection = { 0, 1, 0, -1 };
+    readonly int[] yByDirection = { -1, 0, 1, 0 };
 
     int tileColor;
+
     Vector2Int position;
 
     //Steps the two first value are the map position and the third value is the tile color value

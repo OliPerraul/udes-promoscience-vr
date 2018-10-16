@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//To be deleted
 public class RaycastInteraction : MonoBehaviour
 {
     [SerializeField]

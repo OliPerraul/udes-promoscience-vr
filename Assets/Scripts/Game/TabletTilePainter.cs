@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//To be remove
 public class TabletTilePainter : MonoBehaviour
 { 
     [SerializeField]

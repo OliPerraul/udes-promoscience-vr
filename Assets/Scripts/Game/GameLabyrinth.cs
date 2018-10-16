@@ -91,7 +91,7 @@ public class GameLabyrinth : MonoBehaviour
     GameObject InstantiateLabyrithTile(int x,int y,int tileId)
     {
         GameObject tile = null;
-        Vector3 tilePosition = GetWorldPosition(x, y);
+        Vector3 tilePosition = GetLabyrinthPositionInWorldPosition(x, y);
 
         if(tileId == Constants.TILE_START_1_ID)
         {
@@ -113,15 +113,13 @@ public class GameLabyrinth : MonoBehaviour
         return tile;
     }
 
-    Vector3 GetWorldPosition(int x, int y)
+    public Vector3 GetLabyrinthPositionInWorldPosition(int x, int y)
     {
-        Vector3 worldPos = new Vector3();
-
-        worldPos.x = (x - startPosition.x) * Constants.TILE_SIZE;
-        worldPos.y = 0;
-        worldPos.z = (-y + startPosition.y) * Constants.TILE_SIZE;
-
-        return worldPos;
+        return new Vector3((x - startPosition.x) * Constants.TILE_SIZE, 0, (-y + startPosition.y) * Constants.TILE_SIZE);
+    }
+    public Vector2Int GetWorldPositionInLabyrinthPosition(float x, float y)
+    {
+        return new Vector2Int(Mathf.RoundToInt((x / Constants.TILE_SIZE)) + startPosition.x, Mathf.RoundToInt((-y / Constants.TILE_SIZE)) + startPosition.y);
     }
 
     public Vector2Int GetLabyrithStartPosition()
@@ -135,7 +133,7 @@ public class GameLabyrinth : MonoBehaviour
     }
     public Vector3 GetLabyrithEndPositionInWorldPosition()
     {
-        return GetWorldPosition(endPosition.x, endPosition.y);
+        return GetLabyrinthPositionInWorldPosition(endPosition.x, endPosition.y);
     }
 
     public int GetLabyrithXLenght()
@@ -194,6 +192,31 @@ public class GameLabyrinth : MonoBehaviour
         }
 
         return isWalkable;
+    }
+
+    public bool GetIsTileWalkable(Vector2Int tile)
+    {
+        return GetIsTileWalkable(tile.x, tile.y);
+    }
+
+    public int GetTileColorId(Vector2Int tile)
+    {
+        int colorId = -1;
+        FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();
+        if (floorPainter != null)
+        {
+            colorId = floorPainter.GetFloorColorId();
+        }
+        return colorId;
+    }
+
+    public void SetTileColorWithId(Vector2Int tile, int colorId)
+    {
+        FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();
+        if (floorPainter != null)
+        {
+            floorPainter.PaintFloorWithColorId(colorId);
+        }
     }
 
     public void DestroyLabyrinth()
