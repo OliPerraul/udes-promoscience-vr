@@ -30,6 +30,7 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
 
         while (!asReachedTheEnd)
         {
+            Debug.Log(position);
             bool[] isDirectionWalkableAndNotVisited = new bool[4];
             isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
             isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]];
@@ -54,7 +55,6 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
             directionDistance[2] = isDirectionWalkableAndNotVisited[2] ? (endPosition - new Vector2Int(position.x + xByDirection[2], position.y + yByDirection[2])).magnitude : -1;
             directionDistance[3] = isDirectionWalkableAndNotVisited[3] ? (endPosition - new Vector2Int(position.x + xByDirection[3], position.y + yByDirection[3])).magnitude : -1;
 
-
             if (directionDistance[(direction) % 4] != -1 
                 && (directionDistance[(direction + 1) % 4] == -1 || directionDistance[(direction) % 4] <= directionDistance[(direction + 1) % 4]) 
                 && (directionDistance[(direction + 2) % 4] == -1 || directionDistance[(direction) % 4] <= directionDistance[(direction + 2) % 4]) 
@@ -76,7 +76,7 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                 direction = (direction + 2) % 4;
                 MoveInDirection(direction);
             }
-            else if (directionDistance[(direction + 3) % 4] > 0)
+            else if (directionDistance[(direction + 3) % 4] != -1)
             {
                 direction = (direction + 3) % 4;
                 MoveInDirection(direction);
@@ -105,7 +105,7 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                     }
                     algorithmStepsPosition.Add(algorithmStepsPosition[i]);
 
-                    if (algorithmStepsPosition[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmStepsPosition[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
+                    if (algorithmStepsPosition[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmStepsPosition[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)//Index ou of range error
                     {
                         isReturnedToLastIntersection = true;
                         position.x = algorithmStepsPosition[i].x;

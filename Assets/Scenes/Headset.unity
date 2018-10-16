@@ -1874,7 +1874,7 @@ MonoBehaviour:
   movementTargetPosition: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f,
     type: 2}
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
-  chatServerPort: 9996
+  serverPort: 9996
 --- !u!114 &817602603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2401,7 +2401,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  labyrinth: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
 --- !u!114 &1092423830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4644,9 +4644,9 @@ MonoBehaviour:
   directiveDisplayer: {fileID: 1833387989}
   directiveImage: {fileID: 1833387990}
   cameraTransform: {fileID: 1049012887}
-  fowardImage: {fileID: 21300000, guid: cda8e35f05ebada4685e4c8493b9d8aa, type: 3}
-  turnLeftImage: {fileID: 21300000, guid: 53bee1f10f30bbd4abfbcd48bc6e99ee, type: 3}
-  turnRightImage: {fileID: 21300000, guid: 53bee1f10f30bbd4abfbcd48bc6e99ee, type: 3}
+  fowardImage: {fileID: 21300000, guid: 304c761886f391b459a2ae7683e8f04f, type: 3}
+  turnLeftImage: {fileID: 21300000, guid: 662ddcf614773024c9247c8cb81bb241, type: 3}
+  turnRightImage: {fileID: 21300000, guid: 4be20fdf00db24045957efb262abe4ee, type: 3}
   uTurnImage: {fileID: 21300000, guid: 53bee1f10f30bbd4abfbcd48bc6e99ee, type: 3}
   stopImage: {fileID: 21300000, guid: cda8e35f05ebada4685e4c8493b9d8aa, type: 3}
 --- !u!114 &2133895379

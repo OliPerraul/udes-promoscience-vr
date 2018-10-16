@@ -60,7 +60,16 @@ public class AlgorithmRespect : MonoBehaviour
             errorCounter = 0;
             isDiverging.value = false;
             algorithmRespect.value = 1.0f;
-            SetAlgorithmStepsWithId(algorithmId.value);
+
+            if(gameState.value == Constants.PLAYING_TUTORIAL)
+            {
+                SetAlgorithmStepsWithId(Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH);//SetAlgorithmStepsWithId(Constants.TUTORIAL_ALGORITH);
+            }
+            else
+            {
+                SetAlgorithmStepsWithId(algorithmId.value);
+            }
+               
             playerSteps.Clear();
             currentPosition = labyrinth.GetLabyrithStartPosition();
             playerSteps.Add(new Vector2Int(currentPosition.x, currentPosition.y));

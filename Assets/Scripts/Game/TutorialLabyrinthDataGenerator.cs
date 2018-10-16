@@ -124,7 +124,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         map[7, 8] = Constants.TILE_FLOOR_1_ID;
         map[8, 8] = Constants.TILE_FLOOR_1_ID;
 
-        labyrinthData.SetLabyrithDataWitId( map, id);
+        labyrinthData.SetLabyrithData( map, id);
     }
 	
 

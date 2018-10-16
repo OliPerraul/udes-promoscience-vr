@@ -24,22 +24,22 @@ public class UILobbyPlayer : MonoBehaviour
 
     private void OnDestroy()
     {
-        PlayerList.instance.GetPlayerWithId(playerId).deviceNameChangedEvent -= UpdateLobbyPlayerName;
-        PlayerList.instance.GetPlayerWithId(playerId).deviceNameChangedEvent -= UpdateLobbyPlayerImage;
-        PlayerList.instance.GetPlayerWithId(playerId).teamNameChangedEvent -= UpdateLobbyPlayerTeamName;
-        PlayerList.instance.GetPlayerWithId(playerId).teamColorChangedEvent -= UpdateLobbyPlayerColor;
-        PlayerList.instance.GetPlayerWithId(playerId).playerStatusChangedEvent -= UpdateLobbyPlayerStatusText;
+        PlayerList.instance.GetPlayerWithId(playerId).sDeviceNameChangedEvent -= UpdateLobbyPlayerName;
+        PlayerList.instance.GetPlayerWithId(playerId).sDeviceNameChangedEvent -= UpdateLobbyPlayerImage;
+        PlayerList.instance.GetPlayerWithId(playerId).sTeamNameChangedEvent -= UpdateLobbyPlayerTeamName;
+        PlayerList.instance.GetPlayerWithId(playerId).sTeamColorChangedEvent -= UpdateLobbyPlayerColor;
+        PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatusChangedEvent -= UpdateLobbyPlayerStatusText;
     }
 
     public void SetPlayer(int id)
     {
         playerId = id;
 
-        PlayerList.instance.GetPlayerWithId(playerId).deviceNameChangedEvent += UpdateLobbyPlayerName;
-        PlayerList.instance.GetPlayerWithId(playerId).deviceNameChangedEvent += UpdateLobbyPlayerImage;
-        PlayerList.instance.GetPlayerWithId(playerId).teamNameChangedEvent += UpdateLobbyPlayerTeamName;
-        PlayerList.instance.GetPlayerWithId(playerId).teamColorChangedEvent += UpdateLobbyPlayerColor;
-        PlayerList.instance.GetPlayerWithId(playerId).playerStatusChangedEvent += UpdateLobbyPlayerStatusText;
+        PlayerList.instance.GetPlayerWithId(playerId).sDeviceNameChangedEvent += UpdateLobbyPlayerName;
+        PlayerList.instance.GetPlayerWithId(playerId).sDeviceNameChangedEvent += UpdateLobbyPlayerImage;
+        PlayerList.instance.GetPlayerWithId(playerId).sTeamNameChangedEvent += UpdateLobbyPlayerTeamName;
+        PlayerList.instance.GetPlayerWithId(playerId).sTeamColorChangedEvent += UpdateLobbyPlayerColor;
+        PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatusChangedEvent += UpdateLobbyPlayerStatusText;
 
         UpdateLobbyPlayerInformation();
     }
@@ -60,50 +60,50 @@ public class UILobbyPlayer : MonoBehaviour
 
     void UpdateLobbyPlayerName()
     {
-        nameText.text = PlayerList.instance.GetPlayerWithId(playerId).deviceName;
+        nameText.text = PlayerList.instance.GetPlayerWithId(playerId).sDeviceName;
     }
 
     void UpdateLobbyPlayerTeamName()
     {
-        teamNameText.text = PlayerList.instance.GetPlayerWithId(playerId).teamName;
+        teamNameText.text = PlayerList.instance.GetPlayerWithId(playerId).sTeamName;
     }
 
     void UpdateLobbyPlayerColor()
     {
-        color.color = PlayerList.instance.GetPlayerWithId(playerId).teamColor;
+        color.color = PlayerList.instance.GetPlayerWithId(playerId).sTeamColor;
     }
 
     void UpdateLobbyPlayerStatusText()
     {
-        if(PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.NOT_READY)
+        if(PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatus == Constants.NOT_READY)
         {
             statusText.text = "Not ready";
         }
-        else if(PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.PAIRING)
+        else if(PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatus == Constants.PAIRING)
         {
             statusText.text = "Pairing";
         }
-        else if(PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.NO_ASSOCIATED_PAIR)
+        else if(PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatus == Constants.NO_ASSOCIATED_PAIR)
         {
             statusText.text = "No associated pair";
         }
-        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.PAIRED)
+        else if (PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatus == Constants.PAIRED)
         {
             statusText.text = "Paired";
         }
-        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.READY)
+        else if (PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatus == Constants.READY)
         {
             statusText.text = "Ready";
         }
-        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.PLAYING_TUTORIAL)
+        else if (PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatus == Constants.PLAYING_TUTORIAL)
         {
             statusText.text = "Playing tutorial";
         }
-        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.PLAYING)
+        else if (PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatus == Constants.PLAYING)
         {
             statusText.text = "Playing";
         }
-        else if (PlayerList.instance.GetPlayerWithId(playerId).playerStatus == Constants.WAITING_FOR_NEXT_ROUND)
+        else if (PlayerList.instance.GetPlayerWithId(playerId).sPlayerStatus == Constants.WAITING_FOR_NEXT_ROUND)
         {
             statusText.text = "Waiting for next round";
         }

@@ -20,7 +20,7 @@ public class ScriptableLabyrinth : ScriptableObject
         }
     }
 
-    public int[] GetLabyrithDataWitId(int id)
+    public int[] GetLabyrithDataWithId(int id)
     {
         if(id!= currentId)
         {
@@ -38,7 +38,7 @@ public class ScriptableLabyrinth : ScriptableObject
     public int GetLabyrithValueAt(int x,int y)
     {
         //Could add an out of bound check
-        return data[(x * sizeX) + y];
+        return data[(x * sizeY) + y];
     }
 
     public int GetLabyrithXLenght()
@@ -52,18 +52,20 @@ public class ScriptableLabyrinth : ScriptableObject
     }
 
 
-    public void SetLabyrithDataWitId(int[,] map, int id)
+    public void SetLabyrithData(int[,] map, int id)
     {
         if (id != currentId)
         {
             currentId = id;
-            data = new int[map.GetLength(0) * map.GetLength(1)];
+            sizeX = map.GetLength(0);
+            sizeY = map.GetLength(1);
+            data = new int[sizeX * sizeY];
 
             for (int x = 0; x < sizeX; x++)
             {
                 for (int y = 0; y < sizeY; y++)
                 {
-                    data[(x * sizeX) + y] = map[x, y];
+                    data[(x * sizeY) + y] = map[x, y];
                 }
             }
 
@@ -71,7 +73,7 @@ public class ScriptableLabyrinth : ScriptableObject
         }
     }
 
-    public void SetLabyrithDataWitId(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
+    public void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
     {
         if (id != currentId)
         {

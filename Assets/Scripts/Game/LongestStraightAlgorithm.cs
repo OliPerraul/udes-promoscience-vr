@@ -148,7 +148,7 @@ public class LongestStraightAlgorithm : MonoBehaviour
     {
         int straightLenght = 0;
 
-        while(labyrinth.GetIsTileWalkable(position.x + xByDirection[(direction) % 4], position.y + yByDirection[(direction) % 4]))
+        while(labyrinth.GetIsTileWalkable(position.x + xByDirection[(direction) % 4], position.y + yByDirection[(direction) % 4]) && !alreadyVisitedTile[position.x + xByDirection[(direction) % 4], position.y + yByDirection[(direction) % 4]])
         {
             straightLenght++;
             position.x += xByDirection[direction];

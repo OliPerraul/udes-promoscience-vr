@@ -40,7 +40,7 @@ public class AlgorithmDisplay : MonoBehaviour
     {
         if (currentGameState.value == Constants.PLAYING_TUTORIAL || currentGameState.value == Constants.PLAYING)
         {
-            GenerateVisualForAlgorithmWithId(Constants.STANDARD_ALGORITH);
+            GenerateVisualForAlgorithmWithId(Constants.LONGEST_STRAIGHT_ALGORITH);
         }
     }
 

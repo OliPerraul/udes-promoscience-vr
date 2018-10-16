@@ -67,8 +67,6 @@ public class GameManager : MonoBehaviour
         }
         else if (gameState.value == Constants.PLAYING)
         {
-            labyrinth.GenerateLabyrinthVisual();
-
             if (controls != null)
             {
                 controls.ResetPositionAndRotation();
@@ -84,7 +82,6 @@ public class GameManager : MonoBehaviour
                 lobby.SetActive(false);
             }
 
-            //Activate algorithm for tablet
             if (controls != null)
             {
                 controls.isControlsEnabled = true;
