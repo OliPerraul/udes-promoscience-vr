@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
         {
             if (controls != null)
             {
+                controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
             }
 
@@ -69,6 +70,7 @@ public class GameManager : MonoBehaviour
         {
             if (controls != null)
             {
+                controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
             }
 

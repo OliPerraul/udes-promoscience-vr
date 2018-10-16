@@ -39,7 +39,7 @@ public class HeadsetControls : MonoBehaviour
     private void Start()
     {
         controls.stopAllMovementEvent += StopAllMovement;
-        controls.stopAllMovementEvent += ResetPositionAndRotation;
+        controls.resetPositionAndRotation += ResetPositionAndRotation;
     }
 
     void Update ()

@@ -21,7 +21,7 @@ public class ServerStatus : MonoBehaviour
         {
             Player player = PlayerList.instance.GetPlayerWithId(i);
 
-            if(player.sPlayerStatus == Constants.PLAYING_TUTORIAL|| player.sPlayerStatus == Constants.WAITING_FOR_NEXT_ROUND)
+            if(player.sPlayerStatus == Constants.PLAYING_TUTORIAL|| player.sPlayerStatus == Constants.PLAYING || player.sPlayerStatus == Constants.WAITING_FOR_NEXT_ROUND)
             {
                 player.sAlgorithmId = ((player.sAlgorithmId + 1) % 3) + 1;
                 player.TargetSetPlayerAlgorithmId(player.connectionToClient, player.sAlgorithmId);
@@ -30,7 +30,6 @@ public class ServerStatus : MonoBehaviour
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                 player.sCourseId = SQLiteUtilities.GetNextCourseID();
 #endif
-                
                 player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, gameRound);
             }
         }

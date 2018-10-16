@@ -279,7 +279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  forwardDirection: {fileID: 0}
+  forwardDirection: {fileID: 11400000, guid: 9d9bde1f7e90c1b46aa5622fe0910c1b, type: 2}
   labyrinth: {fileID: 1092423830}
   cameraTransform: {fileID: 1739980048}
   raycastStartPoint: {fileID: 1240952015}
@@ -3190,7 +3190,7 @@ MonoBehaviour:
   algorithmRespect: {fileID: 0}
   labyrinth: {fileID: 1092423830}
   labyrinthRoom: {fileID: 27522707}
-  lobby: {fileID: 0}
+  lobby: {fileID: 1934809123}
 --- !u!4 &1670229881
 Transform:
   m_ObjectHideFlags: 0

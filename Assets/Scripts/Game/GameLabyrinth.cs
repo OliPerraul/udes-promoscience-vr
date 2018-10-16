@@ -46,7 +46,7 @@ public class GameLabyrinth : MonoBehaviour
         }
     }
 
-        public void GenerateLabyrinthVisual()
+    void GenerateLabyrinthVisual()
     {
         if (labyrinthTiles != null)
         {

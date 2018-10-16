@@ -35,7 +35,7 @@ public class TabletControls : MonoBehaviour
     void Start ()
     {
         controls.stopAllMovementEvent += StopAllMovement;
-        controls.stopAllMovementEvent += ResetPositionAndRotation;
+        controls.resetPositionAndRotation += ResetPositionAndRotation;
         action.valueChangedEvent += AddAction;
 	}
 	
