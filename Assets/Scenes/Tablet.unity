@@ -3206,6 +3206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1300671084}
   - component: {fileID: 1300671085}
+  - component: {fileID: 1300671086}
   m_Layer: 0
   m_Name: ProgressionBar
   m_TagString: Untagged
@@ -3240,9 +3241,22 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1300671083}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 884e009cbe7a0a04cba9ea0006d72c51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressRatio: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
+  progress: {fileID: 1485072605}
+--- !u!114 &1300671086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1300671083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fb27e4735ed9ee41b227b5c18d0a2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   progressRatio: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
