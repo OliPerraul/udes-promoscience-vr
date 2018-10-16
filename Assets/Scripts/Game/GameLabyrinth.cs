@@ -158,6 +158,27 @@ public class GameLabyrinth : MonoBehaviour
         return labyrinthTiles[x, y];
     }
 
+    //Labyrith start should always be in a dead end
+    public int GetStartDirection()
+    {
+        int direction = 0;
+
+        if(GetIsTileWalkable(startPosition.x + 1, startPosition.y))
+        {
+            direction = 1;
+        }
+        else if (GetIsTileWalkable(startPosition.x, startPosition.y + 1))
+        {
+            direction = 2;
+        }
+        else if (GetIsTileWalkable(startPosition.x - 1, startPosition.y))
+        {
+            direction = 3;
+        }
+
+        return direction;
+    }
+
     public bool GetIsTileWalkable(int x, int y)
     {
         bool isWalkable = false;

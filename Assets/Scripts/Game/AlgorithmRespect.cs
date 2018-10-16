@@ -41,10 +41,13 @@ public class AlgorithmRespect : MonoBehaviour
 
     const float E = 2.71828f;
 
+    int currentTileColorId;
+
     Vector2Int currentPosition;
 
-    List<Vector2Int> algorithmSteps = new List<Vector2Int>();
-    List<Vector2Int> playerSteps = new List<Vector2Int>();
+    //Steps the two first value are the map position and the third value is the tile color value
+    List<Vector3Int> algorithmSteps = new List<Vector3Int>();
+    List<Vector3Int> playerSteps = new List<Vector3Int>();
 
     void Start()
     {
@@ -63,7 +66,7 @@ public class AlgorithmRespect : MonoBehaviour
 
             if(gameState.value == Constants.PLAYING_TUTORIAL)
             {
-                SetAlgorithmStepsWithId(Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH);//SetAlgorithmStepsWithId(Constants.TUTORIAL_ALGORITH);
+                SetAlgorithmStepsWithId(Constants.TUTORIAL_ALGORITH);
             }
             else
             {
@@ -72,7 +75,7 @@ public class AlgorithmRespect : MonoBehaviour
                
             playerSteps.Clear();
             currentPosition = labyrinth.GetLabyrithStartPosition();
-            playerSteps.Add(new Vector2Int(currentPosition.x, currentPosition.y));
+            playerSteps.Add(new Vector3Int(currentPosition.x, currentPosition.y, currentTileColorId));//Current tile color might be wrong
             algorithRespectBar.SetActive(true);
         }
         else if (gameState.value == Constants.WAITING_FOR_NEXT_ROUND)
@@ -85,51 +88,65 @@ public class AlgorithmRespect : MonoBehaviour
     {
         if(action.value == Constants.ACTION_MOVE_UP)
         {
+            SetCurrentTileColorId();
             currentPosition += new Vector2Int(0, -1);
             UpdateAlgorithmRespect();
         }
         else if (action.value == Constants.ACTION_MOVE_RIGHT)
         {
+            SetCurrentTileColorId();
             currentPosition += new Vector2Int(1, 0);
             UpdateAlgorithmRespect();
         }
         else if (action.value == Constants.ACTION_MOVE_DOWN)
         {
+            SetCurrentTileColorId();
             currentPosition += new Vector2Int(0, 1);
             UpdateAlgorithmRespect();
         }
         else if (action.value == Constants.ACTION_MOVE_LEFT)
         {
+            SetCurrentTileColorId();
             currentPosition += new Vector2Int(-1, 0);
             UpdateAlgorithmRespect();
         }
     }
 
-    void UpdateAlgorithmRespect()// Quand reset pour le tutorial, le playerSteps n'est pas ressetté? c,est une cause mais pas la seul
+    private void SetCurrentTileColorId()
+    {
+        FloorPainter floorPainter = labyrinth.GetTile(currentPosition).GetComponentInChildren<FloorPainter>();
+        if (floorPainter != null)
+        {
+            currentTileColorId = floorPainter.GetFloorColorId();
+        }
+    }
+
+    void UpdateAlgorithmRespect()
     {
         if (!isDiverging.value)
         {
-            if (currentPosition != algorithmSteps[playerSteps.Count])
+            if (currentPosition.x != algorithmSteps[playerSteps.Count].x || currentPosition.y != algorithmSteps[playerSteps.Count].y || currentTileColorId != algorithmSteps[playerSteps.Count - 1].z)
             {
                 isDiverging.value = true;
                 errorCounter++;
-                algorithmRespect.value = 1.0f - MathFunction((playerSteps[playerSteps.Count - 1] - currentPosition).magnitude);
+                algorithmRespect.value = 1.0f - MathFunction((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - currentPosition).magnitude);
             }
             else
             {
-                playerSteps.Add(new Vector2Int(currentPosition.x, currentPosition.y));
+                playerSteps[playerSteps.Count - 1] = new Vector3Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y, currentTileColorId);
+                playerSteps.Add(new Vector3Int(currentPosition.x, currentPosition.y, 0));
             }
         }
         else
         {
-            if (currentPosition == playerSteps[playerSteps.Count - 1])
+            if (currentPosition.x == playerSteps[playerSteps.Count - 1].x && currentPosition.y == playerSteps[playerSteps.Count - 1].y)
             {
                 isDiverging.value = false;
                 algorithmRespect.value = 1.0f;
             }
             else
             {
-                algorithmRespect.value = 1.0f - MathFunction((playerSteps[playerSteps.Count - 1] - currentPosition).magnitude);
+                algorithmRespect.value = 1.0f - MathFunction((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - currentPosition).magnitude);
             }
         }
     }
@@ -163,13 +180,13 @@ public class AlgorithmRespect : MonoBehaviour
     {
         playerSteps.Clear();
         currentPosition = labyrinth.GetLabyrithStartPosition();
-        playerSteps.Add(new Vector2Int(currentPosition.x, currentPosition.y));
+        playerSteps.Add(new Vector3Int(currentPosition.x, currentPosition.y, 0));
     }
 
     public void ReturnToDivergencePoint()
     {
         //Update real player position
-        currentPosition = playerSteps[playerSteps.Count - 1];
+        currentPosition = new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y);
         UpdateAlgorithmRespect();
     }
 }
