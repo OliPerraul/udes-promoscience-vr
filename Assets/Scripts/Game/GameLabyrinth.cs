@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameLabyrinth : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger gameState;
+    ScriptableGameState gameState;
 
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
@@ -34,15 +34,15 @@ public class GameLabyrinth : MonoBehaviour
 
     public void OnGameStateChanged()
     {
-        if(gameState.value == Constants.TUTORIAL_LABYRITH_READY)
+        if(gameState.value == GameState.TutorialLabyrinthReady)
         {
             GenerateLabyrinthVisual();
-            gameState.value = Constants.PLAYING_TUTORIAL;
+            gameState.value = GameState.PlayingTutorial;
         }
-        else if (gameState.value == Constants.LABYRITH_READY)
+        else if (gameState.value == GameState.LabyrithReady)
         {
             GenerateLabyrinthVisual();
-            gameState.value = Constants.PLAYING;
+            gameState.value = GameState.Playing;
         }
     }
 
@@ -199,9 +199,9 @@ public class GameLabyrinth : MonoBehaviour
         return GetIsTileWalkable(tile.x, tile.y);
     }
 
-    public int GetTileColorId(Vector2Int tile)
+    public FloorColor GetTileColorId(Vector2Int tile)
     {
-        int colorId = -1;
+        FloorColor colorId = FloorColor.NoColor;
         FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();
         if (floorPainter != null)
         {

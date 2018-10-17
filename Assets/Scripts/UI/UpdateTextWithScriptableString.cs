@@ -14,7 +14,6 @@ public class UpdateTextWithScriptableString : MonoBehaviour
 	void Start ()
     {
         scriptableString.valueChangedEvent += OnValueChangedEvent;
-
     }
 	
 	void OnValueChangedEvent()

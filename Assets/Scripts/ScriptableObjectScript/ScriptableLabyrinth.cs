@@ -26,7 +26,7 @@ public class ScriptableLabyrinth : ScriptableObject
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             currentId = id;
-            SQLiteUtilities.SetLabyrintheDataWithId( id, ref sizeX, ref sizeY, ref data);
+            SQLiteUtilities.ReadLabyrinthDataFromId( id, ref sizeX, ref sizeY, ref data);
             
             OnValueChanged();
 #endif

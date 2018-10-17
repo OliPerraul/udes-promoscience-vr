@@ -14,7 +14,7 @@ public class AlgorithmRespect : MonoBehaviour
     ScriptableFloat algorithmRespect;
 
     [SerializeField]
-    ScriptableInteger gameState;
+    ScriptableGameState gameState;
 
     [SerializeField]
     ScriptableBoolean isDiverging;
@@ -42,7 +42,6 @@ public class AlgorithmRespect : MonoBehaviour
 
     bool isAlgorithmRespectActive = false;
 
-
     int errorCounter;
 
     const float E = 2.71828f;
@@ -64,18 +63,18 @@ public class AlgorithmRespect : MonoBehaviour
         if(isAlgorithmRespectActive)
         {
             Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.y);
-
+            Debug.Log(labyrinthPosition);//Temp
             if(labyrinthPosition != currentLabyrinthPosition)
             {
                 if (!isDiverging.value)
                 {
-                    int previousTileColorId = labyrinth.GetTileColorId(currentLabyrinthPosition);
+                    int previousTileColorId = (int) labyrinth.GetTileColorId(currentLabyrinthPosition);
 
                     if (labyrinthPosition.x != algorithmSteps[playerSteps.Count].x || labyrinthPosition.y != algorithmSteps[playerSteps.Count].y || previousTileColorId != algorithmSteps[playerSteps.Count - 1].z)
                     {
                         isDiverging.value = true;
                         errorCounter++;
-                        algorithmRespect.value = 1.0f - MathFunction((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude);
+                        algorithmRespect.value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude);
                     }
                     else
                     {
@@ -92,7 +91,7 @@ public class AlgorithmRespect : MonoBehaviour
                     }
                     else
                     {
-                        algorithmRespect.value = 1.0f - MathFunction((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude);
+                        algorithmRespect.value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude);
                     }
                 }
 
@@ -104,13 +103,13 @@ public class AlgorithmRespect : MonoBehaviour
 
     void OnGameStateChanged()
     {
-        if (gameState.value == Constants.PLAYING_TUTORIAL || gameState.value == Constants.PLAYING)
+        if (gameState.value == GameState.PlayingTutorial || gameState.value == GameState.Playing)
         {
             errorCounter = 0;
             isDiverging.value = false;
             algorithmRespect.value = 1.0f;
 
-            if(gameState.value == Constants.PLAYING_TUTORIAL)
+            if(gameState.value == GameState.PlayingTutorial)
             {
                 SetAlgorithmStepsWithId(Constants.TUTORIAL_ALGORITH);
             }
@@ -121,11 +120,11 @@ public class AlgorithmRespect : MonoBehaviour
                
             playerSteps.Clear();
             currentLabyrinthPosition = labyrinth.GetLabyrithStartPosition();
-            playerSteps.Add(new Vector3Int(currentLabyrinthPosition.x, currentLabyrinthPosition.y, labyrinth.GetTileColorId(currentLabyrinthPosition)));
+            playerSteps.Add(new Vector3Int(currentLabyrinthPosition.x, currentLabyrinthPosition.y, (int) labyrinth.GetTileColorId(currentLabyrinthPosition)));
             algorithRespectBar.SetActive(true);
             isAlgorithmRespectActive = true;
         }
-        else if (gameState.value == Constants.WAITING_FOR_NEXT_ROUND)
+        else if (gameState.value == GameState.WaitingForNextRound)
         {
             isAlgorithmRespectActive = false;
             algorithRespectBar.SetActive(false);
@@ -160,9 +159,9 @@ public class AlgorithmRespect : MonoBehaviour
         }
     }
 
-    float MathFunction(float x)
+    float RespectValueComputation(float x)
     {
-        return (1 - Mathf.Pow(E, -x/Constants.TILE_SIZE));
+        return Mathf.Pow(E, -x/Constants.TILE_SIZE);
     }
 
     public void ResetPlayerSteps()

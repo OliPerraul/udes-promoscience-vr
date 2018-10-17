@@ -11,4 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273baf4ad2745fa42ba25f9cc22bc6b8, type: 3}
   m_Name: DeviceType
   m_EditorClassIdentifier: 
-  mValue: -1
+  mValue: 0

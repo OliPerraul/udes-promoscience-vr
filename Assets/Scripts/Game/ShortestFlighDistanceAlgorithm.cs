@@ -30,7 +30,7 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
 
         int direction = labyrinth.GetStartDirection();
 
-        tileColor = Constants.YELLOW_COLOR_ID;
+        tileColor = (int) FloorColor.Yellow;
         position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
 
@@ -105,7 +105,7 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                     i = algorithmSteps.Count - 2;
                 }
 
-                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, Constants.RED_COLOR_ID);
+                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, (int) FloorColor.Red);
 
                 bool isReturnedToLastIntersection = false;
 
@@ -122,11 +122,11 @@ public class ShortestFlighDistanceAlgorithm : MonoBehaviour
                         isReturnedToLastIntersection = true;
                         position.x = algorithmSteps[i].x;
                         position.y = algorithmSteps[i].y;
-                        algorithmSteps.Add(new Vector3Int(position.x, position.y, Constants.YELLOW_COLOR_ID));
+                        algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
                     }
                     else
                     {
-                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, Constants.RED_COLOR_ID));
+                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, (int) FloorColor.Red));
                     }
 
                     i--;

@@ -12,7 +12,7 @@ public class MessageServer : MonoBehaviour
     ScriptableInteger directive;
 
     [SerializeField]
-    ScriptableInteger gameState;
+    ScriptableGameState gameState;
 
     [SerializeField]
     ScriptableVector3 headRotation;
@@ -47,9 +47,9 @@ public class MessageServer : MonoBehaviour
         server = new NetworkServerSimple();
         server.RegisterHandler(MsgType.Connect, OnConnect);
         server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        server.RegisterHandler(CustomMsgType.Action, OnAction);
-        server.RegisterHandler(CustomMsgType.MovementTargetPosition, OnMovementTargetPosition);
-        server.RegisterHandler(CustomMsgType.HeadRotation, OnHeadRotation);
+        server.RegisterHandler(ActionMessage.GetCustomMsgType(), OnAction);
+        server.RegisterHandler(MovementTargetPositionMessage.GetCustomMsgType(), OnMovementTargetPosition);
+        server.RegisterHandler(HeadRotationMessage.GetCustomMsgType(), OnHeadRotation);
 
         server.Listen(serverPort);
     }
@@ -63,7 +63,7 @@ public class MessageServer : MonoBehaviour
     void OnConnect(NetworkMessage netMsg)
     {
         clientConnection = netMsg.conn;
-        gameState.value = Constants.READY_TUTORIAL;
+        gameState.value = GameState.ReadyTutorial;//Might need to be changed when doing reconnection
     }
 
     void OnDisconnect(NetworkMessage netMsg)
@@ -95,7 +95,7 @@ public class MessageServer : MonoBehaviour
         DirectiveMessage directiveMsg = new DirectiveMessage();
         directiveMsg.directiveId = directive.value;
 
-        clientConnection.Send(CustomMsgType.Directive, directiveMsg);
+        clientConnection.Send(directiveMsg.GetMsgType(), directiveMsg);
     }
 
 }

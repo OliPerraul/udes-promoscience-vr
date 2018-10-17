@@ -25,7 +25,7 @@ public class PairingClient : MonoBehaviour
         client = new NetworkClient();
         client.RegisterHandler(MsgType.Connect, OnConnect);
         client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        client.RegisterHandler(CustomMsgType.PairingResult, OnPairingResult);
+        client.RegisterHandler(PairingResultMessage.GetCustomMsgType(), OnPairingResult);
 
         client.Connect(serverIpAdress.value, serverPort);
     }
@@ -69,16 +69,16 @@ public class PairingClient : MonoBehaviour
 
         string deviceName = SystemInfo.deviceModel;
 
-        if (deviceType.value == Constants.DEVICE_TABLET)
+        if (deviceType.value == DeviceType.Tablet)
         {
-            pairingRequestMsg.deviceType = Constants.DEVICE_TABLET;
+            pairingRequestMsg.deviceType = DeviceType.Tablet;
         }
-        else if (deviceType.value == Constants.DEVICE_HEADSET)
+        else if (deviceType.value == DeviceType.Headset)
         {
-            pairingRequestMsg.deviceType = Constants.DEVICE_HEADSET;
+            pairingRequestMsg.deviceType = DeviceType.Headset;
         }
 
-        client.Send(CustomMsgType.PairingRequest, pairingRequestMsg);
+        client.Send(pairingRequestMsg.GetMsgType(), pairingRequestMsg);
     }
 
 }

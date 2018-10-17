@@ -7,121 +7,121 @@ using UnityEngine.Networking;
 public class Player : NetworkBehaviour
 {
     public string deviceUniqueIdentifier = "";
+    string deviceName = "";
 
     #region Server
 
-    string mDeviceName = "";
-    string mTeamName = "";
-    Color mTeamColor = Color.white;
-    int mPlayerStatus = 0;
-    int mPlayerAction;
+    string serverTeamName = "";
+    Color serverTeamColor = Color.white;
+    GameState serverPlayerGameState = 0;
+    int serverPlayerAction;
 
-    public int sDeviceType = -1;
-    public int sAlgorithmId;
-    public int sTeamId;
-    public int sCourseId;
-    public int sLabyrinthId;
+    public DeviceType serverDeviceType = DeviceType.NoType;
+    public int serverAlgorithmId;
+    public int serverTeamId;
+    public int serverCourseId;
+    public int serverLabyrinthId;
 
-    public string sDeviceName
+    public string ServerDeviceName
     {
         get
         {
-            return mDeviceName;
+            return deviceName;
         }
         set
         {
-            mDeviceName = value;
+            deviceName = value;
             OnDeviceNameChanged();
         }
     }
 
-    public string sTeamName
+    public string ServerTeamName
     {
         get
         {
-            return mTeamName;
+            return serverTeamName;
         }
         set
         {
-            mTeamName = value;
+            serverTeamName = value;
             OnTeamNameChanged();
         }
     }
 
-    public Color sTeamColor
+    public Color ServerTeamColor
     {
         get
         {
-            return mTeamColor;
+            return serverTeamColor;
         }
         set
         {
-            mTeamColor = value;
+            serverTeamColor = value;
             OnTeamColorChanged();
         }
     }
 
-    public int sPlayerStatus
+    public GameState ServerPlayerGameState
     {
         get
         {
-            return mPlayerStatus;
+            return serverPlayerGameState;
         }
         set
         {
-            mPlayerStatus = value;
+            serverPlayerGameState = value;
             OnPlayerStatusChanged();
         }
     }
 
-    public int sPlayerAction
+    public int ServerPlayerAction
     {
         get
         {
-            return mPlayerAction;
+            return serverPlayerAction;
         }
         set
         {
-            mPlayerAction = value;
-            sPlayerActionChangedEvent();
+            serverPlayerAction = value;
+            serverPlayerActionChangedEvent();
         }
     }
 
-    public Action sDeviceNameChangedEvent;
-    public Action sTeamNameChangedEvent;
-    public Action sTeamColorChangedEvent;
-    public Action sPlayerStatusChangedEvent;
-    public Action sPlayerActionChangedEvent;
+    public Action serverDeviceNameChangedEvent;
+    public Action serverTeamNameChangedEvent;
+    public Action serverTeamColorChangedEvent;
+    public Action serverPlayerStatusChangedEvent;
+    public Action serverPlayerActionChangedEvent;
 
     void OnDeviceNameChanged()
     {
-        if (sDeviceNameChangedEvent != null)
+        if (serverDeviceNameChangedEvent != null)
         {
-            sDeviceNameChangedEvent();
+            serverDeviceNameChangedEvent();
         }
     }
 
     void OnTeamNameChanged()
     {
-        if (sTeamNameChangedEvent != null)
+        if (serverTeamNameChangedEvent != null)
         {
-            sTeamNameChangedEvent();
+            serverTeamNameChangedEvent();
         }
     }
 
     void OnTeamColorChanged()
     {
-        if (sTeamColorChangedEvent != null)
+        if (serverTeamColorChangedEvent != null)
         {
-            sTeamColorChangedEvent();
+            serverTeamColorChangedEvent();
         }
     }
 
     void OnPlayerStatusChanged()
     {
-        if (sPlayerStatusChangedEvent != null)
+        if (serverPlayerStatusChangedEvent != null)
         {
-            sPlayerStatusChangedEvent();
+            serverPlayerStatusChangedEvent();
         }
     }
 
@@ -139,7 +139,7 @@ public class Player : NetworkBehaviour
     ScriptableDeviceType deviceType;
 
     [SerializeField]
-    ScriptableInteger gameState;
+    ScriptableGameState gameState;
 
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
@@ -160,30 +160,30 @@ public class Player : NetworkBehaviour
     void ClientInitialize()
     {
         deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
-        sDeviceName = SystemInfo.deviceModel;
+        ServerDeviceName = SystemInfo.deviceModel;
 
-        if (deviceType.value == Constants.DEVICE_TABLET)
+        if (deviceType.value == DeviceType.Tablet)
         {
             action.valueChangedEvent += SendCmdPlayerAction;
         }
 
         CmdSetDeviceType(deviceType.value);
-        CmdSetDeviceName(sDeviceName);
+        CmdSetDeviceName(ServerDeviceName);
         CmdSetUniqueIdentifier(deviceUniqueIdentifier);
 
-        gameState.value = Constants.PAIRING;
+        gameState.value = GameState.Pairing;
     }
 
     [Client]
     void SendCmdPlayerGameState()
     {
-        CmdSetPlayerStatus(gameState.value);
+        CmdSetPlayerGameState(gameState.value);
     }
 
     [Client]
     void SendCmdPlayerAction()
     {
-        if (gameState.value == Constants.PLAYING)
+        if (gameState.value == GameState.Playing)
         {
             CmdSetPlayerAction(action.value);
         }
@@ -194,15 +194,15 @@ public class Player : NetworkBehaviour
     #region Command
 
     [Command]
-    void CmdSetDeviceType(int dType)
+    void CmdSetDeviceType(DeviceType type)
     {
-        sDeviceType = dType;
+        serverDeviceType = type;
     }
 
     [Command]
     void CmdSetDeviceName(string dName)
     {
-        sDeviceName = dName;
+        ServerDeviceName = dName;
     }
 
     [Command]
@@ -212,15 +212,15 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSetPlayerStatus(int id)
+    public void CmdSetPlayerGameState(GameState state)
     {
-        sPlayerStatus = id;
+        ServerPlayerGameState = state;
     }
 
     [Command]
     public void CmdSetPlayerAction(int actionId)
     {
-        sPlayerAction = actionId;
+        ServerPlayerAction = actionId;
     }
 
     #endregion
@@ -228,16 +228,16 @@ public class Player : NetworkBehaviour
     #region TargetRpc
 
     [TargetRpc]
-    public void TargetSetPlayerStatus(NetworkConnection target, int id)
+    public void TargetSetGameState(NetworkConnection target, GameState state)
     {
-        sPlayerStatus = id;
+        ServerPlayerGameState = state;
     }
 
     [TargetRpc]
     public void TargetSetPairedIpAdress(NetworkConnection target, string ipAdress)
     {
         pairedIpAdress.value = ipAdress;
-        gameState.value = Constants.PAIRED;
+        gameState.value = GameState.Paired;
     }
 
     [TargetRpc]
@@ -247,17 +247,17 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetSetGame(NetworkConnection target, int[] data, int sizeX,int sizeY, int labyrinthId)
+    public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId)
     {
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
 
         if(algorithmId.value == Constants.TUTORIAL_ALGORITH)
         {
-            gameState.value = Constants.READY_TUTORIAL;
+            gameState.value = GameState.ReadyTutorial;
         }
         else
         {
-            gameState.value = Constants.LABYRITH_READY;
+            gameState.value = GameState.LabyrithReady;
         }
     }
     #endregion

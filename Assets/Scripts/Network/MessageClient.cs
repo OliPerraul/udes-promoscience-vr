@@ -12,7 +12,7 @@ public class MessageClient : MonoBehaviour
     ScriptableInteger directive;
 
     [SerializeField]
-    ScriptableInteger gameState;
+    ScriptableGameState gameState;
 
     [SerializeField]
     ScriptableVector3 headRotation;
@@ -37,7 +37,7 @@ public class MessageClient : MonoBehaviour
         client = new NetworkClient();
         client.RegisterHandler(MsgType.Connect, OnConnect);
         client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        client.RegisterHandler(CustomMsgType.Directive, OnDirective);
+        client.RegisterHandler(DirectiveMessage.GetCustomMsgType(), OnDirective);
 
         client.Connect(pairedIpAdress.value, serverPort);
     }
@@ -50,11 +50,11 @@ public class MessageClient : MonoBehaviour
 
     void OnConnect(NetworkMessage netMsg)
     {
-        gameState.value = Constants.READY_TUTORIAL;
+        gameState.value = GameState.ReadyTutorial;
 
         action.valueChangedEvent += SendAction;
-        movementTargetPosition.valueChangedEvent += SendMovementTargetPosition;
-        headRotation.valueChangedEvent += SendHeadRotation;
+        movementTargetPosition.valueChangedEvent += SendMovementTargetPosition;//to be removed
+        headRotation.valueChangedEvent += SendHeadRotation;//to be removed
     }
 
     void OnDisconnect(NetworkMessage netMsg)
@@ -70,10 +70,10 @@ public class MessageClient : MonoBehaviour
 
     public void SendMovementTargetPosition()
     {
-        MovementTargetPositionMessage actionMsg = new MovementTargetPositionMessage();
-        actionMsg.targetPosition = movementTargetPosition.value;
+        MovementTargetPositionMessage movementTargetPositionMsg = new MovementTargetPositionMessage();
+        movementTargetPositionMsg.targetPosition = movementTargetPosition.value;
 
-        client.Send(CustomMsgType.MovementTargetPosition, actionMsg);
+        client.Send(movementTargetPositionMsg.GetMsgType(), movementTargetPositionMsg);
     }
 
     public void SendAction()
@@ -81,7 +81,7 @@ public class MessageClient : MonoBehaviour
         ActionMessage actionMsg = new ActionMessage();
         actionMsg.actionId = action.value;
 
-        client.Send(CustomMsgType.Action, actionMsg);
+        client.Send(actionMsg.GetMsgType(), actionMsg);
     }
 
     public void SendHeadRotation()
@@ -89,6 +89,6 @@ public class MessageClient : MonoBehaviour
         HeadRotationMessage headRotationMsg = new HeadRotationMessage();
         headRotationMsg.rotation = headRotation.value;
 
-        client.Send(CustomMsgType.HeadRotation, headRotationMsg);
+        client.Send(headRotationMsg.GetMsgType(), headRotationMsg);
     }
 }

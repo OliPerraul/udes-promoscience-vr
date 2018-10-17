@@ -6,7 +6,7 @@ public class AlgorithmDisplay : MonoBehaviour
 {
 
     [SerializeField]
-    ScriptableInteger currentGameState;
+    ScriptableGameState gameState;
 
     [SerializeField]
     RightHandAlgorithm rightHandAlgorithm;
@@ -32,13 +32,13 @@ public class AlgorithmDisplay : MonoBehaviour
 
     void Start()
     {
-        currentGameState.valueChangedEvent += OnGameStateChanged;
+        gameState.valueChangedEvent += OnGameStateChanged;
     }
 
 
     void OnGameStateChanged()
     {
-        if (currentGameState.value == Constants.PLAYING_TUTORIAL || currentGameState.value == Constants.PLAYING)
+        if (gameState.value == GameState.PlayingTutorial || gameState.value == GameState.Playing)
         {
             GenerateVisualForAlgorithmWithId(Constants.STANDARD_ALGORITH);
         }

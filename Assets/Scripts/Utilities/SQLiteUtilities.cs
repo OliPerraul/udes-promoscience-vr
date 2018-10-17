@@ -69,7 +69,6 @@ public static class SQLiteUtilities
 
         if (!System.IO.File.Exists(dbPath))
         {
-            Debug.Log("Database doesn't exist, creating it");
             CreateDatabase();
             InsertBasicLabyrinths();
         }
@@ -222,6 +221,7 @@ public static class SQLiteUtilities
     public static void InsertOrReplaceLabyrinth(int id, int sizeX, int sizeY, int[] data)
     {
         CreateDatabaseIfItDoesntExist();
+
         string specs = sizeX + " " + sizeY;
          
         for (int i = 0; i < sizeX * sizeY; i++)
@@ -243,7 +243,7 @@ public static class SQLiteUtilities
         }
     }
 
-    public static void SetLabyrintheDataWithId(int id, ref int sizeX, ref int sizeY, ref int[] data)
+    public static void ReadLabyrinthDataFromId(int id, ref int sizeX, ref int sizeY, ref int[] data)//Modifier pour envoyer le labyrinth en référence et le modifier directement (Read labyrinth)
     {
         CreateDatabaseIfItDoesntExist();
 
@@ -282,7 +282,7 @@ public static class SQLiteUtilities
         }
     }
 
-    public static string GetPairing(string id, int deviceType)
+    public static string GetPairing(string id, DeviceType deviceType)
     {
         CreateDatabaseIfItDoesntExist();
 
@@ -295,11 +295,11 @@ public static class SQLiteUtilities
             using (SqliteCommand cmd = conn.CreateCommand())
             {
                 cmd.CommandType = CommandType.Text;
-                if (deviceType == Constants.DEVICE_TABLET)
+                if (deviceType == DeviceType.Tablet)
                 {
                     cmd.CommandText = "SELECT * FROM DevicePairing WHERE TabletID='" + id + "'";
                 }
-                else if(deviceType == Constants.DEVICE_HEADSET)
+                else if(deviceType == DeviceType.Headset)
                 {
                     cmd.CommandText = "SELECT * FROM DevicePairing WHERE HeadsetID='" + id + "'";
                 }
@@ -310,11 +310,11 @@ public static class SQLiteUtilities
                 {
                     while (reader.Read())
                     {
-                        if (deviceType == Constants.DEVICE_TABLET)
+                        if (deviceType == DeviceType.Tablet)
                         {
                             pairedId = reader["HeadsetID"].ToString();
                         }
-                        else if (deviceType == Constants.DEVICE_HEADSET)
+                        else if (deviceType == DeviceType.Headset)
                         {
                             pairedId = reader["TabletID"].ToString();
                         }
@@ -327,7 +327,7 @@ public static class SQLiteUtilities
         return pairedId;
     }
 
-    static void RemovePairing(string id,int deviceType)
+    static void RemovePairing(string id, DeviceType deviceType)
     {
         CreateDatabaseIfItDoesntExist();
 
@@ -340,11 +340,11 @@ public static class SQLiteUtilities
             using (SqliteCommand cmd = conn.CreateCommand())
             {
                 cmd.CommandType = CommandType.Text;
-                if(deviceType == Constants.DEVICE_TABLET)
+                if(deviceType == DeviceType.Tablet)
                 {
                     cmd.CommandText = "DELETE FROM DevicePairing WHERE TabletID='" + id + "'";
                 }
-                else if(deviceType == Constants.DEVICE_HEADSET)
+                else if(deviceType == DeviceType.Headset)
                 {
                     cmd.CommandText = "DELETE FROM DevicePairing WHERE HeadsetID='" + id + "'";
                 }
@@ -359,8 +359,8 @@ public static class SQLiteUtilities
     {
         CreateDatabaseIfItDoesntExist();
 
-        RemovePairing(tabletId, 0);
-        RemovePairing(headsetId, 1);
+        RemovePairing(tabletId, DeviceType.Tablet);
+        RemovePairing(headsetId, DeviceType.Headset);
 
         string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
@@ -396,7 +396,7 @@ public static class SQLiteUtilities
                 cmd.CommandText = "SELECT Count(*) FROM Team WHERE TeamID='" + teamId + "'";
                 cmd.ExecuteNonQuery();
 
-                using (SqliteDataReader reader = cmd.ExecuteReader())
+                using (SqliteDataReader reader = cmd.ExecuteReader())//Changer dans une function
                 {
                     if (reader.Read())
                     {
@@ -417,7 +417,7 @@ public static class SQLiteUtilities
                     + "' AND NoAlgo='" + algorithmId + "'";
                 cmd.ExecuteNonQuery();
 
-                using (SqliteDataReader reader = cmd.ExecuteReader())
+                using (SqliteDataReader reader = cmd.ExecuteReader())//Changer dans une function
                 {
                     if (reader.Read())
                     {
@@ -438,7 +438,7 @@ public static class SQLiteUtilities
         }
     }
 
-    public static int GetNextTeamID()
+    public static int GetNextTeamID()//Retravailler
     {
         int teamId = 0;
         string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -489,7 +489,7 @@ public static class SQLiteUtilities
         return teamId;
     }
 
-    public static int GetNextCourseID()
+    public static int GetNextCourseID()//Encasuler dans une fonction avec paramètres
     {
         int courseId = 0;
         string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -542,7 +542,7 @@ public static class SQLiteUtilities
         return courseId;
     }
 
-    static void InsertBasicLabyrinths()
+    static void InsertBasicLabyrinths()//Lire d'une string
     {
         //Labyrinth 1
         int id = 1;

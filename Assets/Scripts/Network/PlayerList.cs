@@ -40,7 +40,7 @@ public class PlayerList : MonoBehaviour
         Destroy(p);
     }
 
-    public Player GetPlayerWithId(int id)
+    public Player GetPlayerWithId(int id)//Unsign int pour eviter problème
     {
         if(id < 0 || id >= list.Count)
         {
@@ -54,12 +54,6 @@ public class PlayerList : MonoBehaviour
 
     public int GetLastPlayerId()
     {
-        if (list.Count == 0)
-        {
-            //Exeption out of range
-            Debug.Log("GetLastPlayer Out of range! No player in list");
-            return -1;
-        }
         return list.Count-1;
     }
 

@@ -19,7 +19,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
     [SerializeField]
     Transform cameraTransform;
 
-    List<int> actionsList = new List<int>();
+    List<int> actionsList = new List<int>();//Queue
 
     bool isChainingMovement = false;
     bool isMoving = false;
@@ -27,7 +27,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
     bool isTurningRight = false;
 
     readonly int[] xByDirection = { 0, 1, 0, -1 };
-    readonly int[] yByDirection = { -1, 0, 1, 0 };
+    readonly int[] yByDirection = { 1, 0, -1, 0 };
 
     float lerpValue = 0;
     float moveSpeed = 0;
@@ -138,8 +138,8 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                                 trajectory.eulerAngles += new Vector3(0, -90, 0);
                                 fromRotation = targetRotation;
                                 targetRotation = fromRotation * trajectory;
+
                                 forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
-                                action.value = Constants.ACTION_TURN_LEFT;
                                 lerpValue = 1 - lerpValue;
                                 isTurningLeft = true;
                                 isTurningRight = false;
@@ -176,8 +176,8 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                                 trajectory.eulerAngles += new Vector3(0, 90, 0);
                                 fromRotation = targetRotation;
                                 targetRotation = fromRotation * trajectory;
+
                                 forwardDirection.value = (forwardDirection.value + 1) % 4;
-                                action.value = Constants.ACTION_TURN_RIGHT;
                                 lerpValue = 1 - lerpValue;
                                 isTurningLeft = false;
                                 isTurningRight = true;
@@ -201,7 +201,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
 
             if (isMoving)
             {
-                float xi = ((moveSpeed * moveSpeed) / (2 * -1 * Constants.MOVEMENT_ACCELERATION)) + 1;
+                float xi = ((moveSpeed * moveSpeed) / (-2 * Constants.MOVEMENT_ACCELERATION)) + 1;
 
                 if (isChainingMovement)
                 {
@@ -218,7 +218,8 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                         isChainingMovement = false;
                         lerpValue = lerpValue - 1;
 
-                        RequestMovementInDirection(forwardDirection.value);
+                        fromPosition = cameraTransform.position;
+                        targetPosition = fromPosition + (new Vector3(xByDirection[forwardDirection.value] * Constants.TILE_SIZE, 0, yByDirection[forwardDirection.value] * Constants.TILE_SIZE));
 
                         cameraTransform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                     }
@@ -237,7 +238,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
             }
             else if (isTurningLeft || isTurningRight)
             {
-                float xi = ((turnSpeed * turnSpeed) / (2 * -1 * Constants.TURNING_ACCELERATION)) + 1;
+                float xi = ((turnSpeed * turnSpeed) / (-2 * Constants.TURNING_ACCELERATION)) + 1;
 
                 if (isChainingMovement)
                 {
@@ -246,6 +247,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
 
                 turnSpeed = xi < lerpValue ? turnSpeed - (Time.deltaTime * Constants.TURNING_ACCELERATION) : turnSpeed + (Time.deltaTime * Constants.TURNING_ACCELERATION);
                 lerpValue += Time.deltaTime * turnSpeed;
+
                 if (lerpValue >= 1)
                 {
                     if (isChainingMovement)
@@ -261,7 +263,6 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             targetRotation = targetRotation * trajectory;
 
                             forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
-                            action.value = Constants.ACTION_TURN_LEFT;
                         }
                         else if (isTurningRight)
                         {
@@ -271,7 +272,6 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             targetRotation = targetRotation * trajectory;
 
                             forwardDirection.value = (forwardDirection.value + 1) % 4;
-                            action.value = Constants.ACTION_TURN_RIGHT;
                         }
 
                         cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);

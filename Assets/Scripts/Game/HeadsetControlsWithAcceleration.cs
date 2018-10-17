@@ -139,11 +139,11 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
 
             if (isMoving)
             {
-                float xi = ((moveSpeed * moveSpeed)/(2 * -1 * Constants.MOVEMENT_ACCELERATION)) + 1;
+                float xi = ((moveSpeed * moveSpeed)/(-2 * Constants.MOVEMENT_ACCELERATION)) + 1;
 
                 if (isChainingMovement)
                 {
-                    xi++;
+                    xi += 1;
                 }
 
                 moveSpeed = xi < lerpValue ? moveSpeed - (Time.deltaTime * Constants.MOVEMENT_ACCELERATION) : moveSpeed + (Time.deltaTime * Constants.MOVEMENT_ACCELERATION);
@@ -175,7 +175,7 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
             }
             else if (isTurningLeft || isTurningRight)
             {
-                float xi = ((turnSpeed * turnSpeed) / (2 * -1 * Constants.TURNING_ACCELERATION)) + 1;
+                float xi = ((turnSpeed * turnSpeed) / ( -2 * Constants.TURNING_ACCELERATION)) + 1;
 
                 if(isChainingMovement)
                 {
@@ -184,6 +184,7 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
 
                 turnSpeed = xi < lerpValue ? turnSpeed - (Time.deltaTime * Constants.TURNING_ACCELERATION) : turnSpeed + (Time.deltaTime * Constants.TURNING_ACCELERATION);
                 lerpValue += Time.deltaTime * turnSpeed;
+
                 if (lerpValue >= 1)
                 {
                     if (isChainingMovement)
@@ -236,7 +237,7 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
         if (CheckIfMovementIsValidInDirectionFromPosition(direction, cameraTransform.position))
         {
             fromPosition = cameraTransform.position;
-            targetPosition = fromPosition + (new Vector3(xByDirection[direction] * Constants.TILE_SIZE, 0, yByDirection[direction] * Constants.TILE_SIZE));
+            targetPosition = fromPosition + (new Vector3(xByDirection[direction] * Constants.TILE_SIZE, 0, -yByDirection[direction] * Constants.TILE_SIZE));
 
             if (direction == 0)
             {

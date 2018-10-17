@@ -3,24 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+public enum GameState : int
+{
+    NotReady = 0,
+    Pairing = 1,
+    NoAssociatedPair = 2,
+    Paired = 3,
+    Ready = 4,
+    ReadyTutorial = 5,
+    LabyrithReady = 6,
+    TutorialLabyrinthReady = 7,
+    PlayingTutorial = 8,
+    Playing = 9,
+    WaitingForNextRound = 10
+}
+
+public enum DeviceType : int
+{
+    Tablet = 1,
+    Headset = 2,
+    NoType = 0
+}
+
+public enum Directive
+{
+    TurnRight,
+    TurnLeft,
+    MoveFoward,
+    UTurn,
+    Stop
+}
+
+public enum FloorColor : int
+{
+    Grey = 0,
+    Yellow = 1,
+    Red = 2,
+    NoColor = 3
+}
+
 static class Constants
 {
-    //Game states and player status
-    public const int NOT_READY = 0;
-    public const int PAIRING = 1;
-    public const int NO_ASSOCIATED_PAIR = 2;
-    public const int PAIRED = 3;
-    public const int READY = 4;
-    public const int READY_TUTORIAL = 5;
-    public const int LABYRITH_READY = 6;
-    public const int TUTORIAL_LABYRITH_READY = 7;
-    public const int PLAYING_TUTORIAL = 8;
-    public const int PLAYING = 9;
-    public const int WAITING_FOR_NEXT_ROUND = 10;
-
-    //Device types
-    public const int DEVICE_TABLET = 0;
-    public const int DEVICE_HEADSET = 1;
 
     //Algorith identifier
     public const int TUTORIAL_ALGORITH = 0;
@@ -59,6 +82,7 @@ static class Constants
     public const int TILE_END_END_ID = 199;
 
     //Directives
+
     public const int DIRECTIVE_TURN_RIGHT = 0;
     public const int DIRECTIVE_TURN_LEFT = 1;
     public const int DIRECTIVE_MOVE_FOWARD = 2;
@@ -74,10 +98,5 @@ static class Constants
     public const int ACTION_TURN_RIGHT = 5;
     public const int ACTION_PAINT_FLOOR = 6;
     public const int ACTION_DISTANCE_SCANNER = 7;
-
-    //Tile color ids
-    public const int GREY_COLOR_ID = 0;
-    public const int YELLOW_COLOR_ID = 1;
-    public const int RED_COLOR_ID = 2;
 
 }

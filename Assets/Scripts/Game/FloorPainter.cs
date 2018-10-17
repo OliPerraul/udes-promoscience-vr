@@ -16,47 +16,47 @@ public class FloorPainter : MonoBehaviour
     [SerializeField]
     Material redMaterial;
 
-    int currentColorId = 0;
+    FloorColor floorColor = FloorColor.Grey;
 
-    public int GetFloorColorId()
+    public FloorColor GetFloorColorId()
     {
-        return currentColorId;
+        return floorColor;
     }
 
     public void PaintFloor()
     {
-        if (currentColorId == Constants.GREY_COLOR_ID)
+        if (floorColor == FloorColor.Grey)
         {
-            currentColorId = Constants.YELLOW_COLOR_ID;
+            floorColor = FloorColor.Yellow;
             meshRenderer.material = yellowMaterial;
         }
-        else if (currentColorId == Constants.YELLOW_COLOR_ID)
+        else if (floorColor == FloorColor.Yellow)
         {
-            currentColorId = Constants.RED_COLOR_ID;
+            floorColor = FloorColor.Red;
             meshRenderer.material = redMaterial;
         }
-        else if (currentColorId == Constants.RED_COLOR_ID)
+        else if (floorColor == FloorColor.Red)
         {
-            currentColorId = Constants.GREY_COLOR_ID;
+            floorColor = FloorColor.Grey;
             meshRenderer.material = greyMaterial;
         }
     }
 
     public void PaintFloorWithColorId(int id)
     {
-        if (id == Constants.GREY_COLOR_ID)
+        if (id == (int) FloorColor.Grey)
         {
-            currentColorId = id;
+            floorColor = FloorColor.Grey;
             meshRenderer.material = greyMaterial;
         }
-        else if (id == Constants.YELLOW_COLOR_ID)
+        else if (id == (int) FloorColor.Yellow)
         {
-            currentColorId = id;
+            floorColor = FloorColor.Yellow;
             meshRenderer.material = yellowMaterial;
         }
-        else if (id == Constants.RED_COLOR_ID)
+        else if (id == (int) FloorColor.Red)
         {
-            currentColorId = id;
+            floorColor = FloorColor.Red;
             meshRenderer.material = redMaterial;
         }
     }

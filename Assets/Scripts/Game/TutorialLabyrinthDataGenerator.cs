@@ -5,7 +5,7 @@ using UnityEngine;
 public class TutorialLabyrinthDataGenerator : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger gameState;
+    ScriptableGameState gameState;
 
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
@@ -20,10 +20,10 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
 
     void OnGameStateChanged()
     {
-        if (gameState.value == Constants.READY_TUTORIAL)
+        if (gameState.value == GameState.ReadyTutorial)
         {
             GenerateTutorialLabyrinthData();
-            gameState.value = Constants.TUTORIAL_LABYRITH_READY;
+            gameState.value = GameState.TutorialLabyrinthReady;
         }
     }
 

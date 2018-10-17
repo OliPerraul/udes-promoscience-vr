@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//To be deleted
 [CreateAssetMenu(fileName = "Data", menuName = "Data/PlayerList", order = 1)]
 public class ScriptablePlayerList : ScriptableObject
 {

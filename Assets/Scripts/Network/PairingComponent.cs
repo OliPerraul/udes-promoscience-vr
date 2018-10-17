@@ -18,7 +18,7 @@ public class PairingComponent : NetworkBehaviour
         if (isServer)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            player.sPlayerStatusChangedEvent += StartPairingDevice;
+            player.serverPlayerStatusChangedEvent += StartPairingDevice;
 #endif
         }
         else
@@ -31,14 +31,14 @@ public class PairingComponent : NetworkBehaviour
 
     void StartPairingDevice()
     {
-        if (player.sPlayerStatus == Constants.PAIRING)
+        if (player.ServerPlayerGameState == GameState.Pairing)
         {
-            pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.sDeviceType);
+            pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.serverDeviceType);
 
             if(pairedId == null)
             {
-                player.sPlayerStatus = Constants.NO_ASSOCIATED_PAIR;
-                player.TargetSetPlayerStatus(player.connectionToClient ,Constants.NO_ASSOCIATED_PAIR);
+                player.ServerPlayerGameState = GameState.NoAssociatedPair;
+                player.TargetSetGameState(player.connectionToClient , GameState.NoAssociatedPair);
             }
             else
             {
@@ -55,7 +55,7 @@ public class PairingComponent : NetworkBehaviour
         {
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
-                otherPlayer = PlayerList.instance.GetPlayerWithId(i);//Could be optimised to only look for unpared player?
+                otherPlayer = PlayerList.instance.GetPlayerWithId(i);//Could be optimised to only look for unpared player? et pourrait être selement la tablette qui cherche le paire (vérifier reconnection ?)
 
                 if (pairedId == otherPlayer.deviceUniqueIdentifier)
                 {
@@ -68,19 +68,19 @@ public class PairingComponent : NetworkBehaviour
 
         player.TargetSetPairedIpAdress(player.connectionToClient, pairedIpAdress);
 
-        if(player.sDeviceType == Constants.DEVICE_TABLET)
+        if(player.serverDeviceType == DeviceType.Tablet)
         {
             ScriptableTeam scriptableTeam = teamList.GetScriptableTeam();
             int teamId = SQLiteUtilities.GetNextTeamID();
 
-            player.sTeamName = scriptableTeam.teamName;
-            player.sTeamColor = scriptableTeam.teamColor;
-            player.sAlgorithmId = (scriptableTeam.teamId % 3) + 1;
-            player.sTeamId = teamId;
-            otherPlayer.sTeamName = scriptableTeam.teamName;
-            otherPlayer.sTeamColor = scriptableTeam.teamColor;
-            otherPlayer.sAlgorithmId = player.sAlgorithmId;
-            otherPlayer.sTeamId = teamId;
+            player.ServerTeamName = scriptableTeam.teamName;
+            player.ServerTeamColor = scriptableTeam.teamColor;
+            player.serverAlgorithmId = (scriptableTeam.teamId % 3) + 1;
+            player.serverTeamId = teamId;
+            otherPlayer.ServerTeamName = scriptableTeam.teamName;
+            otherPlayer.ServerTeamColor = scriptableTeam.teamColor;
+            otherPlayer.serverAlgorithmId = player.serverAlgorithmId;
+            otherPlayer.serverTeamId = teamId;
         }
     }
 #endif

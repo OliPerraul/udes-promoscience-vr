@@ -33,7 +33,7 @@ public class PairingServer : MonoBehaviour
         server = new NetworkServerSimple();
         server.RegisterHandler(MsgType.Connect, OnConnect);
         server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        server.RegisterHandler(CustomMsgType.PairingRequest, OnPairingRequest);
+        server.RegisterHandler(PairingRequestMessage.GetCustomMsgType(), OnPairingRequest);
 
         server.Listen(serverPort);
     }
@@ -46,7 +46,6 @@ public class PairingServer : MonoBehaviour
 
     void OnConnect(NetworkMessage netMsg)
     {
-        Debug.Log("Pairing Client connect");//to be deleted
         clientConnectionList.Add(netMsg.conn);
     }
 
@@ -68,18 +67,16 @@ public class PairingServer : MonoBehaviour
     void OnPairingRequest(NetworkMessage netMsg)
     {
         PairingRequestMessage msg = netMsg.ReadMessage<PairingRequestMessage>();
-        if(msg.deviceType == Constants.DEVICE_TABLET && tabletId == null)
+        if(msg.deviceType == DeviceType.Tablet && tabletId == null)
         {
             tabletId = msg.deviceId;
             tabletConnection = netMsg.conn;
-            Debug.Log("Pairing request tablet!");//to be deleted
             Pairing();
         }
-        else if (msg.deviceType == Constants.DEVICE_HEADSET && headsetId == null)
+        else if (msg.deviceType == DeviceType.Headset && headsetId == null)
         {
             headsetId = msg.deviceId;
             headsetConnection = netMsg.conn;
-            Debug.Log("Pairing request headset!");//to be deleted
             Pairing();
         }
         else
@@ -96,7 +93,6 @@ public class PairingServer : MonoBehaviour
             SQLiteUtilities.InsertPairing(tabletId, headsetId);
 #endif
             SendPairingResult(true, "Pairing was a success!");
-            Debug.Log("Pairing success!");//to be deleted
         }
     }
 
@@ -106,8 +102,8 @@ public class PairingServer : MonoBehaviour
         pairingResultMsg.isPairingSucess = isPairingSuccess;
         pairingResultMsg.message = message;
 
-        tabletConnection.Send(CustomMsgType.PairingResult, pairingResultMsg);
-        headsetConnection.Send(CustomMsgType.PairingResult, pairingResultMsg);
+        tabletConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
+        headsetConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
     }
 
     public void SendTargetPairingResult(NetworkConnection target, bool isPairingSuccess,string message)
@@ -116,7 +112,7 @@ public class PairingServer : MonoBehaviour
         pairingResultMsg.isPairingSucess = isPairingSuccess;
         pairingResultMsg.message = message;
 
-        target.Send(CustomMsgType.PairingResult, pairingResultMsg);
+        target.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
     }
 
 }

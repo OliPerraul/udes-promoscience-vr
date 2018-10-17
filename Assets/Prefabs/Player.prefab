@@ -112,10 +112,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deviceUniqueIdentifier: 
-  sDeviceType: 0
-  deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
-  pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
-  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
-  algorithmId: {fileID: 11400000, guid: 4dcb39e3bf716b84b9e995d8c5e8b985, type: 2}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  serverDeviceType: 2
+  serverAlgorithmId: 0
+  serverTeamId: 0
+  serverCourseId: 0
+  serverLabyrinthId: 0
   action: {fileID: 11400000, guid: 29454a3e14ca9fc46ad4fa243ef8f076, type: 2}
+  algorithmId: {fileID: 11400000, guid: 4dcb39e3bf716b84b9e995d8c5e8b985, type: 2}
+  deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}

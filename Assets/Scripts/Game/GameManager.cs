@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     ScriptableControler controls;
 
     [SerializeField]
-    ScriptableInteger gameState;
+    ScriptableGameState gameState;
 
     [SerializeField]
     ScriptableBoolean isEndReached;
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     //Game manager could be remove and instead add a status preparing for game and have the module that need it listen to status
     public void OnGameStateChanged()
     {
-        if (gameState.value == Constants.PLAYING_TUTORIAL)
+        if (gameState.value == GameState.Playing || gameState.value == GameState.PlayingTutorial)
         {
             if (controls != null)
             {
@@ -66,32 +66,8 @@ public class GameManager : MonoBehaviour
                 controls.isControlsEnabled = true;
             }
         }
-        else if (gameState.value == Constants.PLAYING)
+        else if (gameState.value == GameState.WaitingForNextRound)
         {
-            if (controls != null)
-            {
-                controls.StopAllMovement();
-                controls.ResetPositionAndRotation();
-            }
-
-            if (labyrinthRoom != null)
-            {
-                labyrinthRoom.GetComponent<Animation>().Play();
-            }
-
-            if (lobby != null)
-            {
-                lobby.SetActive(false);
-            }
-
-            if (controls != null)
-            {
-                controls.isControlsEnabled = true;
-            }
-        }
-        else if (gameState.value == Constants.WAITING_FOR_NEXT_ROUND)
-        {
-
 
         }
     }
@@ -100,7 +76,7 @@ public class GameManager : MonoBehaviour
     {
         if(isEndReached.value)
         {
-            if(gameState.value == Constants.PLAYING_TUTORIAL)
+            if(gameState.value == GameState.PlayingTutorial)
             {
                 controls.isControlsEnabled = false;
                 controls.StopAllMovement();
@@ -109,7 +85,7 @@ public class GameManager : MonoBehaviour
 
                 labyrinthRoom.transform.position = new Vector3(0, 0, 0);
 
-                gameState.value = Constants.TUTORIAL_LABYRITH_READY;
+                gameState.value = GameState.TutorialLabyrinthReady;
             }
             else
             {
@@ -126,7 +102,7 @@ public class GameManager : MonoBehaviour
                     lobby.SetActive(true);
                 }
 
-                gameState.value = Constants.WAITING_FOR_NEXT_ROUND;
+                gameState.value = GameState.WaitingForNextRound;
             }
         }
     }
