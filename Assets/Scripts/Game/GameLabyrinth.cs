@@ -199,9 +199,9 @@ public class GameLabyrinth : MonoBehaviour
         return GetIsTileWalkable(tile.x, tile.y);
     }
 
-    public FloorColor GetTileColorId(Vector2Int tile)
+    public TileColor GetTileColorId(Vector2Int tile)
     {
-        FloorColor colorId = FloorColor.NoColor;
+        TileColor colorId = TileColor.NoColor;
         FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();
         if (floorPainter != null)
         {

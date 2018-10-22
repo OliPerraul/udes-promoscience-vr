@@ -51,6 +51,7 @@ public class AlgorithmRespect : MonoBehaviour
     //Steps the two first value are the map position and the third value is the tile color value
     List<Vector3Int> algorithmSteps = new List<Vector3Int>();
     List<Vector3Int> playerSteps = new List<Vector3Int>();
+    List<Vector3Int> wrongColorTilesWhenDiverging = new List<Vector3Int>();
 
     void Start()
     {
@@ -74,7 +75,7 @@ public class AlgorithmRespect : MonoBehaviour
                     {
                         isDiverging.value = true;
                         errorCounter++;
-                        algorithmRespect.value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude);
+                        algorithmRespect.value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
                     }
                     else
                     {
@@ -86,12 +87,25 @@ public class AlgorithmRespect : MonoBehaviour
                 {
                     if (labyrinthPosition.x == playerSteps[playerSteps.Count - 1].x && labyrinthPosition.y == playerSteps[playerSteps.Count - 1].y)
                     {
-                        isDiverging.value = false;
-                        algorithmRespect.value = 1.0f;
+                        if(wrongColorTilesWhenDiverging.Count == 0)
+                        {
+                            isDiverging.value = false;
+                            algorithmRespect.value = 1.0f;
+                        }
+                        else if(wrongColorTilesWhenDiverging.Count == 1 && wrongColorTilesWhenDiverging[0].x == labyrinthPosition.x && wrongColorTilesWhenDiverging[0].y == labyrinthPosition.y)
+                        {
+                            wrongColorTilesWhenDiverging.RemoveAt(0);
+                            isDiverging.value = false;
+                            algorithmRespect.value = 1.0f;
+                        }
+                        else
+                        {
+                            algorithmRespect.value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+                        }
                     }
                     else
                     {
-                        algorithmRespect.value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude);
+                        algorithmRespect.value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
                     }
                 }
 
@@ -119,6 +133,7 @@ public class AlgorithmRespect : MonoBehaviour
             }
                
             playerSteps.Clear();
+            wrongColorTilesWhenDiverging.Clear();
             currentLabyrinthPosition = labyrinth.GetLabyrithStartPosition();
             playerSteps.Add(new Vector3Int(currentLabyrinthPosition.x, currentLabyrinthPosition.y, (int) labyrinth.GetTileColorId(currentLabyrinthPosition)));
             algorithRespectBar.SetActive(true);
@@ -135,13 +150,39 @@ public class AlgorithmRespect : MonoBehaviour
     {
         if(action.value == Constants.ACTION_PAINT_FLOOR)
         {
-            if(isDiverging)
+            PaintCurrentPositionTile(); //To avoid the fact that we don't know if it was painted before or will be painted right after, we keep the tile painting here instead of in TabletControls
+
+            if (isDiverging.value)
             {
-                //Should keep track of painting when diverging so that they affect algorithmRespect value and so they can be set back to the good color before piking up were the player diverged
+                Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+                int tileColorId = (int)labyrinth.GetTileColorId(labyrinthPosition);
+               
+                for(int i = 0; i < wrongColorTilesWhenDiverging.Count; i++)
+                {
+                    if(labyrinthPosition.x == wrongColorTilesWhenDiverging[i].x && labyrinthPosition.y == wrongColorTilesWhenDiverging[i].y)
+                    {
+                        if (tileColorId == wrongColorTilesWhenDiverging[i].z)
+                        {
+                            wrongColorTilesWhenDiverging.RemoveAt(i);
 
-                //Could add position and color of the tile but we don't know if it was painted before or will be painted right after!!!
+                            if (labyrinthPosition.x == playerSteps[playerSteps.Count - 1].x && labyrinthPosition.y == playerSteps[playerSteps.Count - 1].y && wrongColorTilesWhenDiverging.Count == 0)
+                            {
+                                isDiverging.value = false;
+                                algorithmRespect.value = 1.0f;
+                            }
+                            else
+                            {
+                                algorithmRespect.value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+                            }
+                        }
 
+                        return;
+                    }
+                }
 
+                tileColorId = (tileColorId - 1) < 0 ? 2 : (tileColorId - 1);
+                wrongColorTilesWhenDiverging.Add(new Vector3Int(labyrinthPosition.x, labyrinthPosition.y, tileColorId));
+                algorithmRespect.value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
             }
         }
     }
@@ -166,6 +207,19 @@ public class AlgorithmRespect : MonoBehaviour
         }
     }
 
+    void PaintCurrentPositionTile()
+    {
+        Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+
+        GameObject tile = labyrinth.GetTile(position.x, position.y);
+        FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
+
+        if (floorPainter != null)
+        {
+            floorPainter.PaintFloor();
+        }
+    }
+
     float RespectValueComputation(float x)
     {
         return Mathf.Pow(E, -x/Constants.TILE_SIZE);
@@ -174,6 +228,7 @@ public class AlgorithmRespect : MonoBehaviour
     public void ResetPlayerSteps()
     {
         playerSteps.Clear();
+        wrongColorTilesWhenDiverging.Clear();
         currentLabyrinthPosition = labyrinth.GetLabyrithStartPosition();
         playerSteps.Add(new Vector3Int(currentLabyrinthPosition.x, currentLabyrinthPosition.y, 0));
     }

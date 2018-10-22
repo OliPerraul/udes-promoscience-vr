@@ -29,7 +29,7 @@ public class StandardAlgorithm : MonoBehaviour
 
         int direction = labyrinth.GetStartDirection();
 
-        tileColor = (int) FloorColor.Yellow;
+        tileColor = (int) TileColor.Yellow;
         position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
 
@@ -88,7 +88,7 @@ public class StandardAlgorithm : MonoBehaviour
                     i = algorithmSteps.Count - 2;
                 }
 
-                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, (int) FloorColor.Red);
+                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, (int) TileColor.Red);
 
                 bool isReturnedToLastIntersection = false;
 
@@ -109,7 +109,7 @@ public class StandardAlgorithm : MonoBehaviour
                     }
                     else
                     {
-                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, (int) FloorColor.Red));
+                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, (int) TileColor.Red));
                     }
 
                     i--;

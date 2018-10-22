@@ -34,7 +34,7 @@ public enum Directive
     Stop
 }
 
-public enum FloorColor : int
+public enum TileColor : int
 {
     Grey = 0,
     Yellow = 1,

@@ -22,7 +22,7 @@ public class RightHandAlgorithm : MonoBehaviour
         int direction = labyrinth.GetStartDirection();
         Vector2Int position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
-        algorithmSteps.Add(new Vector3Int(position.x, position.y, (int) FloorColor.Yellow));
+        algorithmSteps.Add(new Vector3Int(position.x, position.y, (int) TileColor.Yellow));
         alreadyVisitedTile[position.x, position.y] = true;
 
         while (!asReachedTheEnd)
@@ -56,7 +56,7 @@ public class RightHandAlgorithm : MonoBehaviour
 
             position.x += xByDirection[direction];
             position.y += yByDirection[direction];
-            int tileColor = alreadyVisitedTile[position.x, position.y] ? (int) FloorColor.Red : (int) FloorColor.Yellow;
+            int tileColor = alreadyVisitedTile[position.x, position.y] ? (int) TileColor.Red : (int) TileColor.Yellow;
 
             algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
 

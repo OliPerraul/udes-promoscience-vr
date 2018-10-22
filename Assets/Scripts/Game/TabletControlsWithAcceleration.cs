@@ -19,7 +19,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
     [SerializeField]
     Transform cameraTransform;
 
-    List<int> actionsList = new List<int>();//Queue
+    Queue<int> actionsList = new Queue<int>();
 
     bool isChainingMovement = false;
     bool isMoving = false;
@@ -43,7 +43,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
     {
         controls.stopAllMovementEvent += StopAllMovement;
         controls.resetPositionAndRotation += ResetPositionAndRotation;
-        action.valueChangedEvent += AddAction;
+        action.valueChangedEvent += OnAction;
 	}
 	
 	
@@ -55,14 +55,14 @@ public class TabletControlsWithAcceleration : MonoBehaviour
             {
                 if (!isTurningLeft && !isTurningRight)
                 {
-                    if (actionsList[0] == Constants.ACTION_MOVE_UP)
+                    if (actionsList.Peek() == Constants.ACTION_MOVE_UP)
                     {
                         if(isMoving)
                         {
                             if(forwardDirection.value == 0)
                             {
                                 isChainingMovement = true;
-                                actionsList.RemoveAt(0);
+                                actionsList.Dequeue();
                             }
                         }
                         else
@@ -72,14 +72,14 @@ public class TabletControlsWithAcceleration : MonoBehaviour
 
 
                     }
-                    else if (actionsList[0] == Constants.ACTION_MOVE_RIGHT)
+                    else if (actionsList.Peek() == Constants.ACTION_MOVE_RIGHT)
                     {
                         if (isMoving)
                         {
                             if (forwardDirection.value == 1)
                             {
                                 isChainingMovement = true;
-                                actionsList.RemoveAt(0);
+                                actionsList.Dequeue();
                             }
                         }
                         else
@@ -87,14 +87,14 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             RequestMovementInDirection(1);
                         }
                     }
-                    else if (actionsList[0] == Constants.ACTION_MOVE_DOWN)
+                    else if (actionsList.Peek() == Constants.ACTION_MOVE_DOWN)
                     {
                         if (isMoving)
                         {
                             if (forwardDirection.value == 2)
                             {
                                 isChainingMovement = true;
-                                actionsList.RemoveAt(0);
+                                actionsList.Dequeue();
                             }
                         }
                         else
@@ -102,14 +102,14 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             RequestMovementInDirection(2);
                         }
                     }
-                    else if (actionsList[0] == Constants.ACTION_MOVE_LEFT)
+                    else if (actionsList.Peek() == Constants.ACTION_MOVE_LEFT)
                     {
                         if (isMoving)
                         {
                             if (forwardDirection.value == 3)
                             {
                                 isChainingMovement = true;
-                                actionsList.RemoveAt(0);
+                                actionsList.Dequeue();
                             }
                         }
                         else
@@ -120,7 +120,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                 }
                 if (!isMoving)
                 {
-                    if (actionsList[0] == Constants.ACTION_TURN_LEFT)
+                    if (actionsList.Peek() == Constants.ACTION_TURN_LEFT)
                     {
                         if (isTurningLeft)
                         {
@@ -156,9 +156,9 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
                         }
 
-                        actionsList.RemoveAt(0);
+                        actionsList.Dequeue();
                     }
-                    else if (actionsList[0] == Constants.ACTION_TURN_RIGHT)
+                    else if (actionsList.Peek() == Constants.ACTION_TURN_RIGHT)
                     {
                         if (isTurningRight)
                         {
@@ -194,7 +194,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             forwardDirection.value = (forwardDirection.value + 1) % 4;
                         }
 
-                        actionsList.RemoveAt(0);
+                        actionsList.Dequeue();
                     }
                 }
             }
@@ -293,15 +293,15 @@ public class TabletControlsWithAcceleration : MonoBehaviour
         }
     }
 
-    void AddAction()
+    void OnAction()
     {
         if (action.value == Constants.ACTION_PAINT_FLOOR)
         {
-            PaintCurrentPositionTile();
+            //PaintCurrentPositionTile();//Moved to algorithm respect for now 
         }
         else
         {
-            actionsList.Add(action.value);
+            actionsList.Enqueue(action.value);
         }
     }
 
@@ -311,21 +311,10 @@ public class TabletControlsWithAcceleration : MonoBehaviour
         targetPosition = fromPosition + (new Vector3(xByDirection[direction] * Constants.TILE_SIZE, 0, yByDirection[direction] * Constants.TILE_SIZE));
 
         isMoving = true;
-        actionsList.RemoveAt(0);
+        actionsList.Dequeue();
     }
 
-    void PaintCurrentPositionTile()
-    {
-        Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
 
-        GameObject tile = labyrinth.GetTile(position.x, position.y);
-        FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
-
-        if (floorPainter != null)
-        {
-            floorPainter.PaintFloor();
-        }
-    }
 
     void StopAllMovement()
     {

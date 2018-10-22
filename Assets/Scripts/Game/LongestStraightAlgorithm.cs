@@ -36,7 +36,7 @@ public class LongestStraightAlgorithm : MonoBehaviour
 
         int direction = labyrinth.GetStartDirection();
 
-        tileColor = (int) FloorColor.Yellow;
+        tileColor = (int) TileColor.Yellow;
         position = labyrinth.GetLabyrithStartPosition();
         endPosition = labyrinth.GetLabyrithEndPosition();
 
@@ -84,7 +84,7 @@ public class LongestStraightAlgorithm : MonoBehaviour
                     i = algorithmSteps.Count - 2;
                 }
 
-                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, (int) FloorColor.Red);
+                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, (int) TileColor.Red);
 
                 bool isReturnedToLastIntersection = false;
                
@@ -105,7 +105,7 @@ public class LongestStraightAlgorithm : MonoBehaviour
                     }
                     else
                     {
-                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, (int) FloorColor.Red));
+                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, (int) TileColor.Red));
                     }
 
                     i--;

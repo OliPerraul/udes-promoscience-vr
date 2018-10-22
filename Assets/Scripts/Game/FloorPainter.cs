@@ -16,47 +16,47 @@ public class FloorPainter : MonoBehaviour
     [SerializeField]
     Material redMaterial;
 
-    FloorColor floorColor = FloorColor.Grey;
+    TileColor floorColor = TileColor.Grey;
 
-    public FloorColor GetFloorColorId()
+    public TileColor GetFloorColorId()
     {
         return floorColor;
     }
 
     public void PaintFloor()
     {
-        if (floorColor == FloorColor.Grey)
+        if (floorColor == TileColor.Grey)
         {
-            floorColor = FloorColor.Yellow;
+            floorColor = TileColor.Yellow;
             meshRenderer.material = yellowMaterial;
         }
-        else if (floorColor == FloorColor.Yellow)
+        else if (floorColor == TileColor.Yellow)
         {
-            floorColor = FloorColor.Red;
+            floorColor = TileColor.Red;
             meshRenderer.material = redMaterial;
         }
-        else if (floorColor == FloorColor.Red)
+        else if (floorColor == TileColor.Red)
         {
-            floorColor = FloorColor.Grey;
+            floorColor = TileColor.Grey;
             meshRenderer.material = greyMaterial;
         }
     }
 
     public void PaintFloorWithColorId(int id)
     {
-        if (id == (int) FloorColor.Grey)
+        if (id == (int) TileColor.Grey)
         {
-            floorColor = FloorColor.Grey;
+            floorColor = TileColor.Grey;
             meshRenderer.material = greyMaterial;
         }
-        else if (id == (int) FloorColor.Yellow)
+        else if (id == (int) TileColor.Yellow)
         {
-            floorColor = FloorColor.Yellow;
+            floorColor = TileColor.Yellow;
             meshRenderer.material = yellowMaterial;
         }
-        else if (id == (int) FloorColor.Red)
+        else if (id == (int) TileColor.Red)
         {
-            floorColor = FloorColor.Red;
+            floorColor = TileColor.Red;
             meshRenderer.material = redMaterial;
         }
     }
