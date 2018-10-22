@@ -138,6 +138,10 @@ public class AlgorithmRespect : MonoBehaviour
             if(isDiverging)
             {
                 //Should keep track of painting when diverging so that they affect algorithmRespect value and so they can be set back to the good color before piking up were the player diverged
+
+                //Could add position and color of the tile but we don't know if it was painted before or will be painted right after!!!
+
+
             }
         }
     }

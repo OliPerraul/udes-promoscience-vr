@@ -9,6 +9,9 @@ public class DirectiveDisplay : MonoBehaviour
     ScriptableInteger directive;
 
     [SerializeField]
+    ScriptableInteger forwardDirection;
+
+    [SerializeField]
     GameObject directiveDisplayer;
 
     [SerializeField]
@@ -18,7 +21,7 @@ public class DirectiveDisplay : MonoBehaviour
     Transform cameraTransform;
 
     [SerializeField]
-    Sprite fowardImage;//temp might change to a ressource manager
+    Sprite forwardImage;//temp might change to a ressource manager
 
     [SerializeField]
     Sprite turnLeftImage;//temp might change to a ressource manager
@@ -32,6 +35,10 @@ public class DirectiveDisplay : MonoBehaviour
     [SerializeField]
     Sprite stopImage;//temp might change to a ressource manager
 
+    readonly int[] xByDirection = { 0, 1, 0, -1 };
+    readonly int[] yByDirection = { -1, 0, 1, 0 };
+
+    readonly float[] rotationByDirection = { 0, 90, 180, 270 };
     float hideTime = 3.0f;
     float hideTimer;
 
@@ -54,13 +61,14 @@ public class DirectiveDisplay : MonoBehaviour
             {
                 directiveDisplayer.SetActive(false);
             }
+            /*
             else
             {
                 directiveDisplayer.transform.position = new Vector3(positionFromCamera.x * Mathf.Sin(Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.y), positionFromCamera.y, positionFromCamera.z * Mathf.Cos(Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.y)) + cameraTransform.position;
                 Quaternion r = new Quaternion();
                 r.eulerAngles = new Vector3(baseRotation.x , cameraTransform.rotation.eulerAngles.y, baseRotation.z);
                 directiveDisplayer.transform.rotation = r;
-            }
+            }*/
         }
 	}
 
@@ -75,7 +83,7 @@ public class DirectiveDisplay : MonoBehaviour
     {
         if(directiveId == Constants.DIRECTIVE_MOVE_FOWARD)
         {
-            directiveImage.sprite = fowardImage;
+            directiveImage.sprite = forwardImage;
         }
         else if (directiveId == Constants.DIRECTIVE_TURN_LEFT)
         {
@@ -93,5 +101,15 @@ public class DirectiveDisplay : MonoBehaviour
         {
             directiveImage.sprite = stopImage;
         }
+
+        SetDisplayPosition();
+    }
+
+    void SetDisplayPosition()
+    {
+        directiveDisplayer.transform.position = new Vector3((xByDirection[forwardDirection.value] * positionFromCamera.x), positionFromCamera.y, (yByDirection[forwardDirection.value] * positionFromCamera.z));
+        Quaternion r = new Quaternion();
+        r.eulerAngles = new Vector3(baseRotation.x, rotationByDirection[forwardDirection.value], baseRotation.z);
+        directiveDisplayer.transform.rotation = r;
     }
 }
