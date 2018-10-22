@@ -62,8 +62,8 @@ public class AlgorithmRespect : MonoBehaviour
     {
         if(isAlgorithmRespectActive)
         {
-            Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.y);
-            Debug.Log(labyrinthPosition);//Temp
+            Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+
             if(labyrinthPosition != currentLabyrinthPosition)
             {
                 if (!isDiverging.value)
@@ -135,7 +135,10 @@ public class AlgorithmRespect : MonoBehaviour
     {
         if(action.value == Constants.ACTION_PAINT_FLOOR)
         {
-            //Should keep track of painting when diverging so that they affect algorithmRespect value and so they can be set back to the good color before piking up were the player diverged
+            if(isDiverging)
+            {
+                //Should keep track of painting when diverging so that they affect algorithmRespect value and so they can be set back to the good color before piking up were the player diverged
+            }
         }
     }
 
