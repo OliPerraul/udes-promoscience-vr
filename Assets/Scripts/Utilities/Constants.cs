@@ -46,11 +46,11 @@ static class Constants
 {
 
     //Algorith identifier
-    public const int TUTORIAL_ALGORITH = 0;
-    public const int RIGHT_HAND_ALGORITH = 0;
-    public const int SHORTEST_FLIGHT_DISTANCE_ALGORITH = 1;
-    public const int LONGEST_STRAIGHT_ALGORITH = 2;
-    public const int STANDARD_ALGORITH = 3;
+    public const int TUTORIAL_ALGORITHM = 0;
+    public const int RIGHT_HAND_ALGORITHM = 0;
+    public const int SHORTEST_FLIGHT_DISTANCE_ALGORITHM = 1;
+    public const int LONGEST_STRAIGHT_ALGORITHM = 2;
+    public const int STANDARD_ALGORITHM = 3;
 
     //Labyrinth tiles
     public const float TILE_SIZE = 5.0f;

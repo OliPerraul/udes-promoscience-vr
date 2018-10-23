@@ -35,8 +35,7 @@ public class DirectiveDisplay : MonoBehaviour
     [SerializeField]
     Sprite stopImage;//temp might change to a ressource manager
 
-    readonly int[] xByDirection = { 0, 1, 0, -1 };
-    readonly int[] yByDirection = { -1, 0, 1, 0 };
+    int forwardDirectionId;
 
     readonly float[] rotationByDirection = { 0, 90, 180, 270 };
     float hideTime = 3.0f;
@@ -44,8 +43,6 @@ public class DirectiveDisplay : MonoBehaviour
 
     Vector3 positionFromCamera = new Vector3(2, 0, 2);
     Vector3 baseRotation = new Vector3(0, 0, 0);
-
-
 
     void Start ()
     {
@@ -61,14 +58,15 @@ public class DirectiveDisplay : MonoBehaviour
             {
                 directiveDisplayer.SetActive(false);
             }
-            /*
             else
             {
+                SetDisplayPosition();
+                /*
                 directiveDisplayer.transform.position = new Vector3(positionFromCamera.x * Mathf.Sin(Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.y), positionFromCamera.y, positionFromCamera.z * Mathf.Cos(Mathf.Deg2Rad * cameraTransform.rotation.eulerAngles.y)) + cameraTransform.position;
                 Quaternion r = new Quaternion();
                 r.eulerAngles = new Vector3(baseRotation.x , cameraTransform.rotation.eulerAngles.y, baseRotation.z);
-                directiveDisplayer.transform.rotation = r;
-            }*/
+                directiveDisplayer.transform.rotation = r;*/
+            }
         }
 	}
 
@@ -76,6 +74,8 @@ public class DirectiveDisplay : MonoBehaviour
     {
         SetDirectiveImage(directive.value);
         hideTimer = 0;
+        forwardDirectionId = forwardDirection.value;
+        SetDisplayPosition();
         directiveDisplayer.SetActive(true);
     }
 
@@ -101,15 +101,13 @@ public class DirectiveDisplay : MonoBehaviour
         {
             directiveImage.sprite = stopImage;
         }
-
-        SetDisplayPosition();
     }
 
     void SetDisplayPosition()
     {
-        directiveDisplayer.transform.position = new Vector3((xByDirection[forwardDirection.value] * positionFromCamera.x), positionFromCamera.y, (yByDirection[forwardDirection.value] * positionFromCamera.z));
+        directiveDisplayer.transform.position = new Vector3((Mathf.Sin(Mathf.Deg2Rad * rotationByDirection[forwardDirectionId]) * positionFromCamera.x), positionFromCamera.y, (Mathf.Cos(Mathf.Deg2Rad * rotationByDirection[forwardDirectionId]) * positionFromCamera.z)) + cameraTransform.position;
         Quaternion r = new Quaternion();
-        r.eulerAngles = new Vector3(baseRotation.x, rotationByDirection[forwardDirection.value], baseRotation.z);
+        r.eulerAngles = new Vector3(baseRotation.x, rotationByDirection[forwardDirectionId], baseRotation.z);
         directiveDisplayer.transform.rotation = r;
     }
 }

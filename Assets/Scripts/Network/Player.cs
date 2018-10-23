@@ -251,7 +251,7 @@ public class Player : NetworkBehaviour
     {
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
 
-        if(algorithmId.value == Constants.TUTORIAL_ALGORITH)
+        if(algorithmId.value == Constants.TUTORIAL_ALGORITHM)
         {
             gameState.value = GameState.ReadyTutorial;
         }

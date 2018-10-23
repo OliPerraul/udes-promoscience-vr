@@ -101,7 +101,22 @@ public class UILobbyPlayer : MonoBehaviour
         }
         else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.Playing)
         {
-            statusText.text = "Playing";
+            string text = "Playing";
+
+            if(PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithmId == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITHM)
+            {
+                text += " - Shortest Flight";
+            }
+            else if (PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithmId == Constants.LONGEST_STRAIGHT_ALGORITHM)
+            {
+                text += " - Longest Straight";
+            }
+            else if (PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithmId == Constants.STANDARD_ALGORITHM)
+            {
+                text += " - Standard algorithm";
+            }
+
+            statusText.text = text;
         }
         else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.WaitingForNextRound)
         {

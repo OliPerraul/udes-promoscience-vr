@@ -24,9 +24,10 @@ public class Compass : MonoBehaviour
 
     void Update()
     {
+
         if (indicator.gameObject.activeSelf)
         {
-            indicator.rotation = Quaternion.Euler(centerEyeTransform.rotation.eulerAngles.y + rotationByDirection[direction] - 90, centerEyeTransform.rotation.eulerAngles.y - 90 , 90);
+            indicator.localRotation = Quaternion.Euler(centerEyeTransform.rotation.eulerAngles.y + -centerEyeTransform.rotation.eulerAngles.z + rotationByDirection[direction] - 90, -90, 90);
         }
     }
 

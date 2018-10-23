@@ -125,7 +125,7 @@ public class AlgorithmRespect : MonoBehaviour
 
             if(gameState.value == GameState.PlayingTutorial)
             {
-                SetAlgorithmStepsWithId(Constants.TUTORIAL_ALGORITH);
+                SetAlgorithmStepsWithId(Constants.TUTORIAL_ALGORITHM);
             }
             else
             {
@@ -189,19 +189,19 @@ public class AlgorithmRespect : MonoBehaviour
 
     void SetAlgorithmStepsWithId(int id)
     {
-        if(id == Constants.RIGHT_HAND_ALGORITH)
+        if(id == Constants.RIGHT_HAND_ALGORITHM)
         {
             algorithmSteps = rightHandAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.LONGEST_STRAIGHT_ALGORITH)
+        else if (id == Constants.LONGEST_STRAIGHT_ALGORITHM)
         {
             algorithmSteps = longestStraightAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH)
+        else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITHM)
         {
             algorithmSteps = shortestFlighDistanceAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.STANDARD_ALGORITH)
+        else if (id == Constants.STANDARD_ALGORITHM)
         {
             algorithmSteps = standardAlgorithm.GetAlgorithmSteps();
         }

@@ -262,8 +262,6 @@ public static class SQLiteUtilities
                 {
                     while (reader.Read())
                     {
-                        Debug.Log("LabyrinthID: " + reader["LabyrinthID"] + "\t Specs: " + reader["Specs"]);
-
                         string[] specs = reader["Specs"].ToString().Split();
                         int[] labyrinthSpecs = Array.ConvertAll(specs, int.Parse);
                         sizeX = labyrinthSpecs[0];

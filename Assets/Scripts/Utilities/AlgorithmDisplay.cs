@@ -40,25 +40,25 @@ public class AlgorithmDisplay : MonoBehaviour
     {
         if (gameState.value == GameState.PlayingTutorial || gameState.value == GameState.Playing)
         {
-            GenerateVisualForAlgorithmWithId(Constants.STANDARD_ALGORITH);
+            GenerateVisualForAlgorithmWithId(Constants.STANDARD_ALGORITHM);
         }
     }
 
     void GenerateVisualForAlgorithmWithId(int id)
     {
-        if (id == Constants.RIGHT_HAND_ALGORITH)
+        if (id == Constants.RIGHT_HAND_ALGORITHM)
         {
             algorithmStepsPosition = rightHandAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.LONGEST_STRAIGHT_ALGORITH)
+        else if (id == Constants.LONGEST_STRAIGHT_ALGORITHM)
         {
             algorithmStepsPosition = longestStraightAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITH)
+        else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITHM)
         {
             algorithmStepsPosition = shortestFlighDistanceAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.STANDARD_ALGORITH)
+        else if (id == Constants.STANDARD_ALGORITHM)
         {
             algorithmStepsPosition = standardAlgorithm.GetAlgorithmSteps();
         }

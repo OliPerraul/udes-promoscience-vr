@@ -10,7 +10,10 @@ public class DistanceScanner : MonoBehaviour
     ScriptableControler controls;
 
     [SerializeField]
-    GameObject DistanceDisplay;
+    GameObject distanceDisplay;
+
+    [SerializeField]
+    GameObject targetDisplay;
 
     [SerializeField]
     Text text;
@@ -27,11 +30,9 @@ public class DistanceScanner : MonoBehaviour
 	
 	void Update ()
     {
-		if(DistanceDisplay.activeSelf)
+		if(distanceDisplay.activeSelf)
         {
-            int distance = (int) GetDistanceFromScan();
-
-            text.text = distance.ToString();
+            ExecuteDistanceScan();
         }
 	}
 
@@ -39,19 +40,22 @@ public class DistanceScanner : MonoBehaviour
     {
         if (controls.isControlsEnabled == true)
         {
-            DistanceDisplay.SetActive(true);
+            distanceDisplay.SetActive(true);
+            targetDisplay.SetActive(true);
         }
         else
         {
-            DistanceDisplay.SetActive(false);
+            distanceDisplay.SetActive(false);
+            targetDisplay.SetActive(false);
         }
     }
 
-    float GetDistanceFromScan()
+    void ExecuteDistanceScan()
     {
+        int distance = 0;
         Ray ray = new Ray(raycastStartPoint.position, raycastStartPoint.forward);
         RaycastHit raycastHit;
-
+        
         if (Physics.Raycast(ray, out raycastHit, raycastRange))
         {
 
@@ -62,11 +66,17 @@ public class DistanceScanner : MonoBehaviour
 
             if (raycastHit.transform.tag != "Overlay")
             {
-                return raycastHit.distance;
+                distance = (int) raycastHit.distance;
+                targetDisplay.transform.position = raycastHit.point;
+                targetDisplay.transform.rotation = Quaternion.FromToRotation(Vector3.up, raycastHit.normal); ;
+                targetDisplay.SetActive(true);
             }
         }
+        else
+        {
+            targetDisplay.SetActive(false);
+        }
 
-        return 0;
+        text.text = distance.ToString();
     }
-
 }
