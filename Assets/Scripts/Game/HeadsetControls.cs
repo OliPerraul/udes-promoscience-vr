@@ -14,7 +14,16 @@ public class HeadsetControls : MonoBehaviour
     ScriptableInteger forwardDirection;
 
     [SerializeField]
-    ScriptableString straightLength;
+    ScriptableVector3 playerPosition;
+
+    [SerializeField]
+    ScriptableQuaternion playerRotation;
+
+    [SerializeField]
+    ScriptableTile playerPaintTile;
+
+    [SerializeField]
+    ScriptableTileColor paintingColor;
 
     [SerializeField]
     GameLabyrinth labyrinth;
@@ -22,111 +31,273 @@ public class HeadsetControls : MonoBehaviour
     [SerializeField]
     Transform cameraTransform;
 
+    bool isChainingMovement = false;
     bool isMoving = false;
-    bool isTurning = false;
+    bool isPrimaryTouchpadHold = false;
+    bool isTurningLeft = false;
+    bool isTurningRight = false;
 
     readonly int[] xByDirection = { 0, 1, 0, -1 };
     readonly int[] yByDirection = { -1, 0, 1, 0 };
 
     float lerpValue = 0;
+    float moveSpeed = 0;
+    float turnSpeed = 0;
 
-    Vector3 targetPosition;
     Vector3 fromPosition;
+    Vector3 targetPosition;
+    Vector3 lastPosition;
 
     Quaternion fromRotation;
     Quaternion targetRotation;
+    Quaternion lastRotation;
+
 
     private void Start()
     {
-        controls.stopAllMovementEvent += StopAllMovement;
-        controls.resetPositionAndRotation += ResetPositionAndRotation;
+        controls.stopAllMovementEvent += OnStopAllMovement;
+        controls.resetPositionAndRotation += OnResetPositionAndRotation;
     }
 
     void Update ()
     {
        if (controls.IsControlsEnabled)
         {
+            if(OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad))
+            {
+                isPrimaryTouchpadHold = false;
+            }
+
+            if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad) || isPrimaryTouchpadHold)
+            {
+                isPrimaryTouchpadHold = true;
+
+                if (!isTurningLeft && !isTurningRight)
+                {
+                    if (isMoving)
+                    {
+                        if( lerpValue >= 0.5f && CheckIfMovementIsValidInDirectionFromPosition(forwardDirection.Value, targetPosition))
+                        {
+                            isChainingMovement = true;
+                        }
+                    }
+                    else
+                    {
+                        RequestMovementInDirection(forwardDirection.Value);
+                    }
+                }
+            }
+            else if (OVRInput.GetDown(OVRInput.Button.Left))
+            {
+                if (!isMoving)
+                {
+                    if (isTurningLeft)
+                    {
+                        isChainingMovement = true;
+                    }
+                    else if (isTurningRight)
+                    {
+                        if(isChainingMovement)
+                        {
+                            isChainingMovement = false;
+                        }
+                        else
+                        {
+                            Quaternion trajectory = new Quaternion();
+                            trajectory.eulerAngles += new Vector3(0, -90, 0);
+                            fromRotation = targetRotation;
+                            targetRotation = fromRotation * trajectory;
+                            forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
+                            action.Value = Constants.ACTION_TURN_LEFT;
+                            lerpValue = 1 - lerpValue;
+                            isTurningLeft = true;
+                            isTurningRight = false;
+                        }
+                    }
+                    else
+                    {
+                        CameraTurnLeft();
+                    }
+                }
+            }
+            else if (OVRInput.GetDown(OVRInput.Button.Right))
+            {
+                if (!isMoving)
+                {
+                    if (isTurningRight)
+                    {
+                        isChainingMovement = true;
+                    }
+                    else if (isTurningLeft)
+                    {
+                        if (isChainingMovement)
+                        {
+                            isChainingMovement = false;
+                        }
+                        else
+                        {
+                            Quaternion trajectory = new Quaternion();
+                            trajectory.eulerAngles += new Vector3(0, 90, 0);
+                            fromRotation = targetRotation;
+                            targetRotation = fromRotation * trajectory;
+                            forwardDirection.Value = (forwardDirection.Value + 1) % 4;
+                            action.Value = Constants.ACTION_TURN_RIGHT;
+                            lerpValue = 1 - lerpValue;
+                            isTurningLeft = false;
+                            isTurningRight = true;
+                        }
+                    }
+                    else
+                    {
+                        CameraTurnRight();
+                    }
+                }
+            }
+            else if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+            {
+                int nextTileColorId = ((int)paintingColor.Value + 1) % 3;
+                paintingColor.Value = (TileColor) nextTileColorId;
+                PaintCurrentPositionTile();
+            }
+
+
             if (isMoving)
             {
-                lerpValue += Time.deltaTime * Constants.MOVEMENT_SPEED;
+                float xi = ((moveSpeed * moveSpeed)/(-2 * Constants.MOVEMENT_ACCELERATION)) + 1;
+
+                if (isChainingMovement)
+                {
+                    xi += 1;
+                }
+
+                moveSpeed = xi < lerpValue ? moveSpeed - (Time.deltaTime * Constants.MOVEMENT_ACCELERATION) : moveSpeed + (Time.deltaTime * Constants.MOVEMENT_ACCELERATION);
+                lerpValue += Time.deltaTime * moveSpeed;
 
                 if (lerpValue >= 1)
                 {
-                    cameraTransform.position = targetPosition;
-                    lerpValue = 0;
-                    isMoving = false;
+                    if(isChainingMovement)
+                    {
+                        isChainingMovement = false;
+                        lerpValue = lerpValue - 1;
+
+                        RequestMovementInDirection(forwardDirection.Value);
+                        PaintCurrentPositionTile();
+
+                        cameraTransform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
+                    }
+                    else
+                    {
+                        cameraTransform.position = targetPosition;
+                        moveSpeed = 0;
+                        lerpValue = 0;
+                        isMoving = false;
+                        PaintCurrentPositionTile();
+                    }
                 }
                 else
                 {
                     cameraTransform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                 }
             }
-            else if (isTurning)
+            else if (isTurningLeft || isTurningRight)
             {
-                lerpValue += Time.deltaTime * Constants.TURNING_SPEED;
+                float xi = ((turnSpeed * turnSpeed) / ( -2 * Constants.TURNING_ACCELERATION)) + 1;
+
+                if(isChainingMovement)
+                {
+                    xi++;
+                }
+
+                turnSpeed = xi < lerpValue ? turnSpeed - (Time.deltaTime * Constants.TURNING_ACCELERATION) : turnSpeed + (Time.deltaTime * Constants.TURNING_ACCELERATION);
+                lerpValue += Time.deltaTime * turnSpeed;
 
                 if (lerpValue >= 1)
                 {
-                    cameraTransform.rotation = targetRotation;
-                    lerpValue = 0;
-                    isTurning = false;
+                    if (isChainingMovement)
+                    {
+                        isChainingMovement = false;
+                        lerpValue = lerpValue - 1;
+
+                        if(isTurningLeft)
+                        {
+                            Quaternion trajectory = new Quaternion();
+                            trajectory.eulerAngles += new Vector3(0, -90, 0);
+                            fromRotation = targetRotation;
+                            targetRotation = targetRotation * trajectory;
+
+                            forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
+                            action.Value = Constants.ACTION_TURN_LEFT;
+                        }
+                        else if (isTurningRight)
+                        {
+                            Quaternion trajectory = new Quaternion();
+                            trajectory.eulerAngles += new Vector3(0, 90, 0);
+                            fromRotation = targetRotation;
+                            targetRotation = targetRotation * trajectory;
+
+                            forwardDirection.Value = (forwardDirection.Value + 1) % 4;
+                            action.Value = Constants.ACTION_TURN_RIGHT;
+                        }
+
+                        cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
+                    }
+                    else
+                    {
+                        cameraTransform.rotation = targetRotation;
+                        turnSpeed = 0;
+                        lerpValue = 0;
+                        isTurningLeft = false;
+                        isTurningRight = false;
+                    }
                 }
                 else
                 {
                     cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
                 }
             }
-            else if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
-            {
-                RequestMovementInDirection(forwardDirection.Value);
-            }
-            else if (OVRInput.GetDown(OVRInput.Button.Left))
-            {
-                CameraTurnLeft();
-            }
-            else if (OVRInput.GetDown(OVRInput.Button.Right))
-            {
-                CameraTurnRight();
-            }
-            else if (OVRInput.GetDown(OVRInput.Button.Back))
-            {
-                PaintCurrentPositionTile();
-            }
-            else if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
-            {
-                TriggerDistanceScanner();
-            }
         }
     }
 
     void RequestMovementInDirection(int direction)
     {
-        if (CheckIfMovementIsValid(direction))
+        if (CheckIfMovementIsValidInDirectionFromPosition(direction, cameraTransform.position))
         {
             fromPosition = cameraTransform.position;
+            targetPosition = fromPosition + (new Vector3(xByDirection[direction] * Constants.TILE_SIZE, 0, -yByDirection[direction] * Constants.TILE_SIZE));
 
             if (direction == 0)
             {
-                targetPosition = fromPosition + (new Vector3(0, 0, Constants.TILE_SIZE));
                 action.Value = Constants.ACTION_MOVE_UP;
             }
             else if (direction == 1)
             {
-                targetPosition = fromPosition + (new Vector3(Constants.TILE_SIZE, 0, 0));
                 action.Value = Constants.ACTION_MOVE_RIGHT;
             }
             else if (direction == 2)
             {
-                targetPosition = fromPosition + (new Vector3(0, 0, -Constants.TILE_SIZE));
                 action.Value = Constants.ACTION_MOVE_DOWN;
             }
             else if (direction == 3)
             {
-                targetPosition = fromPosition + (new Vector3(-Constants.TILE_SIZE, 0, 0));
                 action.Value = Constants.ACTION_MOVE_LEFT;
             }
             
             isMoving = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if(cameraTransform.position != lastPosition)
+        {
+            playerPosition.Value = cameraTransform.position;
+            lastPosition = cameraTransform.position;
+        }
+
+        if (cameraTransform.rotation != lastRotation)
+        {
+            playerRotation.Value = cameraTransform.rotation;
+            lastRotation = cameraTransform.rotation;
         }
     }
 
@@ -137,7 +308,7 @@ public class HeadsetControls : MonoBehaviour
         fromRotation = cameraTransform.rotation;
         targetRotation = fromRotation * trajectory;
 
-        isTurning = true;
+        isTurningLeft = true;
         forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
         action.Value = Constants.ACTION_TURN_LEFT;
     }
@@ -149,76 +320,50 @@ public class HeadsetControls : MonoBehaviour
         fromRotation = cameraTransform.rotation;
         targetRotation = fromRotation * trajectory;
 
-        isTurning = true;
+        isTurningRight = true;
         forwardDirection.Value = (forwardDirection.Value + 1) % 4;
         action.Value = Constants.ACTION_TURN_RIGHT;
     }
 
-
-    bool CheckIfMovementIsValid(int direction)
+    bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
     {
-        int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
-        int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
+        Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(position.x, position.z);
 
-        posX += xByDirection[direction];
-        posY += yByDirection[direction];
+        labyrinthPosition.x += xByDirection[direction];
+        labyrinthPosition.y += yByDirection[direction];
 
-        return labyrinth.GetIsTileWalkable(posX,posY);
+        return labyrinth.GetIsTileWalkable(labyrinthPosition);
     }
-   
+
     void PaintCurrentPositionTile()
     {
-        int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
-        int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
-        GameObject tile = labyrinth.GetTile(posX, posY);
-        FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
-        if(floorPainter != null)
+        Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+
+        TileColor tileColor = labyrinth.GetTileColor(position);
+
+        if (paintingColor.Value != tileColor)
         {
-            floorPainter.PaintFloor();
-            action.Value = Constants.ACTION_PAINT_FLOOR;
+            GameObject tile = labyrinth.GetTile(position);
+            FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
+
+            if (floorPainter != null)
+            {
+                floorPainter.PaintFloorWithColor(paintingColor.Value);
+                action.Value = Constants.ACTION_PAINT_FLOOR;
+                playerPaintTile.SetTile(position, paintingColor.Value);
+            }
         }
     }
 
-    void TriggerDistanceScanner()
-    {
-        int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
-        int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
-        int length = GetStraightLengthInDirection(posX, posY, forwardDirection.Value);
-        if(length < 10)
-        {
-            straightLength.Value = "0" + length;
-        }
-        else
-        {
-            straightLength.Value = length.ToString();
-        }
-
-        action.Value = Constants.ACTION_DISTANCE_SCANNER;
-    }
-
-    int GetStraightLengthInDirection(int posX, int posY, int direction)
-    {
-        int length = 0;
-
-        while (labyrinth.GetIsTileWalkable(posX + xByDirection[(direction) % 4], posY + yByDirection[(direction) % 4]))
-        {
-            length++;
-            posX += xByDirection[direction];
-            posY += yByDirection[direction];
-        }
-
-        return length;
-    }
-
-
-    void StopAllMovement()
+    void OnStopAllMovement()
     {
         isMoving = false;
-        isTurning = false;
+        isTurningLeft = false;
+        isTurningRight = false;
         lerpValue = 0;
     }
 
-    void ResetPositionAndRotation()
+    void OnResetPositionAndRotation()
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
         forwardDirection.Value = labyrinth.GetStartDirection();
