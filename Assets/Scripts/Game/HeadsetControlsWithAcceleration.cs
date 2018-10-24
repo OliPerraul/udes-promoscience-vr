@@ -14,6 +14,18 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
     ScriptableInteger forwardDirection;
 
     [SerializeField]
+    ScriptableVector3 playerPosition;
+
+    [SerializeField]
+    ScriptableQuaternion playerRotation;
+
+    [SerializeField]
+    ScriptableTile playerPaintTile;
+
+    [SerializeField]
+    ScriptableTileColor paintingColor;
+
+    [SerializeField]
     GameLabyrinth labyrinth;
 
     [SerializeField]
@@ -21,6 +33,7 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
 
     bool isChainingMovement = false;
     bool isMoving = false;
+    bool isPrimaryTouchpadHold = false;
     bool isTurningLeft = false;
     bool isTurningRight = false;
 
@@ -33,35 +46,44 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
 
     Vector3 fromPosition;
     Vector3 targetPosition;
+    Vector3 lastPosition;
 
     Quaternion fromRotation;
     Quaternion targetRotation;
+    Quaternion lastRotation;
 
 
     private void Start()
     {
-        controls.stopAllMovementEvent += StopAllMovement;
-        controls.resetPositionAndRotation += ResetPositionAndRotation;
+        controls.stopAllMovementEvent += OnStopAllMovement;
+        controls.resetPositionAndRotation += OnResetPositionAndRotation;
     }
 
     void Update ()
     {
-       if (controls.isControlsEnabled)
+       if (controls.IsControlsEnabled)
         {
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
+            if(OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad))
             {
+                isPrimaryTouchpadHold = false;
+            }
+
+            if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad) || isPrimaryTouchpadHold)
+            {
+                isPrimaryTouchpadHold = true;
+
                 if (!isTurningLeft && !isTurningRight)
                 {
                     if (isMoving)
                     {
-                        if( lerpValue >= 0.5f && CheckIfMovementIsValidInDirectionFromPosition(forwardDirection.value, targetPosition))//Added minimum lerp before chaning is available, need to be tested
+                        if( lerpValue >= 0.5f && CheckIfMovementIsValidInDirectionFromPosition(forwardDirection.Value, targetPosition))
                         {
                             isChainingMovement = true;
                         }
                     }
                     else
                     {
-                        RequestMovementInDirection(forwardDirection.value);
+                        RequestMovementInDirection(forwardDirection.Value);
                     }
                 }
             }
@@ -85,8 +107,8 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
                             trajectory.eulerAngles += new Vector3(0, -90, 0);
                             fromRotation = targetRotation;
                             targetRotation = fromRotation * trajectory;
-                            forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
-                            action.value = Constants.ACTION_TURN_LEFT;
+                            forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
+                            action.Value = Constants.ACTION_TURN_LEFT;
                             lerpValue = 1 - lerpValue;
                             isTurningLeft = true;
                             isTurningRight = false;
@@ -118,8 +140,8 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
                             trajectory.eulerAngles += new Vector3(0, 90, 0);
                             fromRotation = targetRotation;
                             targetRotation = fromRotation * trajectory;
-                            forwardDirection.value = (forwardDirection.value + 1) % 4;
-                            action.value = Constants.ACTION_TURN_RIGHT;
+                            forwardDirection.Value = (forwardDirection.Value + 1) % 4;
+                            action.Value = Constants.ACTION_TURN_RIGHT;
                             lerpValue = 1 - lerpValue;
                             isTurningLeft = false;
                             isTurningRight = true;
@@ -133,6 +155,8 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
             }
             else if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
             {
+                int nextTileColorId = ((int)paintingColor.Value + 1) % 3;
+                paintingColor.Value = (TileColor) nextTileColorId;
                 PaintCurrentPositionTile();
             }
 
@@ -156,7 +180,8 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
                         isChainingMovement = false;
                         lerpValue = lerpValue - 1;
 
-                        RequestMovementInDirection(forwardDirection.value);
+                        RequestMovementInDirection(forwardDirection.Value);
+                        PaintCurrentPositionTile();
 
                         cameraTransform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                     }
@@ -166,6 +191,7 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
                         moveSpeed = 0;
                         lerpValue = 0;
                         isMoving = false;
+                        PaintCurrentPositionTile();
                     }
                 }
                 else
@@ -199,8 +225,8 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = targetRotation * trajectory;
 
-                            forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
-                            action.value = Constants.ACTION_TURN_LEFT;
+                            forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
+                            action.Value = Constants.ACTION_TURN_LEFT;
                         }
                         else if (isTurningRight)
                         {
@@ -209,8 +235,8 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = targetRotation * trajectory;
 
-                            forwardDirection.value = (forwardDirection.value + 1) % 4;
-                            action.value = Constants.ACTION_TURN_RIGHT;
+                            forwardDirection.Value = (forwardDirection.Value + 1) % 4;
+                            action.Value = Constants.ACTION_TURN_RIGHT;
                         }
 
                         cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
@@ -241,22 +267,37 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
 
             if (direction == 0)
             {
-                action.value = Constants.ACTION_MOVE_UP;
+                action.Value = Constants.ACTION_MOVE_UP;
             }
             else if (direction == 1)
             {
-                action.value = Constants.ACTION_MOVE_RIGHT;
+                action.Value = Constants.ACTION_MOVE_RIGHT;
             }
             else if (direction == 2)
             {
-                action.value = Constants.ACTION_MOVE_DOWN;
+                action.Value = Constants.ACTION_MOVE_DOWN;
             }
             else if (direction == 3)
             {
-                action.value = Constants.ACTION_MOVE_LEFT;
+                action.Value = Constants.ACTION_MOVE_LEFT;
             }
             
             isMoving = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if(cameraTransform.position != lastPosition)
+        {
+            playerPosition.Value = cameraTransform.position;
+            lastPosition = cameraTransform.position;
+        }
+
+        if (cameraTransform.rotation != lastRotation)
+        {
+            playerRotation.Value = cameraTransform.rotation;
+            lastRotation = cameraTransform.rotation;
         }
     }
 
@@ -268,8 +309,8 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
         targetRotation = fromRotation * trajectory;
 
         isTurningLeft = true;
-        forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
-        action.value = Constants.ACTION_TURN_LEFT;
+        forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
+        action.Value = Constants.ACTION_TURN_LEFT;
     }
 
     void CameraTurnRight()
@@ -280,8 +321,8 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
         targetRotation = fromRotation * trajectory;
 
         isTurningRight = true;
-        forwardDirection.value = (forwardDirection.value + 1) % 4;
-        action.value = Constants.ACTION_TURN_RIGHT;
+        forwardDirection.Value = (forwardDirection.Value + 1) % 4;
+        action.Value = Constants.ACTION_TURN_RIGHT;
     }
 
     bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
@@ -298,17 +339,23 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
     {
         Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
 
-        GameObject tile = labyrinth.GetTile(position.x, position.y);
-        FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
+        TileColor tileColor = labyrinth.GetTileColor(position);
 
-        if(floorPainter != null)
+        if (paintingColor.Value != tileColor)
         {
-            floorPainter.PaintFloor();
-            action.value = Constants.ACTION_PAINT_FLOOR;
+            GameObject tile = labyrinth.GetTile(position);
+            FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
+
+            if (floorPainter != null)
+            {
+                floorPainter.PaintFloorWithColor(paintingColor.Value);
+                action.Value = Constants.ACTION_PAINT_FLOOR;
+                playerPaintTile.SetTile(position, paintingColor.Value);
+            }
         }
     }
 
-    void StopAllMovement()
+    void OnStopAllMovement()
     {
         isMoving = false;
         isTurningLeft = false;
@@ -316,22 +363,22 @@ public class HeadsetControlsWithAcceleration : MonoBehaviour
         lerpValue = 0;
     }
 
-    void ResetPositionAndRotation()
+    void OnResetPositionAndRotation()
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
-        forwardDirection.value = labyrinth.GetStartDirection();
+        forwardDirection.Value = labyrinth.GetStartDirection();
 
         Quaternion rotation = new Quaternion(0, 0, 0, 0);
 
-        if (forwardDirection.value == 1)
+        if (forwardDirection.Value == 1)
         {
             rotation.eulerAngles = new Vector3(0, 90, 0);
         }
-        else if (forwardDirection.value == 2)
+        else if (forwardDirection.Value == 2)
         {
             rotation.eulerAngles = new Vector3(0, 180, 0);
         }
-        else if (forwardDirection.value == 3)
+        else if (forwardDirection.Value == 3)
         {
             rotation.eulerAngles = new Vector3(0, 270, 0);
         }

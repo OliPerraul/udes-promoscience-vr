@@ -38,7 +38,7 @@ public class AlgorithmDisplay : MonoBehaviour
 
     void OnGameStateChanged()
     {
-        if (gameState.value == GameState.PlayingTutorial || gameState.value == GameState.Playing)
+        if (gameState.Value == GameState.PlayingTutorial || gameState.Value == GameState.Playing)
         {
             GenerateVisualForAlgorithmWithId(Constants.STANDARD_ALGORITHM);
         }

@@ -49,7 +49,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
 	
 	void Update ()
     {
-        if (controls.isControlsEnabled)
+        if (controls.IsControlsEnabled)
         {
             if (actionsList.Count > 0)
             {
@@ -59,7 +59,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                     {
                         if(isMoving)
                         {
-                            if(forwardDirection.value == 0)
+                            if(forwardDirection.Value == 0)
                             {
                                 isChainingMovement = true;
                                 actionsList.Dequeue();
@@ -76,7 +76,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                     {
                         if (isMoving)
                         {
-                            if (forwardDirection.value == 1)
+                            if (forwardDirection.Value == 1)
                             {
                                 isChainingMovement = true;
                                 actionsList.Dequeue();
@@ -91,7 +91,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                     {
                         if (isMoving)
                         {
-                            if (forwardDirection.value == 2)
+                            if (forwardDirection.Value == 2)
                             {
                                 isChainingMovement = true;
                                 actionsList.Dequeue();
@@ -106,7 +106,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                     {
                         if (isMoving)
                         {
-                            if (forwardDirection.value == 3)
+                            if (forwardDirection.Value == 3)
                             {
                                 isChainingMovement = true;
                                 actionsList.Dequeue();
@@ -139,7 +139,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                                 fromRotation = targetRotation;
                                 targetRotation = fromRotation * trajectory;
 
-                                forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
+                                forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
                                 lerpValue = 1 - lerpValue;
                                 isTurningLeft = true;
                                 isTurningRight = false;
@@ -153,7 +153,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             targetRotation = fromRotation * trajectory;
 
                             isTurningLeft = true;
-                            forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
+                            forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
                         }
 
                         actionsList.Dequeue();
@@ -177,7 +177,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                                 fromRotation = targetRotation;
                                 targetRotation = fromRotation * trajectory;
 
-                                forwardDirection.value = (forwardDirection.value + 1) % 4;
+                                forwardDirection.Value = (forwardDirection.Value + 1) % 4;
                                 lerpValue = 1 - lerpValue;
                                 isTurningLeft = false;
                                 isTurningRight = true;
@@ -191,7 +191,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             targetRotation = fromRotation * trajectory;
 
                             isTurningRight = true;
-                            forwardDirection.value = (forwardDirection.value + 1) % 4;
+                            forwardDirection.Value = (forwardDirection.Value + 1) % 4;
                         }
 
                         actionsList.Dequeue();
@@ -219,7 +219,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                         lerpValue = lerpValue - 1;
 
                         fromPosition = cameraTransform.position;
-                        targetPosition = fromPosition + (new Vector3(xByDirection[forwardDirection.value] * Constants.TILE_SIZE, 0, yByDirection[forwardDirection.value] * Constants.TILE_SIZE));
+                        targetPosition = fromPosition + (new Vector3(xByDirection[forwardDirection.Value] * Constants.TILE_SIZE, 0, yByDirection[forwardDirection.Value] * Constants.TILE_SIZE));
 
                         cameraTransform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                     }
@@ -262,7 +262,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = targetRotation * trajectory;
 
-                            forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
+                            forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
                         }
                         else if (isTurningRight)
                         {
@@ -271,7 +271,7 @@ public class TabletControlsWithAcceleration : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = targetRotation * trajectory;
 
-                            forwardDirection.value = (forwardDirection.value + 1) % 4;
+                            forwardDirection.Value = (forwardDirection.Value + 1) % 4;
                         }
 
                         cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
@@ -295,13 +295,13 @@ public class TabletControlsWithAcceleration : MonoBehaviour
 
     void OnAction()
     {
-        if (action.value == Constants.ACTION_PAINT_FLOOR)
+        if (action.Value == Constants.ACTION_PAINT_FLOOR)
         {
             //PaintCurrentPositionTile();//Moved to algorithm respect for now 
         }
         else
         {
-            actionsList.Enqueue(action.value);
+            actionsList.Enqueue(action.Value);
         }
     }
 
@@ -328,19 +328,19 @@ public class TabletControlsWithAcceleration : MonoBehaviour
     void ResetPositionAndRotation()
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
-        forwardDirection.value = labyrinth.GetStartDirection();
+        forwardDirection.Value = labyrinth.GetStartDirection();
 
         Quaternion rotation = new Quaternion(0, 0, 0, 0);
 
-        if (forwardDirection.value == 1)
+        if (forwardDirection.Value == 1)
         {
             rotation.eulerAngles = new Vector3(0, 90, 0);
         }
-        else if (forwardDirection.value == 2)
+        else if (forwardDirection.Value == 2)
         {
             rotation.eulerAngles = new Vector3(0, 180, 0);
         }
-        else if (forwardDirection.value == 3)
+        else if (forwardDirection.Value == 3)
         {
             rotation.eulerAngles = new Vector3(0, 270, 0);
         }

@@ -15,10 +15,16 @@ public class MessageServer : MonoBehaviour
     ScriptableGameState gameState;
 
     [SerializeField]
-    ScriptableVector3 headRotation;
+    ScriptableVector3 playerPosition;
 
     [SerializeField]
-    ScriptableVector3 movementTargetPosition;
+    ScriptableQuaternion playerRotation;
+
+    [SerializeField]
+    ScriptableTile playerPaintTile;
+
+    [SerializeField]
+    ScriptableAction playerReachedTheEnd;
 
     [SerializeField]
     ScriptableString pairedIpAdress;
@@ -31,7 +37,6 @@ public class MessageServer : MonoBehaviour
     private void Start()
     {
         pairedIpAdress.valueChangedEvent += StartServer;
-        directive.valueChangedEvent += SendDirective;
     }
 
     void Update()
@@ -48,8 +53,9 @@ public class MessageServer : MonoBehaviour
         server.RegisterHandler(MsgType.Connect, OnConnect);
         server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
         server.RegisterHandler(ActionMessage.GetCustomMsgType(), OnAction);
-        server.RegisterHandler(MovementTargetPositionMessage.GetCustomMsgType(), OnMovementTargetPosition);
-        server.RegisterHandler(HeadRotationMessage.GetCustomMsgType(), OnHeadRotation);
+        server.RegisterHandler(PlayerPositionMessage.GetCustomMsgType(), OnPlayerPosition);
+        server.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
+        server.RegisterHandler(PlayerPaintTileMessage.GetCustomMsgType(), OnPlayerPaintTile);
 
         server.Listen(serverPort);
     }
@@ -63,39 +69,58 @@ public class MessageServer : MonoBehaviour
     void OnConnect(NetworkMessage netMsg)
     {
         clientConnection = netMsg.conn;
-        gameState.value = GameState.ReadyTutorial;//Might need to be changed when doing reconnection
+
+        directive.valueChangedEvent += SendDirective;
+        playerReachedTheEnd.action += SendEndReached;
+
+        gameState.Value = GameState.ReadyTutorial;//Might need to be changed when doing reconnection
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
         clientConnection = null;
+
+        directive.valueChangedEvent -= SendDirective;
+
         StopServer();//Might be changed when need reconnection?
     }
 
     void OnAction(NetworkMessage netMsg)
     {
         ActionMessage msg = netMsg.ReadMessage<ActionMessage>();
-        action.value = msg.actionId;
+        action.Value = msg.actionId;
     }
 
-    void OnMovementTargetPosition(NetworkMessage netMsg)
+    void OnPlayerPosition(NetworkMessage netMsg)
     {
-        MovementTargetPositionMessage msg = netMsg.ReadMessage<MovementTargetPositionMessage>();
-        movementTargetPosition.value = msg.targetPosition;
+        PlayerPositionMessage msg = netMsg.ReadMessage<PlayerPositionMessage>();
+        playerPosition.Value = msg.targetPosition;
     }
 
-    void OnHeadRotation(NetworkMessage netMsg)
+    void OnPlayerRotation(NetworkMessage netMsg)
     {
-        HeadRotationMessage msg = netMsg.ReadMessage<HeadRotationMessage>();
-        headRotation.value = msg.rotation;
+        PlayerRotationMessage msg = netMsg.ReadMessage<PlayerRotationMessage>();
+        playerRotation.Value = msg.rotation;
+    }
+
+    void OnPlayerPaintTile(NetworkMessage netMsg)
+    {
+        PlayerPaintTileMessage msg = netMsg.ReadMessage<PlayerPaintTileMessage>();
+        playerPaintTile.SetTile(msg.tilePositionX, msg.tilePositionY, msg.tileColor);
     }
 
     public void SendDirective()
     {
         DirectiveMessage directiveMsg = new DirectiveMessage();
-        directiveMsg.directiveId = directive.value;
+        directiveMsg.directiveId = directive.Value;
 
         clientConnection.Send(directiveMsg.GetMsgType(), directiveMsg);
     }
 
+    public void SendEndReached()
+    {
+        PlayerReachedTheEndMessage playerReachedTheEndMessageMsg = new PlayerReachedTheEndMessage();
+
+        clientConnection.Send(playerReachedTheEndMessageMsg.GetMsgType(), playerReachedTheEndMessageMsg);
+    }
 }

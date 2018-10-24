@@ -11,4 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de1e3241ea91ac44b88d1fbf226412d, type: 3}
   m_Name: AlgorithmRespect
   m_EditorClassIdentifier: 
-  mValue: 1
+  value: 1

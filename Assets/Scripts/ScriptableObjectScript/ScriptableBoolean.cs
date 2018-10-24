@@ -6,19 +6,19 @@ using UnityEngine;
 public class ScriptableBoolean : ScriptableObject
 {
     [SerializeField]
-    bool mValue;
+    bool value;
 
     public Action valueChangedEvent;
 
-    public bool value
+    public bool Value
     {
         get
         {
-            return mValue;
+            return value;
         }
         set
         {
-            mValue = value;
+            this.value = value;
             OnValueChanged();
         }
     }

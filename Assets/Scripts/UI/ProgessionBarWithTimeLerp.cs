@@ -24,12 +24,12 @@ public class ProgessionBarWithTimeLerp : MonoBehaviour
     {
         if (isLerping)
         {
-            float lerpSpeedValue = currentValue < progressRatio.value ? lerpSpeed : -lerpSpeed;
+            float lerpSpeedValue = currentValue < progressRatio.Value ? lerpSpeed : -lerpSpeed;
             float lerpValue = currentValue + Time.deltaTime * lerpSpeedValue;
-            if ((currentValue <= progressRatio.value && lerpValue > progressRatio.value) || (currentValue >= progressRatio.value && lerpValue < progressRatio.value))
+            if ((currentValue <= progressRatio.Value && lerpValue > progressRatio.Value) || (currentValue >= progressRatio.Value && lerpValue < progressRatio.Value))
             {
                 isLerping = false;
-                currentValue = progressRatio.value;
+                currentValue = progressRatio.Value;
                 progress.transform.localScale = new Vector3(currentValue, 1, 1);
             }
             else

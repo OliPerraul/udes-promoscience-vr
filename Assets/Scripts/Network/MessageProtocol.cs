@@ -6,8 +6,10 @@ public enum CustomMsgType : short
 {
     Action = 100,
     Directive = 101,
-    MovementTargetPosition = 102,
-    HeadRotation = 103,
+    PlayerPosition = 102,
+    PlayerRotation = 103,
+    PlayerPaintTile = 104,
+    PlayerReachedTheEnd = 105,
     PairingRequest = 110,
     PairingResult = 111
 }
@@ -47,9 +49,9 @@ public class DirectiveMessage : MessageBase
     public int directiveId;
 }
 
-public class MovementTargetPositionMessage : MessageBase
+public class PlayerPositionMessage : MessageBase
 {
-    static CustomMsgType type = CustomMsgType.MovementTargetPosition;
+    static CustomMsgType type = CustomMsgType.PlayerPosition;
 
     public static short GetCustomMsgType()
     {
@@ -65,9 +67,9 @@ public class MovementTargetPositionMessage : MessageBase
 
 }
 
-public class HeadRotationMessage : MessageBase
+public class PlayerRotationMessage : MessageBase
 {
-    static CustomMsgType type = CustomMsgType.HeadRotation;
+    static CustomMsgType type = CustomMsgType.PlayerRotation;
 
     public static short GetCustomMsgType()
     {
@@ -79,7 +81,41 @@ public class HeadRotationMessage : MessageBase
         return (short) type;
     }
 
-    public Vector3 rotation;
+    public Quaternion rotation;
+}
+
+public class PlayerPaintTileMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.PlayerPaintTile;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+
+    public int tilePositionX;
+    public int tilePositionY;
+    public TileColor tileColor;
+}
+
+public class PlayerReachedTheEndMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.PlayerReachedTheEnd;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
 }
 
 public class PairingRequestMessage : MessageBase

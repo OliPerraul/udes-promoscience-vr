@@ -18,7 +18,7 @@ public class DirectionDisplay : MonoBehaviour
 	
     void OnControlsEnableValueChanged()
     {
-        if(controls.isControlsEnabled) 
+        if(controls.IsControlsEnabled) 
         {
             directionDisplayer.SetActive(true);
         }

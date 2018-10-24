@@ -6,21 +6,21 @@ using UnityEngine;
 public class ScriptableControler : ScriptableObject
 {
     [SerializeField]
-    bool mIsControlsEnable;
+    bool isControlsEnable;
 
     public Action stopAllMovementEvent;
     public Action resetPositionAndRotation;
     public Action isControlsEnableValueChangedEvent;
 
-    public bool isControlsEnabled
+    public bool IsControlsEnabled
     {
         get
         {
-            return mIsControlsEnable;
+            return isControlsEnable;
         }
         set
         {
-            mIsControlsEnable = value;
+            isControlsEnable = value;
             OnControlsEnableValueChanged();
         }
     }

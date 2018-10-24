@@ -23,6 +23,6 @@ public class ClientNetworkDiscovery : NetworkDiscovery
         //Causes an error on all devices but stop updating after the error and doesn't seems to afect other modules
         StopBroadcast();
 
-        serverIpAdress.value = fromAddress;
+        serverIpAdress.Value = fromAddress;
     }
 }

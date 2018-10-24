@@ -18,6 +18,6 @@ public class ProgessionBar : MonoBehaviour
 
     void OnValueChanged()
     {
-        progress.transform.localScale = new Vector3(progressRatio.value, 1, 1);
+        progress.transform.localScale = new Vector3(progressRatio.Value, 1, 1);
     }
 }

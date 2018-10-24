@@ -6,17 +6,17 @@ using UnityEngine.SceneManagement;
 public class ScriptableDeviceType : ScriptableObject
 {
     [SerializeField]
-    DeviceType mValue = DeviceType.NoType;
+    DeviceType value = DeviceType.NoType;
 
-    public DeviceType value
+    public DeviceType Value
     {
         get
         {
-            if(mValue == DeviceType.NoType)
+            if(value == DeviceType.NoType)
             {
                 InitializeValue();
             }
-            return mValue;
+            return value;
         }
     }
 
@@ -25,11 +25,11 @@ public class ScriptableDeviceType : ScriptableObject
         string sceneName = SceneManager.GetActiveScene().name;
         if (sceneName[0] == 'T')
         {
-            mValue = DeviceType.Tablet;
+            value = DeviceType.Tablet;
         }
         else if (sceneName[0] == 'H')
         {
-            mValue = DeviceType.Headset;
+            value = DeviceType.Headset;
         }
     }
 }

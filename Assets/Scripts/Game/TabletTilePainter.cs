@@ -31,11 +31,11 @@ public class TabletTilePainter : MonoBehaviour
 
     void OnAction()
     {
-        if (action.value == Constants.ACTION_PAINT_FLOOR)
+        if (action.Value == Constants.ACTION_PAINT_FLOOR)
         {
             PaintCurrentPositionTile();
         }
-        else if (action.value == Constants.ACTION_DISTANCE_SCANNER)
+        else if (action.Value == Constants.ACTION_DISTANCE_SCANNER)
         {
             TriggerDistanceScanner();
         }
@@ -57,14 +57,14 @@ public class TabletTilePainter : MonoBehaviour
     {
         int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
         int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
-        int length = GetStraightLengthInDirection(posX, posY, forwardDirection.value);
+        int length = GetStraightLengthInDirection(posX, posY, forwardDirection.Value);
         if (length < 10)
         {
-            straightLength.value = "0" + length;
+            straightLength.Value = "0" + length;
         }
         else
         {
-            straightLength.value = length.ToString();
+            straightLength.Value = length.ToString();
         }
     }
 

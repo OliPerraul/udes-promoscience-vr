@@ -44,7 +44,7 @@ public class HeadsetControls : MonoBehaviour
 
     void Update ()
     {
-       if (controls.isControlsEnabled)
+       if (controls.IsControlsEnabled)
         {
             if (isMoving)
             {
@@ -78,7 +78,7 @@ public class HeadsetControls : MonoBehaviour
             }
             else if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
             {
-                RequestMovementInDirection(forwardDirection.value);
+                RequestMovementInDirection(forwardDirection.Value);
             }
             else if (OVRInput.GetDown(OVRInput.Button.Left))
             {
@@ -108,22 +108,22 @@ public class HeadsetControls : MonoBehaviour
             if (direction == 0)
             {
                 targetPosition = fromPosition + (new Vector3(0, 0, Constants.TILE_SIZE));
-                action.value = Constants.ACTION_MOVE_UP;
+                action.Value = Constants.ACTION_MOVE_UP;
             }
             else if (direction == 1)
             {
                 targetPosition = fromPosition + (new Vector3(Constants.TILE_SIZE, 0, 0));
-                action.value = Constants.ACTION_MOVE_RIGHT;
+                action.Value = Constants.ACTION_MOVE_RIGHT;
             }
             else if (direction == 2)
             {
                 targetPosition = fromPosition + (new Vector3(0, 0, -Constants.TILE_SIZE));
-                action.value = Constants.ACTION_MOVE_DOWN;
+                action.Value = Constants.ACTION_MOVE_DOWN;
             }
             else if (direction == 3)
             {
                 targetPosition = fromPosition + (new Vector3(-Constants.TILE_SIZE, 0, 0));
-                action.value = Constants.ACTION_MOVE_LEFT;
+                action.Value = Constants.ACTION_MOVE_LEFT;
             }
             
             isMoving = true;
@@ -138,8 +138,8 @@ public class HeadsetControls : MonoBehaviour
         targetRotation = fromRotation * trajectory;
 
         isTurning = true;
-        forwardDirection.value = (forwardDirection.value - 1) < 0 ? 3 : (forwardDirection.value - 1);
-        action.value = Constants.ACTION_TURN_LEFT;
+        forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
+        action.Value = Constants.ACTION_TURN_LEFT;
     }
 
     void CameraTurnRight()
@@ -150,8 +150,8 @@ public class HeadsetControls : MonoBehaviour
         targetRotation = fromRotation * trajectory;
 
         isTurning = true;
-        forwardDirection.value = (forwardDirection.value + 1) % 4;
-        action.value = Constants.ACTION_TURN_RIGHT;
+        forwardDirection.Value = (forwardDirection.Value + 1) % 4;
+        action.Value = Constants.ACTION_TURN_RIGHT;
     }
 
 
@@ -175,7 +175,7 @@ public class HeadsetControls : MonoBehaviour
         if(floorPainter != null)
         {
             floorPainter.PaintFloor();
-            action.value = Constants.ACTION_PAINT_FLOOR;
+            action.Value = Constants.ACTION_PAINT_FLOOR;
         }
     }
 
@@ -183,17 +183,17 @@ public class HeadsetControls : MonoBehaviour
     {
         int posX = Mathf.RoundToInt((cameraTransform.position.x / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().x;
         int posY = Mathf.RoundToInt((-cameraTransform.position.z / Constants.TILE_SIZE)) + labyrinth.GetLabyrithStartPosition().y;
-        int length = GetStraightLengthInDirection(posX, posY, forwardDirection.value);
+        int length = GetStraightLengthInDirection(posX, posY, forwardDirection.Value);
         if(length < 10)
         {
-            straightLength.value = "0" + length;
+            straightLength.Value = "0" + length;
         }
         else
         {
-            straightLength.value = length.ToString();
+            straightLength.Value = length.ToString();
         }
 
-        action.value = Constants.ACTION_DISTANCE_SCANNER;
+        action.Value = Constants.ACTION_DISTANCE_SCANNER;
     }
 
     int GetStraightLengthInDirection(int posX, int posY, int direction)
@@ -221,19 +221,19 @@ public class HeadsetControls : MonoBehaviour
     void ResetPositionAndRotation()
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
-        forwardDirection.value = labyrinth.GetStartDirection();
+        forwardDirection.Value = labyrinth.GetStartDirection();
 
         Quaternion rotation = new Quaternion(0, 0, 0, 0);
 
-        if (forwardDirection.value == 1)
+        if (forwardDirection.Value == 1)
         {
             rotation.eulerAngles = new Vector3(0, 90, 0);
         }
-        else if (forwardDirection.value == 2)
+        else if (forwardDirection.Value == 2)
         {
             rotation.eulerAngles = new Vector3(0, 180, 0);
         }
-        else if (forwardDirection.value == 3)
+        else if (forwardDirection.Value == 3)
         {
             rotation.eulerAngles = new Vector3(0, 270, 0);
         }

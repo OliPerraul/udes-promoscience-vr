@@ -27,7 +27,7 @@ public class PairingClient : MonoBehaviour
         client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
         client.RegisterHandler(PairingResultMessage.GetCustomMsgType(), OnPairingResult);
 
-        client.Connect(serverIpAdress.value, serverPort);
+        client.Connect(serverIpAdress.Value, serverPort);
     }
 
     void StopClient()
@@ -69,11 +69,11 @@ public class PairingClient : MonoBehaviour
 
         string deviceName = SystemInfo.deviceModel;
 
-        if (deviceType.value == DeviceType.Tablet)
+        if (deviceType.Value == DeviceType.Tablet)
         {
             pairingRequestMsg.deviceType = DeviceType.Tablet;
         }
-        else if (deviceType.value == DeviceType.Headset)
+        else if (deviceType.Value == DeviceType.Headset)
         {
             pairingRequestMsg.deviceType = DeviceType.Headset;
         }

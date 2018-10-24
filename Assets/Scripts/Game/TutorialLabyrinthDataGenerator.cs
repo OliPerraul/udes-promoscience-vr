@@ -20,10 +20,10 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
 
     void OnGameStateChanged()
     {
-        if (gameState.value == GameState.ReadyTutorial)
+        if (gameState.Value == GameState.ReadyTutorial)
         {
             GenerateTutorialLabyrinthData();
-            gameState.value = GameState.TutorialLabyrinthReady;
+            gameState.Value = GameState.TutorialLabyrinthReady;
         }
     }
 

@@ -6,19 +6,19 @@ using UnityEngine;
  public class ScriptableFloat : ScriptableObject
  {
     [SerializeField]
-    float mValue;
+    float value;
 
     public Action valueChangedEvent;
    
-    public float value
+    public float Value
     {
         get
         {
-            return mValue;
+            return value;
         }
         set
         {
-            mValue = value;
+            this.value = value;
             OnValueChanged();
         }
     }

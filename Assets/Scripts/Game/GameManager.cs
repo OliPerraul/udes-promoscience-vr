@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     ScriptableGameState gameState;
 
     [SerializeField]
-    ScriptableBoolean isEndReached;
+    ScriptableAction playerReachedTheEnd;
 
     [SerializeField]
     AlgorithmRespect algorithmRespect;
@@ -34,16 +34,16 @@ public class GameManager : MonoBehaviour
 
         gameState.valueChangedEvent += OnGameStateChanged;
 
-        if (isEndReached != null)
+        if (playerReachedTheEnd != null)
         {
-            isEndReached.valueChangedEvent += OnEndReached;
+            playerReachedTheEnd.action += OnPlayerReachedTheEnd;
         }
     }
 
     //Game manager could be remove and instead add a status preparing for game and have the module that need it listen to status
     public void OnGameStateChanged()
     {
-        if (gameState.value == GameState.Playing || gameState.value == GameState.PlayingTutorial)
+        if (gameState.Value == GameState.Playing || gameState.Value == GameState.PlayingTutorial)
         {
             if (controls != null)
             {
@@ -63,47 +63,42 @@ public class GameManager : MonoBehaviour
 
             if (controls != null)
             {
-                controls.isControlsEnabled = true;
+                controls.IsControlsEnabled = true;
             }
         }
-        else if (gameState.value == GameState.WaitingForNextRound)
+        else if (gameState.Value == GameState.WaitingForNextRound)
         {
 
         }
     }
 
-    void OnEndReached()
+    void OnPlayerReachedTheEnd()
     {
-        if(isEndReached.value)
+        if (gameState.Value == GameState.PlayingTutorial)
         {
-            if(gameState.value == GameState.PlayingTutorial)
+            controls.IsControlsEnabled = false;
+            controls.StopAllMovement();
+            controls.ResetPositionAndRotation();
+
+            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
+
+            gameState.Value = GameState.TutorialLabyrinthReady;
+        }
+        else
+        {
+            controls.IsControlsEnabled = false;
+            controls.StopAllMovement();
+            controls.ResetPositionAndRotation();
+
+            labyrinth.DestroyLabyrinth();
+            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
+
+            if (lobby != null)
             {
-                controls.isControlsEnabled = false;
-                controls.StopAllMovement();
-                controls.ResetPositionAndRotation();
-                isEndReached.value = false;
-
-                labyrinthRoom.transform.position = new Vector3(0, 0, 0);
-
-                gameState.value = GameState.TutorialLabyrinthReady;
+                lobby.SetActive(true);
             }
-            else
-            {
-                controls.isControlsEnabled = false;
-                controls.StopAllMovement();
-                controls.ResetPositionAndRotation();
-                isEndReached.value = false;
 
-                labyrinth.DestroyLabyrinth();
-                labyrinthRoom.transform.position = new Vector3(0, 0, 0);
-
-                if (lobby != null)
-                {
-                    lobby.SetActive(true);
-                }
-
-                gameState.value = GameState.WaitingForNextRound;
-            }
+            gameState.Value = GameState.WaitingForNextRound;
         }
     }
 

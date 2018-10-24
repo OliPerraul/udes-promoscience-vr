@@ -6,19 +6,19 @@ using UnityEngine;
 public class ScriptableInteger : ScriptableObject
 {
     [SerializeField]
-    int mValue;
+    int value;
 
     public Action valueChangedEvent;
 
-    public int value
+    public int Value
     {
         get
         {
-            return mValue;
+            return value;
         }
         set
         {
-            mValue = value;
+            this.value = value;
             OnValueChanged();
         }
     }

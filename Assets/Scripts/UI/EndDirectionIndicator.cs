@@ -34,7 +34,7 @@ public class EndDirectionIndicator : MonoBehaviour
 
     public void OnGameStateChanged()
     {
-        if (gameState.value == GameState.PlayingTutorial || gameState.value == GameState.Playing)
+        if (gameState.Value == GameState.PlayingTutorial || gameState.Value == GameState.Playing)
         {
             endPosition = labyrinth.GetLabyrithEndPositionInWorldPosition();
         }
@@ -42,7 +42,7 @@ public class EndDirectionIndicator : MonoBehaviour
 
     void OnControlsEnableValueChanged()
     {
-        if (controls.isControlsEnabled)
+        if (controls.IsControlsEnabled)
         {
             indicator.gameObject.SetActive(true);
         }

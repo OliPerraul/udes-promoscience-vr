@@ -38,7 +38,7 @@ public class DistanceScanner : MonoBehaviour
 
     void OnIsControlsEnableValueChangedEvent()
     {
-        if (controls.isControlsEnabled == true)
+        if (controls.IsControlsEnabled == true)
         {
             distanceDisplay.SetActive(true);
             targetDisplay.SetActive(true);

@@ -18,7 +18,7 @@ public class ClientNetworkManager : NetworkManager
     public void StartConnection ()
     {
         networkPort = serverPort;
-        networkAddress = serverIpAdress.value;
+        networkAddress = serverIpAdress.Value;
         StartClient();
     }
 

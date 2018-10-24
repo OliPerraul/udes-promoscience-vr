@@ -17,7 +17,7 @@ public class DirectiveControls : MonoBehaviour
 
     void OnControlsEnableValueChanged()
     {
-        if (controls.isControlsEnabled)
+        if (controls.IsControlsEnabled)
         {
             foreach (Transform child in transform)
             {
@@ -41,26 +41,26 @@ public class DirectiveControls : MonoBehaviour
 
     public void SetDirectiveMoveFoward()
     {
-        directive.value = Constants.DIRECTIVE_MOVE_FOWARD;
+        directive.Value = Constants.DIRECTIVE_MOVE_FOWARD;
     }
 
     public void SetDirectiveTurnLeft()
     {
-        directive.value = Constants.DIRECTIVE_TURN_LEFT;
+        directive.Value = Constants.DIRECTIVE_TURN_LEFT;
     }
 
     public void SetDirectiveTurnRight()
     {
-        directive.value = Constants.DIRECTIVE_TURN_RIGHT;
+        directive.Value = Constants.DIRECTIVE_TURN_RIGHT;
     }
 
     public void SetDirectiveUTurn()
     {
-        directive.value = Constants.DIRECTIVE_UTURN;
+        directive.Value = Constants.DIRECTIVE_UTURN;
     }
 
     public void SetDirectiveStop()
     {
-        directive.value = Constants.DIRECTIVE_STOP;
+        directive.Value = Constants.DIRECTIVE_STOP;
     }
 }

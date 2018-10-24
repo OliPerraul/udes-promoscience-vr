@@ -6,19 +6,19 @@ using UnityEngine;
 public class ScriptableGameState : ScriptableObject
 {
     [SerializeField]
-    GameState mValue;
+    GameState value;
 
     public Action valueChangedEvent;
 
-    public GameState value
+    public GameState Value
     {
         get
         {
-            return mValue;
+            return value;
         }
         set
         {
-            mValue = value;
+            this.value = value;
             OnValueChanged();
         }
     }

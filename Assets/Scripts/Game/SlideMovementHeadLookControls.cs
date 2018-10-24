@@ -105,7 +105,7 @@ public class SlideMovementHeadLookControls : MonoBehaviour
 
                     isMoving = true;
 
-                    action.value = targetPosition;
+                    action.Value = targetPosition;
                 }
             }
         }

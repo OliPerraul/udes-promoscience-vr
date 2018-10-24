@@ -58,7 +58,7 @@ static class Constants
     public const float MOVEMENT_ACCELERATION = 1f;
     public const float MOVEMENT_MAX_SPEED = 0.5f;
     public const float TURNING_SPEED = 1.0f;
-    public const float TURNING_ACCELERATION = 1f;
+    public const float TURNING_ACCELERATION = 2f;
     public const float TURNING_MAX_SPEED = 0.5f;
 
     //0-49 Floors

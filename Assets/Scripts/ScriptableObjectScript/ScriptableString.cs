@@ -6,19 +6,19 @@ using UnityEngine;
 public class ScriptableString : ScriptableObject
 {
     [SerializeField]
-    string mValue;
+    string value;
 
     public Action valueChangedEvent;
 
-    public string value
+    public string Value
     {
         get
         {
-            return mValue;
+            return value;
         }
         set
         {
-            mValue = value;
+            this.value = value;
             OnValueChanged();
         }
     }

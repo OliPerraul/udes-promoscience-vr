@@ -18,6 +18,6 @@ public class UpdateTextWithScriptableString : MonoBehaviour
 	
 	void OnValueChangedEvent()
     {
-        text.text = scriptableString.value;
+        text.text = scriptableString.Value;
 	}
 }

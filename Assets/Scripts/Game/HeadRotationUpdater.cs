@@ -12,9 +12,9 @@ public class HeadRotationUpdater : MonoBehaviour
 
 	void FixedUpdate ()
     {
-		if(headTransform.rotation.eulerAngles != headRotation.value)
+		if(headTransform.rotation.eulerAngles != headRotation.Value)
         {
-            headRotation.value = headTransform.localRotation.eulerAngles;
+            headRotation.Value = headTransform.localRotation.eulerAngles;
         }
 	}
 }

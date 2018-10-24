@@ -5,19 +5,19 @@ using UnityEngine;
  [CreateAssetMenu(fileName = "Data", menuName = "Data/Vector3", order = 1)]
  public class ScriptableVector3 : ScriptableObject
  {
-    Vector3 mValue;
+    Vector3 value;
 
     public Action valueChangedEvent;
    
-    public Vector3 value
+    public Vector3 Value
     {
         get
         {
-            return mValue;
+            return value;
         }
         set
         {
-            mValue = value;
+            this.value = value;
             OnValueChanged();
         }
     }

@@ -15,10 +15,16 @@ public class MessageClient : MonoBehaviour
     ScriptableGameState gameState;
 
     [SerializeField]
-    ScriptableVector3 headRotation;
+    ScriptableVector3 playerPosition;
 
     [SerializeField]
-    ScriptableVector3 movementTargetPosition;
+    ScriptableQuaternion playerRotation;
+
+    [SerializeField]
+    ScriptableTile playerPaintTile;
+
+    [SerializeField]
+    ScriptableAction playerReachedTheEnd;
 
     [SerializeField]
     ScriptableString pairedIpAdress;
@@ -38,8 +44,9 @@ public class MessageClient : MonoBehaviour
         client.RegisterHandler(MsgType.Connect, OnConnect);
         client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
         client.RegisterHandler(DirectiveMessage.GetCustomMsgType(), OnDirective);
+        client.RegisterHandler(PlayerReachedTheEndMessage.GetCustomMsgType(), OnPlayerReachedTheEnd);
 
-        client.Connect(pairedIpAdress.value, serverPort);
+        client.Connect(pairedIpAdress.Value, serverPort);
     }
 
     void StopClient()
@@ -50,45 +57,68 @@ public class MessageClient : MonoBehaviour
 
     void OnConnect(NetworkMessage netMsg)
     {
-        gameState.value = GameState.ReadyTutorial;
+        gameState.Value = GameState.ReadyTutorial;
 
         action.valueChangedEvent += SendAction;
-        movementTargetPosition.valueChangedEvent += SendMovementTargetPosition;//to be removed
-        headRotation.valueChangedEvent += SendHeadRotation;//to be removed
+        playerPosition.valueChangedEvent += SendPlayerPosition;
+        playerRotation.valueChangedEvent += SendPlayerRotation;
+        playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
+        //forwardDirection.valueChangedEvent += SendFowardDirection;
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
+        action.valueChangedEvent -= SendAction;
+        playerPosition.valueChangedEvent -= SendPlayerPosition;
+        playerRotation.valueChangedEvent -= SendPlayerRotation;
+        playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
+        //forwardDirection.valueChangedEvent -= SendFowardDirection;
+
         StopClient();//Might be changed when need reconnection?
     }
 
     void OnDirective(NetworkMessage netMsg)
     {
         DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
-        directive.value = msg.directiveId;
+        directive.Value = msg.directiveId;
     }
 
-    public void SendMovementTargetPosition()
+    void OnPlayerReachedTheEnd(NetworkMessage netMsg)
     {
-        MovementTargetPositionMessage movementTargetPositionMsg = new MovementTargetPositionMessage();
-        movementTargetPositionMsg.targetPosition = movementTargetPosition.value;
-
-        client.Send(movementTargetPositionMsg.GetMsgType(), movementTargetPositionMsg);
+        playerReachedTheEnd.FireAction();
     }
 
     public void SendAction()
     {
         ActionMessage actionMsg = new ActionMessage();
-        actionMsg.actionId = action.value;
+        actionMsg.actionId = action.Value;
 
         client.Send(actionMsg.GetMsgType(), actionMsg);
     }
 
-    public void SendHeadRotation()
+    public void SendPlayerPosition()
     {
-        HeadRotationMessage headRotationMsg = new HeadRotationMessage();
-        headRotationMsg.rotation = headRotation.value;
+        PlayerPositionMessage movementTargetPositionMsg = new PlayerPositionMessage();
+        movementTargetPositionMsg.targetPosition = playerPosition.Value;
+
+        client.Send(movementTargetPositionMsg.GetMsgType(), movementTargetPositionMsg);
+    }
+
+    public void SendPlayerRotation()
+    {
+        PlayerRotationMessage headRotationMsg = new PlayerRotationMessage();
+        headRotationMsg.rotation = playerRotation.Value;
 
         client.Send(headRotationMsg.GetMsgType(), headRotationMsg);
+    }
+
+    public void SendPlayerPaintTile()
+    {
+        PlayerPaintTileMessage playerPaintTileMessage = new PlayerPaintTileMessage();
+        playerPaintTileMessage.tilePositionX = playerPaintTile.TilePosition.x;
+        playerPaintTileMessage.tilePositionY = playerPaintTile.TilePosition.y;
+        playerPaintTileMessage.tileColor = playerPaintTile.TileColor;
+
+        client.Send(playerPaintTileMessage.GetMsgType(), playerPaintTileMessage);
     }
 }

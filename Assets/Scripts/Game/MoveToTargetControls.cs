@@ -33,7 +33,7 @@ public class MoveToTargetControls : MonoBehaviour
 	
 	void Update ()
     {
-        if (controls.isControlsEnabled)
+        if (controls.IsControlsEnabled)
         {
             if (targetPositions.Count > 0 && !isMoving)
             {
@@ -67,7 +67,7 @@ public class MoveToTargetControls : MonoBehaviour
 
     void AddTargetPosition()
     {
-        targetPositions.Add(action.value);
+        targetPositions.Add(action.Value);
     }
 
     void StopAllMovement()

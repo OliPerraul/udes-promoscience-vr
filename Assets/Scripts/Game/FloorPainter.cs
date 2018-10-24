@@ -16,7 +16,8 @@ public class FloorPainter : MonoBehaviour
     [SerializeField]
     Material redMaterial;
 
-    TileColor floorColor = TileColor.Grey;
+    [SerializeField]
+    TileColor floorColor;
 
     public TileColor GetFloorColorId()
     {
@@ -42,22 +43,27 @@ public class FloorPainter : MonoBehaviour
         }
     }
 
-    public void PaintFloorWithColorId(int id)
+    public void PaintFloorWithColor(TileColor color)
     {
-        if (id == (int) TileColor.Grey)
+        if (color == TileColor.Grey)
         {
             floorColor = TileColor.Grey;
             meshRenderer.material = greyMaterial;
         }
-        else if (id == (int) TileColor.Yellow)
+        else if (color == TileColor.Yellow)
         {
             floorColor = TileColor.Yellow;
             meshRenderer.material = yellowMaterial;
         }
-        else if (id == (int) TileColor.Red)
+        else if (color == TileColor.Red)
         {
             floorColor = TileColor.Red;
             meshRenderer.material = redMaterial;
         }
+    }
+
+    public void PaintFloorWithColorId(int id)
+    {
+        PaintFloorWithColor((TileColor) id);
     }
 }

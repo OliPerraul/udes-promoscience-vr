@@ -17,10 +17,10 @@ public class HeadRotation : MonoBehaviour
 
     void SetRotation()
     {
-		if(headTransform.rotation.eulerAngles != headRotation.value)
+		if(headTransform.rotation.eulerAngles != headRotation.Value)
         {
             Quaternion rotation = new Quaternion();
-            rotation.eulerAngles = headRotation.value;
+            rotation.eulerAngles = headRotation.Value;
             headTransform.localRotation = rotation;
         }
 	}

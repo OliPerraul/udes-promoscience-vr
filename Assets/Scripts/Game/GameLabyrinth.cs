@@ -34,15 +34,15 @@ public class GameLabyrinth : MonoBehaviour
 
     public void OnGameStateChanged()
     {
-        if(gameState.value == GameState.TutorialLabyrinthReady)
+        if(gameState.Value == GameState.TutorialLabyrinthReady)
         {
             GenerateLabyrinthVisual();
-            gameState.value = GameState.PlayingTutorial;
+            gameState.Value = GameState.PlayingTutorial;
         }
-        else if (gameState.value == GameState.LabyrithReady)
+        else if (gameState.Value == GameState.LabyrithReady)
         {
             GenerateLabyrinthVisual();
-            gameState.value = GameState.Playing;
+            gameState.Value = GameState.Playing;
         }
     }
 
@@ -199,7 +199,7 @@ public class GameLabyrinth : MonoBehaviour
         return GetIsTileWalkable(tile.x, tile.y);
     }
 
-    public TileColor GetTileColorId(Vector2Int tile)
+    public TileColor GetTileColor(Vector2Int tile)
     {
         TileColor colorId = TileColor.NoColor;
         FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();

@@ -155,7 +155,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 30a19ffa8d063ed4bb180ae2e0bd5afa, type: 2}
+  - {fileID: 2100000, guid: 0bcda1d6d9c49b94b836685410be2c47, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -230,6 +230,7 @@ MonoBehaviour:
   greyMaterial: {fileID: 2100000, guid: 30a19ffa8d063ed4bb180ae2e0bd5afa, type: 2}
   yellowMaterial: {fileID: 2100000, guid: 0bcda1d6d9c49b94b836685410be2c47, type: 2}
   redMaterial: {fileID: 2100000, guid: 001acaf6e745051479b2819975c03bc3, type: 2}
+  floorColor: 1
 --- !u!114 &114545223935228676
 MonoBehaviour:
   m_ObjectHideFlags: 1

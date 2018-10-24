@@ -162,30 +162,30 @@ public class Player : NetworkBehaviour
         deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
         ServerDeviceName = SystemInfo.deviceModel;
 
-        if (deviceType.value == DeviceType.Tablet)
+        if (deviceType.Value == DeviceType.Tablet)
         {
             action.valueChangedEvent += SendCmdPlayerAction;
         }
 
-        CmdSetDeviceType(deviceType.value);
+        CmdSetDeviceType(deviceType.Value);
         CmdSetDeviceName(ServerDeviceName);
         CmdSetUniqueIdentifier(deviceUniqueIdentifier);
 
-        gameState.value = GameState.Pairing;
+        gameState.Value = GameState.Pairing;
     }
 
     [Client]
     void SendCmdPlayerGameState()
     {
-        CmdSetPlayerGameState(gameState.value);
+        CmdSetPlayerGameState(gameState.Value);
     }
 
     [Client]
     void SendCmdPlayerAction()
     {
-        if (gameState.value == GameState.Playing)
+        if (gameState.Value == GameState.Playing)
         {
-            CmdSetPlayerAction(action.value);
+            CmdSetPlayerAction(action.Value);
         }
     }
 
@@ -236,14 +236,14 @@ public class Player : NetworkBehaviour
     [TargetRpc]
     public void TargetSetPairedIpAdress(NetworkConnection target, string ipAdress)
     {
-        pairedIpAdress.value = ipAdress;
-        gameState.value = GameState.Paired;
+        pairedIpAdress.Value = ipAdress;
+        gameState.Value = GameState.Paired;
     }
 
     [TargetRpc]
     public void TargetSetPlayerAlgorithmId(NetworkConnection target, int id)
     {
-        algorithmId.value = id;
+        algorithmId.Value = id;
     }
 
     [TargetRpc]
@@ -251,13 +251,13 @@ public class Player : NetworkBehaviour
     {
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
 
-        if(algorithmId.value == Constants.TUTORIAL_ALGORITHM)
+        if(algorithmId.Value == Constants.TUTORIAL_ALGORITHM)
         {
-            gameState.value = GameState.ReadyTutorial;
+            gameState.Value = GameState.ReadyTutorial;
         }
         else
         {
-            gameState.value = GameState.LabyrithReady;
+            gameState.Value = GameState.LabyrithReady;
         }
     }
     #endregion
