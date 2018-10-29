@@ -24,11 +24,14 @@ public class UILobbyPlayer : MonoBehaviour
 
     private void OnDestroy()
     {
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverDeviceNameChangedEvent -= UpdateLobbyPlayerName;
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverDeviceNameChangedEvent -= UpdateLobbyPlayerImage;
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverTeamNameChangedEvent -= UpdateLobbyPlayerTeamName;
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverTeamColorChangedEvent -= UpdateLobbyPlayerColor;
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverPlayerStatusChangedEvent -= UpdateLobbyPlayerStatusText;
+        if (PlayerList.instance.GetPlayerWithId(mPlayerId) != null)
+        {
+            PlayerList.instance.GetPlayerWithId(mPlayerId).serverDeviceNameChangedEvent -= UpdateLobbyPlayerName;
+            PlayerList.instance.GetPlayerWithId(mPlayerId).serverDeviceNameChangedEvent -= UpdateLobbyPlayerImage;
+            PlayerList.instance.GetPlayerWithId(mPlayerId).serverTeamNameChangedEvent -= UpdateLobbyPlayerTeamName;
+            PlayerList.instance.GetPlayerWithId(mPlayerId).serverTeamColorChangedEvent -= UpdateLobbyPlayerColor;
+            PlayerList.instance.GetPlayerWithId(mPlayerId).serverPlayerStatusChangedEvent -= UpdateLobbyPlayerStatusText;
+        }
     }
 
     public void SetPlayer(int id)

@@ -427,6 +427,8 @@ public class HeadsetControls : MonoBehaviour
         {
             PaintTile(tiles[i].x, tiles[i].y, tiles[i].color);
         }
+
+        PaintCurrentPositionTile();
     }
 
     void SetForwardDirectionWithRotation(Quaternion rotation)

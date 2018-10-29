@@ -125,6 +125,12 @@ public class Player : NetworkBehaviour
         }
     }
 
+    [Server]
+    private void OnDestroy()
+    {
+        PlayerList.instance.RemovePlayer(this);
+    }
+
     #endregion
 
     #region Client
