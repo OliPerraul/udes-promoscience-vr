@@ -94,7 +94,7 @@ public class MessageServer : MonoBehaviour
     void OnPlayerPosition(NetworkMessage netMsg)
     {
         PlayerPositionMessage msg = netMsg.ReadMessage<PlayerPositionMessage>();
-        playerPosition.Value = msg.targetPosition;
+        playerPosition.Value = msg.position;
     }
 
     void OnPlayerRotation(NetworkMessage netMsg)

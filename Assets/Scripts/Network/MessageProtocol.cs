@@ -63,7 +63,7 @@ public class PlayerPositionMessage : MessageBase
         return (short) type;
     }
 
-    public Vector3 targetPosition;
+    public Vector3 position;
 
 }
 

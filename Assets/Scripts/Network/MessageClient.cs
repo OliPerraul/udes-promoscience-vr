@@ -63,7 +63,6 @@ public class MessageClient : MonoBehaviour
         playerPosition.valueChangedEvent += SendPlayerPosition;
         playerRotation.valueChangedEvent += SendPlayerRotation;
         playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
-        //forwardDirection.valueChangedEvent += SendFowardDirection;
     }
 
     void OnDisconnect(NetworkMessage netMsg)
@@ -72,7 +71,6 @@ public class MessageClient : MonoBehaviour
         playerPosition.valueChangedEvent -= SendPlayerPosition;
         playerRotation.valueChangedEvent -= SendPlayerRotation;
         playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
-        //forwardDirection.valueChangedEvent -= SendFowardDirection;
 
         StopClient();//Might be changed when need reconnection?
     }
@@ -98,18 +96,18 @@ public class MessageClient : MonoBehaviour
 
     public void SendPlayerPosition()
     {
-        PlayerPositionMessage movementTargetPositionMsg = new PlayerPositionMessage();
-        movementTargetPositionMsg.targetPosition = playerPosition.Value;
+        PlayerPositionMessage playerPositionMsg = new PlayerPositionMessage();
+        playerPositionMsg.position = playerPosition.Value;
 
-        client.Send(movementTargetPositionMsg.GetMsgType(), movementTargetPositionMsg);
+        client.Send(playerPositionMsg.GetMsgType(), playerPositionMsg);
     }
 
     public void SendPlayerRotation()
     {
-        PlayerRotationMessage headRotationMsg = new PlayerRotationMessage();
-        headRotationMsg.rotation = playerRotation.Value;
+        PlayerRotationMessage playerRotationMsg = new PlayerRotationMessage();
+        playerRotationMsg.rotation = playerRotation.Value;
 
-        client.Send(headRotationMsg.GetMsgType(), headRotationMsg);
+        client.Send(playerRotationMsg.GetMsgType(), playerRotationMsg);
     }
 
     public void SendPlayerPaintTile()

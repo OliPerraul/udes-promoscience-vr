@@ -61,14 +61,18 @@ public class HeadsetControls : MonoBehaviour
 
     void Update ()
     {
-       if (controls.IsControlsEnabled)
+        if (OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad))
         {
-            if(OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad))
-            {
-                isPrimaryTouchpadHold = false;
-            }
+            isPrimaryTouchpadHold = false;
+        }
+        else if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
+        {
+            isPrimaryTouchpadHold = true;
+        }
 
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad) || isPrimaryTouchpadHold)
+        if (controls.IsControlsEnabled)
+        {
+            if (isPrimaryTouchpadHold)
             {
                 isPrimaryTouchpadHold = true;
 
@@ -153,10 +157,11 @@ public class HeadsetControls : MonoBehaviour
                     }
                 }
             }
-            else if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+
+            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
             {
-                int nextTileColorId = ((int)paintingColor.Value + 1) % 3;
-                paintingColor.Value = (TileColor) nextTileColorId;
+                int tileNextColorId = ((int)paintingColor.Value + 1) % 3;
+                paintingColor.Value = (TileColor) tileNextColorId;
                 PaintCurrentPositionTile();
             }
 
@@ -360,6 +365,8 @@ public class HeadsetControls : MonoBehaviour
         isMoving = false;
         isTurningLeft = false;
         isTurningRight = false;
+        isChainingMovement = false;
+        isPrimaryTouchpadHold = false;
         lerpValue = 0;
     }
 
