@@ -9,7 +9,40 @@ using UnityEngine;
 
 public static class SQLiteUtilities
 {
-    const string fileName = "algorintheDatabase.db";
+    const string fileName = "AlgorintheDatabase.db";
+
+    //Database table 
+    const string TEAM = "Team";
+    const string LABYRINTH = "Labyrinth";
+    const string COURSE = "Course";
+    const string EVENT = "Event";
+    const string DEVICE_PAIRING = "DevicePairing";
+
+    //Team table column
+    const string TEAM_ID = "TeamID";
+    const string TEAM_NAME = "TeamName";
+    const string TEAM_COLOR = "TeamColor";
+    const string TEAM_CREATION_DATE_TIME = "TeamCreationDateTime";
+
+    //Labyrinth table column
+    const string LABYRINTH_ID = "LabyrinthID";
+    const string LABYRINTH_SPECS = "LabyrinthSpecs";
+
+    //Course table column
+    const string COURSE_ID = "CourseID";
+    const string COURSE_TEAM_ID = TEAM_ID;
+    const string COURSE_LABYRINTH_ID = LABYRINTH_ID;
+    const string COURSE_NO_ALGO = "NoAlgo";
+
+    //Event table column
+    const string EVENT_ID = "EventID";
+    const string EVENT_TYPE = "EventType";
+    const string EVENT_TIME = "EventTime";
+    const string EVENT_COURSE_ID = COURSE_ID;
+
+    //DevicePairing table column
+    const string DEVICE_PAIRING_TABLET_ID = "TabletID";
+    const string DEVICE_PAIRING_HEADSET_ID = "HeadsetID";
 
     static void CreateDatabase()
     {
@@ -22,42 +55,42 @@ public static class SQLiteUtilities
             {
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS Team ( " +
-                                  "TeamID INTEGER(10) NOT NULL, " +
-                                  "Name varchar(255) NOT NULL, " +
-                                  "Color varchar(255) NOT NULL, " +
-                                  "CreationDateTime DATETIME NOT NULL, " +
-                                  "PRIMARY KEY(TeamID) );";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + TEAM + "( " +
+                                  TEAM_ID + " INTEGER(10) NOT NULL, " +
+                                  TEAM_NAME + " varchar(255) NOT NULL, " +
+                                  TEAM_COLOR + " varchar(255) NOT NULL, " +
+                                  TEAM_CREATION_DATE_TIME + " DATETIME NOT NULL, " +
+                                  "PRIMARY KEY(" + TEAM_ID + ") );";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS Labyrinth ( " +
-                  "LabyrinthID INTEGER(10) NOT NULL, " +
-                  "Specs varchar(255), " +
-                  "PRIMARY KEY(LabyrinthID) );";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + LABYRINTH + " ( " +
+                                  LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
+                                  LABYRINTH_SPECS + " varchar(255), " +
+                                  "PRIMARY KEY(" + LABYRINTH_ID + ") );";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS Course ( " +
-                  "CourseID INTEGER(10) NOT NULL, " +
-                  "TeamID INTEGER(10) NOT NULL, " +
-                  "LabyrinthID INTEGER(10) NOT NULL, " +
-                  "NoAlgo INTEGER(10) NOT NULL, " +
-                  "PRIMARY KEY(CourseID), " +
-                  "FOREIGN KEY(TeamID) REFERENCES Team(TeamID), " +
-                  "FOREIGN KEY(LabyrinthID) REFERENCES Labyrinth(LabyrinthID)); ";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + COURSE + " ( " +
+                                  COURSE_ID + " INTEGER(10) NOT NULL, " +
+                                  COURSE_TEAM_ID + " INTEGER(10) NOT NULL, " +
+                                  COURSE_LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
+                                  "NoAlgo INTEGER(10) NOT NULL, " +
+                                  "PRIMARY KEY(" + COURSE_ID + "), " +
+                                  "FOREIGN KEY(" + COURSE_TEAM_ID + ") REFERENCES " + TEAM +"(" + TEAM_ID + "), " +
+                                  "FOREIGN KEY(" + COURSE_LABYRINTH_ID + ") REFERENCES " + LABYRINTH +"(" + LABYRINTH_ID + ")); ";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS Event ( " +
-                                  "EventID INTEGER PRIMARY KEY ASC, " +
-                                  "Type INTEGER(10) NOT NULL, " +
-                                  "Time DATETIME NOT NULL, " +
-                                  "CourseID INTEGER(10) NOT NULL, " +
-                                  "FOREIGN KEY(CourseID) REFERENCES Course(CourseID) ); ";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + EVENT + " ( " +
+                                  EVENT_ID + " INTEGER PRIMARY KEY ASC, " +
+                                  EVENT_TYPE + " INTEGER(10) NOT NULL, " +
+                                  EVENT_TIME + " DATETIME NOT NULL, " +
+                                  EVENT_COURSE_ID + " INTEGER(10) NOT NULL, " +
+                                  "FOREIGN KEY(" + EVENT_COURSE_ID + ") REFERENCES " + COURSE + "(" + COURSE_ID + ") ); ";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS DevicePairing ( " +
-                                  "TabletID varchar(255) NOT NULL UNIQUE, " +
-                                  "HeadsetID varchar(255) NOT NULL UNIQUE, " +
-                                  "PRIMARY KEY(TabletID,HeadsetID)); ";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + DEVICE_PAIRING + " ( " +
+                                  DEVICE_PAIRING_TABLET_ID + " varchar(255) NOT NULL UNIQUE, " +
+                                  DEVICE_PAIRING_HEADSET_ID + " varchar(255) NOT NULL UNIQUE, " +
+                                  "PRIMARY KEY(" + DEVICE_PAIRING_TABLET_ID + "," + DEVICE_PAIRING_HEADSET_ID + ")); ";
                 cmd.ExecuteNonQuery();
             }
         }
@@ -91,37 +124,37 @@ public static class SQLiteUtilities
                 cmd.CommandText = "PRAGMA foreign_keys = ON";
                 cmd.ExecuteNonQuery();
                 
-                cmd.CommandText = "INSERT INTO Team (TeamID, Name, Color, CreationDateTime) VALUES (1, 1, 1, DATETIME('2018-08-27',  '13:10:10'));";
+                cmd.CommandText = "INSERT INTO " + TEAM + " (" + TEAM_ID + ", " + TEAM_NAME + ", " + TEAM_COLOR + ", " + TEAM_CREATION_DATE_TIME + ") VALUES (1, 1, 1, DATETIME('2018-08-27',  '13:10:10'));";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "INSERT INTO Team (TeamID, Name, Color) VALUES (2, 2, 2, DATETIME('2018-08-27',  '13:10:10'));";
+                cmd.CommandText = "INSERT INTO " + TEAM + " (" + TEAM_ID + ", " + TEAM_NAME + ", " + TEAM_COLOR + ", " + TEAM_CREATION_DATE_TIME + ") VALUES (2, 2, 2, DATETIME('2018-08-27',  '13:10:10'));";
                 cmd.ExecuteNonQuery();
                 
-                cmd.CommandText = "INSERT INTO Labyrinth (LabyrinthID, Specs) VALUES (1, 'ahah1');";
+                cmd.CommandText = "INSERT INTO " + LABYRINTH + " (" + LABYRINTH_ID + ", " + LABYRINTH_SPECS + ") VALUES (1, 'ahah1');";
                 cmd.ExecuteNonQuery();
                 
-                cmd.CommandText = "INSERT INTO Labyrinth (LabyrinthID, Specs) VALUES (2, 'ahah2');";
+                cmd.CommandText = "INSERT INTO " + LABYRINTH + " (" + LABYRINTH_ID + ", " + LABYRINTH_SPECS + ") VALUES (2, 'ahah2');";
                 cmd.ExecuteNonQuery();
                 
-                cmd.CommandText = "INSERT INTO Course (CourseID, TeamID, LabyrinthID, NoAlgo) VALUES (1, 2, 1, 55);";
+                cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ") VALUES (1, 2, 1, 55);";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "INSERT INTO Course (CourseID, TeamID, LabyrinthID, NoAlgo) VALUES (2, 2, 2, 3);";
+                cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ") VALUES (2, 2, 2, 3);";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "INSERT INTO Course (CourseID, TeamID, LabyrinthID, NoAlgo) VALUES (3, 1, 2, 154);";
+                cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ") VALUES (3, 1, 2, 154);";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "INSERT INTO Event (EventID, Type, Time, CourseID) VALUES (1, 33, DATETIME('2018-08-27',  '13:10:10'), 3);";
+                cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (1, 33, DATETIME('2018-08-27',  '13:10:10'), 3);";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "INSERT INTO Event (EventID, Type, Time, CourseID) VALUES (2, 35, DATETIME('2018-08-27',  '13:10:20'), 3);";
+                cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (2, 35, DATETIME('2018-08-27',  '13:10:20'), 3);";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "INSERT INTO Event (EventID, Type, Time, CourseID) VALUES (3, 10, DATETIME('2018-08-27',  '13:10:15'), 1);";
+                cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (3, 10, DATETIME('2018-08-27',  '13:10:15'), 1);";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "INSERT INTO Event (EventID, Type, Time, CourseID) VALUES (4, 10, DATETIME('2018-08-27',  '15:10:10'), 1);";
+                cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (4, 10, DATETIME('2018-08-27',  '15:10:10'), 1);";
                 cmd.ExecuteNonQuery();
             }
         }
@@ -141,7 +174,7 @@ public static class SQLiteUtilities
             using (SqliteCommand cmd = conn.CreateCommand())   
             {
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT * FROM Team";
+                cmd.CommandText = "SELECT * FROM " + TEAM;
                 cmd.ExecuteNonQuery();
 
                 using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -149,14 +182,14 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log("TeamId: " + reader["TeamId"] + "\t Name: " + reader["Name"] + "\t Color: " + reader["Color"] + "\t CreationDateTime: " + reader["CreationDateTime"]);
+                        Debug.Log( TEAM_ID + ": " + reader[TEAM_ID] + "\t " + TEAM_NAME + ": " + reader[TEAM_NAME] + "\t " + TEAM_COLOR + ": " + reader[TEAM_COLOR] + "\t " + TEAM_CREATION_DATE_TIME + ": " + reader[TEAM_CREATION_DATE_TIME]);
                     }
 
                     reader.Close();
                 }
 
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT * FROM Labyrinth";
+                cmd.CommandText = "SELECT * FROM " + LABYRINTH;
                 cmd.ExecuteNonQuery();
 
                 using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -164,14 +197,14 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log("LabyrinthID: " + reader["LabyrinthID"] + "\t Specs: " + reader["Specs"]);
+                        Debug.Log( LABYRINTH_ID + ": " + reader[LABYRINTH_ID] + "\t " + LABYRINTH_SPECS + ": " + reader[LABYRINTH_SPECS]);
                     }
 
                     reader.Close();
                 }
 
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT * FROM Course";
+                cmd.CommandText = "SELECT * FROM " + COURSE;
                 cmd.ExecuteNonQuery();
 
                 using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -179,14 +212,14 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log("CourseID: " + reader["CourseID"] + "\t TeamId: " + reader["TeamId"] + "\t LabyrinthID: " + reader["LabyrinthID"] + "\t NoAlgo: " + reader["NoAlgo"]);
+                        Debug.Log( COURSE_ID + ": " + reader[COURSE_ID] + "\t " + COURSE_TEAM_ID + ": " + reader[COURSE_TEAM_ID] + "\t " + COURSE_LABYRINTH_ID + ": " + reader[COURSE_LABYRINTH_ID] + "\t " + COURSE_NO_ALGO + ": " + reader[COURSE_NO_ALGO]);
                     }
 
                     reader.Close();
                 }
 
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT * FROM Event";
+                cmd.CommandText = "SELECT * FROM " + EVENT;
                 cmd.ExecuteNonQuery();
 
                 using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -194,14 +227,14 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log("EventID: " + reader["EventID"] + "\t Type: " + reader["Type"] + "\t Time: " + reader["Time"] + "\t CourseID: " + reader["CourseID"]);
+                        Debug.Log(EVENT_ID + ": " + reader[EVENT_ID] + "\t " + EVENT_TYPE + ": " + reader[EVENT_TYPE] + "\t " + EVENT_TIME + ": " + reader[EVENT_TIME] + "\t " + EVENT_COURSE_ID + ": " + reader[EVENT_COURSE_ID]);
                     }
 
                     reader.Close();
                 }
 
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT * FROM DevicePairing";
+                cmd.CommandText = "SELECT * FROM " + DEVICE_PAIRING;
                 cmd.ExecuteNonQuery();
 
                 using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -209,7 +242,7 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log("TabletID: " + reader["TabletID"] + "\t HeadsetID: " + reader["HeadsetID"]);
+                        Debug.Log(DEVICE_PAIRING_TABLET_ID + ": " + reader[DEVICE_PAIRING_TABLET_ID] + "\t " + DEVICE_PAIRING_HEADSET_ID + ": " + reader[DEVICE_PAIRING_HEADSET_ID]);
                     }
 
                     reader.Close();
@@ -237,13 +270,13 @@ public static class SQLiteUtilities
             using (SqliteCommand cmd = conn.CreateCommand())
             {
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "INSERT OR REPLACE INTO Labyrinth (LabyrinthID, Specs) VALUES ('" + id + "', '" + specs + "');";
+                cmd.CommandText = "INSERT OR REPLACE INTO " + LABYRINTH + " (" + LABYRINTH_ID + ", " + LABYRINTH_SPECS + ") VALUES ('" + id + "', '" + specs + "');";
                 cmd.ExecuteNonQuery();
             }
         }
     }
 
-    public static void ReadLabyrinthDataFromId(int id, ref int sizeX, ref int sizeY, ref int[] data)//Modifier pour envoyer le labyrinth en référence et le modifier directement (Read labyrinth)
+    public static void ReadLabyrinthDataFromId(int id, ref int sizeX, ref int sizeY, ref int[] data)
     {
         CreateDatabaseIfItDoesntExist();
 
@@ -255,14 +288,14 @@ public static class SQLiteUtilities
             using (SqliteCommand cmd = conn.CreateCommand())
             {
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT * FROM Labyrinth WHERE LabyrinthID=" + id;
+                cmd.CommandText = "SELECT * FROM " + LABYRINTH + " WHERE " + LABYRINTH_ID + "=" + id;
                 cmd.ExecuteNonQuery();
 
                 using (SqliteDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        string[] specs = reader["Specs"].ToString().Split();
+                        string[] specs = reader[LABYRINTH_SPECS].ToString().Split();
                         int[] labyrinthSpecs = Array.ConvertAll(specs, int.Parse);
                         sizeX = labyrinthSpecs[0];
                         sizeY = labyrinthSpecs[1];
@@ -295,11 +328,11 @@ public static class SQLiteUtilities
                 cmd.CommandType = CommandType.Text;
                 if (deviceType == DeviceType.Tablet)
                 {
-                    cmd.CommandText = "SELECT * FROM DevicePairing WHERE TabletID='" + id + "'";
+                    cmd.CommandText = "SELECT * FROM " + DEVICE_PAIRING + " WHERE " + DEVICE_PAIRING_TABLET_ID + "='" + id + "'";
                 }
                 else if(deviceType == DeviceType.Headset)
                 {
-                    cmd.CommandText = "SELECT * FROM DevicePairing WHERE HeadsetID='" + id + "'";
+                    cmd.CommandText = "SELECT * FROM " + DEVICE_PAIRING + " WHERE " + DEVICE_PAIRING_HEADSET_ID + "='" + id + "'";
                 }
 
                 cmd.ExecuteNonQuery();
@@ -310,11 +343,11 @@ public static class SQLiteUtilities
                     {
                         if (deviceType == DeviceType.Tablet)
                         {
-                            pairedId = reader["HeadsetID"].ToString();
+                            pairedId = reader[DEVICE_PAIRING_HEADSET_ID].ToString();
                         }
                         else if (deviceType == DeviceType.Headset)
                         {
-                            pairedId = reader["TabletID"].ToString();
+                            pairedId = reader[DEVICE_PAIRING_TABLET_ID].ToString();
                         }
                     }
 
@@ -340,11 +373,11 @@ public static class SQLiteUtilities
                 cmd.CommandType = CommandType.Text;
                 if(deviceType == DeviceType.Tablet)
                 {
-                    cmd.CommandText = "DELETE FROM DevicePairing WHERE TabletID='" + id + "'";
+                    cmd.CommandText = "DELETE FROM " + DEVICE_PAIRING + " WHERE " + DEVICE_PAIRING_TABLET_ID + "='" + id + "'";
                 }
                 else if(deviceType == DeviceType.Headset)
                 {
-                    cmd.CommandText = "DELETE FROM DevicePairing WHERE HeadsetID='" + id + "'";
+                    cmd.CommandText = "DELETE FROM " + DEVICE_PAIRING + " WHERE " + DEVICE_PAIRING_HEADSET_ID + "='" + id + "'";
                 }
                 
                 cmd.ExecuteNonQuery();
@@ -369,7 +402,7 @@ public static class SQLiteUtilities
             {
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = "INSERT INTO DevicePairing (TabletID, HeadsetID) VALUES ( '" + tabletId + "', '" + headsetId + "');";
+                cmd.CommandText = "INSERT INTO " + DEVICE_PAIRING + " (" + DEVICE_PAIRING_TABLET_ID + ", " + DEVICE_PAIRING_HEADSET_ID + ") VALUES ( '" + tabletId + "', '" + headsetId + "');";
                 cmd.ExecuteNonQuery();
             }
         }
@@ -391,31 +424,30 @@ public static class SQLiteUtilities
                 cmd.CommandText = "PRAGMA foreign_keys = ON";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "SELECT Count(*) FROM Team WHERE TeamID='" + teamId + "'";
+                cmd.CommandText = "SELECT Count(*) FROM " + TEAM + " WHERE " + TEAM_ID + "='" + teamId + "'";
                 cmd.ExecuteNonQuery();
 
-                using (SqliteDataReader reader = cmd.ExecuteReader())//Changer dans une function
+                using (SqliteDataReader reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         if (reader.GetInt32(0) == 0)
                         {
-                            Debug.Log("No team with id : " + teamId);
                             reader.Close();
-                            cmd.CommandText = "INSERT INTO Team (TeamID, Name, Color, CreationDateTime) VALUES ('" + teamId + "', '" + teamName + "', '" + teamColor + "', DATETIME('" + date + "', '" + time + "'));";
+                            cmd.CommandText = "INSERT INTO " + TEAM + " (" + TEAM_ID + ", " + TEAM_NAME + ", " + TEAM_COLOR + ", " + TEAM_CREATION_DATE_TIME + ") VALUES ('" + teamId + "', '" + teamName + "', '" + teamColor + "', DATETIME('" + date + "', '" + time + "'));";
                             cmd.ExecuteNonQuery();
                         }
                     }
                     reader.Close();
                 }
 
-                cmd.CommandText = "SELECT Count(*) FROM Course WHERE CourseID='" + courseId
-                    + "' AND TeamID='" + teamId
-                    + "' AND LabyrinthID='" + labyrinthId
-                    + "' AND NoAlgo='" + algorithmId + "'";
+                cmd.CommandText = "SELECT Count(*) FROM " + COURSE + " WHERE " + COURSE_ID + "='" + courseId
+                    + "' AND " + COURSE_TEAM_ID + "='" + teamId
+                    + "' AND " + COURSE_LABYRINTH_ID + "='" + labyrinthId
+                    + "' AND " + COURSE_NO_ALGO + "='" + algorithmId + "'";
                 cmd.ExecuteNonQuery();
 
-                using (SqliteDataReader reader = cmd.ExecuteReader())//Changer dans une function
+                using (SqliteDataReader reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())
                     {
@@ -423,20 +455,20 @@ public static class SQLiteUtilities
                         {
                             Debug.Log("No course with specifics");
                             reader.Close();
-                            cmd.CommandText = "INSERT INTO Course (CourseID, TeamId, LabyrinthID, NoAlgo) VALUES ('" + courseId + "', '" + teamId + "', '" + labyrinthId + "', '" + algorithmId + "');";
+                            cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ") VALUES ('" + courseId + "', '" + teamId + "', '" + labyrinthId + "', '" + algorithmId + "');";
                             cmd.ExecuteNonQuery();
                         }
                     }
                     reader.Close();
                 }
 
-                cmd.CommandText = "INSERT INTO Event (Type, Time, CourseID) VALUES ('" + eventType + "',  DATETIME('" + date + "', '" + time + "'), '" + courseId + "');";
+                cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  DATETIME('" + date + "', '" + time + "'), '" + courseId + "');";
                 cmd.ExecuteNonQuery();
             }
         }
     }
 
-    public static int GetNextTeamID()//Retravailler
+    public static int GetNextTeamID()
     {
         int teamId = 0;
         string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -447,7 +479,7 @@ public static class SQLiteUtilities
             using (SqliteCommand cmd = conn.CreateCommand())
             {
                 cmd.CommandType = CommandType.Text;
-                cmd.CommandText = "SELECT Count(*) FROM Team";
+                cmd.CommandText = "SELECT Count(*) FROM " + TEAM;
                 cmd.ExecuteNonQuery();
 
                 using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -463,7 +495,7 @@ public static class SQLiteUtilities
                 while(isNotUnique)
                 {
                     teamId++;
-                    cmd.CommandText = "SELECT Count(*) FROM Team WHERE TeamID='" + teamId + "'";
+                    cmd.CommandText = "SELECT Count(*) FROM " + TEAM + " WHERE " + TEAM_ID + "='" + teamId + "'";
                     cmd.ExecuteNonQuery();
 
                     using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -487,7 +519,7 @@ public static class SQLiteUtilities
         return teamId;
     }
 
-    public static int GetNextCourseID()//Encasuler dans une fonction avec paramètres
+    public static int GetNextCourseID()
     {
         int courseId = 0;
         string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -499,7 +531,7 @@ public static class SQLiteUtilities
             {
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = "SELECT Count(*) FROM Course";
+                cmd.CommandText = "SELECT Count(*) FROM " + COURSE;
                 cmd.ExecuteNonQuery();
 
                 using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -516,7 +548,7 @@ public static class SQLiteUtilities
                 {
                     courseId++;
 
-                    cmd.CommandText = "SELECT Count(*) FROM Course WHERE CourseID='" + courseId + "'";
+                    cmd.CommandText = "SELECT Count(*) FROM " + COURSE + " WHERE " + COURSE_ID + "='" + courseId + "'";
                     cmd.ExecuteNonQuery();
 
                     using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -540,7 +572,7 @@ public static class SQLiteUtilities
         return courseId;
     }
 
-    static void InsertBasicLabyrinths()//Lire d'une string
+    static void InsertBasicLabyrinths()
     {
         //Labyrinth 1
         int id = 1;
