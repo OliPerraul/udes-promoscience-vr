@@ -56,7 +56,7 @@ public class TabletControls : MonoBehaviour
 
                 if (movementLerpValue >= 1)
                 {
-                    movementLerpValue = 0;
+                    movementLerpValue -= 1;
                     isMoving = false;
                     cameraTransform.position = targetPosition;
                 }
@@ -72,7 +72,7 @@ public class TabletControls : MonoBehaviour
 
                 if (rotationLerpValue >= 1)
                 {
-                    rotationLerpValue = 0;
+                    rotationLerpValue -= 1;
                     isTurning = false;
                     cameraTransform.rotation = targetRotation;
                 }
@@ -95,19 +95,27 @@ public class TabletControls : MonoBehaviour
                     isMoving = true;
                 }
             }
-        }
-
-        if (!isTurning && rotationQueue.Count > 0)
-        {
-            if (Quaternion.Angle(cameraTransform.rotation, rotationQueue.Peek()) > maxRotationAngle)
+            else if (!isMoving)
             {
-                cameraTransform.rotation = rotationQueue.Dequeue();
+                movementLerpValue = 0;
             }
-            else
+
+            if (!isTurning && rotationQueue.Count > 0)
             {
-                lastRotation = cameraTransform.rotation;
-                targetRotation = rotationQueue.Dequeue();
-                isTurning = true;
+                if (Quaternion.Angle(cameraTransform.rotation, rotationQueue.Peek()) > maxRotationAngle)
+                {
+                    cameraTransform.rotation = rotationQueue.Dequeue();
+                }
+                else
+                {
+                    lastRotation = cameraTransform.rotation;
+                    targetRotation = rotationQueue.Dequeue();
+                    isTurning = true;
+                }
+            }
+            else if(!isTurning)
+            {
+                rotationLerpValue = 0;
             }
         }
     }
