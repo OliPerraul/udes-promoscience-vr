@@ -10,6 +10,9 @@ public enum CustomMsgType : short
     PlayerRotation = 103,
     PlayerPaintTile = 104,
     PlayerReachedTheEnd = 105,
+    PlayerSetPositionRotationAndTiles = 106,
+    ReturnToDivergencePointRequest = 107,
+    ReturnToDivergencePointAnswer = 108,
     PairingRequest = 110,
     PairingResult = 111
 }
@@ -116,6 +119,57 @@ public class PlayerReachedTheEndMessage : MessageBase
     {
         return (short)type;
     }
+}
+
+public class PlayerSetPositionRotationAndTilesMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.PlayerSetPositionRotationAndTiles;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+
+    public Vector3 position;
+    public Quaternion rotation;
+    public Tile[] tiles;
+}
+
+public class ReturnToDivergencePointRequestMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.ReturnToDivergencePointRequest;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+}
+
+public class ReturnToDivergencePointAnswerMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.ReturnToDivergencePointAnswer;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+
+    public bool answer;
 }
 
 public class PairingRequestMessage : MessageBase

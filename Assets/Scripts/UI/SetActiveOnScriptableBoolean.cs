@@ -8,10 +8,18 @@ public class SetActiveOnScriptableBoolean : MonoBehaviour
     ScriptableBoolean scriptableBoolean;
 
     [SerializeField]
-    GameObject gameObjectToActivate;
+    List<GameObject> gameObjectsToActivateOnTrue = new List<GameObject>();
 
+    [SerializeField]
+    List<GameObject> gameObjectsToHideOnTrue = new List<GameObject>();
 
-	void Start ()
+    [SerializeField]
+    List<GameObject> gameObjectsToActivateOnFalse = new List<GameObject>();
+
+    [SerializeField]
+    List<GameObject> gameObjectsToHideOnFalse = new List<GameObject>();
+
+    void Start ()
     {
         scriptableBoolean.valueChangedEvent += OnScriptableBooleanValueChanged;
     }
@@ -20,11 +28,27 @@ public class SetActiveOnScriptableBoolean : MonoBehaviour
     {
         if(scriptableBoolean.Value == true)
         {
-            gameObjectToActivate.SetActive(true);
+            foreach(GameObject gObject in gameObjectsToHideOnTrue)
+            {
+                gObject.SetActive(false);
+            }
+
+            foreach (GameObject gObject in gameObjectsToActivateOnTrue)
+            {
+                gObject.SetActive(true);
+            }
         }
         else
         {
-            gameObjectToActivate.SetActive(false);
+            foreach (GameObject gObject in gameObjectsToHideOnFalse)
+            {
+                gObject.SetActive(false);
+            }
+
+            foreach (GameObject gObject in gameObjectsToActivateOnFalse)
+            {
+                gObject.SetActive(true);
+            }
         }
     }
 }

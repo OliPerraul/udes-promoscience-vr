@@ -23,6 +23,9 @@ public class HeadsetControls : MonoBehaviour
     ScriptableTile playerPaintTile;
 
     [SerializeField]
+    ScriptablePositionRotationAndTile playerPositionRotationAndTiles;
+
+    [SerializeField]
     ScriptableTileColor paintingColor;
 
     [SerializeField]
@@ -39,6 +42,8 @@ public class HeadsetControls : MonoBehaviour
 
     readonly int[] xByDirection = { 0, 1, 0, -1 };
     readonly int[] yByDirection = { -1, 0, 1, 0 };
+
+    readonly float[] rotationByDirection = { 0, 90, 180, 270 };
 
     float lerpValue = 0;
     float moveSpeed = 0;
@@ -57,6 +62,7 @@ public class HeadsetControls : MonoBehaviour
     {
         controls.stopAllMovementEvent += OnStopAllMovement;
         controls.resetPositionAndRotation += OnResetPositionAndRotation;
+        playerPositionRotationAndTiles.valueChangedEvent += OnPlayerPositionRotationAndTiles;
     }
 
     void Update ()
@@ -340,24 +346,36 @@ public class HeadsetControls : MonoBehaviour
         return labyrinth.GetIsTileWalkable(labyrinthPosition);
     }
 
-    void PaintCurrentPositionTile()
+    void PaintTile(Vector2Int position, TileColor color)
     {
-        Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
-
         TileColor tileColor = labyrinth.GetTileColor(position);
 
-        if (paintingColor.Value != tileColor)
+        if (color != tileColor)
         {
             GameObject tile = labyrinth.GetTile(position);
             FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
 
             if (floorPainter != null)
             {
-                floorPainter.PaintFloorWithColor(paintingColor.Value);
+                floorPainter.PaintFloorWithColor(color);
                 action.Value = Constants.ACTION_PAINT_FLOOR;
-                playerPaintTile.SetTile(position, paintingColor.Value);
+                playerPaintTile.SetTile(position, color);
             }
         }
+    }
+
+    void PaintTile(int positionX, int positionY, TileColor color)
+    {
+        Vector2Int position = new Vector2Int(positionX, positionY);
+
+        PaintTile(position, color);
+    }
+
+    void PaintCurrentPositionTile()
+    {
+        Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+
+        PaintTile(position, paintingColor.Value);
     }
 
     void OnStopAllMovement()
@@ -391,5 +409,46 @@ public class HeadsetControls : MonoBehaviour
         }
 
         cameraTransform.rotation = rotation;
+    }
+
+    void OnPlayerPositionRotationAndTiles()
+    {
+        OnStopAllMovement();
+
+        cameraTransform.position = playerPositionRotationAndTiles.GetPosition();
+
+        cameraTransform.rotation = playerPositionRotationAndTiles.GetRotation();
+
+        SetForwardDirectionWithRotation(playerPositionRotationAndTiles.GetRotation());
+
+        Tile[] tiles = playerPositionRotationAndTiles.GetTiles();
+
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            PaintTile(tiles[i].x, tiles[i].y, tiles[i].color);
+        }
+    }
+
+    void SetForwardDirectionWithRotation(Quaternion rotation)
+    {
+        float y = rotation.eulerAngles.y;
+        float epsilon = 1;
+
+        if(y < rotationByDirection[0] + epsilon && y > rotationByDirection[0] - epsilon)
+        {
+            forwardDirection.Value = 0;
+        }
+        else if (y < rotationByDirection[1] + epsilon && y > rotationByDirection[1] - epsilon)
+        {
+            forwardDirection.Value = 1;
+        }
+        else if (y < rotationByDirection[2] + epsilon && y > rotationByDirection[2] - epsilon)
+        {
+            forwardDirection.Value = 2;
+        }
+        else if (y < rotationByDirection[3] + epsilon && y > rotationByDirection[3] - epsilon)
+        {
+            forwardDirection.Value = 3;
+        }
     }
 }
