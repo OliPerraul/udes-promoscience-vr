@@ -39,10 +39,14 @@ public class GameLabyrinth : MonoBehaviour
             GenerateLabyrinthVisual();
             gameState.Value = GameState.PlayingTutorial;
         }
-        else if (gameState.Value == GameState.LabyrithReady)
+        else if(gameState.Value == GameState.LabyrithReady)
         {
             GenerateLabyrinthVisual();
             gameState.Value = GameState.Playing;
+        }
+        else if(gameState.Value == GameState.WaitingForNextRound)
+        {
+            DestroyLabyrinth();
         }
     }
 

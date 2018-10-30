@@ -170,6 +170,7 @@ public class Player : NetworkBehaviour
 
         if (deviceType.Value == DeviceType.Tablet)
         {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
             action.valueChangedEvent += SendCmdPlayerAction;
         }
 

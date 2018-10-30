@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// This class manage the interaction from to game to the network player
-/// </summary>
-public class GameManager : MonoBehaviour
+public class GameRound : MonoBehaviour
 {
     [SerializeField]
     ScriptableControler controls;
@@ -17,21 +14,16 @@ public class GameManager : MonoBehaviour
     ScriptableAction playerReachedTheEnd;
 
     [SerializeField]
-    AlgorithmRespect algorithmRespect;
-
-    [SerializeField]
     GameLabyrinth labyrinth;
 
     [SerializeField]
     GameObject labyrinthRoom;
 
     [SerializeField]
-    GameObject lobby;//should probably manage it's self or just not exist
+    GameObject lobby;
 
     void Start()
     {
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;//Tablet use only
-
         gameState.valueChangedEvent += OnGameStateChanged;
 
         if (playerReachedTheEnd != null)
@@ -40,7 +32,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //Game manager could be remove and instead add a status preparing for game and have the module that need it listen to status
     public void OnGameStateChanged()
     {
         if (gameState.Value == GameState.Playing || gameState.Value == GameState.PlayingTutorial)
@@ -66,33 +57,22 @@ public class GameManager : MonoBehaviour
                 controls.IsControlsEnabled = true;
             }
         }
-        else if (gameState.Value == GameState.WaitingForNextRound)
-        {
-
-        }
     }
 
     void OnPlayerReachedTheEnd()
     {
+        controls.IsControlsEnabled = false;
+        controls.StopAllMovement();
+        controls.ResetPositionAndRotation();
+
+        labyrinthRoom.transform.position = new Vector3(0, 0, 0);
+
         if (gameState.Value == GameState.PlayingTutorial)
         {
-            controls.IsControlsEnabled = false;
-            controls.StopAllMovement();
-            controls.ResetPositionAndRotation();
-
-            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
-
             gameState.Value = GameState.TutorialLabyrinthReady;
         }
         else
         {
-            controls.IsControlsEnabled = false;
-            controls.StopAllMovement();
-            controls.ResetPositionAndRotation();
-
-            labyrinth.DestroyLabyrinth();
-            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
-
             if (lobby != null)
             {
                 lobby.SetActive(true);
