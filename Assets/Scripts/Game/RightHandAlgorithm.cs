@@ -10,10 +10,10 @@ public class RightHandAlgorithm : MonoBehaviour
     readonly int[] xByDirection = { 0, 1, 0, -1 };
     readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-    public List<Vector3Int> GetAlgorithmSteps()
+    public List<Tile> GetAlgorithmSteps()
     {
         //Steps the two first value are the map position and the third value is the tile color value
-        List<Vector3Int> algorithmSteps = new List<Vector3Int>();
+        List<Tile> algorithmSteps = new List<Tile>();
 
         bool[,] alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
 
@@ -22,7 +22,7 @@ public class RightHandAlgorithm : MonoBehaviour
         int direction = labyrinth.GetStartDirection();
         Vector2Int position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
-        algorithmSteps.Add(new Vector3Int(position.x, position.y, (int) TileColor.Yellow));
+        algorithmSteps.Add(new Tile(position.x, position.y, TileColor.Yellow));
         alreadyVisitedTile[position.x, position.y] = true;
 
         while (!asReachedTheEnd)
@@ -56,9 +56,9 @@ public class RightHandAlgorithm : MonoBehaviour
 
             position.x += xByDirection[direction];
             position.y += yByDirection[direction];
-            int tileColor = alreadyVisitedTile[position.x, position.y] ? (int) TileColor.Red : (int) TileColor.Yellow;
+            TileColor tileColor = alreadyVisitedTile[position.x, position.y] ? TileColor.Red : TileColor.Yellow;
 
-            algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
+            algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
 
             alreadyVisitedTile[position.x, position.y] = true;
 

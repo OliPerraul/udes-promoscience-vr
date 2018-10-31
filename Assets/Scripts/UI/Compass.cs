@@ -8,14 +8,12 @@ public class Compass : MonoBehaviour
     ScriptableControler controls;
 
     [SerializeField]
-    Transform centerEyeTransform;
-
-    [SerializeField]
     Transform indicator;
 
     int direction = 0;
 
-    readonly float[] rotationByDirection = { 0, 90, 180, 270 };
+    readonly int[] xByDirection = { 0, 1, 0, -1 };
+    readonly int[] yByDirection = { -1, 0, 1, 0 };
 
     private void Start()
     {
@@ -24,10 +22,9 @@ public class Compass : MonoBehaviour
 
     void Update()
     {
-
         if (indicator.gameObject.activeSelf)
         {
-            indicator.localRotation = Quaternion.Euler(centerEyeTransform.rotation.eulerAngles.y + -centerEyeTransform.rotation.eulerAngles.z + rotationByDirection[direction] - 90, -90, 90);
+            indicator.LookAt(indicator.position + new Vector3(100 * Constants.TILE_SIZE * xByDirection[direction], 0, 100 * Constants.TILE_SIZE * -yByDirection[direction]));
         }
     }
 

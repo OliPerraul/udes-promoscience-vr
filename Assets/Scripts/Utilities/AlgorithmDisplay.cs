@@ -28,7 +28,7 @@ public class AlgorithmDisplay : MonoBehaviour
 
     List<GameObject> objectList = new List<GameObject>();
 
-    List<Vector3Int> algorithmStepsPosition = new List<Vector3Int>();
+    List<Tile> algorithmStepsPosition = new List<Tile>();
 
     void Start()
     {
@@ -69,7 +69,7 @@ public class AlgorithmDisplay : MonoBehaviour
             FloorPainter floorPainter = labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<FloorPainter>();
             if (floorPainter != null)
             {
-                floorPainter.PaintFloorWithColorId(algorithmStepsPosition[i].z);
+                floorPainter.PaintFloorWithColor(algorithmStepsPosition[i].color);
             }
             objectList.Add(obj);
         }

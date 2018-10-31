@@ -57,10 +57,8 @@ public class AlgorithmRespect : MonoBehaviour
 
     Vector2Int currentLabyrinthPosition;
 
-    //Steps the two first value are the map position and the third value is the tile color value
-    List<Vector3Int> algorithmSteps = new List<Vector3Int>();
-    List<Vector3Int> playerSteps = new List<Vector3Int>();
-
+    List<Tile> algorithmSteps = new List<Tile>();
+    List<Tile> playerSteps = new List<Tile>();
     List<Tile> wrongColorTilesWhenDiverging = new List<Tile>();
 
     Quaternion rotationAtDivergence;
@@ -87,9 +85,9 @@ public class AlgorithmRespect : MonoBehaviour
                 }
                 else if (!isDiverging.Value)
                 {
-                    int previousTileColorId = (int) labyrinth.GetTileColor(currentLabyrinthPosition);
+                    TileColor previousTileColor = labyrinth.GetTileColor(currentLabyrinthPosition);
 
-                    if (labyrinthPosition.x != algorithmSteps[playerSteps.Count].x || labyrinthPosition.y != algorithmSteps[playerSteps.Count].y || previousTileColorId != algorithmSteps[playerSteps.Count - 1].z)
+                    if (labyrinthPosition.x != algorithmSteps[playerSteps.Count].x || labyrinthPosition.y != algorithmSteps[playerSteps.Count].y || previousTileColor != algorithmSteps[playerSteps.Count - 1].color)
                     {
                         isDiverging.Value = true;
                         errorCounter++;
@@ -98,8 +96,8 @@ public class AlgorithmRespect : MonoBehaviour
                     }
                     else
                     {
-                        playerSteps[playerSteps.Count - 1] = new Vector3Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y, previousTileColorId);
-                        playerSteps.Add(new Vector3Int(labyrinthPosition.x, labyrinthPosition.y, 0));
+                        playerSteps[playerSteps.Count - 1] = new Tile(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y, previousTileColor);
+                        playerSteps.Add(new Tile(labyrinthPosition.x, labyrinthPosition.y, TileColor.NoColor));
                     }
                 }
                 else
@@ -164,6 +162,24 @@ public class AlgorithmRespect : MonoBehaviour
         //To avoid the fact that we don't know if it was painted before or will be painted right after, we keep the tile painting here instead of in TabletControls
         TileColor tilePreviousColor = labyrinth.GetTileColor(playerPaintTile.TilePosition);
         PaintTile(playerPaintTile.TilePosition, playerPaintTile.TileColor);
+        
+        if(!isDiverging.Value)
+        {
+            if (playerPaintTile.TilePosition != currentLabyrinthPosition)
+            {
+                TileColor previousTileColor = labyrinth.GetTileColor(currentLabyrinthPosition);
+
+                if (previousTileColor != algorithmSteps[playerSteps.Count - 1].color 
+                    || playerPaintTile.TilePosition.x != algorithmSteps[playerSteps.Count].x 
+                    || playerPaintTile.TilePosition.y != algorithmSteps[playerSteps.Count].y)
+                {
+                    isDiverging.Value = true;
+                    errorCounter++;
+                    algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - currentLabyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+                    rotationAtDivergence = cameraTransform.rotation;
+                }
+            }
+        }
 
         if (isDiverging.Value)
         {
@@ -257,7 +273,7 @@ public class AlgorithmRespect : MonoBehaviour
         isDiverging.Value = false;
         algorithmRespect.Value = 1.0f;
         currentLabyrinthPosition = labyrinth.GetLabyrithStartPosition();
-        playerSteps.Add(new Vector3Int(currentLabyrinthPosition.x, currentLabyrinthPosition.y, (int)labyrinth.GetTileColor(currentLabyrinthPosition)));
+        playerSteps.Add(new Tile(currentLabyrinthPosition.x, currentLabyrinthPosition.y, labyrinth.GetTileColor(currentLabyrinthPosition)));
     }
 
     public void OnReturnToDivergencePointAnswer()

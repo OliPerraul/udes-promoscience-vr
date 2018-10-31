@@ -42,7 +42,7 @@ public class TabletControls : MonoBehaviour
     {
         playerPosition.valueChangedEvent += OnNewPlayerPosition;
         playerRotation.valueChangedEvent += OnNewPlayerRotation;
-        controls.resetPositionAndRotation += ResetPositionAndRotation;
+        controls.resetPositionAndRotation += StopAllMovement;
         controls.stopAllMovementEvent += ResetPositionAndRotation;
     }
 

@@ -10,16 +10,16 @@ public class StandardAlgorithm : MonoBehaviour
     readonly int[] xByDirection = { 0, 1, 0, -1 };
     readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-    int tileColor;
+    TileColor tileColor;
 
     Vector2Int position;
 
     //Steps the two first value are the map position and the third value is the tile color value
-    List<Vector3Int> algorithmSteps;
+    List<Tile> algorithmSteps;
 
-    public List<Vector3Int> GetAlgorithmSteps()
+    public List<Tile> GetAlgorithmSteps()
     {
-        algorithmSteps = new List<Vector3Int>();
+        algorithmSteps = new List<Tile>();
         //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
         List<Vector3Int> lastVisitedIntersection = new List<Vector3Int>();
 
@@ -29,11 +29,11 @@ public class StandardAlgorithm : MonoBehaviour
 
         int direction = labyrinth.GetStartDirection();
 
-        tileColor = (int) TileColor.Yellow;
+        tileColor = TileColor.Yellow;
         position = labyrinth.GetLabyrithStartPosition();
         Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
 
-        algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
+        algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
 
         while (!asReachedTheEnd)
         {
@@ -88,7 +88,7 @@ public class StandardAlgorithm : MonoBehaviour
                     i = algorithmSteps.Count - 2;
                 }
 
-                algorithmSteps[algorithmSteps.Count - 1] = new Vector3Int(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, (int) TileColor.Red);
+                algorithmSteps[algorithmSteps.Count - 1] = new Tile(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, TileColor.Red);
 
                 bool isReturnedToLastIntersection = false;
 
@@ -105,11 +105,11 @@ public class StandardAlgorithm : MonoBehaviour
                         isReturnedToLastIntersection = true;
                         position.x = algorithmSteps[i].x;
                         position.y = algorithmSteps[i].y;
-                        algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
+                        algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
                     }
                     else
                     {
-                        algorithmSteps.Add(new Vector3Int(algorithmSteps[i].x, algorithmSteps[i].y, (int) TileColor.Red));
+                        algorithmSteps.Add(new Tile(algorithmSteps[i].x, algorithmSteps[i].y, TileColor.Red));
                     }
 
                     i--;
@@ -129,6 +129,6 @@ public class StandardAlgorithm : MonoBehaviour
     {
         position.x += xByDirection[direction];
         position.y += yByDirection[direction];
-        algorithmSteps.Add(new Vector3Int(position.x, position.y, tileColor));
+        algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
     }
 }
