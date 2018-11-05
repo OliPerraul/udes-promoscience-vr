@@ -106,15 +106,15 @@ public class UILobbyPlayer : MonoBehaviour
         {
             string text = "Playing";
 
-            if(PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithmId == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITHM)
+            if(PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithm == Algorithm.ShortestFlightDistance)
             {
                 text += " - Shortest Flight";
             }
-            else if (PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithmId == Constants.LONGEST_STRAIGHT_ALGORITHM)
+            else if (PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithm == Algorithm.LongestStraight)
             {
                 text += " - Longest Straight";
             }
-            else if (PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithmId == Constants.STANDARD_ALGORITHM)
+            else if (PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithm == Algorithm.Standard)
             {
                 text += " - Standard algorithm";
             }

@@ -32,7 +32,7 @@ public class ActionMessage : MessageBase
     }
 
 
-    public int actionId;
+    public GameAction action;
 }
 
 public class DirectiveMessage : MessageBase
@@ -49,7 +49,7 @@ public class DirectiveMessage : MessageBase
         return (short) type;
     }
 
-    public int directiveId;
+    public Directive directive;
 }
 
 public class PlayerPositionMessage : MessageBase

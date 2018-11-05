@@ -5,15 +5,6 @@ using System.Text;
 
 static class Constants
 {
-
-    //Algorith identifier
-    public const int TUTORIAL_ALGORITHM = 0;
-    public const int RIGHT_HAND_ALGORITHM = 0;
-    public const int SHORTEST_FLIGHT_DISTANCE_ALGORITHM = 1;
-    public const int LONGEST_STRAIGHT_ALGORITHM = 2;
-    public const int STANDARD_ALGORITHM = 3;
-
-    //Labyrinth tiles
     public const float TILE_SIZE = 5.0f;
     public const float MOVEMENT_SPEED = 0.5f;
     public const float MOVEMENT_ACCELERATION = 1f;
@@ -22,42 +13,30 @@ static class Constants
     public const float TURNING_ACCELERATION = 2f;
     public const float TURNING_MAX_SPEED = 0.5f;
 
+    //Labyrinth tiles
     //0-49 Floors
     public const int TILE_FLOOR_START_ID = 0;
-    public const int TILE_FLOOR_1_ID = 0;
-    public const int TILE_FLOOR_END_ID = 0;
+    public const int TILE_FLOOR_ID = 0;
+    public const int TILE_ROME_FLOOR_ID = 1;
+    public const int TILE_FLOOR_END_ID = 49;
 
     //50-99 Walls
     public const int TILE_WALL_START_ID = 50;
-    public const int TILE_WALL_1_ID = 50;
+    public const int TILE_WALL_ID = 50;
+    public const int TILE_ROME_HORIZONTAL_WALL_ID = 51;
+    public const int TILE_ROME_VERTICAL_WALL_ID = 52;
+    public const int TILE_ROME_TOWER_WALL_ID = 53;
     public const int TILE_WALL_END_ID = 99;
 
     //100-149 Starts
     public const int TILE_START_START_ID = 100;
-    public const int TILE_START_1_ID = 100;
+    public const int TILE_START_ID = 100;
+    public const int TILE_ROME_START_ID = 101;
     public const int TILE_START_END_ID = 149;
 
     //150-199 Ends
     public const int TILE_END_START_ID = 150;
-    public const int TILE_END_1_ID = 150;
+    public const int TILE_END_ID = 150;
+    public const int TILE_ROME_END_ID = 151;
     public const int TILE_END_END_ID = 199;
-
-    //Directives
-
-    public const int DIRECTIVE_TURN_RIGHT = 0;
-    public const int DIRECTIVE_TURN_LEFT = 1;
-    public const int DIRECTIVE_MOVE_FOWARD = 2;
-    public const int DIRECTIVE_UTURN = 3;
-    public const int DIRECTIVE_STOP = 4;
-
-    //Actions
-    public const int ACTION_MOVE_UP = 0;
-    public const int ACTION_MOVE_RIGHT = 1;
-    public const int ACTION_MOVE_DOWN = 2;
-    public const int ACTION_MOVE_LEFT = 3;
-    public const int ACTION_TURN_LEFT = 4;
-    public const int ACTION_TURN_RIGHT = 5;
-    public const int ACTION_PAINT_FLOOR = 6;
-    public const int ACTION_DISTANCE_SCANNER = 7;
-
 }

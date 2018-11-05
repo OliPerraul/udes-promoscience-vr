@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AlgorithmDisplay : MonoBehaviour
 {
-
     [SerializeField]
     ScriptableGameState gameState;
 
@@ -15,7 +14,7 @@ public class AlgorithmDisplay : MonoBehaviour
     LongestStraightAlgorithm longestStraightAlgorithm;
 
     [SerializeField]
-    ShortestFlighDistanceAlgorithm shortestFlighDistanceAlgorithm;
+    ShortestFlightDistanceAlgorithm shortestFlightDistanceAlgorithm;
 
     [SerializeField]
     StandardAlgorithm standardAlgorithm;
@@ -40,37 +39,43 @@ public class AlgorithmDisplay : MonoBehaviour
     {
         if (gameState.Value == GameState.PlayingTutorial || gameState.Value == GameState.Playing)
         {
-            GenerateVisualForAlgorithmWithId(Constants.STANDARD_ALGORITHM);
+            GenerateVisualForAlgorithm(Algorithm.ShortestFlightDistance);
         }
     }
 
-    void GenerateVisualForAlgorithmWithId(int id)
+    void GenerateVisualForAlgorithm(Algorithm algorithm)
     {
-        if (id == Constants.RIGHT_HAND_ALGORITHM)
+        if (algorithm == Algorithm.RightHand)
         {
             algorithmStepsPosition = rightHandAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.LONGEST_STRAIGHT_ALGORITHM)
+        else if (algorithm == Algorithm.LongestStraight)
         {
             algorithmStepsPosition = longestStraightAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITHM)
+        else if (algorithm == Algorithm.ShortestFlightDistance)
         {
-            algorithmStepsPosition = shortestFlighDistanceAlgorithm.GetAlgorithmSteps();
+            algorithmStepsPosition = shortestFlightDistanceAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.STANDARD_ALGORITHM)
+        else if (algorithm == Algorithm.Standard)
         {
             algorithmStepsPosition = standardAlgorithm.GetAlgorithmSteps();
         }
 
+        Debug.Log("algorithmStepsPosition Count : " + algorithmStepsPosition.Count);
+
         for (int i = 0; i < algorithmStepsPosition.Count; i++)
         {
+            Debug.Log("algorithmStepsPosition #" + i + " : " + algorithmStepsPosition[i].x + " , " + algorithmStepsPosition[i].y + " , " + algorithmStepsPosition[i].color);
+
             GameObject obj = (GameObject)Instantiate(sphere, GetWorldPosition( algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
             FloorPainter floorPainter = labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<FloorPainter>();
+
             if (floorPainter != null)
             {
                 floorPainter.PaintFloorWithColor(algorithmStepsPosition[i].color);
             }
+
             objectList.Add(obj);
         }
     }

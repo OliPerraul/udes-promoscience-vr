@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DirectiveDisplay : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger directive;
+    ScriptableDirective directive;
 
     [SerializeField]
     GameObject directiveDisplayer;
@@ -59,25 +59,25 @@ public class DirectiveDisplay : MonoBehaviour
         directiveDisplayer.SetActive(true);
     }
 
-    void SetDirectiveImage(int directiveId)
+    void SetDirectiveImage(Directive dir)
     {
-        if(directiveId == Constants.DIRECTIVE_MOVE_FOWARD)
+        if(dir == Directive.MoveFoward)
         {
             directiveImage.sprite = forwardImage;
         }
-        else if (directiveId == Constants.DIRECTIVE_TURN_LEFT)
+        else if (dir == Directive.TurnLeft)
         {
             directiveImage.sprite = turnLeftImage;
         }
-        else if (directiveId == Constants.DIRECTIVE_TURN_RIGHT)
+        else if (dir == Directive.TurnRight)
         {
             directiveImage.sprite = turnRightImage;
         }
-        else if (directiveId == Constants.DIRECTIVE_UTURN)
+        else if (dir == Directive.UTurn)
         {
             directiveImage.sprite = uTurnImage;
         }
-        else if (directiveId == Constants.DIRECTIVE_STOP)
+        else if (dir == Directive.Stop)
         {
             directiveImage.sprite = stopImage;
         }

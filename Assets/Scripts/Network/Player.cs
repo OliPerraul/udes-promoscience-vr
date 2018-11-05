@@ -14,10 +14,10 @@ public class Player : NetworkBehaviour
     string serverTeamName = "";
     Color serverTeamColor = Color.white;
     GameState serverPlayerGameState = 0;
-    int serverPlayerAction;
+    GameAction serverPlayerAction;
 
     public DeviceType serverDeviceType = DeviceType.NoType;
-    public int serverAlgorithmId;
+    public Algorithm serverAlgorithm;
     public int serverTeamId;
     public int serverCourseId;
     public int serverLabyrinthId;
@@ -74,7 +74,7 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public int ServerPlayerAction
+    public GameAction ServerPlayerAction
     {
         get
         {
@@ -136,10 +136,10 @@ public class Player : NetworkBehaviour
     #region Client
 
     [SerializeField]
-    ScriptableInteger action;
+    ScriptableGameAction action;
 
     [SerializeField]
-    ScriptableInteger algorithmId;
+    ScriptableAlgorithm algorithm;
 
     [SerializeField]
     ScriptableDeviceType deviceType;
@@ -225,9 +225,9 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSetPlayerAction(int actionId)
+    public void CmdSetPlayerAction(GameAction action)
     {
-        ServerPlayerAction = actionId;
+        ServerPlayerAction = action;
     }
 
     #endregion
@@ -248,9 +248,9 @@ public class Player : NetworkBehaviour
     }
 
     [TargetRpc]
-    public void TargetSetPlayerAlgorithmId(NetworkConnection target, int id)
+    public void TargetSetPlayerAlgorithm(NetworkConnection target, Algorithm algo)
     {
-        algorithmId.Value = id;
+        algorithm.Value = algo;
     }
 
     [TargetRpc]
@@ -258,7 +258,7 @@ public class Player : NetworkBehaviour
     {
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
 
-        if(algorithmId.Value == Constants.TUTORIAL_ALGORITHM)
+        if(algorithm.Value == Algorithm.Tutorial)
         {
             gameState.Value = GameState.ReadyTutorial;
         }

@@ -33,11 +33,11 @@ public class ActionSaverComponent : NetworkBehaviour
             string teamColor = player.ServerTeamColor.ToString();
             int courseId = player.serverCourseId;
             int labyrithId = player.serverLabyrinthId;
-            int algorithmId = player.serverAlgorithmId;
+            int algorithmId = (int) player.serverAlgorithm;
 
             System.DateTime now =  System.DateTime.Now;
 
-            SQLiteUtilities.InsertPlayerAction(teamId, teamName, teamColor, courseId, labyrithId, algorithmId, player.ServerPlayerAction, now.ToString("yyyy-MM-dd"), now.ToString("HH:mm:ss"));
+            SQLiteUtilities.InsertPlayerAction(teamId, teamName, teamColor, courseId, labyrithId, algorithmId, (int) player.ServerPlayerAction, now.ToString("yyyy-MM-dd"), now.ToString("HH:mm:ss"));
         }
     }
 #endif

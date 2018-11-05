@@ -19,7 +19,7 @@ public class FloorPainter : MonoBehaviour
     [SerializeField]
     TileColor floorColor;
 
-    public TileColor GetFloorColorId()
+    public TileColor GetFloorColor()
     {
         return floorColor;
     }
@@ -60,10 +60,5 @@ public class FloorPainter : MonoBehaviour
             floorColor = TileColor.Red;
             meshRenderer.material = redMaterial;
         }
-    }
-
-    public void PaintFloorWithColorId(int id)
-    {
-        PaintFloorWithColor((TileColor) id);
     }
 }

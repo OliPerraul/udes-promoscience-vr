@@ -75,11 +75,11 @@ public class PairingComponent : NetworkBehaviour
 
             player.ServerTeamName = scriptableTeam.teamName;
             player.ServerTeamColor = scriptableTeam.teamColor;
-            player.serverAlgorithmId = (scriptableTeam.teamId % 3) + 1;
+            player.serverAlgorithm = (Algorithm) (scriptableTeam.teamId % 3) + 1;
             player.serverTeamId = teamId;
             otherPlayer.ServerTeamName = scriptableTeam.teamName;
             otherPlayer.ServerTeamColor = scriptableTeam.teamColor;
-            otherPlayer.serverAlgorithmId = player.serverAlgorithmId;
+            otherPlayer.serverAlgorithm = player.serverAlgorithm;
             otherPlayer.serverTeamId = teamId;
         }
     }

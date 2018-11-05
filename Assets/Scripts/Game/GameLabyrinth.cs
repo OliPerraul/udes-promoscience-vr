@@ -22,6 +22,19 @@ public class GameLabyrinth : MonoBehaviour
     [SerializeField]
     GameObject endTilePrefab;
 
+    [SerializeField]
+    GameObject romeStartTilePrefab;
+    [SerializeField]
+    GameObject romeFloorTilePrefab;
+    [SerializeField]
+    GameObject romeHorizontalWallTilePrefab;
+    [SerializeField]
+    GameObject romeVerticalWallTilePrefab;
+    [SerializeField]
+    GameObject romeTowerWallTilePrefab;
+    [SerializeField]
+    GameObject romeEndTilePrefab;
+
     int[,] labyrinth;
 
     Vector2Int startPosition;
@@ -97,21 +110,45 @@ public class GameLabyrinth : MonoBehaviour
         GameObject tile = null;
         Vector3 tilePosition = GetLabyrinthPositionInWorldPosition(x, y);
 
-        if(tileId == Constants.TILE_START_1_ID)
+        if(tileId == Constants.TILE_START_ID)
         {
             tile = (GameObject) Instantiate(startTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
         }
-        else if(tileId == Constants.TILE_FLOOR_1_ID)
+        else if(tileId == Constants.TILE_FLOOR_ID)
         {
             tile = (GameObject) Instantiate(floorTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
         }
-        else if (tileId == Constants.TILE_WALL_1_ID)
+        else if (tileId == Constants.TILE_WALL_ID)
         {
             tile = (GameObject) Instantiate(wallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
         }
-        else if (tileId == Constants.TILE_END_1_ID)
+        else if (tileId == Constants.TILE_END_ID)
         {
             tile = (GameObject) Instantiate(endTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_ROME_START_ID)
+        {
+            tile = (GameObject)Instantiate(romeStartTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_ROME_FLOOR_ID)
+        {
+            tile = (GameObject)Instantiate(romeFloorTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_ROME_HORIZONTAL_WALL_ID)
+        {
+            tile = (GameObject)Instantiate(romeHorizontalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_ROME_VERTICAL_WALL_ID)
+        {
+            tile = (GameObject)Instantiate(romeVerticalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_ROME_TOWER_WALL_ID)
+        {
+            tile = (GameObject)Instantiate(romeTowerWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_ROME_END_ID)
+        {
+            tile = (GameObject)Instantiate(romeEndTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
         }
 
         return tile;
@@ -205,21 +242,21 @@ public class GameLabyrinth : MonoBehaviour
 
     public TileColor GetTileColor(Vector2Int tile)
     {
-        TileColor colorId = TileColor.NoColor;
+        TileColor color = TileColor.NoColor;
         FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();
         if (floorPainter != null)
         {
-            colorId = floorPainter.GetFloorColorId();
+            color = floorPainter.GetFloorColor();
         }
-        return colorId;
+        return color;
     }
 
-    public void SetTileColorWithId(Vector2Int tile, int colorId)
+    public void SetTileColor(Vector2Int tile, TileColor color)
     {
         FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();
         if (floorPainter != null)
         {
-            floorPainter.PaintFloorWithColorId(colorId);
+            floorPainter.PaintFloorWithColor(color);
         }
     }
 

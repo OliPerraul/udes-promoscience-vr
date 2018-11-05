@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+public enum Algorithm : int
+{
+   Tutorial = 0,
+   RightHand = 0,
+   ShortestFlightDistance = 1,
+   LongestStraight = 2,
+   Standard = 3
+}
+
 public enum GameState : int
 {
     NotReady = 0,
@@ -18,11 +27,23 @@ public enum GameState : int
     WaitingForNextRound = 10
 }
 
-public enum DeviceType : int
+public enum GameAction : int
 {
-    Tablet = 1,
-    Headset = 2,
-    NoType = 0
+    MoveUp = 0,
+    MoveRight = 1,
+    MoveDown = 2,
+    MoveLeft = 3,
+    TurnRight = 4,
+    TurnLeft = 5,
+    PaintFloor = 6,
+}
+
+public enum DeviceType
+{
+    NoType,
+    Tablet,
+    Headset
+
 }
 
 public enum Directive
@@ -36,8 +57,8 @@ public enum Directive
 
 public enum TileColor : int
 {
-    Grey = 0,
-    Yellow = 1,
-    Red = 2,
-    NoColor = 3
+    NoColor = 0,
+    Grey = 1,
+    Yellow = 2,
+    Red = 3
 }

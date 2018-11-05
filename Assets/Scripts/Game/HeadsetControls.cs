@@ -5,7 +5,7 @@ using UnityEngine;
 public class HeadsetControls : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger action;
+    ScriptableGameAction action;
 
     [SerializeField]
     ScriptableControler controls;
@@ -118,7 +118,7 @@ public class HeadsetControls : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = fromRotation * trajectory;
                             forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
-                            action.Value = Constants.ACTION_TURN_LEFT;
+                            action.Value = GameAction.TurnLeft;
                             lerpValue = 1 - lerpValue;
                             isTurningLeft = true;
                             isTurningRight = false;
@@ -151,7 +151,7 @@ public class HeadsetControls : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = fromRotation * trajectory;
                             forwardDirection.Value = (forwardDirection.Value + 1) % 4;
-                            action.Value = Constants.ACTION_TURN_RIGHT;
+                            action.Value = GameAction.TurnRight;
                             lerpValue = 1 - lerpValue;
                             isTurningLeft = false;
                             isTurningRight = true;
@@ -166,7 +166,7 @@ public class HeadsetControls : MonoBehaviour
 
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
             {
-                int tileNextColorId = ((int)paintingColor.Value + 1) % 3;
+                int tileNextColorId = (((int)paintingColor.Value) % 3) + 1;
                 paintingColor.Value = (TileColor) tileNextColorId;
                 PaintCurrentPositionTile();
             }
@@ -237,7 +237,7 @@ public class HeadsetControls : MonoBehaviour
                             targetRotation = targetRotation * trajectory;
 
                             forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
-                            action.Value = Constants.ACTION_TURN_LEFT;
+                            action.Value = GameAction.TurnLeft;
                         }
                         else if (isTurningRight)
                         {
@@ -247,7 +247,7 @@ public class HeadsetControls : MonoBehaviour
                             targetRotation = targetRotation * trajectory;
 
                             forwardDirection.Value = (forwardDirection.Value + 1) % 4;
-                            action.Value = Constants.ACTION_TURN_RIGHT;
+                            action.Value = GameAction.TurnRight;
                         }
 
                         cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
@@ -278,19 +278,19 @@ public class HeadsetControls : MonoBehaviour
 
             if (direction == 0)
             {
-                action.Value = Constants.ACTION_MOVE_UP;
+                action.Value = GameAction.MoveUp;
             }
             else if (direction == 1)
             {
-                action.Value = Constants.ACTION_MOVE_RIGHT;
+                action.Value = GameAction.MoveRight;
             }
             else if (direction == 2)
             {
-                action.Value = Constants.ACTION_MOVE_DOWN;
+                action.Value = GameAction.MoveDown;
             }
             else if (direction == 3)
             {
-                action.Value = Constants.ACTION_MOVE_LEFT;
+                action.Value = GameAction.MoveLeft;
             }
             
             isMoving = true;
@@ -321,7 +321,7 @@ public class HeadsetControls : MonoBehaviour
 
         isTurningLeft = true;
         forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
-        action.Value = Constants.ACTION_TURN_LEFT;
+        action.Value = GameAction.TurnLeft;
     }
 
     void CameraTurnRight()
@@ -333,7 +333,7 @@ public class HeadsetControls : MonoBehaviour
 
         isTurningRight = true;
         forwardDirection.Value = (forwardDirection.Value + 1) % 4;
-        action.Value = Constants.ACTION_TURN_RIGHT;
+        action.Value = GameAction.TurnRight;
     }
 
     bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
@@ -358,7 +358,7 @@ public class HeadsetControls : MonoBehaviour
             if (floorPainter != null)
             {
                 floorPainter.PaintFloorWithColor(color);
-                action.Value = Constants.ACTION_PAINT_FLOOR;
+                action.Value = GameAction.PaintFloor;
                 playerPaintTile.SetTile(position, color);
             }
         }
@@ -409,6 +409,8 @@ public class HeadsetControls : MonoBehaviour
         }
 
         cameraTransform.rotation = rotation;
+
+        paintingColor.Value = TileColor.Yellow;
     }
 
     void OnPlayerPositionRotationAndTiles()
@@ -427,6 +429,8 @@ public class HeadsetControls : MonoBehaviour
         {
             PaintTile(tiles[i].x, tiles[i].y, tiles[i].color);
         }
+
+        paintingColor.Value = TileColor.Yellow;
 
         PaintCurrentPositionTile();
     }

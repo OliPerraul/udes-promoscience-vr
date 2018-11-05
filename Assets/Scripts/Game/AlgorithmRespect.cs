@@ -5,7 +5,7 @@ using UnityEngine;
 public class AlgorithmRespect : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger algorithmId;
+    ScriptableAlgorithm algorithm;
 
     [SerializeField]
     ScriptableFloat algorithmRespect;
@@ -38,7 +38,7 @@ public class AlgorithmRespect : MonoBehaviour
     LongestStraightAlgorithm longestStraightAlgorithm;
 
     [SerializeField]
-    ShortestFlighDistanceAlgorithm shortestFlighDistanceAlgorithm;
+    ShortestFlightDistanceAlgorithm shortestFlightDistanceAlgorithm;
 
     [SerializeField]
     StandardAlgorithm standardAlgorithm;
@@ -138,11 +138,11 @@ public class AlgorithmRespect : MonoBehaviour
         {
             if(gameState.Value == GameState.PlayingTutorial)
             {
-                SetAlgorithmStepsWithId(Constants.TUTORIAL_ALGORITHM);
+                SetAlgorithmStepsWithId(Algorithm.Tutorial);
             }
             else
             {
-                SetAlgorithmStepsWithId(algorithmId.Value);
+                SetAlgorithmStepsWithId(algorithm.Value);
             }
 
             ResetAlgorithmRespect();
@@ -215,21 +215,21 @@ public class AlgorithmRespect : MonoBehaviour
         }
     }
 
-    void SetAlgorithmStepsWithId(int id)
+    void SetAlgorithmStepsWithId(Algorithm algo)
     {
-        if(id == Constants.RIGHT_HAND_ALGORITHM)
+        if(algo == Algorithm.RightHand)
         {
             algorithmSteps = rightHandAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.LONGEST_STRAIGHT_ALGORITHM)
+        else if (algo == Algorithm.LongestStraight)
         {
             algorithmSteps = longestStraightAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.SHORTEST_FLIGHT_DISTANCE_ALGORITHM)
+        else if (algo == Algorithm.ShortestFlightDistance)
         {
-            algorithmSteps = shortestFlighDistanceAlgorithm.GetAlgorithmSteps();
+            algorithmSteps = shortestFlightDistanceAlgorithm.GetAlgorithmSteps();
         }
-        else if (id == Constants.STANDARD_ALGORITHM)
+        else if (algo == Algorithm.Standard)
         {
             algorithmSteps = standardAlgorithm.GetAlgorithmSteps();
         }

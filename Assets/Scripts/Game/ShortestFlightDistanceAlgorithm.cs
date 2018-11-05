@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShortestFlighDistanceAlgorithm : MonoBehaviour
+public class ShortestFlightDistanceAlgorithm : MonoBehaviour
 {
     [SerializeField]
     GameLabyrinth labyrinth;

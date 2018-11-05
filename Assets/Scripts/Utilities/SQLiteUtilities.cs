@@ -582,124 +582,124 @@ public static class SQLiteUtilities
         int[] data = new int[sizeX * sizeY];
 
         //Colum 0
-        data[(0 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 1] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 8] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(0 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 1] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 8] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 1
-        data[(1 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 1] = Constants.TILE_START_1_ID;
-        data[(1 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 8] = Constants.TILE_END_1_ID;
-        data[(1 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(1 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 1] = Constants.TILE_START_ID;
+        data[(1 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 8] = Constants.TILE_END_ID;
+        data[(1 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 2
-        data[(2 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(2 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 3
-        data[(3 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 2] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(3 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 2] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 4
-        data[(4 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 8] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(4 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 8] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 5
-        data[(5 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(5 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 6
-        data[(6 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 2] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 6] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(6 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 2] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 6] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 7
-        data[(7 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 6] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(7 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 6] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 8
-        data[(8 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(8 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 2] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(8 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(8 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(8 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 2] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(8 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 9
-        data[(9 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 1] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 8] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(9 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 1] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 8] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         SQLiteUtilities.InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
 
@@ -711,124 +711,124 @@ public static class SQLiteUtilities
         data = new int[sizeX * sizeY];
 
         //Colum 0
-        data[(0 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 1] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 8] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(0 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 1] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 8] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 1
-        data[(1 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(1 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 2
-        data[(2 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 2] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(2 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 2] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 3
-        data[(3 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 6] = Constants.TILE_END_1_ID;
-        data[(3 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(3 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 6] = Constants.TILE_END_ID;
+        data[(3 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 4
-        data[(4 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 5] = Constants.TILE_START_1_ID;
-        data[(4 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(4 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 5] = Constants.TILE_START_ID;
+        data[(4 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 5
-        data[(5 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 1] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 6] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(5 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 1] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 6] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 6
-        data[(6 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 2] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(6 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 2] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 7
-        data[(7 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 6] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(7 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 6] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 8
-        data[(8 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(8 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 2] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 6] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(8 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(8 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(8 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 2] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 6] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(8 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 9
-        data[(9 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 1] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 8] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(9 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 1] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 8] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
 
@@ -840,124 +840,124 @@ public static class SQLiteUtilities
         data = new int[sizeX * sizeY];
 
         //Colum 0
-        data[(0 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 1] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 8] = Constants.TILE_WALL_1_ID;
-        data[(0 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(0 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 1] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 8] = Constants.TILE_WALL_ID;
+        data[(0 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 1
-        data[(1 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(1 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(1 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(1 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(1 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(1 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 2
-        data[(2 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 2] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(2 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(2 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(2 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 2] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(2 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(2 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 3
-        data[(3 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(3 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 6] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(3 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(3 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(3 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 6] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(3 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 4
-        data[(4 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 1] = Constants.TILE_END_1_ID;
-        data[(4 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(4 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(4 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(4 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 1] = Constants.TILE_END_ID;
+        data[(4 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(4 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(4 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 5
-        data[(5 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 1] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(5 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(5 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(5 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 1] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(5 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(5 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 6
-        data[(6 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 2] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(6 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(6 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(6 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 2] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(6 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(6 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 7
-        data[(7 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(7 * sizeX) + 6] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 7] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 8] = Constants.TILE_FLOOR_1_ID;
-        data[(7 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(7 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(7 * sizeX) + 6] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 7] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 8] = Constants.TILE_FLOOR_ID;
+        data[(7 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 8
-        data[(8 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(8 * sizeX) + 1] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 2] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 3] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 4] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 5] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 6] = Constants.TILE_FLOOR_1_ID;
-        data[(8 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(8 * sizeX) + 8] = Constants.TILE_START_1_ID;
-        data[(8 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(8 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(8 * sizeX) + 1] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 2] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 3] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 4] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 5] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 6] = Constants.TILE_FLOOR_ID;
+        data[(8 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(8 * sizeX) + 8] = Constants.TILE_START_ID;
+        data[(8 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         //Colum 9
-        data[(9 * sizeX) + 0] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 1] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 2] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 3] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 4] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 5] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 6] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 7] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 8] = Constants.TILE_WALL_1_ID;
-        data[(9 * sizeX) + 9] = Constants.TILE_WALL_1_ID;
+        data[(9 * sizeX) + 0] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 1] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 2] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 3] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 4] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 5] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 6] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 7] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 8] = Constants.TILE_WALL_ID;
+        data[(9 * sizeX) + 9] = Constants.TILE_WALL_ID;
 
         InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
     }

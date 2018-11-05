@@ -56,16 +56,25 @@ public class RightHandAlgorithm : MonoBehaviour
 
             position.x += xByDirection[direction];
             position.y += yByDirection[direction];
-            TileColor tileColor = alreadyVisitedTile[position.x, position.y] ? TileColor.Red : TileColor.Yellow;
 
-            algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
-
-            alreadyVisitedTile[position.x, position.y] = true;
+            bool[] isDirectionWalkableAndNotVisited = new bool[4];
+            isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
+            isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]];
+            isDirectionWalkableAndNotVisited[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]) && !alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]];
+            isDirectionWalkableAndNotVisited[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]) && !alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]];
 
             if (position.x == endPosition.x && position.y == endPosition.y)
             {
                 asReachedTheEnd = true;
             }
+
+            TileColor tileColor = asReachedTheEnd || isDirectionWalkableAndNotVisited[0] || isDirectionWalkableAndNotVisited[1] || isDirectionWalkableAndNotVisited[2] || isDirectionWalkableAndNotVisited[3] ?  TileColor.Yellow : TileColor.Red;
+
+            algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
+
+            alreadyVisitedTile[position.x, position.y] = true;
+
+
         }
 
         return algorithmSteps;

@@ -8,7 +8,7 @@ public class DirectiveControls : MonoBehaviour
     ScriptableControler controls;
 
     [SerializeField]
-    ScriptableInteger directive;
+    ScriptableDirective directive;
 
     private void Start()
     {
@@ -41,26 +41,26 @@ public class DirectiveControls : MonoBehaviour
 
     public void SetDirectiveMoveFoward()
     {
-        directive.Value = Constants.DIRECTIVE_MOVE_FOWARD;
+        directive.Value = Directive.MoveFoward;
     }
 
     public void SetDirectiveTurnLeft()
     {
-        directive.Value = Constants.DIRECTIVE_TURN_LEFT;
+        directive.Value = Directive.TurnLeft;
     }
 
     public void SetDirectiveTurnRight()
     {
-        directive.Value = Constants.DIRECTIVE_TURN_RIGHT;
+        directive.Value = Directive.TurnRight;
     }
 
     public void SetDirectiveUTurn()
     {
-        directive.Value = Constants.DIRECTIVE_UTURN;
+        directive.Value = Directive.UTurn;
     }
 
     public void SetDirectiveStop()
     {
-        directive.Value = Constants.DIRECTIVE_STOP;
+        directive.Value = Directive.Stop;
     }
 }

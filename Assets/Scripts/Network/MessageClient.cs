@@ -6,10 +6,10 @@ using UnityEngine.Networking;
 public class MessageClient : MonoBehaviour
 {
     [SerializeField]
-    ScriptableInteger action;
+    ScriptableGameAction action;
 
     [SerializeField]
-    ScriptableInteger directive;
+    ScriptableDirective directive;
 
     [SerializeField]
     ScriptableGameState gameState;
@@ -91,7 +91,7 @@ public class MessageClient : MonoBehaviour
     void OnDirective(NetworkMessage netMsg)
     {
         DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
-        directive.Value = msg.directiveId;
+        directive.Value = msg.directive;
     }
 
     void OnPlayerReachedTheEnd(NetworkMessage netMsg)
@@ -113,7 +113,7 @@ public class MessageClient : MonoBehaviour
     void SendAction()
     {
         ActionMessage msg = new ActionMessage();
-        msg.actionId = action.Value;
+        msg.action = action.Value;
 
         client.Send(msg.GetMsgType(), msg);
     }

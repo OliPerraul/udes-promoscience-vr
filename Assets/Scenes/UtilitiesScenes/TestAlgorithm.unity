@@ -219,8 +219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controls: {fileID: 0}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  isEndReached: {fileID: 0}
-  algorithmRespect: {fileID: 0}
+  playerReachedTheEnd: {fileID: 0}
   labyrinth: {fileID: 1935275872}
   labyrinthRoom: {fileID: 0}
   lobby: {fileID: 0}
@@ -280,10 +279,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ebe2e2aafc35b4cb7c375dd2998b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentGameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   rightHandAlgorithm: {fileID: 1144186331}
   longestStraightAlgorithm: {fileID: 1144186335}
-  shortestFlighDistanceAlgorithm: {fileID: 1144186334}
+  shortestFlightDistanceAlgorithm: {fileID: 1144186334}
   standardAlgorithm: {fileID: 1144186336}
   labyrinth: {fileID: 1935275872}
   sphere: {fileID: 1214235401783604, guid: 1a5d2996e2f64ab43ac167395ac63dc2, type: 2}
@@ -386,6 +385,18 @@ MonoBehaviour:
   wallTilePrefab: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1,
     type: 2}
   endTilePrefab: {fileID: 1578370847054714, guid: 38299c7c68746054192a25570484bb14,
+    type: 2}
+  romeStartTilePrefab: {fileID: 1648208370768188, guid: 74317b067f1d97a46be1eb660aad3b25,
+    type: 2}
+  romeFloorTilePrefab: {fileID: 1532465971710696, guid: 02926e972175cb44e9cc3e770214724f,
+    type: 2}
+  romeHorizontalWallTilePrefab: {fileID: 1382494581607658, guid: 65b674b6b3e3f834599c2d7859f4aaff,
+    type: 2}
+  romeVerticalWallTilePrefab: {fileID: 1580331101368578, guid: 4719965afcc09484f9ff3944c83e4bad,
+    type: 2}
+  romeTowerWallTilePrefab: {fileID: 1395780099758896, guid: cfbf8d5f9046b6b438fcf4b995edbb54,
+    type: 2}
+  romeEndTilePrefab: {fileID: 1518225262165898, guid: e53d49d9836806245995144287387aa9,
     type: 2}
 --- !u!4 &1935275873
 Transform:
