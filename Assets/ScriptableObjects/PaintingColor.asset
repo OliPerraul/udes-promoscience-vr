@@ -11,4 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ac57978659e134eab990b65832b1b1, type: 3}
   m_Name: PaintingColor
   m_EditorClassIdentifier: 
-  value: 1
+  value: 2
