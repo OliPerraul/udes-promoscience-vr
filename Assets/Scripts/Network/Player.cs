@@ -171,6 +171,9 @@ public class Player : NetworkBehaviour
         if (deviceType.Value == DeviceType.Tablet)
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        }
+        else if(deviceType.Value == DeviceType.Headset)
+        {
             action.valueChangedEvent += SendCmdPlayerAction;
         }
 

@@ -14,6 +14,9 @@ public class TabletControls : MonoBehaviour
     ScriptableQuaternion playerRotation;
 
     [SerializeField]
+    ScriptableTile playerPaintTile;
+
+    [SerializeField]
     GameLabyrinth labyrinth;
 
     [SerializeField]
@@ -42,6 +45,7 @@ public class TabletControls : MonoBehaviour
     {
         playerPosition.valueChangedEvent += OnNewPlayerPosition;
         playerRotation.valueChangedEvent += OnNewPlayerRotation;
+        playerPaintTile.valueChangedEvent += OnPlayerPaintTile;
         controls.resetPositionAndRotation += StopAllMovement;
         controls.stopAllMovementEvent += ResetPositionAndRotation;
     }
@@ -129,6 +133,17 @@ public class TabletControls : MonoBehaviour
     void OnNewPlayerRotation()
     {
         rotationQueue.Enqueue(playerRotation.Value);
+    }
+
+    void OnPlayerPaintTile()
+    {
+        GameObject tile = labyrinth.GetTile(playerPaintTile.TilePosition);
+        FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
+
+        if (floorPainter != null)
+        {
+            floorPainter.PaintFloorWithColor(playerPaintTile.TileColor);
+        }
     }
 
     void StopAllMovement()

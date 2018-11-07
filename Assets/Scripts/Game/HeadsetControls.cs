@@ -14,6 +14,9 @@ public class HeadsetControls : MonoBehaviour
     ScriptableInteger forwardDirection;
 
     [SerializeField]
+    ScriptableAction labyrinthPositionChanged;
+
+    [SerializeField]
     ScriptableVector3 playerPosition;
 
     [SerializeField]
@@ -71,7 +74,6 @@ public class HeadsetControls : MonoBehaviour
 
     void Update ()
     {
-
         if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
         {
             isPrimaryTouchpadHold = true;
@@ -124,7 +126,7 @@ public class HeadsetControls : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = fromRotation * trajectory;
                             forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
-                            action.Value = GameAction.TurnLeft;
+                            //action.Value = GameAction.TurnLeft;
                             lerpValue = 1 - lerpValue;
                             isTurningLeft = true;
                             isTurningRight = false;
@@ -157,7 +159,7 @@ public class HeadsetControls : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = fromRotation * trajectory;
                             forwardDirection.Value = (forwardDirection.Value + 1) % 4;
-                            action.Value = GameAction.TurnRight;
+                            //action.Value = GameAction.TurnRight;
                             lerpValue = 1 - lerpValue;
                             isTurningLeft = false;
                             isTurningRight = true;
@@ -315,8 +317,8 @@ public class HeadsetControls : MonoBehaviour
                 }
                 
                 lastLabyrinthPosition = labyrinthPosition;
+                labyrinthPositionChanged.FireAction();
             }
-           
         }
     }
 
@@ -409,8 +411,8 @@ public class HeadsetControls : MonoBehaviour
             if (floorPainter != null)
             {
                 floorPainter.PaintFloorWithColor(color);
+                playerPaintTile.SetTile(position, color, tileColor);
                 action.Value = GameAction.PaintFloor;
-                playerPaintTile.SetTile(position, color);
             }
         }
     }
@@ -465,6 +467,7 @@ public class HeadsetControls : MonoBehaviour
         paintingColor.Value = TileColor.Yellow;
     }
 
+    
     void OnPlayerPositionRotationAndTiles()
     {
         OnStopAllMovement();

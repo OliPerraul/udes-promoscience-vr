@@ -17,6 +17,9 @@ public class AlgorithmRespect : MonoBehaviour
     ScriptableBoolean isDiverging;
 
     [SerializeField]
+    ScriptableAction labyrinthPositionChanged;
+
+    [SerializeField]
     ScriptableTile playerPaintTile;
 
     [SerializeField]
@@ -44,9 +47,6 @@ public class AlgorithmRespect : MonoBehaviour
     StandardAlgorithm standardAlgorithm;
 
     [SerializeField]
-    GameObject algorithRespectBar;
-
-    [SerializeField]
     Transform cameraTransform;
 
     bool isAlgorithmRespectActive = false;
@@ -67,16 +67,17 @@ public class AlgorithmRespect : MonoBehaviour
     {
        gameState.valueChangedEvent += OnGameStateChanged;
        playerPaintTile.valueChangedEvent += OnPlayerPaintTile;
+       labyrinthPositionChanged.action += OnLabyrinthPositionChanged;
        returnToDivergencePointAnswer.valueChangedEvent += OnReturnToDivergencePointAnswer;
     }
 
-    private void Update()
+    void OnLabyrinthPositionChanged()
     {
         if (isAlgorithmRespectActive)
         {
             Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
 
-            if(labyrinthPosition != currentLabyrinthPosition)
+            if (labyrinthPosition != currentLabyrinthPosition)
             {
                 if (labyrinthPosition == labyrinth.GetLabyrithEndPosition() && !(algorithmRespect.Value < 1.0f))
                 {
@@ -87,9 +88,9 @@ public class AlgorithmRespect : MonoBehaviour
                 {
                     TileColor previousTileColor = labyrinth.GetTileColor(currentLabyrinthPosition);
 
-                    if (labyrinthPosition.x != algorithmSteps[playerSteps.Count].x 
-                        || labyrinthPosition.y != algorithmSteps[playerSteps.Count].y 
-                        || ( previousTileColor != algorithmSteps[playerSteps.Count - 1].color))
+                    if (labyrinthPosition.x != algorithmSteps[playerSteps.Count].x
+                        || labyrinthPosition.y != algorithmSteps[playerSteps.Count].y
+                        || (previousTileColor != algorithmSteps[playerSteps.Count - 1].color))
                     {
                         isDiverging.Value = true;
                         errorCounter++;
@@ -106,16 +107,8 @@ public class AlgorithmRespect : MonoBehaviour
                 {
                     if (labyrinthPosition.x == playerSteps[playerSteps.Count - 1].x && labyrinthPosition.y == playerSteps[playerSteps.Count - 1].y)
                     {
-                        if(wrongColorTilesWhenDiverging.Count == 0)
+                        if (wrongColorTilesWhenDiverging.Count == 0)
                         {
-                            isDiverging.Value = false;
-                            algorithmRespect.Value = 1.0f;
-                        }
-                        else if(wrongColorTilesWhenDiverging.Count == 1 
-                            && wrongColorTilesWhenDiverging[0].x == labyrinthPosition.x 
-                            && wrongColorTilesWhenDiverging[0].y == labyrinthPosition.y)
-                        {
-                            wrongColorTilesWhenDiverging.RemoveAt(0);
                             isDiverging.Value = false;
                             algorithmRespect.Value = 1.0f;
                         }
@@ -132,8 +125,13 @@ public class AlgorithmRespect : MonoBehaviour
 
                 currentLabyrinthPosition = labyrinthPosition;
             }
+            else
+            {
+                Debug.Log("Position hasn't changed as intended!!!");
+            }
         }
     }
+    
 
 
     void OnGameStateChanged()
@@ -151,71 +149,52 @@ public class AlgorithmRespect : MonoBehaviour
 
             ResetAlgorithmRespect();
 
-            algorithRespectBar.SetActive(true);
             isAlgorithmRespectActive = true;
         }
         else if (gameState.Value == GameState.WaitingForNextRound)
         {
             isAlgorithmRespectActive = false;
-            algorithRespectBar.SetActive(false);
         }
     }
 
     void OnPlayerPaintTile()
     {
-        //To avoid the fact that we don't know if it was painted before or will be painted right after, we keep the tile painting here instead of in TabletControls
-        TileColor tilePreviousColor = labyrinth.GetTileColor(playerPaintTile.TilePosition);
-        PaintTile(playerPaintTile.TilePosition, playerPaintTile.TileColor);
-        
-        if(!isDiverging.Value)
-        {
-            if (playerPaintTile.TilePosition != currentLabyrinthPosition)
-            {
-                TileColor currentTileColor = labyrinth.GetTileColor(currentLabyrinthPosition);
-
-                if (currentTileColor != algorithmSteps[playerSteps.Count - 1].color
-                    || playerPaintTile.TilePosition.x != algorithmSteps[playerSteps.Count].x
-                    || playerPaintTile.TilePosition.y != algorithmSteps[playerSteps.Count].y)
-                {
-                    isDiverging.Value = true;
-                    errorCounter++;
-                    algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - currentLabyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
-                    rotationAtDivergence = cameraTransform.rotation;
-                }
-            }
-        }
-
         if (isDiverging.Value)
         {
-            Vector2Int labyrinthPosition = playerPaintTile.TilePosition;
-
-            TileColor tileColorId = playerPaintTile.TileColor;
-
-            for (int i = 0; i < wrongColorTilesWhenDiverging.Count; i++)
+            if (playerPaintTile.TilePosition.x != playerSteps[playerSteps.Count - 1].x
+                || playerPaintTile.TilePosition.y != playerSteps[playerSteps.Count - 1].y)
             {
-                if (labyrinthPosition.x == wrongColorTilesWhenDiverging[i].x && labyrinthPosition.y == wrongColorTilesWhenDiverging[i].y)
+                Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+
+                for (int i = 0; i < wrongColorTilesWhenDiverging.Count; i++)
                 {
-                    if (tileColorId == wrongColorTilesWhenDiverging[i].color)
+                    if (playerPaintTile.TilePosition.x == wrongColorTilesWhenDiverging[i].x
+                        && playerPaintTile.TilePosition.y == wrongColorTilesWhenDiverging[i].y)
                     {
-                        wrongColorTilesWhenDiverging.RemoveAt(i);
+                        if (playerPaintTile.TileColor == wrongColorTilesWhenDiverging[i].color)
+                        {
+                            wrongColorTilesWhenDiverging.RemoveAt(i);
 
-                        if (labyrinthPosition.x == playerSteps[playerSteps.Count - 1].x && labyrinthPosition.y == playerSteps[playerSteps.Count - 1].y && wrongColorTilesWhenDiverging.Count == 0)
-                        {
-                            isDiverging.Value = false;
-                            algorithmRespect.Value = 1.0f;
+                            if (labyrinthPosition.x == playerSteps[playerSteps.Count - 1].x
+                                && labyrinthPosition.y == playerSteps[playerSteps.Count - 1].y
+                                && wrongColorTilesWhenDiverging.Count == 0)
+                            {
+                                isDiverging.Value = false;
+                                algorithmRespect.Value = 1.0f;
+                            }
+                            else
+                            {
+                                algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+                            }
                         }
-                        else
-                        {
-                            algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
-                        }
+
+                        return;
                     }
-
-                    return;
                 }
-            }
 
-            wrongColorTilesWhenDiverging.Add(new Tile(labyrinthPosition.x, labyrinthPosition.y, tilePreviousColor));
-            algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+                wrongColorTilesWhenDiverging.Add(new Tile(playerPaintTile.TilePosition.x, playerPaintTile.TilePosition.y, playerPaintTile.TilePreviousColor));
+                algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+            }
         }
     }
 
@@ -238,31 +217,6 @@ public class AlgorithmRespect : MonoBehaviour
             algorithmSteps = standardAlgorithm.GetAlgorithmSteps();
         }
     }
-
-    void PaintTile(Vector2Int tilePosition, TileColor tileColor)
-    {
-        GameObject tile = labyrinth.GetTile(tilePosition);
-        FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
-
-        if (floorPainter != null)
-        {
-            floorPainter.PaintFloorWithColor(tileColor);
-        }
-    }
-
-    void PaintCurrentPositionTile()
-    {
-        Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
-
-        GameObject tile = labyrinth.GetTile(position.x, position.y);
-        FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
-
-        if (floorPainter != null)
-        {
-            floorPainter.PaintFloor();
-        }
-    }
-
 
     float RespectValueComputation(float x)
     {
@@ -300,3 +254,6 @@ public class AlgorithmRespect : MonoBehaviour
         }
     }
 }
+
+//la tablette et changer la gestion du boutton par rapport au taux du respect
+//Modifier pour que le respect de l'agorithme ferme la requete quand on ne diverge pas sur le casque mais que la tablette avait envoyer une requete

@@ -7,6 +7,7 @@ using UnityEngine;
  {
     Vector2Int tilePosition;
     TileColor tileColor;
+    TileColor tilePreviousColor;
 
     public Action valueChangedEvent;
    
@@ -26,17 +27,31 @@ using UnityEngine;
         }
     }
 
-    public void SetTile(Vector2Int position, TileColor color)
+    public TileColor TilePreviousColor
+    {
+        get
+        {
+            return tilePreviousColor;
+        }
+    }
+
+    public void SetTile(Vector2Int position, TileColor color, TileColor previousColor)
     {
         tilePosition = position;
         tileColor = color;
+        tilePreviousColor = previousColor;
 
         OnValueChanged();
     }
 
+    public void SetTile(int positionX, int positionY, TileColor color, TileColor previousColor)
+    {
+        SetTile(new Vector2Int(positionX, positionY), color, previousColor);
+    }
+
     public void SetTile(int positionX, int positionY, TileColor color)
     {
-        SetTile(new Vector2Int(positionX, positionY), color);
+        SetTile(new Vector2Int(positionX, positionY), color, TileColor.NoColor);
     }
 
     void OnValueChanged()

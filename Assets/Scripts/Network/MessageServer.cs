@@ -9,6 +9,9 @@ public class MessageServer : MonoBehaviour
     ScriptableGameAction action;
 
     [SerializeField]
+    ScriptableFloat algorithmRespect;
+
+    [SerializeField]
     ScriptableDirective directive;
 
     [SerializeField]
@@ -25,9 +28,9 @@ public class MessageServer : MonoBehaviour
 
     [SerializeField]
     ScriptableAction playerReachedTheEnd;
-
+    /*
     [SerializeField]
-    ScriptablePositionRotationAndTile playerPositionRotationAndTiles;
+    ScriptablePositionRotationAndTile playerPositionRotationAndTiles;*/
 
     [SerializeField]
     ScriptableBoolean returnToDivergencePointAnswer;
@@ -38,10 +41,10 @@ public class MessageServer : MonoBehaviour
     [SerializeField]
     ScriptableString pairedIpAdress;
 
-    public int serverPort = 9999;
-
     NetworkServerSimple server = null;
     NetworkConnection clientConnection = null;
+
+    public int serverPort = 9996;
 
     private void Start()
     {
@@ -61,11 +64,9 @@ public class MessageServer : MonoBehaviour
         server = new NetworkServerSimple();
         server.RegisterHandler(MsgType.Connect, OnConnect);
         server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        server.RegisterHandler(ActionMessage.GetCustomMsgType(), OnAction);
-        server.RegisterHandler(PlayerPositionMessage.GetCustomMsgType(), OnPlayerPosition);
-        server.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
-        server.RegisterHandler(PlayerPaintTileMessage.GetCustomMsgType(), OnPlayerPaintTile);
-        server.RegisterHandler(ReturnToDivergencePointAnswerMessage.GetCustomMsgType(), OnReturnToDivergencePointAnswer);
+        server.RegisterHandler(DirectiveMessage.GetCustomMsgType(), OnDirective);
+        //server.RegisterHandler(PlayerSetPositionRotationAndTilesMessage.GetCustomMsgType(), OnPlayerSetPositionRotationAndTiles);
+        server.RegisterHandler(ReturnToDivergencePointRequestMessage.GetCustomMsgType(), OnReturnToDivergencePointRequest);
 
         server.Listen(serverPort);
     }
@@ -80,60 +81,61 @@ public class MessageServer : MonoBehaviour
     {
         clientConnection = netMsg.conn;
 
-        directive.valueChangedEvent += SendDirective;
+        action.valueChangedEvent += SendAction;
+        algorithmRespect.valueChangedEvent += SendAlgorithmRespect;
         playerReachedTheEnd.action += SendEndReached;
-        playerPositionRotationAndTiles.valueChangedEvent += SendPlayerPositionRotationAndTiles;
-        returnToDivergencePointRequest.action += SendReturnToDivergencePointRequest;
+        playerPosition.valueChangedEvent += SendPlayerPosition;
+        playerRotation.valueChangedEvent += SendPlayerRotation;
+        playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
+        returnToDivergencePointAnswer.valueChangedEvent += SendReturnToDivergencePointAnswer;
 
-        gameState.Value = GameState.ReadyTutorial;//Might need to be changed when doing reconnection
+        gameState.Value = GameState.ReadyTutorial;
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
         clientConnection = null;
-
-        directive.valueChangedEvent -= SendDirective;
-        playerReachedTheEnd.action -= SendEndReached;
-        playerPositionRotationAndTiles.valueChangedEvent -= SendPlayerPositionRotationAndTiles;
-        returnToDivergencePointRequest.action -= SendReturnToDivergencePointRequest;
-
         StopServer();//Might be changed when need reconnection?
+
+        action.valueChangedEvent -= SendAction;
+        algorithmRespect.valueChangedEvent -= SendAlgorithmRespect;
+        playerReachedTheEnd.action -= SendEndReached;
+        playerPosition.valueChangedEvent -= SendPlayerPosition;
+        playerRotation.valueChangedEvent -= SendPlayerRotation;
+        playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
+        returnToDivergencePointAnswer.valueChangedEvent -= SendReturnToDivergencePointAnswer;
     }
 
-    void OnAction(NetworkMessage netMsg)
+    void OnDirective(NetworkMessage netMsg)
     {
-        ActionMessage msg = netMsg.ReadMessage<ActionMessage>();
-        action.Value = msg.action;
+        DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
+        directive.Value = msg.directive;
     }
 
-    void OnPlayerPosition(NetworkMessage netMsg)
+    /*
+    void OnPlayerSetPositionRotationAndTiles(NetworkMessage netMsg)
     {
-        PlayerPositionMessage msg = netMsg.ReadMessage<PlayerPositionMessage>();
-        playerPosition.Value = msg.position;
+        PlayerSetPositionRotationAndTilesMessage msg = netMsg.ReadMessage<PlayerSetPositionRotationAndTilesMessage>();
+        playerPositionRotationAndTiles.SetPositionRotationAndTiles(msg.position, msg.rotation, msg.tiles);
+    }*/
+
+    void OnReturnToDivergencePointRequest(NetworkMessage netMsg)
+    {
+        returnToDivergencePointRequest.FireAction();
     }
 
-    void OnPlayerRotation(NetworkMessage netMsg)
+    void SendAction()
     {
-        PlayerRotationMessage msg = netMsg.ReadMessage<PlayerRotationMessage>();
-        playerRotation.Value = msg.rotation;
+        ActionMessage msg = new ActionMessage();
+        msg.action = action.Value;
+
+        clientConnection.Send(msg.GetMsgType(), msg);
     }
 
-    void OnPlayerPaintTile(NetworkMessage netMsg)
+    void SendAlgorithmRespect()
     {
-        PlayerPaintTileMessage msg = netMsg.ReadMessage<PlayerPaintTileMessage>();
-        playerPaintTile.SetTile(msg.tilePositionX, msg.tilePositionY, msg.tileColor);
-    }
-
-    void OnReturnToDivergencePointAnswer(NetworkMessage netMsg)
-    {
-        ReturnToDivergencePointAnswerMessage msg = netMsg.ReadMessage<ReturnToDivergencePointAnswerMessage>();
-        returnToDivergencePointAnswer.Value = msg.answer;
-    }
-
-    void SendDirective()
-    {
-        DirectiveMessage msg = new DirectiveMessage();
-        msg.directive = directive.Value;
+        AlgorithmRespectMessage msg = new AlgorithmRespectMessage();
+        msg.algorithmRespect = algorithmRespect.Value;
 
         clientConnection.Send(msg.GetMsgType(), msg);
     }
@@ -145,22 +147,37 @@ public class MessageServer : MonoBehaviour
         clientConnection.Send(msg.GetMsgType(), msg);
     }
 
-    void SendPlayerPositionRotationAndTiles()
+    void SendPlayerPosition()
     {
-        PlayerSetPositionRotationAndTilesMessage msg = new PlayerSetPositionRotationAndTilesMessage();
-        msg.position = playerPositionRotationAndTiles.GetPosition();
-        msg.rotation = playerPositionRotationAndTiles.GetRotation();
-        msg.tiles = playerPositionRotationAndTiles.GetTiles();
+        PlayerPositionMessage msg = new PlayerPositionMessage();
+        msg.position = playerPosition.Value;
 
         clientConnection.Send(msg.GetMsgType(), msg);
     }
 
-    void SendReturnToDivergencePointRequest()
+    void SendPlayerRotation()
     {
-        ReturnToDivergencePointRequestMessage msg = new ReturnToDivergencePointRequestMessage();
+        PlayerRotationMessage msg = new PlayerRotationMessage();
+        msg.rotation = playerRotation.Value;
 
         clientConnection.Send(msg.GetMsgType(), msg);
     }
 
-   
+    void SendPlayerPaintTile()
+    {
+        PlayerPaintTileMessage msg = new PlayerPaintTileMessage();
+        msg.tilePositionX = playerPaintTile.TilePosition.x;
+        msg.tilePositionY = playerPaintTile.TilePosition.y;
+        msg.tileColor = playerPaintTile.TileColor;
+
+        clientConnection.Send(msg.GetMsgType(), msg);
+    }
+
+    void SendReturnToDivergencePointAnswer()
+    {
+        ReturnToDivergencePointAnswerMessage msg = new ReturnToDivergencePointAnswerMessage();
+        msg.answer = returnToDivergencePointAnswer.Value;
+
+        clientConnection.Send(msg.GetMsgType(), msg);
+    }
 }

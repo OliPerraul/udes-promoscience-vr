@@ -42,7 +42,10 @@ public class PairingComponent : NetworkBehaviour
             }
             else
             {
-                StartCoroutine(PairingDeviceCoroutine());
+                if (player.serverDeviceType == DeviceType.Headset)
+                {
+                    StartCoroutine(PairingDeviceCoroutine());
+                }
             }
         }
     }
@@ -66,22 +69,20 @@ public class PairingComponent : NetworkBehaviour
             yield return new WaitForSeconds(1);
         }
 
+        ScriptableTeam scriptableTeam = teamList.GetScriptableTeam();
+        int teamId = SQLiteUtilities.GetNextTeamID();
+
+        player.ServerTeamName = scriptableTeam.teamName;
+        player.ServerTeamColor = scriptableTeam.teamColor;
+        player.serverAlgorithm = (Algorithm)(scriptableTeam.teamId % 3) + 1;
+        player.serverTeamId = teamId;
+        otherPlayer.ServerTeamName = scriptableTeam.teamName;
+        otherPlayer.ServerTeamColor = scriptableTeam.teamColor;
+        otherPlayer.serverAlgorithm = player.serverAlgorithm;
+        otherPlayer.serverTeamId = teamId;
+
         player.TargetSetPairedIpAdress(player.connectionToClient, pairedIpAdress);
-
-        if(player.serverDeviceType == DeviceType.Tablet)
-        {
-            ScriptableTeam scriptableTeam = teamList.GetScriptableTeam();
-            int teamId = SQLiteUtilities.GetNextTeamID();
-
-            player.ServerTeamName = scriptableTeam.teamName;
-            player.ServerTeamColor = scriptableTeam.teamColor;
-            player.serverAlgorithm = (Algorithm) (scriptableTeam.teamId % 3) + 1;
-            player.serverTeamId = teamId;
-            otherPlayer.ServerTeamName = scriptableTeam.teamName;
-            otherPlayer.ServerTeamColor = scriptableTeam.teamColor;
-            otherPlayer.serverAlgorithm = player.serverAlgorithm;
-            otherPlayer.serverTeamId = teamId;
-        }
+        otherPlayer.TargetSetPairedIpAdress(otherPlayer.connectionToClient, player.connectionToClient.address);
     }
 #endif
 }

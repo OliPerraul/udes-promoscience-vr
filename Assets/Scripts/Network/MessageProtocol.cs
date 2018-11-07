@@ -13,6 +13,7 @@ public enum CustomMsgType : short
     PlayerSetPositionRotationAndTiles = 106,
     ReturnToDivergencePointRequest = 107,
     ReturnToDivergencePointAnswer = 108,
+    AlgorithmRespect = 109,
     PairingRequest = 110,
     PairingResult = 111
 }
@@ -170,6 +171,24 @@ public class ReturnToDivergencePointAnswerMessage : MessageBase
     }
 
     public bool answer;
+}
+
+public class AlgorithmRespectMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.AlgorithmRespect;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+
+
+    public float algorithmRespect;
 }
 
 public class PairingRequestMessage : MessageBase
