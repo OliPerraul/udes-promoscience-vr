@@ -87,7 +87,9 @@ public class AlgorithmRespect : MonoBehaviour
                 {
                     TileColor previousTileColor = labyrinth.GetTileColor(currentLabyrinthPosition);
 
-                    if (labyrinthPosition.x != algorithmSteps[playerSteps.Count].x || labyrinthPosition.y != algorithmSteps[playerSteps.Count].y || previousTileColor != algorithmSteps[playerSteps.Count - 1].color)
+                    if (labyrinthPosition.x != algorithmSteps[playerSteps.Count].x 
+                        || labyrinthPosition.y != algorithmSteps[playerSteps.Count].y 
+                        || ( previousTileColor != algorithmSteps[playerSteps.Count - 1].color))
                     {
                         isDiverging.Value = true;
                         errorCounter++;
@@ -109,7 +111,9 @@ public class AlgorithmRespect : MonoBehaviour
                             isDiverging.Value = false;
                             algorithmRespect.Value = 1.0f;
                         }
-                        else if(wrongColorTilesWhenDiverging.Count == 1 && wrongColorTilesWhenDiverging[0].x == labyrinthPosition.x && wrongColorTilesWhenDiverging[0].y == labyrinthPosition.y)
+                        else if(wrongColorTilesWhenDiverging.Count == 1 
+                            && wrongColorTilesWhenDiverging[0].x == labyrinthPosition.x 
+                            && wrongColorTilesWhenDiverging[0].y == labyrinthPosition.y)
                         {
                             wrongColorTilesWhenDiverging.RemoveAt(0);
                             isDiverging.Value = false;
@@ -167,10 +171,10 @@ public class AlgorithmRespect : MonoBehaviour
         {
             if (playerPaintTile.TilePosition != currentLabyrinthPosition)
             {
-                TileColor previousTileColor = labyrinth.GetTileColor(currentLabyrinthPosition);
+                TileColor currentTileColor = labyrinth.GetTileColor(currentLabyrinthPosition);
 
-                if (previousTileColor != algorithmSteps[playerSteps.Count - 1].color 
-                    || playerPaintTile.TilePosition.x != algorithmSteps[playerSteps.Count].x 
+                if (currentTileColor != algorithmSteps[playerSteps.Count - 1].color
+                    || playerPaintTile.TilePosition.x != algorithmSteps[playerSteps.Count].x
                     || playerPaintTile.TilePosition.y != algorithmSteps[playerSteps.Count].y)
                 {
                     isDiverging.Value = true;

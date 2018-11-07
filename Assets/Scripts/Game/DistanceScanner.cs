@@ -79,7 +79,7 @@ public class DistanceScanner : MonoBehaviour
                 if (hitWallPosition.x == currentPosition.x || hitWallPosition.y == currentPosition.y)
                 {
                     //Might need a check to see if it's the first wall in line for later when obstacles wont be big block without holes
-                    distance = (int)(hitWallPosition - currentPosition).magnitude;
+                    distance = (int)(hitWallPosition - currentPosition).magnitude - 1;
                     text = distance.ToString();
                 }
             }

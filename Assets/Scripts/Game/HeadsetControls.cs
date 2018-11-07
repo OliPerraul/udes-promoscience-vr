@@ -37,6 +37,7 @@ public class HeadsetControls : MonoBehaviour
     bool isChainingMovement = false;
     bool isMoving = false;
     bool isPrimaryTouchpadHold = false;
+    bool isPrimaryIndexTriggerHold = false;
     bool isTurningLeft = false;
     bool isTurningRight = false;
 
@@ -45,9 +46,12 @@ public class HeadsetControls : MonoBehaviour
 
     readonly float[] rotationByDirection = { 0, 90, 180, 270 };
 
+    float primaryIndexTriggerHoldTime = 0;
     float lerpValue = 0;
     float moveSpeed = 0;
     float turnSpeed = 0;
+
+    Vector2Int lastLabyrinthPosition;
 
     Vector3 fromPosition;
     Vector3 targetPosition;
@@ -67,13 +71,15 @@ public class HeadsetControls : MonoBehaviour
 
     void Update ()
     {
+
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
+        {
+            isPrimaryTouchpadHold = true;
+        }
+
         if (OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad))
         {
             isPrimaryTouchpadHold = false;
-        }
-        else if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
-        {
-            isPrimaryTouchpadHold = true;
         }
 
         if (controls.IsControlsEnabled)
@@ -166,11 +172,35 @@ public class HeadsetControls : MonoBehaviour
 
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
             {
-                int tileNextColorId = (((int)paintingColor.Value) % 3) + 1;
-                paintingColor.Value = (TileColor) tileNextColorId;
-                PaintCurrentPositionTile();
+                isPrimaryIndexTriggerHold = true;
+                primaryIndexTriggerHoldTime = 0;
             }
 
+            if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
+            {
+                if (paintingColor.Value == TileColor.Yellow)
+                {
+                    paintingColor.Value = TileColor.Red;
+                }
+                else
+                {
+                    paintingColor.Value = TileColor.Yellow;
+                    PaintCurrentPositionTile();
+                }
+
+                isPrimaryIndexTriggerHold = false;
+            }
+
+            if(isPrimaryIndexTriggerHold)
+            {
+                primaryIndexTriggerHoldTime += Time.deltaTime;
+
+                if (primaryIndexTriggerHoldTime >= 1)
+                {
+                    paintingColor.Value = TileColor.Grey;
+                    PaintCurrentPositionTile();
+                }
+            }
 
             if (isMoving)
             {
@@ -192,7 +222,11 @@ public class HeadsetControls : MonoBehaviour
                         lerpValue = lerpValue - 1;
 
                         RequestMovementInDirection(forwardDirection.Value);
-                        PaintCurrentPositionTile();
+
+                        if (paintingColor.Value != TileColor.Red)
+                        {
+                            PaintCurrentPositionTile();
+                        }
 
                         cameraTransform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                     }
@@ -202,7 +236,11 @@ public class HeadsetControls : MonoBehaviour
                         moveSpeed = 0;
                         lerpValue = 0;
                         isMoving = false;
-                        PaintCurrentPositionTile();
+
+                        if (paintingColor.Value != TileColor.Red)
+                        {
+                            PaintCurrentPositionTile();
+                        }
                     }
                 }
                 else
@@ -266,6 +304,19 @@ public class HeadsetControls : MonoBehaviour
                     cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
                 }
             }
+
+            Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+
+            if (labyrinthPosition != lastLabyrinthPosition)
+            {
+                if (paintingColor.Value == TileColor.Red)
+                {
+                    PaintTile(lastLabyrinthPosition, TileColor.Red);
+                }
+                
+                lastLabyrinthPosition = labyrinthPosition;
+            }
+           
         }
     }
 
@@ -392,6 +443,7 @@ public class HeadsetControls : MonoBehaviour
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
         forwardDirection.Value = labyrinth.GetStartDirection();
+        lastLabyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(0, 0);
 
         Quaternion rotation = new Quaternion(0, 0, 0, 0);
 
@@ -418,6 +470,7 @@ public class HeadsetControls : MonoBehaviour
         OnStopAllMovement();
 
         cameraTransform.position = playerPositionRotationAndTiles.GetPosition();
+        lastLabyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(playerPositionRotationAndTiles.GetPosition().x, playerPositionRotationAndTiles.GetPosition().z);
 
         cameraTransform.rotation = playerPositionRotationAndTiles.GetRotation();
 
