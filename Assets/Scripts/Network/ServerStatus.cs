@@ -13,7 +13,7 @@ public class ServerStatus : MonoBehaviour
     {
         gameRound++;
 
-        int[] data = labyrinthData.GetLabyrithDataWithId(gameRound);
+        int[] data = labyrinthData.GetLabyrithDataWithId(((gameRound - 1) % 3) + 1);
         int sizeX = labyrinthData.GetLabyrithXLenght();
         int sizeY = labyrinthData.GetLabyrithYLenght();
 

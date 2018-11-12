@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23850232929315198}
   m_Layer: 0
   m_Name: ptol_wall_short
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,7 +82,7 @@ Transform:
   m_GameObject: {fileID: 1250342107934316}
   m_LocalRotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5001, y: 0.5001, z: 0.5001}
+  m_LocalScale: {x: 0.5005, y: 0.5005, z: 0.5005}
   m_Children: []
   m_Father: {fileID: 4713560976480624}
   m_RootOrder: 1

@@ -10,9 +10,6 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
 
-    int id = -2;//negative id so that it is not mess up with id of those from the database
-    int sizeX = 11;
-    int sizeY = 11;
     void Start()
     {
         gameState.valueChangedEvent += OnGameStateChanged;
@@ -29,152 +26,156 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
 
     public void GenerateTutorialLabyrinthData()
     {
-        int[,] map = new int[sizeX, sizeY];
+        int id = -2;
+        int sizeX = 11;
+        int sizeY = 11;
 
-        //Row 0
-        map[0, 0] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[1, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[2, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
-        map[3, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[4, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
-        map[5, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[6, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
-        map[7, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[8, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
-        map[9, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[10, 0] = Constants.TILE_ROME_TOWER_WALL_ID;
+        int[] data = new int[sizeX * sizeY];
 
-        //Row 1
-        map[0, 1] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[1, 1] = Constants.TILE_ROME_START_ID;
-        map[2, 1] = Constants.TILE_ROME_FLOOR_ID;
-        map[3, 1] = Constants.TILE_ROME_FLOOR_ID;
-        map[4, 1] = Constants.TILE_ROME_FLOOR_ID;
-        map[5, 1] = Constants.TILE_ROME_FLOOR_ID;
-        map[6, 1] = Constants.TILE_ROME_FLOOR_ID;
-        map[7, 1] = Constants.TILE_ROME_FLOOR_ID;
-        map[8, 1] = Constants.TILE_ROME_FLOOR_ID;
-        map[9, 1] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 1] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        //Colum 0
+        data[(0 * sizeY) + 0] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(0 * sizeY) + 1] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(0 * sizeY) + 2] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        data[(0 * sizeY) + 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(0 * sizeY) + 4] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        data[(0 * sizeY) + 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(0 * sizeY) + 6] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        data[(0 * sizeY) + 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(0 * sizeY) + 8] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        data[(0 * sizeY) + 9] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(0 * sizeY) + 10] = Constants.TILE_ROME_TOWER_WALL_ID;
 
-        //Row 2
-        map[0, 2] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[1, 2] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[2, 2] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[3, 2] = Constants.TILE_ROME_FLOOR_ID;
-        map[4, 2] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[5, 2] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[6, 2] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[7, 2] = Constants.TILE_ROME_FLOOR_ID;
-        map[8, 2] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[9, 2] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 2] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        //Colum 1
+        data[(1 * sizeY) + 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(1 * sizeY) + 1] = Constants.TILE_ROME_START_ID;
+        data[(1 * sizeY) + 2] = Constants.TILE_ROME_FLOOR_ID;
+        data[(1 * sizeY) + 3] = Constants.TILE_ROME_FLOOR_ID;
+        data[(1 * sizeY) + 4] = Constants.TILE_ROME_FLOOR_ID;
+        data[(1 * sizeY) + 5] = Constants.TILE_ROME_FLOOR_ID;
+        data[(1 * sizeY) + 6] = Constants.TILE_ROME_FLOOR_ID;
+        data[(1 * sizeY) + 7] = Constants.TILE_ROME_FLOOR_ID;
+        data[(1 * sizeY) + 8] = Constants.TILE_ROME_FLOOR_ID;
+        data[(1 * sizeY) + 9] = Constants.TILE_ROME_FLOOR_ID;
+        data[(1 * sizeY) + 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
 
-        //Row 3
-        map[0, 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[1, 3] = Constants.TILE_ROME_FLOOR_ID;
-        map[2, 3] = Constants.TILE_ROME_FLOOR_ID;
-        map[3, 3] = Constants.TILE_ROME_FLOOR_ID;
-        map[4, 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[5, 3] = Constants.TILE_ROME_FLOOR_ID;
-        map[6, 3] = Constants.TILE_ROME_FLOOR_ID;
-        map[7, 3] = Constants.TILE_ROME_FLOOR_ID;
-        map[8, 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[9, 3] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        //Colum 2
+        data[(2 * sizeY) + 0] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(2 * sizeY) + 1] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(2 * sizeY) + 2] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(2 * sizeY) + 3] = Constants.TILE_ROME_FLOOR_ID;
+        data[(2 * sizeY) + 4] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(2 * sizeY) + 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(2 * sizeY) + 6] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(2 * sizeY) + 7] = Constants.TILE_ROME_FLOOR_ID;
+        data[(2 * sizeY) + 8] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(2 * sizeY) + 9] = Constants.TILE_ROME_FLOOR_ID;
+        data[(2 * sizeY) + 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
 
-        //Row 4
-        map[0, 4] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
-        map[1, 4] = Constants.TILE_ROME_FLOOR_ID;
-        map[2, 4] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[3, 4] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[4, 4] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[5, 4] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[6, 4] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[7, 4] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[8, 4] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[9, 4] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 4] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        //Colum 3
+        data[(3 * sizeY) + 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(3 * sizeY) + 1] = Constants.TILE_ROME_FLOOR_ID;
+        data[(3 * sizeY) + 2] = Constants.TILE_ROME_FLOOR_ID;
+        data[(3 * sizeY) + 3] = Constants.TILE_ROME_FLOOR_ID;
+        data[(3 * sizeY) + 4] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(3 * sizeY) + 5] = Constants.TILE_ROME_FLOOR_ID;
+        data[(3 * sizeY) + 6] = Constants.TILE_ROME_FLOOR_ID;
+        data[(3 * sizeY) + 7] = Constants.TILE_ROME_FLOOR_ID;
+        data[(3 * sizeY) + 8] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(3 * sizeY) + 9] = Constants.TILE_ROME_FLOOR_ID;
+        data[(3 * sizeY) + 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
 
-        //Row 5
-        map[0, 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[1, 5] = Constants.TILE_ROME_FLOOR_ID;
-        map[2, 5] = Constants.TILE_ROME_FLOOR_ID;
-        map[3, 5] = Constants.TILE_ROME_FLOOR_ID;
-        map[4, 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[5, 5] = Constants.TILE_ROME_END_ID;
-        map[6, 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[7, 5] = Constants.TILE_ROME_FLOOR_ID;
-        map[8, 5] = Constants.TILE_ROME_FLOOR_ID;
-        map[9, 5] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        //Colum 4
+        data[(4 * sizeY) + 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
+        data[(4 * sizeY) + 1] = Constants.TILE_ROME_FLOOR_ID;
+        data[(4 * sizeY) + 2] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(4 * sizeY) + 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(4 * sizeY) + 4] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(4 * sizeY) + 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(4 * sizeY) + 6] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(4 * sizeY) + 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(4 * sizeY) + 8] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(4 * sizeY) + 9] = Constants.TILE_ROME_FLOOR_ID;
+        data[(4 * sizeY) + 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
 
-        //Row 6
-        map[0, 6] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[1, 6] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[2, 6] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[3, 6] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[4, 6] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[5, 6] = Constants.TILE_ROME_FLOOR_ID;
-        map[6, 6] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[7, 6] = Constants.TILE_ROME_FLOOR_ID;
-        map[8, 6] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[9, 6] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 6] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        //Colum 5
+        data[(5 * sizeY) + 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(5 * sizeY) + 1] = Constants.TILE_ROME_FLOOR_ID;
+        data[(5 * sizeY) + 2] = Constants.TILE_ROME_FLOOR_ID;
+        data[(5 * sizeY) + 3] = Constants.TILE_ROME_FLOOR_ID;
+        data[(5 * sizeY) + 4] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(5 * sizeY) + 5] = Constants.TILE_ROME_END_ID;
+        data[(5 * sizeY) + 6] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(5 * sizeY) + 7] = Constants.TILE_ROME_FLOOR_ID;
+        data[(5 * sizeY) + 8] = Constants.TILE_ROME_FLOOR_ID;
+        data[(5 * sizeY) + 9] = Constants.TILE_ROME_FLOOR_ID;
+        data[(5 * sizeY) + 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
 
-        //Row 7
-        map[0, 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[1, 7] = Constants.TILE_ROME_FLOOR_ID;
-        map[2, 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[3, 7] = Constants.TILE_ROME_FLOOR_ID;
-        map[4, 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[5, 7] = Constants.TILE_ROME_FLOOR_ID;
-        map[6, 7] = Constants.TILE_ROME_FLOOR_ID;
-        map[7, 7] = Constants.TILE_ROME_FLOOR_ID;
-        map[8, 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[9, 7] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        //Colum 6
+        data[(6 * sizeY) + 0] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(6 * sizeY) + 1] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(6 * sizeY) + 2] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(6 * sizeY) + 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(6 * sizeY) + 4] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(6 * sizeY) + 5] = Constants.TILE_ROME_FLOOR_ID;
+        data[(6 * sizeY) + 6] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(6 * sizeY) + 7] = Constants.TILE_ROME_FLOOR_ID;
+        data[(6 * sizeY) + 8] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(6 * sizeY) + 9] = Constants.TILE_ROME_FLOOR_ID;
+        data[(6 * sizeY) + 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
 
-        //Row 8
-        map[0, 8] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
-        map[1, 8] = Constants.TILE_ROME_FLOOR_ID;
-        map[2, 8] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[3, 8] = Constants.TILE_ROME_FLOOR_ID;
-        map[4, 8] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[5, 8] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[6, 8] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
-        map[7, 8] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[8, 8] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[9, 8] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 8] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        //Colum 7
+        data[(7 * sizeY) + 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(7 * sizeY) + 1] = Constants.TILE_ROME_FLOOR_ID;
+        data[(7 * sizeY) + 2] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(7 * sizeY) + 3] = Constants.TILE_ROME_FLOOR_ID;
+        data[(7 * sizeY) + 4] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(7 * sizeY) + 5] = Constants.TILE_ROME_FLOOR_ID;
+        data[(7 * sizeY) + 6] = Constants.TILE_ROME_FLOOR_ID;
+        data[(7 * sizeY) + 7] = Constants.TILE_ROME_FLOOR_ID;
+        data[(7 * sizeY) + 8] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(7 * sizeY) + 9] = Constants.TILE_ROME_FLOOR_ID;
+        data[(7 * sizeY) + 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
 
-        //Row 9
-        map[0, 9] = Constants.TILE_ROME_VERTICAL_WALL_ID;
-        map[1, 9] = Constants.TILE_ROME_FLOOR_ID;
-        map[2, 9] = Constants.TILE_ROME_FLOOR_ID;
-        map[3, 9] = Constants.TILE_ROME_FLOOR_ID;
-        map[4, 9] = Constants.TILE_ROME_FLOOR_ID;
-        map[5, 9] = Constants.TILE_ROME_FLOOR_ID;
-        map[6, 9] = Constants.TILE_ROME_FLOOR_ID;
-        map[7, 9] = Constants.TILE_ROME_FLOOR_ID;
-        map[8, 9] = Constants.TILE_ROME_FLOOR_ID;
-        map[9, 9] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 9] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        //Colum 8
+        data[(8 * sizeY) + 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
+        data[(8 * sizeY) + 1] = Constants.TILE_ROME_FLOOR_ID;
+        data[(8 * sizeY) + 2] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(8 * sizeY) + 3] = Constants.TILE_ROME_FLOOR_ID;
+        data[(8 * sizeY) + 4] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(8 * sizeY) + 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(8 * sizeY) + 6] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        data[(8 * sizeY) + 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(8 * sizeY) + 8] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(8 * sizeY) + 9] = Constants.TILE_ROME_FLOOR_ID;
+        data[(8 * sizeY) + 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
 
-        //Row 10
-        map[0, 10] = Constants.TILE_ROME_TOWER_WALL_ID;
-        map[1, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[2, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
-        map[3, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[4, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
-        map[5, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[6, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
-        map[7, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[8, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
-        map[9, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[10, 10] = Constants.TILE_ROME_TOWER_WALL_ID;
+        //Colum 9
+        data[(9 * sizeY) + 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+        data[(9 * sizeY) + 1] = Constants.TILE_ROME_FLOOR_ID;
+        data[(9 * sizeY) + 2] = Constants.TILE_ROME_FLOOR_ID;
+        data[(9 * sizeY) + 3] = Constants.TILE_ROME_FLOOR_ID;
+        data[(9 * sizeY) + 4] = Constants.TILE_ROME_FLOOR_ID;
+        data[(9 * sizeY) + 5] = Constants.TILE_ROME_FLOOR_ID;
+        data[(9 * sizeY) + 6] = Constants.TILE_ROME_FLOOR_ID;
+        data[(9 * sizeY) + 7] = Constants.TILE_ROME_FLOOR_ID;
+        data[(9 * sizeY) + 8] = Constants.TILE_ROME_FLOOR_ID;
+        data[(9 * sizeY) + 9] = Constants.TILE_ROME_FLOOR_ID;
+        data[(9 * sizeY) + 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
 
-        labyrinthData.SetLabyrithData( map, id);
+        //Colum 10
+        data[(10 * sizeY) + 0] = Constants.TILE_ROME_TOWER_WALL_ID;
+        data[(10 * sizeY) + 1] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(10 * sizeY) + 2] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        data[(10 * sizeY) + 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(10 * sizeY) + 4] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        data[(10 * sizeY) + 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(10 * sizeY) + 6] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        data[(10 * sizeY) + 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(10 * sizeY) + 8] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
+        data[(10 * sizeY) + 9] = Constants.TILE_ROME_VERTICAL_WALL_ID;
+        data[(10 * sizeY) + 10] = Constants.TILE_ROME_TOWER_WALL_ID;
+
+        labyrinthData.SetLabyrithData(data, sizeX, sizeY, id);
     }
 	
 

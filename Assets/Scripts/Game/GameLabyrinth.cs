@@ -10,51 +10,10 @@ public class GameLabyrinth : MonoBehaviour
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
 
+    [SerializeField]
+    ScriptableRessources ressources;
+
     GameObject[,] labyrinthTiles;
-
-    //List of gameObjectPrefab could be load with a resource manager but for now....
-    [SerializeField]
-    GameObject startTilePrefab;
-    [SerializeField]
-    GameObject floorTilePrefab;
-    [SerializeField]
-    GameObject wallTilePrefab;
-    [SerializeField]
-    GameObject endTilePrefab;
-
-    [SerializeField]
-    GameObject romeStartTilePrefab;
-    [SerializeField]
-    GameObject romeFloorTilePrefab;
-    [SerializeField]
-    GameObject romeHorizontalWallTilePrefab;
-    [SerializeField]
-    GameObject romeHorizontalWallBTilePrefab;
-    [SerializeField]
-    GameObject romeVerticalWallTilePrefab;
-    [SerializeField]
-    GameObject romeVerticalWallBTilePrefab;
-    [SerializeField]
-    GameObject romeTowerWallTilePrefab;
-    [SerializeField]
-    GameObject romeEndTilePrefab;
-
-    [SerializeField]
-    GameObject ptolStartTilePrefab;
-    [SerializeField]
-    GameObject ptolFloorTilePrefab;
-    [SerializeField]
-    GameObject ptolHorizontalWallTilePrefab;
-    [SerializeField]
-    GameObject ptolHorizontalWallBTilePrefab;
-    [SerializeField]
-    GameObject ptolVerticalWallTilePrefab;
-    [SerializeField]
-    GameObject ptolVerticalWallBTilePrefab;
-    [SerializeField]
-    GameObject ptolTowerWallTilePrefab;
-    [SerializeField]
-    GameObject ptolEndTilePrefab;
 
     int[,] labyrinth;
 
@@ -131,86 +90,7 @@ public class GameLabyrinth : MonoBehaviour
         GameObject tile = null;
         Vector3 tilePosition = GetLabyrinthPositionInWorldPosition(x, y);
 
-        if(tileId == Constants.TILE_START_ID)
-        {
-            tile = (GameObject) Instantiate(startTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if(tileId == Constants.TILE_FLOOR_ID)
-        {
-            tile = (GameObject) Instantiate(floorTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_WALL_ID)
-        {
-            tile = (GameObject) Instantiate(wallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_END_ID)
-        {
-            tile = (GameObject) Instantiate(endTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_ROME_START_ID)
-        {
-            tile = (GameObject)Instantiate(romeStartTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_ROME_FLOOR_ID)
-        {
-            tile = (GameObject)Instantiate(romeFloorTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_ROME_HORIZONTAL_WALL_ID)
-        {
-            tile = (GameObject)Instantiate(romeHorizontalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_ROME_HORIZONTAL_WALL_B_ID)
-        {
-            tile = (GameObject)Instantiate(romeHorizontalWallBTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_ROME_VERTICAL_WALL_ID)
-        {
-            tile = (GameObject)Instantiate(romeVerticalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_ROME_VERTICAL_WALL_B_ID)
-        {
-            tile = (GameObject)Instantiate(romeVerticalWallBTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_ROME_TOWER_WALL_ID)
-        {
-            tile = (GameObject)Instantiate(romeTowerWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_ROME_END_ID)
-        {
-            tile = (GameObject)Instantiate(romeEndTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_PTOL_START_ID)
-        {
-            tile = (GameObject)Instantiate(ptolStartTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_PTOL_FLOOR_ID)
-        {
-            tile = (GameObject)Instantiate(ptolFloorTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_PTOL_HORIZONTAL_WALL_ID)
-        {
-            tile = (GameObject)Instantiate(ptolHorizontalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_PTOL_HORIZONTAL_WALL_B_ID)
-        {
-            tile = (GameObject)Instantiate(ptolHorizontalWallBTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_PTOL_VERTICAL_WALL_ID)
-        {
-            tile = (GameObject)Instantiate(ptolVerticalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_PTOL_VERTICAL_WALL_B_ID)
-        {
-            tile = (GameObject)Instantiate(ptolVerticalWallBTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_PTOL_TOWER_WALL_ID)
-        {
-            tile = (GameObject)Instantiate(ptolTowerWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
-        else if (tileId == Constants.TILE_PTOL_END_ID)
-        {
-            tile = (GameObject)Instantiate(ptolEndTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
-        }
+        tile = Instantiate(ressources.GetTilePrefabWithId(tileId), tilePosition, Quaternion.identity, gameObject.transform);
 
         return tile;
     }
