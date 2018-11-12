@@ -34,13 +34,13 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         //Row 0
         map[0, 0] = Constants.TILE_ROME_TOWER_WALL_ID;
         map[1, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[2, 0] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[2, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
         map[3, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[4, 0] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[4, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
         map[5, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[6, 0] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[6, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
         map[7, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[8, 0] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[8, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
         map[9, 0] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
         map[10, 0] = Constants.TILE_ROME_TOWER_WALL_ID;
 
@@ -68,7 +68,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         map[7, 2] = Constants.TILE_ROME_FLOOR_ID;
         map[8, 2] = Constants.TILE_ROME_TOWER_WALL_ID;
         map[9, 2] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 2] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[10, 2] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
 
         //Row 3
         map[0, 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
@@ -84,7 +84,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         map[10, 3] = Constants.TILE_ROME_VERTICAL_WALL_ID;
 
         //Row 4
-        map[0, 4] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[0, 4] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
         map[1, 4] = Constants.TILE_ROME_FLOOR_ID;
         map[2, 4] = Constants.TILE_ROME_TOWER_WALL_ID;
         map[3, 4] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
@@ -94,7 +94,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         map[7, 4] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
         map[8, 4] = Constants.TILE_ROME_TOWER_WALL_ID;
         map[9, 4] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 4] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[10, 4] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
 
         //Row 5
         map[0, 5] = Constants.TILE_ROME_VERTICAL_WALL_ID;
@@ -120,7 +120,7 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         map[7, 6] = Constants.TILE_ROME_FLOOR_ID;
         map[8, 6] = Constants.TILE_ROME_TOWER_WALL_ID;
         map[9, 6] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 6] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[10, 6] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
 
         //Row 7
         map[0, 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
@@ -136,17 +136,17 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         map[10, 7] = Constants.TILE_ROME_VERTICAL_WALL_ID;
 
         //Row 8
-        map[0, 8] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[0, 8] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
         map[1, 8] = Constants.TILE_ROME_FLOOR_ID;
         map[2, 8] = Constants.TILE_ROME_TOWER_WALL_ID;
         map[3, 8] = Constants.TILE_ROME_FLOOR_ID;
         map[4, 8] = Constants.TILE_ROME_TOWER_WALL_ID;
         map[5, 8] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[6, 8] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[6, 8] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
         map[7, 8] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
         map[8, 8] = Constants.TILE_ROME_TOWER_WALL_ID;
         map[9, 8] = Constants.TILE_ROME_FLOOR_ID;
-        map[10, 8] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[10, 8] = Constants.TILE_ROME_VERTICAL_WALL_B_ID;
 
         //Row 9
         map[0, 9] = Constants.TILE_ROME_VERTICAL_WALL_ID;
@@ -164,13 +164,13 @@ public class TutorialLabyrinthDataGenerator : MonoBehaviour
         //Row 10
         map[0, 10] = Constants.TILE_ROME_TOWER_WALL_ID;
         map[1, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[2, 10] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[2, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
         map[3, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[4, 10] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[4, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
         map[5, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[6, 10] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[6, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
         map[7, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
-        map[8, 10] = Constants.TILE_ROME_TOWER_WALL_ID;
+        map[8, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
         map[9, 10] = Constants.TILE_ROME_HORIZONTAL_WALL_ID;
         map[10, 10] = Constants.TILE_ROME_TOWER_WALL_ID;
 

@@ -29,11 +29,32 @@ public class GameLabyrinth : MonoBehaviour
     [SerializeField]
     GameObject romeHorizontalWallTilePrefab;
     [SerializeField]
+    GameObject romeHorizontalWallBTilePrefab;
+    [SerializeField]
     GameObject romeVerticalWallTilePrefab;
+    [SerializeField]
+    GameObject romeVerticalWallBTilePrefab;
     [SerializeField]
     GameObject romeTowerWallTilePrefab;
     [SerializeField]
     GameObject romeEndTilePrefab;
+
+    [SerializeField]
+    GameObject ptolStartTilePrefab;
+    [SerializeField]
+    GameObject ptolFloorTilePrefab;
+    [SerializeField]
+    GameObject ptolHorizontalWallTilePrefab;
+    [SerializeField]
+    GameObject ptolHorizontalWallBTilePrefab;
+    [SerializeField]
+    GameObject ptolVerticalWallTilePrefab;
+    [SerializeField]
+    GameObject ptolVerticalWallBTilePrefab;
+    [SerializeField]
+    GameObject ptolTowerWallTilePrefab;
+    [SerializeField]
+    GameObject ptolEndTilePrefab;
 
     int[,] labyrinth;
 
@@ -138,9 +159,17 @@ public class GameLabyrinth : MonoBehaviour
         {
             tile = (GameObject)Instantiate(romeHorizontalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
         }
+        else if (tileId == Constants.TILE_ROME_HORIZONTAL_WALL_B_ID)
+        {
+            tile = (GameObject)Instantiate(romeHorizontalWallBTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
         else if (tileId == Constants.TILE_ROME_VERTICAL_WALL_ID)
         {
             tile = (GameObject)Instantiate(romeVerticalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_ROME_VERTICAL_WALL_B_ID)
+        {
+            tile = (GameObject)Instantiate(romeVerticalWallBTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
         }
         else if (tileId == Constants.TILE_ROME_TOWER_WALL_ID)
         {
@@ -149,6 +178,38 @@ public class GameLabyrinth : MonoBehaviour
         else if (tileId == Constants.TILE_ROME_END_ID)
         {
             tile = (GameObject)Instantiate(romeEndTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_PTOL_START_ID)
+        {
+            tile = (GameObject)Instantiate(ptolStartTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_PTOL_FLOOR_ID)
+        {
+            tile = (GameObject)Instantiate(ptolFloorTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_PTOL_HORIZONTAL_WALL_ID)
+        {
+            tile = (GameObject)Instantiate(ptolHorizontalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_PTOL_HORIZONTAL_WALL_B_ID)
+        {
+            tile = (GameObject)Instantiate(ptolHorizontalWallBTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_PTOL_VERTICAL_WALL_ID)
+        {
+            tile = (GameObject)Instantiate(ptolVerticalWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_PTOL_VERTICAL_WALL_B_ID)
+        {
+            tile = (GameObject)Instantiate(ptolVerticalWallBTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_PTOL_TOWER_WALL_ID)
+        {
+            tile = (GameObject)Instantiate(ptolTowerWallTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
+        }
+        else if (tileId == Constants.TILE_PTOL_END_ID)
+        {
+            tile = (GameObject)Instantiate(ptolEndTilePrefab, tilePosition, Quaternion.identity, gameObject.transform);
         }
 
         return tile;
