@@ -15,7 +15,7 @@ public class MessageClient : MonoBehaviour
     ScriptableDirective directive;
 
     [SerializeField]
-    ScriptableGameState gameState;
+    ScriptableClientGameState gameState;
 
     [SerializeField]
     ScriptableBoolean isDiverging;
@@ -81,7 +81,7 @@ public class MessageClient : MonoBehaviour
         //playerPositionRotationAndTiles.valueChangedEvent += SendPlayerPositionRotationAndTiles;
         returnToDivergencePointRequest.action += SendReturnToDivergencePointRequest;
 
-        gameState.Value = GameState.ReadyTutorial;//Might need to be changed when doing reconnection
+        gameState.Value = ClientGameState.Ready;//Might need to be changed when doing reconnection
     }
 
     void OnDisconnect(NetworkMessage netMsg)

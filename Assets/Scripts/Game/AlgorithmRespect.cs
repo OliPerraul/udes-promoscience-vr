@@ -11,7 +11,7 @@ public class AlgorithmRespect : MonoBehaviour
     ScriptableFloat algorithmRespect;
 
     [SerializeField]
-    ScriptableGameState gameState;
+    ScriptableClientGameState gameState;
 
     [SerializeField]
     ScriptableBoolean isDiverging;
@@ -136,9 +136,9 @@ public class AlgorithmRespect : MonoBehaviour
 
     void OnGameStateChanged()
     {
-        if (gameState.Value == GameState.PlayingTutorial || gameState.Value == GameState.Playing)
+        if (gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.Playing)
         {
-            if(gameState.Value == GameState.PlayingTutorial)
+            if(gameState.Value == ClientGameState.PlayingTutorial)
             {
                 SetAlgorithmStepsWithId(Algorithm.Tutorial);
             }
@@ -151,7 +151,7 @@ public class AlgorithmRespect : MonoBehaviour
 
             isAlgorithmRespectActive = true;
         }
-        else if (gameState.Value == GameState.WaitingForNextRound)
+        else if (gameState.Value == ClientGameState.WaitingForNextRound)
         {
             isAlgorithmRespectActive = false;
         }

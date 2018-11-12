@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ScriptableGameState))]
-public class ScriptableGameStateEditor : Editor
+[CustomEditor(typeof(ScriptableClientGameState))]
+public class ScriptableClientGameStateEditor : Editor
 {
     public override void OnInspectorGUI()
     {
@@ -10,7 +10,7 @@ public class ScriptableGameStateEditor : Editor
 
         GUI.enabled = Application.isPlaying;
 
-        ScriptableGameState scriptableGameState = target as ScriptableGameState;
+        ScriptableClientGameState scriptableGameState = target as ScriptableClientGameState;
 
         if (GUILayout.Button("On Value Changed"))
         {

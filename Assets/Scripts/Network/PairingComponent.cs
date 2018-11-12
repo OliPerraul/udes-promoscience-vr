@@ -31,14 +31,14 @@ public class PairingComponent : NetworkBehaviour
 
     void StartPairingDevice()
     {
-        if (player.ServerPlayerGameState == GameState.Pairing)
+        if (player.ServerPlayerGameState == ClientGameState.Pairing)
         {
             pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.serverDeviceType);
 
             if(pairedId == null)
             {
-                player.ServerPlayerGameState = GameState.NoAssociatedPair;
-                player.TargetSetGameState(player.connectionToClient , GameState.NoAssociatedPair);
+                player.ServerPlayerGameState = ClientGameState.NoAssociatedPair;
+                player.TargetSetGameState(player.connectionToClient , ClientGameState.NoAssociatedPair);
             }
             else
             {

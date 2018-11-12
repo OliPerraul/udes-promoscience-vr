@@ -2,15 +2,15 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/GameState", order = 1)]
-public class ScriptableGameState : ScriptableObject
+[CreateAssetMenu(fileName = "Data", menuName = "Data/ClientGameState", order = 1)]
+public class ScriptableClientGameState : ScriptableObject
 {
     [SerializeField]
-    GameState value;
+    ClientGameState value;
 
     public Action valueChangedEvent;
 
-    public GameState Value
+    public ClientGameState Value
     {
         get
         {

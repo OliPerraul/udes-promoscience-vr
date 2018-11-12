@@ -12,7 +12,15 @@ public enum Algorithm : int
    Standard = 3
 }
 
-public enum GameState : int
+public enum ServerGameState : int
+{
+    Lobby = 0,
+    Tutorial = 1,
+    GameRound = 2,
+    Intermission = 3,
+}
+
+public enum ClientGameState : int
 {
     NotReady = 0,
     Pairing = 1,

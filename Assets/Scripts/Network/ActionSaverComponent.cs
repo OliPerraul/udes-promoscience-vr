@@ -26,7 +26,7 @@ public class ActionSaverComponent : NetworkBehaviour
 
     void SaveActionInDatabase()
     {
-        if (player.ServerPlayerGameState == GameState.Playing)
+        if (player.ServerPlayerGameState == ClientGameState.Playing)
         {
             int teamId = player.serverTeamId;
             string teamName = player.ServerTeamName;

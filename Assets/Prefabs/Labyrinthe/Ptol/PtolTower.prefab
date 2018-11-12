@@ -66,6 +66,7 @@ GameObject:
   - component: {fileID: 4620924658248626}
   - component: {fileID: 33161599221555806}
   - component: {fileID: 23406769240058056}
+  - component: {fileID: 64687635583319984}
   m_Layer: 0
   m_Name: ptol_wall_tower
   m_TagString: Wall
@@ -244,6 +245,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1726571000847652}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!64 &64687635583319984
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1567253830591286}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: d27f2c11690010244b1444819678bd15, type: 3}
 --- !u!65 &65586819207079082
 BoxCollider:
   m_ObjectHideFlags: 1

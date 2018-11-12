@@ -5,7 +5,7 @@ using UnityEngine;
 public class EndDirectionIndicator : MonoBehaviour
 {
     [SerializeField]
-    ScriptableGameState gameState;
+    ScriptableClientGameState gameState;
 
     [SerializeField]
     ScriptableControler controls;
@@ -34,7 +34,7 @@ public class EndDirectionIndicator : MonoBehaviour
 
     public void OnGameStateChanged()
     {
-        if (gameState.Value == GameState.PlayingTutorial || gameState.Value == GameState.Playing)
+        if (gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.Playing)
         {
             endPosition = labyrinth.GetLabyrithEndPositionInWorldPosition();
         }

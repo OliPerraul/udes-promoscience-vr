@@ -54,6 +54,7 @@ GameObject:
   - component: {fileID: 4968017589542522}
   - component: {fileID: 33074515935540258}
   - component: {fileID: 23451695370089288}
+  - component: {fileID: 64938058285734776}
   m_Layer: 0
   m_Name: ptol_wall_short
   m_TagString: Wall
@@ -186,6 +187,20 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1068692987160232}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!64 &64938058285734776
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1378743135796212}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 22695f2dd3b06ac40b06c507e5a6ab61, type: 3}
 --- !u!65 &65358548460510048
 BoxCollider:
   m_ObjectHideFlags: 1

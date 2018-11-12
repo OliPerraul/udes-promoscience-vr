@@ -78,31 +78,31 @@ public class UILobbyPlayer : MonoBehaviour
 
     void UpdateLobbyPlayerStatusText()
     {
-        if(PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.NotReady)
+        if(PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.NotReady)
         {
             statusText.text = "Not ready";
         }
-        else if(PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.Pairing)
+        else if(PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.Pairing)
         {
             statusText.text = "Pairing";
         }
-        else if(PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.NoAssociatedPair)
+        else if(PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.NoAssociatedPair)
         {
             statusText.text = "No associated pair";
         }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.Paired)
+        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.Paired)
         {
             statusText.text = "Paired";
         }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.Ready)
+        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.Ready)
         {
             statusText.text = "Ready";
         }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.PlayingTutorial)
+        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.PlayingTutorial)
         {
             statusText.text = "Playing tutorial";
         }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.Playing)
+        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.Playing)
         {
             string text = "Playing";
 
@@ -121,7 +121,7 @@ public class UILobbyPlayer : MonoBehaviour
 
             statusText.text = text;
         }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == GameState.WaitingForNextRound)
+        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.WaitingForNextRound)
         {
             statusText.text = "Waiting for next round";
         }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class AlgorithmDisplay : MonoBehaviour
 {
     [SerializeField]
-    ScriptableGameState gameState;
+    ScriptableClientGameState gameState;
 
     [SerializeField]
     RightHandAlgorithm rightHandAlgorithm;
@@ -37,7 +37,7 @@ public class AlgorithmDisplay : MonoBehaviour
 
     void OnGameStateChanged()
     {
-        if (gameState.Value == GameState.PlayingTutorial || gameState.Value == GameState.Playing)
+        if (gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.Playing)
         {
             GenerateVisualForAlgorithm(Algorithm.ShortestFlightDistance);
         }

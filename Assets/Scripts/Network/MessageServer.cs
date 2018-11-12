@@ -15,7 +15,7 @@ public class MessageServer : MonoBehaviour
     ScriptableDirective directive;
 
     [SerializeField]
-    ScriptableGameState gameState;
+    ScriptableClientGameState gameState;
 
     [SerializeField]
     ScriptableVector3 playerPosition;
@@ -89,7 +89,7 @@ public class MessageServer : MonoBehaviour
         playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
         returnToDivergencePointAnswer.valueChangedEvent += SendReturnToDivergencePointAnswer;
 
-        gameState.Value = GameState.ReadyTutorial;
+        gameState.Value = ClientGameState.Ready;
     }
 
     void OnDisconnect(NetworkMessage netMsg)

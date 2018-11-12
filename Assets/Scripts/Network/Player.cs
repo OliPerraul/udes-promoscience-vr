@@ -13,7 +13,7 @@ public class Player : NetworkBehaviour
 
     string serverTeamName = "";
     Color serverTeamColor = Color.white;
-    GameState serverPlayerGameState = 0;
+    ClientGameState serverPlayerGameState = 0;
     GameAction serverPlayerAction;
 
     public DeviceType serverDeviceType = DeviceType.NoType;
@@ -61,7 +61,7 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public GameState ServerPlayerGameState
+    public ClientGameState ServerPlayerGameState
     {
         get
         {
@@ -145,7 +145,7 @@ public class Player : NetworkBehaviour
     ScriptableDeviceType deviceType;
 
     [SerializeField]
-    ScriptableGameState gameState;
+    ScriptableClientGameState gameState;
 
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
@@ -181,7 +181,7 @@ public class Player : NetworkBehaviour
         CmdSetDeviceName(ServerDeviceName);
         CmdSetUniqueIdentifier(deviceUniqueIdentifier);
 
-        gameState.Value = GameState.Pairing;
+        gameState.Value = ClientGameState.Pairing;
     }
 
     [Client]
@@ -193,7 +193,7 @@ public class Player : NetworkBehaviour
     [Client]
     void SendCmdPlayerAction()
     {
-        if (gameState.Value == GameState.Playing)
+        if (gameState.Value == ClientGameState.Playing)
         {
             CmdSetPlayerAction(action.Value);
         }
@@ -222,7 +222,7 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSetPlayerGameState(GameState state)
+    public void CmdSetPlayerGameState(ClientGameState state)
     {
         ServerPlayerGameState = state;
     }
@@ -238,36 +238,31 @@ public class Player : NetworkBehaviour
     #region TargetRpc
 
     [TargetRpc]
-    public void TargetSetGameState(NetworkConnection target, GameState state)
+    public void TargetSetGameState(NetworkConnection target, ClientGameState state)
     {
-        ServerPlayerGameState = state;
+        gameState.Value = state;
     }
 
     [TargetRpc]
     public void TargetSetPairedIpAdress(NetworkConnection target, string ipAdress)
     {
         pairedIpAdress.Value = ipAdress;
-        gameState.Value = GameState.Paired;
+        gameState.Value = ClientGameState.Paired;
     }
 
     [TargetRpc]
-    public void TargetSetPlayerAlgorithm(NetworkConnection target, Algorithm algo)
-    {
-        algorithm.Value = algo;
-    }
-
-    [TargetRpc]
-    public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId)
+    public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
     {
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
+        algorithm.Value = algo;
 
-        if(algorithm.Value == Algorithm.Tutorial)
+        if (algorithm.Value == Algorithm.Tutorial)
         {
-            gameState.Value = GameState.ReadyTutorial;
+            gameState.Value = ClientGameState.TutorialLabyrinthReady;
         }
         else
         {
-            gameState.Value = GameState.LabyrithReady;
+            gameState.Value = ClientGameState.LabyrithReady;
         }
     }
     #endregion

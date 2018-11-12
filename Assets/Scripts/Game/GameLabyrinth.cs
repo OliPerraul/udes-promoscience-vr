@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameLabyrinth : MonoBehaviour
 {
     [SerializeField]
-    ScriptableGameState gameState;
+    ScriptableClientGameState gameState;
 
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
@@ -27,17 +27,17 @@ public class GameLabyrinth : MonoBehaviour
 
     public void OnGameStateChanged()
     {
-        if(gameState.Value == GameState.TutorialLabyrinthReady)
+        if(gameState.Value == ClientGameState.TutorialLabyrinthReady)
         {
             GenerateLabyrinthVisual();
-            gameState.Value = GameState.PlayingTutorial;
+            gameState.Value = ClientGameState.PlayingTutorial;
         }
-        else if(gameState.Value == GameState.LabyrithReady)
+        else if(gameState.Value == ClientGameState.LabyrithReady)
         {
             GenerateLabyrinthVisual();
-            gameState.Value = GameState.Playing;
+            gameState.Value = ClientGameState.Playing;
         }
-        else if(gameState.Value == GameState.WaitingForNextRound)
+        else if(gameState.Value == ClientGameState.WaitingForNextRound)
         {
             DestroyLabyrinth();
         }

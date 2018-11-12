@@ -8,7 +8,7 @@ public class GameRound : MonoBehaviour
     ScriptableControler controls;
 
     [SerializeField]
-    ScriptableGameState gameState;
+    ScriptableClientGameState gameState;
 
     [SerializeField]
     ScriptableAction playerReachedTheEnd;
@@ -34,7 +34,7 @@ public class GameRound : MonoBehaviour
 
     public void OnGameStateChanged()
     {
-        if (gameState.Value == GameState.Playing || gameState.Value == GameState.PlayingTutorial)
+        if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
         {
             if (controls != null)
             {
@@ -57,28 +57,36 @@ public class GameRound : MonoBehaviour
                 controls.IsControlsEnabled = true;
             }
         }
-    }
-
-    void OnPlayerReachedTheEnd()
-    {
-        controls.IsControlsEnabled = false;
-        controls.StopAllMovement();
-        controls.ResetPositionAndRotation();
-
-        labyrinthRoom.transform.position = new Vector3(0, 0, 0);
-
-        if (gameState.Value == GameState.PlayingTutorial)
+        else if (gameState.Value == ClientGameState.WaitingForNextRound)
         {
-            gameState.Value = GameState.TutorialLabyrinthReady;
-        }
-        else
-        {
+            controls.IsControlsEnabled = false;
+            controls.StopAllMovement();
+            controls.ResetPositionAndRotation();
+
+            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
+
             if (lobby != null)
             {
                 lobby.SetActive(true);
             }
+        }
+    }
 
-            gameState.Value = GameState.WaitingForNextRound;
+    void OnPlayerReachedTheEnd()
+    {
+        if (gameState.Value == ClientGameState.PlayingTutorial)
+        {
+            controls.IsControlsEnabled = false;
+            controls.StopAllMovement();
+            controls.ResetPositionAndRotation();
+
+            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
+
+            gameState.Value = ClientGameState.TutorialLabyrinthReady;
+        }
+        else
+        {
+            gameState.Value = ClientGameState.WaitingForNextRound;
         }
     }
 
