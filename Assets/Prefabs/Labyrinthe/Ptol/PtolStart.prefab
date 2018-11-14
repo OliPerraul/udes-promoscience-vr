@@ -11,24 +11,6 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1666638511150734}
   m_IsPrefabAsset: 1
---- !u!1 &1311166782801140
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4187299174826648}
-  - component: {fileID: 33456712909578124}
-  - component: {fileID: 23619522440097092}
-  - component: {fileID: 114727658483896968}
-  m_Layer: 0
-  m_Name: FloorPainting
-  m_TagString: Floor
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1666638511150734
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,6 +37,7 @@ GameObject:
   - component: {fileID: 33802379903205948}
   - component: {fileID: 23439491336300654}
   - component: {fileID: 65206163361232528}
+  - component: {fileID: 114210028018140990}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Floor
@@ -79,19 +62,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4187299174826648
-Transform:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1311166782801140}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0625, z: 0}
-  m_LocalScale: {x: 5, y: 0.125, z: 5}
-  m_Children: []
-  m_Father: {fileID: 4520261710100964}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4440398350599616
 Transform:
   m_ObjectHideFlags: 1
@@ -130,7 +100,6 @@ Transform:
   m_Children:
   - {fileID: 4440398350599616}
   - {fileID: 4518754949138384}
-  - {fileID: 4187299174826648}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -149,42 +118,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 1c77d4213dff77d47be42ce05b9a9256, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!23 &23619522440097092
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1311166782801140}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RenderingLayerMask: 4294967295
-  m_Materials:
-  - {fileID: 2100000, guid: 0bcda1d6d9c49b94b836685410be2c47, type: 2}
+  - {fileID: 2100000, guid: c9eb36e9ca0dafa4db4141214bf5b365, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -246,13 +180,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1985811696231292}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!33 &33456712909578124
-MeshFilter:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1311166782801140}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &33802379903205948
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -272,19 +199,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114727658483896968
+--- !u!114 &114210028018140990
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1311166782801140}
+  m_GameObject: {fileID: 1970180704875912}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e5b9f5a14fb043499da38275ba10043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 23619522440097092}
-  greyMaterial: {fileID: 2100000, guid: 30a19ffa8d063ed4bb180ae2e0bd5afa, type: 2}
-  yellowMaterial: {fileID: 2100000, guid: 0bcda1d6d9c49b94b836685410be2c47, type: 2}
-  redMaterial: {fileID: 2100000, guid: 001acaf6e745051479b2819975c03bc3, type: 2}
+  meshRenderer: {fileID: 0}
+  greyMaterial: {fileID: 2100000, guid: 1c77d4213dff77d47be42ce05b9a9256, type: 2}
+  yellowMaterial: {fileID: 2100000, guid: c9eb36e9ca0dafa4db4141214bf5b365, type: 2}
+  redMaterial: {fileID: 2100000, guid: e04393b474fa4604f9737d8db7fe6433, type: 2}
   floorColor: 2

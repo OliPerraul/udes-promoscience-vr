@@ -175,17 +175,7 @@ public class AlgorithmRespect : MonoBehaviour
                         {
                             wrongColorTilesWhenDiverging.RemoveAt(i);
 
-                            if (labyrinthPosition.x == playerSteps[playerSteps.Count - 1].x
-                                && labyrinthPosition.y == playerSteps[playerSteps.Count - 1].y
-                                && wrongColorTilesWhenDiverging.Count == 0)
-                            {
-                                isDiverging.Value = false;
-                                algorithmRespect.Value = 1.0f;
-                            }
-                            else
-                            {
-                                algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
-                            }
+                            algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
                         }
 
                         return;
@@ -254,6 +244,3 @@ public class AlgorithmRespect : MonoBehaviour
         }
     }
 }
-
-//la tablette et changer la gestion du boutton par rapport au taux du respect
-//Modifier pour que le respect de l'agorithme ferme la requete quand on ne diverge pas sur le casque mais que la tablette avait envoyer une requete

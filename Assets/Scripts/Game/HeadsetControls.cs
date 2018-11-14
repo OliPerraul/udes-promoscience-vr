@@ -184,7 +184,7 @@ public class HeadsetControls : MonoBehaviour
                 {
                     paintingColor.Value = TileColor.Red;
                 }
-                else
+                else if (primaryIndexTriggerHoldTime <= 1)
                 {
                     paintingColor.Value = TileColor.Yellow;
                     PaintCurrentPositionTile();
@@ -439,6 +439,8 @@ public class HeadsetControls : MonoBehaviour
         isChainingMovement = false;
         isPrimaryTouchpadHold = false;
         lerpValue = 0;
+        moveSpeed = 0;
+        turnSpeed = 0;
     }
 
     void OnResetPositionAndRotation()
@@ -473,8 +475,6 @@ public class HeadsetControls : MonoBehaviour
         OnStopAllMovement();
 
         cameraTransform.position = playerPositionRotationAndTiles.GetPosition();
-        lastLabyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(playerPositionRotationAndTiles.GetPosition().x, playerPositionRotationAndTiles.GetPosition().z);
-
         cameraTransform.rotation = playerPositionRotationAndTiles.GetRotation();
 
         SetForwardDirectionWithRotation(playerPositionRotationAndTiles.GetRotation());
@@ -485,6 +485,9 @@ public class HeadsetControls : MonoBehaviour
         {
             PaintTile(tiles[i].x, tiles[i].y, tiles[i].color);
         }
+
+        lastLabyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+        labyrinthPositionChanged.FireAction();
 
         paintingColor.Value = TileColor.Yellow;
 

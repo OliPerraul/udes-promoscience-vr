@@ -150,7 +150,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a1bedd9c99b887941909f2e85b02d617, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a1bedd9c99b887941909f2e85b02d617, type: 3}
       propertyPath: m_LocalScale.x
@@ -208,7 +208,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9a9e57a3e9c16e54cb0bbf80ab13513d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 9a9e57a3e9c16e54cb0bbf80ab13513d, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -394,7 +394,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d89225153fdd56944969829392187909, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: d89225153fdd56944969829392187909, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -458,7 +458,7 @@ Prefab:
       propertyPath: m_Name
       value: BritWall
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -511,7 +511,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a1bedd9c99b887941909f2e85b02d617, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a1bedd9c99b887941909f2e85b02d617, type: 3}
       propertyPath: m_LocalScale.x
@@ -562,6 +562,7 @@ MonoBehaviour:
   controls: {fileID: 0}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   playerReachedTheEnd: {fileID: 0}
+  isDiverging: {fileID: 0}
   labyrinth: {fileID: 1935275872}
   labyrinthRoom: {fileID: 0}
   lobby: {fileID: 0}
@@ -672,7 +673,7 @@ Prefab:
       propertyPath: m_Name
       value: KartTowerFoundation
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -725,7 +726,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 609011a16be310142ac4307a31273e31, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 609011a16be310142ac4307a31273e31, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -864,7 +865,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 4c73a86b249d7204699995e8db6542e1, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 4c73a86b249d7204699995e8db6542e1, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -973,7 +974,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: daafe22101b69cd47857bab0f6a682d9, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: daafe22101b69cd47857bab0f6a682d9, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1037,7 +1038,7 @@ Prefab:
       propertyPath: m_Name
       value: BritWall
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -1096,7 +1097,7 @@ Prefab:
       propertyPath: m_Name
       value: KartWall (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -1155,7 +1156,7 @@ Prefab:
       propertyPath: m_Name
       value: BritTower2
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -1208,7 +1209,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 212f6922d5a9cb447ad8678af646093a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 212f6922d5a9cb447ad8678af646093a, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1272,7 +1273,7 @@ Prefab:
       propertyPath: m_Name
       value: SeleWall
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -1430,7 +1431,7 @@ Prefab:
       propertyPath: m_Name
       value: KartWallScaffolding
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -1585,7 +1586,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c0cf3a22ead4d3e4186fc485c8e3f8a0, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: c0cf3a22ead4d3e4186fc485c8e3f8a0, type: 3}
       propertyPath: m_LocalScale.x
@@ -1643,7 +1644,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 015dcb21c6a7ac0498826a8969c5cd3c, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 015dcb21c6a7ac0498826a8969c5cd3c, type: 3}
       propertyPath: m_LocalScale.x
@@ -1752,7 +1753,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 2996d3cb3e834c54cbfefe0cfa14f9b5, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 2996d3cb3e834c54cbfefe0cfa14f9b5, type: 3}
       propertyPath: m_LocalScale.x
@@ -1867,7 +1868,7 @@ Prefab:
       propertyPath: m_Name
       value: KartTower2
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -1926,7 +1927,7 @@ Prefab:
       propertyPath: m_Name
       value: KarkTowerScaffolding
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -1985,7 +1986,7 @@ Prefab:
       propertyPath: m_Name
       value: KartWall (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -2044,7 +2045,7 @@ Prefab:
       propertyPath: m_Name
       value: KartWall
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -2097,7 +2098,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: d89225153fdd56944969829392187909, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: d89225153fdd56944969829392187909, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2212,7 +2213,7 @@ Prefab:
       propertyPath: m_Name
       value: KartTower
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -2265,7 +2266,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a1bedd9c99b887941909f2e85b02d617, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a1bedd9c99b887941909f2e85b02d617, type: 3}
       propertyPath: m_LocalScale.x
@@ -2355,7 +2356,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 51ec63a518a434048b1f2fee83f5c838, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 51ec63a518a434048b1f2fee83f5c838, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2413,7 +2414,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 32323244863c7cf49a1bbc0e399b9a6a, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 32323244863c7cf49a1bbc0e399b9a6a, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2471,7 +2472,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 324c1cac0db499742829983e23c7936b, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 324c1cac0db499742829983e23c7936b, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2559,7 +2560,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 1fc9cc1a87cb3d446a0af69e3f02fa9d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 1fc9cc1a87cb3d446a0af69e3f02fa9d, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2623,7 +2624,7 @@ Prefab:
       propertyPath: m_Name
       value: IberWall
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -2676,7 +2677,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 80c20c597ff5926498fd26a7f61fc473, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: 80c20c597ff5926498fd26a7f61fc473, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2892,7 +2893,7 @@ Prefab:
       propertyPath: m_Name
       value: HeleWall
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -2951,7 +2952,7 @@ Prefab:
       propertyPath: m_Name
       value: IberTower
       objectReference: {fileID: 0}
-    - target: {fileID: 4262383214339670, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+    - target: {fileID: 0}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}

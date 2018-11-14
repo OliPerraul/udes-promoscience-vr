@@ -14,6 +14,9 @@ public class GameRound : MonoBehaviour
     ScriptableAction playerReachedTheEnd;
 
     [SerializeField]
+    ScriptableBoolean isDiverging;
+
+    [SerializeField]
     GameLabyrinth labyrinth;
 
     [SerializeField]
@@ -69,6 +72,11 @@ public class GameRound : MonoBehaviour
             {
                 lobby.SetActive(true);
             }
+
+            if(isDiverging != null)
+            {
+                isDiverging.Value = false;
+            }
         }
     }
 
@@ -81,6 +89,11 @@ public class GameRound : MonoBehaviour
             controls.ResetPositionAndRotation();
 
             labyrinthRoom.transform.position = new Vector3(0, 0, 0);
+
+            if (isDiverging != null)
+            {
+                isDiverging.Value = false;
+            }
 
             gameState.Value = ClientGameState.TutorialLabyrinthReady;
         }
