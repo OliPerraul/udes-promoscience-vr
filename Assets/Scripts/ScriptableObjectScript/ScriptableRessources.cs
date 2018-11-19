@@ -10,14 +10,17 @@ public class ScriptableRessources : ScriptableObject
     [SerializeField]
     GameObject floorTilePrefab;
     [SerializeField]
-    GameObject wallTilePrefab;
-    [SerializeField]
     GameObject endTilePrefab;
+    [SerializeField]
+    GameObject wallTilePrefab;
+
 
     [SerializeField]
     GameObject romeStartTilePrefab;
     [SerializeField]
     GameObject romeFloorTilePrefab;
+    [SerializeField]
+    GameObject romeEndTilePrefab;
     [SerializeField]
     GameObject romeHorizontalWallTilePrefab;
     [SerializeField]
@@ -28,13 +31,14 @@ public class ScriptableRessources : ScriptableObject
     GameObject romeVerticalWallBTilePrefab;
     [SerializeField]
     GameObject romeTowerWallTilePrefab;
-    [SerializeField]
-    GameObject romeEndTilePrefab;
+
 
     [SerializeField]
     GameObject ptolStartTilePrefab;
     [SerializeField]
     GameObject ptolFloorTilePrefab;
+    [SerializeField]
+    GameObject ptolEndTilePrefab;
     [SerializeField]
     GameObject ptolHorizontalWallTilePrefab;
     [SerializeField]
@@ -45,8 +49,53 @@ public class ScriptableRessources : ScriptableObject
     GameObject ptolVerticalWallBTilePrefab;
     [SerializeField]
     GameObject ptolTowerWallTilePrefab;
+
+
     [SerializeField]
-    GameObject ptolEndTilePrefab;
+    GameObject britStartTilePrefab;
+    [SerializeField]
+    GameObject britFloorTilePrefab;
+    [SerializeField]
+    GameObject britEndTilePrefab;
+    [SerializeField]
+    GameObject britHorizontalWallTilePrefab;
+    [SerializeField]
+    GameObject britVerticalWallTilePrefab;
+    [SerializeField]
+    GameObject britTowerWallTilePrefab;
+    [SerializeField]
+    GameObject britTowerWall2TilePrefab;
+
+
+    [SerializeField]
+    GameObject kartStartTilePrefab;
+    [SerializeField]
+    GameObject kartFloorTilePrefab;
+    [SerializeField]
+    GameObject kartEndTilePrefab;
+    [SerializeField]
+    GameObject kartHorizontalWallTilePrefab;
+    [SerializeField]
+    GameObject kartHorizontalWallBTilePrefab;
+    [SerializeField]
+    GameObject kartVerticalWallTilePrefab;
+    [SerializeField]
+    GameObject kartVerticalWallBTilePrefab;
+    [SerializeField]
+    GameObject kartHorizontalWallScaffoldingTilePrefab;
+    [SerializeField]
+    GameObject kartHorizontalWallScaffoldingBTilePrefab;
+    [SerializeField]
+    GameObject kartVerticalWallScaffoldingTilePrefab;
+    [SerializeField]
+    GameObject kartVerticalWallScaffoldingBTilePrefab;
+    [SerializeField]
+    GameObject kartTowerWallTilePrefab;
+    [SerializeField]
+    GameObject kartTowerWall2TilePrefab;
+    [SerializeField]
+    GameObject kartTowerWallScaffoldingTilePrefab;
+
 
     public GameObject GetTilePrefabWithId(int tileId)
     {
@@ -61,6 +110,14 @@ public class ScriptableRessources : ScriptableObject
             else if (tileId == Constants.TILE_PTOL_START_ID)
             {
                 tile = ptolStartTilePrefab;
+            }
+            else if (tileId == Constants.TILE_BRIT_START_ID)
+            {
+                tile = britStartTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_START_ID)
+            {
+                tile = kartStartTilePrefab;
             }
             else
             {
@@ -77,6 +134,14 @@ public class ScriptableRessources : ScriptableObject
             {
                 tile = ptolFloorTilePrefab;
             }
+            else if (tileId == Constants.TILE_BRIT_FLOOR_ID)
+            {
+                tile = britFloorTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_FLOOR_ID)
+            {
+                tile = kartFloorTilePrefab;
+            }
             else
             {
                 tile = floorTilePrefab;
@@ -91,6 +156,14 @@ public class ScriptableRessources : ScriptableObject
             else if (tileId == Constants.TILE_PTOL_END_ID)
             {
                 tile = ptolEndTilePrefab;
+            }
+            else if (tileId == Constants.TILE_BRIT_END_ID)
+            {
+                tile = britEndTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_END_ID)
+            {
+                tile = kartEndTilePrefab;
             }
             else
             {
@@ -138,6 +211,66 @@ public class ScriptableRessources : ScriptableObject
             else if (tileId == Constants.TILE_PTOL_TOWER_WALL_ID)
             {
                 tile = ptolTowerWallTilePrefab;
+            }
+            else if (tileId == Constants.TILE_BRIT_HORIZONTAL_WALL_ID)
+            {
+                tile = britHorizontalWallTilePrefab;
+            }
+            else if (tileId == Constants.TILE_BRIT_VERTICAL_WALL_ID)
+            {
+                tile = britVerticalWallTilePrefab;
+            }
+            else if (tileId == Constants.TILE_BRIT_TOWER_WALL_ID)
+            {
+                tile = britTowerWallTilePrefab;
+            }
+            else if (tileId == Constants.TILE_BRIT_TOWER_WALL_2_ID)
+            {
+                tile = britTowerWall2TilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_HORIZONTAL_WALL_ID)
+            {
+                tile = kartHorizontalWallTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_HORIZONTAL_WALL_B_ID)
+            {
+                tile = kartHorizontalWallBTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_VERTICAL_WALL_ID)
+            {
+                tile = kartVerticalWallTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_VERTICAL_WALL_B_ID)
+            {
+                tile = kartVerticalWallBTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID)
+            {
+                tile = kartHorizontalWallScaffoldingTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_B_ID)
+            {
+                tile = kartHorizontalWallScaffoldingBTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_VERTICAL_WALL_SCAFFOLDING_ID)
+            {
+                tile = kartVerticalWallScaffoldingTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID)
+            {
+                tile = kartVerticalWallScaffoldingBTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_TOWER_WALL_ID)
+            {
+                tile = kartTowerWallTilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_TOWER_WALL_2_ID)
+            {
+                tile = kartTowerWall2TilePrefab;
+            }
+            else if (tileId == Constants.TILE_KART_TOWER_WALL_SCAFFOLDING_ID)
+            {
+                tile = kartTowerWallScaffoldingTilePrefab;
             }
             else
             {
