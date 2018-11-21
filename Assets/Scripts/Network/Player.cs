@@ -9,18 +9,54 @@ public class Player : NetworkBehaviour
     public string deviceUniqueIdentifier = "";
     string deviceName = "";
 
+    private void OnDestroy()
+    {
+        if (isServer)
+        {
+            PlayerList.instance.RemovePlayer(this);
+        }
+
+        if (isClient)
+        {
+            gameState.valueChangedEvent -= SendCmdPlayerGameState;
+
+            if (deviceType.Value == DeviceType.Headset)
+            {
+                action.valueChangedEvent -= SendCmdPlayerAction;
+            }
+            else if (deviceType.Value == DeviceType.Tablet)
+            {
+                playerInformation.playerInformationChangedEvent -= SendCmdPlayerInformation;
+            }
+        }
+    }
+
     #region Server
 
-    string serverTeamName = "";
-    Color serverTeamColor = Color.white;
     ClientGameState serverPlayerGameState = 0;
     GameAction serverPlayerAction;
 
+    int serverCourseId;
+    int serverTeamId;
+    int serverTeamInformationId = -1;
+
     public DeviceType serverDeviceType = DeviceType.NoType;
     public Algorithm serverAlgorithm;
-    public int serverTeamId;
-    public int serverCourseId;
+
     public int serverLabyrinthId;
+
+    public int ServerCourseId
+    {
+        get
+        {
+            return serverCourseId;
+        }
+        set
+        {
+            serverCourseId = value;
+            OnTeamIdChanged();
+        }
+    }
 
     public string ServerDeviceName
     {
@@ -35,29 +71,29 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public string ServerTeamName
+    public int ServerTeamId
     {
         get
         {
-            return serverTeamName;
+            return serverTeamId;
         }
         set
         {
-            serverTeamName = value;
-            OnTeamNameChanged();
+            serverTeamId = value;
+            OnTeamIdChanged();
         }
     }
 
-    public Color ServerTeamColor
+    public int ServerTeamInformationId
     {
         get
         {
-            return serverTeamColor;
+            return serverTeamInformationId;
         }
         set
         {
-            serverTeamColor = value;
-            OnTeamColorChanged();
+            serverTeamInformationId = value;
+            OnTeamInformationIdChanged();
         }
     }
 
@@ -87,11 +123,20 @@ public class Player : NetworkBehaviour
         }
     }
 
+    public Action serverCourseIdChangedEvent;
     public Action serverDeviceNameChangedEvent;
-    public Action serverTeamNameChangedEvent;
-    public Action serverTeamColorChangedEvent;
+    public Action serverTeamIdChangedEvent;
+    public Action serverTeamInformationIdChangedEvent;
     public Action serverPlayerStatusChangedEvent;
     public Action serverPlayerActionChangedEvent;
+
+    void OnCourseIdChanged()
+    {
+        if (serverCourseIdChangedEvent != null)
+        {
+            serverCourseIdChangedEvent();
+        }
+    }
 
     void OnDeviceNameChanged()
     {
@@ -101,19 +146,19 @@ public class Player : NetworkBehaviour
         }
     }
 
-    void OnTeamNameChanged()
+    void OnTeamIdChanged()
     {
-        if (serverTeamNameChangedEvent != null)
+        if (serverTeamIdChangedEvent != null)
         {
-            serverTeamNameChangedEvent();
+            serverTeamIdChangedEvent();
         }
     }
 
-    void OnTeamColorChanged()
+    void OnTeamInformationIdChanged()
     {
-        if (serverTeamColorChangedEvent != null)
+        if (serverTeamInformationIdChangedEvent != null)
         {
-            serverTeamColorChangedEvent();
+            serverTeamInformationIdChangedEvent();
         }
     }
 
@@ -123,12 +168,6 @@ public class Player : NetworkBehaviour
         {
             serverPlayerStatusChangedEvent();
         }
-    }
-
-    [Server]
-    private void OnDestroy()
-    {
-        PlayerList.instance.RemovePlayer(this);
     }
 
     #endregion
@@ -153,6 +192,9 @@ public class Player : NetworkBehaviour
     [SerializeField]
     ScriptableString pairedIpAdress;
 
+    [SerializeField]
+    ScriptablePlayerInformation playerInformation;
+
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
@@ -171,6 +213,7 @@ public class Player : NetworkBehaviour
         if (deviceType.Value == DeviceType.Tablet)
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            playerInformation.playerInformationChangedEvent += SendCmdPlayerInformation;
         }
         else if(deviceType.Value == DeviceType.Headset)
         {
@@ -181,13 +224,7 @@ public class Player : NetworkBehaviour
         CmdSetDeviceName(ServerDeviceName);
         CmdSetUniqueIdentifier(deviceUniqueIdentifier);
 
-        gameState.Value = ClientGameState.Pairing;
-    }
-
-    [Client]
-    void SendCmdPlayerGameState()
-    {
-        CmdSetPlayerGameState(gameState.Value);
+        gameState.Value = ClientGameState.Connecting;
     }
 
     [Client]
@@ -197,6 +234,18 @@ public class Player : NetworkBehaviour
         {
             CmdSetPlayerAction(action.Value);
         }
+    }
+
+    [Client]
+    void SendCmdPlayerGameState()
+    {
+        CmdSetPlayerGameState(gameState.Value);
+    }
+
+    [Client]
+    void SendCmdPlayerInformation()
+    {
+        CmdSetPlayerInformation(playerInformation.PlayerTeamInformationId);
     }
 
     #endregion
@@ -222,15 +271,21 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
+    public void CmdSetPlayerAction(GameAction action)
+    {
+        ServerPlayerAction = action;
+    }
+
+    [Command]
     public void CmdSetPlayerGameState(ClientGameState state)
     {
         ServerPlayerGameState = state;
     }
 
     [Command]
-    public void CmdSetPlayerAction(GameAction action)
+    public void CmdSetPlayerInformation(int teamInformationId)
     {
-        ServerPlayerAction = action;
+        ServerTeamInformationId = teamInformationId;
     }
 
     #endregion
@@ -247,7 +302,11 @@ public class Player : NetworkBehaviour
     public void TargetSetPairedIpAdress(NetworkConnection target, string ipAdress)
     {
         pairedIpAdress.Value = ipAdress;
-        gameState.Value = ClientGameState.Paired;
+
+        if (gameState.Value == ClientGameState.Pairing)
+        {
+            gameState.Value = ClientGameState.Paired;
+        }
     }
 
     [TargetRpc]
@@ -264,6 +323,12 @@ public class Player : NetworkBehaviour
         {
             gameState.Value = ClientGameState.LabyrithReady;
         }
+    }
+
+    [TargetRpc]
+    public void TargetSetTeamInformation(NetworkConnection target, int teamInformationId)
+    {
+        playerInformation.SetPlayerInformation(teamInformationId);
     }
     #endregion
 

@@ -56,6 +56,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 114680929369619524}
   teamList: {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682, type: 2}
+  serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
+    type: 2}
+  serverPlayerInformation: {fileID: 11400000, guid: 3feeeb45d324b214994235177b056084,
+    type: 2}
 --- !u!114 &114373050470996920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -99,6 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a840bd24d947b24198e19e9298437e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  teamList: {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682, type: 2}
   player: {fileID: 114680929369619524}
 --- !u!114 &114680929369619524
 MonoBehaviour:
@@ -114,8 +119,6 @@ MonoBehaviour:
   deviceUniqueIdentifier: 
   serverDeviceType: 2
   serverAlgorithm: 0
-  serverTeamId: 0
-  serverCourseId: 0
   serverLabyrinthId: 0
   action: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
   algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
@@ -123,3 +126,4 @@ MonoBehaviour:
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
+  playerInformation: {fileID: 11400000, guid: 5eb020f2a1782f642befe1f47fbefb99, type: 2}

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 
 public class PlayerList : MonoBehaviour
@@ -40,16 +41,41 @@ public class PlayerList : MonoBehaviour
         Destroy(p);
     }
 
-    public Player GetPlayerWithId(int id)//Unsign int pour eviter problème
+    public int GetPlayerId(Player player)
+    {
+        for(int i = 0; i < list.Count; i++)
+        {
+            if(list[i] == player)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public Player GetPlayerWithId(int id)
     {
         if(id < 0 || id >= list.Count)
         {
-            //Exeption out of range
-            Debug.Log("GetPlayerwithId Out of range!");
+            Debug.Log("GetPlayerwithId : Out of range!");
             return null;
         }
 
         return list[id];
+    }
+
+    public Player GetPlayerWithConnection(NetworkConnection conn)
+    {
+        for(int i = 0; i < list.Count; i++)
+        {
+            if(list[i].connectionToClient == conn)
+            {
+                return list[i];
+            }
+        }
+
+        return null;
     }
 
     public int GetLastPlayerId()

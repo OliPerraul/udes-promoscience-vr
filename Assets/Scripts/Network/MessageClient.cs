@@ -18,7 +18,13 @@ public class MessageClient : MonoBehaviour
     ScriptableClientGameState gameState;
 
     [SerializeField]
+    ScriptableBoolean isConnectedToPair;
+
+    [SerializeField]
     ScriptableBoolean isDiverging;
+
+    [SerializeField]
+    ScriptablePlayerInformation playerInformation;
 
     [SerializeField]
     ScriptableVector3 playerPosition;
@@ -59,6 +65,7 @@ public class MessageClient : MonoBehaviour
         client.RegisterHandler(MsgType.Connect, OnConnect);
         client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
         client.RegisterHandler(ActionMessage.GetCustomMsgType(), OnAction);
+        client.RegisterHandler(PlayerInformationMessage.GetCustomMsgType(), OnPlayerInformation);
         client.RegisterHandler(PlayerPositionMessage.GetCustomMsgType(), OnPlayerPosition);
         client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
         client.RegisterHandler(PlayerPaintTileMessage.GetCustomMsgType(), OnPlayerPaintTile);
@@ -75,28 +82,46 @@ public class MessageClient : MonoBehaviour
         client = null;
     }
 
+    private void OnDestroy()
+    {
+        StopClient();
+    }
+
     void OnConnect(NetworkMessage netMsg)
     {
         directive.valueChangedEvent += SendDirective;
-        //playerPositionRotationAndTiles.valueChangedEvent += SendPlayerPositionRotationAndTiles;
         returnToDivergencePointRequest.action += SendReturnToDivergencePointRequest;
 
-        gameState.Value = ClientGameState.Ready;//Might need to be changed when doing reconnection
+        if (gameState.Value == ClientGameState.Paired)
+        {
+            gameState.Value = ClientGameState.Ready;
+        }
+
+        isConnectedToPair.Value = true;
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
-        StopClient();//Might be changed when need reconnection?
+        isConnectedToPair.Value = false;
 
         directive.valueChangedEvent -= SendDirective;
-        //playerPositionRotationAndTiles.valueChangedEvent -= SendPlayerPositionRotationAndTiles;
         returnToDivergencePointRequest.action -= SendReturnToDivergencePointRequest;
+
+        Debug.Log("message disconnected");
+
+        client.Connect(pairedIpAdress.Value, serverPort);
     }
 
     void OnAction(NetworkMessage netMsg)
     {
         ActionMessage msg = netMsg.ReadMessage<ActionMessage>();
         action.Value = msg.action;
+    }
+
+    void OnPlayerInformation(NetworkMessage netMsg)
+    {
+        PlayerInformationMessage msg = netMsg.ReadMessage<PlayerInformationMessage>();
+        playerInformation.SetPlayerInformation(msg.teamInformationId);
     }
 
     void OnPlayerPosition(NetworkMessage netMsg)

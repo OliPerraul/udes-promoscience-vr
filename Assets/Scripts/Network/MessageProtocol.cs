@@ -6,16 +6,17 @@ public enum CustomMsgType : short
 {
     Action = 100,
     Directive = 101,
-    PlayerPosition = 102,
-    PlayerRotation = 103,
-    PlayerPaintTile = 104,
-    PlayerReachedTheEnd = 105,
-    PlayerSetPositionRotationAndTiles = 106,
-    ReturnToDivergencePointRequest = 107,
-    ReturnToDivergencePointAnswer = 108,
-    AlgorithmRespect = 109,
-    PairingRequest = 110,
-    PairingResult = 111
+    PlayerInformation = 102,
+    PlayerPosition = 103,
+    PlayerRotation = 104,
+    PlayerPaintTile = 105,
+    PlayerReachedTheEnd = 106,
+    PlayerSetPositionRotationAndTiles = 107,
+    ReturnToDivergencePointRequest = 108,
+    ReturnToDivergencePointAnswer = 109,
+    AlgorithmRespect = 110,
+    PairingRequest = 111,
+    PairingResult = 112
 }
 
 public class ActionMessage : MessageBase
@@ -51,6 +52,24 @@ public class DirectiveMessage : MessageBase
     }
 
     public Directive directive;
+}
+
+public class PlayerInformationMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.PlayerInformation;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+
+    public int teamInformationId;
+
 }
 
 public class PlayerPositionMessage : MessageBase

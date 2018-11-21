@@ -6,6 +6,12 @@ using UnityEngine.Networking;
 public class ClientNetworkManager : NetworkManager
 {
     [SerializeField]
+    ScriptableControler controls;
+
+    [SerializeField]
+    ScriptableBoolean isConnectedToServer;
+
+    [SerializeField]
     ScriptableString serverIpAdress;
 
     int serverPort = 7777;
@@ -25,5 +31,20 @@ public class ClientNetworkManager : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
+        isConnectedToServer.Value = true;
+    }
+
+    public override void OnClientDisconnect(NetworkConnection conn)
+    {
+        base.OnClientDisconnect(conn);
+
+        isConnectedToServer.Value = false;
+
+        controls.IsControlsEnabled = false;//Should be moved to deconection/reconnection logic
+        Debug.Log("You lost connection with the server!!!");//Same
+
+        //StopClient();
+        StartClient();
+
     }
 }

@@ -18,6 +18,12 @@ public class MessageServer : MonoBehaviour
     ScriptableClientGameState gameState;
 
     [SerializeField]
+    ScriptableBoolean isConnectedToPair;
+
+    [SerializeField]
+    ScriptablePlayerInformation playerInformation;
+
+    [SerializeField]
     ScriptableVector3 playerPosition;
 
     [SerializeField]
@@ -61,20 +67,32 @@ public class MessageServer : MonoBehaviour
 
     void StartServer()
     {
-        server = new NetworkServerSimple();
-        server.RegisterHandler(MsgType.Connect, OnConnect);
-        server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        server.RegisterHandler(DirectiveMessage.GetCustomMsgType(), OnDirective);
-        //server.RegisterHandler(PlayerSetPositionRotationAndTilesMessage.GetCustomMsgType(), OnPlayerSetPositionRotationAndTiles);
-        server.RegisterHandler(ReturnToDivergencePointRequestMessage.GetCustomMsgType(), OnReturnToDivergencePointRequest);
+        if (server == null)
+        {
+            server = new NetworkServerSimple();
+            server.RegisterHandler(MsgType.Connect, OnConnect);
+            server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
+            server.RegisterHandler(DirectiveMessage.GetCustomMsgType(), OnDirective);
+            server.RegisterHandler(ReturnToDivergencePointRequestMessage.GetCustomMsgType(), OnReturnToDivergencePointRequest);
 
-        server.Listen(serverPort);
+            server.Listen(serverPort);
+
+            gameState.Value = ClientGameState.Ready;//Will need to be changed for start with steps?
+        }
     }
 
     void StopServer()
     {
-        server.Stop();
-        server = null;
+        if (server != null)
+        {
+            server.Stop();
+            server = null;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        StopServer();
     }
 
     void OnConnect(NetworkMessage netMsg)
@@ -89,13 +107,23 @@ public class MessageServer : MonoBehaviour
         playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
         returnToDivergencePointAnswer.valueChangedEvent += SendReturnToDivergencePointAnswer;
 
-        gameState.Value = ClientGameState.Ready;
+        if(playerInformation.IsInitialize)
+        {
+            SendPlayerInformation();
+        }
+        else
+        {
+            playerInformation.playerInformationChangedEvent += SendPlayerInformation;
+        }
+
+        isConnectedToPair.Value = true;
     }
 
     void OnDisconnect(NetworkMessage netMsg)
     {
+        isConnectedToPair.Value = false;
+
         clientConnection = null;
-        StopServer();//Might be changed when need reconnection?
 
         action.valueChangedEvent -= SendAction;
         algorithmRespect.valueChangedEvent -= SendAlgorithmRespect;
@@ -104,6 +132,8 @@ public class MessageServer : MonoBehaviour
         playerRotation.valueChangedEvent -= SendPlayerRotation;
         playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
         returnToDivergencePointAnswer.valueChangedEvent -= SendReturnToDivergencePointAnswer;
+
+        Debug.Log("message disconnected");
     }
 
     void OnDirective(NetworkMessage netMsg)
@@ -111,13 +141,6 @@ public class MessageServer : MonoBehaviour
         DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
         directive.Value = msg.directive;
     }
-
-    /*
-    void OnPlayerSetPositionRotationAndTiles(NetworkMessage netMsg)
-    {
-        PlayerSetPositionRotationAndTilesMessage msg = netMsg.ReadMessage<PlayerSetPositionRotationAndTilesMessage>();
-        playerPositionRotationAndTiles.SetPositionRotationAndTiles(msg.position, msg.rotation, msg.tiles);
-    }*/
 
     void OnReturnToDivergencePointRequest(NetworkMessage netMsg)
     {
@@ -143,6 +166,14 @@ public class MessageServer : MonoBehaviour
     void SendEndReached()
     {
         PlayerReachedTheEndMessage msg = new PlayerReachedTheEndMessage();
+
+        clientConnection.Send(msg.GetMsgType(), msg);
+    }
+
+    void SendPlayerInformation()
+    {
+        PlayerInformationMessage msg = new PlayerInformationMessage();
+        msg.teamInformationId = playerInformation.PlayerTeamInformationId;
 
         clientConnection.Send(msg.GetMsgType(), msg);
     }

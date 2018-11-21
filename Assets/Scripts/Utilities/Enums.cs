@@ -23,16 +23,20 @@ public enum ServerGameState : int
 public enum ClientGameState : int
 {
     NotReady = 0,
-    Pairing = 1,
-    NoAssociatedPair = 2,
-    Paired = 3,
-    Ready = 4,
-    ReadyTutorial = 5,
+    Connecting = 1,
+    Pairing = 2,
+    NoAssociatedPair = 3,
+    Paired = 4,
+    Ready = 5,
     LabyrithReady = 6,
     TutorialLabyrinthReady = 7,
     PlayingTutorial = 8,
     Playing = 9,
-    WaitingForNextRound = 10
+    WaitingForNextRound = 10,
+    Reconnecting = 11,
+    ReconnectingNoAssociatedPair = 12,
+    WaitingForPairConnection = 13,
+    GeneratingTutorialLabyrinthDataForTest = 14,
 }
 
 public enum GameAction : int

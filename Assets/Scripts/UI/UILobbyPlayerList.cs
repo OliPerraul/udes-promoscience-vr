@@ -5,35 +5,36 @@ using UnityEngine;
 public class UILobbyPlayerList : MonoBehaviour
 {
     [SerializeField]
-    List<GameObject> lobbyPlayers;
+    ScriptableServerPlayerInformation playerInfomation;
+
+    [SerializeField]
+    Stack<GameObject> lobbyPlayers;
 
     [SerializeField]
     GameObject lobbyPlayerPrefab;
 
-    // Use this for initialization
     void Start ()
     {
-        lobbyPlayers = new List<GameObject>();
-        PlayerList.instance.addPlayerEvent += AddLobbyPlayer;
-        PlayerList.instance.removePlayerEvent += RemoveLobbyPlayer;
+        lobbyPlayers = new Stack<GameObject>();
+        playerInfomation.addPlayerEvent += AddLobbyPlayer;
+        playerInfomation.removePlayerEvent += RemoveLobbyPlayer;
     }
 
     private void OnDestroy()
     {
-        PlayerList.instance.addPlayerEvent -= AddLobbyPlayer;
-        PlayerList.instance.removePlayerEvent -= RemoveLobbyPlayer;
+        playerInfomation.addPlayerEvent -= AddLobbyPlayer;
+        playerInfomation.removePlayerEvent -= RemoveLobbyPlayer;
     }
 
     void AddLobbyPlayer()
     {
         GameObject playerLobby = Instantiate(lobbyPlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity, gameObject.transform);
-        playerLobby.GetComponent<UILobbyPlayer>().SetPlayer(PlayerList.instance.GetLastPlayerId());
-        lobbyPlayers.Add(playerLobby);
+        playerLobby.GetComponent<UILobbyPlayer>().SetId(lobbyPlayers.Count);
+        lobbyPlayers.Push(playerLobby);
     }
 
-    void RemoveLobbyPlayer(int id)
+    void RemoveLobbyPlayer()
     {
-        Destroy(lobbyPlayers[id]);
-        lobbyPlayers.RemoveAt(id);
+        Destroy(lobbyPlayers.Pop());
     }
 }

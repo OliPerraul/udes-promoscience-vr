@@ -5,7 +5,7 @@ using UnityEngine;
 public class SetActiveOnScriptableServerGameState : MonoBehaviour
 {
     [SerializeField]
-    ScriptableServerGameState gameState;
+    ScriptableServerGameInformation serverGameInformation;
 
     [SerializeField]
     List<GameObject> gameObjectsToActivateOnTutorial = new List<GameObject>();
@@ -27,12 +27,12 @@ public class SetActiveOnScriptableServerGameState : MonoBehaviour
 
     void Start()
     {
-        gameState.valueChangedEvent += OnValueChanged;
+        serverGameInformation.gameStateChangedEvent += OnValueChanged;
     }
 
     void OnValueChanged()
     {
-        if(gameState.Value == ServerGameState.Tutorial)
+        if(serverGameInformation.GameState == ServerGameState.Tutorial)
         {
             foreach (GameObject gObject in gameObjectsToActivateOnTutorial)
             {
@@ -44,7 +44,7 @@ public class SetActiveOnScriptableServerGameState : MonoBehaviour
                 gObject.SetActive(false);
             }
         }
-        else if (gameState.Value == ServerGameState.GameRound)
+        else if (serverGameInformation.GameState == ServerGameState.GameRound)
         {
             foreach (GameObject gObject in gameObjectsToActivateOnGameRound)
             {
@@ -56,7 +56,7 @@ public class SetActiveOnScriptableServerGameState : MonoBehaviour
                 gObject.SetActive(false);
             }
         }
-        else if (gameState.Value == ServerGameState.Intermission)
+        else if (serverGameInformation.GameState == ServerGameState.Intermission)
         {
             foreach (GameObject gObject in gameObjectsToActivateOnIntermission)
             {

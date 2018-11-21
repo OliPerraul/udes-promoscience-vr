@@ -9,6 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40f6efd1854f10249858285136525aa5, type: 3}
-  m_Name: ServerGameState
+  m_Name: ServerGameInformation
   m_EditorClassIdentifier: 
-  value: 0
+  gameState: 0
+  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}

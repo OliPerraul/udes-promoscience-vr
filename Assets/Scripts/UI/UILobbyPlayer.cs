@@ -6,6 +6,12 @@ using UnityEngine.UI;
 public class UILobbyPlayer : MonoBehaviour
 {
     [SerializeField]
+    ScriptableServerPlayerInformation playersInformation;
+
+    [SerializeField]
+    ScriptableTeamList teamList;
+
+    [SerializeField]
     Image image;
 
     [SerializeField]
@@ -20,110 +26,142 @@ public class UILobbyPlayer : MonoBehaviour
     [SerializeField]
     Text statusText;
 
-    int mPlayerId;
+    PlayerInformation playerInformation;
+
+    int slotId;
 
     private void OnDestroy()
     {
-        if (PlayerList.instance.GetPlayerWithId(mPlayerId) != null)
+        if (playerInformation != null)
         {
-            PlayerList.instance.GetPlayerWithId(mPlayerId).serverDeviceNameChangedEvent -= UpdateLobbyPlayerName;
-            PlayerList.instance.GetPlayerWithId(mPlayerId).serverDeviceNameChangedEvent -= UpdateLobbyPlayerImage;
-            PlayerList.instance.GetPlayerWithId(mPlayerId).serverTeamNameChangedEvent -= UpdateLobbyPlayerTeamName;
-            PlayerList.instance.GetPlayerWithId(mPlayerId).serverTeamColorChangedEvent -= UpdateLobbyPlayerColor;
-            PlayerList.instance.GetPlayerWithId(mPlayerId).serverPlayerStatusChangedEvent -= UpdateLobbyPlayerStatusText;
+            playersInformation.orderChangedEvent -= ChangePlayerId;
         }
     }
 
-    public void SetPlayer(int id)
+    public void SetId(int id)
     {
-        mPlayerId = id;
+        slotId = id;
 
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverDeviceNameChangedEvent += UpdateLobbyPlayerName;
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverDeviceNameChangedEvent += UpdateLobbyPlayerImage;
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverTeamNameChangedEvent += UpdateLobbyPlayerTeamName;
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverTeamColorChangedEvent += UpdateLobbyPlayerColor;
-        PlayerList.instance.GetPlayerWithId(mPlayerId).serverPlayerStatusChangedEvent += UpdateLobbyPlayerStatusText;
+        playersInformation.orderChangedEvent += ChangePlayerId;
 
-        UpdateLobbyPlayerInformation();
+        ChangePlayerId();
     }
 
-    void UpdateLobbyPlayerInformation()
+    void ChangePlayerId()
     {
-        UpdateLobbyPlayerImage();
-        UpdateLobbyPlayerName();
-        UpdateLobbyPlayerTeamName();
-        UpdateLobbyPlayerColor();
+        if(playerInformation != null)
+        {
+            playerInformation.playerTeamIdChangedEvent -= UpdateLobbyPlayerTeam;
+            playerInformation.playerGameStateChangedEvent -= UpdateLobbyPlayerStatusText;
+        }
+
+        playerInformation = playersInformation.GetPlayerInformationWithId(slotId);
+
+        playerInformation.playerTeamIdChangedEvent += UpdateLobbyPlayerTeam;
+        playerInformation.playerGameStateChangedEvent += UpdateLobbyPlayerStatusText;
+
+        SetLobbyPlayerImage();
+        SetLobbyPlayerName();
+        UpdateLobbyPlayerTeam();
         UpdateLobbyPlayerStatusText();
     }
 
-    void UpdateLobbyPlayerImage()
+    void SetLobbyPlayerImage()
     {
         //Should change depending on the device type between a heaset or a tablet
     }
 
-    void UpdateLobbyPlayerName()
+    void SetLobbyPlayerName()
     {
-        nameText.text = PlayerList.instance.GetPlayerWithId(mPlayerId).ServerDeviceName;
+        nameText.text = PlayerList.instance.GetPlayerWithId(playerInformation.playerId).ServerDeviceName;
     }
 
-    void UpdateLobbyPlayerTeamName()
+    void UpdateLobbyPlayerTeam()
     {
-        teamNameText.text = PlayerList.instance.GetPlayerWithId(mPlayerId).ServerTeamName;
-    }
-
-    void UpdateLobbyPlayerColor()
-    {
-        color.color = PlayerList.instance.GetPlayerWithId(mPlayerId).ServerTeamColor;
+        if (playerInformation.playerTeamInformationId != -1)
+        {
+            ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.playerTeamInformationId);
+            teamNameText.text = team.TeamName;
+            color.color = team.TeamColor;
+        }
+        else
+        {
+            teamNameText.text = "";
+            color.color = Color.white;
+        }
     }
 
     void UpdateLobbyPlayerStatusText()
     {
-        if(PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.NotReady)
+        if (playerInformation.playerId == -1)
         {
-            statusText.text = "Not ready";
+            statusText.text = "Disconnected";
         }
-        else if(PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.Pairing)
+        else
         {
-            statusText.text = "Pairing";
-        }
-        else if(PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.NoAssociatedPair)
-        {
-            statusText.text = "No associated pair";
-        }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.Paired)
-        {
-            statusText.text = "Paired";
-        }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.Ready)
-        {
-            statusText.text = "Ready";
-        }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.PlayingTutorial)
-        {
-            statusText.text = "Playing tutorial";
-        }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.Playing)
-        {
-            string text = "Playing";
+            if (playerInformation.playerGameState == ClientGameState.Connecting)
+            {
+                statusText.text = "Connecting";
+            }
+            else if (playerInformation.playerGameState == ClientGameState.NotReady)
+            {
+                statusText.text = "Not ready";
+            }
+            else if (playerInformation.playerGameState == ClientGameState.Pairing)
+            {
+                statusText.text = "Pairing";
+            }
+            else if (playerInformation.playerGameState == ClientGameState.NoAssociatedPair || playerInformation.playerGameState == ClientGameState.ReconnectingNoAssociatedPair)
+            {
+                statusText.text = "No associated pair";
+            }
+            else if (playerInformation.playerGameState == ClientGameState.Paired)
+            {
+                statusText.text = "Paired";
+            }
+            else if (playerInformation.playerGameState == ClientGameState.Ready)
+            {
+                statusText.text = "Ready";
+            }
+            else if (playerInformation.playerGameState == ClientGameState.PlayingTutorial)
+            {
+                statusText.text = "Playing tutorial";
+            }
+            else if (playerInformation.playerGameState == ClientGameState.Playing)
+            {
+                string text = "Playing";
 
-            if(PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithm == Algorithm.ShortestFlightDistance)
-            {
-                text += " - Shortest Flight";
-            }
-            else if (PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithm == Algorithm.LongestStraight)
-            {
-                text += " - Longest Straight";
-            }
-            else if (PlayerList.instance.GetPlayerWithId(mPlayerId).serverAlgorithm == Algorithm.Standard)
-            {
-                text += " - Standard algorithm";
-            }
+                if (PlayerList.instance.GetPlayerWithId(slotId).serverAlgorithm == Algorithm.ShortestFlightDistance)
+                {
+                    text += " - Shortest Flight";
+                }
+                else if (PlayerList.instance.GetPlayerWithId(slotId).serverAlgorithm == Algorithm.LongestStraight)
+                {
+                    text += " - Longest Straight";
+                }
+                else if (PlayerList.instance.GetPlayerWithId(slotId).serverAlgorithm == Algorithm.Standard)
+                {
+                    text += " - Standard algorithm";
+                }
 
-            statusText.text = text;
-        }
-        else if (PlayerList.instance.GetPlayerWithId(mPlayerId).ServerPlayerGameState == ClientGameState.WaitingForNextRound)
-        {
-            statusText.text = "Waiting for next round";
+                statusText.text = text;
+            }
+            else if (playerInformation.playerGameState == ClientGameState.WaitingForNextRound)
+            {
+                statusText.text = "Waiting for next round";
+            }
+            else if (playerInformation.playerGameState == ClientGameState.Reconnecting)
+            {
+                statusText.text = "Reconnecting";
+            }
+            else if (playerInformation.playerGameState == ClientGameState.WaitingForPairConnection)
+            {
+                statusText.text = "Waiting for pair connection";
+            }
+            else
+            {
+                statusText.text = "Unknown Status";
+            }
         }
     }
 }

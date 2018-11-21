@@ -73,11 +73,11 @@ MonoBehaviour:
     type: 2}
   kartHorizontalWallTilePrefab: {fileID: 1503283505879990, guid: 075e334b272e91547bd73a50f8b3d66c,
     type: 2}
-  kartHorizontalWallBTilePrefab: {fileID: 1854886737373398, guid: e1dda7383f3c695408b14117c544363f,
+  kartHorizontalWallBTilePrefab: {fileID: 1525289004682826, guid: e1dda7383f3c695408b14117c544363f,
     type: 2}
-  kartVerticalWallTilePrefab: {fileID: 1301981579965226, guid: 720d6fe6b8a7c1840b050970724221a2,
+  kartVerticalWallTilePrefab: {fileID: 1211049068313638, guid: 5f26108985976884dbe7f6b2a9648afc,
     type: 2}
-  kartVerticalWallBTilePrefab: {fileID: 1156283786065266, guid: c2d4fb53ee8457c479b89a2ecc3f0735,
+  kartVerticalWallBTilePrefab: {fileID: 1956309484137566, guid: 53bded35c90138742bb97abc82f13290,
     type: 2}
   kartHorizontalWallScaffoldingTilePrefab: {fileID: 1944624705569068, guid: 74c3f1b7d52e0ba488a776f880c1c94a,
     type: 2}

@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 public class ActionSaverComponent : NetworkBehaviour
 {
     [SerializeField]
+    ScriptableTeamList teamList;
+
+    [SerializeField]
     Player player;
 
     void Start ()
@@ -28,10 +31,11 @@ public class ActionSaverComponent : NetworkBehaviour
     {
         if (player.ServerPlayerGameState == ClientGameState.Playing)
         {
-            int teamId = player.serverTeamId;
-            string teamName = player.ServerTeamName;
-            string teamColor = player.ServerTeamColor.ToString();
-            int courseId = player.serverCourseId;
+            int teamId = player.ServerTeamId;
+            ScriptableTeam team = teamList.GetScriptableTeamWithId(player.ServerTeamInformationId);
+            string teamName = team.TeamName;
+            string teamColor = team.TeamColor.ToString();
+            int courseId = player.ServerCourseId;
             int labyrithId = player.serverLabyrinthId;
             int algorithmId = (int) player.serverAlgorithm;
 

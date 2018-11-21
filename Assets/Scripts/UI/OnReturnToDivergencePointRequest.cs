@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class OnReturnToDivergencePointRequest : MonoBehaviour
 {
-
     [SerializeField]
     ScriptableControler controls;
 

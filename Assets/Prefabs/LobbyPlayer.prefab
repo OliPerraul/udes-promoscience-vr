@@ -184,6 +184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 581fa33a4de92a24f8244b6a3b566333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playersInformation: {fileID: 11400000, guid: 3feeeb45d324b214994235177b056084, type: 2}
+  teamList: {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682, type: 2}
   image: {fileID: 114918811949441476}
   nameText: {fileID: 114993567989397778}
   teamNameText: {fileID: 114127204284644362}
