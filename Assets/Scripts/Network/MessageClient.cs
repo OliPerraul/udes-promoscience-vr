@@ -6,9 +6,6 @@ using UnityEngine.Networking;
 public class MessageClient : MonoBehaviour
 {
     [SerializeField]
-    ScriptableGameAction action;
-
-    [SerializeField]
     ScriptableFloat algorithmRespect;
 
     [SerializeField]
@@ -61,20 +58,26 @@ public class MessageClient : MonoBehaviour
 
     void StartServer()
     {
-        client = new NetworkClient();
-        client.RegisterHandler(MsgType.Connect, OnConnect);
-        client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        client.RegisterHandler(ActionMessage.GetCustomMsgType(), OnAction);
-        client.RegisterHandler(PlayerInformationMessage.GetCustomMsgType(), OnPlayerInformation);
-        client.RegisterHandler(PlayerPositionMessage.GetCustomMsgType(), OnPlayerPosition);
-        client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
-        client.RegisterHandler(PlayerPaintTileMessage.GetCustomMsgType(), OnPlayerPaintTile);
-        client.RegisterHandler(PlayerReachedTheEndMessage.GetCustomMsgType(), OnPlayerReachedTheEnd);
-        client.RegisterHandler(PlayerTilesToPaintMessage.GetCustomMsgType(), OnPlayerTilesToPaint);
-        client.RegisterHandler(ReturnToDivergencePointAnswerMessage.GetCustomMsgType(), OnReturnToDivergencePointAnswer);
-        client.RegisterHandler(AlgorithmRespectMessage.GetCustomMsgType(), OnAlgorithmRespect);
+        if (client == null)
+        {
+            client = new NetworkClient();
+            client.RegisterHandler(MsgType.Connect, OnConnect);
+            client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
+            client.RegisterHandler(PlayerInformationMessage.GetCustomMsgType(), OnPlayerInformation);
+            client.RegisterHandler(PlayerPositionMessage.GetCustomMsgType(), OnPlayerPosition);
+            client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
+            client.RegisterHandler(PlayerPaintTileMessage.GetCustomMsgType(), OnPlayerPaintTile);
+            client.RegisterHandler(PlayerReachedTheEndMessage.GetCustomMsgType(), OnPlayerReachedTheEnd);
+            client.RegisterHandler(PlayerTilesToPaintMessage.GetCustomMsgType(), OnPlayerTilesToPaint);
+            client.RegisterHandler(ReturnToDivergencePointAnswerMessage.GetCustomMsgType(), OnReturnToDivergencePointAnswer);
+            client.RegisterHandler(AlgorithmRespectMessage.GetCustomMsgType(), OnAlgorithmRespect);
 
-        client.Connect(pairedIpAdress.Value, serverPort);
+            client.Connect(pairedIpAdress.Value, serverPort);
+        }
+        else
+        {
+            gameState.Value = ClientGameState.Ready;
+        }
     }
 
     void StopClient()
@@ -115,15 +118,7 @@ public class MessageClient : MonoBehaviour
         directive.valueChangedEvent -= SendDirective;
         returnToDivergencePointRequest.action -= SendReturnToDivergencePointRequest;
 
-        Debug.Log("message disconnected");//Temp
-
         client.Connect(pairedIpAdress.Value, serverPort);
-    }
-
-    void OnAction(NetworkMessage netMsg)
-    {
-        ActionMessage msg = netMsg.ReadMessage<ActionMessage>();
-        action.Value = msg.action;
     }
 
     void OnPlayerInformation(NetworkMessage netMsg)

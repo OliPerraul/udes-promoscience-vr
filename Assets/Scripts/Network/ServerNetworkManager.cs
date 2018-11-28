@@ -83,8 +83,10 @@ public class ServerNetworkManager : NetworkManager
     public void CloseServer()
     {
         StopServer();
-        serverPlayerInformation.ClearPlayerInformation();
+
         serverGameInformation.ClearGameInformation();
+        serverPlayerInformation.ClearPlayerInformation();
+
         Application.Quit();
     }
 }

@@ -76,21 +76,30 @@ public class ConnectionComponent : NetworkBehaviour
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                     int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
 #endif
-                    if (courseLabyrinthId == ((serverGameInformation.gameRound - 1) % 3) + 1)
+                    if (courseLabyrinthId == ((serverGameInformation.GameRound - 1) % 3) + 1)
                     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-                        Queue<int> playerSteps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
-#endif
-                        if(playerSteps.Count > 0)
+                        if(SQLiteUtilities.HasPlayerAlreadyCompletedTheRound(player.ServerCourseId))
                         {
-                            serverGameInformation.StartGameRoundWithSteps(player, playerSteps.ToArray());
                             player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                            player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
                         }
                         else
                         {
-                            player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                            player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
+                            Queue<int> playerSteps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
+
+                            if (playerSteps.Count > 0)
+                            {
+                                serverGameInformation.StartGameRoundWithSteps(player, playerSteps.ToArray());
+                                player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                            }
+                            else
+                            {
+                                player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                                player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
+                            }
                         }
+#endif
                     }
                     else
                     {

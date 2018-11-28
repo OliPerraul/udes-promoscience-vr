@@ -39,9 +39,7 @@ public class ActionSaverComponent : NetworkBehaviour
             int labyrithId = player.serverLabyrinthId;
             int algorithmId = (int) player.serverAlgorithm;
 
-            System.DateTime now =  System.DateTime.Now;
-
-            SQLiteUtilities.InsertPlayerAction(teamId, teamName, teamColor, courseId, labyrithId, algorithmId, (int) player.ServerPlayerAction, now.ToString("yyyy-MM-dd"), now.ToString("HH:mm:ss"));
+            SQLiteUtilities.InsertPlayerAction(teamId, teamName, teamColor, courseId, labyrithId, algorithmId, (int) player.ServerPlayerGameAction, player.ServerPlayerGameActionDateTimeString);
         }
     }
 #endif

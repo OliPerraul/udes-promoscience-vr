@@ -4,7 +4,6 @@ using UnityEngine.Networking;
 
 public enum CustomMsgType : short
 {
-    Action = 100,
     Directive = 101,
     PlayerInformation = 102,
     PlayerPosition = 103,
@@ -18,24 +17,6 @@ public enum CustomMsgType : short
     AlgorithmRespect = 110,
     PairingRequest = 111,
     PairingResult = 112
-}
-
-public class ActionMessage : MessageBase
-{
-    static CustomMsgType type = CustomMsgType.Action;
-
-    public static short GetCustomMsgType()
-    {
-        return (short) type;
-    }
-
-    public short GetMsgType()
-    {
-        return (short) type;
-    }
-
-
-    public GameAction action;
 }
 
 public class DirectiveMessage : MessageBase

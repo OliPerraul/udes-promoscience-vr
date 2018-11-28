@@ -14,7 +14,6 @@ public class ShortestFlightDistanceAlgorithm : MonoBehaviour
 
     Vector2Int position;
 
-    //Steps the two first value are the map position and the third value is the tile color value
     List<Tile> algorithmSteps;
 
     public List<Tile> GetAlgorithmSteps()

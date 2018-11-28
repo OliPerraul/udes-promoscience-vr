@@ -23,7 +23,7 @@ public class GameRound : MonoBehaviour
     GameObject labyrinthRoom;
 
     [SerializeField]
-    GameObject lobby;
+    GameObject waitingForNextRoundRoom;
 
     void Start()
     {
@@ -44,15 +44,15 @@ public class GameRound : MonoBehaviour
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
             }
-
+            
             if (labyrinthRoom != null)
             {
                 labyrinthRoom.GetComponent<Animation>().Play();
             }
 
-            if (lobby != null)
+            if (waitingForNextRoundRoom != null)
             {
-                lobby.SetActive(false);
+                waitingForNextRoundRoom.SetActive(false);
             }
 
             if (controls != null)
@@ -62,39 +62,31 @@ public class GameRound : MonoBehaviour
         }
         else if (gameState.Value == ClientGameState.WaitingForNextRound)
         {
-            controls.IsControlsEnabled = false;
-            controls.StopAllMovement();
-            controls.ResetPositionAndRotation();
-
-            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
-
-            if (lobby != null)
+            if (waitingForNextRoundRoom != null)
             {
-                lobby.SetActive(true);
-            }
-
-            if(isDiverging != null)
-            {
-                isDiverging.Value = false;
+                waitingForNextRoundRoom.SetActive(true);
             }
         }
     }
 
     void OnPlayerReachedTheEnd()
     {
+        controls.IsControlsEnabled = false;
+        controls.StopAllMovement();
+        controls.ResetPositionAndRotation();
+
+        if (isDiverging != null)
+        {
+            isDiverging.Value = false;
+        }
+
+        if (labyrinthRoom != null)
+        {
+            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
+        }
+
         if (gameState.Value == ClientGameState.PlayingTutorial)
         {
-            controls.IsControlsEnabled = false;
-            controls.StopAllMovement();
-            controls.ResetPositionAndRotation();
-
-            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
-
-            if (isDiverging != null)
-            {
-                isDiverging.Value = false;
-            }
-
             gameState.Value = ClientGameState.TutorialLabyrinthReady;
         }
         else

@@ -146,12 +146,19 @@ public class TabletControls : MonoBehaviour
 
     void OnPlayerTilesToPaint()
     {
-        Tile[] tiles = playerTilesToPaint.Value;
-
-        for (int i = 0; i < tiles.Length; i++)
+        if (playerTilesToPaint.Value != null)
         {
-            Tile tile = tiles[i];
-            PaintTile(new Vector2Int(tile.x, tile.y), tile.color);
+            Tile[] tiles = playerTilesToPaint.Value;
+
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                Tile tile = tiles[i];
+                PaintTile(new Vector2Int(tile.x, tile.y), tile.color);
+            }
+        }
+        else
+        {
+            Debug.Log(" playerTilesToPaint.Value == null !!");//temp
         }
     }
 

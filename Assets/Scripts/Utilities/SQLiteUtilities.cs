@@ -97,7 +97,7 @@ public static class SQLiteUtilities
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + EVENT + " ( " +
                                   EVENT_ID + " INTEGER PRIMARY KEY ASC, " +
                                   EVENT_TYPE + " INTEGER(10) NOT NULL, " +
-                                  EVENT_TIME + " DATETIME NOT NULL, " +
+                                  EVENT_TIME + " DEFAULT(STRFTIME('YYYY-MM-DD HH:MM:SS.SSS', 'NOW')), " +
                                   EVENT_COURSE_ID + " INTEGER(10) NOT NULL, " +
                                   "FOREIGN KEY(" + EVENT_COURSE_ID + ") REFERENCES " + COURSE + "(" + COURSE_ID + ") ); ";
                 cmd.ExecuteNonQuery();
@@ -519,7 +519,7 @@ public static class SQLiteUtilities
         }
     }
 
-    public static void InsertPlayerAction(int teamId, string teamName, string teamColor, int courseId, int labyrinthId, int algorithmId, int eventType, string date, string time)
+    public static void InsertPlayerAction(int teamId, string teamName, string teamColor, int courseId, int labyrinthId, int algorithmId, int eventType, string dateTime)
     {
         CreateDatabaseIfItDoesntExist();
 
@@ -545,7 +545,7 @@ public static class SQLiteUtilities
                         if (reader.GetInt32(0) == 0)
                         {
                             reader.Close();
-                            cmd.CommandText = "INSERT INTO " + TEAM + " (" + TEAM_ID + ", " + TEAM_NAME + ", " + TEAM_COLOR + ", " + TEAM_CREATION_DATE_TIME + ") VALUES ('" + teamId + "', '" + teamName + "', '" + teamColor + "', DATETIME('" + date + "', '" + time + "'));";
+                            cmd.CommandText = "INSERT INTO " + TEAM + " (" + TEAM_ID + ", " + TEAM_NAME + ", " + TEAM_COLOR + ", " + TEAM_CREATION_DATE_TIME + ") VALUES ('" + teamId + "', '" + teamName + "', '" + teamColor + "', '" + dateTime + "');";
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -572,7 +572,7 @@ public static class SQLiteUtilities
                     reader.Close();
                 }
 
-                cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  DATETIME('" + date + "', '" + time + "'), '" + courseId + "');";
+                cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  '" + dateTime + "', '" + courseId + "');";
                 cmd.ExecuteNonQuery();
             }
         }
@@ -591,7 +591,7 @@ public static class SQLiteUtilities
             {
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = "INSERT OR REPLACE INTO " + SERVER_GAME_INFORMATION + " (" + SERVER_GAME_INFORMATION_SAVE_SLOT_ID + ", " + SERVER_GAME_STATE_ID + ", " + SERVER_GAME_ROUND + ") VALUES ( '" + 1 + "', '" + serverGameInformation.GameState + "', '" + serverGameInformation.gameRound + "');";
+                cmd.CommandText = "INSERT OR REPLACE INTO " + SERVER_GAME_INFORMATION + " (" + SERVER_GAME_INFORMATION_SAVE_SLOT_ID + ", " + SERVER_GAME_STATE_ID + ", " + SERVER_GAME_ROUND + ") VALUES ( '" + 1 + "', '" + (int) serverGameInformation.GameState + "', '" + serverGameInformation.GameRound + "');";
                 cmd.ExecuteNonQuery();
             }
         }
@@ -618,7 +618,7 @@ public static class SQLiteUtilities
                     if (reader.Read())
                     {
                         serverGameInformation.GameState = (ServerGameState) int.Parse(reader[SERVER_GAME_STATE_ID].ToString());
-                        serverGameInformation.gameRound = int.Parse(reader[SERVER_GAME_ROUND].ToString());
+                        serverGameInformation.GameRound = int.Parse(reader[SERVER_GAME_ROUND].ToString());
                     }
 
                     reader.Close();
@@ -734,6 +734,44 @@ public static class SQLiteUtilities
         return labyrinthId;
     }
 
+    public static bool HasPlayerAlreadyCompletedTheRound(int courseId)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        bool hasPlayerAlreadyCompletedTheRound = false;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "SELECT Count(*) FROM " + EVENT
+                    + " WHERE " + EVENT_COURSE_ID + "=" + courseId
+                    + " AND " + EVENT_TYPE + "=" + (int) GameAction.CompletedRound;
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        if (reader.GetInt32(0) == 1)
+                        {
+                            hasPlayerAlreadyCompletedTheRound = true;
+                        }
+                    }
+
+                    reader.Close();
+                }
+            }
+        }
+
+        return hasPlayerAlreadyCompletedTheRound;
+    }
+
     public static Queue<int> GetPlayerStepsForCourse(int courseId)
     {
         CreateDatabaseIfItDoesntExist();
@@ -749,7 +787,7 @@ public static class SQLiteUtilities
             {
                 cmd.CommandType = CommandType.Text;
 
-                cmd.CommandText = "SELECT * FROM " + EVENT
+                cmd.CommandText = "SELECT " + EVENT_TYPE + ", " + EVENT_TIME + " FROM " + EVENT
                     + " WHERE " + EVENT_COURSE_ID + "=" + courseId
                     + " ORDER BY " + EVENT_TIME;
                 cmd.ExecuteNonQuery();
@@ -768,7 +806,6 @@ public static class SQLiteUtilities
 
         return playerSteps;
     }
-
 
     public static int GetNextTeamID()
     {

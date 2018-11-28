@@ -12,7 +12,6 @@ public class RightHandAlgorithm : MonoBehaviour
 
     public List<Tile> GetAlgorithmSteps()
     {
-        //Steps the two first value are the map position and the third value is the tile color value
         List<Tile> algorithmSteps = new List<Tile>();
 
         bool[,] alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];

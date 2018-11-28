@@ -1930,8 +1930,8 @@ MonoBehaviour:
     type: 2}
   isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
   labyrinth: {fileID: 1135340688}
-  labyrinthRoom: {fileID: 2015499311}
-  lobby: {fileID: 0}
+  labyrinthRoom: {fileID: 0}
+  waitingForNextRoundRoom: {fileID: 2015499311}
 --- !u!4 &1135340686
 Transform:
   m_ObjectHideFlags: 0
@@ -2782,10 +2782,10 @@ MonoBehaviour:
   directiveImage: {fileID: 533428278}
   cameraTransform: {fileID: 2118753609}
   forwardImage: {fileID: 21300000, guid: 304c761886f391b459a2ae7683e8f04f, type: 3}
+  stopImage: {fileID: 21300000, guid: defe3d207698b8f48b0052bacf25c984, type: 3}
   turnLeftImage: {fileID: 21300000, guid: 662ddcf614773024c9247c8cb81bb241, type: 3}
   turnRightImage: {fileID: 21300000, guid: 4be20fdf00db24045957efb262abe4ee, type: 3}
   uTurnImage: {fileID: 21300000, guid: 0c0967d625681ce4bb3d0a92b6dacc41, type: 3}
-  stopImage: {fileID: 21300000, guid: defe3d207698b8f48b0052bacf25c984, type: 3}
 --- !u!114 &1475679455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5470,7 +5470,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895839653b5b36b4f869b5edf3c3cd32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  action: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
   algorithmRespect: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
   directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}

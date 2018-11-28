@@ -5,16 +5,30 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Data", menuName = "Data/ServerGameState", order = 1)]
 public class ScriptableServerGameInformation : ScriptableObject
 {
-    ServerGameState gameState;
-
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
 
+    public Action gameRoundChangedEvent;
     public Action gameStateChangedEvent;
 
     const int tutorialLabyrinthId = 4;
 
-    public int gameRound = 0;
+    int gameRound = 0;
+
+    ServerGameState gameState;
+
+    public int GameRound
+    {
+        get
+        {
+            return gameRound;
+        }
+        set
+        {
+            gameRound = value;
+            OnGameRoundValueChanged();
+        }
+    }
 
     public ServerGameState GameState
     {
@@ -26,6 +40,14 @@ public class ScriptableServerGameInformation : ScriptableObject
         {
             gameState = value;
             OnGameStateValueChanged();
+        }
+    }
+
+    public void OnGameRoundValueChanged()
+    {
+        if (gameRoundChangedEvent != null)
+        {
+            gameRoundChangedEvent();
         }
     }
 
@@ -72,10 +94,10 @@ public class ScriptableServerGameInformation : ScriptableObject
 
     public void StartNextGameRound()
     {
-        gameRound++;
+        GameRound++;
         GameState = ServerGameState.GameRound;
 
-        int[] data = labyrinthData.GetLabyrithDataWithId(((gameRound - 1) % 3) + 1);
+        int[] data = labyrinthData.GetLabyrithDataWithId(((GameRound - 1) % 3) + 1);
         int sizeX = labyrinthData.GetLabyrithXLenght();
         int sizeY = labyrinthData.GetLabyrithYLenght();
 
@@ -85,45 +107,45 @@ public class ScriptableServerGameInformation : ScriptableObject
 
             if (player.ServerPlayerGameState == ClientGameState.Ready || player.ServerPlayerGameState == ClientGameState.PlayingTutorial || player.ServerPlayerGameState == ClientGameState.Playing || player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
             {
-                Algorithm algorithm = (Algorithm)((player.ServerTeamId + gameRound) % 3) + 1;
+                Algorithm algorithm = (Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
                 player.serverAlgorithm = algorithm;
-                player.serverLabyrinthId = gameRound;
+                player.serverLabyrinthId = GameRound;
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                 player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
 #endif
-                player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, gameRound, algorithm);
+                player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
             }
         }
     }
 
     public void StartGameRound(Player player)
     {
-        int[] data = labyrinthData.GetLabyrithDataWithId(((gameRound - 1) % 3) + 1);
+        int[] data = labyrinthData.GetLabyrithDataWithId(((GameRound - 1) % 3) + 1);
         int sizeX = labyrinthData.GetLabyrithXLenght();
         int sizeY = labyrinthData.GetLabyrithYLenght();
 
-        Algorithm algorithm = (Algorithm)((player.ServerTeamId + gameRound) % 3) + 1;
+        Algorithm algorithm = (Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
         player.serverAlgorithm = algorithm;
-        player.serverLabyrinthId = gameRound;
+        player.serverLabyrinthId = GameRound;
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
         player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
 #endif
-        player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, gameRound, algorithm);
+        player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
     }
 
     public void StartGameRoundWithSteps(Player player, int[] steps)
     {
-        int[] data = labyrinthData.GetLabyrithDataWithId(((gameRound - 1) % 3) + 1);
+        int[] data = labyrinthData.GetLabyrithDataWithId(((GameRound - 1) % 3) + 1);
         int sizeX = labyrinthData.GetLabyrithXLenght();
         int sizeY = labyrinthData.GetLabyrithYLenght();
 
-        Algorithm algorithm = (Algorithm)((player.ServerTeamId + gameRound) % 3) + 1;
+        Algorithm algorithm = (Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
         player.serverAlgorithm = algorithm;
-        player.serverLabyrinthId = gameRound;
+        player.serverLabyrinthId = GameRound;
 
-        player.TargetSetGameWithSteps(player.connectionToClient, steps, data, sizeX, sizeY, gameRound, algorithm);
+        player.TargetSetGameWithSteps(player.connectionToClient, steps, data, sizeX, sizeY, GameRound, algorithm);
     }
 
     public void EndRoundOrTutorial()

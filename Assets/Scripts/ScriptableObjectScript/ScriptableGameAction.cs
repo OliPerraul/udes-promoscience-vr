@@ -6,21 +6,43 @@ using UnityEngine;
 public class ScriptableGameAction : ScriptableObject
 {
     [SerializeField]
-    GameAction value;
+    GameAction action;
+
+    DateTime dateTime;
 
     public Action valueChangedEvent;
 
-    public GameAction Value
+    public GameAction Action
     {
         get
         {
-            return value;
+            return action;
         }
-        set
+    }
+
+    public String DateTimeString
+    {
+        get
         {
-            this.value = value;
-            OnValueChanged();
+            return dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
         }
+    }
+
+    public void SetAction(GameAction gameAction)
+    {
+        action = gameAction;
+
+        DateTime actionDateTime = DateTime.Now;
+
+        if (actionDateTime == dateTime)//Doesn't seems o be working, there is event that have the same milliseconds
+        {
+            Debug.Log("simultaneous actions");//temp
+            actionDateTime = actionDateTime.AddMilliseconds(1);//Used to avoid simultaneous actions
+        }
+
+        dateTime = actionDateTime;
+
+        OnValueChanged();
     }
 
     public void OnValueChanged()

@@ -22,7 +22,7 @@ public class Player : NetworkBehaviour
 
             if (deviceType.Value == DeviceType.Headset)
             {
-                action.valueChangedEvent -= SendCmdPlayerAction;
+                gameAction.valueChangedEvent -= SendCmdPlayerAction;
             }
             else if (deviceType.Value == DeviceType.Tablet)
             {
@@ -34,7 +34,8 @@ public class Player : NetworkBehaviour
     #region Server
 
     ClientGameState serverPlayerGameState = 0;
-    GameAction serverPlayerAction;
+    GameAction serverPlayerGameAction;
+    string serverPlayerGameActionDateTimeString;
 
     int serverCourseId = -1;
     int serverTeamId = -1;
@@ -110,17 +111,28 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public GameAction ServerPlayerAction
+    public GameAction ServerPlayerGameAction
     {
         get
         {
-            return serverPlayerAction;
+            return serverPlayerGameAction;
         }
-        set
+    }
+
+    public String ServerPlayerGameActionDateTimeString
+    {
+        get
         {
-            serverPlayerAction = value;
-            serverPlayerActionChangedEvent();
+            return serverPlayerGameActionDateTimeString;
         }
+    }
+
+    public void ServerSetPlayerGameAction(GameAction action, String dateTime)
+    {
+        serverPlayerGameAction = action;
+        serverPlayerGameActionDateTimeString = dateTime;
+
+        serverPlayerActionChangedEvent();
     }
 
     public Action serverCourseIdChangedEvent;
@@ -175,7 +187,7 @@ public class Player : NetworkBehaviour
     #region Client
 
     [SerializeField]
-    ScriptableGameAction action;
+    ScriptableGameAction gameAction;
 
     [SerializeField]
     ScriptableAlgorithm algorithm;
@@ -220,7 +232,7 @@ public class Player : NetworkBehaviour
         }
         else if(deviceType.Value == DeviceType.Headset)
         {
-            action.valueChangedEvent += SendCmdPlayerAction;
+            gameAction.valueChangedEvent += SendCmdPlayerAction;
         }
 
         CmdSetDeviceType(deviceType.Value);
@@ -235,7 +247,7 @@ public class Player : NetworkBehaviour
     {
         if (gameState.Value == ClientGameState.Playing)
         {
-            CmdSetPlayerAction(action.Value);
+            CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString);
         }
     }
 
@@ -274,9 +286,9 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSetPlayerAction(GameAction action)
+    public void CmdSetPlayerAction(GameAction action, String dateTime)
     {
-        ServerPlayerAction = action;
+        ServerSetPlayerGameAction(action, dateTime);
     }
 
     [Command]

@@ -120,7 +120,7 @@ MonoBehaviour:
   serverDeviceType: 2
   serverAlgorithm: 0
   serverLabyrinthId: 0
-  action: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
+  gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
   algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
   deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}

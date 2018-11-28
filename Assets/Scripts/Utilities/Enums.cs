@@ -50,11 +50,13 @@ public enum GameAction : int
     PaintFloorYellow = 6,
     PaintFloorRed = 7,
     UnpaintFloor = 8,
-    ReceivedDirectiveMoveForward = 9,
-    ReceivedDirectiveStop = 10,
-    ReceivedDirectiveTurnLeft = 11,
-    ReceivedDirectiveTurnRight = 12,
-    ReceivedDirectiveUturn = 13
+    ReturnToDivergencePoint = 9,
+    CompletedRound = 10,
+    ReceivedDirectiveMoveForward = 11,
+    ReceivedDirectiveStop = 12,
+    ReceivedDirectiveTurnLeft = 13,
+    ReceivedDirectiveTurnRight = 14,
+    ReceivedDirectiveUturn = 15
 }
 
 public enum DeviceType

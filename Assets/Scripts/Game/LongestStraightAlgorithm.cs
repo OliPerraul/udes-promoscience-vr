@@ -21,8 +21,8 @@ public class LongestStraightAlgorithm : MonoBehaviour
     Vector2Int position;
     Vector2Int endPosition;
 
-    //Steps the two first value are the map position and the third value is the tile color value
     List<Tile> algorithmSteps;
+
     //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
     List<Vector3Int> lastVisitedIntersection;
 

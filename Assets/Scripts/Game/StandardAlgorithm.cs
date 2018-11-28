@@ -14,12 +14,12 @@ public class StandardAlgorithm : MonoBehaviour
 
     Vector2Int position;
 
-    //Steps the two first value are the map position and the third value is the tile color value
     List<Tile> algorithmSteps;
 
     public List<Tile> GetAlgorithmSteps()
     {
         algorithmSteps = new List<Tile>();
+
         //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
         List<Vector3Int> lastVisitedIntersection = new List<Vector3Int>();
 

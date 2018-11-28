@@ -5,7 +5,7 @@ using UnityEngine;
 public class HeadsetControls : MonoBehaviour
 {
     [SerializeField]
-    ScriptableGameAction action;
+    ScriptableGameAction gameAction;
 
     [SerializeField]
     ScriptableControler controls;
@@ -130,7 +130,7 @@ public class HeadsetControls : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = fromRotation * trajectory;
                             forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
-                            action.Value = GameAction.TurnLeft;
+                            gameAction.SetAction(GameAction.TurnLeft);
                             lerpValue = 1 - lerpValue;
                             isTurningLeft = true;
                             isTurningRight = false;
@@ -163,7 +163,7 @@ public class HeadsetControls : MonoBehaviour
                             fromRotation = targetRotation;
                             targetRotation = fromRotation * trajectory;
                             forwardDirection.Value = (forwardDirection.Value + 1) % 4;
-                            action.Value = GameAction.TurnRight;
+                            gameAction.SetAction(GameAction.TurnRight);
                             lerpValue = 1 - lerpValue;
                             isTurningLeft = false;
                             isTurningRight = true;
@@ -191,7 +191,7 @@ public class HeadsetControls : MonoBehaviour
                 else if (primaryIndexTriggerHoldTime <= 1)
                 {
                     paintingColor.Value = TileColor.Yellow;
-                    PaintCurrentPositionTile();
+                    PaintCurrentPositionTile(true);
                 }
 
                 isPrimaryIndexTriggerHold = false;
@@ -201,10 +201,10 @@ public class HeadsetControls : MonoBehaviour
             {
                 primaryIndexTriggerHoldTime += Time.deltaTime;
 
-                if (primaryIndexTriggerHoldTime >= 1)
+                if (primaryIndexTriggerHoldTime >= 1 && paintingColor.Value != TileColor.Grey)
                 {
                     paintingColor.Value = TileColor.Grey;
-                    PaintCurrentPositionTile();
+                    PaintCurrentPositionTile(true);
                 }
             }
 
@@ -245,7 +245,7 @@ public class HeadsetControls : MonoBehaviour
 
                     if (paintingColor.Value != TileColor.Red)
                     {
-                        PaintCurrentPositionTile();
+                        PaintCurrentPositionTile(true);
                     }
                 }
                 else
@@ -280,7 +280,7 @@ public class HeadsetControls : MonoBehaviour
                             targetRotation = targetRotation * trajectory;
 
                             forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
-                            action.Value = GameAction.TurnLeft;
+                            gameAction.SetAction(GameAction.TurnLeft);
                         }
                         else if (isTurningRight)
                         {
@@ -290,7 +290,7 @@ public class HeadsetControls : MonoBehaviour
                             targetRotation = targetRotation * trajectory;
 
                             forwardDirection.Value = (forwardDirection.Value + 1) % 4;
-                            action.Value = GameAction.TurnRight;
+                            gameAction.SetAction(GameAction.TurnRight);
                         }
 
                         cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
@@ -316,7 +316,7 @@ public class HeadsetControls : MonoBehaviour
             {
                 if (paintingColor.Value == TileColor.Red)
                 {
-                    PaintTile(lastLabyrinthPosition, TileColor.Red);
+                    PaintTile(lastLabyrinthPosition, TileColor.Red, true);
                 }
                 
                 lastLabyrinthPosition = labyrinthPosition;
@@ -360,7 +360,7 @@ public class HeadsetControls : MonoBehaviour
 
         isTurningLeft = true;
         forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
-        action.Value = GameAction.TurnLeft;
+        gameAction.SetAction(GameAction.TurnLeft);
     }
 
     void CameraTurnRight()
@@ -372,7 +372,7 @@ public class HeadsetControls : MonoBehaviour
 
         isTurningRight = true;
         forwardDirection.Value = (forwardDirection.Value + 1) % 4;
-        action.Value = GameAction.TurnRight;
+        gameAction.SetAction(GameAction.TurnRight);
     }
 
     bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
@@ -385,7 +385,7 @@ public class HeadsetControls : MonoBehaviour
         return labyrinth.GetIsTileWalkable(labyrinthPosition);
     }
 
-    void PaintTile(Vector2Int position, TileColor color)
+    void PaintTile(Vector2Int position, TileColor color, bool saveAction)
     {
         TileColor tileColor = labyrinth.GetTileColor(position);
 
@@ -399,53 +399,56 @@ public class HeadsetControls : MonoBehaviour
                 floorPainter.PaintFloorWithColor(color);
                 playerPaintTile.SetTile(position, color, tileColor);
 
-                if(color == TileColor.Grey)
+                if (saveAction)
                 {
-                    action.Value = GameAction.UnpaintFloor;
-                }
-                else if(color == TileColor.Yellow)
-                {
-                    action.Value = GameAction.PaintFloorYellow;
-                }
-                else if (color == TileColor.Red)
-                {
-                    action.Value = GameAction.PaintFloorRed;
+                    if (color == TileColor.Grey)
+                    {
+                        gameAction.SetAction(GameAction.UnpaintFloor);
+                    }
+                    else if (color == TileColor.Yellow)
+                    {
+                        gameAction.SetAction(GameAction.PaintFloorYellow);
+                    }
+                    else if (color == TileColor.Red)
+                    {
+                        gameAction.SetAction(GameAction.PaintFloorRed);
+                    }
                 }
             }
         }
     }
 
-    void PaintTile(int positionX, int positionY, TileColor color)
+    void PaintTile(int positionX, int positionY, TileColor color, bool saveAction)
     {
         Vector2Int position = new Vector2Int(positionX, positionY);
 
-        PaintTile(position, color);
+        PaintTile(position, color, saveAction);
     }
 
-    void PaintCurrentPositionTile()
+    void PaintCurrentPositionTile(bool saveAction)
     {
         Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
 
-        PaintTile(position, paintingColor.Value);
+        PaintTile(position, paintingColor.Value, saveAction);
     }
 
     void MovementInDirectionAction(int direction)
     {
         if (direction == 0)
         {
-            action.Value = GameAction.MoveUp;
+            gameAction.SetAction(GameAction.MoveUp);
         }
         else if (direction == 1)
         {
-            action.Value = GameAction.MoveRight;
+            gameAction.SetAction(GameAction.MoveRight);
         }
         else if (direction == 2)
         {
-            action.Value = GameAction.MoveDown;
+            gameAction.SetAction(GameAction.MoveDown);
         }
         else if (direction == 3)
         {
-            action.Value = GameAction.MoveLeft;
+            gameAction.SetAction(GameAction.MoveLeft);
         }
     }
 
@@ -453,23 +456,23 @@ public class HeadsetControls : MonoBehaviour
     {
         if (directive.Value == Directive.MoveForward)
         {
-           action.Value = GameAction.ReceivedDirectiveMoveForward;
+            gameAction.SetAction(GameAction.ReceivedDirectiveMoveForward);
         }
         else if (directive.Value == Directive.Stop)
         {
-            action.Value = GameAction.ReceivedDirectiveStop;
+            gameAction.SetAction(GameAction.ReceivedDirectiveStop);
         }
         else if (directive.Value == Directive.TurnLeft)
         {
-            action.Value = GameAction.ReceivedDirectiveTurnLeft;
+            gameAction.SetAction(GameAction.ReceivedDirectiveTurnLeft);
         }
         else if (directive.Value == Directive.TurnRight)
         {
-            action.Value = GameAction.ReceivedDirectiveTurnRight;
+            gameAction.SetAction(GameAction.ReceivedDirectiveTurnRight);
         }
         else if (directive.Value == Directive.UTurn)
         {
-            action.Value = GameAction.ReceivedDirectiveUturn;
+            gameAction.SetAction(GameAction.ReceivedDirectiveUturn);
         }
     }
 
@@ -525,7 +528,7 @@ public class HeadsetControls : MonoBehaviour
 
         for (int i = 0; i < tiles.Length; i++)
         {
-            PaintTile(tiles[i].x, tiles[i].y, tiles[i].color);
+            PaintTile(tiles[i].x, tiles[i].y, tiles[i].color, false);
         }
 
         lastLabyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
@@ -533,7 +536,7 @@ public class HeadsetControls : MonoBehaviour
 
         paintingColor.Value = TileColor.Yellow;
 
-        PaintCurrentPositionTile();
+        PaintCurrentPositionTile(true);
     }
 
     void SetForwardDirectionWithRotation(Quaternion rotation)

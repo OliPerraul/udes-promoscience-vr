@@ -5,8 +5,9 @@ using UnityEngine.Networking;
 
 public class MessageServer : MonoBehaviour
 {
+    /*
     [SerializeField]
-    ScriptableGameAction action;
+    ScriptableGameAction action;*/
 
     [SerializeField]
     ScriptableFloat algorithmRespect;
@@ -98,7 +99,7 @@ public class MessageServer : MonoBehaviour
     {
         clientConnection = netMsg.conn;
 
-        action.valueChangedEvent += SendAction;
+        //action.valueChangedEvent += SendAction;
         algorithmRespect.valueChangedEvent += SendAlgorithmRespect;
         playerReachedTheEnd.action += SendEndReached;
         playerPosition.valueChangedEvent += SendPlayerPosition;
@@ -124,7 +125,7 @@ public class MessageServer : MonoBehaviour
 
         clientConnection = null;
 
-        action.valueChangedEvent -= SendAction;
+        //action.valueChangedEvent -= SendAction;
         algorithmRespect.valueChangedEvent -= SendAlgorithmRespect;
         playerReachedTheEnd.action -= SendEndReached;
         playerPosition.valueChangedEvent -= SendPlayerPosition;
@@ -158,14 +159,14 @@ public class MessageServer : MonoBehaviour
             SendPlayerTilesToPaint();
         }
     }
-
+    /*
     void SendAction()
     {
         ActionMessage msg = new ActionMessage();
         msg.action = action.Value;
 
         clientConnection.Send(msg.GetMsgType(), msg);
-    }
+    }*/
 
     void SendAlgorithmRespect()
     {
