@@ -9,6 +9,9 @@ public class ServerNetworkManager : NetworkManager
     public static ServerNetworkManager instance;
 
     [SerializeField]
+    ScriptableServerGameInformation serverGameInformation;
+
+    [SerializeField]
     ScriptableServerPlayerInformation serverPlayerInformation;
 
     Action<String> playerDisconnectfromServerEvent;
@@ -17,14 +20,13 @@ public class ServerNetworkManager : NetworkManager
 
     float timer = 0;
 
+    bool isServerStarted = false;
+
     void Start ()
     {
         if (instance == null)
         {
             instance = this;
-            serverPlayerInformation.LoadInformationFromDatabase();
-            playerDisconnectfromServerEvent += serverPlayerInformation.OnPlayerDisconnect;
-            StartServer();
         }
         else
         {
@@ -34,13 +36,25 @@ public class ServerNetworkManager : NetworkManager
 
     private void Update()
     {
-        timer += Time.deltaTime;
 
-        if(timer >= informationSavingFrequencie)
+        if (!isServerStarted)
         {
-            timer = 0;
+            isServerStarted = true;
+            serverGameInformation.LoadGameInformationFromDatabase();
+            serverPlayerInformation.LoadPlayerInformationFromDatabase();
+            playerDisconnectfromServerEvent += serverPlayerInformation.OnPlayerDisconnect;
+            StartServer();
+        }
+        else
+        {
+            timer += Time.deltaTime;
 
-            serverPlayerInformation.SaveInformationToDatabase();
+            if (timer >= informationSavingFrequencie)
+            {
+                timer = 0;
+
+                serverPlayerInformation.SavePlayerInformationToDatabase();
+            }
         }
     }
 
@@ -69,7 +83,8 @@ public class ServerNetworkManager : NetworkManager
     public void CloseServer()
     {
         StopServer();
-        serverPlayerInformation.ClearPlayerInformationList();
-        //Close application
+        serverPlayerInformation.ClearPlayerInformation();
+        serverGameInformation.ClearGameInformation();
+        Application.Quit();
     }
 }

@@ -34,7 +34,7 @@ public class UILobbyPlayer : MonoBehaviour
     {
         if (playerInformation != null)
         {
-            playersInformation.orderChangedEvent -= ChangePlayerId;
+            playersInformation.orderChangedEvent -= OnOrderChanged;
         }
     }
 
@@ -42,21 +42,28 @@ public class UILobbyPlayer : MonoBehaviour
     {
         slotId = id;
 
-        playersInformation.orderChangedEvent += ChangePlayerId;
+        playersInformation.orderChangedEvent += OnOrderChanged;
 
-        ChangePlayerId();
+        SetPlayer();
     }
 
-    void ChangePlayerId()
+    void OnOrderChanged()
     {
-        if(playerInformation != null)
+        if (playerInformation != null)
         {
+            playerInformation.playerChangedEvent -= SetPlayer;
             playerInformation.playerTeamIdChangedEvent -= UpdateLobbyPlayerTeam;
             playerInformation.playerGameStateChangedEvent -= UpdateLobbyPlayerStatusText;
         }
 
+        SetPlayer();
+    }
+
+    void SetPlayer()
+    {
         playerInformation = playersInformation.GetPlayerInformationWithId(slotId);
 
+        playerInformation.playerChangedEvent += SetPlayer;
         playerInformation.playerTeamIdChangedEvent += UpdateLobbyPlayerTeam;
         playerInformation.playerGameStateChangedEvent += UpdateLobbyPlayerStatusText;
 
@@ -68,19 +75,25 @@ public class UILobbyPlayer : MonoBehaviour
 
     void SetLobbyPlayerImage()
     {
-        //Should change depending on the device type between a heaset or a tablet
+        if (playerInformation.Player != null)
+        {
+            //Should change depending on the device type between a heaset or a tablet
+        }
     }
 
     void SetLobbyPlayerName()
     {
-        nameText.text = PlayerList.instance.GetPlayerWithId(playerInformation.playerId).ServerDeviceName;
+        if (playerInformation.Player != null)
+        {
+            nameText.text = playerInformation.Player.ServerDeviceName;
+        }
     }
 
     void UpdateLobbyPlayerTeam()
     {
-        if (playerInformation.playerTeamInformationId != -1)
+        if (playerInformation.PlayerTeamInformationId != -1)
         {
-            ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.playerTeamInformationId);
+            ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.PlayerTeamInformationId);
             teamNameText.text = team.TeamName;
             color.color = team.TeamColor;
         }
@@ -93,68 +106,71 @@ public class UILobbyPlayer : MonoBehaviour
 
     void UpdateLobbyPlayerStatusText()
     {
-        if (playerInformation.playerId == -1)
+        if (playerInformation.Player == null)
         {
             statusText.text = "Disconnected";
         }
         else
         {
-            if (playerInformation.playerGameState == ClientGameState.Connecting)
+            if (playerInformation.PlayerGameState == ClientGameState.Connecting)
             {
                 statusText.text = "Connecting";
             }
-            else if (playerInformation.playerGameState == ClientGameState.NotReady)
+            else if (playerInformation.PlayerGameState == ClientGameState.NotReady)
             {
                 statusText.text = "Not ready";
             }
-            else if (playerInformation.playerGameState == ClientGameState.Pairing)
+            else if (playerInformation.PlayerGameState == ClientGameState.Pairing)
             {
                 statusText.text = "Pairing";
             }
-            else if (playerInformation.playerGameState == ClientGameState.NoAssociatedPair || playerInformation.playerGameState == ClientGameState.ReconnectingNoAssociatedPair)
+            else if (playerInformation.PlayerGameState == ClientGameState.NoAssociatedPair || playerInformation.PlayerGameState == ClientGameState.ReconnectingNoAssociatedPair)
             {
                 statusText.text = "No associated pair";
             }
-            else if (playerInformation.playerGameState == ClientGameState.Paired)
+            else if (playerInformation.PlayerGameState == ClientGameState.Paired)
             {
                 statusText.text = "Paired";
             }
-            else if (playerInformation.playerGameState == ClientGameState.Ready)
+            else if (playerInformation.PlayerGameState == ClientGameState.Ready)
             {
                 statusText.text = "Ready";
             }
-            else if (playerInformation.playerGameState == ClientGameState.PlayingTutorial)
+            else if (playerInformation.PlayerGameState == ClientGameState.PlayingTutorial)
             {
                 statusText.text = "Playing tutorial";
             }
-            else if (playerInformation.playerGameState == ClientGameState.Playing)
+            else if (playerInformation.PlayerGameState == ClientGameState.Playing)
             {
                 string text = "Playing";
 
-                if (PlayerList.instance.GetPlayerWithId(slotId).serverAlgorithm == Algorithm.ShortestFlightDistance)
+                if (playerInformation.Player.serverDeviceType == DeviceType.Headset)
                 {
-                    text += " - Shortest Flight";
-                }
-                else if (PlayerList.instance.GetPlayerWithId(slotId).serverAlgorithm == Algorithm.LongestStraight)
-                {
-                    text += " - Longest Straight";
-                }
-                else if (PlayerList.instance.GetPlayerWithId(slotId).serverAlgorithm == Algorithm.Standard)
-                {
-                    text += " - Standard algorithm";
+                    if (playerInformation.Player.serverAlgorithm == Algorithm.ShortestFlightDistance)
+                    {
+                        text += " - Shortest Flight";
+                    }
+                    else if (playerInformation.Player.serverAlgorithm == Algorithm.LongestStraight)
+                    {
+                        text += " - Longest Straight";
+                    }
+                    else if (playerInformation.Player.serverAlgorithm == Algorithm.Standard)
+                    {
+                        text += " - Standard algorithm";
+                    }
                 }
 
                 statusText.text = text;
             }
-            else if (playerInformation.playerGameState == ClientGameState.WaitingForNextRound)
+            else if (playerInformation.PlayerGameState == ClientGameState.WaitingForNextRound)
             {
                 statusText.text = "Waiting for next round";
             }
-            else if (playerInformation.playerGameState == ClientGameState.Reconnecting)
+            else if (playerInformation.PlayerGameState == ClientGameState.Reconnecting)
             {
                 statusText.text = "Reconnecting";
             }
-            else if (playerInformation.playerGameState == ClientGameState.WaitingForPairConnection)
+            else if (playerInformation.PlayerGameState == ClientGameState.WaitingForPairConnection)
             {
                 statusText.text = "Waiting for pair connection";
             }

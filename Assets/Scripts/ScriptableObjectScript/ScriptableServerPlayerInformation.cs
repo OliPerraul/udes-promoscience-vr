@@ -38,18 +38,25 @@ public class ScriptableServerPlayerInformation : ScriptableObject
         }
     }
 
-    public void AddPlayerOrReconnect(int playerId, string playerDeviceUniqueIdentifier)
+    public void AddPlayerInformation(PlayerInformation playerInformation)
+    {
+        playersInformation.Add(playerInformation);
+
+        OnAddPlayer();
+    }
+
+    public void AddPlayerOrReconnect(Player player)
     {
         for(int i = 0; i < playersInformation.Count; i++)
         {
-            if(playersInformation[i].playerDeviceUniqueIdentifier == playerDeviceUniqueIdentifier)
+            if(playersInformation[i].PlayerDeviceUniqueIdentifier == player.deviceUniqueIdentifier)
             {
-                playersInformation[i].OnPlayerReconnect(playerId);
+                playersInformation[i].OnPlayerReconnect(player);
                 return ;
             }
         }
 
-        PlayerInformation playerinformation = new PlayerInformation(playerId, playerDeviceUniqueIdentifier);
+        PlayerInformation playerinformation = new PlayerInformation(player);
         playersInformation.Add(playerinformation);
 
         OnAddPlayer();
@@ -59,7 +66,7 @@ public class ScriptableServerPlayerInformation : ScriptableObject
     {
         for (int i = 0; i < playersInformation.Count; i++)
         {
-            if (playersInformation[i].playerDeviceUniqueIdentifier == playerDeviceUniqueIdentifier)
+            if (playersInformation[i].PlayerDeviceUniqueIdentifier == playerDeviceUniqueIdentifier)
             {
                 playersInformation[i].OnPlayerDisconnect();
                 return;
@@ -80,28 +87,30 @@ public class ScriptableServerPlayerInformation : ScriptableObject
         }
     }
 
-    public void LoadInformationFromDatabase()
+    public int GetPlayerCount()
+    {
+        return playersInformation.Count;
+    }
+
+    public void LoadPlayerInformationFromDatabase()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-        //Check if there is stored information
-        //SQLiteUtilities.
-
-        playersInformation.Clear();
+        SQLiteUtilities.SetServerPlayerInformation(this);
 #endif
     }
 
-    public void SaveInformationToDatabase()
+    public void SavePlayerInformationToDatabase()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-        //Check if there is stored information
-        //SQLiteUtilities.
+        SQLiteUtilities.InsertServerPlayerInformation(this);
 #endif
     }
 
-    public void ClearPlayerInformationList()//Might need to add a destroy part in struct to deregister from event
+    public void ClearPlayerInformation()
     {
-        playersInformation.Clear();
-        OnRemovePlayer();
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        SQLiteUtilities.ResetServerPlayerInformation();
+#endif
     }
 }
 

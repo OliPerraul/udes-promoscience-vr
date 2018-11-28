@@ -4,24 +4,72 @@ using System.Collections.Generic;
 
 public class PlayerInformation
 {
-    public int playerCourseId;
-    public int playerId;//Should be changed for reerance to player instead to avoid error when a player from to of the list is removed id should change
-    public int playerTeamId;
-    public int playerTeamInformationId;
+    Player player;
 
-    public string playerDeviceUniqueIdentifier;
+    int playerCourseId;
+    int playerTeamId;
+    int playerTeamInformationId;
 
-    public ClientGameState playerGameState;
+    string playerDeviceUniqueIdentifier;
 
+    ClientGameState playerGameState;
+
+    public Player Player
+    {
+        get
+        {
+            return player;
+        }
+    }
+
+    public int PlayerCourseId
+    {
+        get
+        {
+            return playerCourseId;
+        }
+    }
+
+    public int PlayerTeamId
+    {
+        get
+        {
+            return playerTeamId;
+        }
+    }
+
+    public int PlayerTeamInformationId
+    {
+        get
+        {
+            return playerTeamInformationId;
+        }
+    }
+
+    public string PlayerDeviceUniqueIdentifier
+    {
+        get
+        {
+            return playerDeviceUniqueIdentifier;
+        }
+    }
+
+    public ClientGameState PlayerGameState
+    {
+        get
+        {
+            return playerGameState;
+        }
+    }
+
+    public Action playerChangedEvent;
     public Action playerTeamIdChangedEvent;
     public Action playerGameStateChangedEvent;
 
-    public PlayerInformation(int id, string deviceUniqueIdentifier)
+    public PlayerInformation(Player p)
     {
-        playerId = id;
-        playerDeviceUniqueIdentifier = deviceUniqueIdentifier;
-
-        Player player = PlayerList.instance.GetPlayerWithId(id);
+        player = p;
+        playerDeviceUniqueIdentifier = player.deviceUniqueIdentifier;
 
         playerCourseId = player.ServerCourseId;
         playerTeamId = player.ServerTeamId;
@@ -29,28 +77,44 @@ public class PlayerInformation
         playerGameState = player.ServerPlayerGameState;
 
         player.serverCourseIdChangedEvent += OnPlayerCourseIdChanged;
-        player.serverTeamIdChangedEvent += OnPlayerTeamIdChanged;//Should change only once if not disconnected before it does
-        player.serverTeamInformationIdChangedEvent += OnPlayerTeamInformationIdChanged;//Should change only once if not disconnected before it does
+        player.serverTeamIdChangedEvent += OnPlayerTeamIdChanged;
+        player.serverTeamInformationIdChangedEvent += OnPlayerTeamInformationIdChanged;
         player.serverPlayerStatusChangedEvent += OnPlayerGameStateChanged;
 
         player.TargetSetGameState(player.connectionToClient, ClientGameState.Pairing);
     }
 
+    public PlayerInformation(int courseId, int teamId, int teamInformationId, string deviceUniqueIdentifier, ClientGameState gameState)
+    {
+        player = null;
+        playerCourseId = courseId;
+        playerTeamId = teamId;
+        playerTeamInformationId = teamInformationId;
+        playerDeviceUniqueIdentifier = deviceUniqueIdentifier;
+        playerGameState = gameState;
+    }
+
+    void OnPlayerChanged()
+    {
+
+        if (playerChangedEvent != null)
+        {
+            playerChangedEvent();
+        }
+    }
+
     void OnPlayerCourseIdChanged()
     {
-        Player player = PlayerList.instance.GetPlayerWithId(playerId);
         playerCourseId = player.ServerCourseId;
     }
 
     void OnPlayerTeamIdChanged()
     {
-        Player player = PlayerList.instance.GetPlayerWithId(playerId);
         playerTeamId = player.ServerTeamId;
     }
 
     void OnPlayerTeamInformationIdChanged()
     {
-        Player player = PlayerList.instance.GetPlayerWithId(playerId);
         playerTeamInformationId = player.ServerTeamInformationId;
 
         if (playerTeamIdChangedEvent != null)
@@ -61,7 +125,6 @@ public class PlayerInformation
 
     void OnPlayerGameStateChanged()
     {
-        Player player = PlayerList.instance.GetPlayerWithId(playerId);
         playerGameState = player.ServerPlayerGameState;
 
         if (playerGameStateChangedEvent != null)
@@ -72,7 +135,7 @@ public class PlayerInformation
 
     public void OnPlayerDisconnect()
     {
-        playerId = -1;
+        player = null;
 
         if (playerGameStateChangedEvent != null)
         {
@@ -80,11 +143,9 @@ public class PlayerInformation
         }
     }
 
-    public void OnPlayerReconnect(int id)
+    public void OnPlayerReconnect(Player p)
     {
-        playerId = id;
-
-        Player player = PlayerList.instance.GetPlayerWithId(id);
+        player = p;
 
         if (player.serverDeviceType == DeviceType.Headset && playerGameState != ClientGameState.Pairing && playerGameState != ClientGameState.NoAssociatedPair)
         {
@@ -107,5 +168,7 @@ public class PlayerInformation
 
             player.TargetSetGameState(player.connectionToClient, ClientGameState.Pairing);
         }
+
+        OnPlayerChanged();
     }
 }

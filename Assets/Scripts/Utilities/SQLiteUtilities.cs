@@ -17,6 +17,8 @@ public static class SQLiteUtilities
     const string COURSE = "Course";
     const string EVENT = "Event";
     const string DEVICE_PAIRING = "DevicePairing";
+    const string SERVER_GAME_INFORMATION = "ServerGameInformation";
+    const string SERVER_PLAYER_INFORMATION = "ServerPlayerInformation";
 
     //Team table column
     const string TEAM_ID = "TeamID";
@@ -43,6 +45,19 @@ public static class SQLiteUtilities
     //DevicePairing table column
     const string DEVICE_PAIRING_TABLET_ID = "TabletID";
     const string DEVICE_PAIRING_HEADSET_ID = "HeadsetID";
+
+    //ServerGameInformation table column
+    const string SERVER_GAME_INFORMATION_SAVE_SLOT_ID = "SaveSlotID";
+    const string SERVER_GAME_STATE_ID = "ServerGameState";
+    const string SERVER_GAME_ROUND = "ServerGameRound";
+
+    //ServerPlayerInformation table column
+    const string SERVER_PLAYER_INFORMATION_SAVE_SLOT_ID = "SaveSlotID";
+    const string SERVER_PLAYER_COURSE_ID = "PlayerCourseID";
+    const string SERVER_PLAYER_TEAM_ID = "PlayerTeamId";
+    const string SERVER_PLAYER_TEAM_INFORMATION_ID = "PlayerTeamInformationId";
+    const string SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER = "PlayerDeviceUniqueIdentifier";
+    const string SERVER_PLAYER_GAME_STATE_ID = "PlayerGameState";
 
     static void CreateDatabase()
     {
@@ -94,6 +109,9 @@ public static class SQLiteUtilities
                 cmd.ExecuteNonQuery();
             }
         }
+
+        ResetServerGameInformation();
+        ResetServerPlayerInformation();
     }
 
     public static void CreateDatabaseIfItDoesntExist()
@@ -104,6 +122,57 @@ public static class SQLiteUtilities
         {
             CreateDatabase();
             InsertBasicLabyrinths();
+        }
+    }
+
+    public static void ResetServerGameInformation()
+    {
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "DROP TABLE IF EXISTS " + SERVER_GAME_INFORMATION + ";";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + SERVER_GAME_INFORMATION + " ( " +
+                                  SERVER_GAME_INFORMATION_SAVE_SLOT_ID + " INTEGER(10) NOT NULL, " +
+                                  SERVER_GAME_STATE_ID + " INTEGER(10) NOT NULL, " +
+                                  SERVER_GAME_ROUND + " INTEGER(10) NOT NULL, " +
+                                  "PRIMARY KEY(" + SERVER_GAME_INFORMATION_SAVE_SLOT_ID + ")); ";
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static void ResetServerPlayerInformation()
+    {
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "DROP TABLE IF EXISTS " + SERVER_PLAYER_INFORMATION + ";";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + SERVER_PLAYER_INFORMATION + " ( " +
+                                  SERVER_PLAYER_INFORMATION_SAVE_SLOT_ID + " INTEGER(10) NOT NULL, " +
+                                  SERVER_PLAYER_COURSE_ID + " INTEGER(10), " +
+                                  SERVER_PLAYER_TEAM_ID + " INTEGER(10), " +
+                                  SERVER_PLAYER_TEAM_INFORMATION_ID + " INTEGER(10), " +
+                                  SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER + " varchar(255) NOT NULL UNIQUE, " +
+                                  SERVER_PLAYER_GAME_STATE_ID + " INTEGER(10) NOT NULL, " +
+                                  "PRIMARY KEY(" + SERVER_PLAYER_INFORMATION_SAVE_SLOT_ID + ")); ";
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 
@@ -182,13 +251,15 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log( TEAM_ID + ": " + reader[TEAM_ID] + "\t " + TEAM_NAME + ": " + reader[TEAM_NAME] + "\t " + TEAM_COLOR + ": " + reader[TEAM_COLOR] + "\t " + TEAM_CREATION_DATE_TIME + ": " + reader[TEAM_CREATION_DATE_TIME]);
+                        Debug.Log( TEAM_ID + ": " + reader[TEAM_ID]
+                            + "\t " + TEAM_NAME + ": " + reader[TEAM_NAME]
+                            + "\t " + TEAM_COLOR + ": " + reader[TEAM_COLOR]
+                            + "\t " + TEAM_CREATION_DATE_TIME + ": " + reader[TEAM_CREATION_DATE_TIME]);
                     }
 
                     reader.Close();
                 }
 
-                cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "SELECT * FROM " + LABYRINTH;
                 cmd.ExecuteNonQuery();
 
@@ -197,13 +268,12 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log( LABYRINTH_ID + ": " + reader[LABYRINTH_ID] + "\t " + LABYRINTH_SPECS + ": " + reader[LABYRINTH_SPECS]);
+                        Debug.Log( LABYRINTH_ID + ": " + reader[LABYRINTH_ID]
+                            + "\t " + LABYRINTH_SPECS + ": " + reader[LABYRINTH_SPECS]);
                     }
 
                     reader.Close();
                 }
-
-                cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "SELECT * FROM " + COURSE;
                 cmd.ExecuteNonQuery();
 
@@ -212,13 +282,15 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log( COURSE_ID + ": " + reader[COURSE_ID] + "\t " + COURSE_TEAM_ID + ": " + reader[COURSE_TEAM_ID] + "\t " + COURSE_LABYRINTH_ID + ": " + reader[COURSE_LABYRINTH_ID] + "\t " + COURSE_NO_ALGO + ": " + reader[COURSE_NO_ALGO]);
+                        Debug.Log( COURSE_ID + ": " + reader[COURSE_ID]
+                            + "\t " + COURSE_TEAM_ID + ": " + reader[COURSE_TEAM_ID]
+                            + "\t " + COURSE_LABYRINTH_ID + ": " + reader[COURSE_LABYRINTH_ID]
+                            + "\t " + COURSE_NO_ALGO + ": " + reader[COURSE_NO_ALGO]);
                     }
 
                     reader.Close();
                 }
 
-                cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "SELECT * FROM " + EVENT;
                 cmd.ExecuteNonQuery();
 
@@ -227,13 +299,15 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log(EVENT_ID + ": " + reader[EVENT_ID] + "\t " + EVENT_TYPE + ": " + reader[EVENT_TYPE] + "\t " + EVENT_TIME + ": " + reader[EVENT_TIME] + "\t " + EVENT_COURSE_ID + ": " + reader[EVENT_COURSE_ID]);
+                        Debug.Log(EVENT_ID + ": " + reader[EVENT_ID]
+                            + "\t " + EVENT_TYPE + ": " + reader[EVENT_TYPE]
+                            + "\t " + EVENT_TIME + ": " + reader[EVENT_TIME]
+                            + "\t " + EVENT_COURSE_ID + ": " + reader[EVENT_COURSE_ID]);
                     }
 
                     reader.Close();
                 }
 
-                cmd.CommandType = CommandType.Text;
                 cmd.CommandText = "SELECT * FROM " + DEVICE_PAIRING;
                 cmd.ExecuteNonQuery();
 
@@ -242,7 +316,43 @@ public static class SQLiteUtilities
 
                     while (reader.Read())
                     {
-                        Debug.Log(DEVICE_PAIRING_TABLET_ID + ": " + reader[DEVICE_PAIRING_TABLET_ID] + "\t " + DEVICE_PAIRING_HEADSET_ID + ": " + reader[DEVICE_PAIRING_HEADSET_ID]);
+                        Debug.Log(DEVICE_PAIRING_TABLET_ID + ": " + reader[DEVICE_PAIRING_TABLET_ID]
+                            + "\t " + DEVICE_PAIRING_HEADSET_ID + ": " + reader[DEVICE_PAIRING_HEADSET_ID]);
+                    }
+
+                    reader.Close();
+                }
+
+                cmd.CommandText = "SELECT * FROM " + SERVER_GAME_INFORMATION;
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        Debug.Log(SERVER_GAME_INFORMATION_SAVE_SLOT_ID + ": " + reader[SERVER_GAME_INFORMATION_SAVE_SLOT_ID]
+                            + "\t " + SERVER_GAME_STATE_ID + ": " + reader[SERVER_GAME_STATE_ID]
+                            + "\t " + SERVER_GAME_ROUND + ": " + reader[SERVER_GAME_ROUND]);
+                    }
+
+                    reader.Close();
+                }
+
+                cmd.CommandText = "SELECT * FROM " + SERVER_PLAYER_INFORMATION;
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+
+                    while (reader.Read())
+                    {
+                        Debug.Log(SERVER_PLAYER_INFORMATION_SAVE_SLOT_ID + ": " + reader[SERVER_PLAYER_INFORMATION_SAVE_SLOT_ID]
+                            + "\t " + SERVER_PLAYER_COURSE_ID + ": " + reader[SERVER_PLAYER_COURSE_ID]
+                            + "\t " + SERVER_PLAYER_TEAM_ID + ": " + reader[SERVER_PLAYER_TEAM_ID]
+                            + "\t " + SERVER_PLAYER_TEAM_INFORMATION_ID + ": " + reader[SERVER_PLAYER_TEAM_INFORMATION_ID]
+                            + "\t " + SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER + ": " + reader[SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER]
+                            + "\t " + SERVER_PLAYER_GAME_STATE_ID + ": " + reader[SERVER_PLAYER_GAME_STATE_ID]);
                     }
 
                     reader.Close();
@@ -355,6 +465,7 @@ public static class SQLiteUtilities
                 }
             }
         }
+
         return pairedId;
     }
 
@@ -453,7 +564,6 @@ public static class SQLiteUtilities
                     {
                         if (reader.GetInt32(0) == 0)
                         {
-                            Debug.Log("No course with specifics");
                             reader.Close();
                             cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ") VALUES ('" + courseId + "', '" + teamId + "', '" + labyrinthId + "', '" + algorithmId + "');";
                             cmd.ExecuteNonQuery();
@@ -467,6 +577,198 @@ public static class SQLiteUtilities
             }
         }
     }
+
+    public static void InsertServerGameInformation(ScriptableServerGameInformation serverGameInformation)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "INSERT OR REPLACE INTO " + SERVER_GAME_INFORMATION + " (" + SERVER_GAME_INFORMATION_SAVE_SLOT_ID + ", " + SERVER_GAME_STATE_ID + ", " + SERVER_GAME_ROUND + ") VALUES ( '" + 1 + "', '" + serverGameInformation.GameState + "', '" + serverGameInformation.gameRound + "');";
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public static void SetServerGameInformation(ScriptableServerGameInformation serverGameInformation)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "SELECT * FROM " + SERVER_GAME_INFORMATION + " WHERE " + SERVER_GAME_INFORMATION_SAVE_SLOT_ID + "=" + 1;
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        serverGameInformation.GameState = (ServerGameState) int.Parse(reader[SERVER_GAME_STATE_ID].ToString());
+                        serverGameInformation.gameRound = int.Parse(reader[SERVER_GAME_ROUND].ToString());
+                    }
+
+                    reader.Close();
+                }
+            }
+        }
+    }
+
+    public static void InsertServerPlayerInformation(ScriptableServerPlayerInformation serverPlayerInformation)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                for (int i = 0; i < serverPlayerInformation.GetPlayerCount(); i++)
+                {
+                    PlayerInformation playerInformation = serverPlayerInformation.GetPlayerInformationWithId(i);
+
+                    cmd.CommandText = "INSERT OR REPLACE INTO " + SERVER_PLAYER_INFORMATION 
+                        + " (" + SERVER_PLAYER_INFORMATION_SAVE_SLOT_ID + ", " 
+                        + SERVER_PLAYER_COURSE_ID + ", " 
+                        + SERVER_PLAYER_TEAM_ID + ", " 
+                        + SERVER_PLAYER_TEAM_INFORMATION_ID + ", " 
+                        + SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER + ", " 
+                        + SERVER_PLAYER_GAME_STATE_ID
+                        + ") VALUES ( '" 
+                        + i + "', '" 
+                        + playerInformation.PlayerCourseId + "', '"
+                        + playerInformation.PlayerTeamId + "', '"
+                        + playerInformation.PlayerTeamInformationId + "', '"
+                        + playerInformation.PlayerDeviceUniqueIdentifier + "', '"
+                        + (int) playerInformation.PlayerGameState + "');";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+    }
+
+    public static void SetServerPlayerInformation(ScriptableServerPlayerInformation serverPlayerInformation)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "SELECT * FROM " + SERVER_PLAYER_INFORMATION;
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int courseId = int.Parse(reader[SERVER_PLAYER_COURSE_ID].ToString());
+                        int teamId = int.Parse(reader[SERVER_PLAYER_TEAM_ID].ToString());
+                        int teamInformationId = int.Parse(reader[SERVER_PLAYER_TEAM_INFORMATION_ID].ToString());
+                        string deviceUniqueIdentifier = reader[SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER].ToString();
+                        ClientGameState gameState = (ClientGameState) int.Parse(reader[SERVER_PLAYER_GAME_STATE_ID].ToString());
+
+                        PlayerInformation playerInformation = new PlayerInformation(courseId, teamId, teamInformationId, deviceUniqueIdentifier, gameState);
+
+                        serverPlayerInformation.AddPlayerInformation(playerInformation);
+                    }
+
+                    reader.Close();
+                }
+            }
+        }
+    }
+
+    public static int GetPlayerCourseLabyrinthId(int courseId)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        int labyrinthId = -1;
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "SELECT " + COURSE_LABYRINTH_ID + " FROM " + COURSE + " WHERE " + COURSE_ID + "=" + courseId;
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        labyrinthId = reader.GetInt32(0);
+                    }
+
+                    reader.Close();
+                }
+            }
+        }
+
+        return labyrinthId;
+    }
+
+    public static Queue<int> GetPlayerStepsForCourse(int courseId)
+    {
+        CreateDatabaseIfItDoesntExist();
+
+        string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+        Queue<int> playerSteps = new Queue<int>();
+
+        using (SqliteConnection conn = new SqliteConnection(dbPath))
+        {
+            conn.Open();
+            using (SqliteCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.CommandText = "SELECT * FROM " + EVENT
+                    + " WHERE " + EVENT_COURSE_ID + "=" + courseId
+                    + " ORDER BY " + EVENT_TIME;
+                cmd.ExecuteNonQuery();
+
+                using (SqliteDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        playerSteps.Enqueue(int.Parse(reader[EVENT_TYPE].ToString()));
+                    }
+                    
+                    reader.Close();
+                }
+            }
+        }
+
+        return playerSteps;
+    }
+
 
     public static int GetNextTeamID()
     {

@@ -37,4 +37,12 @@ public class UILobbyPlayerList : MonoBehaviour
     {
         Destroy(lobbyPlayers.Pop());
     }
+
+    void RemoveAllLobbyPlayer()
+    {
+        while (lobbyPlayers.Count > 0)
+        {
+            Destroy(lobbyPlayers.Pop());
+        }
+    }
 }

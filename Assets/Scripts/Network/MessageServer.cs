@@ -34,9 +34,6 @@ public class MessageServer : MonoBehaviour
 
     [SerializeField]
     ScriptableAction playerReachedTheEnd;
-    /*
-    [SerializeField]
-    ScriptablePositionRotationAndTile playerPositionRotationAndTiles;*/
 
     [SerializeField]
     ScriptableBoolean returnToDivergencePointAnswer;
@@ -46,6 +43,9 @@ public class MessageServer : MonoBehaviour
 
     [SerializeField]
     ScriptableString pairedIpAdress;
+
+    [SerializeField]
+    GameLabyrinth labyrinth;
 
     NetworkServerSimple server = null;
     NetworkConnection clientConnection = null;
@@ -73,11 +73,10 @@ public class MessageServer : MonoBehaviour
             server.RegisterHandler(MsgType.Connect, OnConnect);
             server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
             server.RegisterHandler(DirectiveMessage.GetCustomMsgType(), OnDirective);
+            server.RegisterHandler(RequestForGameInformationMessage.GetCustomMsgType(), OnRequestForGameInformation);
             server.RegisterHandler(ReturnToDivergencePointRequestMessage.GetCustomMsgType(), OnReturnToDivergencePointRequest);
 
             server.Listen(serverPort);
-
-            gameState.Value = ClientGameState.Ready;//Will need to be changed for start with steps?
         }
     }
 
@@ -133,7 +132,9 @@ public class MessageServer : MonoBehaviour
         playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
         returnToDivergencePointAnswer.valueChangedEvent -= SendReturnToDivergencePointAnswer;
 
-        Debug.Log("message disconnected");
+        playerInformation.playerInformationChangedEvent -= SendPlayerInformation;
+
+        Debug.Log("message disconnected");//temp
     }
 
     void OnDirective(NetworkMessage netMsg)
@@ -145,6 +146,17 @@ public class MessageServer : MonoBehaviour
     void OnReturnToDivergencePointRequest(NetworkMessage netMsg)
     {
         returnToDivergencePointRequest.FireAction();
+    }
+
+    void OnRequestForGameInformation(NetworkMessage netMsg)
+    {
+        if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
+        {
+            SendPlayerPosition();
+            SendPlayerRotation();
+            SendAlgorithmRespect();
+            SendPlayerTilesToPaint();
+        }
     }
 
     void SendAction()
@@ -200,6 +212,14 @@ public class MessageServer : MonoBehaviour
         msg.tilePositionX = playerPaintTile.TilePosition.x;
         msg.tilePositionY = playerPaintTile.TilePosition.y;
         msg.tileColor = playerPaintTile.TileColor;
+
+        clientConnection.Send(msg.GetMsgType(), msg);
+    }
+
+    void SendPlayerTilesToPaint()
+    {
+        PlayerTilesToPaintMessage msg = new PlayerTilesToPaintMessage();
+        msg.tiles = labyrinth.GetTilesToPaint();
 
         clientConnection.Send(msg.GetMsgType(), msg);
     }

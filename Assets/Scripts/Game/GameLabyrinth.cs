@@ -99,6 +99,12 @@ public class GameLabyrinth : MonoBehaviour
     {
         return new Vector3((x - startPosition.x) * Constants.TILE_SIZE, 0, (-y + startPosition.y) * Constants.TILE_SIZE);
     }
+
+    public Vector3 GetLabyrinthPositionInWorldPosition(Vector2Int position)
+    {
+        return GetLabyrinthPositionInWorldPosition(position.x, position.y);
+    }
+
     public Vector2Int GetWorldPositionInLabyrinthPosition(float x, float y)
     {
         return new Vector2Int(Mathf.RoundToInt((x / Constants.TILE_SIZE)) + startPosition.x, Mathf.RoundToInt((-y / Constants.TILE_SIZE)) + startPosition.y);
@@ -199,6 +205,25 @@ public class GameLabyrinth : MonoBehaviour
         {
             floorPainter.PaintFloorWithColor(color);
         }
+    }
+
+    public Tile[] GetTilesToPaint()
+    {
+        Queue<Tile> paintedTile = new Queue<Tile>();
+
+        for (int x = 0; x < labyrinthTiles.GetLength(0); x++)
+        {
+            for (int y = 0; y < labyrinthTiles.GetLength(1); y++)
+            {
+                TileColor color = GetTileColor(new Vector2Int(x, y));
+                if (color != TileColor.Grey)
+                {
+                    paintedTile.Enqueue(new Tile(x, y, color));
+                }
+            }
+        }
+
+        return paintedTile.ToArray();
     }
 
     public void DestroyLabyrinth()

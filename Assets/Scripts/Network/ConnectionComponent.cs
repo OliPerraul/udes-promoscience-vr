@@ -39,7 +39,7 @@ public class ConnectionComponent : NetworkBehaviour
     {
         if (player.ServerPlayerGameState == ClientGameState.Connecting)
         {
-           serverPlayerInformation.AddPlayerOrReconnect(PlayerList.instance.GetPlayerId(player), player.deviceUniqueIdentifier);
+            serverPlayerInformation.AddPlayerOrReconnect(player);
         }
         else if (player.ServerPlayerGameState == ClientGameState.Pairing)
         {
@@ -71,28 +71,43 @@ public class ConnectionComponent : NetworkBehaviour
             }
             else
             {
-                /*
-                if (serverGameInformation.GameState == ServerGameState.GameRound)
+                if (serverGameInformation.GameState == ServerGameState.GameRound && player.ServerCourseId != -1)
                 {
-                    //BD get steps for current gameround
-                    //And labyrinth
-
-                    //StartWithStepFunction?
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                    int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
+#endif
+                    if (courseLabyrinthId == ((serverGameInformation.gameRound - 1) % 3) + 1)
+                    {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                        Queue<int> playerSteps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
+#endif
+                        if(playerSteps.Count > 0)
+                        {
+                            serverGameInformation.StartGameRoundWithSteps(player, playerSteps.ToArray());
+                            player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                        }
+                        else
+                        {
+                            player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                            player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
+                        }
+                    }
+                    else
+                    {
+                        player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                        player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
+                    }
                 }
                 else
                 {
                     player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);//Set the other game state tat start the MessageServer?
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
                 }
-                */
-
-                //Temp
-                player.TargetSetPairedIpAdress(player.connectionToClient, "");
             }
         }
         else if (player.ServerPlayerGameState == ClientGameState.Ready)
         {
-            if(serverGameInformation.GameState == ServerGameState.Tutorial)
+            if (serverGameInformation.GameState == ServerGameState.Tutorial)
             {
                 serverGameInformation.StartTutorial(player);
             }
@@ -117,7 +132,8 @@ public class ConnectionComponent : NetworkBehaviour
         player.ServerTeamInformationId = scriptableTeam.TeamId;
 
         player.TargetSetTeamInformation(player.connectionToClient, scriptableTeam.TeamId);
-        player.TargetSetPairedIpAdress(player.connectionToClient, "");//Change this for change game state?
+        player.TargetSetPairedIpAdress(player.connectionToClient, "");
+        player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
     }
 
     IEnumerator PairingDeviceCoroutine()

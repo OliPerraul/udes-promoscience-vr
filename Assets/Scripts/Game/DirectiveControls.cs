@@ -41,7 +41,7 @@ public class DirectiveControls : MonoBehaviour
 
     public void SetDirectiveMoveFoward()
     {
-        directive.Value = Directive.MoveFoward;
+        directive.Value = Directive.MoveForward;
     }
 
     public void SetDirectiveTurnLeft()

@@ -3376,6 +3376,7 @@ MonoBehaviour:
   returnToDivergencePointRequest: {fileID: 11400000, guid: bc147a0c74a996b44b71cb26b81651f0,
     type: 2}
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
+  labyrinth: {fileID: 1670229883}
   serverPort: 9996
 --- !u!114 &817602603
 MonoBehaviour:
@@ -7585,10 +7586,11 @@ MonoBehaviour:
   labyrinthPositionChanged: {fileID: 11400000, guid: 9cd2cda09a0f1684e883e7263786dccc,
     type: 2}
   playerPaintTile: {fileID: 11400000, guid: 7301fc4899778e3459a66b0b9b95ffb4, type: 2}
-  playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
-    type: 2}
   playerPositionRotationAndTiles: {fileID: 11400000, guid: a4032a8e9782c4645a8d9b69310a00e5,
     type: 2}
+  playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
+    type: 2}
+  playerStartSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
   returnToDivergencePointAnswer: {fileID: 11400000, guid: c0ec1a0d6508fb5428bb9521683f8580,
     type: 2}
   labyrinth: {fileID: 1670229883}

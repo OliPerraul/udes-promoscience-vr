@@ -11,7 +11,8 @@ public enum CustomMsgType : short
     PlayerRotation = 104,
     PlayerPaintTile = 105,
     PlayerReachedTheEnd = 106,
-    PlayerSetPositionRotationAndTiles = 107,
+    PlayerTilesToPaint = 107,
+    RequestForGameInformation = 113,
     ReturnToDivergencePointRequest = 108,
     ReturnToDivergencePointAnswer = 109,
     AlgorithmRespect = 110,
@@ -141,9 +142,9 @@ public class PlayerReachedTheEndMessage : MessageBase
     }
 }
 
-public class PlayerSetPositionRotationAndTilesMessage : MessageBase
+public class PlayerTilesToPaintMessage : MessageBase
 {
-    static CustomMsgType type = CustomMsgType.PlayerSetPositionRotationAndTiles;
+    static CustomMsgType type = CustomMsgType.PlayerTilesToPaint;
 
     public static short GetCustomMsgType()
     {
@@ -155,9 +156,22 @@ public class PlayerSetPositionRotationAndTilesMessage : MessageBase
         return (short)type;
     }
 
-    public Vector3 position;
-    public Quaternion rotation;
     public Tile[] tiles;
+}
+
+public class RequestForGameInformationMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.RequestForGameInformation;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
 }
 
 public class ReturnToDivergencePointRequestMessage : MessageBase

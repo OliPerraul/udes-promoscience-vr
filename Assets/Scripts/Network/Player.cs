@@ -36,8 +36,8 @@ public class Player : NetworkBehaviour
     ClientGameState serverPlayerGameState = 0;
     GameAction serverPlayerAction;
 
-    int serverCourseId;
-    int serverTeamId;
+    int serverCourseId = -1;
+    int serverTeamId = -1;
     int serverTeamInformationId = -1;
 
     public DeviceType serverDeviceType = DeviceType.NoType;
@@ -54,7 +54,7 @@ public class Player : NetworkBehaviour
         set
         {
             serverCourseId = value;
-            OnTeamIdChanged();
+            OnCourseIdChanged();
         }
     }
 
@@ -195,6 +195,9 @@ public class Player : NetworkBehaviour
     [SerializeField]
     ScriptablePlayerInformation playerInformation;
 
+    [SerializeField]
+    ScriptableIntegerArray playerStartSteps;
+
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
@@ -312,6 +315,28 @@ public class Player : NetworkBehaviour
     [TargetRpc]
     public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
     {
+        playerStartSteps.Value = new int[0];
+
+        labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
+        algorithm.Value = algo;
+
+        if (algorithm.Value == Algorithm.Tutorial)
+        {
+            gameState.Value = ClientGameState.TutorialLabyrinthReady;
+        }
+        else
+        {
+            gameState.Value = ClientGameState.LabyrithReady;
+        }
+    }
+
+    [TargetRpc]
+    public void TargetSetGameWithSteps(NetworkConnection target, int[] steps, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
+    {
+        Debug.Log("StartWithSteps!");//temp
+
+        playerStartSteps.Value = steps;
+
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
         algorithm.Value = algo;
 

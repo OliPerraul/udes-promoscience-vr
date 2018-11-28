@@ -47,7 +47,14 @@ public enum GameAction : int
     MoveLeft = 3,
     TurnRight = 4,
     TurnLeft = 5,
-    PaintFloor = 6,
+    PaintFloorYellow = 6,
+    PaintFloorRed = 7,
+    UnpaintFloor = 8,
+    ReceivedDirectiveMoveForward = 9,
+    ReceivedDirectiveStop = 10,
+    ReceivedDirectiveTurnLeft = 11,
+    ReceivedDirectiveTurnRight = 12,
+    ReceivedDirectiveUturn = 13
 }
 
 public enum DeviceType
@@ -60,17 +67,17 @@ public enum DeviceType
 
 public enum Directive
 {
-    TurnRight,
+    MoveForward,
+    Stop,
     TurnLeft,
-    MoveFoward,
-    UTurn,
-    Stop
+    TurnRight,
+    UTurn
 }
 
 public enum TileColor : int
 {
-    NoColor = 0,
-    Grey = 1,
-    Yellow = 2,
-    Red = 3
+    Grey = 0,
+    Yellow = 1,
+    Red = 2,
+    NoColor = 3
 }

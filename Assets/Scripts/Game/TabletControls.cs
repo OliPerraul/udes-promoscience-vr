@@ -17,6 +17,9 @@ public class TabletControls : MonoBehaviour
     ScriptableTile playerPaintTile;
 
     [SerializeField]
+    ScriptableTileArray playerTilesToPaint;
+
+    [SerializeField]
     GameLabyrinth labyrinth;
 
     [SerializeField]
@@ -46,6 +49,7 @@ public class TabletControls : MonoBehaviour
         playerPosition.valueChangedEvent += OnNewPlayerPosition;
         playerRotation.valueChangedEvent += OnNewPlayerRotation;
         playerPaintTile.valueChangedEvent += OnPlayerPaintTile;
+        playerTilesToPaint.valueChangedEvent += OnPlayerTilesToPaint;
         controls.resetPositionAndRotation += StopAllMovement;
         controls.stopAllMovementEvent += ResetPositionAndRotation;
     }
@@ -137,12 +141,28 @@ public class TabletControls : MonoBehaviour
 
     void OnPlayerPaintTile()
     {
-        GameObject tile = labyrinth.GetTile(playerPaintTile.TilePosition);
+        PaintTile(playerPaintTile.TilePosition, playerPaintTile.TileColor);
+    }
+
+    void OnPlayerTilesToPaint()
+    {
+        Tile[] tiles = playerTilesToPaint.Value;
+
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            Tile tile = tiles[i];
+            PaintTile(new Vector2Int(tile.x, tile.y), tile.color);
+        }
+    }
+
+    void PaintTile(Vector2Int position, TileColor color)
+    {
+        GameObject tile = labyrinth.GetTile(position);
         FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
 
         if (floorPainter != null)
         {
-            floorPainter.PaintFloorWithColor(playerPaintTile.TileColor);
+            floorPainter.PaintFloorWithColor(color);
         }
     }
 

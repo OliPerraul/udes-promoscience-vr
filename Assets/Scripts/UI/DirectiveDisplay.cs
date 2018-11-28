@@ -18,19 +18,19 @@ public class DirectiveDisplay : MonoBehaviour
     Transform cameraTransform;
 
     [SerializeField]
-    Sprite forwardImage;//temp might change to a ressource manager
+    Sprite forwardImage;
 
     [SerializeField]
-    Sprite turnLeftImage;//temp might change to a ressource manager
+    Sprite stopImage;
 
     [SerializeField]
-    Sprite turnRightImage;//temp might change to a ressource manager
+    Sprite turnLeftImage;
 
     [SerializeField]
-    Sprite uTurnImage;//temp might change to a ressource manager
+    Sprite turnRightImage;
 
     [SerializeField]
-    Sprite stopImage;//temp might change to a ressource manager
+    Sprite uTurnImage;
 
     float hideTime = 3.0f;
     float hideTimer;
@@ -61,9 +61,13 @@ public class DirectiveDisplay : MonoBehaviour
 
     void SetDirectiveImage(Directive dir)
     {
-        if(dir == Directive.MoveFoward)
+        if(dir == Directive.MoveForward)
         {
             directiveImage.sprite = forwardImage;
+        }
+        else if (dir == Directive.Stop)
+        {
+            directiveImage.sprite = stopImage;
         }
         else if (dir == Directive.TurnLeft)
         {
@@ -76,10 +80,6 @@ public class DirectiveDisplay : MonoBehaviour
         else if (dir == Directive.UTurn)
         {
             directiveImage.sprite = uTurnImage;
-        }
-        else if (dir == Directive.Stop)
-        {
-            directiveImage.sprite = stopImage;
         }
     }
 }

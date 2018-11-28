@@ -1960,6 +1960,7 @@ MonoBehaviour:
   playerPosition: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f, type: 2}
   playerRotation: {fileID: 11400000, guid: 2a36872cafdb21144af5591f6351885b, type: 2}
   playerPaintTile: {fileID: 11400000, guid: 7301fc4899778e3459a66b0b9b95ffb4, type: 2}
+  playerTilesToPaint: {fileID: 11400000, guid: e2a59109816f01f4b8f87b6ce5112b02, type: 2}
   labyrinth: {fileID: 1135340688}
   cameraTransform: {fileID: 1700386059}
 --- !u!114 &1135340688
@@ -5481,6 +5482,7 @@ MonoBehaviour:
   playerPaintTile: {fileID: 11400000, guid: 7301fc4899778e3459a66b0b9b95ffb4, type: 2}
   playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
     type: 2}
+  playerTilesToPaint: {fileID: 11400000, guid: e2a59109816f01f4b8f87b6ce5112b02, type: 2}
   returnToDivergencePointAnswer: {fileID: 11400000, guid: c0ec1a0d6508fb5428bb9521683f8580,
     type: 2}
   returnToDivergencePointRequest: {fileID: 11400000, guid: bc147a0c74a996b44b71cb26b81651f0,

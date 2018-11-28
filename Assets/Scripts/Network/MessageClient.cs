@@ -37,9 +37,9 @@ public class MessageClient : MonoBehaviour
 
     [SerializeField]
     ScriptableAction playerReachedTheEnd;
-    /*
+    
     [SerializeField]
-    ScriptablePositionRotationAndTile playerPositionRotationAndTiles;*/
+    ScriptableTileArray playerTilesToPaint;
 
     [SerializeField]
     ScriptableBoolean returnToDivergencePointAnswer;
@@ -70,6 +70,7 @@ public class MessageClient : MonoBehaviour
         client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
         client.RegisterHandler(PlayerPaintTileMessage.GetCustomMsgType(), OnPlayerPaintTile);
         client.RegisterHandler(PlayerReachedTheEndMessage.GetCustomMsgType(), OnPlayerReachedTheEnd);
+        client.RegisterHandler(PlayerTilesToPaintMessage.GetCustomMsgType(), OnPlayerTilesToPaint);
         client.RegisterHandler(ReturnToDivergencePointAnswerMessage.GetCustomMsgType(), OnReturnToDivergencePointAnswer);
         client.RegisterHandler(AlgorithmRespectMessage.GetCustomMsgType(), OnAlgorithmRespect);
 
@@ -82,6 +83,14 @@ public class MessageClient : MonoBehaviour
         client = null;
     }
 
+    void OnGameStateChanged()
+    {
+        if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
+        {
+            SendRequestForGameInformation();
+        }
+    }
+
     private void OnDestroy()
     {
         StopClient();
@@ -91,11 +100,9 @@ public class MessageClient : MonoBehaviour
     {
         directive.valueChangedEvent += SendDirective;
         returnToDivergencePointRequest.action += SendReturnToDivergencePointRequest;
+        gameState.valueChangedEvent += OnGameStateChanged;
 
-        if (gameState.Value == ClientGameState.Paired)
-        {
-            gameState.Value = ClientGameState.Ready;
-        }
+        gameState.Value = ClientGameState.Ready;
 
         isConnectedToPair.Value = true;
     }
@@ -104,10 +111,11 @@ public class MessageClient : MonoBehaviour
     {
         isConnectedToPair.Value = false;
 
+        gameState.valueChangedEvent -= OnGameStateChanged;
         directive.valueChangedEvent -= SendDirective;
         returnToDivergencePointRequest.action -= SendReturnToDivergencePointRequest;
 
-        Debug.Log("message disconnected");
+        Debug.Log("message disconnected");//Temp
 
         client.Connect(pairedIpAdress.Value, serverPort);
     }
@@ -147,6 +155,12 @@ public class MessageClient : MonoBehaviour
         playerReachedTheEnd.FireAction();
     }
 
+    void OnPlayerTilesToPaint(NetworkMessage netMsg)
+    {
+        PlayerTilesToPaintMessage msg = netMsg.ReadMessage<PlayerTilesToPaintMessage>();
+        playerTilesToPaint.Value = msg.tiles;
+    }
+
     void OnReturnToDivergencePointAnswer(NetworkMessage netMsg)
     {
         ReturnToDivergencePointAnswerMessage msg = netMsg.ReadMessage<ReturnToDivergencePointAnswerMessage>();
@@ -175,16 +189,12 @@ public class MessageClient : MonoBehaviour
 
         client.Send(msg.GetMsgType(), msg);
     }
-    /*
-    void SendPlayerPositionRotationAndTiles()
+    
+    void SendRequestForGameInformation()
     {
-        PlayerSetPositionRotationAndTilesMessage msg = new PlayerSetPositionRotationAndTilesMessage();
-        msg.position = playerPositionRotationAndTiles.GetPosition();
-        msg.rotation = playerPositionRotationAndTiles.GetRotation();
-        msg.tiles = playerPositionRotationAndTiles.GetTiles();
-
+        RequestForGameInformationMessage msg = new RequestForGameInformationMessage();
         client.Send(msg.GetMsgType(), msg);
-    }*/
+    }
 
     void SendReturnToDivergencePointRequest()
     {
