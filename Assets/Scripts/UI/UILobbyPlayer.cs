@@ -12,6 +12,54 @@ public class UILobbyPlayer : MonoBehaviour
     ScriptableTeamList teamList;
 
     [SerializeField]
+    ScriptableLocalizeString connecting;
+
+    [SerializeField]
+    ScriptableLocalizeString disconnected;
+
+    [SerializeField]
+    ScriptableLocalizeString longestStraight;
+
+    [SerializeField]
+    ScriptableLocalizeString noAssociatedPair;
+
+    [SerializeField]
+    ScriptableLocalizeString notReady;
+
+    [SerializeField]
+    ScriptableLocalizeString paired;
+
+    [SerializeField]
+    ScriptableLocalizeString pairing;
+
+    [SerializeField]
+    ScriptableLocalizeString playing;
+
+    [SerializeField]
+    ScriptableLocalizeString playingTutorial;
+
+    [SerializeField]
+    ScriptableLocalizeString ready;
+
+    [SerializeField]
+    ScriptableLocalizeString reconnecting;
+
+    [SerializeField]
+    ScriptableLocalizeString shortestFlight;
+
+    [SerializeField]
+    ScriptableLocalizeString standardAlgorithm;
+
+    [SerializeField]
+    ScriptableLocalizeString unknownStatus;
+
+    [SerializeField]
+    ScriptableLocalizeString waitingForNextRound;
+
+    [SerializeField]
+    ScriptableLocalizeString waitingForPairConnection;
+
+    [SerializeField]
     Image image;
 
     [SerializeField]
@@ -108,55 +156,55 @@ public class UILobbyPlayer : MonoBehaviour
     {
         if (playerInformation.Player == null)
         {
-            statusText.text = "Disconnected";
+            statusText.text = disconnected.Value;
         }
         else
         {
             if (playerInformation.PlayerGameState == ClientGameState.Connecting)
             {
-                statusText.text = "Connecting";
+                statusText.text = connecting.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.NotReady)
             {
-                statusText.text = "Not ready";
+                statusText.text = notReady.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Pairing)
             {
-                statusText.text = "Pairing";
+                statusText.text = pairing.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.NoAssociatedPair || playerInformation.PlayerGameState == ClientGameState.ReconnectingNoAssociatedPair)
             {
-                statusText.text = "No associated pair";
+                statusText.text = noAssociatedPair.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Paired)
             {
-                statusText.text = "Paired";
+                statusText.text = paired.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Ready)
             {
-                statusText.text = "Ready";
+                statusText.text = ready.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.PlayingTutorial)
             {
-                statusText.text = "Playing tutorial";
+                statusText.text = playingTutorial.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Playing)
             {
-                string text = "Playing";
+                string text = playing.Value;
 
                 if (playerInformation.Player.serverDeviceType == DeviceType.Headset)
                 {
                     if (playerInformation.Player.serverAlgorithm == Algorithm.ShortestFlightDistance)
                     {
-                        text += " - Shortest Flight";
+                        text += " - " + shortestFlight.Value;
                     }
                     else if (playerInformation.Player.serverAlgorithm == Algorithm.LongestStraight)
                     {
-                        text += " - Longest Straight";
+                        text += " - " + longestStraight.Value;
                     }
                     else if (playerInformation.Player.serverAlgorithm == Algorithm.Standard)
                     {
-                        text += " - Standard algorithm";
+                        text += " - " + standardAlgorithm.Value;
                     }
                 }
 
@@ -164,19 +212,19 @@ public class UILobbyPlayer : MonoBehaviour
             }
             else if (playerInformation.PlayerGameState == ClientGameState.WaitingForNextRound)
             {
-                statusText.text = "Waiting for next round";
+                statusText.text = waitingForNextRound.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Reconnecting)
             {
-                statusText.text = "Reconnecting";
+                statusText.text = reconnecting.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.WaitingForPairConnection)
             {
-                statusText.text = "Waiting for pair connection";
+                statusText.text = waitingForPairConnection.Value;
             }
             else
             {
-                statusText.text = "Unknown Status";
+                statusText.text = unknownStatus.Value;
             }
         }
     }

@@ -186,6 +186,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playersInformation: {fileID: 11400000, guid: 3feeeb45d324b214994235177b056084, type: 2}
   teamList: {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682, type: 2}
+  connecting: {fileID: 11400000, guid: e6a2b4259ca60fb4492c30d739d17f63, type: 2}
+  disconnected: {fileID: 11400000, guid: 6e039fd3cb9bc5046a2c3bae9705d5d6, type: 2}
+  longestStraight: {fileID: 11400000, guid: 2a11923c14f145f4d828ed5d8c3abbcd, type: 2}
+  noAssociatedPair: {fileID: 11400000, guid: 0a4f4806024424b4aa34174ba6e1b42a, type: 2}
+  notReady: {fileID: 11400000, guid: 177c90cb1c0fcdc4da29e53ccc2c1675, type: 2}
+  paired: {fileID: 11400000, guid: 0d2d52918d1bbb8458dc8b849e89f4c8, type: 2}
+  pairing: {fileID: 11400000, guid: 78ed7f45c1e746f4e8ac97f27ecb3166, type: 2}
+  playing: {fileID: 11400000, guid: fd42ff0ffe425cf4398f100f5eaf04e2, type: 2}
+  playingTutorial: {fileID: 11400000, guid: 6a29a99edc659fd40a2d7f848294407a, type: 2}
+  ready: {fileID: 11400000, guid: df2321abe4b96664696bb2b1eaed8038, type: 2}
+  reconnecting: {fileID: 11400000, guid: d3bbd059717ff4a4ab614d72caa39bff, type: 2}
+  shortestFlight: {fileID: 11400000, guid: 576b4d870d7816e46ba15f87c9a38160, type: 2}
+  standardAlgorithm: {fileID: 11400000, guid: 28ef717dfeb2055438332deb3e5aca84, type: 2}
+  unknownStatus: {fileID: 11400000, guid: 307b5af17b6f47240b842094e710eea2, type: 2}
+  waitingForNextRound: {fileID: 11400000, guid: c539fd7114cb28f4dbe934def83d7c36,
+    type: 2}
+  waitingForPairConnection: {fileID: 11400000, guid: ab2a0e2fd719f624da6f23cfc7ee15de,
+    type: 2}
   image: {fileID: 114918811949441476}
   nameText: {fileID: 114993567989397778}
   teamNameText: {fileID: 114127204284644362}

@@ -78,9 +78,46 @@ public class DistanceScanner : MonoBehaviour
 
                 if (hitWallPosition.x == currentPosition.x || hitWallPosition.y == currentPosition.y)
                 {
-                    //Might need a check to see if it's the first wall in line for later when obstacles wont be big block without holes
-                    distance = (int)(hitWallPosition - currentPosition).magnitude - 1;
-                    text = distance.ToString();
+                    bool isFirstWallInLine = true;
+
+                    if (hitWallPosition.x == currentPosition.x)
+                    {
+                        int direction = (hitWallPosition.y - currentPosition.y) < 0 ? 0 : 2;
+                        int y = currentPosition.y + yByDirection[direction];
+
+                        while(y != hitWallPosition.y)
+                        {
+                            if(!labyrinth.GetIsTileWalkable(currentPosition.x, y))
+                            {
+                                isFirstWallInLine = false;
+                                break;
+                            }
+
+                            y += yByDirection[direction];
+                        }
+                    }
+                    else if (hitWallPosition.y == currentPosition.y)
+                    {
+                        int direction = (hitWallPosition.x - currentPosition.x) < 0 ? 3 : 1;
+                        int x = currentPosition.x + xByDirection[direction];
+
+                        while (x != hitWallPosition.x)
+                        {
+                            if (!labyrinth.GetIsTileWalkable(x, currentPosition.y))
+                            {
+                                isFirstWallInLine = false;
+                                break;
+                            }
+
+                            x += xByDirection[direction];
+                        }
+                    }
+
+                    if (isFirstWallInLine)
+                    {
+                        distance = (int)(hitWallPosition - currentPosition).magnitude - 1;
+                        text = distance.ToString();
+                    }
                 }
             }
             else if (raycastHit.transform.tag == TAG_FLOOR)
@@ -88,7 +125,6 @@ public class DistanceScanner : MonoBehaviour
                 Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
                 Vector2Int hitPosition = labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.point.x, raycastHit.point.z);
 
-                //Could also check if they are walkable
                 if (hitPosition == currentPosition
                         || hitPosition == (currentPosition + new Vector2Int(xByDirection[0], yByDirection[0]))
                         || hitPosition == (currentPosition + new Vector2Int(xByDirection[1], yByDirection[1]))

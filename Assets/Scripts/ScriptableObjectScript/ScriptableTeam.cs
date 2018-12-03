@@ -9,7 +9,7 @@ public class ScriptableTeam : ScriptableObject
     int teamId;
 
     [SerializeField]
-    string teamName;
+    ScriptableLocalizeString teamName;
 
     [SerializeField]
     Color teamColor;
@@ -26,7 +26,7 @@ public class ScriptableTeam : ScriptableObject
     {
         get
         {
-            return teamName;
+            return teamName.Value;
         }
     }
 

@@ -114,7 +114,7 @@ public class ScriptableServerGameInformation : ScriptableObject
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                 player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
 #endif
-                player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
+                player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, ((GameRound - 1) % 3) + 1, algorithm);
             }
         }
     }
@@ -132,7 +132,7 @@ public class ScriptableServerGameInformation : ScriptableObject
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
         player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
 #endif
-        player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
+        player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, ((GameRound - 1) % 3) + 1, algorithm);
     }
 
     public void StartGameRoundWithSteps(Player player, int[] steps)
@@ -145,7 +145,7 @@ public class ScriptableServerGameInformation : ScriptableObject
         player.serverAlgorithm = algorithm;
         player.serverLabyrinthId = GameRound;
 
-        player.TargetSetGameWithSteps(player.connectionToClient, steps, data, sizeX, sizeY, GameRound, algorithm);
+        player.TargetSetGameWithSteps(player.connectionToClient, steps, data, sizeX, sizeY, ((GameRound - 1) % 3) + 1, algorithm);
     }
 
     public void EndRoundOrTutorial()

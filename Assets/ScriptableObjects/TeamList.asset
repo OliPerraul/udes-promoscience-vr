@@ -13,6 +13,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamList:
   - {fileID: 11400000, guid: 31f3223daea9f1c448db07382e7614b4, type: 2}
+  - {fileID: 11400000, guid: 8689748819513a140bc84ea1c76c27d3, type: 2}
   - {fileID: 11400000, guid: e11f4f6bcf59f3f4d8a02cdbec5296d4, type: 2}
+  - {fileID: 11400000, guid: c58213bbf27e4e44aa9ad3d3b6be304c, type: 2}
+  - {fileID: 11400000, guid: fd825cc49b558894096acdebdeb8ff30, type: 2}
+  - {fileID: 11400000, guid: 6b5ab7704be968d4f9b5919b2378e964, type: 2}
   - {fileID: 11400000, guid: f20eb0e156b0e2649937bc5197a7ed79, type: 2}
+  - {fileID: 11400000, guid: 49ef8169ab86b6f41adacb29925c7152, type: 2}
   - {fileID: 11400000, guid: d88793ba413debd4eb471b445caed1c6, type: 2}
+  - {fileID: 11400000, guid: 5bc53aad85f3c244996ff44b1d2fceec, type: 2}
+  - {fileID: 11400000, guid: 4f738b91062f67d45b691568ff52ec29, type: 2}
+  - {fileID: 11400000, guid: f01abe705435457449246cdb974afccb, type: 2}

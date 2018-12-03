@@ -11,6 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18768afd6c3e9524dadae043969fffcb, type: 3}
   m_Name: Orange Team
   m_EditorClassIdentifier: 
-  teamId: 2
-  teamName: Orange Team
+  teamId: 6
+  teamName: {fileID: 11400000, guid: 70e8b14093674d940bd5f157a1a3d86c, type: 2}
   teamColor: {r: 1, g: 0.6324958, b: 0, a: 1}
