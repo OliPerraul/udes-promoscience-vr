@@ -5,10 +5,6 @@ using UnityEngine.Networking;
 
 public class MessageServer : MonoBehaviour
 {
-    /*
-    [SerializeField]
-    ScriptableGameAction action;*/
-
     [SerializeField]
     ScriptableFloat algorithmRespect;
 
@@ -99,7 +95,6 @@ public class MessageServer : MonoBehaviour
     {
         clientConnection = netMsg.conn;
 
-        //action.valueChangedEvent += SendAction;
         algorithmRespect.valueChangedEvent += SendAlgorithmRespect;
         playerReachedTheEnd.action += SendEndReached;
         playerPosition.valueChangedEvent += SendPlayerPosition;
@@ -125,7 +120,6 @@ public class MessageServer : MonoBehaviour
 
         clientConnection = null;
 
-        //action.valueChangedEvent -= SendAction;
         algorithmRespect.valueChangedEvent -= SendAlgorithmRespect;
         playerReachedTheEnd.action -= SendEndReached;
         playerPosition.valueChangedEvent -= SendPlayerPosition;
@@ -134,8 +128,6 @@ public class MessageServer : MonoBehaviour
         returnToDivergencePointAnswer.valueChangedEvent -= SendReturnToDivergencePointAnswer;
 
         playerInformation.playerInformationChangedEvent -= SendPlayerInformation;
-
-        Debug.Log("message disconnected");//temp
     }
 
     void OnDirective(NetworkMessage netMsg)
@@ -158,15 +150,11 @@ public class MessageServer : MonoBehaviour
             SendAlgorithmRespect();
             SendPlayerTilesToPaint();
         }
+        else if (gameState.Value == ClientGameState.WaitingForNextRound)
+        {
+            SendEndReached();
+        }
     }
-    /*
-    void SendAction()
-    {
-        ActionMessage msg = new ActionMessage();
-        msg.action = action.Value;
-
-        clientConnection.Send(msg.GetMsgType(), msg);
-    }*/
 
     void SendAlgorithmRespect()
     {

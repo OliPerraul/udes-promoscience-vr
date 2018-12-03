@@ -345,8 +345,6 @@ public class Player : NetworkBehaviour
     [TargetRpc]
     public void TargetSetGameWithSteps(NetworkConnection target, int[] steps, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
     {
-        Debug.Log("StartWithSteps!");//temp
-
         playerStartSteps.Value = steps;
 
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);

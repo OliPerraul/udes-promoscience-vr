@@ -32,7 +32,8 @@ public class DirectiveDisplay : MonoBehaviour
     [SerializeField]
     Sprite uTurnImage;
 
-    float hideTime = 3.0f;
+    const float hideTime = 3.0f;
+
     float hideTimer;
 
     void Start ()
@@ -45,7 +46,11 @@ public class DirectiveDisplay : MonoBehaviour
 		if(directiveDisplayer.activeSelf)
         {
             hideTimer += Time.deltaTime;
-            if(hideTimer >= hideTime)
+
+            float scale = hideTimer < hideTime / 2 ? 1.0f + ( hideTimer / (hideTime / 2))/2 : 1.5f - ((hideTimer - (hideTime / 2)) / (hideTime / 2))/2;
+            gameObject.transform.localScale += new Vector3(scale - gameObject.transform.localScale.x, scale - gameObject.transform.localScale.y, 0f);
+
+            if (hideTimer >= hideTime)
             {
                 directiveDisplayer.SetActive(false);
             }
