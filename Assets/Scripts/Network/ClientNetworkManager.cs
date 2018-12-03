@@ -40,11 +40,6 @@ public class ClientNetworkManager : NetworkManager
 
         isConnectedToServer.Value = false;
 
-        controls.IsControlsEnabled = false;//Should be moved to deconection/reconnection logic
-        Debug.Log("You lost connection with the server!!!");//Same
-
-        //StopClient();
         StartClient();
-
     }
 }

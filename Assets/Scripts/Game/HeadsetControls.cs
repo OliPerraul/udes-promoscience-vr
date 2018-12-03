@@ -5,16 +5,25 @@ using UnityEngine;
 public class HeadsetControls : MonoBehaviour
 {
     [SerializeField]
-    ScriptableGameAction gameAction;
-
-    [SerializeField]
     ScriptableControler controls;
 
     [SerializeField]
     ScriptableDirective directive;
 
     [SerializeField]
+    ScriptableGameAction gameAction;
+
+    [SerializeField]
+    ScriptableClientGameState gameState;
+
+    [SerializeField]
     ScriptableInteger forwardDirection;
+
+    [SerializeField]
+    ScriptableBoolean isConnectedToPair;
+
+    [SerializeField]
+    ScriptableBoolean isConnectedToServer;
 
     [SerializeField]
     ScriptableAction labyrinthPositionChanged;
@@ -73,10 +82,12 @@ public class HeadsetControls : MonoBehaviour
         controls.stopAllMovementEvent += OnStopAllMovement;
         controls.resetPositionAndRotation += OnResetPositionAndRotation;
         directive.valueChangedEvent += OnDirective;
+        isConnectedToPair.valueChangedEvent += OnConnectOrDisconnectWithPair;
+        isConnectedToServer.valueChangedEvent += OnConnectOrDisconnectWithServer;
         playerPositionRotationAndTiles.valueChangedEvent += OnPlayerPositionRotationAndTiles;
     }
 
-    void Update ()
+    void Update()
     {
         if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
         {
@@ -98,7 +109,7 @@ public class HeadsetControls : MonoBehaviour
                 {
                     if (isMoving)
                     {
-                        if( lerpValue >= 0.5f && CheckIfMovementIsValidInDirectionFromPosition(forwardDirection.Value, targetPosition))
+                        if (lerpValue >= 0.5f && CheckIfMovementIsValidInDirectionFromPosition(forwardDirection.Value, targetPosition))
                         {
                             isChainingMovement = true;
                         }
@@ -119,7 +130,7 @@ public class HeadsetControls : MonoBehaviour
                     }
                     else if (isTurningRight)
                     {
-                        if(isChainingMovement)
+                        if (isChainingMovement)
                         {
                             isChainingMovement = false;
                         }
@@ -197,7 +208,7 @@ public class HeadsetControls : MonoBehaviour
                 isPrimaryIndexTriggerHold = false;
             }
 
-            if(isPrimaryIndexTriggerHold)
+            if (isPrimaryIndexTriggerHold)
             {
                 primaryIndexTriggerHoldTime += Time.deltaTime;
 
@@ -210,7 +221,7 @@ public class HeadsetControls : MonoBehaviour
 
             if (isMoving)
             {
-                float xi = ((moveSpeed * moveSpeed)/(-2 * Constants.MOVEMENT_ACCELERATION)) + 1;
+                float xi = ((moveSpeed * moveSpeed) / (-2 * Constants.MOVEMENT_ACCELERATION)) + 1;
 
                 if (isChainingMovement)
                 {
@@ -222,7 +233,7 @@ public class HeadsetControls : MonoBehaviour
 
                 if (lerpValue >= 1)
                 {
-                    if(isChainingMovement)
+                    if (isChainingMovement)
                     {
                         MovementInDirectionAction(forwardDirection.Value);
 
@@ -255,9 +266,9 @@ public class HeadsetControls : MonoBehaviour
             }
             else if (isTurningLeft || isTurningRight)
             {
-                float xi = ((turnSpeed * turnSpeed) / ( -2 * Constants.TURNING_ACCELERATION)) + 1;
+                float xi = ((turnSpeed * turnSpeed) / (-2 * Constants.TURNING_ACCELERATION)) + 1;
 
-                if(isChainingMovement)
+                if (isChainingMovement)
                 {
                     xi++;
                 }
@@ -272,7 +283,7 @@ public class HeadsetControls : MonoBehaviour
                         isChainingMovement = false;
                         lerpValue = lerpValue - 1;
 
-                        if(isTurningLeft)
+                        if (isTurningLeft)
                         {
                             Quaternion trajectory = new Quaternion();
                             trajectory.eulerAngles += new Vector3(0, -90, 0);
@@ -318,7 +329,7 @@ public class HeadsetControls : MonoBehaviour
                 {
                     PaintTile(lastLabyrinthPosition, TileColor.Red, true);
                 }
-                
+
                 lastLabyrinthPosition = labyrinthPosition;
                 labyrinthPositionChanged.FireAction();
             }
@@ -346,7 +357,7 @@ public class HeadsetControls : MonoBehaviour
         {
             fromPosition = cameraTransform.position;
             targetPosition = fromPosition + (new Vector3(xByDirection[direction] * Constants.TILE_SIZE, 0, -yByDirection[direction] * Constants.TILE_SIZE));
-            
+
             isMoving = true;
         }
     }
@@ -449,6 +460,29 @@ public class HeadsetControls : MonoBehaviour
         else if (direction == 3)
         {
             gameAction.SetAction(GameAction.MoveLeft);
+        }
+    }
+
+    void OnConnectOrDisconnectWithPair()
+    {
+        if (isConnectedToServer.Value)
+        {
+            if(gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
+            {
+                controls.IsControlsEnabled = true;
+            }
+        }
+        else
+        {
+            controls.IsControlsEnabled = false;
+        }
+    }
+
+    void OnConnectOrDisconnectWithServer()
+    {
+        if (!isConnectedToServer.Value)
+        {
+            controls.IsControlsEnabled = false;
         }
     }
 

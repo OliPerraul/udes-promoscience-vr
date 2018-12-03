@@ -8,6 +8,12 @@ public class TabletControls : MonoBehaviour
     ScriptableControler controls;
 
     [SerializeField]
+    ScriptableBoolean isConnectedToPair;
+
+    [SerializeField]
+    ScriptableBoolean isConnectedToServer;
+
+    [SerializeField]
     ScriptableVector3 playerPosition;
 
     [SerializeField]
@@ -28,7 +34,7 @@ public class TabletControls : MonoBehaviour
     bool isMoving = false;
     bool isTurning = false;
 
-    const float fixedTimestep = 0.05f;//Value of TimeManager Fixed Timestep
+    const float fixedTimestep = 0.03f;//Value of TimeManager Fixed Timestep
     const float maxMovementDistance = Constants.TILE_SIZE;
     const float maxRotationAngle = 45;
 
@@ -52,6 +58,8 @@ public class TabletControls : MonoBehaviour
         playerTilesToPaint.valueChangedEvent += OnPlayerTilesToPaint;
         controls.resetPositionAndRotation += StopAllMovement;
         controls.stopAllMovementEvent += ResetPositionAndRotation;
+        isConnectedToPair.valueChangedEvent += OnDisconnectFromPair;
+        isConnectedToServer.valueChangedEvent += OnDisconnectFromServer;
     }
 
     private void Update()
@@ -128,6 +136,21 @@ public class TabletControls : MonoBehaviour
         }
     }
 
+    void OnDisconnectFromPair()
+    {
+        if (!isConnectedToPair.Value)
+        {
+            controls.IsControlsEnabled = false;
+        }
+    }
+
+    void OnDisconnectFromServer()
+    {
+        if (!isConnectedToServer.Value)
+        {
+            controls.IsControlsEnabled = false;
+        }
+    }
 
     void OnNewPlayerPosition()
     {
@@ -146,19 +169,12 @@ public class TabletControls : MonoBehaviour
 
     void OnPlayerTilesToPaint()
     {
-        if (playerTilesToPaint.Value != null)
-        {
-            Tile[] tiles = playerTilesToPaint.Value;
+        Tile[] tiles = playerTilesToPaint.Value;
 
-            for (int i = 0; i < tiles.Length; i++)
-            {
-                Tile tile = tiles[i];
-                PaintTile(new Vector2Int(tile.x, tile.y), tile.color);
-            }
-        }
-        else
+        for (int i = 0; i < tiles.Length; i++)
         {
-            Debug.Log(" playerTilesToPaint.Value == null !!");//temp
+            Tile tile = tiles[i];
+            PaintTile(new Vector2Int(tile.x, tile.y), tile.color);
         }
     }
 
