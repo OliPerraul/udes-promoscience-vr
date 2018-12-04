@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamId: 1
   teamName: {fileID: 11400000, guid: 0947a97b49d22364c89dc7906eecfdd8, type: 2}
-  teamColor: {r: 0, g: 1, b: 1, a: 0}
+  teamColor: {r: 0, g: 1, b: 1, a: 1}

@@ -58,13 +58,13 @@ public class TabletControls : MonoBehaviour
         playerTilesToPaint.valueChangedEvent += OnPlayerTilesToPaint;
         controls.resetPositionAndRotation += StopAllMovement;
         controls.stopAllMovementEvent += ResetPositionAndRotation;
-        isConnectedToPair.valueChangedEvent += OnDisconnectFromPair;
-        isConnectedToServer.valueChangedEvent += OnDisconnectFromServer;
+        isConnectedToPair.valueChangedEvent += OnConnectOrDisconnect;
+        isConnectedToServer.valueChangedEvent += OnConnectOrDisconnect;
     }
 
     private void Update()
     {
-        if (controls.IsControlsEnabled)
+        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
         {
             if (isMoving)
             {
@@ -136,17 +136,14 @@ public class TabletControls : MonoBehaviour
         }
     }
 
-    void OnDisconnectFromPair()
-    {
-        if (!isConnectedToPair.Value)
-        {
-            controls.IsControlsEnabled = false;
-        }
-    }
 
-    void OnDisconnectFromServer()
+    void OnConnectOrDisconnect()
     {
-        if (!isConnectedToServer.Value)
+        if (isConnectedToPair.Value && isConnectedToServer.Value)
+        {
+            controls.IsControlsEnabled = true;
+        }
+        else
         {
             controls.IsControlsEnabled = false;
         }

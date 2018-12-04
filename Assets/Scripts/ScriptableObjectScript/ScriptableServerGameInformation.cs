@@ -94,10 +94,10 @@ public class ScriptableServerGameInformation : ScriptableObject
 
     public void StartNextGameRound()
     {
-        GameRound++;
+        GameRound = (GameRound % 3) + 1;
         GameState = ServerGameState.GameRound;
 
-        int[] data = labyrinthData.GetLabyrithDataWithId(((GameRound - 1) % 3) + 1);
+        int[] data = labyrinthData.GetLabyrithDataWithId(GameRound);
         int sizeX = labyrinthData.GetLabyrithXLenght();
         int sizeY = labyrinthData.GetLabyrithYLenght();
 
@@ -114,14 +114,14 @@ public class ScriptableServerGameInformation : ScriptableObject
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                 player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
 #endif
-                player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, ((GameRound - 1) % 3) + 1, algorithm);
+                player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
             }
         }
     }
 
     public void StartGameRound(Player player)
     {
-        int[] data = labyrinthData.GetLabyrithDataWithId(((GameRound - 1) % 3) + 1);
+        int[] data = labyrinthData.GetLabyrithDataWithId(GameRound);
         int sizeX = labyrinthData.GetLabyrithXLenght();
         int sizeY = labyrinthData.GetLabyrithYLenght();
 
@@ -132,12 +132,12 @@ public class ScriptableServerGameInformation : ScriptableObject
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
         player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
 #endif
-        player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, ((GameRound - 1) % 3) + 1, algorithm);
+        player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
     }
 
     public void StartGameRoundWithSteps(Player player, int[] steps)
     {
-        int[] data = labyrinthData.GetLabyrithDataWithId(((GameRound - 1) % 3) + 1);
+        int[] data = labyrinthData.GetLabyrithDataWithId(GameRound);
         int sizeX = labyrinthData.GetLabyrithXLenght();
         int sizeY = labyrinthData.GetLabyrithYLenght();
 
@@ -145,7 +145,7 @@ public class ScriptableServerGameInformation : ScriptableObject
         player.serverAlgorithm = algorithm;
         player.serverLabyrinthId = GameRound;
 
-        player.TargetSetGameWithSteps(player.connectionToClient, steps, data, sizeX, sizeY, ((GameRound - 1) % 3) + 1, algorithm);
+        player.TargetSetGameWithSteps(player.connectionToClient, steps, data, sizeX, sizeY, GameRound, algorithm);
     }
 
     public void EndRoundOrTutorial()

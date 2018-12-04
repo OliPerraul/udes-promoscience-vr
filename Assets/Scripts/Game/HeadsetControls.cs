@@ -82,8 +82,8 @@ public class HeadsetControls : MonoBehaviour
         controls.stopAllMovementEvent += OnStopAllMovement;
         controls.resetPositionAndRotation += OnResetPositionAndRotation;
         directive.valueChangedEvent += OnDirective;
-        isConnectedToPair.valueChangedEvent += OnConnectOrDisconnectWithPair;
-        isConnectedToServer.valueChangedEvent += OnConnectOrDisconnectWithServer;
+        isConnectedToPair.valueChangedEvent += OnConnectOrDisconnect;
+        isConnectedToServer.valueChangedEvent += OnConnectOrDisconnect;
         playerPositionRotationAndTiles.valueChangedEvent += OnPlayerPositionRotationAndTiles;
     }
 
@@ -99,7 +99,7 @@ public class HeadsetControls : MonoBehaviour
             isPrimaryTouchpadHold = false;
         }
 
-        if (controls.IsControlsEnabled)
+        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
         {
             if (isPrimaryTouchpadHold)
             {
@@ -463,24 +463,13 @@ public class HeadsetControls : MonoBehaviour
         }
     }
 
-    void OnConnectOrDisconnectWithPair()
+    void OnConnectOrDisconnect()
     {
-        if (isConnectedToServer.Value)
+        if (isConnectedToPair.Value && isConnectedToServer.Value)
         {
-            if(gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
-            {
-                controls.IsControlsEnabled = true;
-            }
+            controls.IsControlsEnabled = true;
         }
         else
-        {
-            controls.IsControlsEnabled = false;
-        }
-    }
-
-    void OnConnectOrDisconnectWithServer()
-    {
-        if (!isConnectedToServer.Value)
         {
             controls.IsControlsEnabled = false;
         }
@@ -525,7 +514,16 @@ public class HeadsetControls : MonoBehaviour
     void OnResetPositionAndRotation()
     {
         cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
-        forwardDirection.Value = labyrinth.GetStartDirection();
+
+        if (gameState.Value == ClientGameState.WaitingForNextRound)
+        {
+            forwardDirection.Value = 0;
+        }
+        else
+        {
+            forwardDirection.Value = labyrinth.GetStartDirection();
+        }
+
         lastLabyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(0, 0);
 
         Quaternion rotation = new Quaternion(0, 0, 0, 0);

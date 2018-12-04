@@ -20,9 +20,6 @@ public class GameRound : MonoBehaviour
     GameLabyrinth labyrinth;
 
     [SerializeField]
-    GameObject labyrinthRoom;
-
-    [SerializeField]
     GameObject waitingForNextRoundRoom;
 
     void Start()
@@ -44,11 +41,6 @@ public class GameRound : MonoBehaviour
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
             }
-            
-            if (labyrinthRoom != null)
-            {
-                labyrinthRoom.GetComponent<Animation>().Play();
-            }
 
             if (waitingForNextRoundRoom != null)
             {
@@ -57,11 +49,15 @@ public class GameRound : MonoBehaviour
 
             if (controls != null)
             {
-                controls.IsControlsEnabled = true;
+                controls.IsPlayerControlsEnabled = true;
             }
         }
         else if (gameState.Value == ClientGameState.WaitingForNextRound)
         {
+            controls.IsPlayerControlsEnabled = false;
+            controls.StopAllMovement();
+            controls.ResetPositionAndRotation();
+
             if (waitingForNextRoundRoom != null)
             {
                 waitingForNextRoundRoom.SetActive(true);
@@ -71,22 +67,17 @@ public class GameRound : MonoBehaviour
 
     void OnPlayerReachedTheEnd()
     {
-        controls.IsControlsEnabled = false;
-        controls.StopAllMovement();
-        controls.ResetPositionAndRotation();
-
         if (isDiverging != null)
         {
             isDiverging.Value = false;
         }
 
-        if (labyrinthRoom != null)
-        {
-            labyrinthRoom.transform.position = new Vector3(0, 0, 0);
-        }
-
         if (gameState.Value == ClientGameState.PlayingTutorial)
         {
+            controls.IsPlayerControlsEnabled = false;
+            controls.StopAllMovement();
+            controls.ResetPositionAndRotation();
+
             gameState.Value = ClientGameState.TutorialLabyrinthReady;
         }
         else

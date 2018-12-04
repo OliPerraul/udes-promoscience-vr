@@ -145,9 +145,9 @@ public class MessageServer : MonoBehaviour
     {
         if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
         {
+            SendAlgorithmRespect();
             SendPlayerPosition();
             SendPlayerRotation();
-            SendAlgorithmRespect();
             SendPlayerTilesToPaint();
         }
         else if (gameState.Value == ClientGameState.WaitingForNextRound)

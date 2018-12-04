@@ -14,7 +14,7 @@ public class ScriptableControlerEditor : Editor
 
         if (GUILayout.Button("On Controls Enable Value Changed"))
         {
-            scriptableControler.OnControlsEnableValueChanged();
+            scriptableControler.OnPlayerControlsEnableValueChanged();
         }
 
         if (GUILayout.Button("Stop All Movement"))

@@ -18,6 +18,7 @@ public class Compass : MonoBehaviour
     private void Start()
     {
         controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+        controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
     }
 
     void Update()
@@ -30,7 +31,7 @@ public class Compass : MonoBehaviour
 
     void OnControlsEnableValueChanged()
     {
-        if (controls.IsControlsEnabled)
+        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
         {
             indicator.gameObject.SetActive(true);
         }

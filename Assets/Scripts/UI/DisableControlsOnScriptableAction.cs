@@ -17,6 +17,6 @@ public class DisableControlsOnScriptableAction : MonoBehaviour
 
     void OnScriptableAction()
     {
-        controls.IsControlsEnabled = false;
+        controls.IsPlayerControlsEnabled = false;
     }
 }

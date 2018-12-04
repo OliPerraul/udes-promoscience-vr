@@ -8,9 +8,13 @@ public class ScriptableControler : ScriptableObject
     [SerializeField]
     bool isControlsEnable;
 
+    [SerializeField]
+    bool isPlayerControlsEnable;
+
     public Action stopAllMovementEvent;
     public Action resetPositionAndRotation;
     public Action isControlsEnableValueChangedEvent;
+    public Action isPlayerControlsEnableValueChangedEvent;
 
     public bool IsControlsEnabled
     {
@@ -25,11 +29,32 @@ public class ScriptableControler : ScriptableObject
         }
     }
 
+    public bool IsPlayerControlsEnabled
+    {
+        get
+        {
+            return isPlayerControlsEnable;
+        }
+        set
+        {
+            isPlayerControlsEnable = value;
+            OnPlayerControlsEnableValueChanged();
+        }
+    }
+
     public void OnControlsEnableValueChanged()
     {
         if (isControlsEnableValueChangedEvent != null)
         {
             isControlsEnableValueChangedEvent();
+        }
+    }
+
+    public void OnPlayerControlsEnableValueChanged()
+    {
+        if (isPlayerControlsEnableValueChangedEvent != null)
+        {
+            isPlayerControlsEnableValueChangedEvent();
         }
     }
 

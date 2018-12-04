@@ -14,11 +14,12 @@ public class DirectionDisplay : MonoBehaviour
     void Start()
     {
         controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+        controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
     }
 	
     void OnControlsEnableValueChanged()
     {
-        if(controls.IsControlsEnabled) 
+        if(controls.IsControlsEnabled && controls.IsPlayerControlsEnabled) 
         {
             directionDisplayer.SetActive(true);
         }

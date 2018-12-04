@@ -17,21 +17,30 @@ public class OnReturnToDivergencePointRequest : MonoBehaviour
     ScriptableAction returnToDivergencePointRequest;
 
     [SerializeField]
-    GameObject gameObjectToActivate;
+    GameObject confirmationPanel;
 
 
     void Start()
     {
+        controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         returnToDivergencePointRequest.action += OnScriptableAction;
         isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
+    }
+
+    void OnControlsEnableValueChanged()
+    {
+        if (!controls.IsControlsEnabled)
+        {
+            OnIsDivergingValueChanged();
+        }
     }
 
     void OnScriptableAction()
     {
         if (isDiverging.Value)
         {
-            controls.IsControlsEnabled = false;
-            gameObjectToActivate.SetActive(true);
+            controls.IsPlayerControlsEnabled = false;
+            confirmationPanel.SetActive(true);
         }
         else
         {
@@ -41,11 +50,11 @@ public class OnReturnToDivergencePointRequest : MonoBehaviour
 
     void OnIsDivergingValueChanged()
     {
-        if(gameObjectToActivate.activeSelf)
+        if(confirmationPanel.activeSelf)
         {
+            confirmationPanel.SetActive(false);
+            controls.IsPlayerControlsEnabled = true;
             returnToDivergencePointAnswer.Value = false;
-            gameObjectToActivate.SetActive(false);
-            controls.IsControlsEnabled = true;
         }
     }
 }

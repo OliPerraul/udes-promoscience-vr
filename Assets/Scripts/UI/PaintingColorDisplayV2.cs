@@ -25,12 +25,13 @@ public class PaintingColorDisplayV2 : MonoBehaviour
     void Start()
     {
         controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+        controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         paintingColor.valueChangedEvent += OnPaintingColorValueChanged;
     }
 
     void OnControlsEnableValueChanged()
     {
-        if (controls.IsControlsEnabled)
+        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
         {
             colorRings.gameObject.SetActive(true);
         }

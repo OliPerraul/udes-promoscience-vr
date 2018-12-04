@@ -38,6 +38,7 @@ public class DistanceScanner : MonoBehaviour
 	void Start ()
     {
         controls.isControlsEnableValueChangedEvent += OnIsControlsEnableValueChangedEvent;
+        controls.isPlayerControlsEnableValueChangedEvent += OnIsControlsEnableValueChangedEvent;
     }
 	
 	void Update ()
@@ -50,7 +51,7 @@ public class DistanceScanner : MonoBehaviour
 
     void OnIsControlsEnableValueChangedEvent()
     {
-        if (controls.IsControlsEnabled == true)
+        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
         {
             distanceDisplay.SetActive(true);
             targetDisplay.SetActive(true);
@@ -116,7 +117,7 @@ public class DistanceScanner : MonoBehaviour
                     if (isFirstWallInLine)
                     {
                         distance = (int)(hitWallPosition - currentPosition).magnitude - 1;
-                        text = distance.ToString();
+                        text = "<color=cyan>" + distance.ToString() + "</color>";
                     }
                 }
             }
@@ -133,7 +134,7 @@ public class DistanceScanner : MonoBehaviour
                 {
                     distance = (labyrinth.GetLabyrithEndPosition() - hitPosition).magnitude;
                     distance = Mathf.Round(distance * 10) / 10;
-                    text = distance.ToString();
+                    text = "<color=lime>" + distance.ToString() + "</color>";
                 }
             }
 

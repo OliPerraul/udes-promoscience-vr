@@ -192,20 +192,17 @@ public class UILobbyPlayer : MonoBehaviour
             {
                 string text = playing.Value;
 
-                if (playerInformation.Player.serverDeviceType == DeviceType.Headset)
+                if (playerInformation.Player.serverAlgorithm == Algorithm.ShortestFlightDistance)
                 {
-                    if (playerInformation.Player.serverAlgorithm == Algorithm.ShortestFlightDistance)
-                    {
-                        text += " - " + shortestFlight.Value;
-                    }
-                    else if (playerInformation.Player.serverAlgorithm == Algorithm.LongestStraight)
-                    {
-                        text += " - " + longestStraight.Value;
-                    }
-                    else if (playerInformation.Player.serverAlgorithm == Algorithm.Standard)
-                    {
-                        text += " - " + standardAlgorithm.Value;
-                    }
+                    text += " - " + shortestFlight.Value;
+                }
+                else if (playerInformation.Player.serverAlgorithm == Algorithm.LongestStraight)
+                {
+                    text += " - " + longestStraight.Value;
+                }
+                else if (playerInformation.Player.serverAlgorithm == Algorithm.Standard)
+                {
+                    text += " - " + standardAlgorithm.Value;
                 }
 
                 statusText.text = text;

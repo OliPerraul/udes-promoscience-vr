@@ -13,11 +13,12 @@ public class DirectiveControls : MonoBehaviour
     private void Start()
     {
         controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+        controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
     }
 
     void OnControlsEnableValueChanged()
     {
-        if (controls.IsControlsEnabled)
+        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
         {
             foreach (Transform child in transform)
             {
