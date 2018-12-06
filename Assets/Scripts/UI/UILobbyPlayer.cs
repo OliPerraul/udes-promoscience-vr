@@ -12,52 +12,52 @@ public class UILobbyPlayer : MonoBehaviour
     ScriptableTeamList teamList;
 
     [SerializeField]
-    ScriptableLocalizeString connecting;
+    ScriptableLocalizeString connectingString;
 
     [SerializeField]
-    ScriptableLocalizeString disconnected;
+    ScriptableLocalizeString disconnectedString;
 
     [SerializeField]
-    ScriptableLocalizeString longestStraight;
+    ScriptableLocalizeString longestStraightString;
 
     [SerializeField]
-    ScriptableLocalizeString noAssociatedPair;
+    ScriptableLocalizeString noAssociatedPairString;
 
     [SerializeField]
-    ScriptableLocalizeString notReady;
+    ScriptableLocalizeString notReadyString;
 
     [SerializeField]
-    ScriptableLocalizeString paired;
+    ScriptableLocalizeString pairedString;
 
     [SerializeField]
-    ScriptableLocalizeString pairing;
+    ScriptableLocalizeString pairingString;
 
     [SerializeField]
-    ScriptableLocalizeString playing;
+    ScriptableLocalizeString playingString;
 
     [SerializeField]
-    ScriptableLocalizeString playingTutorial;
+    ScriptableLocalizeString playingTutorialString;
 
     [SerializeField]
-    ScriptableLocalizeString ready;
+    ScriptableLocalizeString readyString;
 
     [SerializeField]
-    ScriptableLocalizeString reconnecting;
+    ScriptableLocalizeString reconnectingString;
 
     [SerializeField]
-    ScriptableLocalizeString shortestFlight;
+    ScriptableLocalizeString shortestFlightString;
 
     [SerializeField]
-    ScriptableLocalizeString standardAlgorithm;
+    ScriptableLocalizeString standardAlgorithmString;
 
     [SerializeField]
-    ScriptableLocalizeString unknownStatus;
+    ScriptableLocalizeString unknownStatusString;
 
     [SerializeField]
-    ScriptableLocalizeString waitingForNextRound;
+    ScriptableLocalizeString waitingForNextRoundString;
 
     [SerializeField]
-    ScriptableLocalizeString waitingForPairConnection;
+    ScriptableLocalizeString waitingForPairConnectionString;
 
     [SerializeField]
     Image image;
@@ -156,72 +156,75 @@ public class UILobbyPlayer : MonoBehaviour
     {
         if (playerInformation.Player == null)
         {
-            statusText.text = disconnected.Value;
+            statusText.text = disconnectedString.Value;
         }
         else
         {
             if (playerInformation.PlayerGameState == ClientGameState.Connecting)
             {
-                statusText.text = connecting.Value;
+                statusText.text = connectingString.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.NotReady)
             {
-                statusText.text = notReady.Value;
+                statusText.text = notReadyString.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Pairing)
             {
-                statusText.text = pairing.Value;
+                statusText.text = pairingString.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.NoAssociatedPair || playerInformation.PlayerGameState == ClientGameState.ReconnectingNoAssociatedPair)
             {
-                statusText.text = noAssociatedPair.Value;
+                statusText.text = noAssociatedPairString.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Paired)
             {
-                statusText.text = paired.Value;
+                statusText.text = pairedString.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Ready)
             {
-                statusText.text = ready.Value;
+                statusText.text = readyString.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.PlayingTutorial)
             {
-                statusText.text = playingTutorial.Value;
+                statusText.text = playingTutorialString.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Playing)
             {
-                string text = playing.Value;
+                string text = playingString.Value;
 
-                if (playerInformation.Player.serverAlgorithm == Algorithm.ShortestFlightDistance)
+                if (playerInformation.Player.serverDeviceType == DeviceType.Headset)
                 {
-                    text += " - " + shortestFlight.Value;
-                }
-                else if (playerInformation.Player.serverAlgorithm == Algorithm.LongestStraight)
-                {
-                    text += " - " + longestStraight.Value;
-                }
-                else if (playerInformation.Player.serverAlgorithm == Algorithm.Standard)
-                {
-                    text += " - " + standardAlgorithm.Value;
+                    if (playerInformation.Player.serverAlgorithm == Algorithm.ShortestFlightDistance)
+                    {
+                        text += " - " + shortestFlightString.Value;
+                    }
+                    else if (playerInformation.Player.serverAlgorithm == Algorithm.LongestStraight)
+                    {
+                        text += " - " + longestStraightString.Value;
+                    }
+                    else if (playerInformation.Player.serverAlgorithm == Algorithm.Standard)
+                    {
+                        text += " - " + standardAlgorithmString.Value;
+                    }
                 }
 
                 statusText.text = text;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.WaitingForNextRound)
             {
-                statusText.text = waitingForNextRound.Value;
+                statusText.text = waitingForNextRoundString.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.Reconnecting)
             {
-                statusText.text = reconnecting.Value;
+                statusText.text = reconnectingString.Value;
             }
             else if (playerInformation.PlayerGameState == ClientGameState.WaitingForPairConnection)
             {
-                statusText.text = waitingForPairConnection.Value;
+                statusText.text = waitingForPairConnectionString.Value;
             }
             else
             {
-                statusText.text = unknownStatus.Value;
+                statusText.text = unknownStatusString.Value;
             }
         }
     }

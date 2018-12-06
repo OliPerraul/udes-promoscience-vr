@@ -330,9 +330,13 @@ public class Player : NetworkBehaviour
         playerStartSteps.Value = new int[0];
 
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
-        algorithm.Value = algo;
 
-        if (algorithm.Value == Algorithm.Tutorial)
+        if (deviceType.Value == DeviceType.Headset)
+        {
+            algorithm.Value = algo;
+        }
+
+        if (algo == Algorithm.Tutorial)
         {
             gameState.Value = ClientGameState.TutorialLabyrinthReady;
         }

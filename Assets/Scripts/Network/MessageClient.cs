@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 public class MessageClient : MonoBehaviour
 {
     [SerializeField]
+    ScriptableAlgorithm algorithm;
+
+    [SerializeField]
     ScriptableFloat algorithmRespect;
 
     [SerializeField]
@@ -19,6 +22,9 @@ public class MessageClient : MonoBehaviour
 
     [SerializeField]
     ScriptableBoolean isDiverging;
+
+    [SerializeField]
+    ScriptableString pairedIpAdress;
 
     [SerializeField]
     ScriptablePlayerInformation playerInformation;
@@ -44,9 +50,6 @@ public class MessageClient : MonoBehaviour
     [SerializeField]
     ScriptableAction returnToDivergencePointRequest;
 
-    [SerializeField]
-    ScriptableString pairedIpAdress;
-
     NetworkClient client = null;
 
     public int serverPort = 9996;
@@ -56,6 +59,11 @@ public class MessageClient : MonoBehaviour
         pairedIpAdress.valueChangedEvent += StartServer;
     }
 
+    private void OnDestroy()
+    {
+        StopClient();
+    }
+
     void StartServer()
     {
         if (client == null)
@@ -63,14 +71,15 @@ public class MessageClient : MonoBehaviour
             client = new NetworkClient();
             client.RegisterHandler(MsgType.Connect, OnConnect);
             client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
+            client.RegisterHandler(AlgorithmMessage.GetCustomMsgType(), OnAlgorithm);
+            client.RegisterHandler(AlgorithmRespectMessage.GetCustomMsgType(), OnAlgorithmRespect);
             client.RegisterHandler(PlayerInformationMessage.GetCustomMsgType(), OnPlayerInformation);
-            client.RegisterHandler(PlayerPositionMessage.GetCustomMsgType(), OnPlayerPosition);
-            client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
             client.RegisterHandler(PlayerPaintTileMessage.GetCustomMsgType(), OnPlayerPaintTile);
+            client.RegisterHandler(PlayerPositionMessage.GetCustomMsgType(), OnPlayerPosition);
             client.RegisterHandler(PlayerReachedTheEndMessage.GetCustomMsgType(), OnPlayerReachedTheEnd);
+            client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
             client.RegisterHandler(PlayerTilesToPaintMessage.GetCustomMsgType(), OnPlayerTilesToPaint);
             client.RegisterHandler(ReturnToDivergencePointAnswerMessage.GetCustomMsgType(), OnReturnToDivergencePointAnswer);
-            client.RegisterHandler(AlgorithmRespectMessage.GetCustomMsgType(), OnAlgorithmRespect);
 
             client.Connect(pairedIpAdress.Value, serverPort);
         }
@@ -94,18 +103,11 @@ public class MessageClient : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        StopClient();
-    }
-
     void OnConnect(NetworkMessage netMsg)
     {
         directive.valueChangedEvent += SendDirective;
         returnToDivergencePointRequest.action += SendReturnToDivergencePointRequest;
         gameState.valueChangedEvent += OnGameStateChanged;
-
-        gameState.Value = ClientGameState.Ready;
 
         isConnectedToPair.Value = true;
     }
@@ -121,22 +123,33 @@ public class MessageClient : MonoBehaviour
         client.Connect(pairedIpAdress.Value, serverPort);
     }
 
+    void OnAlgorithm(NetworkMessage netMsg)
+    {
+        AlgorithmMessage msg = netMsg.ReadMessage<AlgorithmMessage>();
+        algorithm.Value = msg.algorithm;
+    }
+
+    void OnAlgorithmRespect(NetworkMessage netMsg)
+    {
+        AlgorithmRespectMessage msg = netMsg.ReadMessage<AlgorithmRespectMessage>();
+        algorithmRespect.Value = msg.algorithmRespect;
+
+        if (algorithmRespect.Value >= 1 && isDiverging.Value)
+        {
+            isDiverging.Value = false;
+        }
+        else if (algorithmRespect.Value < 1 && !isDiverging.Value)
+        {
+            isDiverging.Value = true;
+        }
+    }
+
     void OnPlayerInformation(NetworkMessage netMsg)
     {
         PlayerInformationMessage msg = netMsg.ReadMessage<PlayerInformationMessage>();
         playerInformation.SetPlayerInformation(msg.teamInformationId);
-    }
 
-    void OnPlayerPosition(NetworkMessage netMsg)
-    {
-        PlayerPositionMessage msg = netMsg.ReadMessage<PlayerPositionMessage>();
-        playerPosition.Value = msg.position;
-    }
-
-    void OnPlayerRotation(NetworkMessage netMsg)
-    {
-        PlayerRotationMessage msg = netMsg.ReadMessage<PlayerRotationMessage>();
-        playerRotation.Value = msg.rotation;
+        gameState.Value = ClientGameState.Ready;
     }
 
     void OnPlayerPaintTile(NetworkMessage netMsg)
@@ -145,9 +158,20 @@ public class MessageClient : MonoBehaviour
         playerPaintTile.SetTile(msg.tilePositionX, msg.tilePositionY, msg.tileColor);
     }
 
+    void OnPlayerPosition(NetworkMessage netMsg)
+    {
+        PlayerPositionMessage msg = netMsg.ReadMessage<PlayerPositionMessage>();
+        playerPosition.Value = msg.position;
+    }
     void OnPlayerReachedTheEnd(NetworkMessage netMsg)
     {
         playerReachedTheEnd.FireAction();
+    }
+
+    void OnPlayerRotation(NetworkMessage netMsg)
+    {
+        PlayerRotationMessage msg = netMsg.ReadMessage<PlayerRotationMessage>();
+        playerRotation.Value = msg.rotation;
     }
 
     void OnPlayerTilesToPaint(NetworkMessage netMsg)
@@ -160,21 +184,6 @@ public class MessageClient : MonoBehaviour
     {
         ReturnToDivergencePointAnswerMessage msg = netMsg.ReadMessage<ReturnToDivergencePointAnswerMessage>();
         returnToDivergencePointAnswer.Value = msg.answer;
-    }
-
-    void OnAlgorithmRespect(NetworkMessage netMsg)
-    {
-        AlgorithmRespectMessage msg = netMsg.ReadMessage<AlgorithmRespectMessage>();
-        algorithmRespect.Value = msg.algorithmRespect;
-
-        if(algorithmRespect.Value >= 1 && isDiverging.Value)
-        {
-            isDiverging.Value = false;
-        }
-        else if(algorithmRespect.Value < 1 && !isDiverging.Value)
-        {
-            isDiverging.Value = true;
-        }
     }
 
     void SendDirective()

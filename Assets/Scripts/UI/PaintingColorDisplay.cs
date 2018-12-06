@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PaintingColorDisplay : MonoBehaviour
 {
@@ -12,12 +11,18 @@ public class PaintingColorDisplay : MonoBehaviour
     ScriptableTileColor paintingColor;
 
     [SerializeField]
-    GameObject paintingColorImage;
+    GameObject colorRings;
 
     [SerializeField]
-    Image colorImage;
+    GameObject greyRing;
 
-	void Start ()
+    [SerializeField]
+    GameObject yellowRing;
+
+    [SerializeField]
+    GameObject redRing;
+
+    void Start()
     {
         controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
@@ -28,11 +33,11 @@ public class PaintingColorDisplay : MonoBehaviour
     {
         if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
         {
-            paintingColorImage.gameObject.SetActive(true);
+            colorRings.gameObject.SetActive(true);
         }
         else
         {
-            paintingColorImage.gameObject.SetActive(false);
+            colorRings.gameObject.SetActive(false);
         }
     }
 
@@ -40,15 +45,21 @@ public class PaintingColorDisplay : MonoBehaviour
     {
         if (paintingColor.Value == TileColor.Grey)
         {
-            colorImage.color = Color.grey;
+            greyRing.SetActive(true);
+            yellowRing.SetActive(false);
+            redRing.SetActive(false);
         }
         else if (paintingColor.Value == TileColor.Yellow)
         {
-            colorImage.color = Color.yellow;
+            yellowRing.SetActive(true);
+            greyRing.SetActive(false);
+            redRing.SetActive(false);
         }
         else if (paintingColor.Value == TileColor.Red)
         {
-            colorImage.color = Color.red;
+            redRing.SetActive(true);
+            greyRing.SetActive(false);
+            yellowRing.SetActive(false);
         }
     }
 }

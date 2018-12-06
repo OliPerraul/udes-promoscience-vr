@@ -899,12 +899,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
     type: 2}
-  gameRound: {fileID: 11400000, guid: a3c915a5b6fd803448ff62eb6199fd15, type: 2}
-  gameState: {fileID: 11400000, guid: bcdc6f133d663d64aa5bafe636f22b25, type: 2}
-  intermission: {fileID: 11400000, guid: d7e6fc28d84e9ae45a8f555765a21c93, type: 2}
-  lobby: {fileID: 11400000, guid: 4fda5070eac41f94bb666cf2423d8005, type: 2}
-  playingRound: {fileID: 11400000, guid: cb4bf8d5856475b42986a9e0127a0e85, type: 2}
-  tutorial: {fileID: 11400000, guid: 4c1906268fc66444bb09c0382dda11f5, type: 2}
+  gameRoundString: {fileID: 11400000, guid: a3c915a5b6fd803448ff62eb6199fd15, type: 2}
+  gameStateString: {fileID: 11400000, guid: bcdc6f133d663d64aa5bafe636f22b25, type: 2}
+  intermissionString: {fileID: 11400000, guid: d7e6fc28d84e9ae45a8f555765a21c93, type: 2}
+  lobbyString: {fileID: 11400000, guid: 4fda5070eac41f94bb666cf2423d8005, type: 2}
+  playingRoundString: {fileID: 11400000, guid: cb4bf8d5856475b42986a9e0127a0e85, type: 2}
+  tutorialString: {fileID: 11400000, guid: 4c1906268fc66444bb09c0382dda11f5, type: 2}
   serverGameRoundText: {fileID: 1637774934}
   serverGameStateText: {fileID: 282219876}
 --- !u!1 &441544734
@@ -2004,7 +2004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000042598487}
+  m_AnchoredPosition: {x: 0, y: 0.00003542458}
   m_SizeDelta: {x: -50, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1329621017

@@ -4,19 +4,55 @@ using UnityEngine.Networking;
 
 public enum CustomMsgType : short
 {
-    Directive = 101,
-    PlayerInformation = 102,
-    PlayerPosition = 103,
-    PlayerRotation = 104,
-    PlayerPaintTile = 105,
-    PlayerReachedTheEnd = 106,
-    PlayerTilesToPaint = 107,
-    RequestForGameInformation = 113,
-    ReturnToDivergencePointRequest = 108,
-    ReturnToDivergencePointAnswer = 109,
-    AlgorithmRespect = 110,
-    PairingRequest = 111,
-    PairingResult = 112
+    Algorithm = 100,
+    AlgorithmRespect = 101,
+    Directive = 102,
+    PairingRequest = 103,
+    PairingResult = 104,
+    PlayerInformation = 105,
+    PlayerPaintTile = 106,
+    PlayerPosition = 107,
+    PlayerReachedTheEnd = 108,
+    PlayerRotation = 109,
+    PlayerTilesToPaint = 110,
+    RequestForGameInformation = 111,
+    ReturnToDivergencePointAnswer = 112,
+    ReturnToDivergencePointRequest = 113
+}
+
+public class AlgorithmMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.Algorithm;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+
+    public Algorithm algorithm;
+}
+
+public class AlgorithmRespectMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.AlgorithmRespect;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+
+
+    public float algorithmRespect;
 }
 
 public class DirectiveMessage : MessageBase
@@ -35,6 +71,41 @@ public class DirectiveMessage : MessageBase
 
     public Directive directive;
 }
+public class PairingRequestMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.PairingRequest;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+
+    public DeviceType deviceType;
+    public string deviceId;
+}
+
+public class PairingResultMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.PairingResult;
+
+    public static short GetCustomMsgType()
+    {
+        return (short)type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short)type;
+    }
+
+    public bool isPairingSucess;
+    public string message;
+}
 
 public class PlayerInformationMessage : MessageBase
 {
@@ -52,41 +123,6 @@ public class PlayerInformationMessage : MessageBase
 
     public int teamInformationId;
 
-}
-
-public class PlayerPositionMessage : MessageBase
-{
-    static CustomMsgType type = CustomMsgType.PlayerPosition;
-
-    public static short GetCustomMsgType()
-    {
-        return (short) type;
-    }
-
-    public short GetMsgType()
-    {
-        return (short) type;
-    }
-
-    public Vector3 position;
-
-}
-
-public class PlayerRotationMessage : MessageBase
-{
-    static CustomMsgType type = CustomMsgType.PlayerRotation;
-
-    public static short GetCustomMsgType()
-    {
-        return (short) type;
-    }
-
-    public short GetMsgType()
-    {
-        return (short) type;
-    }
-
-    public Quaternion rotation;
 }
 
 public class PlayerPaintTileMessage : MessageBase
@@ -108,6 +144,24 @@ public class PlayerPaintTileMessage : MessageBase
     public TileColor tileColor;
 }
 
+public class PlayerPositionMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.PlayerPosition;
+
+    public static short GetCustomMsgType()
+    {
+        return (short) type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short) type;
+    }
+
+    public Vector3 position;
+
+}
+
 public class PlayerReachedTheEndMessage : MessageBase
 {
     static CustomMsgType type = CustomMsgType.PlayerReachedTheEnd;
@@ -121,6 +175,23 @@ public class PlayerReachedTheEndMessage : MessageBase
     {
         return (short)type;
     }
+}
+
+public class PlayerRotationMessage : MessageBase
+{
+    static CustomMsgType type = CustomMsgType.PlayerRotation;
+
+    public static short GetCustomMsgType()
+    {
+        return (short) type;
+    }
+
+    public short GetMsgType()
+    {
+        return (short) type;
+    }
+
+    public Quaternion rotation;
 }
 
 public class PlayerTilesToPaintMessage : MessageBase
@@ -155,21 +226,6 @@ public class RequestForGameInformationMessage : MessageBase
     }
 }
 
-public class ReturnToDivergencePointRequestMessage : MessageBase
-{
-    static CustomMsgType type = CustomMsgType.ReturnToDivergencePointRequest;
-
-    public static short GetCustomMsgType()
-    {
-        return (short)type;
-    }
-
-    public short GetMsgType()
-    {
-        return (short)type;
-    }
-}
-
 public class ReturnToDivergencePointAnswerMessage : MessageBase
 {
     static CustomMsgType type = CustomMsgType.ReturnToDivergencePointAnswer;
@@ -187,9 +243,9 @@ public class ReturnToDivergencePointAnswerMessage : MessageBase
     public bool answer;
 }
 
-public class AlgorithmRespectMessage : MessageBase
+public class ReturnToDivergencePointRequestMessage : MessageBase
 {
-    static CustomMsgType type = CustomMsgType.AlgorithmRespect;
+    static CustomMsgType type = CustomMsgType.ReturnToDivergencePointRequest;
 
     public static short GetCustomMsgType()
     {
@@ -200,43 +256,4 @@ public class AlgorithmRespectMessage : MessageBase
     {
         return (short)type;
     }
-
-
-    public float algorithmRespect;
-}
-
-public class PairingRequestMessage : MessageBase
-{
-    static CustomMsgType type = CustomMsgType.PairingRequest;
-
-    public static short GetCustomMsgType()
-    {
-        return (short) type;
-    }
-
-    public short GetMsgType()
-    {
-        return (short) type;
-    }
-
-    public DeviceType deviceType;
-    public string deviceId;
-}
-
-public class PairingResultMessage : MessageBase
-{
-    static CustomMsgType type = CustomMsgType.PairingResult;
-
-    public static short GetCustomMsgType()
-    {
-        return (short) type;
-    }
-
-    public short GetMsgType()
-    {
-        return (short) type;
-    }
-
-    public bool isPairingSucess;
-    public string message;
 }

@@ -6,6 +6,9 @@ using UnityEngine.Networking;
 public class MessageServer : MonoBehaviour
 {
     [SerializeField]
+    ScriptableAlgorithm algorithm;
+
+    [SerializeField]
     ScriptableFloat algorithmRespect;
 
     [SerializeField]
@@ -18,28 +21,28 @@ public class MessageServer : MonoBehaviour
     ScriptableBoolean isConnectedToPair;
 
     [SerializeField]
+    ScriptableString pairedIpAdress;
+
+    [SerializeField]
     ScriptablePlayerInformation playerInformation;
-
-    [SerializeField]
-    ScriptableVector3 playerPosition;
-
-    [SerializeField]
-    ScriptableQuaternion playerRotation;
 
     [SerializeField]
     ScriptableTile playerPaintTile;
 
     [SerializeField]
+    ScriptableVector3 playerPosition;
+
+    [SerializeField]
     ScriptableAction playerReachedTheEnd;
+
+    [SerializeField]
+    ScriptableQuaternion playerRotation;
 
     [SerializeField]
     ScriptableBoolean returnToDivergencePointAnswer;
 
     [SerializeField]
     ScriptableAction returnToDivergencePointRequest;
-
-    [SerializeField]
-    ScriptableString pairedIpAdress;
 
     [SerializeField]
     GameLabyrinth labyrinth;
@@ -96,10 +99,10 @@ public class MessageServer : MonoBehaviour
         clientConnection = netMsg.conn;
 
         algorithmRespect.valueChangedEvent += SendAlgorithmRespect;
-        playerReachedTheEnd.action += SendEndReached;
-        playerPosition.valueChangedEvent += SendPlayerPosition;
-        playerRotation.valueChangedEvent += SendPlayerRotation;
         playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
+        playerPosition.valueChangedEvent += SendPlayerPosition;
+        playerReachedTheEnd.action += SendEndReached;
+        playerRotation.valueChangedEvent += SendPlayerRotation;
         returnToDivergencePointAnswer.valueChangedEvent += SendReturnToDivergencePointAnswer;
 
         if(playerInformation.IsInitialize)
@@ -121,10 +124,10 @@ public class MessageServer : MonoBehaviour
         clientConnection = null;
 
         algorithmRespect.valueChangedEvent -= SendAlgorithmRespect;
-        playerReachedTheEnd.action -= SendEndReached;
-        playerPosition.valueChangedEvent -= SendPlayerPosition;
-        playerRotation.valueChangedEvent -= SendPlayerRotation;
         playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
+        playerPosition.valueChangedEvent -= SendPlayerPosition;
+        playerReachedTheEnd.action -= SendEndReached;
+        playerRotation.valueChangedEvent -= SendPlayerRotation;
         returnToDivergencePointAnswer.valueChangedEvent -= SendReturnToDivergencePointAnswer;
 
         playerInformation.playerInformationChangedEvent -= SendPlayerInformation;
@@ -145,6 +148,7 @@ public class MessageServer : MonoBehaviour
     {
         if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
         {
+            SendAlgorithm();
             SendAlgorithmRespect();
             SendPlayerPosition();
             SendPlayerRotation();
@@ -154,6 +158,14 @@ public class MessageServer : MonoBehaviour
         {
             SendEndReached();
         }
+    }
+
+    void SendAlgorithm()
+    {
+        AlgorithmMessage msg = new AlgorithmMessage();
+        msg.algorithm = algorithm.Value;
+
+        clientConnection.Send(msg.GetMsgType(), msg);
     }
 
     void SendAlgorithmRespect()

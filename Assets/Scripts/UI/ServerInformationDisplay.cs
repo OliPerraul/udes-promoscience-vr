@@ -9,22 +9,22 @@ public class ServerInformationDisplay : MonoBehaviour
     ScriptableServerGameInformation serverGameInformation;
 
     [SerializeField]
-    ScriptableLocalizeString gameRound;
+    ScriptableLocalizeString gameRoundString;
 
     [SerializeField]
-    ScriptableLocalizeString gameState;
+    ScriptableLocalizeString gameStateString;
 
     [SerializeField]
-    ScriptableLocalizeString intermission;
+    ScriptableLocalizeString intermissionString;
 
     [SerializeField]
-    ScriptableLocalizeString lobby;
+    ScriptableLocalizeString lobbyString;
 
     [SerializeField]
-    ScriptableLocalizeString playingRound;
+    ScriptableLocalizeString playingRoundString;
 
     [SerializeField]
-    ScriptableLocalizeString tutorial;
+    ScriptableLocalizeString tutorialString;
 
     [SerializeField]
     Text serverGameRoundText;
@@ -43,28 +43,28 @@ public class ServerInformationDisplay : MonoBehaviour
 	
     void OnGameRoundChanged()
     {
-        serverGameRoundText.text = gameRound.Value + " : " + serverGameInformation.GameRound;
+        serverGameRoundText.text = gameRoundString.Value + " : " + serverGameInformation.GameRound;
     }
 
     void OnGameStateChanged()
     {
-        string s = gameState.Value + " : ";
+        string s = gameStateString.Value + " : ";
 
         if(serverGameInformation.GameState == ServerGameState.Lobby)
         {
-            s += lobby.Value;
+            s += lobbyString.Value;
         }
         else if (serverGameInformation.GameState == ServerGameState.Tutorial)
         {
-            s += tutorial.Value;
+            s += tutorialString.Value;
         }
         else if (serverGameInformation.GameState == ServerGameState.GameRound)
         {
-            s += playingRound.Value;
+            s += playingRoundString.Value;
         }
         else if (serverGameInformation.GameState == ServerGameState.Intermission)
         {
-            s += intermission.Value;
+            s += intermissionString.Value;
         }
 
         serverGameStateText.text = s;
