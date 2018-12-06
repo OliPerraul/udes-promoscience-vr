@@ -8,8 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40f6efd1854f10249858285136525aa5, type: 3}
-  m_Name: ServerGameInformation
+  m_Script: {fileID: 11500000, guid: 91ee10dcb2722ad4ab92f5f5003a8414, type: 3}
+  m_Name: ForwardDirection
   m_EditorClassIdentifier: 
-  gameState: 0
-  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  value: 0

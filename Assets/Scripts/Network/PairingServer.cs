@@ -81,7 +81,7 @@ public class PairingServer : MonoBehaviour
         }
         else
         {
-            SendTargetPairingResult(netMsg.conn, false, "Pairing failed : Already device type pairing!");
+            SendTargetPairingResult(netMsg.conn, false);
         }
     }
 
@@ -92,25 +92,23 @@ public class PairingServer : MonoBehaviour
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             SQLiteUtilities.InsertPairing(tabletId, headsetId);
 #endif
-            SendPairingResult(true, "Pairing was a success!");
+            SendPairingResult(true);
         }
     }
 
-    public void SendPairingResult(bool isPairingSuccess, string message)
+    public void SendPairingResult(bool isPairingSuccess)
     {
         PairingResultMessage pairingResultMsg = new PairingResultMessage();
         pairingResultMsg.isPairingSucess = isPairingSuccess;
-        pairingResultMsg.message = message;
 
         tabletConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
         headsetConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
     }
 
-    public void SendTargetPairingResult(NetworkConnection target, bool isPairingSuccess,string message)
+    public void SendTargetPairingResult(NetworkConnection target, bool isPairingSuccess)
     {
         PairingResultMessage pairingResultMsg = new PairingResultMessage();
         pairingResultMsg.isPairingSucess = isPairingSuccess;
-        pairingResultMsg.message = message;
 
         target.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
     }

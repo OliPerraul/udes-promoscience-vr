@@ -8,7 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 455c954822323ce4685961331bf2d693, type: 3}
-  m_Name: IsDiverging
+  m_Script: {fileID: 11500000, guid: 25ee1a8c34ade804f8804d228360fc10, type: 3}
+  m_Name: PairingRequestSent
   m_EditorClassIdentifier: 
-  mValue: 0
+  english: Paring request sent!
+  french: "Requ\xEAte de jumelage envoy\xE9e!"

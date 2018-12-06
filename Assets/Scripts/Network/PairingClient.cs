@@ -11,6 +11,18 @@ public class PairingClient : MonoBehaviour
     [SerializeField]
     ScriptableString serverIpAdress;
 
+    [SerializeField]
+    GameObject connectingToPairingServerPanel;
+
+    [SerializeField]
+    GameObject pairingRequestSentPanel;
+
+    [SerializeField]
+    GameObject pairingResultSuccessPanel;
+
+    [SerializeField]
+    GameObject pairingResultFailedPanel;
+
     public int serverPort = 9995;
 
     NetworkClient client = null;
@@ -39,7 +51,10 @@ public class PairingClient : MonoBehaviour
     void OnConnect(NetworkMessage netMsg)
     {
         SendPairingRequest();
-        UITextManager.instance.SetText("Pairing : pairing request sent" );//Should be changed when UI changed
+
+        connectingToPairingServerPanel.SetActive(false);
+
+        pairingRequestSentPanel.SetActive(true);
     }
 
     void OnDisconnect(NetworkMessage netMsg)
@@ -50,14 +65,17 @@ public class PairingClient : MonoBehaviour
     void OnPairingResult(NetworkMessage netMsg)
     {
         PairingResultMessage msg = netMsg.ReadMessage<PairingResultMessage>();
-        if(msg.isPairingSucess)
+
+        pairingRequestSentPanel.SetActive(false);
+
+        if (msg.isPairingSucess)
         {
-            UITextManager.instance.SetText("Pairing : " + msg.message);//Should be changed when UI changed
+            pairingResultSuccessPanel.SetActive(true);
             StopClient();
         }
         else
         {
-            UITextManager.instance.SetText("Pairing : " + msg.message);//Should be changed when UI changed
+            pairingResultFailedPanel.SetActive(true);
             StopClient();
         }
     }
