@@ -224,6 +224,8 @@ public class RequestForGameInformationMessage : MessageBase
     {
         return (short)type;
     }
+
+    public int gameRound;
 }
 
 public class ReturnToDivergencePointAnswerMessage : MessageBase

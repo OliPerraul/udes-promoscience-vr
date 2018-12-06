@@ -15,10 +15,16 @@ public class MessageServer : MonoBehaviour
     ScriptableDirective directive;
 
     [SerializeField]
+    ScriptableInteger gameRound;
+
+    [SerializeField]
     ScriptableClientGameState gameState;
 
     [SerializeField]
     ScriptableBoolean isConnectedToPair;
+
+    [SerializeField]
+    ScriptableBoolean isRoundCompleted;
 
     [SerializeField]
     ScriptableString pairedIpAdress;
@@ -49,6 +55,10 @@ public class MessageServer : MonoBehaviour
 
     NetworkServerSimple server = null;
     NetworkConnection clientConnection = null;
+
+    bool isRequestDelayed = false;
+
+    int gameRoundRequest;
 
     public int serverPort = 9996;
 
@@ -146,17 +156,59 @@ public class MessageServer : MonoBehaviour
 
     void OnRequestForGameInformation(NetworkMessage netMsg)
     {
-        if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
+        RequestForGameInformationMessage msg = netMsg.ReadMessage<RequestForGameInformationMessage>();
+        gameRoundRequest = msg.gameRound;
+
+        if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.WaitingForNextRound)
         {
-            SendAlgorithm();
-            SendAlgorithmRespect();
-            SendPlayerPosition();
-            SendPlayerRotation();
-            SendPlayerTilesToPaint();
+            if (gameRoundRequest == gameRound.Value)
+            {
+                if (isRoundCompleted.Value)
+                {
+                    SendEndReached();
+                }
+                else
+                {
+                    SendAlgorithm();
+                    SendAlgorithmRespect();
+                    SendPlayerPosition();
+                    SendPlayerRotation();
+                    SendPlayerTilesToPaint();
+                }
+
+                return;
+            }
         }
-        else if (gameState.Value == ClientGameState.WaitingForNextRound)
+
+        if (!isRequestDelayed)
         {
-            SendEndReached();
+            gameState.valueChangedEvent += DelayedSendGameInformation;
+            isRequestDelayed = true;
+        }
+    }
+
+    void DelayedSendGameInformation()
+    {
+        if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.WaitingForNextRound)
+        {
+            if (gameRoundRequest == gameRound.Value)
+            {
+                if (isRoundCompleted.Value)
+                {
+                    SendEndReached();
+                }
+                else
+                {
+                    SendAlgorithm();
+                    SendAlgorithmRespect();
+                    SendPlayerPosition();
+                    SendPlayerRotation();
+                    SendPlayerTilesToPaint();
+                }
+                
+                gameRound.valueChangedEvent -= DelayedSendGameInformation;
+                isRequestDelayed = false;
+            }
         }
     }
 

@@ -196,7 +196,13 @@ public class Player : NetworkBehaviour
     ScriptableDeviceType deviceType;
 
     [SerializeField]
+    ScriptableInteger gameRound;
+
+    [SerializeField]
     ScriptableClientGameState gameState;
+
+    [SerializeField]
+    ScriptableBoolean isRoundCompleted;
 
     [SerializeField]
     ScriptableLabyrinth labyrinthData;
@@ -225,9 +231,10 @@ public class Player : NetworkBehaviour
         deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
         ServerDeviceName = SystemInfo.deviceModel;
 
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         if (deviceType.Value == DeviceType.Tablet)
         {
-            Screen.sleepTimeout = SleepTimeout.NeverSleep;
             playerInformation.playerInformationChangedEvent += SendCmdPlayerInformation;
         }
         else if(deviceType.Value == DeviceType.Headset)
@@ -331,6 +338,9 @@ public class Player : NetworkBehaviour
 
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
 
+        isRoundCompleted.Value = false;
+        gameRound.Value = labyrinthId;
+
         if (deviceType.Value == DeviceType.Headset)
         {
             algorithm.Value = algo;
@@ -354,6 +364,9 @@ public class Player : NetworkBehaviour
         labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
         algorithm.Value = algo;
 
+        isRoundCompleted.Value = false;
+        gameRound.Value = labyrinthId;
+
         if (algorithm.Value == Algorithm.Tutorial)
         {
             gameState.Value = ClientGameState.TutorialLabyrinthReady;
@@ -362,6 +375,15 @@ public class Player : NetworkBehaviour
         {
             gameState.Value = ClientGameState.LabyrithReady;
         }
+    }
+
+    [TargetRpc]
+    public void TargetSetRoundCompleted (NetworkConnection target, int labyrinthId)
+    {
+        isRoundCompleted.Value = true;
+        gameRound.Value = labyrinthId;
+
+        gameState.Value = ClientGameState.WaitingForNextRound;
     }
 
     [TargetRpc]

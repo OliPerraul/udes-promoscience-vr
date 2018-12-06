@@ -76,13 +76,13 @@ public class ConnectionComponent : NetworkBehaviour
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                     int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
 #endif
-                    if (courseLabyrinthId == ((serverGameInformation.GameRound - 1) % 3) + 1)
+                    if (courseLabyrinthId == serverGameInformation.GameRound)
                     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                         if(SQLiteUtilities.HasPlayerAlreadyCompletedTheRound(player.ServerCourseId))
                         {
                             player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                            player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
+                            player.TargetSetRoundCompleted(player.connectionToClient, serverGameInformation.GameRound);
                         }
                         else
                         {

@@ -15,6 +15,9 @@ public class MessageClient : MonoBehaviour
     ScriptableDirective directive;
 
     [SerializeField]
+    ScriptableInteger gameRound;
+
+    [SerializeField]
     ScriptableClientGameState gameState;
 
     [SerializeField]
@@ -197,6 +200,8 @@ public class MessageClient : MonoBehaviour
     void SendRequestForGameInformation()
     {
         RequestForGameInformationMessage msg = new RequestForGameInformationMessage();
+        msg.gameRound = gameRound.Value;
+
         client.Send(msg.GetMsgType(), msg);
     }
 

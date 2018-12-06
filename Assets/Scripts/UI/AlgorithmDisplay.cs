@@ -68,6 +68,7 @@ public class AlgorithmDisplay : MonoBehaviour
         if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
         {
             display.gameObject.SetActive(true);
+            OnAlgorithmValueChanged();
         }
         else
         {

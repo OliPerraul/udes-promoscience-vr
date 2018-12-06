@@ -20,6 +20,9 @@ public class AlgorithmRespect : MonoBehaviour
     ScriptableBoolean isDiverging;
 
     [SerializeField]
+    ScriptableBoolean isRoundCompleted;
+
+    [SerializeField]
     ScriptableAction labyrinthPositionChanged;
 
     [SerializeField]
@@ -129,7 +132,14 @@ public class AlgorithmRespect : MonoBehaviour
             if (labyrinthPosition == labyrinth.GetLabyrithEndPosition() && !(algorithmRespect.Value < 1.0f))
             {
                 gameAction.SetAction(GameAction.CompletedRound);
+
+                if (gameState.Value == ClientGameState.Playing)
+                {
+                    isRoundCompleted.Value = true;
+                }
+
                 playerReachedTheEnd.FireAction();
+
                 return;
             }
             else if (!isDiverging.Value)
