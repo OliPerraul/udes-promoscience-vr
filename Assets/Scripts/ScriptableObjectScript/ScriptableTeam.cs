@@ -2,40 +2,43 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/Team", order = 1)]
-public class ScriptableTeam : ScriptableObject
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    [SerializeField]
-    int teamId;
 
-    [SerializeField]
-    ScriptableLocalizeString teamName;
-
-    [SerializeField]
-    Color teamColor;
-
-    public int TeamId
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/Team", order = 1)]
+    public class ScriptableTeam : ScriptableObject
     {
-        get
+        [SerializeField]
+        int teamId;
+
+        [SerializeField]
+        ScriptableLocalizeString teamName;
+
+        [SerializeField]
+        Color teamColor;
+
+        public int TeamId
         {
-            return teamId;
+            get
+            {
+                return teamId;
+            }
         }
-    }
 
-    public string TeamName
-    {
-        get
+        public string TeamName
         {
-            return teamName.Value;
+            get
+            {
+                return teamName.Value;
+            }
         }
-    }
 
-    public Color TeamColor
-    {
-        get
+        public Color TeamColor
         {
-            return teamColor;
+            get
+            {
+                return teamColor;
+            }
         }
     }
 }
-

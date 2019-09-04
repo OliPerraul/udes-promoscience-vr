@@ -3,100 +3,105 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class PairingClient : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+
+namespace UdeS.Promoscience.Network
 {
-    [SerializeField]
-    ScriptableDeviceType deviceType;
-
-    [SerializeField]
-    ScriptableString serverIpAdress;
-
-    [SerializeField]
-    GameObject connectingToPairingServerPanel;
-
-    [SerializeField]
-    GameObject pairingRequestSentPanel;
-
-    [SerializeField]
-    GameObject pairingResultSuccessPanel;
-
-    [SerializeField]
-    GameObject pairingResultFailedPanel;
-
-    public int serverPort = 9995;
-
-    NetworkClient client = null;
-
-    private void Start()
+    public class PairingClient : MonoBehaviour
     {
-        serverIpAdress.valueChangedEvent += StartClient;
-    }
+        [SerializeField]
+        ScriptableDeviceType deviceType;
 
-    void StartClient()
-    {
-        client = new NetworkClient();
-        client.RegisterHandler(MsgType.Connect, OnConnect);
-        client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        client.RegisterHandler(PairingResultMessage.GetCustomMsgType(), OnPairingResult);
+        [SerializeField]
+        ScriptableString serverIpAdress;
 
-        client.Connect(serverIpAdress.Value, serverPort);
-    }
+        [SerializeField]
+        GameObject connectingToPairingServerPanel;
 
-    void StopClient()
-    {
-        client.Disconnect();
-        client = null;
-    }
+        [SerializeField]
+        GameObject pairingRequestSentPanel;
 
-    void OnConnect(NetworkMessage netMsg)
-    {
-        SendPairingRequest();
+        [SerializeField]
+        GameObject pairingResultSuccessPanel;
 
-        connectingToPairingServerPanel.SetActive(false);
+        [SerializeField]
+        GameObject pairingResultFailedPanel;
 
-        pairingRequestSentPanel.SetActive(true);
-    }
+        public int serverPort = 9995;
 
-    void OnDisconnect(NetworkMessage netMsg)
-    {
-        StopClient();
-    }
+        NetworkClient client = null;
 
-    void OnPairingResult(NetworkMessage netMsg)
-    {
-        PairingResultMessage msg = netMsg.ReadMessage<PairingResultMessage>();
-
-        pairingRequestSentPanel.SetActive(false);
-
-        if (msg.isPairingSucess)
+        private void Start()
         {
-            pairingResultSuccessPanel.SetActive(true);
+            serverIpAdress.valueChangedEvent += StartClient;
+        }
+
+        void StartClient()
+        {
+            client = new NetworkClient();
+            client.RegisterHandler(MsgType.Connect, OnConnect);
+            client.RegisterHandler(MsgType.Disconnect, OnDisconnect);
+            client.RegisterHandler(PairingResultMessage.GetCustomMsgType(), OnPairingResult);
+
+            client.Connect(serverIpAdress.Value, serverPort);
+        }
+
+        void StopClient()
+        {
+            client.Disconnect();
+            client = null;
+        }
+
+        void OnConnect(NetworkMessage netMsg)
+        {
+            SendPairingRequest();
+
+            connectingToPairingServerPanel.SetActive(false);
+
+            pairingRequestSentPanel.SetActive(true);
+        }
+
+        void OnDisconnect(NetworkMessage netMsg)
+        {
             StopClient();
         }
-        else
+
+        void OnPairingResult(NetworkMessage netMsg)
         {
-            pairingResultFailedPanel.SetActive(true);
-            StopClient();
+            PairingResultMessage msg = netMsg.ReadMessage<PairingResultMessage>();
+
+            pairingRequestSentPanel.SetActive(false);
+
+            if (msg.isPairingSucess)
+            {
+                pairingResultSuccessPanel.SetActive(true);
+                StopClient();
+            }
+            else
+            {
+                pairingResultFailedPanel.SetActive(true);
+                StopClient();
+            }
         }
+
+        public void SendPairingRequest()
+        {
+            PairingRequestMessage pairingRequestMsg = new PairingRequestMessage();
+            pairingRequestMsg.deviceId = SystemInfo.deviceUniqueIdentifier;
+
+            string deviceName = SystemInfo.deviceModel;
+
+            if (deviceType.Value == Utils.DeviceType.Tablet)
+            {
+                pairingRequestMsg.deviceType = Utils.DeviceType.Tablet;
+            }
+            else if (deviceType.Value == Utils.DeviceType.Headset)
+            {
+                pairingRequestMsg.deviceType = Utils.DeviceType.Headset;
+            }
+
+            client.Send(pairingRequestMsg.GetMsgType(), pairingRequestMsg);
+        }
+
     }
-
-    public void SendPairingRequest()
-    {
-        PairingRequestMessage pairingRequestMsg = new PairingRequestMessage();
-        pairingRequestMsg.deviceId = SystemInfo.deviceUniqueIdentifier;
-
-        string deviceName = SystemInfo.deviceModel;
-
-        if (deviceType.Value == DeviceType.Tablet)
-        {
-            pairingRequestMsg.deviceType = DeviceType.Tablet;
-        }
-        else if (deviceType.Value == DeviceType.Headset)
-        {
-            pairingRequestMsg.deviceType = DeviceType.Headset;
-        }
-
-        client.Send(pairingRequestMsg.GetMsgType(), pairingRequestMsg);
-    }
-
 }

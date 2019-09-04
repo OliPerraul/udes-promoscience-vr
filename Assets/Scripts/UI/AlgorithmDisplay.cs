@@ -3,76 +3,83 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AlgorithmDisplay : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.Utils;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableAlgorithm algorithm;
-
-    [SerializeField]
-    ScriptableControler controls;
-
-    [SerializeField]
-    ScriptableLocalizeString algorithmString;
-
-    [SerializeField]
-    ScriptableLocalizeString longestStraightString;
-
-    [SerializeField]
-    ScriptableLocalizeString rightHandString;
-
-    [SerializeField]
-    ScriptableLocalizeString shortestFlightString;
-
-    [SerializeField]
-    ScriptableLocalizeString standardAlgorithmString;
-
-    [SerializeField]
-    GameObject display;
-
-    [SerializeField]
-    Text text;
-
-    private void Start()
+    public class AlgorithmDisplay : MonoBehaviour
     {
-        algorithm.valueChangedEvent += OnAlgorithmValueChanged;
-        controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-        controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-    }
+        [SerializeField]
+        ScriptableAlgorithm algorithm;
 
-    void OnAlgorithmValueChanged()
-    {
-        string s = algorithmString.Value + " : ";
+        [SerializeField]
+        ScriptableControler controls;
 
-        if(algorithm.Value == Algorithm.LongestStraight)
+        [SerializeField]
+        ScriptableLocalizeString algorithmString;
+
+        [SerializeField]
+        ScriptableLocalizeString longestStraightString;
+
+        [SerializeField]
+        ScriptableLocalizeString rightHandString;
+
+        [SerializeField]
+        ScriptableLocalizeString shortestFlightString;
+
+        [SerializeField]
+        ScriptableLocalizeString standardAlgorithmString;
+
+        [SerializeField]
+        GameObject display;
+
+        [SerializeField]
+        Text text;
+
+        private void Start()
         {
-            s += longestStraightString.Value;
-        }
-        else if (algorithm.Value == Algorithm.RightHand)
-        {
-            s += rightHandString.Value;
-        }
-        else if (algorithm.Value == Algorithm.ShortestFlightDistance)
-        {
-            s += shortestFlightString.Value;
-        }
-        else if (algorithm.Value == Algorithm.Standard)
-        {
-            s += standardAlgorithmString.Value;
+            algorithm.valueChangedEvent += OnAlgorithmValueChanged;
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
 
-        text.text = s;
-    }
+        void OnAlgorithmValueChanged()
+        {
+            string s = algorithmString.Value + " : ";
 
-    void OnControlsEnableValueChanged()
-    {
-        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
-        {
-            display.gameObject.SetActive(true);
-            OnAlgorithmValueChanged();
+            if (algorithm.Value == Algorithm.LongestStraight)
+            {
+                s += longestStraightString.Value;
+            }
+            else if (algorithm.Value == Algorithm.RightHand)
+            {
+                s += rightHandString.Value;
+            }
+            else if (algorithm.Value == Algorithm.ShortestFlightDistance)
+            {
+                s += shortestFlightString.Value;
+            }
+            else if (algorithm.Value == Algorithm.Standard)
+            {
+                s += standardAlgorithmString.Value;
+            }
+
+            text.text = s;
         }
-        else
+
+        void OnControlsEnableValueChanged()
         {
-            display.gameObject.SetActive(false);
+            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            {
+                display.gameObject.SetActive(true);
+                OnAlgorithmValueChanged();
+            }
+            else
+            {
+                display.gameObject.SetActive(false);
+            }
         }
     }
 }

@@ -2,70 +2,79 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetActiveOnScriptableServerGameState : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Utils;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableServerGameInformation serverGameInformation;
 
-    [SerializeField]
-    List<GameObject> gameObjectsToActivateOnTutorial = new List<GameObject>();
-
-    [SerializeField]
-    List<GameObject> gameObjectsToHideOnTutorial = new List<GameObject>();
-
-    [SerializeField]
-    List<GameObject> gameObjectsToActivateOnGameRound = new List<GameObject>();
-
-    [SerializeField]
-    List<GameObject> gameObjectsToHideOnGameRound = new List<GameObject>();
-
-    [SerializeField]
-    List<GameObject> gameObjectsToActivateOnIntermission = new List<GameObject>();
-
-    [SerializeField]
-    List<GameObject> gameObjectsToHideOnIntermission = new List<GameObject>();
-
-    void Start()
+    public class SetActiveOnScriptableServerGameState : MonoBehaviour
     {
-        serverGameInformation.gameStateChangedEvent += OnValueChanged;
-    }
+        [SerializeField]
+        ScriptableServerGameInformation serverGameInformation;
 
-    void OnValueChanged()
-    {
-        if(serverGameInformation.GameState == ServerGameState.Tutorial)
+        [SerializeField]
+        List<GameObject> gameObjectsToActivateOnTutorial = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToHideOnTutorial = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToActivateOnGameRound = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToHideOnGameRound = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToActivateOnIntermission = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToHideOnIntermission = new List<GameObject>();
+
+        void Start()
         {
-            foreach (GameObject gObject in gameObjectsToActivateOnTutorial)
-            {
-                gObject.SetActive(true);
-            }
-
-            foreach (GameObject gObject in gameObjectsToHideOnTutorial)
-            {
-                gObject.SetActive(false);
-            }
+            serverGameInformation.gameStateChangedEvent += OnValueChanged;
         }
-        else if (serverGameInformation.GameState == ServerGameState.GameRound)
-        {
-            foreach (GameObject gObject in gameObjectsToActivateOnGameRound)
-            {
-                gObject.SetActive(true);
-            }
 
-            foreach (GameObject gObject in gameObjectsToHideOnGameRound)
-            {
-                gObject.SetActive(false);
-            }
-        }
-        else if (serverGameInformation.GameState == ServerGameState.Intermission)
+        void OnValueChanged()
         {
-            foreach (GameObject gObject in gameObjectsToActivateOnIntermission)
+            if (serverGameInformation.GameState == ServerGameState.Tutorial)
             {
-                gObject.SetActive(true);
-            }
+                foreach (GameObject gObject in gameObjectsToActivateOnTutorial)
+                {
+                    gObject.SetActive(true);
+                }
 
-            foreach (GameObject gObject in gameObjectsToHideOnIntermission)
+                foreach (GameObject gObject in gameObjectsToHideOnTutorial)
+                {
+                    gObject.SetActive(false);
+                }
+            }
+            else if (serverGameInformation.GameState == ServerGameState.GameRound)
             {
-                gObject.SetActive(false);
+                foreach (GameObject gObject in gameObjectsToActivateOnGameRound)
+                {
+                    gObject.SetActive(true);
+                }
+
+                foreach (GameObject gObject in gameObjectsToHideOnGameRound)
+                {
+                    gObject.SetActive(false);
+                }
+            }
+            else if (serverGameInformation.GameState == ServerGameState.Intermission)
+            {
+                foreach (GameObject gObject in gameObjectsToActivateOnIntermission)
+                {
+                    gObject.SetActive(true);
+                }
+
+                foreach (GameObject gObject in gameObjectsToHideOnIntermission)
+                {
+                    gObject.SetActive(false);
+                }
             }
         }
     }

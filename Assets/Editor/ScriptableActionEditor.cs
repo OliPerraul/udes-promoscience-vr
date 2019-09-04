@@ -1,20 +1,30 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ScriptableAction))]
-public class ScriptableActionEditor : Editor
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.Editor
 {
-    public override void OnInspectorGUI()
+    namespace UdeS.Promoscience.Editor
     {
-        base.OnInspectorGUI();
-
-        GUI.enabled = Application.isPlaying;
-
-        ScriptableAction scriptableAction = target as ScriptableAction;
-
-        if (GUILayout.Button("Fire Action"))
+        [CustomEditor(typeof(ScriptableAction))]
+        public class ScriptableActionEditor : UnityEditor.Editor
         {
-            scriptableAction.FireAction();
+            public override void OnInspectorGUI()
+            {
+                base.OnInspectorGUI();
+
+                GUI.enabled = Application.isPlaying;
+
+                ScriptableAction scriptableAction = target as ScriptableAction;
+
+                if (GUILayout.Button("Fire Action"))
+                {
+                    scriptableAction.FireAction();
+                }
+            }
         }
     }
 }

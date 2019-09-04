@@ -2,71 +2,78 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ReturnToDivergenceControls : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableControler controls;
 
-    [SerializeField]
-    ScriptableBoolean isDiverging;
-
-    [SerializeField]
-    ScriptableAction playerReachedTheEnd;
-
-    [SerializeField]
-    ScriptableBoolean returnToDivergencePointAnswer;
-
-    [SerializeField]
-    GameObject confirmatioPanel;
-
-    [SerializeField]
-    GameObject returnToDivergenceButton;
-
-
-    private void Start()
+    public class ReturnToDivergenceControls : MonoBehaviour
     {
-        controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-        isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
-        playerReachedTheEnd.action += OnPlayerReachedTheEnd;
-        returnToDivergencePointAnswer.valueChangedEvent += OnReturnToDivergencePointAnswer;
-    }
+        [SerializeField]
+        ScriptableControler controls;
 
-    void OnControlsEnableValueChanged()
-    {
-        if (!controls.IsControlsEnabled)
+        [SerializeField]
+        ScriptableBoolean isDiverging;
+
+        [SerializeField]
+        ScriptableAction playerReachedTheEnd;
+
+        [SerializeField]
+        ScriptableBoolean returnToDivergencePointAnswer;
+
+        [SerializeField]
+        GameObject confirmatioPanel;
+
+        [SerializeField]
+        GameObject returnToDivergenceButton;
+
+
+        private void Start()
         {
-            confirmatioPanel.SetActive(false);
-            returnToDivergenceButton.SetActive(false);
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
+            playerReachedTheEnd.action += OnPlayerReachedTheEnd;
+            returnToDivergencePointAnswer.valueChangedEvent += OnReturnToDivergencePointAnswer;
         }
-    }
 
-
-    void OnIsDivergingValueChanged()
-    {
-        if(isDiverging.Value)
+        void OnControlsEnableValueChanged()
         {
-            returnToDivergenceButton.SetActive(true);
-        }
-        else
-        {
-            confirmatioPanel.SetActive(false);
-            returnToDivergenceButton.SetActive(false);
-        }
-    }
-
-    void OnPlayerReachedTheEnd()
-    {
-        confirmatioPanel.SetActive(false);
-        returnToDivergenceButton.SetActive(false);
-    }
-
-    void OnReturnToDivergencePointAnswer()
-    {
-        if (!returnToDivergencePointAnswer.Value)
-        {
-            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            if (!controls.IsControlsEnabled)
             {
-                OnIsDivergingValueChanged();
+                confirmatioPanel.SetActive(false);
+                returnToDivergenceButton.SetActive(false);
+            }
+        }
+
+
+        void OnIsDivergingValueChanged()
+        {
+            if (isDiverging.Value)
+            {
+                returnToDivergenceButton.SetActive(true);
+            }
+            else
+            {
+                confirmatioPanel.SetActive(false);
+                returnToDivergenceButton.SetActive(false);
+            }
+        }
+
+        void OnPlayerReachedTheEnd()
+        {
+            confirmatioPanel.SetActive(false);
+            returnToDivergenceButton.SetActive(false);
+        }
+
+        void OnReturnToDivergencePointAnswer()
+        {
+            if (!returnToDivergencePointAnswer.Value)
+            {
+                if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+                {
+                    OnIsDivergingValueChanged();
+                }
             }
         }
     }

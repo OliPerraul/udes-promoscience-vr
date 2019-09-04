@@ -3,26 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ClientNetworkDiscovery : NetworkDiscovery
+using UdeS.Promoscience.ScriptableObjects;
+
+namespace UdeS.Promoscience.Network
 {
-    [SerializeField]
-    ScriptableString serverIpAdress;
-
-	void Start ()
+    public class ClientNetworkDiscovery : NetworkDiscovery
     {
-        Initialize();
-        StartAsClient();
-    }
+        [SerializeField]
+        ScriptableString serverIpAdress;
 
-    public override void OnReceivedBroadcast(string fromAddress, string data)
-    {
-        //Restarting network transport is a workaround to avoid an error cause by StopBroadcast() on pc, the update function of the network discovery still run for nothing and deleting it cause errors
-        //NetworkTransport.Shutdown();
-        //NetworkTransport.Init();
+        void Start()
+        {
+            Initialize();
+            StartAsClient();
+        }
 
-        //Causes an error on all devices but stop updating after the error and doesn't seems to afect other modules
-        StopBroadcast();
+        public override void OnReceivedBroadcast(string fromAddress, string data)
+        {
+            //Restarting network transport is a workaround to avoid an error cause by StopBroadcast() on pc, the update function of the network discovery still run for nothing and deleting it cause errors
+            //NetworkTransport.Shutdown();
+            //NetworkTransport.Init();
 
-        serverIpAdress.Value = fromAddress;
+            //Causes an error on all devices but stop updating after the error and doesn't seems to afect other modules
+            StopBroadcast();
+
+            serverIpAdress.Value = fromAddress;
+        }
     }
 }

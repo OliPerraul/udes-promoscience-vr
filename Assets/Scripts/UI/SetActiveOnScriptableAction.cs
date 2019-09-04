@@ -2,32 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetActiveOnScriptableAction : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableAction scriptableAction;
 
-    [SerializeField]
-    List<GameObject> gameObjectsToActivate = new List<GameObject>();
-
-    [SerializeField]
-    List<GameObject> gameObjectsToHide = new List<GameObject>();
-
-    void Start()
+    public class SetActiveOnScriptableAction : MonoBehaviour
     {
-        scriptableAction.action += OnScriptableAction;
-    }
+        [SerializeField]
+        ScriptableAction scriptableAction;
 
-    void OnScriptableAction()
-    {
-        foreach (GameObject gObject in gameObjectsToHide)
+        [SerializeField]
+        List<GameObject> gameObjectsToActivate = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToHide = new List<GameObject>();
+
+        void Start()
         {
-            gObject.SetActive(false);
+            scriptableAction.action += OnScriptableAction;
         }
 
-        foreach (GameObject gObject in gameObjectsToActivate)
+        void OnScriptableAction()
         {
-            gObject.SetActive(true);
+            foreach (GameObject gObject in gameObjectsToHide)
+            {
+                gObject.SetActive(false);
+            }
+
+            foreach (GameObject gObject in gameObjectsToActivate)
+            {
+                gObject.SetActive(true);
+            }
         }
     }
 }

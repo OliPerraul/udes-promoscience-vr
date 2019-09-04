@@ -1,20 +1,28 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ScriptableGameAction))]
-public class ScriptableGameActionEditor : Editor
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.Editor
 {
-    public override void OnInspectorGUI()
+
+    [CustomEditor(typeof(ScriptableGameAction))]
+    public class ScriptableGameActionEditor : UnityEditor.Editor
     {
-        base.OnInspectorGUI();
-
-        GUI.enabled = Application.isPlaying;
-
-        ScriptableGameAction scriptableGameState = target as ScriptableGameAction;
-
-        if (GUILayout.Button("On Value Changed"))
+        public override void OnInspectorGUI()
         {
-            scriptableGameState.OnValueChanged();
+            base.OnInspectorGUI();
+
+            GUI.enabled = Application.isPlaying;
+
+            ScriptableGameAction scriptableGameState = target as ScriptableGameAction;
+
+            if (GUILayout.Button("On Value Changed"))
+            {
+                scriptableGameState.OnValueChanged();
+            }
         }
     }
 }

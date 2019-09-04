@@ -1,116 +1,125 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using UnityEngine.Networking;
 
-public class PairingServer : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.UI;
+
+
+namespace UdeS.Promoscience.Network
 {
-    NetworkServerSimple server = null;
-    List<NetworkConnection> clientConnectionList = new List<NetworkConnection>();
-
-    NetworkConnection tabletConnection = null;
-    NetworkConnection headsetConnection = null;
-    string tabletId = null;
-    string headsetId = null;
-
-    public int serverPort = 9995;
-
-    private void Start()
+    public class PairingServer : MonoBehaviour
     {
-        StartServer();
-    }
+        NetworkServerSimple server = null;
+        List<NetworkConnection> clientConnectionList = new List<NetworkConnection>();
 
-    void Update()
-    {
-        if (server != null)
+        NetworkConnection tabletConnection = null;
+        NetworkConnection headsetConnection = null;
+        string tabletId = null;
+        string headsetId = null;
+
+        public int serverPort = 9995;
+
+        private void Start()
         {
-            server.Update();
+            StartServer();
         }
-    }
 
-    void StartServer()
-    {
-        server = new NetworkServerSimple();
-        server.RegisterHandler(MsgType.Connect, OnConnect);
-        server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-        server.RegisterHandler(PairingRequestMessage.GetCustomMsgType(), OnPairingRequest);
-
-        server.Listen(serverPort);
-    }
-
-    void StopServer()
-    {
-        server.Stop();
-        server = null;
-    }
-
-    void OnConnect(NetworkMessage netMsg)
-    {
-        clientConnectionList.Add(netMsg.conn);
-    }
-
-    void OnDisconnect(NetworkMessage netMsg)
-    {
-        clientConnectionList.Remove(netMsg.conn);
-        if (netMsg.conn == tabletConnection)
+        void Update()
         {
-            tabletId = null;
-            tabletConnection = null;
+            if (server != null)
+            {
+                server.Update();
+            }
         }
-        else if (netMsg.conn == headsetConnection)
-        {
-            headsetId = null;
-            headsetConnection = null;
-        }
-    }
 
-    void OnPairingRequest(NetworkMessage netMsg)
-    {
-        PairingRequestMessage msg = netMsg.ReadMessage<PairingRequestMessage>();
-        if(msg.deviceType == DeviceType.Tablet && tabletId == null)
+        void StartServer()
         {
-            tabletId = msg.deviceId;
-            tabletConnection = netMsg.conn;
-            Pairing();
-        }
-        else if (msg.deviceType == DeviceType.Headset && headsetId == null)
-        {
-            headsetId = msg.deviceId;
-            headsetConnection = netMsg.conn;
-            Pairing();
-        }
-        else
-        {
-            SendTargetPairingResult(netMsg.conn, false);
-        }
-    }
+            server = new NetworkServerSimple();
+            server.RegisterHandler(MsgType.Connect, OnConnect);
+            server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
+            server.RegisterHandler(PairingRequestMessage.GetCustomMsgType(), OnPairingRequest);
 
-    void Pairing()
-    {
-        if (tabletId != null && headsetId != null)
+            server.Listen(serverPort);
+        }
+
+        void StopServer()
         {
+            server.Stop();
+            server = null;
+        }
+
+        void OnConnect(NetworkMessage netMsg)
+        {
+            clientConnectionList.Add(netMsg.conn);
+        }
+
+        void OnDisconnect(NetworkMessage netMsg)
+        {
+            clientConnectionList.Remove(netMsg.conn);
+            if (netMsg.conn == tabletConnection)
+            {
+                tabletId = null;
+                tabletConnection = null;
+            }
+            else if (netMsg.conn == headsetConnection)
+            {
+                headsetId = null;
+                headsetConnection = null;
+            }
+        }
+
+        void OnPairingRequest(NetworkMessage netMsg)
+        {
+            PairingRequestMessage msg = netMsg.ReadMessage<PairingRequestMessage>();
+            if (msg.deviceType == Utils.DeviceType.Tablet && tabletId == null)
+            {
+                tabletId = msg.deviceId;
+                tabletConnection = netMsg.conn;
+                Pairing();
+            }
+            else if (msg.deviceType == Utils.DeviceType.Headset && headsetId == null)
+            {
+                headsetId = msg.deviceId;
+                headsetConnection = netMsg.conn;
+                Pairing();
+            }
+            else
+            {
+                SendTargetPairingResult(netMsg.conn, false);
+            }
+        }
+
+        void Pairing()
+        {
+            if (tabletId != null && headsetId != null)
+            {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            SQLiteUtilities.InsertPairing(tabletId, headsetId);
+                SQLiteUtilities.InsertPairing(tabletId, headsetId);
 #endif
-            SendPairingResult(true);
+                SendPairingResult(true);
+            }
+        }
+
+        public void SendPairingResult(bool isPairingSuccess)
+        {
+            PairingResultMessage pairingResultMsg = new PairingResultMessage();
+            pairingResultMsg.isPairingSucess = isPairingSuccess;
+
+            tabletConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
+            headsetConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
+        }
+
+        public void SendTargetPairingResult(NetworkConnection target, bool isPairingSuccess)
+        {
+            PairingResultMessage pairingResultMsg = new PairingResultMessage();
+            pairingResultMsg.isPairingSucess = isPairingSuccess;
+
+            target.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
         }
     }
-
-    public void SendPairingResult(bool isPairingSuccess)
-    {
-        PairingResultMessage pairingResultMsg = new PairingResultMessage();
-        pairingResultMsg.isPairingSucess = isPairingSuccess;
-
-        tabletConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
-        headsetConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
-    }
-
-    public void SendTargetPairingResult(NetworkConnection target, bool isPairingSuccess)
-    {
-        PairingResultMessage pairingResultMsg = new PairingResultMessage();
-        pairingResultMsg.isPairingSucess = isPairingSuccess;
-
-        target.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
-    }
-
 }

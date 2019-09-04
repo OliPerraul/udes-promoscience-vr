@@ -3,21 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpdateTextWithScriptableString : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableString scriptableString;
-
-    [SerializeField]
-    Text text;
-
-	void Start ()
+    public class UpdateTextWithScriptableString : MonoBehaviour
     {
-        scriptableString.valueChangedEvent += OnValueChangedEvent;
+        [SerializeField]
+        ScriptableString scriptableString;
+
+        [SerializeField]
+        Text text;
+
+        void Start()
+        {
+            scriptableString.valueChangedEvent += OnValueChangedEvent;
+        }
+
+        void OnValueChangedEvent()
+        {
+            text.text = scriptableString.Value;
+        }
     }
-	
-	void OnValueChangedEvent()
-    {
-        text.text = scriptableString.Value;
-	}
 }

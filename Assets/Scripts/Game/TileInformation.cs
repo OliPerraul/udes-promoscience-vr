@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileInformation : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+
+namespace UdeS.Promoscience.Game
 {
-    public bool isWalkable;
+    public class TileInformation : MonoBehaviour
+    {
+        public bool isWalkable;
+    }
 }

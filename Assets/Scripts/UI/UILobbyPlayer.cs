@@ -3,228 +3,237 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UILobbyPlayer : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Utils;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableServerPlayerInformation playersInformation;
 
-    [SerializeField]
-    ScriptableTeamList teamList;
-
-    [SerializeField]
-    ScriptableLocalizeString connectingString;
-
-    [SerializeField]
-    ScriptableLocalizeString disconnectedString;
-
-    [SerializeField]
-    ScriptableLocalizeString longestStraightString;
-
-    [SerializeField]
-    ScriptableLocalizeString noAssociatedPairString;
-
-    [SerializeField]
-    ScriptableLocalizeString notReadyString;
-
-    [SerializeField]
-    ScriptableLocalizeString pairedString;
-
-    [SerializeField]
-    ScriptableLocalizeString pairingString;
-
-    [SerializeField]
-    ScriptableLocalizeString playingString;
-
-    [SerializeField]
-    ScriptableLocalizeString playingTutorialString;
-
-    [SerializeField]
-    ScriptableLocalizeString readyString;
-
-    [SerializeField]
-    ScriptableLocalizeString reconnectingString;
-
-    [SerializeField]
-    ScriptableLocalizeString shortestFlightString;
-
-    [SerializeField]
-    ScriptableLocalizeString standardAlgorithmString;
-
-    [SerializeField]
-    ScriptableLocalizeString unknownStatusString;
-
-    [SerializeField]
-    ScriptableLocalizeString waitingForNextRoundString;
-
-    [SerializeField]
-    ScriptableLocalizeString waitingForPairConnectionString;
-
-    [SerializeField]
-    Image image;
-
-    [SerializeField]
-    Text nameText;
-
-    [SerializeField]
-    Text teamNameText;
-
-    [SerializeField]
-    Image color;
-
-    [SerializeField]
-    Text statusText;
-
-    PlayerInformation playerInformation;
-
-    int slotId;
-
-    private void OnDestroy()
+    public class UILobbyPlayer : MonoBehaviour
     {
-        if (playerInformation != null)
+        [SerializeField]
+        ScriptableServerPlayerInformation playersInformation;
+
+        [SerializeField]
+        ScriptableTeamList teamList;
+
+        [SerializeField]
+        ScriptableLocalizeString connectingString;
+
+        [SerializeField]
+        ScriptableLocalizeString disconnectedString;
+
+        [SerializeField]
+        ScriptableLocalizeString longestStraightString;
+
+        [SerializeField]
+        ScriptableLocalizeString noAssociatedPairString;
+
+        [SerializeField]
+        ScriptableLocalizeString notReadyString;
+
+        [SerializeField]
+        ScriptableLocalizeString pairedString;
+
+        [SerializeField]
+        ScriptableLocalizeString pairingString;
+
+        [SerializeField]
+        ScriptableLocalizeString playingString;
+
+        [SerializeField]
+        ScriptableLocalizeString playingTutorialString;
+
+        [SerializeField]
+        ScriptableLocalizeString readyString;
+
+        [SerializeField]
+        ScriptableLocalizeString reconnectingString;
+
+        [SerializeField]
+        ScriptableLocalizeString shortestFlightString;
+
+        [SerializeField]
+        ScriptableLocalizeString standardAlgorithmString;
+
+        [SerializeField]
+        ScriptableLocalizeString unknownStatusString;
+
+        [SerializeField]
+        ScriptableLocalizeString waitingForNextRoundString;
+
+        [SerializeField]
+        ScriptableLocalizeString waitingForPairConnectionString;
+
+        [SerializeField]
+        Image image;
+
+        [SerializeField]
+        Text nameText;
+
+        [SerializeField]
+        Text teamNameText;
+
+        [SerializeField]
+        Image color;
+
+        [SerializeField]
+        Text statusText;
+
+        PlayerInformation playerInformation;
+
+        int slotId;
+
+        private void OnDestroy()
         {
-            playersInformation.orderChangedEvent -= OnOrderChanged;
-        }
-    }
-
-    public void SetId(int id)
-    {
-        slotId = id;
-
-        playersInformation.orderChangedEvent += OnOrderChanged;
-
-        SetPlayer();
-    }
-
-    void OnOrderChanged()
-    {
-        if (playerInformation != null)
-        {
-            playerInformation.playerChangedEvent -= SetPlayer;
-            playerInformation.playerTeamIdChangedEvent -= UpdateLobbyPlayerTeam;
-            playerInformation.playerGameStateChangedEvent -= UpdateLobbyPlayerStatusText;
+            if (playerInformation != null)
+            {
+                playersInformation.orderChangedEvent -= OnOrderChanged;
+            }
         }
 
-        SetPlayer();
-    }
-
-    void SetPlayer()
-    {
-        playerInformation = playersInformation.GetPlayerInformationWithId(slotId);
-
-        playerInformation.playerChangedEvent += SetPlayer;
-        playerInformation.playerTeamIdChangedEvent += UpdateLobbyPlayerTeam;
-        playerInformation.playerGameStateChangedEvent += UpdateLobbyPlayerStatusText;
-
-        SetLobbyPlayerImage();
-        SetLobbyPlayerName();
-        UpdateLobbyPlayerTeam();
-        UpdateLobbyPlayerStatusText();
-    }
-
-    void SetLobbyPlayerImage()
-    {
-        if (playerInformation.Player != null)
+        public void SetId(int id)
         {
-            //Should change depending on the device type between a heaset or a tablet
+            slotId = id;
+
+            playersInformation.orderChangedEvent += OnOrderChanged;
+
+            SetPlayer();
         }
-    }
 
-    void SetLobbyPlayerName()
-    {
-        if (playerInformation.Player != null)
+        void OnOrderChanged()
         {
-            nameText.text = playerInformation.Player.ServerDeviceName;
+            if (playerInformation != null)
+            {
+                playerInformation.playerChangedEvent -= SetPlayer;
+                playerInformation.playerTeamIdChangedEvent -= UpdateLobbyPlayerTeam;
+                playerInformation.playerGameStateChangedEvent -= UpdateLobbyPlayerStatusText;
+            }
+
+            SetPlayer();
         }
-    }
 
-    void UpdateLobbyPlayerTeam()
-    {
-        if (playerInformation.PlayerTeamInformationId != -1)
+        void SetPlayer()
         {
-            ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.PlayerTeamInformationId);
-            teamNameText.text = team.TeamName;
-            color.color = team.TeamColor;
+            playerInformation = playersInformation.GetPlayerInformationWithId(slotId);
+
+            playerInformation.playerChangedEvent += SetPlayer;
+            playerInformation.playerTeamIdChangedEvent += UpdateLobbyPlayerTeam;
+            playerInformation.playerGameStateChangedEvent += UpdateLobbyPlayerStatusText;
+
+            SetLobbyPlayerImage();
+            SetLobbyPlayerName();
+            UpdateLobbyPlayerTeam();
+            UpdateLobbyPlayerStatusText();
         }
-        else
+
+        void SetLobbyPlayerImage()
         {
-            teamNameText.text = "";
-            color.color = Color.white;
+            if (playerInformation.Player != null)
+            {
+                //Should change depending on the device type between a heaset or a tablet
+            }
         }
-    }
 
-    void UpdateLobbyPlayerStatusText()
-    {
-        if (playerInformation.Player == null)
+        void SetLobbyPlayerName()
         {
-            statusText.text = disconnectedString.Value;
+            if (playerInformation.Player != null)
+            {
+                nameText.text = playerInformation.Player.ServerDeviceName;
+            }
         }
-        else
+
+        void UpdateLobbyPlayerTeam()
         {
-            if (playerInformation.PlayerGameState == ClientGameState.Connecting)
+            if (playerInformation.PlayerTeamInformationId != -1)
             {
-                statusText.text = connectingString.Value;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.NotReady)
-            {
-                statusText.text = notReadyString.Value;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.Pairing)
-            {
-                statusText.text = pairingString.Value;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.NoAssociatedPair || playerInformation.PlayerGameState == ClientGameState.ReconnectingNoAssociatedPair)
-            {
-                statusText.text = noAssociatedPairString.Value;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.Paired)
-            {
-                statusText.text = pairedString.Value;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.Ready)
-            {
-                statusText.text = readyString.Value;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.PlayingTutorial)
-            {
-                statusText.text = playingTutorialString.Value;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.Playing)
-            {
-                string text = playingString.Value;
-
-                if (playerInformation.Player.serverDeviceType == DeviceType.Headset)
-                {
-                    if (playerInformation.Player.serverAlgorithm == Algorithm.ShortestFlightDistance)
-                    {
-                        text += " - " + shortestFlightString.Value;
-                    }
-                    else if (playerInformation.Player.serverAlgorithm == Algorithm.LongestStraight)
-                    {
-                        text += " - " + longestStraightString.Value;
-                    }
-                    else if (playerInformation.Player.serverAlgorithm == Algorithm.Standard)
-                    {
-                        text += " - " + standardAlgorithmString.Value;
-                    }
-                }
-
-                statusText.text = text;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.WaitingForNextRound)
-            {
-                statusText.text = waitingForNextRoundString.Value;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.Reconnecting)
-            {
-                statusText.text = reconnectingString.Value;
-            }
-            else if (playerInformation.PlayerGameState == ClientGameState.WaitingForPairConnection)
-            {
-                statusText.text = waitingForPairConnectionString.Value;
+                ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.PlayerTeamInformationId);
+                teamNameText.text = team.TeamName;
+                color.color = team.TeamColor;
             }
             else
             {
-                statusText.text = unknownStatusString.Value;
+                teamNameText.text = "";
+                color.color = Color.white;
+            }
+        }
+
+        void UpdateLobbyPlayerStatusText()
+        {
+            if (playerInformation.Player == null)
+            {
+                statusText.text = disconnectedString.Value;
+            }
+            else
+            {
+                if (playerInformation.PlayerGameState == ClientGameState.Connecting)
+                {
+                    statusText.text = connectingString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.NotReady)
+                {
+                    statusText.text = notReadyString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.Pairing)
+                {
+                    statusText.text = pairingString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.NoAssociatedPair || playerInformation.PlayerGameState == ClientGameState.ReconnectingNoAssociatedPair)
+                {
+                    statusText.text = noAssociatedPairString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.Paired)
+                {
+                    statusText.text = pairedString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.Ready)
+                {
+                    statusText.text = readyString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.PlayingTutorial)
+                {
+                    statusText.text = playingTutorialString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.Playing)
+                {
+                    string text = playingString.Value;
+
+                    if (playerInformation.Player.serverDeviceType == Utils.DeviceType.Headset)
+                    {
+                        if (playerInformation.Player.serverAlgorithm == Algorithm.ShortestFlightDistance)
+                        {
+                            text += " - " + shortestFlightString.Value;
+                        }
+                        else if (playerInformation.Player.serverAlgorithm == Algorithm.LongestStraight)
+                        {
+                            text += " - " + longestStraightString.Value;
+                        }
+                        else if (playerInformation.Player.serverAlgorithm == Algorithm.Standard)
+                        {
+                            text += " - " + standardAlgorithmString.Value;
+                        }
+                    }
+
+                    statusText.text = text;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.WaitingForNextRound)
+                {
+                    statusText.text = waitingForNextRoundString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.Reconnecting)
+                {
+                    statusText.text = reconnectingString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.WaitingForPairConnection)
+                {
+                    statusText.text = waitingForPairConnectionString.Value;
+                }
+                else
+                {
+                    statusText.text = unknownStatusString.Value;
+                }
             }
         }
     }

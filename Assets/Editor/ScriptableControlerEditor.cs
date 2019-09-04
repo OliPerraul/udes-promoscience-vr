@@ -1,25 +1,32 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ScriptableControler))]
-public class ScriptableControlerEditor : Editor
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.Editor
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(ScriptableControler))]
+    public class ScriptableControlerEditor : UnityEditor.Editor
     {
-        base.OnInspectorGUI();
-
-        GUI.enabled = Application.isPlaying;
-
-        ScriptableControler scriptableControler = target as ScriptableControler;
-
-        if (GUILayout.Button("On Controls Enable Value Changed"))
+        public override void OnInspectorGUI()
         {
-            scriptableControler.OnPlayerControlsEnableValueChanged();
-        }
+            base.OnInspectorGUI();
 
-        if (GUILayout.Button("Stop All Movement"))
-        {
-            scriptableControler.StopAllMovement();
+            GUI.enabled = Application.isPlaying;
+
+            ScriptableControler scriptableControler = target as ScriptableControler;
+
+            if (GUILayout.Button("On Controls Enable Value Changed"))
+            {
+                scriptableControler.OnPlayerControlsEnableValueChanged();
+            }
+
+            if (GUILayout.Button("Stop All Movement"))
+            {
+                scriptableControler.StopAllMovement();
+            }
         }
     }
 }

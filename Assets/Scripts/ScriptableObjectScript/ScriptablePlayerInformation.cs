@@ -3,46 +3,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/PlayerInformation", order = 1)]
-public class ScriptablePlayerInformation : ScriptableObject
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    bool isInitialize = false;
 
-    int playerTeamInformationId;
-
-    public int PlayerTeamInformationId
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/PlayerInformation", order = 1)]
+    public class ScriptablePlayerInformation : ScriptableObject
     {
-        get
+        bool isInitialize = false;
+
+        int playerTeamInformationId;
+
+        public int PlayerTeamInformationId
         {
-            return playerTeamInformationId;
+            get
+            {
+                return playerTeamInformationId;
+            }
         }
-    }
 
-    public bool IsInitialize
-    {
-        get
+        public bool IsInitialize
         {
-            return isInitialize;
+            get
+            {
+                return isInitialize;
+            }
         }
-    }
 
-    public Action playerInformationChangedEvent;
+        public Action playerInformationChangedEvent;
 
-    void OnPlayerInformationChanged()
-    {
-        if (playerInformationChangedEvent != null)
+        void OnPlayerInformationChanged()
         {
-            playerInformationChangedEvent();
+            if (playerInformationChangedEvent != null)
+            {
+                playerInformationChangedEvent();
+            }
         }
-    }
 
-    public void SetPlayerInformation(int teamInformationId)
-    {
-        playerTeamInformationId = teamInformationId;
+        public void SetPlayerInformation(int teamInformationId)
+        {
+            playerTeamInformationId = teamInformationId;
 
-        isInitialize = true;
+            isInitialize = true;
 
-        OnPlayerInformationChanged();
+            OnPlayerInformationChanged();
+        }
     }
 }
 

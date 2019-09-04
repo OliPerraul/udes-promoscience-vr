@@ -2,87 +2,94 @@
 using System.Collections;
 using UnityEngine;
 
- [CreateAssetMenu(fileName = "Data", menuName = "Data/Labyrinth", order = 1)]
-public class ScriptableLabyrinth : ScriptableObject
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    int currentId = -1;
-    int[] data;
-    int sizeX;
-    int sizeY;
-
-    public Action valueChangedEvent;
-
-    void OnValueChanged()
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/Labyrinth", order = 1)]
+    public class ScriptableLabyrinth : ScriptableObject
     {
-        if (valueChangedEvent != null)
+        int currentId = -1;
+        int[] data;
+        int sizeX;
+        int sizeY;
+
+        public Action valueChangedEvent;
+
+        void OnValueChanged()
         {
-            valueChangedEvent();
-        }
-    }
-
-    public int[] GetLabyrithDataWithId(int id)
-    {
-        if(id!= currentId)
-        {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            currentId = id;
-            SQLiteUtilities.ReadLabyrinthDataFromId( id, ref sizeX, ref sizeY, ref data);
-            
-            OnValueChanged();
-#endif
-        }
-
-        return data;
-    }
-
-    public int GetLabyrithValueAt(int x,int y)
-    {
-        //Could add an out of bound check
-        return data[(x * sizeY) + y];
-    }
-
-    public int GetLabyrithXLenght()
-    {
-        return sizeX;
-    }
-
-    public int GetLabyrithYLenght()
-    {
-        return sizeY;
-    }
-
-
-    public void SetLabyrithData(int[,] map, int id)
-    {
-        if (id != currentId)
-        {
-            currentId = id;
-            sizeX = map.GetLength(0);
-            sizeY = map.GetLength(1);
-            data = new int[sizeX * sizeY];
-
-            for (int x = 0; x < sizeX; x++)
+            if (valueChangedEvent != null)
             {
-                for (int y = 0; y < sizeY; y++)
-                {
-                    data[(x * sizeY) + y] = map[x, y];
-                }
+                valueChangedEvent();
+            }
+        }
+
+        public int[] GetLabyrithDataWithId(int id)
+        {
+            if (id != currentId)
+            {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                currentId = id;
+                SQLiteUtilities.ReadLabyrinthDataFromId(id, ref sizeX, ref sizeY, ref data);
+
+                OnValueChanged();
+#endif
             }
 
-            OnValueChanged();
+            return data;
         }
-    }
 
-    public void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
-    {
-        if (id != currentId)
+        public int GetLabyrithValueAt(int x, int y)
         {
-            currentId = id;
-            data = labyrinthData;
-            sizeX = labyrinthSizeX;
-            sizeY = labyrinthSizeY;
+            //Could add an out of bound check
+            return data[(x * sizeY) + y];
+        }
 
-            OnValueChanged();
+        public int GetLabyrithXLenght()
+        {
+            return sizeX;
+        }
+
+        public int GetLabyrithYLenght()
+        {
+            return sizeY;
+        }
+
+
+        public void SetLabyrithData(int[,] map, int id)
+        {
+            if (id != currentId)
+            {
+                currentId = id;
+                sizeX = map.GetLength(0);
+                sizeY = map.GetLength(1);
+                data = new int[sizeX * sizeY];
+
+                for (int x = 0; x < sizeX; x++)
+                {
+                    for (int y = 0; y < sizeY; y++)
+                    {
+                        data[(x * sizeY) + y] = map[x, y];
+                    }
+                }
+
+                OnValueChanged();
+            }
+        }
+
+        public void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
+        {
+            if (id != currentId)
+            {
+                currentId = id;
+                data = labyrinthData;
+                sizeX = labyrinthSizeX;
+                sizeY = labyrinthSizeY;
+
+                OnValueChanged();
+            }
         }
     }
 }

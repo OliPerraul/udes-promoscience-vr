@@ -3,150 +3,155 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
 
-public class DistanceScanner : MonoBehaviour
+namespace UdeS.Promoscience.Game
 {
-    [SerializeField]
-    ScriptableControler controls;
-
-    [SerializeField]
-    GameLabyrinth labyrinth;
-
-    [SerializeField]
-    GameObject distanceDisplay;
-
-    [SerializeField]
-    GameObject targetDisplay;
-
-    [SerializeField]
-    Text textDisplay;
-
-    [SerializeField]
-    Transform cameraTransform;
-
-    [SerializeField]
-    Transform raycastStartPoint;
-
-    const string TAG_FLOOR = "Floor";
-    const string TAG_WALL = "Wall";
-
-    readonly int[] xByDirection = { 0, 1, 0, -1 };
-    readonly int[] yByDirection = { -1, 0, 1, 0 };
-
-    float raycastRange = 100 * Constants.TILE_SIZE;
-
-	void Start ()
+    public class DistanceScanner : MonoBehaviour
     {
-        controls.isControlsEnableValueChangedEvent += OnIsControlsEnableValueChangedEvent;
-        controls.isPlayerControlsEnableValueChangedEvent += OnIsControlsEnableValueChangedEvent;
-    }
-	
-	void Update ()
-    {
-		if(distanceDisplay.activeSelf)
+        [SerializeField]
+        ScriptableControler controls;
+
+        [SerializeField]
+        GameLabyrinth labyrinth;
+
+        [SerializeField]
+        GameObject distanceDisplay;
+
+        [SerializeField]
+        GameObject targetDisplay;
+
+        [SerializeField]
+        Text textDisplay;
+
+        [SerializeField]
+        Transform cameraTransform;
+
+        [SerializeField]
+        Transform raycastStartPoint;
+
+        const string TAG_FLOOR = "Floor";
+        const string TAG_WALL = "Wall";
+
+        readonly int[] xByDirection = { 0, 1, 0, -1 };
+        readonly int[] yByDirection = { -1, 0, 1, 0 };
+
+        float raycastRange = 100 * Constants.TILE_SIZE;
+
+        void Start()
         {
-            ExecuteDistanceScan();
+            controls.isControlsEnableValueChangedEvent += OnIsControlsEnableValueChangedEvent;
+            controls.isPlayerControlsEnableValueChangedEvent += OnIsControlsEnableValueChangedEvent;
         }
-	}
 
-    void OnIsControlsEnableValueChangedEvent()
-    {
-        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+        void Update()
         {
-            distanceDisplay.SetActive(true);
-            targetDisplay.SetActive(true);
-        }
-        else
-        {
-            distanceDisplay.SetActive(false);
-            targetDisplay.SetActive(false);
-        }
-    }
-
-    void ExecuteDistanceScan()
-    {
-        float distance = 0;
-        string text = "";
-        Ray ray = new Ray(raycastStartPoint.position, raycastStartPoint.forward);
-        RaycastHit raycastHit;
-        
-        if (Physics.Raycast(ray, out raycastHit, raycastRange))
-        {
-            if (raycastHit.transform.tag == TAG_WALL)
+            if (distanceDisplay.activeSelf)
             {
-                Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
-                Vector2Int hitWallPosition = labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.transform.position.x, raycastHit.transform.position.z);
+                ExecuteDistanceScan();
+            }
+        }
 
-                if (hitWallPosition.x == currentPosition.x || hitWallPosition.y == currentPosition.y)
+        void OnIsControlsEnableValueChangedEvent()
+        {
+            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            {
+                distanceDisplay.SetActive(true);
+                targetDisplay.SetActive(true);
+            }
+            else
+            {
+                distanceDisplay.SetActive(false);
+                targetDisplay.SetActive(false);
+            }
+        }
+
+        void ExecuteDistanceScan()
+        {
+            float distance = 0;
+            string text = "";
+            Ray ray = new Ray(raycastStartPoint.position, raycastStartPoint.forward);
+            RaycastHit raycastHit;
+
+            if (Physics.Raycast(ray, out raycastHit, raycastRange))
+            {
+                if (raycastHit.transform.tag == TAG_WALL)
                 {
-                    bool isFirstWallInLine = true;
+                    Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+                    Vector2Int hitWallPosition = labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.transform.position.x, raycastHit.transform.position.z);
 
-                    if (hitWallPosition.x == currentPosition.x)
+                    if (hitWallPosition.x == currentPosition.x || hitWallPosition.y == currentPosition.y)
                     {
-                        int direction = (hitWallPosition.y - currentPosition.y) < 0 ? 0 : 2;
-                        int y = currentPosition.y + yByDirection[direction];
+                        bool isFirstWallInLine = true;
 
-                        while(y != hitWallPosition.y)
+                        if (hitWallPosition.x == currentPosition.x)
                         {
-                            if(!labyrinth.GetIsTileWalkable(currentPosition.x, y))
-                            {
-                                isFirstWallInLine = false;
-                                break;
-                            }
+                            int direction = (hitWallPosition.y - currentPosition.y) < 0 ? 0 : 2;
+                            int y = currentPosition.y + yByDirection[direction];
 
-                            y += yByDirection[direction];
+                            while (y != hitWallPosition.y)
+                            {
+                                if (!labyrinth.GetIsTileWalkable(currentPosition.x, y))
+                                {
+                                    isFirstWallInLine = false;
+                                    break;
+                                }
+
+                                y += yByDirection[direction];
+                            }
+                        }
+                        else if (hitWallPosition.y == currentPosition.y)
+                        {
+                            int direction = (hitWallPosition.x - currentPosition.x) < 0 ? 3 : 1;
+                            int x = currentPosition.x + xByDirection[direction];
+
+                            while (x != hitWallPosition.x)
+                            {
+                                if (!labyrinth.GetIsTileWalkable(x, currentPosition.y))
+                                {
+                                    isFirstWallInLine = false;
+                                    break;
+                                }
+
+                                x += xByDirection[direction];
+                            }
+                        }
+
+                        if (isFirstWallInLine)
+                        {
+                            distance = (int)(hitWallPosition - currentPosition).magnitude - 1;
+                            text = "<color=cyan>" + distance.ToString() + "</color>";
                         }
                     }
-                    else if (hitWallPosition.y == currentPosition.y)
-                    {
-                        int direction = (hitWallPosition.x - currentPosition.x) < 0 ? 3 : 1;
-                        int x = currentPosition.x + xByDirection[direction];
-
-                        while (x != hitWallPosition.x)
-                        {
-                            if (!labyrinth.GetIsTileWalkable(x, currentPosition.y))
-                            {
-                                isFirstWallInLine = false;
-                                break;
-                            }
-
-                            x += xByDirection[direction];
-                        }
-                    }
-
-                    if (isFirstWallInLine)
-                    {
-                        distance = (int)(hitWallPosition - currentPosition).magnitude - 1;
-                        text = "<color=cyan>" + distance.ToString() + "</color>";
-                    }
                 }
-            }
-            else if (raycastHit.transform.tag == TAG_FLOOR)
-            {
-                Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
-                Vector2Int hitPosition = labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.point.x, raycastHit.point.z);
-
-                if (hitPosition == currentPosition
-                        || hitPosition == (currentPosition + new Vector2Int(xByDirection[0], yByDirection[0]))
-                        || hitPosition == (currentPosition + new Vector2Int(xByDirection[1], yByDirection[1]))
-                        || hitPosition == (currentPosition + new Vector2Int(xByDirection[2], yByDirection[2]))
-                        || hitPosition == (currentPosition + new Vector2Int(xByDirection[3], yByDirection[3])))
+                else if (raycastHit.transform.tag == TAG_FLOOR)
                 {
-                    distance = (labyrinth.GetLabyrithEndPosition() - hitPosition).magnitude;
-                    distance = Mathf.Round(distance * 10) / 10;
-                    text = "<color=lime>" + distance.ToString() + "</color>";
+                    Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+                    Vector2Int hitPosition = labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.point.x, raycastHit.point.z);
+
+                    if (hitPosition == currentPosition
+                            || hitPosition == (currentPosition + new Vector2Int(xByDirection[0], yByDirection[0]))
+                            || hitPosition == (currentPosition + new Vector2Int(xByDirection[1], yByDirection[1]))
+                            || hitPosition == (currentPosition + new Vector2Int(xByDirection[2], yByDirection[2]))
+                            || hitPosition == (currentPosition + new Vector2Int(xByDirection[3], yByDirection[3])))
+                    {
+                        distance = (labyrinth.GetLabyrithEndPosition() - hitPosition).magnitude;
+                        distance = Mathf.Round(distance * 10) / 10;
+                        text = "<color=lime>" + distance.ToString() + "</color>";
+                    }
                 }
+
+                targetDisplay.transform.position = raycastHit.point;
+                targetDisplay.transform.rotation = Quaternion.FromToRotation(Vector3.up, raycastHit.normal); ;
+                targetDisplay.SetActive(true);
+            }
+            else
+            {
+                targetDisplay.SetActive(false);
             }
 
-            targetDisplay.transform.position = raycastHit.point;
-            targetDisplay.transform.rotation = Quaternion.FromToRotation(Vector3.up, raycastHit.normal); ;
-            targetDisplay.SetActive(true);
+            textDisplay.text = text;
         }
-        else
-        {
-            targetDisplay.SetActive(false);
-        }
-
-        textDisplay.text = text;
     }
 }

@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class LocalizeText : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableLocalizeString localizeString;
 
-    [SerializeField]
-    Text text;
-
-    void Start ()
+    public class LocalizeText : MonoBehaviour
     {
-        text.text = localizeString.Value;
-	}
-	
+        [SerializeField]
+        ScriptableLocalizeString localizeString;
+
+        [SerializeField]
+        Text text;
+
+        void Start()
+        {
+            text.text = localizeString.Value;
+        }
+
+    }
 }

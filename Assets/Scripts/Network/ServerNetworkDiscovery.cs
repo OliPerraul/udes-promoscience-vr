@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ServerNetworkDiscovery : NetworkDiscovery
+namespace UdeS.Promoscience.Network
 {
-	void Start ()
+
+    public class ServerNetworkDiscovery : NetworkDiscovery
     {
-        Initialize();
-        StartAsServer();
+        void Start()
+        {
+            Initialize();
+            StartAsServer();
+        }
     }
 }

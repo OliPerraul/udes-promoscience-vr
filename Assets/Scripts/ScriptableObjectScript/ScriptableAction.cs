@@ -2,16 +2,19 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/Action", order = 1)]
-public class ScriptableAction : ScriptableObject
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    public Action action;
-
-    public void FireAction()
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/Action", order = 1)]
+    public class ScriptableAction : ScriptableObject
     {
-        if (action != null)
+        public Action action;
+
+        public void FireAction()
         {
-            action();
+            if (action != null)
+            {
+                action();
+            }
         }
     }
 }

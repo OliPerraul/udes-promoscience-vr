@@ -1,20 +1,28 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ScriptableInteger))]
-public class ScriptableIntegerEditor : Editor
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.Editor
 {
-    public override void OnInspectorGUI()
+
+    [CustomEditor(typeof(ScriptableInteger))]
+    public class ScriptableIntegerEditor : UnityEditor.Editor
     {
-        base.OnInspectorGUI();
-
-        GUI.enabled = Application.isPlaying;
-
-        ScriptableInteger scriptableInteger = target as ScriptableInteger;
-
-        if (GUILayout.Button("On Value Changed"))
+        public override void OnInspectorGUI()
         {
-            scriptableInteger.OnValueChanged();
+            base.OnInspectorGUI();
+
+            GUI.enabled = Application.isPlaying;
+
+            ScriptableInteger scriptableInteger = target as ScriptableInteger;
+
+            if (GUILayout.Button("On Value Changed"))
+            {
+                scriptableInteger.OnValueChanged();
+            }
         }
     }
 }

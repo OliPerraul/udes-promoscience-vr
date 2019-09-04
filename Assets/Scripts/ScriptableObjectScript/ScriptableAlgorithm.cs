@@ -1,34 +1,38 @@
 ﻿using System;
 using System.Collections;
+using UdeS.Promoscience.Utils;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/Algorithm", order = 1)]
-public class ScriptableAlgorithm : ScriptableObject
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    [SerializeField]
-    Algorithm value;
 
-    public Action valueChangedEvent;
-
-    public Algorithm Value
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/Algorithm", order = 1)]
+    public class ScriptableAlgorithm : ScriptableObject
     {
-        get
-        {
-            return value;
-        }
-        set
-        {
-            this.value = value;
-            OnValueChanged();
-        }
-    }
+        [SerializeField]
+        Algorithm value;
 
-    public void OnValueChanged()
-    {
-        if (valueChangedEvent != null)
+        public Action valueChangedEvent;
+
+        public Algorithm Value
         {
-            valueChangedEvent();
+            get
+            {
+                return value;
+            }
+            set
+            {
+                this.value = value;
+                OnValueChanged();
+            }
+        }
+
+        public void OnValueChanged()
+        {
+            if (valueChangedEvent != null)
+            {
+                valueChangedEvent();
+            }
         }
     }
 }
-

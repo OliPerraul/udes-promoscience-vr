@@ -6,27 +6,32 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-public class UDPLocalListener : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+
+namespace UdeS.Promoscience.Tests
 {
-    [SerializeField]
-    ScriptableString serverIpAdress;
-
-    int port = 9995;
-
-    int messageCount = 0;
-
-    void Start()
+    public class UDPLocalListener : MonoBehaviour
     {
-        UdpClient listener = new UdpClient(port);
-        IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, port);
+        [SerializeField]
+        ScriptableString serverIpAdress;
 
-        Debug.Log("Waiting for broadcast");
-        byte[] bytes = listener.Receive(ref groupEP);//Lock execution but there is a Async alternative
+        int port = 9995;
 
-        messageCount++;
+        int messageCount = 0;
 
-        Debug.Log(Encoding.ASCII.GetString(bytes, 0, bytes.Length) + " | MessageCount : " + messageCount);
+        void Start()
+        {
+            UdpClient listener = new UdpClient(port);
+            IPEndPoint groupEP = new IPEndPoint(IPAddress.Any, port);
 
-        listener.Close();
+            Debug.Log("Waiting for broadcast");
+            byte[] bytes = listener.Receive(ref groupEP);//Lock execution but there is a Async alternative
+
+            messageCount++;
+
+            Debug.Log(Encoding.ASCII.GetString(bytes, 0, bytes.Length) + " | MessageCount : " + messageCount);
+
+            listener.Close();
+        }
     }
 }

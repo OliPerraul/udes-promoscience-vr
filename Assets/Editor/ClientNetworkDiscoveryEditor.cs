@@ -1,10 +1,18 @@
-﻿using UnityEditor;
+﻿using UdeS.Promoscience.Network;
+using UnityEditor;
 
-[CustomEditor(typeof(ClientNetworkDiscovery))]
-public class ClientNetworkDiscoveryEditor : Editor
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.Editor
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(ClientNetworkDiscovery))]
+    public class ClientNetworkDiscoveryEditor : UnityEditor.Editor
     {
-        base.OnInspectorGUI();
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+        }
     }
 }

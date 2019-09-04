@@ -2,34 +2,42 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/DeviceType", order = 1)]
-public class ScriptableDeviceType : ScriptableObject
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    [SerializeField]
-    DeviceType value = DeviceType.NoType;
 
-    public DeviceType Value
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/DeviceType", order = 1)]
+    public class ScriptableDeviceType : ScriptableObject
     {
-        get
+        [SerializeField]
+        Utils.DeviceType value = Utils.DeviceType.NoType;
+
+        public Utils.DeviceType Value
         {
-            if(value == DeviceType.NoType)
+            get
             {
-                InitializeValue();
+                if (value == Utils.DeviceType.NoType)
+                {
+                    InitializeValue();
+                }
+                return value;
             }
-            return value;
         }
-    }
 
-    void InitializeValue()
-    {
-        string sceneName = SceneManager.GetActiveScene().name;
-        if (sceneName[0] == 'T')
+        void InitializeValue()
         {
-            value = DeviceType.Tablet;
-        }
-        else if (sceneName[0] == 'H')
-        {
-            value = DeviceType.Headset;
+            string sceneName = SceneManager.GetActiveScene().name;
+            if (sceneName[0] == 'T')
+            {
+                value = Utils.DeviceType.Tablet;
+            }
+            else if (sceneName[0] == 'H')
+            {
+                value = Utils.DeviceType.Headset;
+            }
         }
     }
 }

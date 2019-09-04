@@ -2,66 +2,72 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DirectiveControls : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+
+namespace UdeS.Promoscience.Game
 {
-    [SerializeField]
-    ScriptableControler controls;
-
-    [SerializeField]
-    ScriptableDirective directive;
-
-    private void Start()
+    public class DirectiveControls : MonoBehaviour
     {
-        controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-        controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-    }
+        [SerializeField]
+        ScriptableControler controls;
 
-    void OnControlsEnableValueChanged()
-    {
-        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+        [SerializeField]
+        ScriptableDirective directive;
+
+        private void Start()
         {
-            foreach (Transform child in transform)
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+        }
+
+        void OnControlsEnableValueChanged()
+        {
+            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
             {
-                if (child != this.transform)
+                foreach (Transform child in transform)
                 {
-                    child.gameObject.SetActive(true);
+                    if (child != this.transform)
+                    {
+                        child.gameObject.SetActive(true);
+                    }
+                }
+            }
+            else
+            {
+                foreach (Transform child in transform)
+                {
+                    if (child != this.transform)
+                    {
+                        child.gameObject.SetActive(false);
+                    }
                 }
             }
         }
-        else
+
+        public void SetDirectiveMoveFoward()
         {
-            foreach (Transform child in transform)
-            {
-                if (child != this.transform)
-                {
-                    child.gameObject.SetActive(false);
-                }
-            }
+            directive.Value = Directive.MoveForward;
         }
-    }
 
-    public void SetDirectiveMoveFoward()
-    {
-        directive.Value = Directive.MoveForward;
-    }
+        public void SetDirectiveTurnLeft()
+        {
+            directive.Value = Directive.TurnLeft;
+        }
 
-    public void SetDirectiveTurnLeft()
-    {
-        directive.Value = Directive.TurnLeft;
-    }
+        public void SetDirectiveTurnRight()
+        {
+            directive.Value = Directive.TurnRight;
+        }
 
-    public void SetDirectiveTurnRight()
-    {
-        directive.Value = Directive.TurnRight;
-    }
+        public void SetDirectiveUTurn()
+        {
+            directive.Value = Directive.UTurn;
+        }
 
-    public void SetDirectiveUTurn()
-    {
-        directive.Value = Directive.UTurn;
-    }
-
-    public void SetDirectiveStop()
-    {
-        directive.Value = Directive.Stop;
+        public void SetDirectiveStop()
+        {
+            directive.Value = Directive.Stop;
+        }
     }
 }
