@@ -4,89 +4,95 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ServerNetworkManager : NetworkManager
+using UdeS.Promoscience.ScriptableObjects;
+
+namespace UdeS.Promoscience.Network
 {
-    public static ServerNetworkManager instance;
 
-    [SerializeField]
-    ScriptableServerGameInformation serverGameInformation;
-
-    [SerializeField]
-    ScriptableServerPlayerInformation serverPlayerInformation;
-
-    Action<String> playerDisconnectfromServerEvent;
-
-    const float informationSavingFrequencie = 10.0f;
-
-    float timer = 0;
-
-    bool isServerStarted = false;
-
-    void Start ()
+    public class ServerNetworkManager : NetworkManager
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-	}
+        public static ServerNetworkManager instance;
 
-    private void Update()
-    {
+        [SerializeField]
+        ScriptableServerGameInformation serverGameInformation;
 
-        if (!isServerStarted)
-        {
-            isServerStarted = true;
-            serverGameInformation.LoadGameInformationFromDatabase();
-            serverPlayerInformation.LoadPlayerInformationFromDatabase();
-            playerDisconnectfromServerEvent += serverPlayerInformation.OnPlayerDisconnect;
-            StartServer();
-        }
-        else
-        {
-            timer += Time.deltaTime;
+        [SerializeField]
+        ScriptableServerPlayerInformation serverPlayerInformation;
 
-            if (timer >= informationSavingFrequencie)
+        Action<String> playerDisconnectfromServerEvent;
+
+        const float informationSavingFrequencie = 10.0f;
+
+        float timer = 0;
+
+        bool isServerStarted = false;
+
+        void Start()
+        {
+            if (instance == null)
             {
-                timer = 0;
-
-                serverPlayerInformation.SavePlayerInformationToDatabase();
+                instance = this;
+            }
+            else
+            {
+                Destroy(this);
             }
         }
-    }
 
-    public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
-    {
-        GameObject player = (GameObject)Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-        Player p = player.GetComponent<Player>();
-        PlayerList.instance.AddPlayer(p);
-        NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
-    }
-
-    public override void OnServerDisconnect(NetworkConnection conn)
-    {
-        if (playerDisconnectfromServerEvent != null)
+        private void Update()
         {
-            Player player = PlayerList.instance.GetPlayerWithConnection(conn);
 
-            if (player != null)
+            if (!isServerStarted)
             {
-                playerDisconnectfromServerEvent(player.deviceUniqueIdentifier);
+                isServerStarted = true;
+                serverGameInformation.LoadGameInformationFromDatabase();
+                serverPlayerInformation.LoadPlayerInformationFromDatabase();
+                playerDisconnectfromServerEvent += serverPlayerInformation.OnPlayerDisconnect;
+                StartServer();
+            }
+            else
+            {
+                timer += Time.deltaTime;
+
+                if (timer >= informationSavingFrequencie)
+                {
+                    timer = 0;
+
+                    serverPlayerInformation.SavePlayerInformationToDatabase();
+                }
             }
         }
-        base.OnServerDisconnect(conn);
-    }
 
-    public void CloseServer()
-    {
-        StopServer();
+        public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
+        {
+            GameObject player = (GameObject)Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
+            Player p = player.GetComponent<Player>();
+            PlayerList.instance.AddPlayer(p);
+            NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
+        }
 
-        serverGameInformation.ClearGameInformation();
-        serverPlayerInformation.ClearPlayerInformation();
+        public override void OnServerDisconnect(NetworkConnection conn)
+        {
+            if (playerDisconnectfromServerEvent != null)
+            {
+                Player player = PlayerList.instance.GetPlayerWithConnection(conn);
 
-        Application.Quit();
+                if (player != null)
+                {
+                    playerDisconnectfromServerEvent(player.deviceUniqueIdentifier);
+                }
+            }
+            base.OnServerDisconnect(conn);
+        }
+
+        public void CloseServer()
+        {
+            StopServer();
+
+            serverGameInformation.ClearGameInformation();
+            serverPlayerInformation.ClearPlayerInformation();
+
+            Application.Quit();
+        }
     }
 }

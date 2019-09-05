@@ -3,103 +3,115 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ConnectionComponent : NetworkBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.Network
 {
-    [SerializeField]
-    Player player;
-
-    [SerializeField]
-    ScriptableTeamList teamList;
-
-    [SerializeField]
-    ScriptableServerGameInformation serverGameInformation;
-
-    [SerializeField]
-    ScriptableServerPlayerInformation serverPlayerInformation;
-
-    string pairedId = null;
-
-    void Start ()
+    public class ConnectionComponent : NetworkBehaviour
     {
-        if (isServer)
-        {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            player.serverPlayerStatusChangedEvent += StartPairingDevice;
-#endif
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
+        [SerializeField]
+        Player player;
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        [SerializeField]
+        ScriptableTeamList teamList;
 
-    void StartPairingDevice()
-    {
-        if (player.ServerPlayerGameState == ClientGameState.Connecting)
-        {
-            serverPlayerInformation.AddPlayerOrReconnect(player);
-        }
-        else if (player.ServerPlayerGameState == ClientGameState.Pairing)
-        {
-            pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.serverDeviceType);
+        [SerializeField]
+        ScriptableServerGameInformation serverGameInformation;
 
-            if (pairedId == null)
+        [SerializeField]
+        ScriptableServerPlayerInformation serverPlayerInformation;
+
+        string pairedId = null;
+
+        void Start()
+        {
+            if (isServer)
             {
-                player.TargetSetGameState(player.connectionToClient, ClientGameState.NoAssociatedPair);
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                player.serverPlayerStatusChangedEvent += StartPairingDevice;
+#endif
             }
             else
             {
-                if (player.serverDeviceType == DeviceType.Headset)
+                Destroy(this);
+            }
+        }
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
+        void StartPairingDevice()
+        {
+            if (player.ServerPlayerGameState == ClientGameState.Connecting)
+            {
+                serverPlayerInformation.AddPlayerOrReconnect(player);
+            }
+            else if (player.ServerPlayerGameState == ClientGameState.Pairing)
+            {
+                pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.serverDeviceType);
+
+                if (pairedId == null)
                 {
-                    InitializeHeadsetInformation();
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.NoAssociatedPair);
                 }
                 else
                 {
-                    StartCoroutine(PairingDeviceCoroutine());
+                    if (player.serverDeviceType == Utils.DeviceType.Headset)
+                    {
+                        InitializeHeadsetInformation();
+                    }
+                    else
+                    {
+                        StartCoroutine(PairingDeviceCoroutine());
+                    }
                 }
             }
-        }
-        else if (player.serverDeviceType == DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
-        {
-            pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.serverDeviceType);
+            else if (player.serverDeviceType == Utils.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
+            {
+                pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.serverDeviceType);
 
-            if (pairedId == null)
-            {
-                player.TargetSetGameState(player.connectionToClient, ClientGameState.ReconnectingNoAssociatedPair);
-            }
-            else
-            {
-                if (serverGameInformation.GameState == ServerGameState.GameRound && player.ServerCourseId != -1)
+                if (pairedId == null)
                 {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-                    int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
-#endif
-                    if (courseLabyrinthId == serverGameInformation.GameRound)
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ReconnectingNoAssociatedPair);
+                }
+                else
+                {
+                    if (serverGameInformation.GameState == ServerGameState.GameRound && player.ServerCourseId != -1)
                     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-                        if(SQLiteUtilities.HasPlayerAlreadyCompletedTheRound(player.ServerCourseId))
+                        int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
+#endif
+                        if (courseLabyrinthId == serverGameInformation.GameRound)
                         {
-                            player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                            player.TargetSetRoundCompleted(player.connectionToClient, serverGameInformation.GameRound);
-                        }
-                        else
-                        {
-                            Queue<int> playerSteps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
-
-                            if (playerSteps.Count > 0)
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                            if (SQLiteUtilities.HasPlayerAlreadyCompletedTheRound(player.ServerCourseId))
                             {
-                                serverGameInformation.StartGameRoundWithSteps(player, playerSteps.ToArray());
                                 player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                                player.TargetSetRoundCompleted(player.connectionToClient, serverGameInformation.GameRound);
                             }
                             else
                             {
-                                player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                                player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
+                                Queue<int> playerSteps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
+
+                                if (playerSteps.Count > 0)
+                                {
+                                    serverGameInformation.StartGameRoundWithSteps(player, playerSteps.ToArray());
+                                    player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                                }
+                                else
+                                {
+                                    player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                                    player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
+                                }
                             }
-                        }
 #endif
+                        }
+                        else
+                        {
+                            player.TargetSetPairedIpAdress(player.connectionToClient, "");
+                            player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
+                        }
                     }
                     else
                     {
@@ -107,64 +119,59 @@ public class ConnectionComponent : NetworkBehaviour
                         player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
                     }
                 }
-                else
+            }
+            else if (player.ServerPlayerGameState == ClientGameState.Ready)
+            {
+                if (serverGameInformation.GameState == ServerGameState.Tutorial)
                 {
-                    player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
+                    serverGameInformation.StartTutorial(player);
+                }
+                else if (serverGameInformation.GameState == ServerGameState.GameRound)
+                {
+                    serverGameInformation.StartGameRound(player);
+                }
+                else if (serverGameInformation.GameState == ServerGameState.Intermission)
+                {
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
                 }
             }
         }
-        else if (player.ServerPlayerGameState == ClientGameState.Ready)
+
+        void InitializeHeadsetInformation()
         {
-            if (serverGameInformation.GameState == ServerGameState.Tutorial)
-            {
-                serverGameInformation.StartTutorial(player);
-            }
-            else if (serverGameInformation.GameState == ServerGameState.GameRound)
-            {
-                serverGameInformation.StartGameRound(player);
-            }
-            else if (serverGameInformation.GameState == ServerGameState.Intermission)
-            {
-                player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
-            }
+            ScriptableTeam scriptableTeam = teamList.GetUnusedScriptableTeam();
+            int teamId = SQLiteUtilities.GetNextTeamID();
+
+            player.serverAlgorithm = (Algorithm)(scriptableTeam.TeamId % 3) + 1;
+            player.ServerTeamId = teamId;
+            player.ServerTeamInformationId = scriptableTeam.TeamId;
+
+            player.TargetSetTeamInformation(player.connectionToClient, scriptableTeam.TeamId);
+            player.TargetSetPairedIpAdress(player.connectionToClient, "");
+            player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
         }
-    }
 
-    void InitializeHeadsetInformation()
-    {
-        ScriptableTeam scriptableTeam = teamList.GetUnusedScriptableTeam();
-        int teamId = SQLiteUtilities.GetNextTeamID();
-
-        player.serverAlgorithm = (Algorithm)(scriptableTeam.TeamId % 3) + 1;
-        player.ServerTeamId = teamId;
-        player.ServerTeamInformationId = scriptableTeam.TeamId;
-
-        player.TargetSetTeamInformation(player.connectionToClient, scriptableTeam.TeamId);
-        player.TargetSetPairedIpAdress(player.connectionToClient, "");
-        player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);
-    }
-
-    IEnumerator PairingDeviceCoroutine()
-    {
-        string pairedIpAdress = null;
-        Player otherPlayer = null;
-        while (pairedIpAdress == null)
+        IEnumerator PairingDeviceCoroutine()
         {
-            for (int i = 0; i < PlayerList.instance.list.Count; i++)
+            string pairedIpAdress = null;
+            Player otherPlayer = null;
+            while (pairedIpAdress == null)
             {
-                otherPlayer = PlayerList.instance.GetPlayerWithId(i);
-
-                if (pairedId == otherPlayer.deviceUniqueIdentifier)
+                for (int i = 0; i < PlayerList.instance.list.Count; i++)
                 {
-                    pairedIpAdress = otherPlayer.connectionToClient.address;
-                    break;
-                }
-            }
-            yield return new WaitForSeconds(1);
-        }
+                    otherPlayer = PlayerList.instance.GetPlayerWithId(i);
 
-        player.TargetSetPairedIpAdress(player.connectionToClient, pairedIpAdress);
-    }
+                    if (pairedId == otherPlayer.deviceUniqueIdentifier)
+                    {
+                        pairedIpAdress = otherPlayer.connectionToClient.address;
+                        break;
+                    }
+                }
+                yield return new WaitForSeconds(1);
+            }
+
+            player.TargetSetPairedIpAdress(player.connectionToClient, pairedIpAdress);
+        }
 #endif
+    }
 }

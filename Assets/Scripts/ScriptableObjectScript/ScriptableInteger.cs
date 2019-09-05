@@ -2,33 +2,36 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/Int", order = 1)]
-public class ScriptableInteger : ScriptableObject
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    [SerializeField]
-    int value;
 
-    public Action valueChangedEvent;
-
-    public int Value
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/Int", order = 1)]
+    public class ScriptableInteger : ScriptableObject
     {
-        get
-        {
-            return value;
-        }
-        set
-        {
-            this.value = value;
-            OnValueChanged();
-        }
-    }
+        [SerializeField]
+        int value;
 
-    public void OnValueChanged()
-    {
-        if (valueChangedEvent != null)
+        public Action valueChangedEvent;
+
+        public int Value
         {
-            valueChangedEvent();
+            get
+            {
+                return value;
+            }
+            set
+            {
+                this.value = value;
+                OnValueChanged();
+            }
+        }
+
+        public void OnValueChanged()
+        {
+            if (valueChangedEvent != null)
+            {
+                valueChangedEvent();
+            }
         }
     }
 }
-

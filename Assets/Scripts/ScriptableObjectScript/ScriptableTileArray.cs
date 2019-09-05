@@ -2,33 +2,41 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/TileArray", order = 1)]
-public class ScriptableTileArray : ScriptableObject
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    [SerializeField]
-    Tile[] value;
 
-    public Action valueChangedEvent;
-
-    public Tile[] Value
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/TileArray", order = 1)]
+    public class ScriptableTileArray : ScriptableObject
     {
-        get
+        [SerializeField]
+        Tile[] value;
+
+        public Action valueChangedEvent;
+
+        public Tile[] Value
         {
-            return value;
+            get
+            {
+                return value;
+            }
+            set
+            {
+                this.value = value;
+                OnValueChanged();
+            }
         }
-        set
+
+        public void OnValueChanged()
         {
-            this.value = value;
-            OnValueChanged();
+            if (valueChangedEvent != null)
+            {
+                valueChangedEvent();
+            }
         }
     }
 
-    public void OnValueChanged()
-    {
-        if (valueChangedEvent != null)
-        {
-            valueChangedEvent();
-        }
-    }
 }
-

@@ -4,393 +4,401 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Player : NetworkBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.Network
 {
-    public string deviceUniqueIdentifier = "";
-    string deviceName = "";
 
-    private void OnDestroy()
+    public class Player : NetworkBehaviour
     {
-        if (isServer)
-        {
-            PlayerList.instance.RemovePlayer(this);
-        }
+        public string deviceUniqueIdentifier = "";
+        string deviceName = "";
 
-        if (isClient)
+        private void OnDestroy()
         {
-            gameState.valueChangedEvent -= SendCmdPlayerGameState;
-
-            if (deviceType.Value == DeviceType.Headset)
+            if (isServer)
             {
-                gameAction.valueChangedEvent -= SendCmdPlayerAction;
+                PlayerList.instance.RemovePlayer(this);
             }
-            else if (deviceType.Value == DeviceType.Tablet)
+
+            if (isClient)
             {
-                playerInformation.playerInformationChangedEvent -= SendCmdPlayerInformation;
+                gameState.valueChangedEvent -= SendCmdPlayerGameState;
+
+                if (deviceType.Value == Utils.DeviceType.Headset)
+                {
+                    gameAction.valueChangedEvent -= SendCmdPlayerAction;
+                }
+                else if (deviceType.Value == Utils.DeviceType.Tablet)
+                {
+                    playerInformation.playerInformationChangedEvent -= SendCmdPlayerInformation;
+                }
             }
         }
-    }
 
-    #region Server
+        #region Server
 
-    ClientGameState serverPlayerGameState = 0;
-    GameAction serverPlayerGameAction;
-    string serverPlayerGameActionDateTimeString;
+        ClientGameState serverPlayerGameState = 0;
+        GameAction serverPlayerGameAction;
+        string serverPlayerGameActionDateTimeString;
 
-    int serverCourseId = -1;
-    int serverTeamId = -1;
-    int serverTeamInformationId = -1;
+        int serverCourseId = -1;
+        int serverTeamId = -1;
+        int serverTeamInformationId = -1;
 
-    public DeviceType serverDeviceType = DeviceType.NoType;
-    public Algorithm serverAlgorithm;
+        public Utils.DeviceType serverDeviceType = Utils.DeviceType.NoType;
+        public Algorithm serverAlgorithm;
 
-    public int serverLabyrinthId;
+        public int serverLabyrinthId;
 
-    public int ServerCourseId
-    {
-        get
+        public int ServerCourseId
         {
-            return serverCourseId;
-        }
-        set
-        {
-            serverCourseId = value;
-            OnCourseIdChanged();
-        }
-    }
-
-    public string ServerDeviceName
-    {
-        get
-        {
-            return deviceName;
-        }
-        set
-        {
-            deviceName = value;
-            OnDeviceNameChanged();
-        }
-    }
-
-    public int ServerTeamId
-    {
-        get
-        {
-            return serverTeamId;
-        }
-        set
-        {
-            serverTeamId = value;
-            OnTeamIdChanged();
-        }
-    }
-
-    public int ServerTeamInformationId
-    {
-        get
-        {
-            return serverTeamInformationId;
-        }
-        set
-        {
-            serverTeamInformationId = value;
-            OnTeamInformationIdChanged();
-        }
-    }
-
-    public ClientGameState ServerPlayerGameState
-    {
-        get
-        {
-            return serverPlayerGameState;
-        }
-        set
-        {
-            serverPlayerGameState = value;
-            OnPlayerStatusChanged();
-        }
-    }
-
-    public GameAction ServerPlayerGameAction
-    {
-        get
-        {
-            return serverPlayerGameAction;
-        }
-    }
-
-    public String ServerPlayerGameActionDateTimeString
-    {
-        get
-        {
-            return serverPlayerGameActionDateTimeString;
-        }
-    }
-
-    public void ServerSetPlayerGameAction(GameAction action, String dateTime)
-    {
-        serverPlayerGameAction = action;
-        serverPlayerGameActionDateTimeString = dateTime;
-
-        serverPlayerActionChangedEvent();
-    }
-
-    public Action serverCourseIdChangedEvent;
-    public Action serverDeviceNameChangedEvent;
-    public Action serverTeamIdChangedEvent;
-    public Action serverTeamInformationIdChangedEvent;
-    public Action serverPlayerStatusChangedEvent;
-    public Action serverPlayerActionChangedEvent;
-
-    void OnCourseIdChanged()
-    {
-        if (serverCourseIdChangedEvent != null)
-        {
-            serverCourseIdChangedEvent();
-        }
-    }
-
-    void OnDeviceNameChanged()
-    {
-        if (serverDeviceNameChangedEvent != null)
-        {
-            serverDeviceNameChangedEvent();
-        }
-    }
-
-    void OnTeamIdChanged()
-    {
-        if (serverTeamIdChangedEvent != null)
-        {
-            serverTeamIdChangedEvent();
-        }
-    }
-
-    void OnTeamInformationIdChanged()
-    {
-        if (serverTeamInformationIdChangedEvent != null)
-        {
-            serverTeamInformationIdChangedEvent();
-        }
-    }
-
-    void OnPlayerStatusChanged()
-    {
-        if (serverPlayerStatusChangedEvent != null)
-        {
-            serverPlayerStatusChangedEvent();
-        }
-    }
-
-    #endregion
-
-    #region Client
-
-    [SerializeField]
-    ScriptableGameAction gameAction;
-
-    [SerializeField]
-    ScriptableAlgorithm algorithm;
-
-    [SerializeField]
-    ScriptableDeviceType deviceType;
-
-    [SerializeField]
-    ScriptableInteger gameRound;
-
-    [SerializeField]
-    ScriptableClientGameState gameState;
-
-    [SerializeField]
-    ScriptableBoolean isRoundCompleted;
-
-    [SerializeField]
-    ScriptableLabyrinth labyrinthData;
-
-    [SerializeField]
-    ScriptableString pairedIpAdress;
-
-    [SerializeField]
-    ScriptablePlayerInformation playerInformation;
-
-    [SerializeField]
-    ScriptableIntegerArray playerStartSteps;
-
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
-
-        gameState.valueChangedEvent += SendCmdPlayerGameState;
-
-        ClientInitialize();
-    }
-
-    [Client]
-    void ClientInitialize()
-    {
-        deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
-        ServerDeviceName = SystemInfo.deviceModel;
-
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-
-        if (deviceType.Value == DeviceType.Tablet)
-        {
-            playerInformation.playerInformationChangedEvent += SendCmdPlayerInformation;
-        }
-        else if(deviceType.Value == DeviceType.Headset)
-        {
-            gameAction.valueChangedEvent += SendCmdPlayerAction;
+            get
+            {
+                return serverCourseId;
+            }
+            set
+            {
+                serverCourseId = value;
+                OnCourseIdChanged();
+            }
         }
 
-        CmdSetDeviceType(deviceType.Value);
-        CmdSetDeviceName(ServerDeviceName);
-        CmdSetUniqueIdentifier(deviceUniqueIdentifier);
-
-        gameState.Value = ClientGameState.Connecting;
-    }
-
-    [Client]
-    void SendCmdPlayerAction()
-    {
-        if (gameState.Value == ClientGameState.Playing)
+        public string ServerDeviceName
         {
-            CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString);
+            get
+            {
+                return deviceName;
+            }
+            set
+            {
+                deviceName = value;
+                OnDeviceNameChanged();
+            }
         }
-    }
 
-    [Client]
-    void SendCmdPlayerGameState()
-    {
-        CmdSetPlayerGameState(gameState.Value);
-    }
-
-    [Client]
-    void SendCmdPlayerInformation()
-    {
-        CmdSetPlayerInformation(playerInformation.PlayerTeamInformationId);
-    }
-
-    #endregion
-
-    #region Command
-
-    [Command]
-    void CmdSetDeviceType(DeviceType type)
-    {
-        serverDeviceType = type;
-    }
-
-    [Command]
-    void CmdSetDeviceName(string dName)
-    {
-        ServerDeviceName = dName;
-    }
-
-    [Command]
-    public void CmdSetUniqueIdentifier(string id)
-    {
-        deviceUniqueIdentifier = id;
-    }
-
-    [Command]
-    public void CmdSetPlayerAction(GameAction action, String dateTime)
-    {
-        ServerSetPlayerGameAction(action, dateTime);
-    }
-
-    [Command]
-    public void CmdSetPlayerGameState(ClientGameState state)
-    {
-        ServerPlayerGameState = state;
-    }
-
-    [Command]
-    public void CmdSetPlayerInformation(int teamInformationId)
-    {
-        ServerTeamInformationId = teamInformationId;
-    }
-
-    #endregion
-
-    #region TargetRpc
-
-    [TargetRpc]
-    public void TargetSetGameState(NetworkConnection target, ClientGameState state)
-    {
-        gameState.Value = state;
-    }
-
-    [TargetRpc]
-    public void TargetSetPairedIpAdress(NetworkConnection target, string ipAdress)
-    {
-        pairedIpAdress.Value = ipAdress;
-
-        if (gameState.Value == ClientGameState.Pairing)
+        public int ServerTeamId
         {
-            gameState.Value = ClientGameState.Paired;
+            get
+            {
+                return serverTeamId;
+            }
+            set
+            {
+                serverTeamId = value;
+                OnTeamIdChanged();
+            }
         }
-    }
 
-    [TargetRpc]
-    public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
-    {
-        playerStartSteps.Value = new int[0];
-
-        labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
-
-        isRoundCompleted.Value = false;
-        gameRound.Value = labyrinthId;
-
-        if (deviceType.Value == DeviceType.Headset)
+        public int ServerTeamInformationId
         {
+            get
+            {
+                return serverTeamInformationId;
+            }
+            set
+            {
+                serverTeamInformationId = value;
+                OnTeamInformationIdChanged();
+            }
+        }
+
+        public ClientGameState ServerPlayerGameState
+        {
+            get
+            {
+                return serverPlayerGameState;
+            }
+            set
+            {
+                serverPlayerGameState = value;
+                OnPlayerStatusChanged();
+            }
+        }
+
+        public GameAction ServerPlayerGameAction
+        {
+            get
+            {
+                return serverPlayerGameAction;
+            }
+        }
+
+        public String ServerPlayerGameActionDateTimeString
+        {
+            get
+            {
+                return serverPlayerGameActionDateTimeString;
+            }
+        }
+
+        public void ServerSetPlayerGameAction(GameAction action, String dateTime)
+        {
+            serverPlayerGameAction = action;
+            serverPlayerGameActionDateTimeString = dateTime;
+
+            serverPlayerActionChangedEvent();
+        }
+
+        public Action serverCourseIdChangedEvent;
+        public Action serverDeviceNameChangedEvent;
+        public Action serverTeamIdChangedEvent;
+        public Action serverTeamInformationIdChangedEvent;
+        public Action serverPlayerStatusChangedEvent;
+        public Action serverPlayerActionChangedEvent;
+
+        void OnCourseIdChanged()
+        {
+            if (serverCourseIdChangedEvent != null)
+            {
+                serverCourseIdChangedEvent();
+            }
+        }
+
+        void OnDeviceNameChanged()
+        {
+            if (serverDeviceNameChangedEvent != null)
+            {
+                serverDeviceNameChangedEvent();
+            }
+        }
+
+        void OnTeamIdChanged()
+        {
+            if (serverTeamIdChangedEvent != null)
+            {
+                serverTeamIdChangedEvent();
+            }
+        }
+
+        void OnTeamInformationIdChanged()
+        {
+            if (serverTeamInformationIdChangedEvent != null)
+            {
+                serverTeamInformationIdChangedEvent();
+            }
+        }
+
+        void OnPlayerStatusChanged()
+        {
+            if (serverPlayerStatusChangedEvent != null)
+            {
+                serverPlayerStatusChangedEvent();
+            }
+        }
+
+        #endregion
+
+        #region Client
+
+        [SerializeField]
+        ScriptableGameAction gameAction;
+
+        [SerializeField]
+        ScriptableAlgorithm algorithm;
+
+        [SerializeField]
+        ScriptableDeviceType deviceType;
+
+        [SerializeField]
+        ScriptableInteger gameRound;
+
+        [SerializeField]
+        ScriptableClientGameState gameState;
+
+        [SerializeField]
+        ScriptableBoolean isRoundCompleted;
+
+        [SerializeField]
+        ScriptableLabyrinth labyrinthData;
+
+        [SerializeField]
+        ScriptableString pairedIpAdress;
+
+        [SerializeField]
+        ScriptablePlayerInformation playerInformation;
+
+        [SerializeField]
+        ScriptableIntegerArray playerStartSteps;
+
+        public override void OnStartLocalPlayer()
+        {
+            base.OnStartLocalPlayer();
+
+            gameState.valueChangedEvent += SendCmdPlayerGameState;
+
+            ClientInitialize();
+        }
+
+        [Client]
+        void ClientInitialize()
+        {
+            deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
+            ServerDeviceName = SystemInfo.deviceModel;
+
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
+            if (deviceType.Value == Utils.DeviceType.Tablet)
+            {
+                playerInformation.playerInformationChangedEvent += SendCmdPlayerInformation;
+            }
+            else if (deviceType.Value == Utils.DeviceType.Headset)
+            {
+                gameAction.valueChangedEvent += SendCmdPlayerAction;
+            }
+
+            CmdSetDeviceType(deviceType.Value);
+            CmdSetDeviceName(ServerDeviceName);
+            CmdSetUniqueIdentifier(deviceUniqueIdentifier);
+
+            gameState.Value = ClientGameState.Connecting;
+        }
+
+        [Client]
+        void SendCmdPlayerAction()
+        {
+            if (gameState.Value == ClientGameState.Playing)
+            {
+                CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString);
+            }
+        }
+
+        [Client]
+        void SendCmdPlayerGameState()
+        {
+            CmdSetPlayerGameState(gameState.Value);
+        }
+
+        [Client]
+        void SendCmdPlayerInformation()
+        {
+            CmdSetPlayerInformation(playerInformation.PlayerTeamInformationId);
+        }
+
+        #endregion
+
+        #region Command
+
+        [Command]
+        void CmdSetDeviceType(Utils.DeviceType type)
+        {
+            serverDeviceType = type;
+        }
+
+        [Command]
+        void CmdSetDeviceName(string dName)
+        {
+            ServerDeviceName = dName;
+        }
+
+        [Command]
+        public void CmdSetUniqueIdentifier(string id)
+        {
+            deviceUniqueIdentifier = id;
+        }
+
+        [Command]
+        public void CmdSetPlayerAction(GameAction action, String dateTime)
+        {
+            ServerSetPlayerGameAction(action, dateTime);
+        }
+
+        [Command]
+        public void CmdSetPlayerGameState(ClientGameState state)
+        {
+            ServerPlayerGameState = state;
+        }
+
+        [Command]
+        public void CmdSetPlayerInformation(int teamInformationId)
+        {
+            ServerTeamInformationId = teamInformationId;
+        }
+
+        #endregion
+
+        #region TargetRpc
+
+        [TargetRpc]
+        public void TargetSetGameState(NetworkConnection target, ClientGameState state)
+        {
+            gameState.Value = state;
+        }
+
+        [TargetRpc]
+        public void TargetSetPairedIpAdress(NetworkConnection target, string ipAdress)
+        {
+            pairedIpAdress.Value = ipAdress;
+
+            if (gameState.Value == ClientGameState.Pairing)
+            {
+                gameState.Value = ClientGameState.Paired;
+            }
+        }
+
+        [TargetRpc]
+        public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
+        {
+            playerStartSteps.Value = new int[0];
+
+            labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
+
+            isRoundCompleted.Value = false;
+            gameRound.Value = labyrinthId;
+
+            if (deviceType.Value == Utils.DeviceType.Headset)
+            {
+                algorithm.Value = algo;
+            }
+
+            if (algo == Algorithm.Tutorial)
+            {
+                gameState.Value = ClientGameState.TutorialLabyrinthReady;
+            }
+            else
+            {
+                gameState.Value = ClientGameState.LabyrithReady;
+            }
+        }
+
+        [TargetRpc]
+        public void TargetSetGameWithSteps(NetworkConnection target, int[] steps, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
+        {
+            playerStartSteps.Value = steps;
+
+            labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
             algorithm.Value = algo;
+
+            isRoundCompleted.Value = false;
+            gameRound.Value = labyrinthId;
+
+            if (algorithm.Value == Algorithm.Tutorial)
+            {
+                gameState.Value = ClientGameState.TutorialLabyrinthReady;
+            }
+            else
+            {
+                gameState.Value = ClientGameState.LabyrithReady;
+            }
         }
 
-        if (algo == Algorithm.Tutorial)
+        [TargetRpc]
+        public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId)
         {
-            gameState.Value = ClientGameState.TutorialLabyrinthReady;
+            isRoundCompleted.Value = true;
+            gameRound.Value = labyrinthId;
+
+            gameState.Value = ClientGameState.WaitingForNextRound;
         }
-        else
+
+        [TargetRpc]
+        public void TargetSetTeamInformation(NetworkConnection target, int teamInformationId)
         {
-            gameState.Value = ClientGameState.LabyrithReady;
+            playerInformation.SetPlayerInformation(teamInformationId);
         }
+        #endregion
+
     }
-
-    [TargetRpc]
-    public void TargetSetGameWithSteps(NetworkConnection target, int[] steps, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
-    {
-        playerStartSteps.Value = steps;
-
-        labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
-        algorithm.Value = algo;
-
-        isRoundCompleted.Value = false;
-        gameRound.Value = labyrinthId;
-
-        if (algorithm.Value == Algorithm.Tutorial)
-        {
-            gameState.Value = ClientGameState.TutorialLabyrinthReady;
-        }
-        else
-        {
-            gameState.Value = ClientGameState.LabyrithReady;
-        }
-    }
-
-    [TargetRpc]
-    public void TargetSetRoundCompleted (NetworkConnection target, int labyrinthId)
-    {
-        isRoundCompleted.Value = true;
-        gameRound.Value = labyrinthId;
-
-        gameState.Value = ClientGameState.WaitingForNextRound;
-    }
-
-    [TargetRpc]
-    public void TargetSetTeamInformation(NetworkConnection target, int teamInformationId)
-    {
-        playerInformation.SetPlayerInformation(teamInformationId);
-    }
-    #endregion
-
 }

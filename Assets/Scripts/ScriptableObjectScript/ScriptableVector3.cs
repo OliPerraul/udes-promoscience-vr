@@ -2,30 +2,34 @@
 using System.Collections;
 using UnityEngine;
 
- [CreateAssetMenu(fileName = "Data", menuName = "Data/Vector3", order = 1)]
- public class ScriptableVector3 : ScriptableObject
- {
-    Vector3 value;
+namespace UdeS.Promoscience.ScriptableObjects
+{
 
-    public Action valueChangedEvent;
-   
-    public Vector3 Value
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/Vector3", order = 1)]
+    public class ScriptableVector3 : ScriptableObject
     {
-        get
+        Vector3 value;
+
+        public Action valueChangedEvent;
+
+        public Vector3 Value
         {
-            return value;
+            get
+            {
+                return value;
+            }
+            set
+            {
+                this.value = value;
+                OnValueChanged();
+            }
         }
-        set
+        void OnValueChanged()
         {
-            this.value = value;
-            OnValueChanged();
-        }
-    }
-    void OnValueChanged()
-    {
-        if (valueChangedEvent != null)
-        {
-            valueChangedEvent();
+            if (valueChangedEvent != null)
+            {
+                valueChangedEvent();
+            }
         }
     }
 }

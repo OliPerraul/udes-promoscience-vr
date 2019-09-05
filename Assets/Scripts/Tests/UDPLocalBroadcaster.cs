@@ -6,29 +6,33 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class UDPLocalBroadcaster : MonoBehaviour
+namespace UdeS.Promoscience.Tests
 {
-    int port = 9995;
 
-    float timer = 0;
-
-    private void Update()
+    public class UDPLocalBroadcaster : MonoBehaviour
     {
-        timer += Time.deltaTime;
+        int port = 9995;
 
-        if (timer >= 2)
+        float timer = 0;
+
+        private void Update()
         {
-            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            timer += Time.deltaTime;
 
-            IPAddress broadcastAddress = IPAddress.Parse("192.168.0.255");//SocketOptionName.Broadcast is equivalent to 255.255.255.255
+            if (timer >= 2)
+            {
+                Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-            byte[] message = Encoding.ASCII.GetBytes("Hello");
-            IPEndPoint endPoint = new IPEndPoint(broadcastAddress, port);
+                IPAddress broadcastAddress = IPAddress.Parse("192.168.0.255");//SocketOptionName.Broadcast is equivalent to 255.255.255.255
 
-            socket.SendTo(message, endPoint);
+                byte[] message = Encoding.ASCII.GetBytes("Hello");
+                IPEndPoint endPoint = new IPEndPoint(broadcastAddress, port);
 
-            timer = 0;
+                socket.SendTo(message, endPoint);
+
+                timer = 0;
+            }
         }
-    }
 
+    }
 }

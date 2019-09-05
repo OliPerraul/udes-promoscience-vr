@@ -1,20 +1,28 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(ScriptableFloat))]
-public class ScriptableFloatEditor : Editor
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.Editor
 {
-    public override void OnInspectorGUI()
+
+    [CustomEditor(typeof(ScriptableFloat))]
+    public class ScriptableFloatEditor : UnityEditor.Editor
     {
-        base.OnInspectorGUI();
-
-        GUI.enabled = Application.isPlaying;
-
-        ScriptableFloat scriptableFloat = target as ScriptableFloat;
-
-        if (GUILayout.Button("On Value Changed"))
+        public override void OnInspectorGUI()
         {
-            scriptableFloat.OnValueChanged();
+            base.OnInspectorGUI();
+
+            GUI.enabled = Application.isPlaying;
+
+            ScriptableFloat scriptableFloat = target as ScriptableFloat;
+
+            if (GUILayout.Button("On Value Changed"))
+            {
+                scriptableFloat.OnValueChanged();
+            }
         }
     }
 }

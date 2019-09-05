@@ -2,64 +2,71 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PaintingColorDisplay : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableControler controls;
-
-    [SerializeField]
-    ScriptableTileColor paintingColor;
-
-    [SerializeField]
-    GameObject colorRings;
-
-    [SerializeField]
-    GameObject greyRing;
-
-    [SerializeField]
-    GameObject yellowRing;
-
-    [SerializeField]
-    GameObject redRing;
-
-    void Start()
+    public class PaintingColorDisplay : MonoBehaviour
     {
-        controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-        controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-        paintingColor.valueChangedEvent += OnPaintingColorValueChanged;
-    }
+        [SerializeField]
+        ScriptableControler controls;
 
-    void OnControlsEnableValueChanged()
-    {
-        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
-        {
-            colorRings.gameObject.SetActive(true);
-        }
-        else
-        {
-            colorRings.gameObject.SetActive(false);
-        }
-    }
+        [SerializeField]
+        ScriptableTileColor paintingColor;
 
-    void OnPaintingColorValueChanged()
-    {
-        if (paintingColor.Value == TileColor.Grey)
+        [SerializeField]
+        GameObject colorRings;
+
+        [SerializeField]
+        GameObject greyRing;
+
+        [SerializeField]
+        GameObject yellowRing;
+
+        [SerializeField]
+        GameObject redRing;
+
+        void Start()
         {
-            greyRing.SetActive(true);
-            yellowRing.SetActive(false);
-            redRing.SetActive(false);
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            paintingColor.valueChangedEvent += OnPaintingColorValueChanged;
         }
-        else if (paintingColor.Value == TileColor.Yellow)
+
+        void OnControlsEnableValueChanged()
         {
-            yellowRing.SetActive(true);
-            greyRing.SetActive(false);
-            redRing.SetActive(false);
+            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            {
+                colorRings.gameObject.SetActive(true);
+            }
+            else
+            {
+                colorRings.gameObject.SetActive(false);
+            }
         }
-        else if (paintingColor.Value == TileColor.Red)
+
+        void OnPaintingColorValueChanged()
         {
-            redRing.SetActive(true);
-            greyRing.SetActive(false);
-            yellowRing.SetActive(false);
+            if (paintingColor.Value == TileColor.Grey)
+            {
+                greyRing.SetActive(true);
+                yellowRing.SetActive(false);
+                redRing.SetActive(false);
+            }
+            else if (paintingColor.Value == TileColor.Yellow)
+            {
+                yellowRing.SetActive(true);
+                greyRing.SetActive(false);
+                redRing.SetActive(false);
+            }
+            else if (paintingColor.Value == TileColor.Red)
+            {
+                redRing.SetActive(true);
+                greyRing.SetActive(false);
+                yellowRing.SetActive(false);
+            }
         }
     }
 }

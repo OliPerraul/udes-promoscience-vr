@@ -2,59 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OnReturnToDivergencePointRequest : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableControler controls;
-
-    [SerializeField]
-    ScriptableBoolean isDiverging;
-
-    [SerializeField]
-    ScriptableBoolean returnToDivergencePointAnswer;
-
-    [SerializeField]
-    ScriptableAction returnToDivergencePointRequest;
-
-    [SerializeField]
-    GameObject confirmationPanel;
-
-
-    void Start()
+    public class OnReturnToDivergencePointRequest : MonoBehaviour
     {
-        controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-        returnToDivergencePointRequest.action += OnScriptableAction;
-        isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
-    }
+        [SerializeField]
+        ScriptableControler controls;
 
-    void OnControlsEnableValueChanged()
-    {
-        if (!controls.IsControlsEnabled)
+        [SerializeField]
+        ScriptableBoolean isDiverging;
+
+        [SerializeField]
+        ScriptableBoolean returnToDivergencePointAnswer;
+
+        [SerializeField]
+        ScriptableAction returnToDivergencePointRequest;
+
+        [SerializeField]
+        GameObject confirmationPanel;
+
+
+        void Start()
         {
-            OnIsDivergingValueChanged();
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            returnToDivergencePointRequest.action += OnScriptableAction;
+            isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
         }
-    }
 
-    void OnScriptableAction()
-    {
-        if (isDiverging.Value)
+        void OnControlsEnableValueChanged()
         {
-            controls.IsPlayerControlsEnabled = false;
-            confirmationPanel.SetActive(true);
+            if (!controls.IsControlsEnabled)
+            {
+                OnIsDivergingValueChanged();
+            }
         }
-        else
-        {
-            returnToDivergencePointAnswer.Value = false;
-        }
-    }
 
-    void OnIsDivergingValueChanged()
-    {
-        if(confirmationPanel.activeSelf)
+        void OnScriptableAction()
         {
-            confirmationPanel.SetActive(false);
-            controls.IsPlayerControlsEnabled = true;
-            returnToDivergencePointAnswer.Value = false;
+            if (isDiverging.Value)
+            {
+                controls.IsPlayerControlsEnabled = false;
+                confirmationPanel.SetActive(true);
+            }
+            else
+            {
+                returnToDivergencePointAnswer.Value = false;
+            }
+        }
+
+        void OnIsDivergingValueChanged()
+        {
+            if (confirmationPanel.activeSelf)
+            {
+                confirmationPanel.SetActive(false);
+                controls.IsPlayerControlsEnabled = true;
+                returnToDivergencePointAnswer.Value = false;
+            }
         }
     }
 }

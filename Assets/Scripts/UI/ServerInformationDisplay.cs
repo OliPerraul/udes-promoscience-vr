@@ -3,70 +3,79 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ServerInformationDisplay : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Utils;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableServerGameInformation serverGameInformation;
 
-    [SerializeField]
-    ScriptableLocalizeString gameRoundString;
-
-    [SerializeField]
-    ScriptableLocalizeString gameStateString;
-
-    [SerializeField]
-    ScriptableLocalizeString intermissionString;
-
-    [SerializeField]
-    ScriptableLocalizeString lobbyString;
-
-    [SerializeField]
-    ScriptableLocalizeString playingRoundString;
-
-    [SerializeField]
-    ScriptableLocalizeString tutorialString;
-
-    [SerializeField]
-    Text serverGameRoundText;
-
-    [SerializeField]
-    Text serverGameStateText;
-
-	void Start ()
+    public class ServerInformationDisplay : MonoBehaviour
     {
-        serverGameInformation.gameRoundChangedEvent += OnGameRoundChanged;
-        serverGameInformation.gameStateChangedEvent += OnGameStateChanged;
-        OnGameRoundChanged();
-        OnGameStateChanged();
+        [SerializeField]
+        ScriptableServerGameInformation serverGameInformation;
 
-    }
-	
-    void OnGameRoundChanged()
-    {
-        serverGameRoundText.text = gameRoundString.Value + " : " + serverGameInformation.GameRound;
-    }
+        [SerializeField]
+        ScriptableLocalizeString gameRoundString;
 
-    void OnGameStateChanged()
-    {
-        string s = gameStateString.Value + " : ";
+        [SerializeField]
+        ScriptableLocalizeString gameStateString;
 
-        if(serverGameInformation.GameState == ServerGameState.Lobby)
+        [SerializeField]
+        ScriptableLocalizeString intermissionString;
+
+        [SerializeField]
+        ScriptableLocalizeString lobbyString;
+
+        [SerializeField]
+        ScriptableLocalizeString playingRoundString;
+
+        [SerializeField]
+        ScriptableLocalizeString tutorialString;
+
+        [SerializeField]
+        Text serverGameRoundText;
+
+        [SerializeField]
+        Text serverGameStateText;
+
+        void Start()
         {
-            s += lobbyString.Value;
-        }
-        else if (serverGameInformation.GameState == ServerGameState.Tutorial)
-        {
-            s += tutorialString.Value;
-        }
-        else if (serverGameInformation.GameState == ServerGameState.GameRound)
-        {
-            s += playingRoundString.Value;
-        }
-        else if (serverGameInformation.GameState == ServerGameState.Intermission)
-        {
-            s += intermissionString.Value;
+            serverGameInformation.gameRoundChangedEvent += OnGameRoundChanged;
+            serverGameInformation.gameStateChangedEvent += OnGameStateChanged;
+            OnGameRoundChanged();
+            OnGameStateChanged();
+
         }
 
-        serverGameStateText.text = s;
+        void OnGameRoundChanged()
+        {
+            serverGameRoundText.text = gameRoundString.Value + " : " + serverGameInformation.GameRound;
+        }
+
+        void OnGameStateChanged()
+        {
+            string s = gameStateString.Value + " : ";
+
+            if (serverGameInformation.GameState == ServerGameState.Lobby)
+            {
+                s += lobbyString.Value;
+            }
+            else if (serverGameInformation.GameState == Utils.ServerGameState.Tutorial)
+            {
+                s += tutorialString.Value;
+            }
+            else if (serverGameInformation.GameState == ServerGameState.GameRound)
+            {
+                s += playingRoundString.Value;
+            }
+            else if (serverGameInformation.GameState == ServerGameState.Intermission)
+            {
+                s += intermissionString.Value;
+            }
+
+            serverGameStateText.text = s;
+        }
     }
 }

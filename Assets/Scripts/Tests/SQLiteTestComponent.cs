@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SQLiteTestComponent : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.Tests
 {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-    void Start ()
+    public class SQLiteTestComponent : MonoBehaviour
     {
-        SQLiteUtilities.CreateDatabaseIfItDoesntExist();
-    }
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+        void Start()
+        {
+            SQLiteUtilities.CreateDatabaseIfItDoesntExist();
+        }
 
 #endif
+    }
+
 }

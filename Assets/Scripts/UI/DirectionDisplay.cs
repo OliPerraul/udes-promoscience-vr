@@ -3,30 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DirectionDisplay : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableControler controls;
 
-    [SerializeField]
-    GameObject directionDisplayer;
-
-    void Start()
+    public class DirectionDisplay : MonoBehaviour
     {
-        controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-        controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-    }
-	
-    void OnControlsEnableValueChanged()
-    {
-        if(controls.IsControlsEnabled && controls.IsPlayerControlsEnabled) 
-        {
-            directionDisplayer.SetActive(true);
-        }
-        else
-        {
-            directionDisplayer.SetActive(false);
-        }
-    }
+        [SerializeField]
+        ScriptableControler controls;
 
+        [SerializeField]
+        GameObject directionDisplayer;
+
+        void Start()
+        {
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+        }
+
+        void OnControlsEnableValueChanged()
+        {
+            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            {
+                directionDisplayer.SetActive(true);
+            }
+            else
+            {
+                directionDisplayer.SetActive(false);
+            }
+        }
+    }
 }

@@ -2,32 +2,39 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/ClientGameState", order = 1)]
-public class ScriptableClientGameState : ScriptableObject
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    [SerializeField]
-    ClientGameState value;
-
-    public Action valueChangedEvent;
-
-    public ClientGameState Value
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/ClientGameState", order = 1)]
+    public class ScriptableClientGameState : ScriptableObject
     {
-        get
-        {
-            return value;
-        }
-        set
-        {
-            this.value = value;
-            OnValueChanged();
-        }
-    }
+        [SerializeField]
+        ClientGameState value;
 
-    public void OnValueChanged()
-    {
-        if (valueChangedEvent != null)
+        public Action valueChangedEvent;
+
+        public ClientGameState Value
         {
-            valueChangedEvent();
+            get
+            {
+                return value;
+            }
+            set
+            {
+                this.value = value;
+                OnValueChanged();
+            }
+        }
+
+        public void OnValueChanged()
+        {
+            if (valueChangedEvent != null)
+            {
+                valueChangedEvent();
+            }
         }
     }
 }

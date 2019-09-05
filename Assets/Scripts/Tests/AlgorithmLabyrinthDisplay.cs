@@ -2,94 +2,102 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AlgorithmLabyrinthDisplay : MonoBehaviour
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.Tests
 {
-    [SerializeField]
-    ScriptableClientGameState gameState;
-
-    [SerializeField]
-    RightHandAlgorithm rightHandAlgorithm;
-
-    [SerializeField]
-    LongestStraightAlgorithm longestStraightAlgorithm;
-
-    [SerializeField]
-    ShortestFlightDistanceAlgorithm shortestFlightDistanceAlgorithm;
-
-    [SerializeField]
-    StandardAlgorithm standardAlgorithm;
-
-    [SerializeField]
-    GameLabyrinth labyrinth;
-
-    [SerializeField]
-    GameObject sphere;
-
-    List<GameObject> objectList = new List<GameObject>();
-
-    List<Tile> algorithmStepsPosition = new List<Tile>();
-
-    void Start()
+    public class AlgorithmLabyrinthDisplay : MonoBehaviour
     {
-        gameState.valueChangedEvent += OnGameStateChanged;
-    }
+        [SerializeField]
+        ScriptableClientGameState gameState;
 
+        [SerializeField]
+        RightHandAlgorithm rightHandAlgorithm;
 
-    void OnGameStateChanged()
-    {
-        if (gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.Playing)
+        [SerializeField]
+        LongestStraightAlgorithm longestStraightAlgorithm;
+
+        [SerializeField]
+        ShortestFlightDistanceAlgorithm shortestFlightDistanceAlgorithm;
+
+        [SerializeField]
+        StandardAlgorithm standardAlgorithm;
+
+        [SerializeField]
+        GameLabyrinth labyrinth;
+
+        [SerializeField]
+        GameObject sphere;
+
+        List<GameObject> objectList = new List<GameObject>();
+
+        List<Tile> algorithmStepsPosition = new List<Tile>();
+
+        void Start()
         {
-            GenerateVisualForAlgorithm(Algorithm.ShortestFlightDistance);
+            gameState.valueChangedEvent += OnGameStateChanged;
         }
-    }
 
-    void GenerateVisualForAlgorithm(Algorithm algorithm)
-    {
-        if (algorithm == Algorithm.RightHand)
-        {
-            algorithmStepsPosition = rightHandAlgorithm.GetAlgorithmSteps();
-        }
-        else if (algorithm == Algorithm.LongestStraight)
-        {
-            algorithmStepsPosition = longestStraightAlgorithm.GetAlgorithmSteps();
-        }
-        else if (algorithm == Algorithm.ShortestFlightDistance)
-        {
-            algorithmStepsPosition = shortestFlightDistanceAlgorithm.GetAlgorithmSteps();
-        }
-        else if (algorithm == Algorithm.Standard)
-        {
-            algorithmStepsPosition = standardAlgorithm.GetAlgorithmSteps();
-        }
 
-        Debug.Log("algorithmStepsPosition Count : " + algorithmStepsPosition.Count);
-
-        for (int i = 0; i < algorithmStepsPosition.Count; i++)
+        void OnGameStateChanged()
         {
-            Debug.Log("algorithmStepsPosition #" + i + " : " + algorithmStepsPosition[i].x + " , " + algorithmStepsPosition[i].y + " , " + algorithmStepsPosition[i].color);
-
-            GameObject obj = (GameObject)Instantiate(sphere, GetWorldPosition( algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
-            FloorPainter floorPainter = labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<FloorPainter>();
-
-            if (floorPainter != null)
+            if (gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.Playing)
             {
-                floorPainter.PaintFloorWithColor(algorithmStepsPosition[i].color);
+                GenerateVisualForAlgorithm(Algorithm.ShortestFlightDistance);
+            }
+        }
+
+        void GenerateVisualForAlgorithm(Algorithm algorithm)
+        {
+            if (algorithm == Algorithm.RightHand)
+            {
+                algorithmStepsPosition = rightHandAlgorithm.GetAlgorithmSteps();
+            }
+            else if (algorithm == Algorithm.LongestStraight)
+            {
+                algorithmStepsPosition = longestStraightAlgorithm.GetAlgorithmSteps();
+            }
+            else if (algorithm == Algorithm.ShortestFlightDistance)
+            {
+                algorithmStepsPosition = shortestFlightDistanceAlgorithm.GetAlgorithmSteps();
+            }
+            else if (algorithm == Algorithm.Standard)
+            {
+                algorithmStepsPosition = standardAlgorithm.GetAlgorithmSteps();
             }
 
-            objectList.Add(obj);
+            Debug.Log("algorithmStepsPosition Count : " + algorithmStepsPosition.Count);
+
+            for (int i = 0; i < algorithmStepsPosition.Count; i++)
+            {
+                Debug.Log("algorithmStepsPosition #" + i + " : " + algorithmStepsPosition[i].x + " , " + algorithmStepsPosition[i].y + " , " + algorithmStepsPosition[i].color);
+
+                GameObject obj = (GameObject)Instantiate(sphere, GetWorldPosition(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
+                FloorPainter floorPainter = labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<FloorPainter>();
+
+                if (floorPainter != null)
+                {
+                    floorPainter.PaintFloorWithColor(algorithmStepsPosition[i].color);
+                }
+
+                objectList.Add(obj);
+            }
         }
-    }
 
-    Vector3 GetWorldPosition(int x, int y)
-    {
-        Vector3 worldPos = new Vector3();
+        Vector3 GetWorldPosition(int x, int y)
+        {
+            Vector3 worldPos = new Vector3();
 
-        Vector2Int startPosition = labyrinth.GetLabyrithStartPosition();
+            Vector2Int startPosition = labyrinth.GetLabyrithStartPosition();
 
-        worldPos.x = (x - startPosition.x) * Constants.TILE_SIZE;
-        worldPos.y = 0.5f;
-        worldPos.z = (-y + startPosition.y) * Constants.TILE_SIZE;
+            worldPos.x = (x - startPosition.x) * Constants.TILE_SIZE;
+            worldPos.y = 0.5f;
+            worldPos.z = (-y + startPosition.y) * Constants.TILE_SIZE;
 
-        return worldPos;
+            return worldPos;
+        }
     }
 }

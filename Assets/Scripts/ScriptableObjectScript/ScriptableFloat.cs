@@ -2,31 +2,34 @@
 using System.Collections;
 using UnityEngine;
 
- [CreateAssetMenu(fileName = "Data", menuName = "Data/Float", order = 1)]
- public class ScriptableFloat : ScriptableObject
- {
-    [SerializeField]
-    float value;
+namespace UdeS.Promoscience.ScriptableObjects
+{
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/Float", order = 1)]
+    public class ScriptableFloat : ScriptableObject
+    {
+        [SerializeField]
+        float value;
 
-    public Action valueChangedEvent;
-   
-    public float Value
-    {
-        get
+        public Action valueChangedEvent;
+
+        public float Value
         {
-            return value;
+            get
+            {
+                return value;
+            }
+            set
+            {
+                this.value = value;
+                OnValueChanged();
+            }
         }
-        set
+        public void OnValueChanged()
         {
-            this.value = value;
-            OnValueChanged();
-        }
-    }
-    public void OnValueChanged()
-    {
-        if (valueChangedEvent != null)
-        {
-            valueChangedEvent();
+            if (valueChangedEvent != null)
+            {
+                valueChangedEvent();
+            }
         }
     }
 }

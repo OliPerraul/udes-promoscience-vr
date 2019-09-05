@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FPSCounter : MonoBehaviour
+namespace UdeS.Promoscience.Tests
 {
-    public Text fpsDisplay;
 
-    public void Update()
+    public class FPSCounter : MonoBehaviour
     {
-        string fpsText = (int)(1f / Time.unscaledDeltaTime) + " FPS";
-        fpsDisplay.text = fpsText;
+        public Text fpsDisplay;
+
+        public void Update()
+        {
+            string fpsText = (int)(1f / Time.unscaledDeltaTime) + " FPS";
+            fpsDisplay.text = fpsText;
+        }
     }
 }
  

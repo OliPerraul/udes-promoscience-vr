@@ -2,22 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProgessionBar : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableFloat progressRatio;
-
-    [SerializeField]
-    GameObject progress;
-
-	void Start ()
+    public class ProgessionBar : MonoBehaviour
     {
-        progressRatio.valueChangedEvent += OnValueChanged;
-	}
+        [SerializeField]
+        ScriptableFloat progressRatio;
+
+        [SerializeField]
+        GameObject progress;
+
+        void Start()
+        {
+            progressRatio.valueChangedEvent += OnValueChanged;
+        }
 
 
-    void OnValueChanged()
-    {
-        progress.transform.localScale = new Vector3(progressRatio.Value, 1, 1);
+        void OnValueChanged()
+        {
+            progress.transform.localScale = new Vector3(progressRatio.Value, 1, 1);
+        }
     }
 }

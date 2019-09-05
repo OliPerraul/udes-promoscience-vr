@@ -2,42 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Compass : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.Utils;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableControler controls;
-
-    [SerializeField]
-    Transform indicator;
-
-    int direction = 0;
-
-    readonly int[] xByDirection = { 0, 1, 0, -1 };
-    readonly int[] yByDirection = { -1, 0, 1, 0 };
-
-    private void Start()
+    public class Compass : MonoBehaviour
     {
-        controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-        controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-    }
+        [SerializeField]
+        ScriptableControler controls;
 
-    void Update()
-    {
-        if (indicator.gameObject.activeSelf)
+        [SerializeField]
+        Transform indicator;
+
+        int direction = 0;
+
+        readonly int[] xByDirection = { 0, 1, 0, -1 };
+        readonly int[] yByDirection = { -1, 0, 1, 0 };
+
+        private void Start()
         {
-            indicator.LookAt(indicator.position + new Vector3(100 * Constants.TILE_SIZE * xByDirection[direction], 0, 100 * Constants.TILE_SIZE * -yByDirection[direction]));
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
-    }
 
-    void OnControlsEnableValueChanged()
-    {
-        if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+        void Update()
         {
-            indicator.gameObject.SetActive(true);
+            if (indicator.gameObject.activeSelf)
+            {
+                indicator.LookAt(indicator.position + new Vector3(100 * Constants.TILE_SIZE * xByDirection[direction], 0, 100 * Constants.TILE_SIZE * -yByDirection[direction]));
+            }
         }
-        else
+
+        void OnControlsEnableValueChanged()
         {
-            indicator.gameObject.SetActive(false);
+            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            {
+                indicator.gameObject.SetActive(true);
+            }
+            else
+            {
+                indicator.gameObject.SetActive(false);
+            }
         }
     }
 }

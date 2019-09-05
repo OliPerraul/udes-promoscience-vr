@@ -3,67 +3,75 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//This class is a temporary UI class, should change with scriptable objects
-public class UITextManager : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.UI
 {
-    public static UITextManager instance;
 
-    [SerializeField]
-    GameObject waitingText;
-
-    [SerializeField]
-    GameObject messageText;
-
-    [SerializeField]
-    GameObject readyButton;
-
-    [SerializeField]
-    GameObject messageButtonGroup;
-
-    void Start ()
+    //This class is a temporary UI class, should change with scriptable objects
+    public class UITextManager : MonoBehaviour
     {
-	    if(instance == null)
+        public static UITextManager instance;
+
+        [SerializeField]
+        GameObject waitingText;
+
+        [SerializeField]
+        GameObject messageText;
+
+        [SerializeField]
+        GameObject readyButton;
+
+        [SerializeField]
+        GameObject messageButtonGroup;
+
+        void Start()
         {
-            instance = this;
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else
+            {
+                Destroy(this);
+            }
         }
-        else
+
+        public void SetText(string s)
         {
-            Destroy(this);
+            waitingText.GetComponent<Text>().text = s;
         }
-	}
 
-    public void SetText(string s)
-    {
-        waitingText.GetComponent<Text>().text = s;
-    }
+        public void SetMessageText(string s)
+        {
+            messageText.GetComponent<Text>().text = s;
+        }
 
-    public void SetMessageText(string s)
-    {
-        messageText.GetComponent<Text>().text = s;
-    }
+        public void HideText()
+        {
+            waitingText.SetActive(false);
+        }
 
-    public void HideText()
-    {
-        waitingText.SetActive(false);
-    }
+        public void ShowReadyButton()
+        {
+            readyButton.SetActive(true);
+        }
 
-    public void ShowReadyButton()
-    {
-        readyButton.SetActive(true);
-    }
+        public void HideReadyButton()
+        {
+            readyButton.SetActive(false);
+        }
 
-    public void HideReadyButton()
-    {
-        readyButton.SetActive(false);
-    }
+        public void ShowMessageButtonGroup()
+        {
+            messageButtonGroup.SetActive(true);
+        }
 
-    public void ShowMessageButtonGroup()
-    {
-        messageButtonGroup.SetActive(true);
-    }
-
-    public void HideMessageButtonGroup()
-    {
-        messageButtonGroup.SetActive(false);
+        public void HideMessageButtonGroup()
+        {
+            messageButtonGroup.SetActive(false);
+        }
     }
 }

@@ -2,76 +2,78 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/Controler", order = 1)]
-public class ScriptableControler : ScriptableObject
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    [SerializeField]
-    bool isControlsEnable;
-
-    [SerializeField]
-    bool isPlayerControlsEnable;
-
-    public Action stopAllMovementEvent;
-    public Action resetPositionAndRotation;
-    public Action isControlsEnableValueChangedEvent;
-    public Action isPlayerControlsEnableValueChangedEvent;
-
-    public bool IsControlsEnabled
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/Controler", order = 1)]
+    public class ScriptableControler : ScriptableObject
     {
-        get
-        {
-            return isControlsEnable;
-        }
-        set
-        {
-            isControlsEnable = value;
-            OnControlsEnableValueChanged();
-        }
-    }
+        [SerializeField]
+        bool isControlsEnable;
 
-    public bool IsPlayerControlsEnabled
-    {
-        get
-        {
-            return isPlayerControlsEnable;
-        }
-        set
-        {
-            isPlayerControlsEnable = value;
-            OnPlayerControlsEnableValueChanged();
-        }
-    }
+        [SerializeField]
+        bool isPlayerControlsEnable;
 
-    public void OnControlsEnableValueChanged()
-    {
-        if (isControlsEnableValueChangedEvent != null)
-        {
-            isControlsEnableValueChangedEvent();
-        }
-    }
+        public Action stopAllMovementEvent;
+        public Action resetPositionAndRotation;
+        public Action isControlsEnableValueChangedEvent;
+        public Action isPlayerControlsEnableValueChangedEvent;
 
-    public void OnPlayerControlsEnableValueChanged()
-    {
-        if (isPlayerControlsEnableValueChangedEvent != null)
+        public bool IsControlsEnabled
         {
-            isPlayerControlsEnableValueChangedEvent();
+            get
+            {
+                return isControlsEnable;
+            }
+            set
+            {
+                isControlsEnable = value;
+                OnControlsEnableValueChanged();
+            }
         }
-    }
 
-    public void StopAllMovement()
-    {
-        if (stopAllMovementEvent != null)
+        public bool IsPlayerControlsEnabled
         {
-            stopAllMovementEvent();
+            get
+            {
+                return isPlayerControlsEnable;
+            }
+            set
+            {
+                isPlayerControlsEnable = value;
+                OnPlayerControlsEnableValueChanged();
+            }
         }
-    }
 
-    public void ResetPositionAndRotation()
-    {
-        if (resetPositionAndRotation != null)
+        public void OnControlsEnableValueChanged()
         {
-            resetPositionAndRotation();
+            if (isControlsEnableValueChangedEvent != null)
+            {
+                isControlsEnableValueChangedEvent();
+            }
+        }
+
+        public void OnPlayerControlsEnableValueChanged()
+        {
+            if (isPlayerControlsEnableValueChangedEvent != null)
+            {
+                isPlayerControlsEnableValueChangedEvent();
+            }
+        }
+
+        public void StopAllMovement()
+        {
+            if (stopAllMovementEvent != null)
+            {
+                stopAllMovementEvent();
+            }
+        }
+
+        public void ResetPositionAndRotation()
+        {
+            if (resetPositionAndRotation != null)
+            {
+                resetPositionAndRotation();
+            }
         }
     }
 }
-

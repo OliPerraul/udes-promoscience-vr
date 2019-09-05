@@ -2,52 +2,60 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetActiveOnScriptableBoolean : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableBoolean scriptableBoolean;
 
-    [SerializeField]
-    List<GameObject> gameObjectsToActivateOnTrue = new List<GameObject>();
-
-    [SerializeField]
-    List<GameObject> gameObjectsToHideOnTrue = new List<GameObject>();
-
-    [SerializeField]
-    List<GameObject> gameObjectsToActivateOnFalse = new List<GameObject>();
-
-    [SerializeField]
-    List<GameObject> gameObjectsToHideOnFalse = new List<GameObject>();
-
-    void Start ()
+    public class SetActiveOnScriptableBoolean : MonoBehaviour
     {
-        scriptableBoolean.valueChangedEvent += OnScriptableBooleanValueChanged;
-    }
-	
-	void OnScriptableBooleanValueChanged()
-    {
-        if(scriptableBoolean.Value == true)
+        [SerializeField]
+        ScriptableBoolean scriptableBoolean;
+
+        [SerializeField]
+        List<GameObject> gameObjectsToActivateOnTrue = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToHideOnTrue = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToActivateOnFalse = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToHideOnFalse = new List<GameObject>();
+
+        void Start()
         {
-            foreach(GameObject gObject in gameObjectsToHideOnTrue)
-            {
-                gObject.SetActive(false);
-            }
-
-            foreach (GameObject gObject in gameObjectsToActivateOnTrue)
-            {
-                gObject.SetActive(true);
-            }
+            scriptableBoolean.valueChangedEvent += OnScriptableBooleanValueChanged;
         }
-        else
-        {
-            foreach (GameObject gObject in gameObjectsToHideOnFalse)
-            {
-                gObject.SetActive(false);
-            }
 
-            foreach (GameObject gObject in gameObjectsToActivateOnFalse)
+        void OnScriptableBooleanValueChanged()
+        {
+            if (scriptableBoolean.Value == true)
             {
-                gObject.SetActive(true);
+                foreach (GameObject gObject in gameObjectsToHideOnTrue)
+                {
+                    gObject.SetActive(false);
+                }
+
+                foreach (GameObject gObject in gameObjectsToActivateOnTrue)
+                {
+                    gObject.SetActive(true);
+                }
+            }
+            else
+            {
+                foreach (GameObject gObject in gameObjectsToHideOnFalse)
+                {
+                    gObject.SetActive(false);
+                }
+
+                foreach (GameObject gObject in gameObjectsToActivateOnFalse)
+                {
+                    gObject.SetActive(true);
+                }
             }
         }
     }

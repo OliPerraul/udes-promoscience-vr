@@ -2,33 +2,40 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/TileColor", order = 1)]
-public class ScriptableTileColor : ScriptableObject
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Network;
+
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    [SerializeField]
-    TileColor value;
 
-    public Action valueChangedEvent;
-
-    public TileColor Value
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/TileColor", order = 1)]
+    public class ScriptableTileColor : ScriptableObject
     {
-        get
-        {
-            return value;
-        }
-        set
-        {
-            this.value = value;
-            OnValueChanged();
-        }
-    }
+        [SerializeField]
+        TileColor value;
 
-    public void OnValueChanged()
-    {
-        if (valueChangedEvent != null)
+        public Action valueChangedEvent;
+
+        public TileColor Value
         {
-            valueChangedEvent();
+            get
+            {
+                return value;
+            }
+            set
+            {
+                this.value = value;
+                OnValueChanged();
+            }
+        }
+
+        public void OnValueChanged()
+        {
+            if (valueChangedEvent != null)
+            {
+                valueChangedEvent();
+            }
         }
     }
 }
-

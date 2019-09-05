@@ -3,43 +3,48 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ClientNetworkManager : NetworkManager
+using UdeS.Promoscience.ScriptableObjects;
+
+namespace UdeS.Promoscience.Network
 {
-    [SerializeField]
-    ScriptableControler controls;
-
-    [SerializeField]
-    ScriptableBoolean isConnectedToServer;
-
-    [SerializeField]
-    ScriptableString serverIpAdress;
-
-    int serverPort = 7777;
-
-    private void Start()
+    public class ClientNetworkManager : NetworkManager
     {
-        serverIpAdress.valueChangedEvent += StartConnection;
-    }
+        [SerializeField]
+        ScriptableControler controls;
 
-    public void StartConnection ()
-    {
-        networkPort = serverPort;
-        networkAddress = serverIpAdress.Value;
-        StartClient();
-    }
+        [SerializeField]
+        ScriptableBoolean isConnectedToServer;
 
-    public override void OnClientConnect(NetworkConnection conn)
-    {
-        base.OnClientConnect(conn);
-        isConnectedToServer.Value = true;
-    }
+        [SerializeField]
+        ScriptableString serverIpAdress;
 
-    public override void OnClientDisconnect(NetworkConnection conn)
-    {
-        base.OnClientDisconnect(conn);
+        int serverPort = 7777;
 
-        isConnectedToServer.Value = false;
+        private void Start()
+        {
+            serverIpAdress.valueChangedEvent += StartConnection;
+        }
 
-        StartClient();
+        public void StartConnection()
+        {
+            networkPort = serverPort;
+            networkAddress = serverIpAdress.Value;
+            StartClient();
+        }
+
+        public override void OnClientConnect(NetworkConnection conn)
+        {
+            base.OnClientConnect(conn);
+            isConnectedToServer.Value = true;
+        }
+
+        public override void OnClientDisconnect(NetworkConnection conn)
+        {
+            base.OnClientDisconnect(conn);
+
+            isConnectedToServer.Value = false;
+
+            StartClient();
+        }
     }
 }

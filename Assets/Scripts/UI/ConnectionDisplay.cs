@@ -2,67 +2,74 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConnectionDisplay : MonoBehaviour
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.UI
 {
-    [SerializeField]
-    ScriptableBoolean isConnectedToPair;
 
-    [SerializeField]
-    ScriptableBoolean isConnectedToServer;
-
-    [SerializeField]
-    GameObject pairPanel;
-
-    [SerializeField]
-    GameObject serverPanel;
-
-    private void Start()
+    public class ConnectionDisplay : MonoBehaviour
     {
-        isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
-        isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
-    }
+        [SerializeField]
+        ScriptableBoolean isConnectedToPair;
 
-    void OnIsConnectedToPairValueChanged()
-    {
-        if (isConnectedToPair.Value)
+        [SerializeField]
+        ScriptableBoolean isConnectedToServer;
+
+        [SerializeField]
+        GameObject pairPanel;
+
+        [SerializeField]
+        GameObject serverPanel;
+
+        private void Start()
         {
-            if (pairPanel.activeSelf)
+            isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
+            isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
+        }
+
+        void OnIsConnectedToPairValueChanged()
+        {
+            if (isConnectedToPair.Value)
             {
-                pairPanel.SetActive(false);
+                if (pairPanel.activeSelf)
+                {
+                    pairPanel.SetActive(false);
+                }
+            }
+            else
+            {
+                if (isConnectedToServer.Value)
+                {
+                    pairPanel.SetActive(true);
+                }
             }
         }
-        else
+
+
+        void OnIsConnectedToServerValueChanged()
         {
             if (isConnectedToServer.Value)
             {
-                pairPanel.SetActive(true);
+                if (!isConnectedToPair.Value)
+                {
+                    pairPanel.SetActive(true);
+                }
+
+                if (serverPanel.activeSelf)
+                {
+                    serverPanel.SetActive(false);
+                }
             }
-        }
-    }
-
-
-    void OnIsConnectedToServerValueChanged()
-    {
-        if (isConnectedToServer.Value)
-        {
-            if (!isConnectedToPair.Value)
+            else
             {
-                pairPanel.SetActive(true);
-            }
+                if (pairPanel.activeSelf)
+                {
+                    pairPanel.SetActive(false);
+                }
 
-            if (serverPanel.activeSelf)
-            {
-                serverPanel.SetActive(false);
+                serverPanel.SetActive(true);
             }
-        }
-        else
-        {
-            if(pairPanel.activeSelf)
-            {
-                pairPanel.SetActive(false);
-            }
-
-            serverPanel.SetActive(true);
         }
     }
 }

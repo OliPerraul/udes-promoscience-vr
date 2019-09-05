@@ -2,26 +2,30 @@
 using System.Collections;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Data", menuName = "Data/LocalizeString", order = 1)]
-public class ScriptableLocalizeString : ScriptableObject
+namespace UdeS.Promoscience.ScriptableObjects
 {
-    [SerializeField]
-    string english;
 
-    [SerializeField]
-    string french;
-
-    public string Value
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/LocalizeString", order = 1)]
+    public class ScriptableLocalizeString : ScriptableObject
     {
-        get
+        [SerializeField]
+        string english;
+
+        [SerializeField]
+        string french;
+
+        public string Value
         {
-            if (Application.systemLanguage == SystemLanguage.French)
+            get
             {
-                return french;
-            }
-            else
-            {
-                return english;
+                if (Application.systemLanguage == SystemLanguage.French)
+                {
+                    return french;
+                }
+                else
+                {
+                    return english;
+                }
             }
         }
     }
