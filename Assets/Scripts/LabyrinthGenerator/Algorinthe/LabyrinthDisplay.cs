@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -166,3 +169,6 @@ namespace UdeS.Promoscience.Generator
         }
     }
 }
+
+
+#endif
