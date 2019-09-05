@@ -2,14 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BorderWall : Wall
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.Generator
 {
+    public class BorderWall : Wall
+    {
+        public BorderWall(int x, int y) : base(x, y)
+        {
 
-	public BorderWall(int x, int y) : base(x,y){
+        }
 
-	}
-
-	public override bool isBorderWall(){
-		return true;
-	}
+        public override bool isBorderWall()
+        {
+            return true;
+        }
+    }
 }

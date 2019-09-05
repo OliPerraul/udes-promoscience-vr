@@ -2,13 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wall : Cell
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.Game;
+
+namespace UdeS.Promoscience.Generator
 {
-	public Wall (int x, int y) : base( x, y){
+    public class Wall : Cell
+    {
+        public Wall(int x, int y) : base(x, y)
+        {
 
-	}
+        }
 
-	public override bool isWall(){
-		return true;
-	}
+        public override bool isWall()
+        {
+            return true;
+        }
+    }
 }
