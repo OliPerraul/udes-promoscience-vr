@@ -9,7 +9,7 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Utils
 {
-
+    // 
     public struct Tile
     {
         public int x;

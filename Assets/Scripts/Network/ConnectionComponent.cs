@@ -30,7 +30,8 @@ namespace UdeS.Promoscience.Network
             if (isServer)
             {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-                player.serverPlayerStatusChangedEvent += StartPairingDevice;
+
+                player.serverPlayerStatusChangedEvent += OnPlayerStatusChanged;
 #endif
             }
             else
@@ -40,8 +41,7 @@ namespace UdeS.Promoscience.Network
         }
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-
-        void StartPairingDevice()
+        private void OnPlayerStatusChanged()
         {
             if (player.ServerPlayerGameState == ClientGameState.Connecting)
             {
@@ -67,6 +67,16 @@ namespace UdeS.Promoscience.Network
                     }
                 }
             }
+            else if (player.ServerPlayerGameState == ClientGameState.ViewingPlayback)
+            {
+                Queue<int> steps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
+
+                if (SQLiteUtilities.HasPlayerAlreadyCompletedTheRound(player.ServerCourseId))
+                {
+                    // Use the steps for playback
+                    player.TargetSetRoundCompleted(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray());
+                }
+            }
             else if (player.serverDeviceType == Utils.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
             {
                 pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.serverDeviceType);
@@ -85,18 +95,23 @@ namespace UdeS.Promoscience.Network
                         if (courseLabyrinthId == serverGameInformation.GameRound)
                         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
+                            Queue<int> steps;
+
+                            steps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
+
                             if (SQLiteUtilities.HasPlayerAlreadyCompletedTheRound(player.ServerCourseId))
                             {
+                                // Use the steps for playback
                                 player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                                player.TargetSetRoundCompleted(player.connectionToClient, serverGameInformation.GameRound);
+                                player.TargetSetRoundCompleted(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray());
                             }
                             else
                             {
-                                Queue<int> playerSteps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
-
-                                if (playerSteps.Count > 0)
+                                if (steps.Count > 0)
                                 {
-                                    serverGameInformation.StartGameRoundWithSteps(player, playerSteps.ToArray());
+                                    // Connection drop, used the steps to resume where you were
+                                    serverGameInformation.StartGameRoundWithSteps(player, steps.ToArray());
                                     player.TargetSetPairedIpAdress(player.connectionToClient, "");
                                 }
                                 else

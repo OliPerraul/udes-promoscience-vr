@@ -221,7 +221,7 @@ namespace UdeS.Promoscience.Network
         ScriptablePlayerInformation playerInformation;
 
         [SerializeField]
-        ScriptableIntegerArray playerStartSteps;
+        ScriptableIntegerArray recordedSteps;
 
         public override void OnStartLocalPlayer()
         {
@@ -341,7 +341,7 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
         {
-            playerStartSteps.Value = new int[0];
+            recordedSteps.Value = new int[0];
 
             labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
 
@@ -366,7 +366,7 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetGameWithSteps(NetworkConnection target, int[] steps, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
         {
-            playerStartSteps.Value = steps;
+            recordedSteps.Value = steps;
 
             labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
             algorithm.Value = algo;
@@ -385,12 +385,12 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId)
+        public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId, int[] steps)
         {
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
-
-            gameState.Value = ClientGameState.WaitingForNextRound;
+            recordedSteps.Value = steps; // Use for playback
+            gameState.Value = ClientGameState.ViewingPlayback;
         }
 
         [TargetRpc]

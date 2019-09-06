@@ -32261,6 +32261,12 @@ GameObject:
   - component: {fileID: 1670229880}
   - component: {fileID: 1670229882}
   - component: {fileID: 1670229883}
+  - component: {fileID: 1670229889}
+  - component: {fileID: 1670229888}
+  - component: {fileID: 1670229887}
+  - component: {fileID: 1670229886}
+  - component: {fileID: 1670229885}
+  - component: {fileID: 1670229884}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -32296,9 +32302,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1943416332}
-  - {fileID: 1711725693}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -32345,6 +32349,104 @@ MonoBehaviour:
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
   ressources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
+--- !u!114 &1670229884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670229879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fee905aa0c5e6e49873777c8f614fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  musicSource: {fileID: 1279388832}
+  classicLoopMusic: {fileID: 8300000, guid: 2ab6be3c4285ced439c066ad06c81aa5, type: 3}
+  classicLoopWithOutDrumMusic: {fileID: 8300000, guid: 9883757589f2109469d6e99e3459194c,
+    type: 3}
+  modernLoopMusic: {fileID: 8300000, guid: 1b0bdd8a3f785b741892eb0e9f5f4afe, type: 3}
+--- !u!114 &1670229885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670229879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4fdb716754c8f4a926fbf408ca00d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
+  algorithmRespect: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
+  gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
+  isRoundCompleted: {fileID: 11400000, guid: e97778b7be0c6ef4684d9b10501cc0dc, type: 2}
+  labyrinthPositionChanged: {fileID: 11400000, guid: 9cd2cda09a0f1684e883e7263786dccc,
+    type: 2}
+  playerPaintTile: {fileID: 11400000, guid: 7301fc4899778e3459a66b0b9b95ffb4, type: 2}
+  playerPositionRotationAndTiles: {fileID: 11400000, guid: a4032a8e9782c4645a8d9b69310a00e5,
+    type: 2}
+  playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
+    type: 2}
+  playerStartSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
+  returnToDivergencePointAnswer: {fileID: 11400000, guid: c0ec1a0d6508fb5428bb9521683f8580,
+    type: 2}
+  labyrinth: {fileID: 1670229883}
+  rightHandAlgorithm: {fileID: 1670229886}
+  longestStraightAlgorithm: {fileID: 1670229887}
+  shortestFlightDistanceAlgorithm: {fileID: 1670229888}
+  standardAlgorithm: {fileID: 1670229889}
+  cameraTransform: {fileID: 1739980048}
+--- !u!114 &1670229886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670229879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6150ba9d456f2bb438af8ec61e41c15f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  labyrinth: {fileID: 1670229883}
+--- !u!114 &1670229887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670229879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eee8c225a1910d0428fe59158bb8692f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  labyrinth: {fileID: 1670229883}
+--- !u!114 &1670229888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670229879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085870fe91de8b4abab6553bd11f1f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  labyrinth: {fileID: 1670229883}
+--- !u!114 &1670229889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670229879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa0364522b725e43a636aada198922f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  labyrinth: {fileID: 1670229883}
 --- !u!1 &1700639016
 GameObject:
   m_ObjectHideFlags: 0
@@ -32417,52 +32519,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1700639016}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1711725692
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1711725693}
-  - component: {fileID: 1711725694}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1711725693
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1711725692}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1670229881}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1711725694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1711725692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fee905aa0c5e6e49873777c8f614fd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  musicSource: {fileID: 1279388832}
-  classicLoopMusic: {fileID: 8300000, guid: 2ab6be3c4285ced439c066ad06c81aa5, type: 3}
-  classicLoopWithOutDrumMusic: {fileID: 8300000, guid: 9883757589f2109469d6e99e3459194c,
-    type: 3}
-  modernLoopMusic: {fileID: 8300000, guid: 1b0bdd8a3f785b741892eb0e9f5f4afe, type: 3}
 --- !u!1 &1723224273
 GameObject:
   m_ObjectHideFlags: 0
@@ -32870,9 +32926,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1777336346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: d863f367e290a5b42940e1beca77c4d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  labyrinth: {fileID: 1670229883}
+  distanceDisplay: {fileID: 45366792}
+  targetDisplay: {fileID: 793860706}
+  textDisplay: {fileID: 2102470042}
+  cameraTransform: {fileID: 1739980048}
+  raycastStartPoint: {fileID: 1049012887}
 --- !u!1 &1797732891
 GameObject:
   m_ObjectHideFlags: 0
@@ -38083,137 +38146,6 @@ Transform:
   m_Father: {fileID: 1536235207}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1943416331
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1943416332}
-  - component: {fileID: 1943416338}
-  - component: {fileID: 1943416337}
-  - component: {fileID: 1943416336}
-  - component: {fileID: 1943416335}
-  - component: {fileID: 1943416334}
-  - component: {fileID: 1943416333}
-  m_Layer: 0
-  m_Name: AlgorithRespect
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1943416332
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1943416331}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1670229881}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 581.5, y: 362}
-  m_SizeDelta: {x: 1163, y: 724}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1943416333
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1943416331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aa0364522b725e43a636aada198922f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1670229883}
---- !u!114 &1943416334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1943416331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085870fe91de8b4abab6553bd11f1f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1670229883}
---- !u!114 &1943416335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1943416331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eee8c225a1910d0428fe59158bb8692f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1670229883}
---- !u!114 &1943416336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1943416331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6150ba9d456f2bb438af8ec61e41c15f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1670229883}
---- !u!114 &1943416337
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1943416331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba4fdb716754c8f4a926fbf408ca00d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
-  algorithmRespect: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
-  gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
-  isRoundCompleted: {fileID: 11400000, guid: e97778b7be0c6ef4684d9b10501cc0dc, type: 2}
-  labyrinthPositionChanged: {fileID: 11400000, guid: 9cd2cda09a0f1684e883e7263786dccc,
-    type: 2}
-  playerPaintTile: {fileID: 11400000, guid: 7301fc4899778e3459a66b0b9b95ffb4, type: 2}
-  playerPositionRotationAndTiles: {fileID: 11400000, guid: a4032a8e9782c4645a8d9b69310a00e5,
-    type: 2}
-  playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
-    type: 2}
-  playerStartSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
-  returnToDivergencePointAnswer: {fileID: 11400000, guid: c0ec1a0d6508fb5428bb9521683f8580,
-    type: 2}
-  labyrinth: {fileID: 1670229883}
-  rightHandAlgorithm: {fileID: 1943416336}
-  longestStraightAlgorithm: {fileID: 1943416335}
-  shortestFlightDistanceAlgorithm: {fileID: 1943416334}
-  standardAlgorithm: {fileID: 1943416333}
-  cameraTransform: {fileID: 1739980048}
---- !u!114 &1943416338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1943416331}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d4f9930376290448af8eda29a59f170, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1945591254
 GameObject:
   m_ObjectHideFlags: 0

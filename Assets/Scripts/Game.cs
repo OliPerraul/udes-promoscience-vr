@@ -30,6 +30,9 @@ namespace UdeS.Promoscience
         [SerializeField]
         private Camera gameCamera;
 
+        [SerializeField]
+        ScriptableIntegerArray recordedSteps;
+
         void Start()
         {
             gameState.valueChangedEvent += OnGameStateChanged;
@@ -66,6 +69,8 @@ namespace UdeS.Promoscience
             {
                 gameCamera.ChangeState(Camera.State.Topdown);
 
+                //recordedSteps.Value
+
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();
             }
@@ -94,8 +99,6 @@ namespace UdeS.Promoscience
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
-
-                //gameState.Value = ClientGameState.TutorialLabyrinthReady;
                 gameState.Value = ClientGameState.ViewingPlayback;
             }
             else
