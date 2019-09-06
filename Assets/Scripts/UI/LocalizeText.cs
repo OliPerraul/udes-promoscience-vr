@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.UI
 {

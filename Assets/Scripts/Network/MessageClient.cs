@@ -99,8 +99,11 @@ namespace UdeS.Promoscience.Network
 
         void StopClient()
         {
-            client.Disconnect();
-            client = null;
+            if (client != null)
+            {
+                client.Disconnect();
+                client = null;
+            }
         }
 
         void OnGameStateChanged()
@@ -171,6 +174,7 @@ namespace UdeS.Promoscience.Network
             PlayerPositionMessage msg = netMsg.ReadMessage<PlayerPositionMessage>();
             playerPosition.Value = msg.position;
         }
+
         void OnPlayerReachedTheEnd(NetworkMessage netMsg)
         {
             playerReachedTheEnd.FireAction();

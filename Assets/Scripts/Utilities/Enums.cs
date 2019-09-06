@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Utils
@@ -43,6 +43,8 @@ namespace UdeS.Promoscience.Utils
         ReconnectingNoAssociatedPair = 12,
         WaitingForPairConnection = 13,
         GeneratingTutorialLabyrinthDataForTest = 14,
+
+        ViewingPlayback = 15,
     }
 
     public enum GameAction : int

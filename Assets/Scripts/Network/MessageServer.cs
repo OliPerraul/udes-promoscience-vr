@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Network
 {
@@ -58,7 +58,7 @@ namespace UdeS.Promoscience.Network
         ScriptableAction returnToDivergencePointRequest;
 
         [SerializeField]
-        GameLabyrinth labyrinth;
+        Labyrinth labyrinth;
 
         NetworkServerSimple server = null;
         NetworkConnection clientConnection = null;

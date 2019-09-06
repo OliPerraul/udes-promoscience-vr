@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.Tests
         StandardAlgorithm standardAlgorithm;
 
         [SerializeField]
-        GameLabyrinth labyrinth;
+        Labyrinth labyrinth;
 
         [SerializeField]
         GameObject sphere;

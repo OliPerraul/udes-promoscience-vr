@@ -7,14 +7,14 @@ using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Generator
 {
     public class LabyrinthDisplay : MonoBehaviour
     {
         public GameObject cube;
-        public Camera cam;
+        public UnityEngine.Camera cam;
 
         private LabyrinthTranslator labyrinth;
         private List<GameObject> map = new List<GameObject>();

@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Network
 {

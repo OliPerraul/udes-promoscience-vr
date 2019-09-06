@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Generator.UI
 {

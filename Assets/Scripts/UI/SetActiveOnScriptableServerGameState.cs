@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 using UdeS.Promoscience.Utils;
 
