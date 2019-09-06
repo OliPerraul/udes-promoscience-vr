@@ -1269,11 +1269,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 937188561}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 347d891f17c824042951cf3bce514108, type: 3}
+  m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   topDownCamera: {fileID: 2023921694}
   gameplayCamera: {fileID: 2118753608}
+  oculusCameraLeft: {fileID: 0}
+  oculusCameraRight: {fileID: 0}
 --- !u!1 &956410941
 GameObject:
   m_ObjectHideFlags: 0
@@ -1575,13 +1577,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1b65bd747aa5d45b69b80a55442b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controls: {fileID: 0}
-  gameState: {fileID: 0}
-  playerReachedTheEnd: {fileID: 0}
-  isDiverging: {fileID: 0}
-  labyrinth: {fileID: 0}
-  waitingForNextRoundRoom: {fileID: 0}
-  gameCamera: {fileID: 0}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
+    type: 2}
+  isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
+  labyrinth: {fileID: 1135340688}
+  waitingForNextRoundRoom: {fileID: 1707732046}
+  gameCamera: {fileID: 937188563}
 --- !u!4 &1135340686
 Transform:
   m_ObjectHideFlags: 0
@@ -1606,15 +1609,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ed9baf2765a3e40874a00a0b1574a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controls: {fileID: 0}
-  isConnectedToPair: {fileID: 0}
-  isConnectedToServer: {fileID: 0}
-  playerPosition: {fileID: 0}
-  playerRotation: {fileID: 0}
-  playerPaintTile: {fileID: 0}
-  playerTilesToPaint: {fileID: 0}
-  labyrinth: {fileID: 0}
-  cameraTransform: {fileID: 0}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
+  isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
+    type: 2}
+  playerPosition: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f, type: 2}
+  playerRotation: {fileID: 11400000, guid: 2a36872cafdb21144af5591f6351885b, type: 2}
+  playerPaintTile: {fileID: 11400000, guid: 7301fc4899778e3459a66b0b9b95ffb4, type: 2}
+  playerTilesToPaint: {fileID: 11400000, guid: e2a59109816f01f4b8f87b6ce5112b02, type: 2}
+  labyrinth: {fileID: 1135340688}
+  cameraTransform: {fileID: 1700386059}
 --- !u!114 &1135340688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1626,9 +1630,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 940ca2b7de768b8438f3b382a6cdd036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameState: {fileID: 0}
-  labyrinthData: {fileID: 0}
-  ressources: {fileID: 0}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  ressources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
 --- !u!1 &1172535618
 GameObject:
   m_ObjectHideFlags: 0
@@ -2629,7 +2633,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1700386059}
-  - component: {fileID: 1700386060}
   m_Layer: 0
   m_Name: GameplayCamera
   m_TagString: Untagged
@@ -2653,19 +2656,6 @@ Transform:
   m_Father: {fileID: 937188562}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1700386060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1700386058}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 347d891f17c824042951cf3bce514108, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topDownCamera: {fileID: 0}
-  gameplayCamera: {fileID: 2118753608}
 --- !u!1001 &1707732045
 Prefab:
   m_ObjectHideFlags: 0
@@ -2712,6 +2702,11 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c326b37a6a4b02448eb591b9e6c121a, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1 &1707732046 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1634689534996100, guid: 3c326b37a6a4b02448eb591b9e6c121a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1707732045}
 --- !u!1 &1738305205
 GameObject:
   m_ObjectHideFlags: 0
