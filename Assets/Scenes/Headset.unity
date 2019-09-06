@@ -5469,7 +5469,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 295393665}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 347d891f17c824042951cf3bce514108, type: 3}
+  m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   topDownCamera: {fileID: 1407037787}
@@ -32276,14 +32276,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1670229879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b173631a1188cb4d94bae3f397c30ec, type: 3}
+  m_Script: {fileID: 11500000, guid: de1b65bd747aa5d45b69b80a55442b51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
     type: 2}
-  isDiverging: {fileID: 0}
+  isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
   labyrinth: {fileID: 1670229883}
   waitingForNextRoundRoom: {fileID: 2104624899}
   gameCamera: {fileID: 295393667}
@@ -32310,7 +32310,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1670229879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 076f85bf6afe2284abf442c7cc891bbe, type: 3}
+  m_Script: {fileID: 11500000, guid: 60dee36bd5713834c9250e3b9d9947ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
@@ -32339,7 +32339,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1670229879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1b21d37b36a74e468712048583f6295, type: 3}
+  m_Script: {fileID: 11500000, guid: 940ca2b7de768b8438f3b382a6cdd036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
