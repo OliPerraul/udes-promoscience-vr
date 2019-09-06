@@ -32870,16 +32870,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1777336346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8391ac9d6f2f1704a8877b88eecfce2b, type: 3}
+  m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
-  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  labyrinth: {fileID: 1670229883}
-  distanceDisplay: {fileID: 45366792}
-  targetDisplay: {fileID: 793860706}
-  textDisplay: {fileID: 2102470042}
-  cameraTransform: {fileID: 1739980048}
-  raycastStartPoint: {fileID: 1049012887}
 --- !u!1 &1797732891
 GameObject:
   m_ObjectHideFlags: 0
@@ -38098,6 +38091,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1943416332}
+  - component: {fileID: 1943416338}
   - component: {fileID: 1943416337}
   - component: {fileID: 1943416336}
   - component: {fileID: 1943416335}
@@ -38209,6 +38203,17 @@ MonoBehaviour:
   shortestFlightDistanceAlgorithm: {fileID: 1943416334}
   standardAlgorithm: {fileID: 1943416333}
   cameraTransform: {fileID: 1739980048}
+--- !u!114 &1943416338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1943416331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d4f9930376290448af8eda29a59f170, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1945591254
 GameObject:
   m_ObjectHideFlags: 0

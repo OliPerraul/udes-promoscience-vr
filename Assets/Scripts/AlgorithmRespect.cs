@@ -65,6 +65,7 @@ namespace UdeS.Promoscience
         [SerializeField]
         Transform cameraTransform;
 
+
         bool isAlgorithmRespectActive = false;
 
         int errorCounter;
@@ -76,10 +77,17 @@ namespace UdeS.Promoscience
         Vector2Int currentLabyrinthPosition;
 
         List<Tile> algorithmSteps = new List<Tile>();
+
         List<Tile> playerSteps = new List<Tile>();
+    
         List<Tile> wrongColorTilesWhenDiverging = new List<Tile>();
 
         Quaternion rotationAtDivergence;
+
+        public void Awake()
+        {
+            
+        }
 
         void Start()
         {
@@ -160,8 +168,13 @@ namespace UdeS.Promoscience
                     }
                     else
                     {
-                        playerSteps[playerSteps.Count - 1] = new Tile(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y, previousTileColor);
-                        playerSteps.Add(new Tile(labyrinthPosition.x, labyrinthPosition.y, TileColor.NoColor));
+                        Tile tile = new Tile(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y, previousTileColor);
+                        //log.Record(tile);
+                        playerSteps[playerSteps.Count - 1] = tile;
+
+                        tile = new Tile(labyrinthPosition.x, labyrinthPosition.y, TileColor.NoColor);
+                        //log.Record(tile);
+                        playerSteps.Add(tile);
                     }
                 }
                 else
@@ -244,13 +257,19 @@ namespace UdeS.Promoscience
 
         void ResetAlgorithmRespect()
         {
+            //log = new Log(logger);
             playerSteps.Clear();
+
+
             wrongColorTilesWhenDiverging.Clear();
             errorCounter = 0;
             isDiverging.Value = false;
             algorithmRespect.Value = 1.0f;
             currentLabyrinthPosition = labyrinth.GetLabyrithStartPosition();
-            playerSteps.Add(new Tile(currentLabyrinthPosition.x, currentLabyrinthPosition.y, labyrinth.GetTileColor(currentLabyrinthPosition)));
+
+            Tile tile = new Tile(currentLabyrinthPosition.x, currentLabyrinthPosition.y, labyrinth.GetTileColor(currentLabyrinthPosition));
+            //log.Record(tile);
+            playerSteps.Add(tile);
         }
 
         public void OnReturnToDivergencePointAnswer()
