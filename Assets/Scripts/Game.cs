@@ -99,7 +99,7 @@ namespace UdeS.Promoscience
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
-                gameState.Value = ClientGameState.ViewingPlayback;
+                gameState.Value = ClientGameState.WaitingPlayback;
             }
             else
             {

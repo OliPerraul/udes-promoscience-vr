@@ -45,6 +45,7 @@ namespace UdeS.Promoscience.Utils
         GeneratingTutorialLabyrinthDataForTest = 14,
 
         ViewingPlayback = 15,
+        WaitingPlayback = 16,
     }
 
     public enum GameAction : int
@@ -67,6 +68,7 @@ namespace UdeS.Promoscience.Utils
         ReceivedDirectiveUturn = 15
     }
 
+    [Serializable]
     public enum DeviceType
     {
         NoType,

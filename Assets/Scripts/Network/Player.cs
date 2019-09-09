@@ -16,6 +16,9 @@ namespace UdeS.Promoscience.Network
         public string deviceUniqueIdentifier = "";
         string deviceName = "";
 
+
+
+
         private void OnDestroy()
         {
             if (isServer)
@@ -47,6 +50,9 @@ namespace UdeS.Promoscience.Network
         int serverCourseId = -1;
         int serverTeamId = -1;
         int serverTeamInformationId = -1;
+
+        [SerializeField]
+        public UnityEngine.UI.Text DebugText;
 
         public Utils.DeviceType serverDeviceType = Utils.DeviceType.NoType;
         public Algorithm serverAlgorithm;
@@ -259,7 +265,8 @@ namespace UdeS.Promoscience.Network
         [Client]
         void SendCmdPlayerAction()
         {
-            if (gameState.Value == ClientGameState.Playing)
+            if (gameState.Value == ClientGameState.Playing ||
+                gameState.Value == ClientGameState.PlayingTutorial)
             {
                 CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString);
             }
@@ -385,12 +392,22 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId, int[] steps)
+        public void TargetSetViewingPlayback(NetworkConnection target, int labyrinthId, int[] steps)
         {
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
             recordedSteps.Value = steps; // Use for playback
             gameState.Value = ClientGameState.ViewingPlayback;
+        }
+
+
+        [TargetRpc]
+        public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId, int[] steps)
+        {
+            isRoundCompleted.Value = true;
+            gameRound.Value = labyrinthId;
+            recordedSteps.Value = steps; 
+            gameState.Value = ClientGameState.WaitingForNextRound;
         }
 
         [TargetRpc]

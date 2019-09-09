@@ -1585,6 +1585,7 @@ MonoBehaviour:
   labyrinth: {fileID: 1135340688}
   waitingForNextRoundRoom: {fileID: 1707732046}
   gameCamera: {fileID: 937188563}
+  recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
 --- !u!4 &1135340686
 Transform:
   m_ObjectHideFlags: 0

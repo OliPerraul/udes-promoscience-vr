@@ -37,6 +37,7 @@ GameObject:
   - component: {fileID: 33593698873815118}
   - component: {fileID: 23748295476491160}
   - component: {fileID: 65142081057122800}
+  - component: {fileID: 114648252920497644}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -213,3 +214,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114648252920497644
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1798156734369832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40213ddd26cd39a469a6f8d7b89d073d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshRenderer: {fileID: 23945536018356898, guid: 99a25470771a661419a177eeb85a4143,
+    type: 2}
+  greyMaterial: {fileID: 2100000, guid: be4ad14977614494195cfbfb9d74b92c, type: 2}
+  yellowMaterial: {fileID: 2100000, guid: 72631cb4686d49b4b88523136dab87d6, type: 2}
+  redMaterial: {fileID: 2100000, guid: 76897f593ab483b42a6f9b6bc6aacc9e, type: 2}
+  floorColor: 0

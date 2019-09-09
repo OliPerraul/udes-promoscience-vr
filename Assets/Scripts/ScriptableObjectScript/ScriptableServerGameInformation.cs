@@ -79,10 +79,18 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
 
-                if (player.ServerPlayerGameState == ClientGameState.Ready || player.ServerPlayerGameState == ClientGameState.PlayingTutorial || player.ServerPlayerGameState == ClientGameState.Playing || player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
+                if (player.ServerPlayerGameState == ClientGameState.Ready || 
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial || 
+                    player.ServerPlayerGameState == ClientGameState.Playing || 
+                    player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
                 {
                     Algorithm algorithm = Algorithm.Tutorial;
+                    player.serverAlgorithm = algorithm;
+                    player.serverLabyrinthId = tutorialLabyrinthId;
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                    player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
+#endif
                     player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, tutorialLabyrinthId, algorithm);
                 }
             }
@@ -95,6 +103,12 @@ namespace UdeS.Promoscience.ScriptableObjects
             int sizeY = labyrinthData.GetLabyrithYLenght();
 
             Algorithm algorithm = Algorithm.Tutorial;
+            player.serverAlgorithm = algorithm;
+            player.serverLabyrinthId = tutorialLabyrinthId;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
+#endif
 
             player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, tutorialLabyrinthId, algorithm);
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
-using UdeS.Promoscience;
+//using UdeS.Promoscience.Game;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience
@@ -42,7 +42,7 @@ namespace UdeS.Promoscience
         ScriptableAction playerReachedTheEnd;
 
         [SerializeField]
-        ScriptableIntegerArray playerStartSteps;
+        ScriptableIntegerArray recordedSteps;
 
         [SerializeField]
         ScriptableBoolean returnToDivergencePointAnswer;
@@ -65,7 +65,6 @@ namespace UdeS.Promoscience
         [SerializeField]
         Transform cameraTransform;
 
-
         bool isAlgorithmRespectActive = false;
 
         int errorCounter;
@@ -77,17 +76,10 @@ namespace UdeS.Promoscience
         Vector2Int currentLabyrinthPosition;
 
         List<Tile> algorithmSteps = new List<Tile>();
-
         List<Tile> playerSteps = new List<Tile>();
-    
         List<Tile> wrongColorTilesWhenDiverging = new List<Tile>();
 
         Quaternion rotationAtDivergence;
-
-        public void Awake()
-        {
-            
-        }
 
         void Start()
         {
@@ -105,6 +97,8 @@ namespace UdeS.Promoscience
             }
         }
 
+
+
         void OnGameStateChanged()
         {
             if (gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.Playing)
@@ -119,7 +113,7 @@ namespace UdeS.Promoscience
                 {
                     SetAlgorithmStepsWithId(algorithm.Value);
 
-                    if (playerStartSteps.Value.Length > 0)
+                    if (recordedSteps.Value.Length > 0)
                     {
                         StartWithSteps();
                     }
@@ -168,13 +162,8 @@ namespace UdeS.Promoscience
                     }
                     else
                     {
-                        Tile tile = new Tile(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y, previousTileColor);
-                        //log.Record(tile);
-                        playerSteps[playerSteps.Count - 1] = tile;
-
-                        tile = new Tile(labyrinthPosition.x, labyrinthPosition.y, TileColor.NoColor);
-                        //log.Record(tile);
-                        playerSteps.Add(tile);
+                        playerSteps[playerSteps.Count - 1] = new Tile(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y, previousTileColor);
+                        playerSteps.Add(new Tile(labyrinthPosition.x, labyrinthPosition.y, TileColor.NoColor));
                     }
                 }
                 else
@@ -257,19 +246,13 @@ namespace UdeS.Promoscience
 
         void ResetAlgorithmRespect()
         {
-            //log = new Log(logger);
             playerSteps.Clear();
-
-
             wrongColorTilesWhenDiverging.Clear();
             errorCounter = 0;
             isDiverging.Value = false;
             algorithmRespect.Value = 1.0f;
             currentLabyrinthPosition = labyrinth.GetLabyrithStartPosition();
-
-            Tile tile = new Tile(currentLabyrinthPosition.x, currentLabyrinthPosition.y, labyrinth.GetTileColor(currentLabyrinthPosition));
-            //log.Record(tile);
-            playerSteps.Add(tile);
+            playerSteps.Add(new Tile(currentLabyrinthPosition.x, currentLabyrinthPosition.y, labyrinth.GetTileColor(currentLabyrinthPosition)));
         }
 
         public void OnReturnToDivergencePointAnswer()
@@ -296,7 +279,7 @@ namespace UdeS.Promoscience
 
         void StartWithSteps()
         {
-            int[] steps = playerStartSteps.Value;
+            int[] steps = recordedSteps.Value;
             int forwardDirection = labyrinth.GetStartDirection();
             TileColor[,] tiles = new TileColor[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
             Vector2Int position = labyrinth.GetLabyrithStartPosition();

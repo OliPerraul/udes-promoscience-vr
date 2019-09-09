@@ -9,6 +9,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3049b125d50e1cc43ab5ab73fadb4dc8, type: 3}
-  m_Name: PlayerStartSteps
+  m_Name: RecordedSteps
   m_EditorClassIdentifier: 
   value: 

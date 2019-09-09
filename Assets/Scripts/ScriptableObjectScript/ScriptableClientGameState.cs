@@ -16,6 +16,11 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public Action valueChangedEvent;
 
+        public void Awake()
+        {
+            value = ClientGameState.Connecting;
+        }
+
         public ClientGameState Value
         {
             get

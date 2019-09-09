@@ -67,15 +67,14 @@ namespace UdeS.Promoscience.Network
                     }
                 }
             }
-            else if (player.ServerPlayerGameState == ClientGameState.ViewingPlayback)
+            else if (player.ServerPlayerGameState == ClientGameState.WaitingPlayback) 
             {
+                // TODO
+                // Steps to recover
                 Queue<int> steps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
-
-                if (SQLiteUtilities.HasPlayerAlreadyCompletedTheRound(player.ServerCourseId))
-                {
-                    // Use the steps for playback
-                    player.TargetSetRoundCompleted(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray());
-                }
+                // Use the steps for playback
+                player.TargetSetViewingPlayback(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray());
+                
             }
             else if (player.serverDeviceType == Utils.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
             {
