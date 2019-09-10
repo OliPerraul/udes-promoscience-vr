@@ -11,9 +11,14 @@ namespace UdeS.Promoscience.ScriptableObjects
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/DeviceType", order = 1)]
     public class ScriptableDeviceType : ScriptableObject
-    {
-        [SerializeField]
-        Utils.DeviceType value = Utils.DeviceType.NoType;
+    {        
+        private Utils.DeviceType value = Utils.DeviceType.NoType;
+
+        public void Awake()
+        {
+            value = Utils.DeviceType.NoType;
+            //InitializeValue();
+        }
 
         public Utils.DeviceType Value
         {
@@ -38,6 +43,11 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
                 value = Utils.DeviceType.Headset;
             }
+        }
+
+        public void OnValidate()
+        {
+            value = Utils.DeviceType.NoType;
         }
     }
 }

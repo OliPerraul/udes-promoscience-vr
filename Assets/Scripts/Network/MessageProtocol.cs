@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Network
             return (short)type;
         }
 
-        public Algorithm algorithm;
+        public Utils.Algorithm algorithm;
     }
 
     public class AlgorithmRespectMessage : MessageBase

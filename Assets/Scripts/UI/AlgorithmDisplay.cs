@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.UI
@@ -49,19 +49,19 @@ namespace UdeS.Promoscience.UI
         {
             string s = algorithmString.Value + " : ";
 
-            if (algorithm.Value == Algorithm.LongestStraight)
+            if (algorithm.Value == Utils.Algorithm.LongestStraight)
             {
                 s += longestStraightString.Value;
             }
-            else if (algorithm.Value == Algorithm.RightHand)
+            else if (algorithm.Value == Utils.Algorithm.RightHand)
             {
                 s += rightHandString.Value;
             }
-            else if (algorithm.Value == Algorithm.ShortestFlightDistance)
+            else if (algorithm.Value == Utils.Algorithm.ShortestFlightDistance)
             {
                 s += shortestFlightString.Value;
             }
-            else if (algorithm.Value == Algorithm.Standard)
+            else if (algorithm.Value == Utils.Algorithm.Standard)
             {
                 s += standardAlgorithmString.Value;
             }

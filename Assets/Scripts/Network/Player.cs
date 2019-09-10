@@ -16,6 +16,9 @@ namespace UdeS.Promoscience.Network
         public string deviceUniqueIdentifier = "";
         string deviceName = "";
 
+
+
+
         private void OnDestroy()
         {
             if (isServer)
@@ -48,8 +51,11 @@ namespace UdeS.Promoscience.Network
         int serverTeamId = -1;
         int serverTeamInformationId = -1;
 
+        [SerializeField]
+        public UnityEngine.UI.Text DebugText;
+
         public Utils.DeviceType serverDeviceType = Utils.DeviceType.NoType;
-        public Algorithm serverAlgorithm;
+        public Utils.Algorithm serverAlgorithm;
 
         public int serverLabyrinthId;
 
@@ -221,7 +227,7 @@ namespace UdeS.Promoscience.Network
         ScriptablePlayerInformation playerInformation;
 
         [SerializeField]
-        ScriptableIntegerArray playerStartSteps;
+        ScriptableIntegerArray recordedSteps;
 
         public override void OnStartLocalPlayer()
         {
@@ -259,7 +265,8 @@ namespace UdeS.Promoscience.Network
         [Client]
         void SendCmdPlayerAction()
         {
-            if (gameState.Value == ClientGameState.Playing)
+            if (gameState.Value == ClientGameState.Playing ||
+                gameState.Value == ClientGameState.PlayingTutorial)
             {
                 CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString);
             }
@@ -339,9 +346,9 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
+        public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId, Utils.Algorithm algo)
         {
-            playerStartSteps.Value = new int[0];
+            recordedSteps.Value = new int[0];
 
             labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
 
@@ -353,7 +360,7 @@ namespace UdeS.Promoscience.Network
                 algorithm.Value = algo;
             }
 
-            if (algo == Algorithm.Tutorial)
+            if (algo == Utils.Algorithm.Tutorial)
             {
                 gameState.Value = ClientGameState.TutorialLabyrinthReady;
             }
@@ -364,9 +371,9 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetGameWithSteps(NetworkConnection target, int[] steps, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
+        public void TargetSetGameWithSteps(NetworkConnection target, int[] steps, int[] data, int sizeX, int sizeY, int labyrinthId, Utils.Algorithm algo)
         {
-            playerStartSteps.Value = steps;
+            recordedSteps.Value = steps;
 
             labyrinthData.SetLabyrithData(data, sizeX, sizeY, labyrinthId);
             algorithm.Value = algo;
@@ -374,7 +381,7 @@ namespace UdeS.Promoscience.Network
             isRoundCompleted.Value = false;
             gameRound.Value = labyrinthId;
 
-            if (algorithm.Value == Algorithm.Tutorial)
+            if (algorithm.Value == Utils.Algorithm.Tutorial)
             {
                 gameState.Value = ClientGameState.TutorialLabyrinthReady;
             }
@@ -385,11 +392,21 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId)
+        public void TargetSetViewingPlayback(NetworkConnection target, int labyrinthId, int[] steps)
         {
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
+            recordedSteps.Value = steps; // Use for playback
+            gameState.Value = ClientGameState.ViewingPlayback;
+        }
 
+
+        [TargetRpc]
+        public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId, int[] steps)
+        {
+            isRoundCompleted.Value = true;
+            gameRound.Value = labyrinthId;
+            recordedSteps.Value = steps; 
             gameState.Value = ClientGameState.WaitingForNextRound;
         }
 

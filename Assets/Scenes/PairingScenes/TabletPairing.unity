@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3891959, g: 0.43484828, b: 0.44082886, a: 1}
+  m_IndirectSpecularColor: {r: 0.38919508, g: 0.43484735, b: 0.440828, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1226,6 +1226,7 @@ MonoBehaviour:
   pairingRequestSentPanel: {fileID: 1391272299}
   pairingResultSuccessPanel: {fileID: 1710091339}
   pairingResultFailedPanel: {fileID: 91313921}
+  text: {fileID: 0}
   serverPort: 9995
 --- !u!4 &1613977603
 Transform:

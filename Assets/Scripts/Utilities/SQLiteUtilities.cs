@@ -9,7 +9,7 @@ using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Network;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Utils
 {

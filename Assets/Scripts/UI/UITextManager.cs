@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.UI

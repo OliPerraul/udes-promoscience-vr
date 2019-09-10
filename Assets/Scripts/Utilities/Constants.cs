@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Utils
@@ -13,7 +13,7 @@ namespace UdeS.Promoscience.Utils
     static class Constants
     {
         public const float TILE_SIZE = 5.0f;
-        public const float MOVEMENT_SPEED = 0.5f;
+        public const float MOVEMENT_SPEED = 2f;
         public const float MOVEMENT_ACCELERATION = 1f;
         public const float MOVEMENT_MAX_SPEED = 0.5f;
         public const float TURNING_SPEED = 1.0f;

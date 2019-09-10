@@ -12,6 +12,12 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public Action valueChangedEvent;
 
+        public void Awake()
+        {
+            value = null;
+        }
+
+
         public int[] Value
         {
             get

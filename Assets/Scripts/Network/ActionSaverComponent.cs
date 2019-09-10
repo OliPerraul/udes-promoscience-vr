@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Network
 {
@@ -35,7 +35,8 @@ namespace UdeS.Promoscience.Network
 
         void SaveActionInDatabase()
         {
-            if (player.ServerPlayerGameState == ClientGameState.Playing)
+            if (player.ServerPlayerGameState == ClientGameState.Playing ||
+                player.ServerPlayerGameState == ClientGameState.PlayingTutorial )
             {
                 int teamId = player.ServerTeamId;
                 ScriptableTeam team = teamList.GetScriptableTeamWithId(player.ServerTeamInformationId);

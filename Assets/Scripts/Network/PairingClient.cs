@@ -27,6 +27,10 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         GameObject pairingResultFailedPanel;
 
+        [SerializeField]
+        private UnityEngine.UI.Text text;// pairingResultFailedPanel;
+
+
         public int serverPort = 9995;
 
         NetworkClient client = null;

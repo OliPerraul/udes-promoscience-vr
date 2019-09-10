@@ -101,7 +101,6 @@ namespace UdeS.Promoscience.Network
 
         void OnPlayerChanged()
         {
-
             if (playerChangedEvent != null)
             {
                 playerChangedEvent();

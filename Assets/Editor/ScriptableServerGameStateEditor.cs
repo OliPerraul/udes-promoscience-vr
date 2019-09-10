@@ -3,7 +3,7 @@ using UnityEditor;
 
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Network;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Editor
 {

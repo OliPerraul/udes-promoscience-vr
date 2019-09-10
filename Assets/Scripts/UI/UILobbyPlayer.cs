@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Game;
+using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 using UdeS.Promoscience.Utils;
 
@@ -202,15 +202,15 @@ namespace UdeS.Promoscience.UI
 
                     if (playerInformation.Player.serverDeviceType == Utils.DeviceType.Headset)
                     {
-                        if (playerInformation.Player.serverAlgorithm == Algorithm.ShortestFlightDistance)
+                        if (playerInformation.Player.serverAlgorithm == Utils.Algorithm.ShortestFlightDistance)
                         {
                             text += " - " + shortestFlightString.Value;
                         }
-                        else if (playerInformation.Player.serverAlgorithm == Algorithm.LongestStraight)
+                        else if (playerInformation.Player.serverAlgorithm == Utils.Algorithm.LongestStraight)
                         {
                             text += " - " + longestStraightString.Value;
                         }
-                        else if (playerInformation.Player.serverAlgorithm == Algorithm.Standard)
+                        else if (playerInformation.Player.serverAlgorithm == Utils.Algorithm.Standard)
                         {
                             text += " - " + standardAlgorithmString.Value;
                         }
