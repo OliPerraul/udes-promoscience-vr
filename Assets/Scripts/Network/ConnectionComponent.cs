@@ -156,7 +156,7 @@ namespace UdeS.Promoscience.Network
             ScriptableTeam scriptableTeam = teamList.GetUnusedScriptableTeam();
             int teamId = SQLiteUtilities.GetNextTeamID();
 
-            player.serverAlgorithm = (Algorithm)(scriptableTeam.TeamId % 3) + 1;
+            player.serverAlgorithm = (Utils.Algorithm)(scriptableTeam.TeamId % 3) + 1;
             player.ServerTeamId = teamId;
             player.ServerTeamInformationId = scriptableTeam.TeamId;
 

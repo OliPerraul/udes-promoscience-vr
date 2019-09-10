@@ -97,8 +97,6 @@ namespace UdeS.Promoscience
             }
         }
 
-
-
         void OnGameStateChanged()
         {
             if (gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.Playing)
@@ -107,7 +105,7 @@ namespace UdeS.Promoscience
 
                 if (gameState.Value == ClientGameState.PlayingTutorial)
                 {
-                    SetAlgorithmStepsWithId(Algorithm.Tutorial);
+                    SetAlgorithmStepsWithId(Utils.Algorithm.Tutorial);
                 }
                 else
                 {
@@ -219,21 +217,21 @@ namespace UdeS.Promoscience
             }
         }
 
-        void SetAlgorithmStepsWithId(Algorithm algo)
+        void SetAlgorithmStepsWithId(Utils.Algorithm algo)
         {
-            if (algo == Algorithm.RightHand)
+            if (algo == Utils.Algorithm.RightHand)
             {
                 algorithmSteps = rightHandAlgorithm.GetAlgorithmSteps();
             }
-            else if (algo == Algorithm.LongestStraight)
+            else if (algo == Utils.Algorithm.LongestStraight)
             {
                 algorithmSteps = longestStraightAlgorithm.GetAlgorithmSteps();
             }
-            else if (algo == Algorithm.ShortestFlightDistance)
+            else if (algo == Utils.Algorithm.ShortestFlightDistance)
             {
                 algorithmSteps = shortestFlightDistanceAlgorithm.GetAlgorithmSteps();
             }
-            else if (algo == Algorithm.Standard)
+            else if (algo == Utils.Algorithm.Standard)
             {
                 algorithmSteps = standardAlgorithm.GetAlgorithmSteps();
             }

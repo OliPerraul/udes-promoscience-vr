@@ -31,7 +31,10 @@ namespace UdeS.Promoscience
         private Camera gameCamera;
 
         [SerializeField]
-        ScriptableIntegerArray recordedSteps;
+        private ScriptableIntegerArray recordedSteps;
+
+        [SerializeField]
+        private PlaybackManager playbackManager;
 
         void Start()
         {
@@ -42,8 +45,6 @@ namespace UdeS.Promoscience
                 playerReachedTheEnd.action += OnPlayerReachedTheEnd;
             }
         }
-
-
 
         public void OnGameStateChanged()
         {
@@ -68,8 +69,7 @@ namespace UdeS.Promoscience
             else if (gameState.Value == ClientGameState.ViewingPlayback)
             {
                 gameCamera.ChangeState(Camera.State.Topdown);
-
-                //recordedSteps.Value
+                playbackManager.BeginPlayback();
 
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();

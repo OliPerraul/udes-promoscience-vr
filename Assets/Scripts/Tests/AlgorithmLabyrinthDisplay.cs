@@ -46,25 +46,25 @@ namespace UdeS.Promoscience.Tests
         {
             if (gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.Playing)
             {
-                GenerateVisualForAlgorithm(Algorithm.ShortestFlightDistance);
+                GenerateVisualForAlgorithm(Utils.Algorithm.ShortestFlightDistance);
             }
         }
 
-        void GenerateVisualForAlgorithm(Algorithm algorithm)
+        void GenerateVisualForAlgorithm(Utils.Algorithm algorithm)
         {
-            if (algorithm == Algorithm.RightHand)
+            if (algorithm == Utils.Algorithm.RightHand)
             {
                 algorithmStepsPosition = rightHandAlgorithm.GetAlgorithmSteps();
             }
-            else if (algorithm == Algorithm.LongestStraight)
+            else if (algorithm == Utils.Algorithm.LongestStraight)
             {
                 algorithmStepsPosition = longestStraightAlgorithm.GetAlgorithmSteps();
             }
-            else if (algorithm == Algorithm.ShortestFlightDistance)
+            else if (algorithm == Utils.Algorithm.ShortestFlightDistance)
             {
                 algorithmStepsPosition = shortestFlightDistanceAlgorithm.GetAlgorithmSteps();
             }
-            else if (algorithm == Algorithm.Standard)
+            else if (algorithm == Utils.Algorithm.Standard)
             {
                 algorithmStepsPosition = standardAlgorithm.GetAlgorithmSteps();
             }

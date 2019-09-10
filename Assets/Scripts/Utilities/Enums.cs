@@ -74,7 +74,6 @@ namespace UdeS.Promoscience.Utils
         NoType,
         Tablet,
         Headset
-
     }
 
     public enum Directive

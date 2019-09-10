@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         public void Awake()
         {
             value = Utils.DeviceType.NoType;
-            InitializeValue();
+            //InitializeValue();
         }
 
         public Utils.DeviceType Value

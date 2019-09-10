@@ -55,7 +55,7 @@ namespace UdeS.Promoscience.Network
         public UnityEngine.UI.Text DebugText;
 
         public Utils.DeviceType serverDeviceType = Utils.DeviceType.NoType;
-        public Algorithm serverAlgorithm;
+        public Utils.Algorithm serverAlgorithm;
 
         public int serverLabyrinthId;
 
@@ -346,7 +346,7 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
+        public void TargetSetGame(NetworkConnection target, int[] data, int sizeX, int sizeY, int labyrinthId, Utils.Algorithm algo)
         {
             recordedSteps.Value = new int[0];
 
@@ -360,7 +360,7 @@ namespace UdeS.Promoscience.Network
                 algorithm.Value = algo;
             }
 
-            if (algo == Algorithm.Tutorial)
+            if (algo == Utils.Algorithm.Tutorial)
             {
                 gameState.Value = ClientGameState.TutorialLabyrinthReady;
             }
@@ -371,7 +371,7 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetGameWithSteps(NetworkConnection target, int[] steps, int[] data, int sizeX, int sizeY, int labyrinthId, Algorithm algo)
+        public void TargetSetGameWithSteps(NetworkConnection target, int[] steps, int[] data, int sizeX, int sizeY, int labyrinthId, Utils.Algorithm algo)
         {
             recordedSteps.Value = steps;
 
@@ -381,7 +381,7 @@ namespace UdeS.Promoscience.Network
             isRoundCompleted.Value = false;
             gameRound.Value = labyrinthId;
 
-            if (algorithm.Value == Algorithm.Tutorial)
+            if (algorithm.Value == Utils.Algorithm.Tutorial)
             {
                 gameState.Value = ClientGameState.TutorialLabyrinthReady;
             }

@@ -6,8 +6,7 @@ namespace UdeS.Promoscience
 {
     public class Character : MonoBehaviour
     {
-        [SerializeField]
-        private GameObject _object;
+
 
     }
 }
