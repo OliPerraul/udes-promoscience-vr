@@ -63,7 +63,8 @@ namespace UdeS.Promoscience
         StandardAlgorithm standardAlgorithm;
 
         [SerializeField]
-        Transform cameraTransform;
+        Controls.CameraRigWrapper cameraRig;
+
 
         bool isAlgorithmRespectActive = false;
 
@@ -93,7 +94,7 @@ namespace UdeS.Promoscience
         {
             if (isAlgorithmRespectActive)
             {
-                EvaluateAlgorithmRespectOnPositionChanged(labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z), labyrinth.GetTileColor(currentLabyrinthPosition), cameraTransform.rotation);
+                EvaluateAlgorithmRespectOnPositionChanged(labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z), labyrinth.GetTileColor(currentLabyrinthPosition), cameraRig.Transform.rotation);
             }
         }
 
@@ -127,7 +128,7 @@ namespace UdeS.Promoscience
 
         void OnPlayerPaintTile()
         {
-            EvaluateAlgorithmRespectOnPaintTile(labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z), playerPaintTile.TilePosition.x, playerPaintTile.TilePosition.y, playerPaintTile.TileColor, playerPaintTile.TilePreviousColor);
+            EvaluateAlgorithmRespectOnPaintTile(labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z), playerPaintTile.TilePosition.x, playerPaintTile.TilePosition.y, playerPaintTile.TileColor, playerPaintTile.TilePreviousColor);
         }
 
         void EvaluateAlgorithmRespectOnPositionChanged(Vector2Int labyrinthPosition, TileColor previousTileColor, Quaternion rotation)
@@ -268,7 +269,7 @@ namespace UdeS.Promoscience
                     tiles[i] = wrongColorTilesWhenDiverging[i];
                 }
 
-                Vector3 position = labyrinth.GetLabyrinthPositionInWorldPosition(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) + new Vector3(0, cameraTransform.position.y, 0);
+                Vector3 position = labyrinth.GetLabyrinthPositionInWorldPosition(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) + new Vector3(0, cameraRig.Transform.position.y, 0);
                 Quaternion rotation = rotationAtDivergence;
 
                 playerPositionRotationAndTiles.SetPositionRotationAndTiles(position, rotation, tiles);
@@ -390,7 +391,7 @@ namespace UdeS.Promoscience
                 rotation.eulerAngles = new Vector3(0, rotationByDirection[3], 0);
             }
 
-            playerPositionRotationAndTiles.SetPositionRotationAndTiles(labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, cameraTransform.position.y, 0), rotation, tilesToPaint);
+            playerPositionRotationAndTiles.SetPositionRotationAndTiles(labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, cameraRig.Transform.position.y, 0), rotation, tilesToPaint);
         }
 
         int GetForwardDirectionWithRotation(Quaternion rotation)

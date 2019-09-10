@@ -156,6 +156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4314157671096570}
+  - component: {fileID: 114719634723700290}
   m_Layer: 0
   m_Name: TabletCharacter
   m_TagString: Untagged
@@ -526,6 +527,27 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114719634723700290
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1733788188339874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66ed9baf2765a3e40874a00a0b1574a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
+  isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
+    type: 2}
+  playerPosition: {fileID: 11400000, guid: a995ca52fbe81a24b8b0ae85c592b67f, type: 2}
+  playerRotation: {fileID: 11400000, guid: 2a36872cafdb21144af5591f6351885b, type: 2}
+  playerPaintTile: {fileID: 11400000, guid: 7301fc4899778e3459a66b0b9b95ffb4, type: 2}
+  playerTilesToPaint: {fileID: 11400000, guid: e2a59109816f01f4b8f87b6ce5112b02, type: 2}
+  labyrinth: {fileID: 0}
+  cameraTransform: {fileID: 4293299867555152}
 --- !u!114 &114914474233805738
 MonoBehaviour:
   m_ObjectHideFlags: 1

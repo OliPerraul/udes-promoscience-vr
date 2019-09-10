@@ -54,7 +54,8 @@ namespace UdeS.Promoscience
         Labyrinth labyrinth;
 
         [SerializeField]
-        Transform cameraTransform;
+        private Controls.CameraRigWrapper cameraRig;
+
 
         bool isChainingMovement = false;
         bool isMoving = false;
@@ -96,12 +97,12 @@ namespace UdeS.Promoscience
 
         void Update()
         {
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad))
+            if (cameraRig.IsPrimaryTouchPadDown)
             {
                 isPrimaryTouchpadHold = true;
             }
 
-            if (OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad))
+            if (cameraRig.IsPrimaryTouchPadUp)
             {
                 isPrimaryTouchpadHold = false;
             }
@@ -127,7 +128,7 @@ namespace UdeS.Promoscience
                         }
                     }
                 }
-                else if (OVRInput.GetDown(OVRInput.Button.Left))
+                else if (cameraRig.IsLeft)
                 {
                     if (!isMoving)
                     {
@@ -160,7 +161,7 @@ namespace UdeS.Promoscience
                         }
                     }
                 }
-                else if (OVRInput.GetDown(OVRInput.Button.Right))
+                else if (cameraRig.IsRight)
                 {
                     if (!isMoving)
                     {
@@ -194,13 +195,13 @@ namespace UdeS.Promoscience
                     }
                 }
 
-                if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
+                if (cameraRig.IsPrimaryIndexTriggerDown)
                 {
                     isPrimaryIndexTriggerHold = true;
                     primaryIndexTriggerHoldTime = 0;
                 }
 
-                if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger))
+                if (cameraRig.PrimaryIndexTriggerUp)
                 {
                     if (paintingColor.Value == TileColor.Yellow)
                     {
@@ -236,7 +237,7 @@ namespace UdeS.Promoscience
                     }
 
                     moveSpeed = xi < lerpValue ? moveSpeed - (Time.deltaTime * Constants.MOVEMENT_ACCELERATION) : moveSpeed + (Time.deltaTime * Constants.MOVEMENT_ACCELERATION);
-                    lerpValue += Time.deltaTime * moveSpeed;
+                    lerpValue += Time.deltaTime * moveSpeed * Constants.MOVEMENT_SPEED;
 
                     if (lerpValue >= 1)
                     {
@@ -249,13 +250,13 @@ namespace UdeS.Promoscience
 
                             RequestMovementInDirection(forwardDirection.Value);
 
-                            cameraTransform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
+                            cameraRig.Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                         }
                         else
                         {
                             MovementInDirectionAction(forwardDirection.Value);
 
-                            cameraTransform.position = targetPosition;
+                            cameraRig.Transform.position = targetPosition;
                             moveSpeed = 0;
                             lerpValue = 0;
                             isMoving = false;
@@ -268,7 +269,7 @@ namespace UdeS.Promoscience
                     }
                     else
                     {
-                        cameraTransform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
+                        cameraRig.Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                     }
                 }
                 else if (isTurningLeft || isTurningRight)
@@ -311,11 +312,11 @@ namespace UdeS.Promoscience
                                 gameAction.SetAction(GameAction.TurnRight);
                             }
 
-                            cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
+                            cameraRig.Transform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
                         }
                         else
                         {
-                            cameraTransform.rotation = targetRotation;
+                            cameraRig.Transform.rotation = targetRotation;
                             turnSpeed = 0;
                             lerpValue = 0;
                             isTurningLeft = false;
@@ -324,11 +325,11 @@ namespace UdeS.Promoscience
                     }
                     else
                     {
-                        cameraTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
+                        cameraRig.Transform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
                     }
                 }
 
-                Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+                Vector2Int labyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
 
                 if (labyrinthPosition != lastLabyrinthPosition)
                 {
@@ -345,24 +346,24 @@ namespace UdeS.Promoscience
 
         private void FixedUpdate()
         {
-            if (cameraTransform.position != lastPosition)
+            if (cameraRig.Transform.position != lastPosition)
             {
-                playerPosition.Value = cameraTransform.position;
-                lastPosition = cameraTransform.position;
+                playerPosition.Value = cameraRig.Transform.position;
+                lastPosition = cameraRig.Transform.position;
             }
 
-            if (cameraTransform.rotation != lastRotation)
+            if (cameraRig.Transform.rotation != lastRotation)
             {
-                playerRotation.Value = cameraTransform.rotation;
-                lastRotation = cameraTransform.rotation;
+                playerRotation.Value = cameraRig.Transform.rotation;
+                lastRotation = cameraRig.Transform.rotation;
             }
         }
 
         void RequestMovementInDirection(int direction)
         {
-            if (CheckIfMovementIsValidInDirectionFromPosition(direction, cameraTransform.position))
+            if (CheckIfMovementIsValidInDirectionFromPosition(direction, cameraRig.Transform.position))
             {
-                fromPosition = cameraTransform.position;
+                fromPosition = cameraRig.Transform.position;
                 targetPosition = fromPosition + (new Vector3(xByDirection[direction] * Constants.TILE_SIZE, 0, -yByDirection[direction] * Constants.TILE_SIZE));
 
                 isMoving = true;
@@ -373,7 +374,7 @@ namespace UdeS.Promoscience
         {
             Quaternion trajectory = new Quaternion();
             trajectory.eulerAngles += new Vector3(0, -90, 0);
-            fromRotation = cameraTransform.rotation;
+            fromRotation = cameraRig.Transform.rotation;
             targetRotation = fromRotation * trajectory;
 
             isTurningLeft = true;
@@ -385,7 +386,7 @@ namespace UdeS.Promoscience
         {
             Quaternion trajectory = new Quaternion();
             trajectory.eulerAngles += new Vector3(0, 90, 0);
-            fromRotation = cameraTransform.rotation;
+            fromRotation = cameraRig.Transform.rotation;
             targetRotation = fromRotation * trajectory;
 
             isTurningRight = true;
@@ -445,7 +446,7 @@ namespace UdeS.Promoscience
 
         void PaintCurrentPositionTile(bool saveAction)
         {
-            Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+            Vector2Int position = labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
 
             PaintTile(position, paintingColor.Value, saveAction);
         }
@@ -520,7 +521,7 @@ namespace UdeS.Promoscience
 
         void OnResetPositionAndRotation()
         {
-            cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
+            cameraRig.Transform.position = new Vector3(0, cameraRig.Transform.position.y, 0);
 
             if (gameState.Value == ClientGameState.WaitingForNextRound)
             {
@@ -548,7 +549,7 @@ namespace UdeS.Promoscience
                 rotation.eulerAngles = new Vector3(0, 270, 0);
             }
 
-            cameraTransform.rotation = rotation;
+            cameraRig.Transform.rotation = rotation;
 
             paintingColor.Value = TileColor.Yellow;
         }
@@ -558,8 +559,8 @@ namespace UdeS.Promoscience
         {
             OnStopAllMovement();
 
-            cameraTransform.position = playerPositionRotationAndTiles.GetPosition();
-            cameraTransform.rotation = playerPositionRotationAndTiles.GetRotation();
+            cameraRig.Transform.position = playerPositionRotationAndTiles.GetPosition();
+            cameraRig.Transform.rotation = playerPositionRotationAndTiles.GetRotation();
 
             SetForwardDirectionWithRotation(playerPositionRotationAndTiles.GetRotation());
 
@@ -570,7 +571,7 @@ namespace UdeS.Promoscience
                 PaintTile(tiles[i].x, tiles[i].y, tiles[i].color, false);
             }
 
-            lastLabyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+            lastLabyrinthPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
             labyrinthPositionChanged.FireAction();
 
             paintingColor.Value = TileColor.Yellow;

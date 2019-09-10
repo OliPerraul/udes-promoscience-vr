@@ -26,7 +26,7 @@ namespace UdeS.Promoscience
         Text textDisplay;
 
         [SerializeField]
-        Transform cameraTransform;
+        Controls.CameraRigWrapper cameraRig;
 
         [SerializeField]
         Transform raycastStartPoint;
@@ -78,7 +78,7 @@ namespace UdeS.Promoscience
             {
                 if (raycastHit.transform.tag == TAG_WALL)
                 {
-                    Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+                    Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
                     Vector2Int hitWallPosition = labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.transform.position.x, raycastHit.transform.position.z);
 
                     if (hitWallPosition.x == currentPosition.x || hitWallPosition.y == currentPosition.y)
@@ -127,7 +127,7 @@ namespace UdeS.Promoscience
                 }
                 else if (raycastHit.transform.tag == TAG_FLOOR)
                 {
-                    Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraTransform.position.x, cameraTransform.position.z);
+                    Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
                     Vector2Int hitPosition = labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.point.x, raycastHit.point.z);
 
                     if (hitPosition == currentPosition
