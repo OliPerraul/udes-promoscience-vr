@@ -820,6 +820,10 @@ Prefab:
       propertyPath: labyrinth
       value: 
       objectReference: {fileID: 1047053753}
+    - target: {fileID: 1279924026762390, guid: 2509be728dc29d34a82da3a3a8355c7c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2509be728dc29d34a82da3a3a8355c7c, type: 2}
   m_IsPrefabAsset: 0
