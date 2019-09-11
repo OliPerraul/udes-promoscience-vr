@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject messageButtonGroup;
 
-        void Start()
+        void OnEnable()
         {
             if (instance == null)
             {

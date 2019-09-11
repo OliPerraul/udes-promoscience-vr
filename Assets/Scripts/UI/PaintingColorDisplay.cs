@@ -28,7 +28,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject redRing;
 
-        void Start()
+        void OnEnable()
         {
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
             controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;

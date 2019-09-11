@@ -21,7 +21,7 @@ namespace UdeS.Promoscience.UI
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-        private void Start()
+        void OnEnable()
         {
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
             controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;

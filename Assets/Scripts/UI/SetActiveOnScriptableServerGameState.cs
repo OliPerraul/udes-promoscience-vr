@@ -33,7 +33,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         List<GameObject> gameObjectsToHideOnIntermission = new List<GameObject>();
 
-        void Start()
+        void OnEnable()
         {
             serverGameInformation.gameStateChangedEvent += OnValueChanged;
         }

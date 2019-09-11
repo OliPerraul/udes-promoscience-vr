@@ -15,7 +15,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         Text text;
 
-        void Start()
+        void OnEnable()
         {
             text.text = localizeString.Value;
         }

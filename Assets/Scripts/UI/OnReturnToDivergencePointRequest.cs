@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.UI
         GameObject confirmationPanel;
 
 
-        void Start()
+        void OnEnable()
         {
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
             returnToDivergencePointRequest.action += OnScriptableAction;

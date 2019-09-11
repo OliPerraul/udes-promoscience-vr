@@ -42,7 +42,7 @@ namespace UdeS.Promoscience.UI
 
         float hideTimer;
 
-        void Start()
+        void OnEnable()
         {
             directive.valueChangedEvent += OnNewDirective;
         }

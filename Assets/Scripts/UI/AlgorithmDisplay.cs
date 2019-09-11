@@ -38,7 +38,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         Text text;
 
-        private void Start()
+        void OnEnable()
         {
             algorithm.valueChangedEvent += OnAlgorithmValueChanged;
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;

@@ -26,7 +26,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         List<GameObject> gameObjectsToHideOnFalse = new List<GameObject>();
 
-        void Start()
+        void OnEnable()
         {
             scriptableBoolean.valueChangedEvent += OnScriptableBooleanValueChanged;
         }

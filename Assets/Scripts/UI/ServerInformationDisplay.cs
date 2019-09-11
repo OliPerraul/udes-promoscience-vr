@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         Text serverGameStateText;
 
-        void Start()
+        void OnEnable()
         {
             serverGameInformation.gameRoundChangedEvent += OnGameRoundChanged;
             serverGameInformation.gameStateChangedEvent += OnGameStateChanged;
@@ -62,7 +62,7 @@ namespace UdeS.Promoscience.UI
             {
                 s += lobbyString.Value;
             }
-            else if (serverGameInformation.GameState == Utils.ServerGameState.Tutorial)
+            else if (serverGameInformation.GameState == ServerGameState.Tutorial)
             {
                 s += tutorialString.Value;
             }

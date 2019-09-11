@@ -20,7 +20,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject lobbyPlayerPrefab;
 
-        void Start()
+        void OnEnable()
         {
             lobbyPlayers = new Stack<GameObject>();
             playerInfomation.addPlayerEvent += AddLobbyPlayer;

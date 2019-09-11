@@ -20,7 +20,7 @@ namespace UdeS.Promoscience.UI
         float lerpSpeed = 1.0f;
         float currentValue = 1.0f;
 
-        void Start()
+        void OnEnable()
         {
             progressRatio.valueChangedEvent += OnValueChanged;
         }

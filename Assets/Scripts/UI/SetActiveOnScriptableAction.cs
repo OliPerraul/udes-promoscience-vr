@@ -20,7 +20,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         List<GameObject> gameObjectsToHide = new List<GameObject>();
 
-        void Start()
+        void OnEnable()
         {
             scriptableAction.action += OnScriptableAction;
         }

@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject directionDisplayer;
 
-        void Start()
+        void OnEnable()
         {
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
             controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;

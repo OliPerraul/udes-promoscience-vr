@@ -22,7 +22,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject serverPanel;
 
-        private void Start()
+        void OnEnable()
         {
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
             isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;

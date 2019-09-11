@@ -15,7 +15,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject progress;
 
-        void Start()
+        void OnEnable()
         {
             progressRatio.valueChangedEvent += OnValueChanged;
         }
