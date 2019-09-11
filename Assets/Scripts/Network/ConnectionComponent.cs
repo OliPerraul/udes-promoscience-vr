@@ -73,8 +73,7 @@ namespace UdeS.Promoscience.Network
                 // Steps to recover
                 Queue<int> steps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
                 // Use the steps for playback
-                player.TargetSetViewingPlayback(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray());
-                
+                player.TargetSetViewingPlayback(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray());                
             }
             else if (player.serverDeviceType == Utils.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
             {

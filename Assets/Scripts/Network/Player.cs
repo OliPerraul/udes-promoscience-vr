@@ -400,7 +400,6 @@ namespace UdeS.Promoscience.Network
             gameState.Value = ClientGameState.ViewingPlayback;
         }
 
-
         [TargetRpc]
         public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId, int[] steps)
         {

@@ -42,8 +42,7 @@ namespace UdeS.Promoscience
         private void BeginPlayerPlayback(Vector2Int labPos, Vector3 worldPos)
         {
             PlaybackCharacter character = playbackCharacterTemplate.Create(labyrinth, labPos, worldPos);
-            StartCoroutine(PlayerPlaybackCoroutine(character));
- 
+            StartCoroutine(PlayerPlaybackCoroutine(character)); 
         }
 
         IEnumerator PlayerPlaybackCoroutine(PlaybackCharacter character)

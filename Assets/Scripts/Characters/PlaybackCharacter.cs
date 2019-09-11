@@ -7,7 +7,7 @@ namespace UdeS.Promoscience
     public class PlaybackCharacter : MonoBehaviour
     {
         [SerializeField]
-        private float speed;
+        private float speed = 0.6f;
         
         private Labyrinth labyrinth;
 
@@ -44,7 +44,6 @@ namespace UdeS.Promoscience
             {
                 labyrinthPosition.y -= 1;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-
             }
             else if (gameAction == GameAction.MoveRight)
             {
