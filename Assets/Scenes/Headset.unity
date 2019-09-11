@@ -159,7 +159,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1125253077304216, guid: 8cdb3b398b3b3174f8f5990cb85da817, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cdb3b398b3b3174f8f5990cb85da817, type: 2}
@@ -179,7 +179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &295393666
 Transform:
   m_ObjectHideFlags: 0
@@ -617,6 +617,18 @@ Prefab:
         type: 2}
       propertyPath: m_PixelPerfect
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1657926158648774, guid: 2509be728dc29d34a82da3a3a8355c7c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1130842287669382, guid: 2509be728dc29d34a82da3a3a8355c7c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1809604946217256, guid: 2509be728dc29d34a82da3a3a8355c7c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2509be728dc29d34a82da3a3a8355c7c, type: 2}
