@@ -32,8 +32,10 @@ namespace UdeS.Promoscience.Controls
         }
 
 
+
         [SerializeField]
         private UnityEngine.Camera camera;
+
 
         public void FixedUpdate()//Transform character, Transform camera)
         {
@@ -197,15 +199,5 @@ namespace UdeS.Promoscience.Controls
 
             return q;
         }
-
-        bool CheckTrigger()
-        {
-#if UNITY_ANDROID && !UNITY_EDITOR
-            return OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger);
-#else
-            return Input.GetMouseButton(0);
-#endif
-        }
-
     }
 }

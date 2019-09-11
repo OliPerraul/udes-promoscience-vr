@@ -18,6 +18,12 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public Action valueChangedEvent;
 
+        public void Awake()
+        {
+            tileColor = TileColor.Yellow;
+        }
+
+
         public Vector2Int TilePosition
         {
             get

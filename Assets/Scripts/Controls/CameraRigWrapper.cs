@@ -11,15 +11,24 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         public OVRCameraRig ovrCameraRig;
 
+        [SerializeField]
+        public UnityEngine.EventSystems.StandaloneInputModule standaloneInputs;
+
+        [SerializeField]
+        public ControllerSelection.OVRInputModule ovrInputModule;
+
+
+        public bool ovrCameraRigEnabled;
+
         public Transform Transform
         {
             get
             {
-                if (ovrCameraRig)
+                if (ovrCameraRigEnabled)
                 {
                     return ovrCameraRig.transform;
                 }
-                else if (desktopCameraRig)
+                else if (!ovrCameraRigEnabled)
                 {
                     return desktopCameraRig.CharacterTransform;
                 }
@@ -34,12 +43,16 @@ namespace UdeS.Promoscience.Controls
 #if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
             desktopCameraRig.gameObject.SetActive(true);
             ovrCameraRig.gameObject.SetActive(false);
-            ovrCameraRig = null;
+            ovrInputModule.enabled = false;
+            standaloneInputs.enabled = true;
+            ovrCameraRigEnabled = false;
             Cursor.lockState = CursorLockMode.Locked;
 #elif UNITY_ANDROID
-            ovrCameraRig.SetActive(true);
-            desktopCameraRig.SetActive(false);
-            desktopCameraRig = null;
+            desktopCameraRig.gameObject.SetActive(true);
+            ovrCameraRig.gameObject.SetActive(true);
+            ovrInputModule.enabled = true;
+            standaloneInputs.enabled = false;
+            ovrCameraRigEnabled = true;
 #endif
         }
 
@@ -48,11 +61,11 @@ namespace UdeS.Promoscience.Controls
             get
             {
 
-                if (ovrCameraRig)
+                if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad);
                 }
-                else if (desktopCameraRig)
+                else if (!ovrCameraRigEnabled)
                 {
                     return Input.GetKeyDown(KeyCode.Mouse0);
                 }
@@ -65,11 +78,11 @@ namespace UdeS.Promoscience.Controls
             get
             {
 
-                if (ovrCameraRig)
+                if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad);
                 }
-                else if (desktopCameraRig)
+                else if (!ovrCameraRigEnabled)
                 {
                     return Input.GetKeyUp(KeyCode.Mouse0);
                 }
@@ -82,11 +95,11 @@ namespace UdeS.Promoscience.Controls
             get
             {
 
-                if (ovrCameraRig)
+                if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger);
                 }
-                else if (desktopCameraRig)
+                else if (!ovrCameraRigEnabled)
                 {
                     return Input.GetKeyDown(KeyCode.Mouse1);
                 }
@@ -99,11 +112,11 @@ namespace UdeS.Promoscience.Controls
             get
             {
 
-                if (ovrCameraRig)
+                if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger);
                 }
-                else if (desktopCameraRig)
+                else if (!ovrCameraRigEnabled)
                 {
                     return Input.GetKeyUp(KeyCode.Mouse1);
                 }
@@ -117,11 +130,11 @@ namespace UdeS.Promoscience.Controls
             get
             {
 
-                if (ovrCameraRig)
+                if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetUp(OVRInput.Button.Left);
                 }
-                else if (desktopCameraRig)
+                else if (!ovrCameraRigEnabled)
                 {
                     return Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A);
                 }
@@ -134,11 +147,11 @@ namespace UdeS.Promoscience.Controls
             get
             {
 
-                if (ovrCameraRig)
+                if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetUp(OVRInput.Button.Right);
                 }
-                else if (desktopCameraRig)
+                else if (!ovrCameraRigEnabled)
                 {
                     return Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D);
                 }

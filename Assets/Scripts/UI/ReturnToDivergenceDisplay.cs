@@ -44,6 +44,8 @@ namespace UdeS.Promoscience.UI
         {
             if (isDiverging.Value)
             {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
                 controls.IsPlayerControlsEnabled = false;
                 confirmationPanel.SetActive(true);
             }
@@ -57,6 +59,8 @@ namespace UdeS.Promoscience.UI
         {
             if (confirmationPanel.activeSelf)
             {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Confined;
                 confirmationPanel.SetActive(false);
                 controls.IsPlayerControlsEnabled = true;
                 returnToDivergencePointAnswer.Value = false;
