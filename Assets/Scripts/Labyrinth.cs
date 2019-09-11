@@ -174,7 +174,8 @@ namespace UdeS.Promoscience
 
         public bool GetIsTileWalkable(int x, int y)
         {
-            bool isWalkable = false;
+            if (labyrinth == null)
+                return false;
 
             if (x >= 0 && x < labyrinth.GetLength(0) && y >= 0 && y < labyrinth.GetLength(1))
             {
@@ -182,11 +183,11 @@ namespace UdeS.Promoscience
                     || (labyrinth[x, y] >= Constants.TILE_START_START_ID && labyrinth[x, y] <= Constants.TILE_START_END_ID)
                     || (labyrinth[x, y] >= Constants.TILE_END_START_ID && labyrinth[x, y] <= Constants.TILE_END_END_ID))
                 {
-                    isWalkable = true;
+                    return true;
                 }
             }
 
-            return isWalkable;
+            return false;
         }
 
         public bool GetIsTileWalkable(Vector2Int tile)

@@ -214,4 +214,4 @@ MonoBehaviour:
   greyMaterial: {fileID: 2100000, guid: f0013a559a5e13d42a79dd1568a746ea, type: 2}
   yellowMaterial: {fileID: 2100000, guid: 7386f5c737acf544facc0a848bda35fe, type: 2}
   redMaterial: {fileID: 2100000, guid: b48c198a7a293e8429badff56f3016e0, type: 2}
-  floorColor: 0
+  floorColor: 1
