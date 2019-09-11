@@ -51,8 +51,8 @@ namespace UdeS.Promoscience.Network
         int serverTeamId = -1;
         int serverTeamInformationId = -1;
 
-        [SerializeField]
-        public UnityEngine.UI.Text DebugText;
+        //[SerializeField]
+        //public UnityEngine.UI.Text DebugText;
 
         public Utils.DeviceType serverDeviceType = Utils.DeviceType.NoType;
         public Utils.Algorithm serverAlgorithm;
