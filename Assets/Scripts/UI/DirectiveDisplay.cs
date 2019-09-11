@@ -21,9 +21,6 @@ namespace UdeS.Promoscience.UI
         Image directiveImage;
 
         [SerializeField]
-        Transform cameraTransform;
-
-        [SerializeField]
         Sprite forwardImage;
 
         [SerializeField]
