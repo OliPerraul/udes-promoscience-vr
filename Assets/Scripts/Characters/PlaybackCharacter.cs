@@ -37,7 +37,7 @@ namespace UdeS.Promoscience
             transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
         }
 
-        public void Perform(GameAction gameAction, ActionInfo info)
+        public void Perform(GameAction gameAction, string info)
         {
             int forwardDirection = labyrinth.GetStartDirection();
 

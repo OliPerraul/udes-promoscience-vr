@@ -412,7 +412,7 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetViewingPlayback(NetworkConnection target, int labyrinthId, int[] steps, ActionInfo[] stepValues)
+        public void TargetSetViewingPlayback(NetworkConnection target, int labyrinthId, int[] steps, string[] stepValues)
         {
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;

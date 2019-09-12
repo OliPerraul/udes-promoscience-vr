@@ -7,6 +7,6 @@ namespace UdeS.Promoscience.ScriptableObjects
 {
     public class ScriptableMisc : MonoBehaviour
     {
-        public ActionInfo[] ActionValues;
+        public string[] ActionValues;
     }
 }

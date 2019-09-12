@@ -72,7 +72,7 @@ namespace UdeS.Promoscience.Network
                 // TODO
                 // Steps to recover
                 Queue<int> steps;
-                Queue<ActionInfo> stepValues;
+                Queue<string> stepValues; //jsons
                 SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
 
                 // Use the steps for playback

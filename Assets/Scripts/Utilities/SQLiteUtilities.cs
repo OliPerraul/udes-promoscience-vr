@@ -825,14 +825,14 @@ namespace UdeS.Promoscience.Utils
             return playerSteps;
         }
 
-        public static void GetPlayerStepsForCourse(int courseId, out Queue<int> playerSteps, out Queue<ActionInfo> actionValues)
+        public static void GetPlayerStepsForCourse(int courseId, out Queue<int> playerSteps, out Queue<string> stepValues)
         {
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
             playerSteps = new Queue<int>();
-            actionValues = new Queue<ActionInfo>();
+            stepValues = new Queue<string>();
 
             using (SqliteConnection conn = new SqliteConnection(dbPath))
             {
@@ -851,7 +851,7 @@ namespace UdeS.Promoscience.Utils
                         while (reader.Read())
                         {
                             playerSteps.Enqueue(int.Parse(reader[EVENT_TYPE].ToString()));
-                            actionValues.Enqueue(JsonUtility.FromJson<ActionInfo>(reader[EVENT_VALUE].ToString()));
+                            stepValues.Enqueue(reader[EVENT_VALUE].ToString());
                         }
 
                         reader.Close();
