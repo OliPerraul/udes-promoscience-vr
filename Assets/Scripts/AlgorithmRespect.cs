@@ -287,20 +287,17 @@ namespace UdeS.Promoscience
         {
             if (returnToDivergencePointAnswer.Value)
             {
-                gameAction.SetAction(GameAction.ReturnToDivergencePoint);
-
                 errorCounter += 5;
 
-                Tile[] tiles = new Tile[wrongColorTilesWhenDiverging.Count];
+                Tile[] tiles = wrongColorTilesWhenDiverging.ToArray(); 
 
-                for (int i = 0; i < wrongColorTilesWhenDiverging.Count; i++)
-                {
-                    tiles[i] = wrongColorTilesWhenDiverging[i];
-                }
+                Vector2Int gridPos = 
+                    new Vector2Int(playerSteps[playerSteps.Count - 1].x, 
+                    playerSteps[playerSteps.Count - 1].y);
 
                 Vector3 position = labyrinth.GetLabyrinthPositionInWorldPosition(
-                    playerSteps[playerSteps.Count - 1].x, 
-                    playerSteps[playerSteps.Count - 1].y) + new Vector3(0, cameraRig.Transform.position.y, 0);
+                    gridPos.x,
+                    gridPos.y) + new Vector3(0, cameraRig.Transform.position.y, 0);
 
                 Quaternion rotation = rotationAtDivergence;
 
@@ -308,6 +305,9 @@ namespace UdeS.Promoscience
                     position, 
                     rotation, 
                     tiles);
+
+                gameAction.SetAction(GameAction.ReturnToDivergencePoint, gridPos, rotation, tiles);
+
             }
         }
 

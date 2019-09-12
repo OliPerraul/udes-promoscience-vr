@@ -26,6 +26,9 @@ namespace UdeS.Promoscience
         [SerializeField]
         private float algorithmPlaybackSpeed = 0.5f;
 
+        [SerializeField]
+        private ScriptableMisc misc;
+
 
         public void BeginPlayback()
         {
@@ -47,12 +50,10 @@ namespace UdeS.Promoscience
 
         public IEnumerator PlayerPlaybackCoroutine(PlaybackCharacter character)
         {
-            int idx = 0;
-            foreach (int step in recordedSteps.Value)
+            for(int i = 0; i < recordedSteps.Value.Length; i++)
             {
-                character.Perform((GameAction)step, idx);
+                character.Perform((GameAction)recordedSteps.Value[i], misc.ActionValues[i]);
                 yield return new WaitForSeconds(playerPlaybackSpeed);
-                idx++;
             }
 
             // TODO destroy..

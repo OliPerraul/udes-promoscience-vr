@@ -48,6 +48,7 @@ namespace UdeS.Promoscience.Utils
         WaitingPlayback = 16,
     }
 
+    [Serializable]
     public enum GameAction : int
     {
         MoveUp = 0,
@@ -85,6 +86,7 @@ namespace UdeS.Promoscience.Utils
         UTurn
     }
 
+    [Serializable]
     public enum TileColor : int
     {
         Grey = 0,

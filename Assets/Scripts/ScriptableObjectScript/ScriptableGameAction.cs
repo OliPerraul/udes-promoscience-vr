@@ -8,6 +8,20 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.ScriptableObjects
 {
+    [Serializable]
+    public class ActionInfo
+    {
+        [SerializeField]
+        public Vector2Int position;
+
+        [SerializeField]
+        public Quaternion rotation;
+
+        [SerializeField]
+        public Tile[] tiles;        
+    }       
+
+
     [CreateAssetMenu(fileName = "Data", menuName = "Data/GameAction", order = 1)]
     public class ScriptableGameAction : ScriptableObject
     {
@@ -16,17 +30,15 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         DateTime dateTime;
 
-        int backtrack = 0;
+        string value = "{}";
 
         public Action valueChangedEvent;
 
-
-
-        public int Backtrack
+        public string Value
         {
             get
             {
-                return backtrack;
+                return value;
             }
         }
 
@@ -47,13 +59,38 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
-        public void SetAction(GameAction gameAction, int backtrack=0)
+
+
+        public void SetAction(GameAction gameAction)
         {
             action = gameAction;
 
-            this.backtrack = backtrack;
+            value = JsonUtility.ToJson(new ActionInfo());
 
             DateTime actionDateTime = DateTime.Now;
+
+            if (actionDateTime == dateTime)//Doesn't seems o be working, there is event that have the same milliseconds
+            {
+                actionDateTime = actionDateTime.AddMilliseconds(1);//Used to avoid simultaneous actions
+            }
+
+            dateTime = actionDateTime;
+
+            OnValueChanged();
+        }        
+
+        public void SetAction(GameAction gameAction, Vector2Int position, Quaternion rotation, Tile[] tiles)
+        {
+            action = gameAction;            
+                
+            DateTime actionDateTime = DateTime.Now;
+
+            var actionValue = new ActionInfo();
+            actionValue.tiles = tiles;
+            actionValue.position = position;
+            actionValue.rotation = rotation;
+
+            value = JsonUtility.ToJson(actionValue);
 
             if (actionDateTime == dateTime)//Doesn't seems o be working, there is event that have the same milliseconds
             {

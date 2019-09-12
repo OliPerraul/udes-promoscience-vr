@@ -10,6 +10,7 @@ using UdeS.Promoscience.Network;
 namespace UdeS.Promoscience.Utils
 {
     // 
+    [Serializable]
     public struct Tile
     {
         public int x;

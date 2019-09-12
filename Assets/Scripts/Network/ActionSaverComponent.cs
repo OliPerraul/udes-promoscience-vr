@@ -46,7 +46,16 @@ namespace UdeS.Promoscience.Network
                 int labyrithId = player.serverLabyrinthId;
                 int algorithmId = (int)player.serverAlgorithm;
 
-                SQLiteUtilities.InsertPlayerAction(teamId, teamName, teamColor, courseId, labyrithId, algorithmId, (int)player.ServerPlayerGameAction, player.ServerPlayerGameActionDateTimeString);
+                SQLiteUtilities.InsertPlayerAction(
+                    teamId, 
+                    teamName, 
+                    teamColor, 
+                    courseId, 
+                    labyrithId, 
+                    algorithmId, 
+                    (int)player.ServerPlayerGameAction, 
+                    player.ServerPlayerGameActionDateTimeString, 
+                    player.ServerPlayerGameActionValue);
             }
         }
 #endif

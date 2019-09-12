@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience
 {
@@ -36,7 +37,7 @@ namespace UdeS.Promoscience
             transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
         }
 
-        public void Perform(GameAction gameAction, int idx)
+        public void Perform(GameAction gameAction, ActionInfo info)
         {
             int forwardDirection = labyrinth.GetStartDirection();
 

@@ -45,16 +45,9 @@ namespace UdeS.Promoscience.Utils
         //Event table column
         const string EVENT_ID = "EventID";
         const string EVENT_TYPE = "EventType";
+        const string EVENT_VALUE = "{}"; // JSON value used only for divergent location
         const string EVENT_TIME = "EventTime";
-        const string EVENT_X = "EventX";
-        const string EVENT_Y = "EventY";
         const string EVENT_COURSE_ID = COURSE_ID;
-
-        const string EVENT_TILE_ID = EVENT_ID;
-        const string EVENT_TILE_X = "EventTileX";
-        const string EVENT_TILE_Y = "EventTileY";
-        const string EVENT_TILE_COLOR = "EventTileColor";
-
 
         //DevicePairing table column
         const string DEVICE_PAIRING_TABLET_ID = "TabletID";
@@ -111,6 +104,7 @@ namespace UdeS.Promoscience.Utils
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + EVENT + " ( " +
                                       EVENT_ID + " INTEGER PRIMARY KEY ASC, " +
                                       EVENT_TYPE + " INTEGER(10) NOT NULL, " +
+                                      EVENT_VALUE + " TEXT NOT NULL, " +
                                       EVENT_TIME + " DEFAULT(STRFTIME('YYYY-MM-DD HH:MM:SS.SSS', 'NOW')), " +
                                       EVENT_COURSE_ID + " INTEGER(10) NOT NULL, " +
                                       "FOREIGN KEY(" + EVENT_COURSE_ID + ") REFERENCES " + COURSE + "(" + COURSE_ID + ") ); ";
@@ -228,16 +222,16 @@ namespace UdeS.Promoscience.Utils
                     cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ") VALUES (3, 1, 2, 154);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (1, 33, DATETIME('2018-08-27',  '13:10:10'), 3);";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (1, 33, '{}', DATETIME('2018-08-27',  '13:10:10'), 3);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (2, 35, DATETIME('2018-08-27',  '13:10:20'), 3);";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (2, 35, '{}', DATETIME('2018-08-27',  '13:10:20'), 3);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (3, 10, DATETIME('2018-08-27',  '13:10:15'), 1);";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (3, 10, '{}', DATETIME('2018-08-27',  '13:10:15'), 1);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (4, 10, DATETIME('2018-08-27',  '15:10:10'), 1);";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (4, 10, '{}', DATETIME('2018-08-27',  '15:10:10'), 1);";
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -315,6 +309,7 @@ namespace UdeS.Promoscience.Utils
                         {
                             Debug.Log(EVENT_ID + ": " + reader[EVENT_ID]
                                 + "\t " + EVENT_TYPE + ": " + reader[EVENT_TYPE]
+                                + "\t " + EVENT_VALUE + ": " + reader[EVENT_VALUE]
                                 + "\t " + EVENT_TIME + ": " + reader[EVENT_TIME]
                                 + "\t " + EVENT_COURSE_ID + ": " + reader[EVENT_COURSE_ID]);
                         }
@@ -533,7 +528,16 @@ namespace UdeS.Promoscience.Utils
             }
         }
 
-        public static void InsertPlayerAction(int teamId, string teamName, string teamColor, int courseId, int labyrinthId, int algorithmId, int eventType, string dateTime)
+        public static void InsertPlayerAction(
+            int teamId, 
+            string teamName, 
+            string teamColor, 
+            int courseId, 
+            int labyrinthId, 
+            int algorithmId, 
+            int eventType, 
+            string dateTime, 
+            string eventValue)
         {
             CreateDatabaseIfItDoesntExist();
 
@@ -586,7 +590,7 @@ namespace UdeS.Promoscience.Utils
                         reader.Close();
                     }
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  '" + dateTime + "', '" + courseId + "');";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  '" + eventValue + "',  '" + dateTime + "', '" + courseId + "');";
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -819,6 +823,41 @@ namespace UdeS.Promoscience.Utils
             }
 
             return playerSteps;
+        }
+
+        public static void GetPlayerStepsForCourse(int courseId, out Queue<int> playerSteps, out Queue<ActionInfo> actionValues)
+        {
+            CreateDatabaseIfItDoesntExist();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            playerSteps = new Queue<int>();
+            actionValues = new Queue<ActionInfo>();
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "SELECT " + EVENT_TYPE + ", " + EVENT_TIME + " FROM " + EVENT
+                        + " WHERE " + EVENT_COURSE_ID + "=" + courseId
+                        + " ORDER BY " + EVENT_TIME;
+                    cmd.ExecuteNonQuery();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            playerSteps.Enqueue(int.Parse(reader[EVENT_TYPE].ToString()));
+                            actionValues.Enqueue(JsonUtility.FromJson<ActionInfo>(reader[EVENT_VALUE].ToString()));
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
         }
 
         public static int GetNextTeamID()

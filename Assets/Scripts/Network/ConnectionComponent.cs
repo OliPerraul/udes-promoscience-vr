@@ -71,9 +71,12 @@ namespace UdeS.Promoscience.Network
             {
                 // TODO
                 // Steps to recover
-                Queue<int> steps = SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId);
+                Queue<int> steps;
+                Queue<ActionInfo> stepValues;
+                SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
+
                 // Use the steps for playback
-                player.TargetSetViewingPlayback(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray());                
+                player.TargetSetViewingPlayback(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray(), stepValues.ToArray());                
             }
             else if (player.serverDeviceType == Utils.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
             {

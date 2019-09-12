@@ -17,8 +17,6 @@ namespace UdeS.Promoscience.Network
         string deviceName = "";
 
 
-
-
         private void OnDestroy()
         {
             if (isServer)
@@ -45,6 +43,7 @@ namespace UdeS.Promoscience.Network
 
         ClientGameState serverPlayerGameState = 0;
         GameAction serverPlayerGameAction;
+        string serverPlayerGameActionValue;
         string serverPlayerGameActionDateTimeString;
         int serverPlayerbacktrack = 0;
 
@@ -133,6 +132,14 @@ namespace UdeS.Promoscience.Network
             }
         }
 
+        public String ServerPlayerGameActionValue
+        {
+            get
+            {
+                return serverPlayerGameActionValue;
+            }
+        }
+
         public String ServerPlayerGameActionDateTimeString
         {
             get
@@ -149,11 +156,11 @@ namespace UdeS.Promoscience.Network
             }
         }
 
-        public void ServerSetPlayerGameAction(GameAction action, String dateTime, int backtrack)
+        public void ServerSetPlayerGameAction(GameAction action, string dateTime, string value)
         {
             serverPlayerGameAction = action;
             serverPlayerGameActionDateTimeString = dateTime;
-            serverPlayerbacktrack = backtrack;
+            serverPlayerGameActionValue = value;
 
             serverPlayerActionChangedEvent();
         }
@@ -239,6 +246,9 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         ScriptableIntegerArray recordedSteps;
 
+        [SerializeField]
+        ScriptableMisc misc;
+
         public override void OnStartLocalPlayer()
         {
             base.OnStartLocalPlayer();
@@ -278,7 +288,7 @@ namespace UdeS.Promoscience.Network
             if (gameState.Value == ClientGameState.Playing ||
                 gameState.Value == ClientGameState.PlayingTutorial)
             {
-                CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString, gameAction.Backtrack);
+                CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString, gameAction.Value);
             }
         }
 
@@ -317,9 +327,9 @@ namespace UdeS.Promoscience.Network
         }
 
         [Command]
-        public void CmdSetPlayerAction(GameAction action, String dateTime, int backtrack)
+        public void CmdSetPlayerAction(GameAction action, String dateTime, string value)
         {
-            ServerSetPlayerGameAction(action, dateTime, backtrack);
+            ServerSetPlayerGameAction(action, dateTime, value);
         }
 
         [Command]
@@ -402,11 +412,12 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetViewingPlayback(NetworkConnection target, int labyrinthId, int[] steps)
+        public void TargetSetViewingPlayback(NetworkConnection target, int labyrinthId, int[] steps, ActionInfo[] stepValues)
         {
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
-            recordedSteps.Value = steps; // Use for playback
+            recordedSteps.Value = steps;
+            misc.ActionValues = stepValues;
             gameState.Value = ClientGameState.ViewingPlayback;
         }
 
