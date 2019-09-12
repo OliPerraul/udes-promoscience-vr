@@ -45,7 +45,7 @@ namespace UdeS.Promoscience.Utils
         //Event table column
         const string EVENT_ID = "EventID";
         const string EVENT_TYPE = "EventType";
-        const string EVENT_VALUE = "{}"; // JSON value used only for divergent location
+        const string EVENT_VALUE = "EventValue"; // JSON value used only for divergent location
         const string EVENT_TIME = "EventTime";
         const string EVENT_COURSE_ID = COURSE_ID;
 
