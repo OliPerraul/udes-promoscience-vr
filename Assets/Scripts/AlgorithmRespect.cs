@@ -80,6 +80,8 @@ namespace UdeS.Promoscience
         List<Tile> playerSteps = new List<Tile>();
         List<Tile> wrongColorTilesWhenDiverging = new List<Tile>();
 
+        Stack<GameAction> stack = new Stack<GameAction>();
+
         Quaternion rotationAtDivergence;
 
         private int backtrack = 0;

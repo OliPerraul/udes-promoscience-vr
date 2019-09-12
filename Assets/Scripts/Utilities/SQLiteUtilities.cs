@@ -46,7 +46,15 @@ namespace UdeS.Promoscience.Utils
         const string EVENT_ID = "EventID";
         const string EVENT_TYPE = "EventType";
         const string EVENT_TIME = "EventTime";
+        const string EVENT_X = "EventX";
+        const string EVENT_Y = "EventY";
         const string EVENT_COURSE_ID = COURSE_ID;
+
+        const string EVENT_TILE_ID = EVENT_ID;
+        const string EVENT_TILE_X = "EventTileX";
+        const string EVENT_TILE_Y = "EventTileY";
+        const string EVENT_TILE_COLOR = "EventTileColor";
+
 
         //DevicePairing table column
         const string DEVICE_PAIRING_TABLET_ID = "TabletID";
