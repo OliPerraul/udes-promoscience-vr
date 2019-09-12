@@ -5,7 +5,8 @@ using System.Collections;
 
 namespace UdeS.Promoscience.ScriptableObjects
 {
-    public class ScriptableMisc : MonoBehaviour
+    [CreateAssetMenu(fileName = "Data", menuName = "Data/Misc", order = 1)]
+    public class ScriptableMisc : ScriptableObject
     {
         public string[] ActionValues;
     }
