@@ -29,23 +29,41 @@ namespace UdeS.Promoscience
         [SerializeField]
         private ScriptableMisc misc;
 
+        PlaybackCharacter character;
+
+        Vector2Int labyrinthPosition;
+
+        Vector3 worldPosition;
+
+        public void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                BeginPlayback();
+            }
+        }
 
         public void BeginPlayback()
         {
-            Vector2Int labPos = labyrinth.GetLabyrithStartPosition();
+            StopAllCoroutines();
 
-            Vector3 worldPosition =
-                labyrinth.GetLabyrinthPositionInWorldPosition(labPos);
+            labyrinth.GenerateLabyrinthVisual();
+            labyrinthPosition = labyrinth.GetLabyrithStartPosition();
 
-            BeginPlayerPlayback(labPos, worldPosition);
-            BeginAlgorithmPlayback(labPos, worldPosition);
+            worldPosition =
+                labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
+
+            BeginPlayerPlayback();
+            BeginAlgorithmPlayback();
         }
 
-
-        private void BeginPlayerPlayback(Vector2Int labPos, Vector3 worldPos)
+        private void BeginPlayerPlayback()
         {
-            PlaybackCharacter character = playbackCharacterTemplate.Create(labyrinth, labPos, worldPos);
-            StartCoroutine(PlayerPlaybackCoroutine(character)); 
+            if (character != null)
+                Destroy(character.gameObject);
+
+            character = playbackCharacterTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
+            StartCoroutine(PlayerPlaybackCoroutine(character));
         }
 
         public IEnumerator PlayerPlaybackCoroutine(PlaybackCharacter character)
@@ -60,7 +78,7 @@ namespace UdeS.Promoscience
             yield return null;
         }
 
-        private void BeginAlgorithmPlayback(Vector2Int labPos, Vector3 worldPos)
+        private void BeginAlgorithmPlayback()
         {
             //PlaybackCharacter character = Instantiate(
             //    playbackCharacterTemplate.gameObject,

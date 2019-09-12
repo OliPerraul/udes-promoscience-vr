@@ -273,7 +273,6 @@ namespace UdeS.Promoscience.Utils
 
                     using (SqliteDataReader reader = cmd.ExecuteReader())
                     {
-
                         while (reader.Read())
                         {
                             Debug.Log(LABYRINTH_ID + ": " + reader[LABYRINTH_ID]
@@ -287,7 +286,6 @@ namespace UdeS.Promoscience.Utils
 
                     using (SqliteDataReader reader = cmd.ExecuteReader())
                     {
-
                         while (reader.Read())
                         {
                             Debug.Log(COURSE_ID + ": " + reader[COURSE_ID]
@@ -841,7 +839,7 @@ namespace UdeS.Promoscience.Utils
                 {
                     cmd.CommandType = CommandType.Text;
 
-                    cmd.CommandText = "SELECT " + EVENT_TYPE + ", " + EVENT_TIME + " FROM " + EVENT
+                    cmd.CommandText = "SELECT " + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + " FROM " + EVENT
                         + " WHERE " + EVENT_COURSE_ID + "=" + courseId
                         + " ORDER BY " + EVENT_TIME;
                     cmd.ExecuteNonQuery();

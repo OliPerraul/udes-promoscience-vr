@@ -1617,7 +1617,7 @@ MonoBehaviour:
   labyrinth: {fileID: 15762161}
   algorithm: {fileID: 955073499}
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
-  playerPlaybackSpeed: 0.5
+  playerPlaybackSpeed: 0.1
   algorithmPlaybackSpeed: 0.5
   misc: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
 --- !u!1 &1172535618

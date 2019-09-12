@@ -6,6 +6,7 @@ using System.Text;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
+using UnityEngine;
 
 namespace UdeS.Promoscience.Utils
 {
@@ -23,5 +24,14 @@ namespace UdeS.Promoscience.Utils
             y = yPosition;
             color = tileColor;
         }
+
+        public Vector2Int Position
+        {
+            get
+            {
+                return new Vector2Int(x, y);
+            }
+        }
+
     }
 }

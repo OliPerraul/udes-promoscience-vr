@@ -55,7 +55,7 @@ namespace UdeS.Promoscience
             }
         }
 
-        void GenerateLabyrinthVisual()
+        public void GenerateLabyrinthVisual()
         {
             if (labyrinthTiles != null)
             {
@@ -213,7 +213,9 @@ namespace UdeS.Promoscience
 
         public void SetTileColor(Vector2Int tile, TileColor color)
         {
-            FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();
+            GameObject gobj = labyrinthTiles[tile.x, tile.y];
+            
+            var floorPainter = gobj.GetComponentInChildren<FloorPainter>();
             if (floorPainter != null)
             {
                 floorPainter.PaintFloorWithColor(color);

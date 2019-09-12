@@ -292,8 +292,9 @@ namespace UdeS.Promoscience
                 Tile[] tiles = wrongColorTilesWhenDiverging.ToArray(); 
 
                 Vector2Int gridPos = 
-                    new Vector2Int(playerSteps[playerSteps.Count - 1].x, 
-                    playerSteps[playerSteps.Count - 1].y);
+                    new Vector2Int(
+                        playerSteps[playerSteps.Count - 1].x, 
+                        playerSteps[playerSteps.Count - 1].y);
 
                 Vector3 position = labyrinth.GetLabyrinthPositionInWorldPosition(
                     gridPos.x,

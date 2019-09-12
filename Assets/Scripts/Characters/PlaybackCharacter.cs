@@ -31,7 +31,6 @@ namespace UdeS.Promoscience
             return character;
         }
 
-
         public void FixedUpdate()
         {
             transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
@@ -83,24 +82,19 @@ namespace UdeS.Promoscience
             }
             else if (gameAction == GameAction.ReturnToDivergencePoint)
             {
-                //errorCounter += 5;
+                ActionInfo actionInfo = JsonUtility.FromJson<ActionInfo>(info);
 
-                //var position = new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y);
-                //forwardDirection = GetForwardDirectionWithRotation(rotationAtDivergence);
+                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(actionInfo.position) ;
 
-                //TileColor previousColor;
+                transform.position = targetPosition;
+                transform.rotation = actionInfo.rotation;
 
-                //for (int j = wrongColorTilesWhenDiverging.Count - 1; j >= 0; j--)
-                //{
-                //    Tile tile = wrongColorTilesWhenDiverging[j];
+                foreach (Tile tile in actionInfo.tiles)
+                {
+                    labyrinth.SetTileColor(tile.Position, tile.color);
+                }
 
-                //    previousColor = tiles[tile.x, tile.y];
-                //    tiles[tile.x, tile.y] = tile.color;
-
-                //    EvaluateAlgorithmRespectOnPaintTile(position, tile.x, tile.y, tile.color, previousColor);
-                //}
-
-                //EvaluateAlgorithmRespectOnPositionChanged(position, tiles[currentLabyrinthPosition.x, currentLabyrinthPosition.y], GetRotationWithForwardDirection(forwardDirection));
+                labyrinth.SetTileColor(actionInfo.position, TileColor.Yellow);
             }
         }
             
