@@ -1583,7 +1583,7 @@ MonoBehaviour:
   playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
     type: 2}
   isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
-  labyrinth: {fileID: 0}
+  labyrinth: {fileID: 15762161}
   waitingForNextRoundRoom: {fileID: 1707732046}
   gameCamera: {fileID: 937188563}
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}

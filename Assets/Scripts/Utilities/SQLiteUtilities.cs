@@ -45,7 +45,6 @@ namespace UdeS.Promoscience.Utils
         //Event table column
         const string EVENT_ID = "EventID";
         const string EVENT_TYPE = "EventType";
-        const string EVENT_BACKTRACK = "EventBacktrack";
         const string EVENT_TIME = "EventTime";
         const string EVENT_COURSE_ID = COURSE_ID;
 
@@ -104,7 +103,6 @@ namespace UdeS.Promoscience.Utils
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + EVENT + " ( " +
                                       EVENT_ID + " INTEGER PRIMARY KEY ASC, " +
                                       EVENT_TYPE + " INTEGER(10) NOT NULL, " +
-                                      EVENT_BACKTRACK + " INTEGER NOT NULL, " +
                                       EVENT_TIME + " DEFAULT(STRFTIME('YYYY-MM-DD HH:MM:SS.SSS', 'NOW')), " +
                                       EVENT_COURSE_ID + " INTEGER(10) NOT NULL, " +
                                       "FOREIGN KEY(" + EVENT_COURSE_ID + ") REFERENCES " + COURSE + "(" + COURSE_ID + ") ); ";
@@ -222,16 +220,16 @@ namespace UdeS.Promoscience.Utils
                     cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ") VALUES (3, 1, 2, 154);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_BACKTRACK + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (1, 33, 0, DATETIME('2018-08-27',  '13:10:10'), 3);";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (1, 33, DATETIME('2018-08-27',  '13:10:10'), 3);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_BACKTRACK + ", " + EVENT_TIME  + ", " + EVENT_COURSE_ID + ") VALUES (2, 35, 0, DATETIME('2018-08-27',  '13:10:20'), 3);";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (2, 35, DATETIME('2018-08-27',  '13:10:20'), 3);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_BACKTRACK + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (3, 10, 0, DATETIME('2018-08-27',  '13:10:15'), 1);";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (3, 10, DATETIME('2018-08-27',  '13:10:15'), 1);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_BACKTRACK + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (4, 10, 0, DATETIME('2018-08-27',  '15:10:10'), 1);";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (4, 10, DATETIME('2018-08-27',  '15:10:10'), 1);";
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -309,7 +307,6 @@ namespace UdeS.Promoscience.Utils
                         {
                             Debug.Log(EVENT_ID + ": " + reader[EVENT_ID]
                                 + "\t " + EVENT_TYPE + ": " + reader[EVENT_TYPE]
-                                + "\t " + EVENT_BACKTRACK + ": " + reader[EVENT_BACKTRACK]
                                 + "\t " + EVENT_TIME + ": " + reader[EVENT_TIME]
                                 + "\t " + EVENT_COURSE_ID + ": " + reader[EVENT_COURSE_ID]);
                         }
@@ -528,7 +525,7 @@ namespace UdeS.Promoscience.Utils
             }
         }
 
-        public static void InsertPlayerAction(int teamId, string teamName, string teamColor, int courseId, int labyrinthId, int algorithmId, int eventType, int backtrack, string dateTime)
+        public static void InsertPlayerAction(int teamId, string teamName, string teamColor, int courseId, int labyrinthId, int algorithmId, int eventType, string dateTime)
         {
             CreateDatabaseIfItDoesntExist();
 
@@ -581,7 +578,7 @@ namespace UdeS.Promoscience.Utils
                         reader.Close();
                     }
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_BACKTRACK + "," + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  '" + backtrack + "', '" + "',  '" + dateTime + "', '" + courseId + "');";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  '" + dateTime + "', '" + courseId + "');";
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -780,46 +777,6 @@ namespace UdeS.Promoscience.Utils
 
             return hasPlayerAlreadyCompletedTheRound;
         }
-
-
-        // Return the GameAction and possibly backtrack for teleport
-        public static bool GetPlayerStepsForCourse(int courseId, out Queue<int> playerSteps, out Queue<int> backtracks)
-        {
-            CreateDatabaseIfItDoesntExist();
-
-            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
-
-            playerSteps = new Queue<int>();
-            backtracks = new Queue<int>();
-
-            using (SqliteConnection conn = new SqliteConnection(dbPath))
-            {
-                conn.Open();
-                using (SqliteCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandType = CommandType.Text;
-
-                    cmd.CommandText = "SELECT " + EVENT_TYPE + ", " + EVENT_BACKTRACK + ", " + EVENT_TIME + " FROM " + EVENT
-                        + " WHERE " + EVENT_COURSE_ID + "=" + courseId
-                        + " ORDER BY " + EVENT_TIME;
-                    cmd.ExecuteNonQuery();
-
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            backtracks.Enqueue(int.Parse(reader[EVENT_BACKTRACK].ToString()));
-                            playerSteps.Enqueue(int.Parse(reader[EVENT_TYPE].ToString()));
-                        }
-
-                        reader.Close();
-                    }
-                }
-            }
-
-            return true;
-        }
-
 
         public static Queue<int> GetPlayerStepsForCourse(int courseId)
         {

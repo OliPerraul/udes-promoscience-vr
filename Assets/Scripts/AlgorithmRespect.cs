@@ -157,15 +157,23 @@ namespace UdeS.Promoscience
                         || (previousTileColor != algorithmSteps[playerSteps.Count - 1].color))
                     {
                         isDiverging.Value = true;
-                        backtrack++;
-                        errorCounter++;
-                        algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+                        algorithmRespect.Value = RespectValueComputation((new Vector2Int(
+                            playerSteps[playerSteps.Count - 1].x, 
+                            playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+
                         rotationAtDivergence = rotation;
                     }
                     else
                     {
-                        playerSteps[playerSteps.Count - 1] = new Tile(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y, previousTileColor);
-                        playerSteps.Add(new Tile(labyrinthPosition.x, labyrinthPosition.y, TileColor.NoColor));
+                        playerSteps[playerSteps.Count - 1] = new Tile(
+                            playerSteps[playerSteps.Count - 1].x, 
+                            playerSteps[playerSteps.Count - 1].y, 
+                            previousTileColor);
+
+                        playerSteps.Add(new Tile(
+                            labyrinthPosition.x, 
+                            labyrinthPosition.y, 
+                            TileColor.NoColor));
                     }
                 }
                 else
@@ -179,12 +187,18 @@ namespace UdeS.Promoscience
                         }
                         else
                         {
-                            algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+                            algorithmRespect.Value = RespectValueComputation((
+                                new Vector2Int(
+                                    playerSteps[playerSteps.Count - 1].x, 
+                                    playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
                         }
                     }
                     else
                     {
-                        algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+                        algorithmRespect.Value = RespectValueComputation((
+                            new Vector2Int(
+                                playerSteps[playerSteps.Count - 1].x, 
+                                playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
                     }
                 }
 
@@ -208,7 +222,11 @@ namespace UdeS.Promoscience
                             {
                                 wrongColorTilesWhenDiverging.RemoveAt(i);
 
-                                algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+                                algorithmRespect.Value = 
+                                    RespectValueComputation(
+                                        (new Vector2Int(
+                                            playerSteps[playerSteps.Count - 1].x, 
+                                            playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
                             }
 
                             return;
@@ -216,7 +234,12 @@ namespace UdeS.Promoscience
                     }
 
                     wrongColorTilesWhenDiverging.Add(new Tile(x, y, previousColor));
-                    algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
+
+                    algorithmRespect.Value = 
+                        RespectValueComputation(
+                            (new Vector2Int(
+                                playerSteps[playerSteps.Count - 1].x,
+                                playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
                 }
             }
         }
@@ -273,10 +296,16 @@ namespace UdeS.Promoscience
                     tiles[i] = wrongColorTilesWhenDiverging[i];
                 }
 
-                Vector3 position = labyrinth.GetLabyrinthPositionInWorldPosition(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) + new Vector3(0, cameraRig.Transform.position.y, 0);
+                Vector3 position = labyrinth.GetLabyrinthPositionInWorldPosition(
+                    playerSteps[playerSteps.Count - 1].x, 
+                    playerSteps[playerSteps.Count - 1].y) + new Vector3(0, cameraRig.Transform.position.y, 0);
+
                 Quaternion rotation = rotationAtDivergence;
 
-                playerPositionRotationAndTiles.SetPositionRotationAndTiles(position, rotation, tiles);
+                playerPositionRotationAndTiles.SetPositionRotationAndTiles(
+                    position, 
+                    rotation, 
+                    tiles);
             }
         }
 
@@ -361,7 +390,10 @@ namespace UdeS.Promoscience
                         EvaluateAlgorithmRespectOnPaintTile(position, tile.x, tile.y, tile.color, previousColor);
                     }
 
-                    EvaluateAlgorithmRespectOnPositionChanged(position, tiles[currentLabyrinthPosition.x, currentLabyrinthPosition.y], GetRotationWithForwardDirection(forwardDirection));
+                    EvaluateAlgorithmRespectOnPositionChanged(
+                        position, 
+                        tiles[currentLabyrinthPosition.x, currentLabyrinthPosition.y], 
+                        GetRotationWithForwardDirection(forwardDirection));
                 }
             }
 
@@ -395,7 +427,10 @@ namespace UdeS.Promoscience
                 rotation.eulerAngles = new Vector3(0, rotationByDirection[3], 0);
             }
 
-            playerPositionRotationAndTiles.SetPositionRotationAndTiles(labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, cameraRig.Transform.position.y, 0), rotation, tilesToPaint);
+            playerPositionRotationAndTiles.SetPositionRotationAndTiles(
+                labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, cameraRig.Transform.position.y, 0), 
+                rotation, 
+                tilesToPaint);
         }
 
         int GetForwardDirectionWithRotation(Quaternion rotation)
