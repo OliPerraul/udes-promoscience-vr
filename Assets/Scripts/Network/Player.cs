@@ -46,6 +46,7 @@ namespace UdeS.Promoscience.Network
         ClientGameState serverPlayerGameState = 0;
         GameAction serverPlayerGameAction;
         string serverPlayerGameActionDateTimeString;
+        int serverPlayerbacktrack = 0;
 
         int serverCourseId = -1;
         int serverTeamId = -1;
@@ -140,10 +141,19 @@ namespace UdeS.Promoscience.Network
             }
         }
 
-        public void ServerSetPlayerGameAction(GameAction action, String dateTime)
+        public int ServerPlayerBacktrack
+        {
+            get
+            {
+                return serverPlayerbacktrack;
+            }
+        }
+
+        public void ServerSetPlayerGameAction(GameAction action, String dateTime, int backtrack)
         {
             serverPlayerGameAction = action;
             serverPlayerGameActionDateTimeString = dateTime;
+            serverPlayerbacktrack = backtrack;
 
             serverPlayerActionChangedEvent();
         }
@@ -268,7 +278,7 @@ namespace UdeS.Promoscience.Network
             if (gameState.Value == ClientGameState.Playing ||
                 gameState.Value == ClientGameState.PlayingTutorial)
             {
-                CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString);
+                CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString, gameAction.Backtrack);
             }
         }
 
@@ -307,9 +317,9 @@ namespace UdeS.Promoscience.Network
         }
 
         [Command]
-        public void CmdSetPlayerAction(GameAction action, String dateTime)
+        public void CmdSetPlayerAction(GameAction action, String dateTime, int backtrack)
         {
-            ServerSetPlayerGameAction(action, dateTime);
+            ServerSetPlayerGameAction(action, dateTime, backtrack);
         }
 
         [Command]

@@ -36,7 +36,7 @@ namespace UdeS.Promoscience
             transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
         }
 
-        public void Perform(GameAction gameAction)
+        public void Perform(GameAction gameAction, int idx)
         {
             int forwardDirection = labyrinth.GetStartDirection();
 
@@ -70,30 +70,21 @@ namespace UdeS.Promoscience
             }
             else if (gameAction == GameAction.PaintFloorYellow)
             {
-                //TileColor previousColor = tiles[position.x, position.y];
-                //tiles[position.x, position.y] = TileColor.Yellow;
-
-                //EvaluateAlgorithmRespectOnPaintTile(position, position.x, position.y, TileColor.Yellow, previousColor);
+                labyrinth.SetTileColor(labyrinthPosition, TileColor.Yellow);
             }
             else if (gameAction == GameAction.PaintFloorRed)
             {
-                //TileColor previousColor = tiles[position.x, position.y];
-                //tiles[position.x, position.y] = TileColor.Red;
-
-                //EvaluateAlgorithmRespectOnPaintTile(position, position.x, position.y, TileColor.Red, previousColor);
+                labyrinth.SetTileColor(labyrinthPosition, TileColor.Red);
             }
             else if (gameAction == GameAction.UnpaintFloor)
             {
-                //TileColor previousColor = tiles[position.x, position.y];
-                //tiles[position.x, position.y] = TileColor.Grey;
-
-                //EvaluateAlgorithmRespectOnPaintTile(position, position.x, position.y, TileColor.Grey, previousColor);
+                labyrinth.SetTileColor(labyrinthPosition, TileColor.Grey);
             }
             else if (gameAction == GameAction.ReturnToDivergencePoint)
             {
                 //errorCounter += 5;
 
-                //position = new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y);
+                //var position = new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y);
                 //forwardDirection = GetForwardDirectionWithRotation(rotationAtDivergence);
 
                 //TileColor previousColor;

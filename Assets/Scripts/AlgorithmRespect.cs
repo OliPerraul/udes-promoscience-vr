@@ -82,6 +82,8 @@ namespace UdeS.Promoscience
 
         Quaternion rotationAtDivergence;
 
+        private int backtrack = 0;
+
         void Start()
         {
             gameState.valueChangedEvent += OnGameStateChanged;
@@ -155,6 +157,7 @@ namespace UdeS.Promoscience
                         || (previousTileColor != algorithmSteps[playerSteps.Count - 1].color))
                     {
                         isDiverging.Value = true;
+                        backtrack++;
                         errorCounter++;
                         algorithmRespect.Value = RespectValueComputation((new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
                         rotationAtDivergence = rotation;
@@ -247,6 +250,7 @@ namespace UdeS.Promoscience
         {
             playerSteps.Clear();
             wrongColorTilesWhenDiverging.Clear();
+            backtrack = 0;
             errorCounter = 0;
             isDiverging.Value = false;
             algorithmRespect.Value = 1.0f;

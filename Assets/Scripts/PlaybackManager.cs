@@ -45,12 +45,14 @@ namespace UdeS.Promoscience
             StartCoroutine(PlayerPlaybackCoroutine(character)); 
         }
 
-        IEnumerator PlayerPlaybackCoroutine(PlaybackCharacter character)
+        public IEnumerator PlayerPlaybackCoroutine(PlaybackCharacter character)
         {
+            int idx = 0;
             foreach (int step in recordedSteps.Value)
             {
-                character.Perform((GameAction)step);
+                character.Perform((GameAction)step, idx);
                 yield return new WaitForSeconds(playerPlaybackSpeed);
+                idx++;
             }
 
             // TODO destroy..

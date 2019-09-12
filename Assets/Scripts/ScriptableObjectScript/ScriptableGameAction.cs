@@ -16,7 +16,20 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         DateTime dateTime;
 
+        int backtrack = 0;
+
         public Action valueChangedEvent;
+
+
+
+        public int Backtrack
+        {
+            get
+            {
+                return backtrack;
+            }
+        }
+
 
         public GameAction Action
         {
@@ -34,15 +47,16 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
-        public void SetAction(GameAction gameAction)
+        public void SetAction(GameAction gameAction, int backtrack=0)
         {
             action = gameAction;
+
+            this.backtrack = backtrack;
 
             DateTime actionDateTime = DateTime.Now;
 
             if (actionDateTime == dateTime)//Doesn't seems o be working, there is event that have the same milliseconds
             {
-                Debug.Log("simultaneous actions");//temp
                 actionDateTime = actionDateTime.AddMilliseconds(1);//Used to avoid simultaneous actions
             }
 

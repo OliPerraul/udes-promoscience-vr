@@ -69,7 +69,6 @@ namespace UdeS.Promoscience
             else if (gameState.Value == ClientGameState.ViewingPlayback)
             {
                 gameCamera.ChangeState(Camera.State.Topdown);
-
                 playbackManager.BeginPlayback();
 
                 controls.IsPlayerControlsEnabled = false;
