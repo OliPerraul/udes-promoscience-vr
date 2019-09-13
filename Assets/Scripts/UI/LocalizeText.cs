@@ -17,7 +17,9 @@ namespace UdeS.Promoscience.UI
 
         void OnEnable()
         {
-            text.text = localizeString.Value;
+            if(text != null  && localizeString != null)
+                text.text = localizeString.Value;
+
         }
 
     }
