@@ -5,7 +5,7 @@ using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience
 {
-    public class PlaybackCharacter : MonoBehaviour
+    public class PlayerPlayback : MonoBehaviour
     {
         [SerializeField]
         private float speed = 0.6f;
@@ -18,12 +18,12 @@ namespace UdeS.Promoscience
 
         private TileColor lastColor;
 
-        public PlaybackCharacter Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
+        public PlayerPlayback Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
         {
-            PlaybackCharacter character = Instantiate(
+            PlayerPlayback character = Instantiate(
                 gameObject,
                 worldPos, Quaternion.identity)
-                .GetComponent<PlaybackCharacter>();
+                .GetComponent<PlayerPlayback>();
 
             character.labyrinth = labyrinth;
             character.labyrinthPosition = labpos;
@@ -88,7 +88,6 @@ namespace UdeS.Promoscience
             else if (gameAction == GameAction.ReturnToDivergencePoint)
             {
                 ActionInfo actionInfo = JsonUtility.FromJson<ActionInfo>(info);
-
                 
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition) ;
 

@@ -9,7 +9,14 @@ namespace UdeS.Promoscience
     public class PlaybackManager : MonoBehaviour
     {
         [SerializeField]
-        private PlaybackCharacter playbackCharacterTemplate;
+        private PlayerPlayback playerPlaybackTemplate;
+
+        private PlayerPlayback playerPlayback;
+
+        [SerializeField]
+        private AlgorithmPlayback algorithmPlaybackTemplate;
+
+        private AlgorithmPlayback algorithmPlayback;
 
         [SerializeField]
         private Labyrinth labyrinth;
@@ -29,11 +36,9 @@ namespace UdeS.Promoscience
         [SerializeField]
         private ScriptableMisc misc;
 
-        PlaybackCharacter character;
+        private Vector2Int labyrinthPosition;
 
-        Vector2Int labyrinthPosition;
-
-        Vector3 worldPosition;
+        private Vector3 worldPosition;
 
         public void Update()
         {
@@ -59,38 +64,43 @@ namespace UdeS.Promoscience
 
         private void BeginPlayerPlayback()
         {
-            if (character != null)
-                Destroy(character.gameObject);
+            if (playerPlayback != null)
+                Destroy(playerPlayback.gameObject);
 
-            character = playbackCharacterTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
-            StartCoroutine(PlayerPlaybackCoroutine(character));
+            playerPlayback = playerPlaybackTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
+            StartCoroutine(PlayerPlaybackCoroutine());
         }
 
-        public IEnumerator PlayerPlaybackCoroutine(PlaybackCharacter character)
+        public IEnumerator PlayerPlaybackCoroutine()
         {
             for(int i = 0; i < recordedSteps.Value.Length; i++)
             {
-                character.Perform((GameAction)recordedSteps.Value[i], misc.ActionValues[i]);
+                playerPlayback.Perform((GameAction)recordedSteps.Value[i], misc.ActionValues[i]);
                 yield return new WaitForSeconds(playerPlaybackSpeed);
             }
 
-            // TODO destroy..
             yield return null;
         }
 
         private void BeginAlgorithmPlayback()
         {
-            //PlaybackCharacter character = Instantiate(
-            //    playbackCharacterTemplate.gameObject,
-            //    worldPos, Quaternion.identity)
-            //    .GetComponent<PlaybackCharacter>();
+            if (algorithmPlayback != null)
+                Destroy(algorithmPlayback.gameObject);
 
-            //List<Tile> tiles = algorithm.GetAlgorithmSteps();
+            algorithmPlayback = algorithmPlaybackTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
+
+            StartCoroutine(AlgorithmPlaybackCoroutine());
         }
 
         IEnumerator AlgorithmPlaybackCoroutine()
         {
-            yield return new WaitForSeconds(algorithmPlaybackSpeed);
+            List<Tile> tiles = algorithm.GetAlgorithmSteps();
+
+            foreach (var tile in tiles)
+            {
+                algorithmPlayback.Perform(tile);
+                yield return new WaitForSeconds(algorithmPlaybackSpeed);
+            }
 
             yield return null;
         }

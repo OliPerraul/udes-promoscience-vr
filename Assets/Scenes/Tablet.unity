@@ -1612,7 +1612,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fde6711e3c032649b5edefeb4879106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playbackCharacterTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
+  playerPlaybackTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
+    type: 2}
+  algorithmPlaybackTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
     type: 2}
   labyrinth: {fileID: 15762161}
   algorithm: {fileID: 955073499}
