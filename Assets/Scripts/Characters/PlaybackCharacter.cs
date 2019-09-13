@@ -16,6 +16,8 @@ namespace UdeS.Promoscience
 
         private Vector3 targetPosition;
 
+        private TileColor lastColor;
+
         public PlaybackCharacter Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
         {
             PlaybackCharacter character = Instantiate(
@@ -70,31 +72,41 @@ namespace UdeS.Promoscience
             }
             else if (gameAction == GameAction.PaintFloorYellow)
             {
+                lastColor = labyrinth.GetTileColor(labyrinthPosition);
                 labyrinth.SetTileColor(labyrinthPosition, TileColor.Yellow);
             }
             else if (gameAction == GameAction.PaintFloorRed)
             {
+                lastColor = labyrinth.GetTileColor(labyrinthPosition);
                 labyrinth.SetTileColor(labyrinthPosition, TileColor.Red);
             }
             else if (gameAction == GameAction.UnpaintFloor)
-            {
+            {;
+                lastColor = labyrinth.GetTileColor(labyrinthPosition);
                 labyrinth.SetTileColor(labyrinthPosition, TileColor.Grey);
             }
             else if (gameAction == GameAction.ReturnToDivergencePoint)
             {
                 ActionInfo actionInfo = JsonUtility.FromJson<ActionInfo>(info);
 
-                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(actionInfo.position) ;
+                
+                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition) ;
 
                 transform.position = targetPosition;
                 transform.rotation = actionInfo.rotation;
 
+                // Undo wrong tiles (apply the correct colors)
                 foreach (Tile tile in actionInfo.tiles)
                 {
                     labyrinth.SetTileColor(tile.Position, tile.color);
                 }
 
-                labyrinth.SetTileColor(actionInfo.position, TileColor.Yellow);
+                // Undo last action
+                labyrinth.SetTileColor(labyrinthPosition, lastColor);
+
+                // Reset labyrinth position and mark current tile
+                labyrinthPosition = actionInfo.position;
+                labyrinth.SetTileColor(labyrinthPosition, TileColor.Yellow);
             }
         }
             
