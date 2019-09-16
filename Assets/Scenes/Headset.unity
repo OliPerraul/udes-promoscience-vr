@@ -37962,6 +37962,7 @@ MonoBehaviour:
   smoothTime: 5
   character: {fileID: 1734729013}
   camera: {fileID: 578517098}
+  grabbedMouseFocus: {fileID: 11400000, guid: 1c4b8b3665bc59640956b786c5e870f2, type: 2}
 --- !u!1 &1291056704
 GameObject:
   m_ObjectHideFlags: 0
@@ -43091,6 +43092,7 @@ MonoBehaviour:
   readyString:
     localizeString: {fileID: 0}
     defaultString: '[?]'
+  grabbedMouseFocus: {fileID: 0}
   headsetImage: {fileID: 0}
   tabletImage: {fileID: 0}
   serverImage: {fileID: 0}
@@ -47965,6 +47967,7 @@ MonoBehaviour:
   returnToDivergencePointRequest: {fileID: 11400000, guid: bc147a0c74a996b44b71cb26b81651f0,
     type: 2}
   confirmationPanel: {fileID: 351146638}
+  grabbedMouseFocus: {fileID: 0}
 --- !u!1 &1452398572
 GameObject:
   m_ObjectHideFlags: 0
@@ -72277,6 +72280,7 @@ MonoBehaviour:
   returnToDivergencePointRequest: {fileID: 11400000, guid: bc147a0c74a996b44b71cb26b81651f0,
     type: 2}
   confirmationPanel: {fileID: 2111931362}
+  grabbedMouseFocus: {fileID: 11400000, guid: 1c4b8b3665bc59640956b786c5e870f2, type: 2}
 --- !u!1 &1636750816
 GameObject:
   m_ObjectHideFlags: 0

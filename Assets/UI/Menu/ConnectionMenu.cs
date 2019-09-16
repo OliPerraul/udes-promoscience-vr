@@ -41,6 +41,9 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private LocalizeString readyString;
 
+        [SerializeField]
+        private ScriptableBoolean grabbedMouseFocus; 
+
 
         [SerializeField]
         private Image headsetImage;
@@ -117,6 +120,17 @@ namespace UdeS.Promoscience.UI
             }
         }
 
+        public void OnEnable()
+        {
+            grabbedMouseFocus.Value = false;
+        }
+
+        public void OnDisable()
+        {
+            grabbedMouseFocus.Value = true;
+        }
+
+
         void OnIsConnectedToPairValueChanged()
         {
             if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
@@ -130,10 +144,11 @@ namespace UdeS.Promoscience.UI
                         serverImage.color = serverImage.color.SetA(1);
                         connectionStatusText.text = readyString.Value;
 
-                        EnableButton(true);
+                        EnableButton();
                     }
                     else
                     {
+                        gameObject.SetActive(true);
                         serverImage.color = serverImage.color.SetA(disconnectedAlpha);
                         connectionStatusText.text = connectingToServerString.Value;
 
@@ -142,6 +157,7 @@ namespace UdeS.Promoscience.UI
                 }
                 else
                 {
+                    gameObject.SetActive(true);
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
                     connectionStatusText.text = connectingToPairString.Value;
 
@@ -166,6 +182,7 @@ namespace UdeS.Promoscience.UI
                     }
                     else
                     {
+                        gameObject.SetActive(true);
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
                         connectionStatusText.text = connectingToPairString.Value;
 
@@ -174,6 +191,7 @@ namespace UdeS.Promoscience.UI
                 }
                 else
                 {
+                    gameObject.SetActive(true);
                     serverImage.color = serverImage.color.SetA(disconnectedAlpha);
                     connectionStatusText.text = connectingToServerString.Value;
 
@@ -203,7 +221,6 @@ namespace UdeS.Promoscience.UI
                 button.interactable = false;
             }
         }
-
 
         void OnPairingStatusChanged()
         {

@@ -721,7 +721,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &615104637
 GameObject:
@@ -818,7 +818,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &617503596
 GameObject:
@@ -2329,7 +2329,7 @@ RectTransform:
   - {fileID: 499337089}
   - {fileID: 1150753926}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2596,15 +2596,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4314157671096570, guid: 98bb625919cf56c42bc9b50ddbc0b615, type: 2}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314157671096570, guid: 98bb625919cf56c42bc9b50ddbc0b615, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314157671096570, guid: 98bb625919cf56c42bc9b50ddbc0b615, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4314157671096570, guid: 98bb625919cf56c42bc9b50ddbc0b615, type: 2}
       propertyPath: m_LocalRotation.w
@@ -2612,13 +2612,17 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4314157671096570, guid: 98bb625919cf56c42bc9b50ddbc0b615, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114719634723700290, guid: 98bb625919cf56c42bc9b50ddbc0b615,
         type: 2}
       propertyPath: labyrinth
       value: 
       objectReference: {fileID: 590990571}
+    - target: {fileID: 4314157671096570, guid: 98bb625919cf56c42bc9b50ddbc0b615, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98bb625919cf56c42bc9b50ddbc0b615, type: 2}
   m_IsPrefabAsset: 0
@@ -2872,42 +2876,42 @@ Prefab:
     - target: {fileID: 224699138997800952, guid: 23b69f705b8223c4fb4ecd8e02014fe1,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 263
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224699138997800952, guid: 23b69f705b8223c4fb4ecd8e02014fe1,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 211
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224699138997800952, guid: 23b69f705b8223c4fb4ecd8e02014fe1,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 526
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224699138997800952, guid: 23b69f705b8223c4fb4ecd8e02014fe1,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 422
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224699138997800952, guid: 23b69f705b8223c4fb4ecd8e02014fe1,
         type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 224699138997800952, guid: 23b69f705b8223c4fb4ecd8e02014fe1,
         type: 2}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 224699138997800952, guid: 23b69f705b8223c4fb4ecd8e02014fe1,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 224699138997800952, guid: 23b69f705b8223c4fb4ecd8e02014fe1,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 224699138997800952, guid: 23b69f705b8223c4fb4ecd8e02014fe1,
         type: 2}
@@ -2924,6 +2928,10 @@ Prefab:
       propertyPath: startPanel
       value: 
       objectReference: {fileID: 741938480}
+    - target: {fileID: 1106216373295042, guid: 23b69f705b8223c4fb4ecd8e02014fe1, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23b69f705b8223c4fb4ecd8e02014fe1, type: 2}
   m_IsPrefabAsset: 0

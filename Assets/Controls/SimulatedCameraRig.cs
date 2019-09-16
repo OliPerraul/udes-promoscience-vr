@@ -4,6 +4,7 @@ using UnityEngine;
 
 using System;
 using UnityEngine;
+using UdeS.Promoscience.ScriptableObjects;
 //using UnityStandardAssets.CrossPlatformInput;
 
 namespace UdeS.Promoscience.Controls
@@ -32,10 +33,37 @@ namespace UdeS.Promoscience.Controls
         }
 
 
-
         [SerializeField]
         private UnityEngine.Camera camera;
 
+
+        [SerializeField]
+        private ScriptableBoolean grabbedMouseFocus;
+
+        bool init = false;
+
+        public void OnEnable()
+        {
+            if (!init)
+            {
+                init = true;
+                grabbedMouseFocus.valueChangedEvent += OnMouseFocusChanged;
+            }
+        }
+
+        public void OnMouseFocusChanged()
+        {
+            if (grabbedMouseFocus.Value)
+            {
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
+            else
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            }
+        }
 
         public void FixedUpdate()//Transform character, Transform camera)
         {

@@ -1352,6 +1352,7 @@ MonoBehaviour:
   readyString:
     localizeString: {fileID: 11400000, guid: df2321abe4b96664696bb2b1eaed8038, type: 2}
     defaultString: '[?]'
+  grabbedMouseFocus: {fileID: 11400000, guid: 1c4b8b3665bc59640956b786c5e870f2, type: 2}
   headsetImage: {fileID: 114215689330116478}
   tabletImage: {fileID: 114796950847967442}
   serverImage: {fileID: 114887689475021048}

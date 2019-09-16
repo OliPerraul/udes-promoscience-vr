@@ -24,6 +24,9 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject confirmationPanel;
 
+        [SerializeField]
+        private ScriptableBoolean grabbedMouseFocus;
+
 
         void OnEnable()
         {
@@ -44,8 +47,7 @@ namespace UdeS.Promoscience.UI
         {
             if (isDiverging.Value)
             {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
+                grabbedMouseFocus.Value = false;
                 controls.IsPlayerControlsEnabled = false;
                 confirmationPanel.SetActive(true);
             }
@@ -59,8 +61,7 @@ namespace UdeS.Promoscience.UI
         {
             if (confirmationPanel.activeSelf)
             {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Confined;
+                grabbedMouseFocus.Value = true;
                 confirmationPanel.SetActive(false);
                 controls.IsPlayerControlsEnabled = true;
                 returnToDivergencePointAnswer.Value = false;
