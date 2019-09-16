@@ -13,6 +13,9 @@ namespace UdeS.Promoscience.UI
         ScriptableFloat progressRatio;
 
         [SerializeField]
+        ScriptableControler controls;
+
+        [SerializeField]
         GameObject progress;
 
         bool isLerping = false;
@@ -23,7 +26,34 @@ namespace UdeS.Promoscience.UI
         void OnEnable()
         {
             progressRatio.valueChangedEvent += OnValueChanged;
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
+
+        void OnControlsEnableValueChanged()
+        {
+            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            {
+                foreach (Transform child in transform)
+                {
+                    if (child != this.transform)
+                    {
+                        child.gameObject.SetActive(true);
+                    }
+                }
+            }
+            else
+            {
+                foreach (Transform child in transform)
+                {
+                    if (child != this.transform)
+                    {
+                        child.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+
+
 
         void Update()
         {
