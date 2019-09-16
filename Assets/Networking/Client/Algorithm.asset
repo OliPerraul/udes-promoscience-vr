@@ -12,3 +12,18 @@ MonoBehaviour:
   m_Name: Algorithm
   m_EditorClassIdentifier: 
   value: 0
+  longestStraightString:
+    localizeString: {fileID: 11400000, guid: 2a11923c14f145f4d828ed5d8c3abbcd, type: 2}
+    defaultString: '[?]'
+  rightHandString:
+    localizeString: {fileID: 11400000, guid: e7f30e2fdde13874c8106a7e4969cfbf, type: 2}
+    defaultString: '[?]'
+  shortestFlightDistance:
+    localizeString: {fileID: 11400000, guid: 576b4d870d7816e46ba15f87c9a38160, type: 2}
+    defaultString: '[?]'
+  standardString:
+    localizeString: {fileID: 11400000, guid: 28ef717dfeb2055438332deb3e5aca84, type: 2}
+    defaultString: '[?]'
+  tutorialString:
+    localizeString: {fileID: 11400000, guid: e7f30e2fdde13874c8106a7e4969cfbf, type: 2}
+    defaultString: '[?]'
