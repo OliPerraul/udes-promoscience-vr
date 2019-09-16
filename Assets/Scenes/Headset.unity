@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7182,13 +7182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b557fef1875f8a4cbbad922a4420ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pairingStatus: {fileID: 0}
   deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
   serverIpAdress: {fileID: 11400000, guid: 07aac683d064d3440ab716d251d9585b, type: 2}
-  connectingToPairingServerPanel: {fileID: 0}
-  pairingRequestSentPanel: {fileID: 0}
-  pairingResultSuccessPanel: {fileID: 0}
-  pairingResultFailedPanel: {fileID: 0}
-  text: {fileID: 0}
   serverPort: 9995
 --- !u!1 &291004929
 GameObject:
@@ -41035,19 +41031,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e87f87c177ffe249b49cbe7cb45b04b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
+  pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
+  connectingToServerString:
+    localizeString: {fileID: 11400000, guid: 503125f55708eaa4eaa5f34b78a836d3, type: 2}
+    defaultString: '[?]'
+  connectingToPairString:
+    localizeString: {fileID: 11400000, guid: a2662e8ec78f19f48894e604d0a640be, type: 2}
+    defaultString: '[?]'
+  connectingToPairingServerString:
+    localizeString: {fileID: 11400000, guid: 1afaac59ede1a864ba9588d333124883, type: 2}
+    defaultString: '[?]'
+  pairingRequestSentString:
+    localizeString: {fileID: 11400000, guid: ce26d654048969648a9771b69eea0d00, type: 2}
+    defaultString: '[?]'
+  pairingResultSuccessString:
+    localizeString: {fileID: 11400000, guid: 5bb84640c74cfe542a27aa0665c07818, type: 2}
+    defaultString: '[?]'
+  pairingResultFailString:
+    localizeString: {fileID: 11400000, guid: 5ffdff238c1311040b428dfa06168d9d, type: 2}
+    defaultString: '[?]'
+  readyString:
+    localizeString: {fileID: 11400000, guid: df2321abe4b96664696bb2b1eaed8038, type: 2}
+    defaultString: '[?]'
   headsetImage: {fileID: 1370217964}
   tabletImage: {fileID: 1947044015}
+  serverImage: {fileID: 0}
   disconnectedAlpha: 0.4
   backgroundImage: {fileID: 1124282871}
-  buttonImage: {fileID: 88643769}
-  circleIconTemplate: {fileID: 21300000, guid: c51106cac63a85f4b9f1d36a5086cc96, type: 3}
   teams: []
-  dropdown: {fileID: 1380722488}
+  button: {fileID: 88643767}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
     type: 2}
-  pairPanel: {fileID: 2107176079}
-  serverPanel: {fileID: 1250316634}
+  showConnectionDelay: 2
 --- !u!114 &1124282867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42788,7 +42805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1277893027
 Transform:
   m_ObjectHideFlags: 0
@@ -48562,19 +48579,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e87f87c177ffe249b49cbe7cb45b04b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deviceType: {fileID: 0}
+  pairingStatus: {fileID: 0}
+  connectingToServerString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  connectingToPairString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  connectingToPairingServerString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  pairingRequestSentString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  pairingResultSuccessString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  pairingResultFailString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  readyString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
   headsetImage: {fileID: 0}
   tabletImage: {fileID: 0}
+  serverImage: {fileID: 0}
   disconnectedAlpha: 0.4
   backgroundImage: {fileID: 0}
-  buttonImage: {fileID: 0}
-  circleIconTemplate: {fileID: 0}
   teams: []
-  dropdown: {fileID: 0}
+  button: {fileID: 0}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
     type: 2}
-  pairPanel: {fileID: 116859386}
-  serverPanel: {fileID: 432447647}
+  showConnectionDelay: 2
 --- !u!1 &1398590744
 GameObject:
   m_ObjectHideFlags: 0
