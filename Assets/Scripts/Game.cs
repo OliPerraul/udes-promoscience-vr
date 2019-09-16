@@ -36,6 +36,28 @@ namespace UdeS.Promoscience
         [SerializeField]
         private PlaybackManager playbackManager;
 
+        private static Game instance = null;
+
+        public static Game Instance
+        {
+            get {
+
+                return instance;
+            }
+        }
+
+        public void Awake()
+        {
+            if (instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
         void Start()
         {
             gameState.valueChangedEvent += OnGameStateChanged;

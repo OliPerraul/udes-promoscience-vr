@@ -6,7 +6,8 @@ public class ShowPanels : MonoBehaviour {
 
     //public GameObject lobbyPanel;                         //Store a reference to the Game Object OptionsPanel 
     public GameObject optionsPanel;							//Store a reference to the Game Object OptionsPanel 
-	public GameObject optionsTint;							//Store a reference to the Game Object OptionsTint 
+    public GameObject startPanel;                         //Store a reference to the Game Object OptionsPanel 
+    public GameObject optionsTint;							//Store a reference to the Game Object OptionsTint 
 	public GameObject menuPanel;							//Store a reference to the Game Object MenuPanel 
 	public GameObject pausePanel;                           //Store a reference to the Game Object PausePanel 
 
@@ -43,6 +44,17 @@ public class ShowPanels : MonoBehaviour {
 
     }
 
+
+    //Call this function to activate and display the Options panel during the main menu
+    public void ShowStartPanel()
+    {
+        startPanel.SetActive(true);
+        optionsTint.SetActive(true);
+        menuPanel.SetActive(false);
+        SetSelection(startPanel);
+
+    }
+
     ////Call this function to activate and display the Options panel during the main menu
     //public void ShowLobbyPanel()
     //{
@@ -55,11 +67,13 @@ public class ShowPanels : MonoBehaviour {
 
 
     //Call this function to deactivate and hide the Options panel during the main menu
+    // TODO rename (other panels too)
     public void HideOptionsPanel()
 	{
         menuPanel.SetActive(true);
         optionsPanel.SetActive(false);
 		optionsTint.SetActive(false);
+        startPanel.SetActive(false);
 	}
 
 	//Call this function to activate and display the main menu panel during the main menu
