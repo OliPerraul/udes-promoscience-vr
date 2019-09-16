@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
 using Cirrus.Extensions;
+using System;
 
 namespace UdeS.Promoscience.UI
 {
@@ -42,8 +43,13 @@ namespace UdeS.Promoscience.UI
         private LocalizeString readyString;
 
         [SerializeField]
-        private ScriptableBoolean grabbedMouseFocus; 
+        private LocalizeString waitingForServer;
 
+        [SerializeField]
+        private ScriptableBoolean grabbedMouseFocus;
+
+        [SerializeField]
+        private ScriptableClientGameState gameState;
 
         [SerializeField]
         private Image headsetImage;
@@ -103,7 +109,10 @@ namespace UdeS.Promoscience.UI
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
             isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
             pairingStatus.valueChangedEvent += OnPairingStatusChanged;
+            gameState.valueChangedEvent += OmGameStateChanged;
+
             serverImage.color = serverImage.color.SetA(disconnectedAlpha);
+            
             
             switch (deviceType.Value)
             {
@@ -119,6 +128,11 @@ namespace UdeS.Promoscience.UI
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
                     break;
             }
+        }
+
+        private void OmGameStateChanged()
+        {
+            OnIsConnectedToServerValueChanged();
         }
 
         public void OnEnable()
@@ -173,13 +187,13 @@ namespace UdeS.Promoscience.UI
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
                         connectionStatusText.text = readyString.Value;
                         StartCoroutine(ReadyClose());
+                        
                     }
                     else
                     {
                         gameObject.SetActive(true);
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
-                        connectionStatusText.text = connectingToPairString.Value;
-                        
+                        connectionStatusText.text = connectingToPairString.Value;                        
                     }
                 }
                 else
@@ -193,10 +207,17 @@ namespace UdeS.Promoscience.UI
 
         IEnumerator ShowConnection()
         {
-            yield return new WaitForSeconds(showConnectionDelay);
+            if (gameState.Value == Utils.ClientGameState.Playing ||
+                gameState.Value == Utils.ClientGameState.PlayingTutorial)
+            {
 
-            OnIsConnectedToPairValueChanged();
-            OnIsConnectedToServerValueChanged();
+                yield return new WaitForSeconds(showConnectionDelay);
+
+                OnIsConnectedToPairValueChanged();
+                OnIsConnectedToServerValueChanged();
+            }
+
+            yield return null;
         }
 
         IEnumerator ReadyClose()
