@@ -9,7 +9,7 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.UI
 {
-    public class ConnectionDisplay : MonoBehaviour
+    public class ConnectionMenu : MonoBehaviour
     {
         [SerializeField]
         private ScriptableDeviceType deviceType;
