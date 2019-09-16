@@ -207,24 +207,25 @@ namespace UdeS.Promoscience.UI
 
         IEnumerator ShowConnection()
         {
-            if (gameState.Value == Utils.ClientGameState.Playing ||
-                gameState.Value == Utils.ClientGameState.PlayingTutorial)
-            {
+            yield return new WaitForSeconds(showConnectionDelay);
 
-                yield return new WaitForSeconds(showConnectionDelay);
-
-                OnIsConnectedToPairValueChanged();
-                OnIsConnectedToServerValueChanged();
-            }
+            OnIsConnectedToPairValueChanged();
+            OnIsConnectedToServerValueChanged();
+     
 
             yield return null;
         }
 
         IEnumerator ReadyClose()
         {
-            yield return new WaitForSeconds(readyCloseDelay);
+            if (gameState.Value == Utils.ClientGameState.Playing ||
+                gameState.Value == Utils.ClientGameState.PlayingTutorial)
+            {
 
-            gameObject.SetActive(false);
+                yield return new WaitForSeconds(readyCloseDelay);
+
+                gameObject.SetActive(false);
+            }
         }
 
         void OnPairingStatusChanged()

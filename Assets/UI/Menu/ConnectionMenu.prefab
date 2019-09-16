@@ -1089,18 +1089,22 @@ MonoBehaviour:
   readyString:
     localizeString: {fileID: 11400000, guid: df2321abe4b96664696bb2b1eaed8038, type: 2}
     defaultString: '[?]'
+  waitingForServer:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
   grabbedMouseFocus: {fileID: 11400000, guid: 1c4b8b3665bc59640956b786c5e870f2, type: 2}
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   headsetImage: {fileID: 114215689330116478}
   tabletImage: {fileID: 114796950847967442}
   serverImage: {fileID: 114887689475021048}
   disconnectedAlpha: 0.4
   backgroundImage: {fileID: 114663266858458052}
   teams: []
-  button: {fileID: 0}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
     type: 2}
   showConnectionDelay: 2
+  readyCloseDelay: 2
 --- !u!114 &114640748669177858
 MonoBehaviour:
   m_ObjectHideFlags: 1
