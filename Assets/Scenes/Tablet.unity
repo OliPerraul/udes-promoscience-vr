@@ -720,6 +720,12 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1092863918 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114353022368083574, guid: 98bb625919cf56c42bc9b50ddbc0b615,
+    type: 2}
+  m_PrefabInternal: {fileID: 1498611656}
+  m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
 --- !u!1 &1114945676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1133,7 +1139,7 @@ Prefab:
         type: 2}
       propertyPath: gameCamera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1092863918}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f07edcf181f89438fcbae02eeecc82, type: 2}
   m_IsPrefabAsset: 0
