@@ -14041,21 +14041,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
-        type: 2}
-      propertyPath: labyrinth
-      value: 
-      objectReference: {fileID: 1452398573}
-    - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
-        type: 2}
-      propertyPath: waitingForNextRoundRoom
-      value: 
-      objectReference: {fileID: 385339551}
-    - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
-        type: 2}
-      propertyPath: gameCamera
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 114077497795959622, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
       propertyPath: labyrinth
@@ -14066,23 +14051,19 @@ Prefab:
       propertyPath: algorithm
       value: 
       objectReference: {fileID: 1630531311}
-    - target: {fileID: 114298733568807416, guid: 28f07edcf181f89438fcbae02eeecc82,
+    - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
-      propertyPath: musicSource
+      propertyPath: labyrinth
       value: 
-      objectReference: {fileID: 556844378}
-    - target: {fileID: 1307779207878956, guid: 28f07edcf181f89438fcbae02eeecc82, type: 2}
-      propertyPath: m_Name
-      value: Game
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1452398573}
+    - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
+        type: 2}
+      propertyPath: waitingForNextRoundRoom
+      value: 
+      objectReference: {fileID: 385339551}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28f07edcf181f89438fcbae02eeecc82, type: 2}
   m_IsPrefabAsset: 0
---- !u!82 &556844378 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 82137802747922868, guid: 28f07edcf181f89438fcbae02eeecc82,
-    type: 2}
-  m_PrefabInternal: {fileID: 556844377}
 --- !u!1 &561596719
 GameObject:
   m_ObjectHideFlags: 0
