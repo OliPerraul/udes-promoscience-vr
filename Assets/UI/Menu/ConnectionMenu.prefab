@@ -1353,16 +1353,10 @@ MonoBehaviour:
     localizeString: {fileID: 11400000, guid: df2321abe4b96664696bb2b1eaed8038, type: 2}
     defaultString: '[?]'
   headsetImage: {fileID: 114215689330116478}
-  pairedDeviceImage: {fileID: 0}
   tabletImage: {fileID: 114796950847967442}
   serverImage: {fileID: 114887689475021048}
   disconnectedAlpha: 0.4
   backgroundImage: {fileID: 114663266858458052}
-  color:
-    r: 0
-    g: 0
-    b: 0
-    a: 0
   teams: []
   button: {fileID: 114995015453027750}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
