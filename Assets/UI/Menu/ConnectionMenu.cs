@@ -147,6 +147,7 @@ namespace UdeS.Promoscience.UI
 
         void OnIsConnectedToPairValueChanged()
         {
+            gameObject.SetActive(true);
             if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
             {
 
@@ -160,15 +161,13 @@ namespace UdeS.Promoscience.UI
                         StartCoroutine(ReadyClose());                        
                     }
                     else
-                    {
-                        gameObject.SetActive(true);
+                    {                        
                         serverImage.color = serverImage.color.SetA(disconnectedAlpha);
                         connectionStatusText.text = connectingToServerString.Value;                        
                     }
                 }
                 else
-                {
-                    gameObject.SetActive(true);
+                {                    
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
                     connectionStatusText.text = connectingToPairString.Value;
                 }
@@ -177,12 +176,13 @@ namespace UdeS.Promoscience.UI
 
         void OnIsConnectedToServerValueChanged()
         {
+            gameObject.SetActive(true);
             if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
             {
                 if (isConnectedToServer.Value)
                 {
                     if (isConnectedToPair.Value)
-                    {
+                    {                        
                         serverImage.color = serverImage.color.SetA(1);
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
                         connectionStatusText.text = readyString.Value;
@@ -190,15 +190,13 @@ namespace UdeS.Promoscience.UI
                         
                     }
                     else
-                    {
-                        gameObject.SetActive(true);
+                    {    
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
                         connectionStatusText.text = connectingToPairString.Value;                        
                     }
                 }
                 else
-                {
-                    gameObject.SetActive(true);
+                {                    
                     serverImage.color = serverImage.color.SetA(disconnectedAlpha);
                     connectionStatusText.text = connectingToServerString.Value;
                 }
@@ -230,6 +228,7 @@ namespace UdeS.Promoscience.UI
 
         void OnPairingStatusChanged()
         {
+            gameObject.SetActive(true);
             switch (pairingStatus.Value)
             {
                 case Network.ScriptablePairingStatus.ConnectionStatus.Pairing:
