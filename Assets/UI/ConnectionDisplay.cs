@@ -12,19 +12,51 @@ namespace UdeS.Promoscience.UI
     public class ConnectionDisplay : MonoBehaviour
     {
         [SerializeField]
+        private ScriptableDeviceType deviceType;
+
+        [SerializeField]
+        private Network.ScriptablePairingStatus pairingStatus;
+
+        private string connectionStatusString = "";
+
+        [SerializeField]
+        private LocalizeString connectingToServerString;
+
+        [SerializeField]
+        private LocalizeString connectingToPairString;
+
+        [SerializeField]
+        private LocalizeString connectingToPairingServerString;
+
+        [SerializeField]
+        private LocalizeString pairingRequestSentString;
+
+        [SerializeField]
+        private LocalizeString pairingResultSuccessString;
+
+        [SerializeField]
+        private LocalizeString pairingResultFailString;
+
+        [SerializeField]
+        private LocalizeString readyString;
+
+
+        [SerializeField]
         private Image headsetImage;
+
+        private Image pairedDeviceImage;
 
         [SerializeField]
         private Image tabletImage;
+
+        [SerializeField]
+        private Image serverImage;
 
         [SerializeField]
         private float disconnectedAlpha = 0.4f;
 
         [SerializeField]
         private Image backgroundImage;
-
-        [SerializeField]
-        private Image buttonImage;
 
         private UnityEngine.Color color;
 
@@ -39,19 +71,14 @@ namespace UdeS.Promoscience.UI
             {
                 color = value;
                 backgroundImage.color = color;
-                buttonImage.color = color;
+                //button.color = color;
             }
         }
-
-        [SerializeField]
-        private Sprite circleIconTemplate;
 
         [SerializeField]
         private List<ScriptableTeam> teams;
 
         [SerializeField]
-        private Dropdown dropdown;
-
         private Button button;
 
         [SerializeField]
@@ -60,97 +87,148 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         ScriptableBoolean isConnectedToServer;
 
-        [SerializeField]
-        GameObject pairPanel;
 
         [SerializeField]
-        GameObject serverPanel;
+        private float showConnectionDelay = 2f;
 
-        void OnEnable()
+        void Start()
         {
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
             isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
-        }
+            pairingStatus.valueChangedEvent += OnPairingStatusChanged;
+            serverImage.color = serverImage.color.SetA(disconnectedAlpha);
 
-        void Awake()
-        {
-            //OnNotReady();
-            headsetImage.color = headsetImage.color.SetA(disconnectedAlpha);
-            tabletImage.color = tabletImage.color.SetA(disconnectedAlpha);
+            EnableButton(false);
+            
+            switch (deviceType.Value)
+            {
+                case Utils.DeviceType.Headset:
+                    headsetImage.color = headsetImage.color.SetA(1);
+                    pairedDeviceImage = tabletImage;
+                    pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
+                    break;
+
+                case Utils.DeviceType.Tablet:
+                    tabletImage.color = tabletImage.color.SetA(1);
+                    pairedDeviceImage = headsetImage;
+                    pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
+                    break;
+            }
         }
 
         void OnIsConnectedToPairValueChanged()
         {
-            if (isConnectedToPair.Value)
+            if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
             {
-                if (pairPanel.activeSelf)
+
+                if (isConnectedToPair.Value)
                 {
-                    pairPanel.SetActive(false);
+                    if (isConnectedToServer.Value)
+                    {
+                        pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
+                        serverImage.color = serverImage.color.SetA(1);
+                        connectionStatusString = readyString.Value;
+
+                        EnableButton(true);
+                    }
+                    else
+                    {
+                        serverImage.color = serverImage.color.SetA(disconnectedAlpha);
+                        connectionStatusString = connectingToServerString.Value;
+
+                        EnableButton(false);
+                    }
                 }
-            }
-            else
-            {
-                if (isConnectedToServer.Value)
+                else
                 {
-                    pairPanel.SetActive(true);
+                    pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
+                    connectionStatusString = connectingToPairString.Value;
+
+                    EnableButton(false);
                 }
             }
         }
 
         void OnIsConnectedToServerValueChanged()
         {
-            if (isConnectedToServer.Value)
+            if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
             {
-                if (!isConnectedToPair.Value)
+                if (isConnectedToServer.Value)
                 {
-                    pairPanel.SetActive(true);
-                }
+                    if (isConnectedToPair.Value)
+                    {
+                        serverImage.color = serverImage.color.SetA(1);
+                        pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
+                        connectionStatusString = readyString.Value;
 
-                if (serverPanel.activeSelf)
-                {
-                    serverPanel.SetActive(false);
+                        EnableButton();
+                    }
+                    else
+                    {
+                        pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
+                        connectionStatusString = connectingToPairString.Value;
+
+                        EnableButton(false);
+                    }
                 }
+                else
+                {
+                    serverImage.color = serverImage.color.SetA(disconnectedAlpha);
+                    connectionStatusString = connectingToServerString.Value;
+
+                    EnableButton(false);
+                }
+            }
+        }
+
+        IEnumerator ShowConnection()
+        {
+            yield return new WaitForSeconds(showConnectionDelay);
+
+            OnIsConnectedToPairValueChanged();
+            OnIsConnectedToServerValueChanged();
+        }
+
+        public void EnableButton(bool enable = true)
+        {
+            if (enable)
+            {
+                button.image.color = button.image.color.SetA(1);
+                button.interactable = true;
             }
             else
             {
-                if (pairPanel.activeSelf)
-                {
-                    pairPanel.SetActive(false);
-                }
-
-                serverPanel.SetActive(true);
+                button.image.color = button.image.color.SetA(disconnectedAlpha);
+                button.interactable = false;
             }
         }
 
 
-
-        public void OnValidate()
+        void OnPairingStatusChanged()
         {
-            if (dropdown != null)
+            switch (pairingStatus.Value)
             {
-                dropdown.ClearOptions();
+                case Network.ScriptablePairingStatus.ConnectionStatus.Pairing:
+                    connectionStatusString = pairingRequestSentString.Value;
 
-                foreach (var tm in teams)
-                {
-                    //AddDropdownOption(tm);
-                }
+                    EnableButton(false);
+
+                    break;
+
+                case Network.ScriptablePairingStatus.ConnectionStatus.PairingFail:
+                    connectionStatusString = pairingResultFailString.Value;
+
+                    EnableButton(false);
+
+                    break;
+
+                case Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess:
+                    connectionStatusString = pairingResultSuccessString.Value;
+                    StartCoroutine(ShowConnection());
+
+                    EnableButton(false);
+                    break;
             }
-        }
-
-        public void OnDropdownItemSelected(int idx)//.OptionData data)
-        {
-            Color = teams[idx].TeamColor;
-        }
-
-        public void OnReady()
-        {
-            headsetImage.color.SetA(1);
-        }
-
-        public void OnNotReady()
-        {
-            headsetImage.color = headsetImage.color.SetA(disconnectedAlpha);
-            tabletImage.color = tabletImage.color.SetA(disconnectedAlpha);
         }
     }
 }

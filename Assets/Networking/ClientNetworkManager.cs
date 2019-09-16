@@ -46,5 +46,6 @@ namespace UdeS.Promoscience.Network
 
             StartClient();
         }
+
     }
 }

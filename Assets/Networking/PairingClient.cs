@@ -10,25 +10,13 @@ namespace UdeS.Promoscience.Network
     public class PairingClient : MonoBehaviour
     {
         [SerializeField]
+        private ScriptablePairingStatus pairingStatus;
+
+        [SerializeField]
         ScriptableDeviceType deviceType;
 
         [SerializeField]
         ScriptableString serverIpAdress;
-
-        [SerializeField]
-        GameObject connectingToPairingServerPanel;
-
-        [SerializeField]
-        GameObject pairingRequestSentPanel;
-
-        [SerializeField]
-        GameObject pairingResultSuccessPanel;
-
-        [SerializeField]
-        GameObject pairingResultFailedPanel;
-
-        [SerializeField]
-        private UnityEngine.UI.Text text;// pairingResultFailedPanel;
 
 
         public int serverPort = 9995;
@@ -60,9 +48,7 @@ namespace UdeS.Promoscience.Network
         {
             SendPairingRequest();
 
-            connectingToPairingServerPanel.SetActive(false);
-
-            pairingRequestSentPanel.SetActive(true);
+            pairingStatus.Value = ScriptablePairingStatus.ConnectionStatus.Pairing;
         }
                        
         void OnDisconnect(NetworkMessage netMsg)
@@ -72,19 +58,18 @@ namespace UdeS.Promoscience.Network
 
         void OnPairingResult(NetworkMessage netMsg)
         {
-            PairingResultMessage msg = netMsg.ReadMessage<PairingResultMessage>();
+            if (pairingStatus.Value == ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
+                return;
 
-            pairingRequestSentPanel.SetActive(false);
+            PairingResultMessage msg = netMsg.ReadMessage<PairingResultMessage>();
 
             if (msg.isPairingSucess)
             {
-                pairingResultSuccessPanel.SetActive(true);
-                StopClient();
+                pairingStatus.Value = ScriptablePairingStatus.ConnectionStatus.PairingSuccess;
             }
             else
             {
-                pairingResultFailedPanel.SetActive(true);
-                StopClient();
+                pairingStatus.Value = ScriptablePairingStatus.ConnectionStatus.PairingFail;
             }
         }
 
