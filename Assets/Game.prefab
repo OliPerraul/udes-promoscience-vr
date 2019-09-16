@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4110188661362624}
+  - component: {fileID: 114013648485032704}
   - component: {fileID: 114069852616093710}
   - component: {fileID: 114077497795959622}
   - component: {fileID: 82137802747922868}
@@ -138,6 +139,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &114013648485032704
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1307779207878956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bb38d7eec57c0f41a81486b9b9c3edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114069852616093710
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -159,6 +171,8 @@ MonoBehaviour:
   gameCamera: {fileID: 0}
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
   playbackManager: {fileID: 114077497795959622}
+  gameRound: {fileID: 11400000, guid: eaa0ab69523e289469a32b6d7fdf0ae2, type: 2}
+  announcement: {fileID: 0}
 --- !u!114 &114077497795959622
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -179,7 +193,7 @@ MonoBehaviour:
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
   playerPlaybackSpeed: 0.5
   algorithmPlaybackSpeed: 0.5
-  misc: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
+  gameData: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
 --- !u!114 &114298733568807416
 MonoBehaviour:
   m_ObjectHideFlags: 1

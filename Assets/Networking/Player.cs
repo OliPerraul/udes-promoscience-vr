@@ -247,7 +247,7 @@ namespace UdeS.Promoscience.Network
         ScriptableIntegerArray recordedSteps;
 
         [SerializeField]
-        ScriptableMisc misc;
+        private ScriptableClientGameData gameData;
 
         public override void OnStartLocalPlayer()
         {
@@ -417,7 +417,7 @@ namespace UdeS.Promoscience.Network
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
             recordedSteps.Value = steps;
-            misc.ActionValues = stepValues;
+            gameData.ActionValues = stepValues;
             gameState.Value = ClientGameState.ViewingPlayback;
         }
 

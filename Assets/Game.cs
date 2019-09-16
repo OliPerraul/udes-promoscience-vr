@@ -36,6 +36,12 @@ namespace UdeS.Promoscience
         [SerializeField]
         private PlaybackManager playbackManager;
 
+        [SerializeField]
+        private ScriptableInteger gameRound;
+
+        [SerializeField]
+        private UI.Announcement announcement;
+
         private static Game instance = null;
 
         public static Game Instance
@@ -56,6 +62,13 @@ namespace UdeS.Promoscience
 
             instance = this;
             DontDestroyOnLoad(gameObject);
+
+            gameRound.valueChangedEvent += OnGameRoundValueChanged;        
+        }
+
+        public void OnGameRoundValueChanged()
+        {
+            announcement.Message = gameRound.ToString();
         }
 
         void Start()
@@ -70,7 +83,16 @@ namespace UdeS.Promoscience
 
         public void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
+            if (gameState.Value == ClientGameState.TutorialLabyrinthReady)
+            {
+                // TODO localize
+                announcement.Message = "Tutorial";
+            }
+            else if (gameState.Value == ClientGameState.LabyrithReady)
+            {
+                //player .Message = ;
+            }
+            else if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
             {
                 if (controls != null)
                 {

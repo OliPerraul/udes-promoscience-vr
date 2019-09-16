@@ -111,8 +111,7 @@ namespace UdeS.Promoscience.UI
             pairingStatus.valueChangedEvent += OnPairingStatusChanged;
             gameState.valueChangedEvent += OmGameStateChanged;
 
-            serverImage.color = serverImage.color.SetA(disconnectedAlpha);
-            
+            serverImage.color = serverImage.color.SetA(disconnectedAlpha);            
             
             switch (deviceType.Value)
             {
@@ -126,7 +125,7 @@ namespace UdeS.Promoscience.UI
                     tabletImage.color = tabletImage.color.SetA(1);
                     pairedDeviceImage = headsetImage;
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
-                    break;
+                    break;                    
             }
         }
 

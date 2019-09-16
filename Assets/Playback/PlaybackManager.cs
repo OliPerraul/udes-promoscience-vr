@@ -34,7 +34,7 @@ namespace UdeS.Promoscience
         private float algorithmPlaybackSpeed = 0.5f;
 
         [SerializeField]
-        private ScriptableMisc misc;
+        private ScriptableClientGameData gameData;
 
         private Vector2Int labyrinthPosition;
 
@@ -75,7 +75,7 @@ namespace UdeS.Promoscience
         {
             for(int i = 0; i < recordedSteps.Value.Length; i++)
             {
-                playerPlayback.Perform((GameAction)recordedSteps.Value[i], misc.ActionValues[i]);
+                playerPlayback.Perform((GameAction)recordedSteps.Value[i], gameData.ActionValues[i]);
                 yield return new WaitForSeconds(playerPlaybackSpeed);
             }
 
