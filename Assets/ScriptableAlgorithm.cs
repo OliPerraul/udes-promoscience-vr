@@ -14,6 +14,22 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public Action valueChangedEvent;
 
+        [SerializeField]
+        private LocalizeString longestStraightString;
+
+        [SerializeField]
+        private LocalizeString rightHandString;
+
+        [SerializeField]
+        private LocalizeString shortestFlightDistance;
+
+        [SerializeField]
+        private LocalizeString standardString;
+
+        [SerializeField]
+        private LocalizeString tutorialString;
+
+
         public Utils.Algorithm Value
         {
             get
@@ -24,6 +40,30 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
                 this.value = value;
                 OnValueChanged();
+            }
+        }
+
+        public string Name
+        {
+            get
+            {
+                switch (value)
+                {
+                    case Utils.Algorithm.LongestStraight:
+                        return tutorialString.Value;
+
+                    case Utils.Algorithm.RightHand:
+                        return tutorialString.Value;
+
+                    case Utils.Algorithm.ShortestFlightDistance:
+                        return tutorialString.Value;
+
+                    case Utils.Algorithm.Standard:
+                        return tutorialString.Value;
+                        
+                    default:
+                        return "[?]";
+                }
             }
         }
 

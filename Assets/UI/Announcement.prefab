@@ -55,10 +55,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7cbc9836122fc849b172c296f236a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  gameRound: {fileID: 11400000, guid: eaa0ab69523e289469a32b6d7fdf0ae2, type: 2}
   announcementText: {fileID: 114297037564727148}
   punchScaleAmount: 1.2
   punchScaleTime: 2
   announcementTime: 6
+  tutorialString:
+    localizeString: {fileID: 0}
+    defaultString: Tutorial
+  roundString:
+    localizeString: {fileID: 0}
+    defaultString: Round
+  algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
 --- !u!114 &114297037564727148
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -91,7 +100,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Tutorial
+  m_Text: 'Tutorial
+
+    (Longest Straight)'
 --- !u!222 &222182508692335084
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -115,7 +126,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 1200}
+  m_SizeDelta: {x: 600, y: 1200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224702435597594978
 RectTransform:

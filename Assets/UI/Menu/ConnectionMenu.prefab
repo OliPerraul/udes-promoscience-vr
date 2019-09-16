@@ -1104,7 +1104,7 @@ MonoBehaviour:
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
     type: 2}
   showConnectionDelay: 2
-  readyCloseDelay: 2
+  readyCloseDelay: 0.5
 --- !u!114 &114640748669177858
 MonoBehaviour:
   m_ObjectHideFlags: 1
