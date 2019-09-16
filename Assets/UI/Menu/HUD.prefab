@@ -5810,6 +5810,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
   pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
+  connectionStatusText: {fileID: 114353951821524132}
   connectingToServerString:
     localizeString: {fileID: 11400000, guid: 503125f55708eaa4eaa5f34b78a836d3, type: 2}
     defaultString: '[?]'

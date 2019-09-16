@@ -17,7 +17,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private Network.ScriptablePairingStatus pairingStatus;
 
-        private string connectionStatusString = "";
+        [SerializeField]
+        private Text connectionStatusText;
 
         [SerializeField]
         private LocalizeString connectingToServerString;
@@ -127,14 +128,14 @@ namespace UdeS.Promoscience.UI
                     {
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
                         serverImage.color = serverImage.color.SetA(1);
-                        connectionStatusString = readyString.Value;
+                        connectionStatusText.text = readyString.Value;
 
                         EnableButton(true);
                     }
                     else
                     {
                         serverImage.color = serverImage.color.SetA(disconnectedAlpha);
-                        connectionStatusString = connectingToServerString.Value;
+                        connectionStatusText.text = connectingToServerString.Value;
 
                         EnableButton(false);
                     }
@@ -142,7 +143,7 @@ namespace UdeS.Promoscience.UI
                 else
                 {
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
-                    connectionStatusString = connectingToPairString.Value;
+                    connectionStatusText.text = connectingToPairString.Value;
 
                     EnableButton(false);
                 }
@@ -159,14 +160,14 @@ namespace UdeS.Promoscience.UI
                     {
                         serverImage.color = serverImage.color.SetA(1);
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
-                        connectionStatusString = readyString.Value;
+                        connectionStatusText.text = readyString.Value;
 
                         EnableButton();
                     }
                     else
                     {
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
-                        connectionStatusString = connectingToPairString.Value;
+                        connectionStatusText.text = connectingToPairString.Value;
 
                         EnableButton(false);
                     }
@@ -174,7 +175,7 @@ namespace UdeS.Promoscience.UI
                 else
                 {
                     serverImage.color = serverImage.color.SetA(disconnectedAlpha);
-                    connectionStatusString = connectingToServerString.Value;
+                    connectionStatusText.text = connectingToServerString.Value;
 
                     EnableButton(false);
                 }
@@ -209,21 +210,21 @@ namespace UdeS.Promoscience.UI
             switch (pairingStatus.Value)
             {
                 case Network.ScriptablePairingStatus.ConnectionStatus.Pairing:
-                    connectionStatusString = pairingRequestSentString.Value;
+                    connectionStatusText.text = pairingRequestSentString.Value;
 
                     EnableButton(false);
 
                     break;
 
                 case Network.ScriptablePairingStatus.ConnectionStatus.PairingFail:
-                    connectionStatusString = pairingResultFailString.Value;
+                    connectionStatusText.text = pairingResultFailString.Value;
 
                     EnableButton(false);
 
                     break;
 
                 case Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess:
-                    connectionStatusString = pairingResultSuccessString.Value;
+                    connectionStatusText.text = pairingResultSuccessString.Value;
                     StartCoroutine(ShowConnection());
 
                     EnableButton(false);
