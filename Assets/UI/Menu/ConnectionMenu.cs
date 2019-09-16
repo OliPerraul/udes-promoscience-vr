@@ -82,8 +82,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private List<ScriptableTeam> teams;
 
-        [SerializeField]
-        private Button button;
+        //[SerializeField]
+        //private Button button;
 
         [SerializeField]
         ScriptableBoolean isConnectedToPair;
@@ -95,14 +95,15 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private float showConnectionDelay = 2f;
 
+        [SerializeField]
+        private float readyCloseDelay = 2f;
+
         void Start()
         {
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
             isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
             pairingStatus.valueChangedEvent += OnPairingStatusChanged;
             serverImage.color = serverImage.color.SetA(disconnectedAlpha);
-
-            EnableButton(false);
             
             switch (deviceType.Value)
             {
@@ -130,7 +131,6 @@ namespace UdeS.Promoscience.UI
             grabbedMouseFocus.Value = true;
         }
 
-
         void OnIsConnectedToPairValueChanged()
         {
             if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
@@ -143,16 +143,13 @@ namespace UdeS.Promoscience.UI
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
                         serverImage.color = serverImage.color.SetA(1);
                         connectionStatusText.text = readyString.Value;
-
-                        EnableButton();
+                        StartCoroutine(ReadyClose());                        
                     }
                     else
                     {
                         gameObject.SetActive(true);
                         serverImage.color = serverImage.color.SetA(disconnectedAlpha);
-                        connectionStatusText.text = connectingToServerString.Value;
-
-                        EnableButton(false);
+                        connectionStatusText.text = connectingToServerString.Value;                        
                     }
                 }
                 else
@@ -160,8 +157,6 @@ namespace UdeS.Promoscience.UI
                     gameObject.SetActive(true);
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
                     connectionStatusText.text = connectingToPairString.Value;
-
-                    EnableButton(false);
                 }
             }
         }
@@ -177,16 +172,14 @@ namespace UdeS.Promoscience.UI
                         serverImage.color = serverImage.color.SetA(1);
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
                         connectionStatusText.text = readyString.Value;
-
-                        EnableButton();
+                        StartCoroutine(ReadyClose());
                     }
                     else
                     {
                         gameObject.SetActive(true);
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
                         connectionStatusText.text = connectingToPairString.Value;
-
-                        EnableButton(false);
+                        
                     }
                 }
                 else
@@ -194,8 +187,6 @@ namespace UdeS.Promoscience.UI
                     gameObject.SetActive(true);
                     serverImage.color = serverImage.color.SetA(disconnectedAlpha);
                     connectionStatusText.text = connectingToServerString.Value;
-
-                    EnableButton(false);
                 }
             }
         }
@@ -208,18 +199,11 @@ namespace UdeS.Promoscience.UI
             OnIsConnectedToServerValueChanged();
         }
 
-        public void EnableButton(bool enable = true)
+        IEnumerator ReadyClose()
         {
-            if (enable)
-            {
-                button.image.color = button.image.color.SetA(1);
-                button.interactable = true;
-            }
-            else
-            {
-                button.image.color = button.image.color.SetA(disconnectedAlpha);
-                button.interactable = false;
-            }
+            yield return new WaitForSeconds(readyCloseDelay);
+
+            gameObject.SetActive(false);
         }
 
         void OnPairingStatusChanged()
@@ -228,23 +212,15 @@ namespace UdeS.Promoscience.UI
             {
                 case Network.ScriptablePairingStatus.ConnectionStatus.Pairing:
                     connectionStatusText.text = pairingRequestSentString.Value;
-
-                    EnableButton(false);
-
                     break;
 
                 case Network.ScriptablePairingStatus.ConnectionStatus.PairingFail:
                     connectionStatusText.text = pairingResultFailString.Value;
-
-                    EnableButton(false);
-
                     break;
 
                 case Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess:
                     connectionStatusText.text = pairingResultSuccessString.Value;
                     StartCoroutine(ShowConnection());
-
-                    EnableButton(false);
                     break;
             }
         }
