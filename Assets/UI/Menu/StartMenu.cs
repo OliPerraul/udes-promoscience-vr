@@ -152,8 +152,5 @@ namespace UdeS.Promoscience.UI.Menu
             headsetImage.color = headsetImage.color.SetA(disconnectedAlpha);
             tabletImage.color = tabletImage.color.SetA(disconnectedAlpha);
         }
-
-
-
     }
 }
