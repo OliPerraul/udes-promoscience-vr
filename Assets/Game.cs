@@ -119,7 +119,8 @@ namespace UdeS.Promoscience
                 isDiverging.Value = false;
             }
 
-            if (gameState.Value == ClientGameState.PlayingTutorial)
+            if (gameState.Value == ClientGameState.PlayingTutorial ||
+                gameState.Value == ClientGameState.Playing)
             {
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();
