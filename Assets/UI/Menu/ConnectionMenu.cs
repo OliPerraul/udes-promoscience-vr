@@ -134,19 +134,23 @@ namespace UdeS.Promoscience.UI
             OnIsConnectedToServerValueChanged();
         }
 
-        public void OnEnable()
+        public void Enable()
         {
+            transform.GetChild(0).gameObject.SetActive(true);
             grabbedMouseFocus.Value = false;
+
+            
         }
 
-        public void OnDisable()
+        public void Disable()
         {
-            grabbedMouseFocus.Value = true;
+            transform.GetChild(0).gameObject.SetActive(false);
+            grabbedMouseFocus.Value = false;
         }
 
         void OnIsConnectedToPairValueChanged()
         {
-            gameObject.SetActive(true);
+            Enable();
             if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
             {
 
@@ -175,7 +179,7 @@ namespace UdeS.Promoscience.UI
 
         void OnIsConnectedToServerValueChanged()
         {
-            gameObject.SetActive(true);
+            Enable();
             if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
             {
                 if (isConnectedToServer.Value)
@@ -221,13 +225,13 @@ namespace UdeS.Promoscience.UI
 
                 yield return new WaitForSeconds(readyCloseDelay);
 
-                gameObject.SetActive(false);
+                Disable();
             }
         }
 
         void OnPairingStatusChanged()
         {
-            gameObject.SetActive(true);
+            Disable();
             switch (pairingStatus.Value)
             {
                 case Network.ScriptablePairingStatus.ConnectionStatus.Pairing:
