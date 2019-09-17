@@ -20,15 +20,17 @@ namespace UdeS.Promoscience.Controls
         public bool smooth;
         public float smoothTime = 5f;
 
+        [SerializeField]
+        private Transform cameraRigTransform;
 
         [SerializeField]
         private GameObject character;
 
-        public Transform CharacterTransform
+        public Transform Transform
         {
             get
             {
-                return character.transform;
+                return cameraRigTransform;
             }
         }
 

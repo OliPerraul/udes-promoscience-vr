@@ -30,7 +30,7 @@ namespace UdeS.Promoscience.Controls
                 }
                 else if (!ovrCameraRigEnabled)
                 {
-                    return desktopCameraRig.CharacterTransform;
+                    return desktopCameraRig.Transform;
                 }
                 else return null;
             }
