@@ -29,7 +29,7 @@ namespace UdeS.Promoscience.UI
         GameObject returnToDivergenceButton;
 
 
-        void OnEnable()
+        void Start()
         {
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
             isDiverging.valueChangedEvent += OnIsDivergingValueChanged;

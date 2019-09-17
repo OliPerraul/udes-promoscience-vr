@@ -48,7 +48,7 @@ namespace UdeS.Promoscience.UI
             timer.OnTimeLimitHandler += OnAnnouncementTimeOut;
             gameState.valueChangedEvent += OnGameStateChanged;
 
-            gameObject.SetActive(false);
+            transform.GetChild(0).gameObject.SetActive(false);
          }
 
 
@@ -98,7 +98,7 @@ namespace UdeS.Promoscience.UI
 
             set
             {
-                gameObject.SetActive(true);
+                transform.GetChild(0).gameObject.SetActive(true);
                 message = value;
                 announcementText.text = message;
 
@@ -113,7 +113,7 @@ namespace UdeS.Promoscience.UI
 
         public void OnAnnouncementTimeOut()
         {
-            gameObject.SetActive(false);
+            transform.GetChild(0).gameObject.SetActive(false);
         }
 
     }

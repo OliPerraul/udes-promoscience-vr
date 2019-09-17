@@ -33,22 +33,13 @@ namespace UdeS.Promoscience.UI
         {
             if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
             {
-                foreach (Transform child in transform)
-                {
-                    if (child != this.transform)
-                    {
-                        child.gameObject.SetActive(true);
-                    }
-                }
+                transform.GetChild(0).gameObject.SetActive(true);
             }
             else
             {
                 foreach (Transform child in transform)
                 {
-                    if (child != this.transform)
-                    {
-                        child.gameObject.SetActive(false);
-                    }
+                    transform.GetChild(0).gameObject.SetActive(false);
                 }
             }
         }
