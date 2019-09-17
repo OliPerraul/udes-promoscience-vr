@@ -57,19 +57,21 @@ namespace UdeS.Promoscience.UI
         {
             if (gameState.Value == Utils.ClientGameState.TutorialLabyrinthReady)
             {
-                // TODO localize
-                Message = tutorialString.Value + "\n" +                                      
-                     "(" + algorithm.Name + ")";                    
+                Message = tutorialString.Value + "\n" +
+                     "(" + algorithm.Name + ")";
+            }
+            else if (gameState.Value == Utils.ClientGameState.LabyrithReady)
+            {
+                Message = roundString.Value + " " + gameRound.Value.ToString() + "\n" +
+                    "(" + algorithm.Name + ")";
             }
 
         }
 
         public void OnGameRoundValueChanged()
         {    
-            Message = roundString.Value + " " + roundString.Value.ToString();
-            // TODO localize
-            Message = roundString.Value + " " + gameRound.Value.ToString() + "\n" +
-                 "(" + algorithm.Name + ")";
+            //Message = roundString.Value + " " + gameRound.Value.ToString() + "\n" +
+            //     "(" + algorithm.Name + ")";
         }
 
 
