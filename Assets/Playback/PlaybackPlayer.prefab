@@ -130,7 +130,7 @@ Transform:
   m_GameObject: {fileID: 1351502765411794}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 4837918435706972}
   m_RootOrder: 0
@@ -213,7 +213,7 @@ Transform:
   m_GameObject: {fileID: 1574848861049094}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4144173762899398}
   m_Father: {fileID: 4148993122712972}
@@ -272,6 +272,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fe04ed6e47a13c4aa3652eb1895586d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path: {fileID: 114693348602176192}
   speed: 0.6
 --- !u!114 &114693348602176192
 MonoBehaviour:
@@ -286,7 +287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   color: {r: 0, g: 0, b: 0, a: 0}
   drawTime: 0.6
-  normalWidth: 1.25
+  normalWidth: 0.625
   backtrackWidth: 2.5
   segments: []
   currentSegment: {fileID: 0}

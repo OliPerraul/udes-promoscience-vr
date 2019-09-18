@@ -10,7 +10,7 @@ using System;
 
 namespace UdeS.Promoscience.UI
 {
-    public class ConnectionMenu : MonoBehaviour
+    public class ConnectionDisplay : MonoBehaviour
     {
         [SerializeField]
         private ScriptableDeviceType deviceType;
@@ -109,7 +109,7 @@ namespace UdeS.Promoscience.UI
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
             isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
             pairingStatus.valueChangedEvent += OnPairingStatusChanged;
-            gameState.valueChangedEvent += OmGameStateChanged;
+            //gameState.valueChangedEvent += OmGameStateChanged;
 
             serverImage.color = serverImage.color.SetA(disconnectedAlpha);            
             
@@ -129,16 +129,10 @@ namespace UdeS.Promoscience.UI
             }
         }
 
-        private void OmGameStateChanged()
-        {
-            OnIsConnectedToServerValueChanged();
-        }
-
         public void Enable()
         {
             transform.GetChild(0).gameObject.SetActive(true);
             grabbedMouseFocus.Value = false;
-
             
         }
 
@@ -180,6 +174,7 @@ namespace UdeS.Promoscience.UI
         void OnIsConnectedToServerValueChanged()
         {
             Enable();
+
             if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
             {
                 if (isConnectedToServer.Value)
@@ -189,8 +184,7 @@ namespace UdeS.Promoscience.UI
                         serverImage.color = serverImage.color.SetA(1);
                         pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
                         connectionStatusText.text = readyString.Value;
-                        StartCoroutine(ReadyClose());
-                        
+                        StartCoroutine(ReadyClose());                        
                     }
                     else
                     {    
@@ -211,22 +205,15 @@ namespace UdeS.Promoscience.UI
             yield return new WaitForSeconds(showConnectionDelay);
 
             OnIsConnectedToPairValueChanged();
-            OnIsConnectedToServerValueChanged();
-     
+            OnIsConnectedToServerValueChanged();     
 
             yield return null;
         }
 
         IEnumerator ReadyClose()
         {
-            if (gameState.Value == Utils.ClientGameState.Playing ||
-                gameState.Value == Utils.ClientGameState.PlayingTutorial)
-            {
-
-                yield return new WaitForSeconds(readyCloseDelay);
-
-                Disable();
-            }
+            yield return new WaitForSeconds(readyCloseDelay);
+            Disable();           
         }
 
         void OnPairingStatusChanged()

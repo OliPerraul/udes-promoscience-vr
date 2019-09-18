@@ -43,7 +43,6 @@ namespace UdeS.Promoscience.Playback
         [SerializeField]
         private float backtrackWidth = 2.5f;
 
-        [SerializeField]
         private List<Segment> segments;
 
         [SerializeField]
@@ -80,11 +79,11 @@ namespace UdeS.Promoscience.Playback
 
         private int counter = 0;
 
-
-        public void Add(Vector3 position)
+        public void Awake()
         {
-
+            segments = new List<Segment>();
         }
+
 
         [ExecuteInEditMode]
         public void FixedUpdate()
@@ -104,7 +103,7 @@ namespace UdeS.Promoscience.Playback
         {
             for (int i = 1; i < positions.Length; i++)
             {
-                currentSegment = segmentTemplate.CreateSegment(this, positions[i - 1], positions[i], drawTime, normalWidth);
+                currentSegment = segmentTemplate.Create(this, positions[i - 1], positions[i], drawTime, normalWidth);
                 yield return StartCoroutine(currentSegment.DrawCoroutine());
             }
 
@@ -113,17 +112,22 @@ namespace UdeS.Promoscience.Playback
 
         public IEnumerator DrawBetween(Vector3 origin, Vector3 dest)
         {
-            currentSegment = segmentTemplate.CreateSegment(this, origin, dest, drawTime, normalWidth);
+            currentSegment = segmentTemplate.Create(
+                this, 
+                origin, 
+                dest, 
+                drawTime, 
+                normalWidth);
+
+            segments.Add(currentSegment);
             yield return StartCoroutine(currentSegment.DrawCoroutine());
         }
 
-
-
-        [ExecuteInEditMode]
-        public void Start()
-        {
-            StartCoroutine(DrawCoroutine());
-        }
+        //[ExecuteInEditMode]
+        //public void Start()
+        //{
+        //    StartCoroutine(DrawCoroutine());
+        //}
 
 
 

@@ -38,26 +38,24 @@ namespace UdeS.Promoscience.Playback
 
             lineRenderer.SetPosition(0, Origin);
             lineRenderer.SetPosition(1, Origin);
-            lineRenderer.SetPosition(2, Origin);
 
             for (; t < time; t += Time.deltaTime)
             {
                 Current = Vector3.Lerp(Origin, Destination, t / time);
-                lineRenderer.SetPosition(2, Current);
+                lineRenderer.SetPosition(1, Current);
                 yield return null;
             }
 
-            lineRenderer.SetPosition(2, Destination);
+            lineRenderer.SetPosition(1, Destination);
             yield return null;
         }
 
-        public Segment CreateSegment(Path path, Vector3 origin, Vector3 destination, float time, float width)
+        public Segment Create(Path path, Vector3 origin, Vector3 destination, float time, float width)
         {
             var segm = Instantiate(
                 gameObject,
                 Vector3.zero,
-                Quaternion.identity,
-                path.transform)
+                Quaternion.identity)                
                 .GetComponent<Segment>();
 
             segm.Origin = origin;

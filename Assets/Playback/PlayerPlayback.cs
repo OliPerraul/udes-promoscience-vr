@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Playback
 
         public void FixedUpdate()
         {
-            transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
+            //transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
         }
 
         public IEnumerator Perform(GameAction gameAction, string info)
@@ -53,26 +53,49 @@ namespace UdeS.Promoscience.Playback
             {
                 labyrinthPosition.y -= 1;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
+                yield return StartCoroutine(path.DrawBetween(lastPosition, targetPosition));
             }
             else if (gameAction == GameAction.MoveRight)
             {
                 labyrinthPosition.x += 1;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
+                yield return StartCoroutine(path.DrawBetween(lastPosition, targetPosition));
             }
             else if (gameAction == GameAction.MoveDown)
             {
                 labyrinthPosition.y += 1;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
+                yield return StartCoroutine(path.DrawBetween(lastPosition, targetPosition));
             }
             else if (gameAction == GameAction.MoveLeft)
             {
                 labyrinthPosition.x -= 1;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
+                yield return StartCoroutine(path.DrawBetween(lastPosition, targetPosition));       
+            }
+            else if (gameAction == GameAction.ReturnToDivergencePoint)
+            {
+                ActionInfo actionInfo = JsonUtility.FromJson<ActionInfo>(info);
+                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
-                //path.             
+                transform.position = targetPosition;
+                transform.rotation = actionInfo.rotation;
+
+                // Undo wrong tiles (apply the correct colors)
+                foreach (Tile tile in actionInfo.tiles)
+                {
+                    labyrinth.SetTileColor(tile.Position, tile.color);
+                }
+
+                // Undo last action
+                labyrinth.SetTileColor(labyrinthPosition, lastColor);
+
+                // Reset labyrinth position and mark current tile
+                labyrinthPosition = actionInfo.position;
+                labyrinth.SetTileColor(labyrinthPosition, TileColor.Yellow);
             }
 
-            yield return StartCoroutine(path.DrawBetween(lastPosition, targetPosition));
+            yield return null;
 
 
             //else if (gameAction == GameAction.TurnRight)

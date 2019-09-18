@@ -75,8 +75,10 @@ namespace UdeS.Promoscience.Playback
         {
             for(int i = 0; i < recordedSteps.Value.Length; i++)
             {
-                yield return playerPlayback.Perform((GameAction)recordedSteps.Value[i], gameData.ActionValues[i]);
-                //yield return new WaitForSeconds(playerPlaybackSpeed);
+                yield return StartCoroutine(
+                    playerPlayback.Perform(
+                        (GameAction)recordedSteps.Value[i], 
+                        gameData.ActionValues[i]));                
             }
 
             yield return null;

@@ -298,17 +298,15 @@ namespace UdeS.Promoscience
 
                 Vector3 position = labyrinth.GetLabyrinthPositionInWorldPosition(
                     gridPos.x,
-                    gridPos.y) + new Vector3(0, cameraRig.Transform.position.y, 0);
-
-                Quaternion rotation = rotationAtDivergence;
+                    gridPos.y) + 
+                    new Vector3(0, cameraRig.Transform.position.y, 0);                
 
                 playerPositionRotationAndTiles.SetPositionRotationAndTiles(
-                    position, 
-                    rotation, 
+                    position,
+                    rotationAtDivergence, 
                     tiles);
 
-                gameAction.SetAction(GameAction.ReturnToDivergencePoint, gridPos, rotation, tiles);
-
+                gameAction.SetAction(GameAction.ReturnToDivergencePoint, gridPos, rotationAtDivergence, tiles);
             }
         }
 
