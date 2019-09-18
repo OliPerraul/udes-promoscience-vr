@@ -4,7 +4,7 @@ using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Playback
 {
     public class PlaybackManager : MonoBehaviour
     {
