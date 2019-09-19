@@ -50,6 +50,13 @@ namespace UdeS.Promoscience.Playback
             yield return null;
         }
 
+        public void Draw()
+        {
+            transform.position = Origin;
+            lineRenderer.SetPosition(0, Origin);
+            lineRenderer.SetPosition(1, Destination);
+        }
+
         public Segment Create(Path path, Vector3 origin, Vector3 destination, float time, float width)
         {
             var segm = Instantiate(

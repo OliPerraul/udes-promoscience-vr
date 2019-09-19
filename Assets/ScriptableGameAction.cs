@@ -9,7 +9,7 @@ using UdeS.Promoscience.Network;
 namespace UdeS.Promoscience.ScriptableObjects
 {
     [Serializable]
-    public class ActionInfo
+    public class ActionValue
     {
         [SerializeField]
         public Vector2Int position;
@@ -18,7 +18,10 @@ namespace UdeS.Promoscience.ScriptableObjects
         public Quaternion rotation;
 
         [SerializeField]
-        public Tile[] tiles;        
+        public Tile[] tiles;
+
+        [SerializeField]
+        public Tile[] playerSteps;
     }       
 
 
@@ -65,7 +68,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         {
             action = gameAction;
 
-            value = JsonUtility.ToJson(new ActionInfo());
+            value = JsonUtility.ToJson(new ActionValue());
 
             DateTime actionDateTime = DateTime.Now;
 
@@ -79,16 +82,17 @@ namespace UdeS.Promoscience.ScriptableObjects
             OnValueChanged();
         }        
 
-        public void SetAction(GameAction gameAction, Vector2Int position, Quaternion rotation, Tile[] tiles)
+        public void SetAction(GameAction gameAction, Vector2Int position, Quaternion rotation, Tile[] tiles, Tile[] playerSteps)
         {
             action = gameAction;            
                 
             DateTime actionDateTime = DateTime.Now;
 
-            var actionValue = new ActionInfo();
+            var actionValue = new ActionValue();
             actionValue.tiles = tiles;
             actionValue.position = position;
             actionValue.rotation = rotation;
+            actionValue.playerSteps = playerSteps;
 
             value = JsonUtility.ToJson(actionValue);
 

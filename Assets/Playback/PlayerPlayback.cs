@@ -3,11 +3,18 @@ using System.Collections;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 
+using Cirrus.Extensions;
+
+using System.Linq;
+
+
 namespace UdeS.Promoscience.Playback
 {
     public class PlayerPlayback : MonoBehaviour
     {
         [SerializeField]
+        private Path pathTemplate;
+
         private Path path;
 
         [SerializeField]
@@ -34,6 +41,13 @@ namespace UdeS.Promoscience.Playback
             character.labyrinthPosition = labpos;
             character.transform.position = worldPos;
             character.targetPosition = worldPos;
+
+            path = Instantiate(
+                pathTemplate.gameObject, 
+                transform.position, 
+                Quaternion.identity, 
+                transform)
+                .GetComponent<Path>();
 
             return character;
         }
@@ -75,24 +89,24 @@ namespace UdeS.Promoscience.Playback
             }
             else if (gameAction == GameAction.ReturnToDivergencePoint)
             {
-                ActionInfo actionInfo = JsonUtility.FromJson<ActionInfo>(info);
+                ActionValue actionInfo = JsonUtility.FromJson<ActionValue>(info);
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
                 transform.position = targetPosition;
                 transform.rotation = actionInfo.rotation;
 
-                // Undo wrong tiles (apply the correct colors)
-                foreach (Tile tile in actionInfo.tiles)
-                {
-                    labyrinth.SetTileColor(tile.Position, tile.color);
-                }
+                Destroy(path.gameObject);
 
-                // Undo last action
-                labyrinth.SetTileColor(labyrinthPosition, lastColor);
+                path = Instantiate(
+                    pathTemplate.gameObject,
+                    transform.position,
+                    Quaternion.identity,
+                    transform)
+                    .GetComponent<Path>();               
 
-                // Reset labyrinth position and mark current tile
-                labyrinthPosition = actionInfo.position;
-                labyrinth.SetTileColor(labyrinthPosition, TileColor.Yellow);
+                path.Draw(
+                    actionInfo.playerSteps.Select
+                    (x => labyrinth.GetLabyrinthPositionInWorldPosition(x.Position)).ToArray());
             }
 
             yield return null;

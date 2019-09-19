@@ -99,15 +99,15 @@ namespace UdeS.Promoscience.Playback
             }
         }
 
-        public IEnumerator DrawCoroutine()
+        public void Draw(Vector3[] positions)
         {
+            this.positions = positions;
+
             for (int i = 1; i < positions.Length; i++)
             {
                 currentSegment = segmentTemplate.Create(this, positions[i - 1], positions[i], drawTime, normalWidth);
-                yield return StartCoroutine(currentSegment.DrawCoroutine());
-            }
-
-            yield return null;
+                currentSegment.Draw();
+            }            
         }
 
         public IEnumerator DrawBetween(Vector3 origin, Vector3 dest)

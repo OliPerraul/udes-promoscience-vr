@@ -306,7 +306,12 @@ namespace UdeS.Promoscience
                     rotationAtDivergence, 
                     tiles);
 
-                gameAction.SetAction(GameAction.ReturnToDivergencePoint, gridPos, rotationAtDivergence, tiles);
+                gameAction.SetAction(
+                    GameAction.ReturnToDivergencePoint, 
+                    gridPos, 
+                    rotationAtDivergence, 
+                    tiles,
+                    playerSteps.ToArray());
             }
         }
 
