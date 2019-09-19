@@ -8,6 +8,13 @@ namespace UdeS.Promoscience.Playbacks
 {
     public class PlaybackManager : MonoBehaviour
     {
+
+        [SerializeField]
+        ScriptableClientGameState gameState;
+
+        [SerializeField]
+        private ScriptableClientGameData gameData;
+
         [SerializeField]
         private PlayerPlayback playerPlaybackTemplate;
 
@@ -33,9 +40,6 @@ namespace UdeS.Promoscience.Playbacks
         [SerializeField]
         private float algorithmPlaybackSpeed = 0.5f;
 
-        [SerializeField]
-        private ScriptableClientGameData gameData;
-
         private Vector2Int labyrinthPosition;
 
         private Vector3 worldPosition;
@@ -47,6 +51,21 @@ namespace UdeS.Promoscience.Playbacks
                 BeginPlayback();
             }
         }
+
+        public void Awake()
+        {
+            gameState.valueChangedEvent += OnGameStateChanged;
+        }
+
+
+        public void OnGameStateChanged()
+        {
+            if (gameState.Value == ClientGameState.ViewingPlayback)
+            {                
+                BeginPlayback();
+            }
+        }
+
 
         public void BeginPlayback()
         {

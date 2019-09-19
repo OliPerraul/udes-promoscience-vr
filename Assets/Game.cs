@@ -34,9 +34,6 @@ namespace UdeS.Promoscience
         private ScriptableIntegerArray recordedSteps;
 
         [SerializeField]
-        private Playbacks.PlaybackManager playbackManager;
-
-        [SerializeField]
         private UI.Announcement announcement;
 
         private static Game instance = null;
@@ -93,8 +90,7 @@ namespace UdeS.Promoscience
             }
             else if (gameState.Value == ClientGameState.ViewingPlayback)
             {
-                gameCamera.ChangeState(Camera.State.Topdown);
-                playbackManager.BeginPlayback();
+                //gameCamera.ChangeState(Camera.State.Topdown);
 
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();

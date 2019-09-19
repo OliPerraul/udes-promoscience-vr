@@ -2505,6 +2505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   topDownCamera: {fileID: 1943193780}
   gameplayCamera: {fileID: 2132406147}
   oculusCameraLeft: {fileID: 0}
@@ -3183,6 +3184,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fde6711e3c032649b5edefeb4879106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: {fileID: 0}
+  gameData: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
+  gameCamera: {fileID: 0}
   playerPlaybackTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
     type: 2}
   algorithmPlaybackTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
@@ -3192,7 +3196,6 @@ MonoBehaviour:
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
   playerPlaybackSpeed: 0.5
   algorithmPlaybackSpeed: 0.5
-  gameData: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
 --- !u!4 &1562544501
 Transform:
   m_ObjectHideFlags: 0

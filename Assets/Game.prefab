@@ -170,8 +170,6 @@ MonoBehaviour:
   waitingForNextRoundRoom: {fileID: 0}
   gameCamera: {fileID: 0}
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
-  playbackManager: {fileID: 114077497795959622}
-  gameRound: {fileID: 11400000, guid: eaa0ab69523e289469a32b6d7fdf0ae2, type: 2}
   announcement: {fileID: 0}
 --- !u!114 &114077497795959622
 MonoBehaviour:
@@ -184,6 +182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fde6711e3c032649b5edefeb4879106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  gameData: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
+  gameCamera: {fileID: 0}
   playerPlaybackTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
     type: 2}
   algorithmPlaybackTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
@@ -193,7 +194,6 @@ MonoBehaviour:
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
   playerPlaybackSpeed: 0.5
   algorithmPlaybackSpeed: 0.5
-  gameData: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
 --- !u!114 &114298733568807416
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
 using UnityEngine;
 
 namespace UdeS.Promoscience
 {
     public class Camera : MonoBehaviour
     {
+        [SerializeField]
+        ScriptableClientGameState gameState;
+
         [SerializeField]
         private UnityEngine.Camera topDownCamera;
 
@@ -25,6 +30,20 @@ namespace UdeS.Promoscience
         }
 
         private State state;
+
+        public void Awake()
+        {
+            gameState.valueChangedEvent += OnGameStateChanged;
+        }
+
+        public void OnGameStateChanged()
+        {
+            if (gameState.Value == ClientGameState.ViewingPlayback)
+            {
+                ChangeState(State.Topdown);
+            }
+        }
+
 
         public void ChangeState(State state)
         {
