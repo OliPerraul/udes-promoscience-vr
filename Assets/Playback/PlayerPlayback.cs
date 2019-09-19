@@ -55,7 +55,7 @@ namespace UdeS.Promoscience.Playback
         public void FixedUpdate()
         {
             //transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
-        }
+        }//
 
         public IEnumerator Perform(GameAction gameAction, string info)
         {
