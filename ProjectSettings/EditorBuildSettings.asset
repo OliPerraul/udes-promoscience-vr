@@ -9,11 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/Server.unity
     guid: 5183d33a6f3a3f24cac9aaeec62df5a3
   - enabled: 0
-    path: Assets/Scenes/Headset.unity
-    guid: 383aa3dbd85300c47a9cb8a017de9f53
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/Tablet.unity
-    guid: 698ea3b44c4bd2247bb1dbb2c63a7479
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 0
     path: Assets/Scenes/PairingScenes/HeadsetPairing.unity
     guid: e268bc23c0cfaa244a53811051ce5512

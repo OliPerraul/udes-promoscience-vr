@@ -1,14 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace UdeS.Promoscience.Playback
+namespace UdeS.Promoscience.Playbacks
 {
     public class Segment : MonoBehaviour
     {
         [SerializeField]
-        private Path path;
+        private SpriteRenderer sprite;
 
         [SerializeField]
         private LineRenderer lineRenderer;
@@ -17,9 +18,6 @@ namespace UdeS.Promoscience.Playback
         {
             if (lineRenderer == null)
                 lineRenderer = GetComponent<LineRenderer>();
-
-            if (path == null)
-                path = GetComponentInParent<Path>();
         }
 
         public Vector3 Origin;
@@ -33,9 +31,7 @@ namespace UdeS.Promoscience.Playback
         public IEnumerator DrawCoroutine()
         {
             float t = 0;
-
             transform.position = Origin;
-
             lineRenderer.SetPosition(0, Origin);
             lineRenderer.SetPosition(1, Origin);
 
@@ -57,20 +53,40 @@ namespace UdeS.Promoscience.Playback
             lineRenderer.SetPosition(1, Destination);
         }
 
-        public Segment Create(Path path, Vector3 origin, Vector3 destination, float time, float width)
+        public void Overwrite(Vector3 origin, Vector3 dest, bool backtrack)
         {
-            var segm = Instantiate(
+            Enable(true);
+
+            Origin = origin;
+            Destination = dest;
+            lineRenderer.enabled = !backtrack;
+        }
+
+        public Segment Create(Transform transform, Vector3 origin, Vector3 destination, float time, float width, bool backtrack)
+        {
+            var segm = Instantiate(                
                 gameObject,
                 Vector3.zero,
-                Quaternion.identity)                
+                Quaternion.identity,
+                transform)                
                 .GetComponent<Segment>();
 
             segm.Origin = origin;
             segm.Destination = destination;
             segm.time = time;
+            segm.lineRenderer.enabled = !backtrack;
             segm.lineRenderer.widthMultiplier = width;
 
             return segm;
         }
+
+        public void Enable(bool enable=true)
+        {
+            lineRenderer.enabled = enable;
+            sprite.enabled = enable;
+        }
+
+
+
     }
 }

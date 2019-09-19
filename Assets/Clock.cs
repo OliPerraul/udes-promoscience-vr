@@ -29,7 +29,7 @@ namespace UdeS.Promoscience
         public void FixedUpdate()
         {
             if(OnTickedHandler != null)
-            OnTickedHandler.Invoke();//
+                OnTickedHandler.Invoke();//
         }
 
 

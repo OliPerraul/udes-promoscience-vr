@@ -6,16 +6,18 @@ using UdeS.Promoscience.ScriptableObjects;
 using Cirrus.Extensions;
 
 using System.Linq;
+using System.Collections.Generic;
 
-
-namespace UdeS.Promoscience.Playback
+namespace UdeS.Promoscience.Playbacks
 {
     public class PlayerPlayback : MonoBehaviour
     {
-        [SerializeField]
-        private Path pathTemplate;
+        //[SerializeField]
+        //private Path pathTemplate;
 
-        private Path path;
+        //private List<Path> paths;
+
+        //private Path path;
 
         [SerializeField]
         private float speed = 0.6f;
@@ -24,89 +26,197 @@ namespace UdeS.Promoscience.Playback
 
         private Vector2Int labyrinthPosition;
 
+        private Vector2Int lastLabyrinthPosition;
+
         private Vector3 targetPosition;
 
         private Vector3 lastPosition;
 
         private TileColor lastColor;
 
+        [SerializeField]
+        private float drawTime = 0.6f;
+
+        [SerializeField]
+        private float normalWidth = 1.25f;
+
+        //private List<Segment> segments;
+
+        [SerializeField]
+        private Segment currentSegment;
+
+        [SerializeField]
+        private GameObject arrowHead;
+
+        [SerializeField]
+        private Segment segmentTemplate;
+
+        [SerializeField]
+        private Transform positionsParent;
+
+        [SerializeField]
+        private List<Transform> markers;
+
+        [SerializeField]
+        private Vector3[] positions;
+
+        private Dictionary<Vector2Int, Segment> segments;
+
         public PlayerPlayback Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
         {
-            PlayerPlayback character = Instantiate(
+            PlayerPlayback playback = Instantiate(
                 gameObject,
                 worldPos, Quaternion.identity)
                 .GetComponent<PlayerPlayback>();
 
-            character.labyrinth = labyrinth;
-            character.labyrinthPosition = labpos;
-            character.transform.position = worldPos;
-            character.targetPosition = worldPos;
+            playback.labyrinth = labyrinth;
+            playback.labyrinthPosition = labpos;
+            playback.transform.position = worldPos;
+            playback.targetPosition = worldPos;           
 
-            path = Instantiate(
-                pathTemplate.gameObject, 
-                transform.position, 
-                Quaternion.identity, 
-                transform)
-                .GetComponent<Path>();
+            //playback.paths = new List<Path>();
+            //playback.path = pathTemplate.Create(playback.transform);
+            //playback.paths.Add(playback.path);
+            //playback.segments = new List<Segment>();
+            playback.segments = new Dictionary<Vector2Int, Segment>();
 
-            return character;
+            return playback;
         }
+
+        public void OnValidate()
+        {
+            if (positionsParent != null)
+            {
+                if (positions.Length == 0)
+                {
+                    markers = positionsParent.GetComponentsInChildren<Transform>().ToList();
+                    markers.Remove(positionsParent.transform);
+                    positions = markers.Select(x => x.position).ToArray();
+                }
+            }
+        }
+
+        private int counter = 0;
+
 
         public void FixedUpdate()
         {
-            //transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
-        }//
+            if (currentSegment != null)
+            {
+                arrowHead.transform.rotation =
+                    Quaternion.LookRotation(
+                        currentSegment.Destination - currentSegment.Origin,
+                        Vector3.up);
+
+                arrowHead.transform.position = currentSegment.Current;
+            }
+        }
+
+        public void Draw(Tile[] tiles)
+        {
+            positions = tiles.Select
+                    (x => labyrinth.GetLabyrinthPositionInWorldPosition(x.Position)).ToArray();
+
+            Segment segment;
+
+            for (int i = 1; i < tiles.Length; i++)
+            {
+                if (segments.TryGetValue(tiles[i].Position, out segment))
+                {
+                    segment.Enable();
+                    segment.Overwrite(positions[i - 1], positions[i], tiles[i].color == TileColor.Red);
+                }
+            }
+        }
+
+        public IEnumerator DrawBetween(Vector2Int o, Vector2Int d, bool backtrack = false)
+        {
+            Vector3 origin = labyrinth.GetLabyrinthPositionInWorldPosition(o);
+            Vector3 dest = labyrinth.GetLabyrinthPositionInWorldPosition(d);
+
+            if (segments.TryGetValue(o, out currentSegment))
+            {
+                currentSegment.Overwrite(origin, dest, backtrack);                
+            }
+            else if(currentSegment == null)
+            {
+                currentSegment = segmentTemplate.Create(
+                    transform,
+                    origin,
+                    dest,
+                    drawTime,
+                    normalWidth,
+                    backtrack);
+
+                segments.Add(o, currentSegment);
+            }
+
+            yield return StartCoroutine(currentSegment.DrawCoroutine());
+        }
+
+        bool backtrack = false;
 
         public IEnumerator Perform(GameAction gameAction, string info)
         {
+            yield return new WaitForEndOfFrame();
+
             int forwardDirection = labyrinth.GetStartDirection();
 
+            lastLabyrinthPosition = labyrinthPosition;
             lastPosition = targetPosition;
+            lastColor = labyrinth.GetTileColor(lastLabyrinthPosition);
+            //bool backtrack = lastColor == TileColor.Red;
 
             if (gameAction == GameAction.MoveUp)
             {
                 labyrinthPosition.y -= 1;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-                yield return StartCoroutine(path.DrawBetween(lastPosition, targetPosition));
+                yield return StartCoroutine(DrawBetween(lastLabyrinthPosition, labyrinthPosition, backtrack));
             }
             else if (gameAction == GameAction.MoveRight)
             {
                 labyrinthPosition.x += 1;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-                yield return StartCoroutine(path.DrawBetween(lastPosition, targetPosition));
+                yield return StartCoroutine(DrawBetween(lastLabyrinthPosition, labyrinthPosition, backtrack));
             }
             else if (gameAction == GameAction.MoveDown)
             {
                 labyrinthPosition.y += 1;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-                yield return StartCoroutine(path.DrawBetween(lastPosition, targetPosition));
+                yield return StartCoroutine(DrawBetween(lastLabyrinthPosition, labyrinthPosition, backtrack));
             }
             else if (gameAction == GameAction.MoveLeft)
             {
                 labyrinthPosition.x -= 1;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-                yield return StartCoroutine(path.DrawBetween(lastPosition, targetPosition));       
+                yield return StartCoroutine(DrawBetween(lastLabyrinthPosition, labyrinthPosition, backtrack));       
+            }
+            else if (gameAction == GameAction.PaintFloorRed)
+            {
+                backtrack = true;
+            }
+            else if (gameAction == GameAction.PaintFloorYellow)
+            {
+                backtrack = false;
             }
             else if (gameAction == GameAction.ReturnToDivergencePoint)
             {
                 ActionValue actionInfo = JsonUtility.FromJson<ActionValue>(info);
+                labyrinthPosition = actionInfo.position;
                 targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
-                transform.position = targetPosition;
-                transform.rotation = actionInfo.rotation;
+                //transform.position = targetPosition;
+                //transform.rotation = actionInfo.rotation;
 
-                Destroy(path.gameObject);
+                foreach (var pair in segments)
+                {
+                    if (pair.Value == null)
+                        continue;
 
-                path = Instantiate(
-                    pathTemplate.gameObject,
-                    transform.position,
-                    Quaternion.identity,
-                    transform)
-                    .GetComponent<Path>();               
+                    pair.Value.Enable(false);
+                }
 
-                path.Draw(
-                    actionInfo.playerSteps.Select
-                    (x => labyrinth.GetLabyrinthPositionInWorldPosition(x.Position)).ToArray());
+                Draw(actionInfo.playerSteps);
             }
 
             yield return null;

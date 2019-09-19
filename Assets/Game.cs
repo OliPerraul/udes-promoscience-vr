@@ -34,7 +34,7 @@ namespace UdeS.Promoscience
         private ScriptableIntegerArray recordedSteps;
 
         [SerializeField]
-        private Playback.PlaybackManager playbackManager;
+        private Playbacks.PlaybackManager playbackManager;
 
         [SerializeField]
         private UI.Announcement announcement;

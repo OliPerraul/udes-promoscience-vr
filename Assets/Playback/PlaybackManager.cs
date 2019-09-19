@@ -4,7 +4,7 @@ using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
 
-namespace UdeS.Promoscience.Playback
+namespace UdeS.Promoscience.Playbacks
 {
     public class PlaybackManager : MonoBehaviour
     {
@@ -59,7 +59,7 @@ namespace UdeS.Promoscience.Playback
                 labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
             BeginPlayerPlayback();
-            //BeginAlgorithmPlayback();
+            BeginAlgorithmPlayback();
         }
 
         private void BeginPlayerPlayback()
@@ -84,28 +84,28 @@ namespace UdeS.Promoscience.Playback
             yield return null;
         }
 
-        //private void BeginAlgorithmPlayback()
-        //{
-        //    if (algorithmPlayback != null)
-        //        Destroy(algorithmPlayback.gameObject);
+        private void BeginAlgorithmPlayback()
+        {
+            if (algorithmPlayback != null)
+                Destroy(algorithmPlayback.gameObject);
 
-        //    algorithmPlayback = algorithmPlaybackTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
+            algorithmPlayback = algorithmPlaybackTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
 
-        //    StartCoroutine(AlgorithmPlaybackCoroutine());
-        //}
+            StartCoroutine(AlgorithmPlaybackCoroutine());
+        }
 
-        //IEnumerator AlgorithmPlaybackCoroutine()
-        //{
-        //    List<Tile> tiles = algorithm.GetAlgorithmSteps();
+        IEnumerator AlgorithmPlaybackCoroutine()
+        {
+            List<Tile> tiles = algorithm.GetAlgorithmSteps();
 
-        //    foreach (var tile in tiles)
-        //    {
-        //        algorithmPlayback.Perform(tile);
-        //        yield return new WaitForSeconds(algorithmPlaybackSpeed);
-        //    }
+            foreach (var tile in tiles)
+            {
+                algorithmPlayback.Perform(tile);
+                yield return new WaitForSeconds(algorithmPlaybackSpeed);
+            }
 
-        //    yield return null;
-        //}
+            yield return null;
+        }
 
 
     }
