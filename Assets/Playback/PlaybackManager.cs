@@ -8,8 +8,8 @@ namespace UdeS.Promoscience.Playbacks
 {
     public class PlaybackManager : MonoBehaviour
     {
-        //[SerializeField]
-        //ScriptableServerGameInformation serverGameState;
+        [SerializeField]
+        ScriptableServerGameInformation serverGameState;
 
         [SerializeField]
         ScriptableClientGameState gameState;
@@ -46,6 +46,8 @@ namespace UdeS.Promoscience.Playbacks
 
         private Vector3 worldPosition;
 
+        private bool playbackActive = false;
+
         public void Update()
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -57,7 +59,9 @@ namespace UdeS.Promoscience.Playbacks
         public void Awake()
         {
             gameState.valueChangedEvent += OnGameStateChanged;
-            //serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
+
+            if(serverGameState != null)
+                serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
         }
 
 
@@ -69,14 +73,19 @@ namespace UdeS.Promoscience.Playbacks
             }
         }
 
-        //public void OnServerGameStateChanged()
-        //{
-        //    if (serverGameState.GameState == ServerGameState.ViewingPlayback)
-        //    {
-        //        BeginPlayback();
-        //    }
-        //}
-
+        public void OnServerGameStateChanged()
+        {
+            if (serverGameState.GameState == ServerGameState.ViewingPlayback)
+            {                 
+                BeginPlayback();
+                playbackActive = true;
+            }
+            else if(playbackActive)
+            {
+                StopPlayback();
+                playbackActive = false;
+            }
+        }
 
         public void BeginPlayback()
         {
@@ -90,6 +99,22 @@ namespace UdeS.Promoscience.Playbacks
 
             BeginPlayerPlayback();
             BeginAlgorithmPlayback();
+        }
+
+        public void StopPlayback()
+        {
+            StopAllCoroutines();
+            labyrinth.DestroyLabyrinth();
+
+            if (playerPlayback)
+            {
+                Destroy(playerPlayback.gameObject);
+            }
+
+            if (algorithmPlayback)
+            {
+                Destroy(algorithmPlayback.gameObject);
+            }
         }
 
         private void BeginPlayerPlayback()

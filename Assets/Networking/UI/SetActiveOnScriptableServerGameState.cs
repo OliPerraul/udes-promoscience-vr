@@ -33,6 +33,13 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         List<GameObject> gameObjectsToHideOnIntermission = new List<GameObject>();
 
+        [SerializeField]
+        List<GameObject> gameObjectsToActivateViewingPlayback = new List<GameObject>();
+
+        [SerializeField]
+        List<GameObject> gameObjectsToHideViewingPlayback = new List<GameObject>();
+
+
         void OnEnable()
         {
             serverGameInformation.gameStateChangedEvent += OnValueChanged;
@@ -72,6 +79,18 @@ namespace UdeS.Promoscience.UI
                 }
 
                 foreach (GameObject gObject in gameObjectsToHideOnIntermission)
+                {
+                    gObject.SetActive(false);
+                }
+            }
+            else if (serverGameInformation.GameState == ServerGameState.ViewingPlayback)
+            {
+                foreach (GameObject gObject in gameObjectsToActivateViewingPlayback)
+                {
+                    gObject.SetActive(true);
+                }
+
+                foreach (GameObject gObject in gameObjectsToHideViewingPlayback)
                 {
                     gObject.SetActive(false);
                 }

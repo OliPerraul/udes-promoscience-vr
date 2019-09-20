@@ -68,6 +68,9 @@ namespace UdeS.Promoscience.UI
         ScriptableLocalizeString waitingForPairConnectionString;
 
         [SerializeField]
+        ScriptableLocalizeString waitingPlaybackString;
+
+        [SerializeField]
         Image image;
 
         [SerializeField]
@@ -227,6 +230,10 @@ namespace UdeS.Promoscience.UI
                     statusText.text = reconnectingString.Value;
                 }
                 else if (playerInformation.PlayerGameState == ClientGameState.WaitingForPairConnection)
+                {
+                    statusText.text = waitingForPairConnectionString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.WaitingPlayback)
                 {
                     statusText.text = waitingForPairConnectionString.Value;
                 }

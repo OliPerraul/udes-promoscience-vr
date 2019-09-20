@@ -184,9 +184,21 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
+
+
         public void BeginPlayback()
         {
             GameState = ServerGameState.ViewingPlayback;
+
+            for (int i = 0; i < PlayerList.instance.list.Count; i++)
+            {
+                Player player = PlayerList.instance.GetPlayerWithId(i);
+
+                if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial || player.ServerPlayerGameState == ClientGameState.Playing)
+                {
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingPlayback);
+                }
+            }
         }
 
         public void LoadGameInformationFromDatabase()

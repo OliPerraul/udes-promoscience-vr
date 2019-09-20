@@ -28,7 +28,7 @@ namespace UdeS.Promoscience
         GameObject waitingForNextRoundRoom;
 
         [SerializeField]
-        private Camera gameCamera;
+        private CameraWrapper gameCamera;
 
         [SerializeField]
         private ScriptableIntegerArray recordedSteps;

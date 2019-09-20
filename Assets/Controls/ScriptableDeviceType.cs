@@ -43,6 +43,10 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
                 value = Utils.DeviceType.Headset;
             }
+            //else if (sceneName[0] == 'P')// Presentation Support
+            //{
+            //    value = Utils.DeviceType.SupportDevice;
+            //}
         }
 
         public void OnValidate()

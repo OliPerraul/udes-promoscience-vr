@@ -6,10 +6,13 @@ using UnityEngine;
 
 namespace UdeS.Promoscience
 {
-    public class Camera : MonoBehaviour
+    public class CameraWrapper : MonoBehaviour
     {
         [SerializeField]
-        ScriptableClientGameState gameState;
+        private ScriptableServerGameInformation serverGameState;
+
+        [SerializeField]
+        private ScriptableClientGameState gameState;
 
         [SerializeField]
         private UnityEngine.Camera topDownCamera;
@@ -34,11 +37,22 @@ namespace UdeS.Promoscience
         public void Awake()
         {
             gameState.valueChangedEvent += OnGameStateChanged;
+
+            if(serverGameState != null)
+                serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
         }
 
         public void OnGameStateChanged()
         {
             if (gameState.Value == ClientGameState.ViewingPlayback)
+            {
+                ChangeState(State.Topdown);
+            }
+        }
+
+        public void OnServerGameStateChanged()
+        {
+            if (serverGameState.GameState == ServerGameState.ViewingPlayback)
             {
                 ChangeState(State.Topdown);
             }

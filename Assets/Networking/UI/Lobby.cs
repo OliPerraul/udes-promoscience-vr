@@ -11,19 +11,19 @@ namespace UdeS.Promoscience.Networking
         private bool enabled = false;
 
         [SerializeField]
-        ScriptableClientGameState gameState;
+        ScriptableServerGameInformation serverGameState;
 
         public void Awake()
         {
-            gameState.valueChangedEvent += OnGameStateChanged;
+            serverGameState.gameStateChangedEvent += OnGameStateChanged;
         }
 
         public void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.ViewingPlayback)
-            {
-                Enabled = false;
-            }
+            //if (serverGameState.GameState == ServerGameState.ViewingPlayback)
+            //{
+            //    Enabled = false;
+            //}
         }
 
         public bool Enabled

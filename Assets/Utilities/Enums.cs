@@ -47,6 +47,7 @@ namespace UdeS.Promoscience.Utils
 
         ViewingPlayback = 15,
         WaitingPlayback = 16,
+        ConnectingSupport = 17,
     }
 
     [Serializable]
@@ -75,7 +76,8 @@ namespace UdeS.Promoscience.Utils
     {
         NoType,
         Tablet,
-        Headset
+        Headset,
+        SupportDevice,
     }
 
     public enum Directive
