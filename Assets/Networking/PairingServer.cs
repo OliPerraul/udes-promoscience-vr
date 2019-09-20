@@ -78,6 +78,9 @@ namespace UdeS.Promoscience.Network
                 headsets.Remove(deviceId);
                 // Otherwise try remove from tablets
                 tablets.Remove(deviceId);
+
+                connections.Remove(netMsg.conn);
+                connectionsInverse.Remove(deviceId);
             }
         }
 
@@ -107,6 +110,9 @@ namespace UdeS.Promoscience.Network
                         if (connectionsInverse.TryGetValue(headsetId, out headsetCon))
                         {
                             Pair(netMsg.conn, tabletId, headsetCon, headsetId);
+                            // Remove paired ids from the pool
+                            tablets.Remove(tabletId);
+                            headsets.Remove(headsetId);
                         }                        
                     }
                     else
@@ -116,21 +122,21 @@ namespace UdeS.Promoscience.Network
                 }
                 else if (msg.deviceType == Utils.DeviceType.Headset)
                 {
-                    headsetId = msg.deviceId;
-
-                    if (headsets.Count != 0)
+                    if (tablets.Count != 0)
                     {
                         tabletId = tablets[0];
                         if (connectionsInverse.TryGetValue(tabletId, out tabletCon))
                         {
                             Pair(tabletCon, tabletId, netMsg.conn, headsetId);
+                            // Remove paired ids from the pool
+                            tablets.Remove(tabletId);
+                            headsets.Remove(headsetId);
                         }
                     }
                     else
                     {
                         headsets.Add(headsetId);
                     }
-
                 }
                 else
                 {
