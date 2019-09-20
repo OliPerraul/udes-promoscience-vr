@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -215,20 +215,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 59015147}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f1a9a1d119a5944aacfb87d1ec283a2, type: 3}
+  m_Script: {fileID: 11500000, guid: b4a9c50de96f6d04386957f4741ac65c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rayTransform: {fileID: 0}
-  joyPadClickButton: 1
-  gazeClickKey: 32
+  trackingSpace: {fileID: 0}
+  joyPadClickButton: 8192
   performSphereCastForGazepointer: 0
   matchNormalOnPhysicsColliders: 0
-  useRightStickScroll: 1
-  rightStickDeadZone: 0.15
+  useLeftStickScroll: 1
+  leftStickDeadZone: 0.15
   useSwipeScroll: 1
-  swipeDragThreshold: 2
-  swipeDragScale: 1
-  InvertSwipeXAxis: 0
+  minSwipeMovement: 0
+  swipeScrollScale: 4
+  activeController: 0
   angleDragThreshold: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
@@ -1132,8 +1131,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   desktopCameraRig: {fileID: 1277893028}
   ovrCameraRig: {fileID: 1300027174}
-  standaloneInputs: {fileID: 0}
-  ovrInputModule: {fileID: 0}
+  standaloneInputs: {fileID: 59015149}
+  ovrInputModule: {fileID: 59015148}
   ovrCameraRigEnabled: 0
 --- !u!4 &265111331
 Transform:

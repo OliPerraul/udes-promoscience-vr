@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.38919508, g: 0.43484735, b: 0.440828, a: 1}
+  m_IndirectSpecularColor: {r: 0.3891959, g: 0.43484828, b: 0.44082886, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -357,7 +357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &322649782
 RectTransform:
   m_ObjectHideFlags: 0
@@ -391,11 +391,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e87f87c177ffe249b49cbe7cb45b04b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deviceType: {fileID: 0}
+  pairingStatus: {fileID: 0}
+  connectionStatusText: {fileID: 0}
+  connectingToServerString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  connectingToPairString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  connectingToPairingServerString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  pairingRequestSentString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  pairingResultSuccessString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  pairingResultFailString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  readyString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  waitingForServer:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
+  grabbedMouseFocus: {fileID: 0}
+  gameState: {fileID: 0}
+  headsetImage: {fileID: 0}
+  tabletImage: {fileID: 0}
+  serverImage: {fileID: 0}
+  disconnectedAlpha: 0.4
+  backgroundImage: {fileID: 0}
+  teams: []
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
     type: 2}
-  pairPanel: {fileID: 197628573}
-  serverPanel: {fileID: 0}
+  showConnectionDelay: 2
+  readyCloseDelay: 2
 --- !u!1 &608799123
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,13 +1255,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b557fef1875f8a4cbbad922a4420ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
   deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
   serverIpAdress: {fileID: 11400000, guid: 07aac683d064d3440ab716d251d9585b, type: 2}
-  connectingToPairingServerPanel: {fileID: 197628573}
-  pairingRequestSentPanel: {fileID: 1391272299}
-  pairingResultSuccessPanel: {fileID: 1710091339}
-  pairingResultFailedPanel: {fileID: 91313921}
-  text: {fileID: 0}
   serverPort: 9995
 --- !u!4 &1613977603
 Transform:

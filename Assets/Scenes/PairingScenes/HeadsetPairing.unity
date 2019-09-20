@@ -2793,12 +2793,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b557fef1875f8a4cbbad922a4420ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
   deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
   serverIpAdress: {fileID: 11400000, guid: 07aac683d064d3440ab716d251d9585b, type: 2}
-  connectingToPairingServerPanel: {fileID: 1921863510}
-  pairingRequestSentPanel: {fileID: 8281053}
-  pairingResultSuccessPanel: {fileID: 1232688302}
-  pairingResultFailedPanel: {fileID: 1086855458}
   serverPort: 9995
 --- !u!4 &1220147781
 Transform:
@@ -3057,6 +3054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   progressRatio: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
+  controls: {fileID: 0}
   progress: {fileID: 381813811}
 --- !u!1 &1350389189
 GameObject:
