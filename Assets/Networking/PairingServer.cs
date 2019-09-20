@@ -110,8 +110,9 @@ namespace UdeS.Promoscience.Network
             PairingResultMessage pairingResultMsg = new PairingResultMessage();
             pairingResultMsg.isPairingSucess = isPairingSuccess;
 
-            tabletConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
-            headsetConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
+            bool res = tabletConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
+            bool res2 = headsetConnection.Send(pairingResultMsg.GetMsgType(), pairingResultMsg);
+            Debug.Log(res);
         }
 
         public void SendTargetPairingResult(NetworkConnection target, bool isPairingSuccess)

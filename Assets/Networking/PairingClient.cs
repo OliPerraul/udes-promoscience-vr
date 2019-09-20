@@ -71,8 +71,6 @@ namespace UdeS.Promoscience.Network
             {
                 pairingStatus.Value = ScriptablePairingStatus.ConnectionStatus.PairingFail;
             }
-
-            StopClient();
         }
 
         public void SendPairingRequest()
