@@ -76,7 +76,12 @@ namespace UdeS.Promoscience.Network
         public void SendPairingRequest()
         {
             PairingRequestMessage pairingRequestMsg = new PairingRequestMessage();
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            pairingRequestMsg.deviceId = Application.dataPath;// SystemInfo.deviceUniqueIdentifier;
+#else
             pairingRequestMsg.deviceId = SystemInfo.deviceUniqueIdentifier;
+#endif
 
             string deviceName = SystemInfo.deviceModel;
 
