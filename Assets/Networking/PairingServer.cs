@@ -91,12 +91,16 @@ namespace UdeS.Promoscience.Network
             NetworkConnection tabletCon;
             NetworkConnection headsetCon;
 
-            if (connections.TryGetValue(netMsg.conn, out headsetId))
+            if (!connections.TryGetValue(netMsg.conn, out headsetId))
             {
+                tabletId = msg.deviceId;
+                headsetId = msg.deviceId;
+
+                connections.Add(netMsg.conn, tabletId);
+                connectionsInverse.Add(tabletId, netMsg.conn);
+
                 if (msg.deviceType == Utils.DeviceType.Tablet)
                 {
-                    tabletId = msg.deviceId;
-
                     if (headsets.Count != 0)
                     {
                         headsetId = headsets[0];
@@ -109,9 +113,6 @@ namespace UdeS.Promoscience.Network
                     {
                         tablets.Add(tabletId);
                     }
-
-                    connections.Add(netMsg.conn, headsetId);
-                    connectionsInverse.Add(headsetId, netMsg.conn);
                 }
                 else if (msg.deviceType == Utils.DeviceType.Headset)
                 {
@@ -130,8 +131,6 @@ namespace UdeS.Promoscience.Network
                         headsets.Add(headsetId);
                     }
 
-                    connections.Add(netMsg.conn, headsetId);
-                    connectionsInverse.Add(headsetId, netMsg.conn);
                 }
                 else
                 {
