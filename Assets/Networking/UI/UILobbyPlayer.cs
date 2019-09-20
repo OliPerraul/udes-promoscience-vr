@@ -144,7 +144,8 @@ namespace UdeS.Promoscience.UI
         {
             if (playerInformation.Player != null)
             {
-                nameText.text = playerInformation.Player.ServerDeviceName;
+                nameText.text = playerInformation.Player.serverDeviceType.ToString() + " " + playerInformation.Player.ServerDeviceName;
+                //nameText.text = playerInformation.Player.serverDeviceType.ToString();
             }
         }
 

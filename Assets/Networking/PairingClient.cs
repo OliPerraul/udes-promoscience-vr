@@ -71,6 +71,8 @@ namespace UdeS.Promoscience.Network
             {
                 pairingStatus.Value = ScriptablePairingStatus.ConnectionStatus.PairingFail;
             }
+
+            StopClient();
         }
 
         public void SendPairingRequest()
@@ -78,6 +80,7 @@ namespace UdeS.Promoscience.Network
             PairingRequestMessage pairingRequestMsg = new PairingRequestMessage();
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            // Use project path as ID to enable debugging from the same device
             pairingRequestMsg.deviceId = Application.dataPath;// SystemInfo.deviceUniqueIdentifier;
 #else
             pairingRequestMsg.deviceId = SystemInfo.deviceUniqueIdentifier;
