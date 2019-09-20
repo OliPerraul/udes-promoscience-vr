@@ -262,7 +262,12 @@ namespace UdeS.Promoscience.Network
         void ClientInitialize()
         {
             // TODO
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             deviceUniqueIdentifier = Application.dataPath;// SystemInfo.deviceUniqueIdentifier;
+#else
+            deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
+#endif
+
             ServerDeviceName = SystemInfo.deviceModel;
 
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
@@ -305,9 +310,9 @@ namespace UdeS.Promoscience.Network
             CmdSetPlayerInformation(playerInformation.PlayerTeamInformationId);
         }
 
-        #endregion
+#endregion
 
-        #region Command
+#region Command
 
         [Command]
         void CmdSetDeviceType(Utils.DeviceType type)
@@ -345,9 +350,9 @@ namespace UdeS.Promoscience.Network
             ServerTeamInformationId = teamInformationId;
         }
 
-        #endregion
+#endregion
 
-        #region TargetRpc
+#region TargetRpc
 
         [TargetRpc]
         public void TargetSetGameState(NetworkConnection target, ClientGameState state)
@@ -436,7 +441,7 @@ namespace UdeS.Promoscience.Network
         {
             playerInformation.SetPlayerInformation(teamInformationId);
         }
-        #endregion
+#endregion
 
     }
 }
