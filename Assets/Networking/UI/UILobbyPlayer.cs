@@ -184,7 +184,9 @@ namespace UdeS.Promoscience.UI
                 {
                     statusText.text = pairingString.Value;
                 }
-                else if (playerInformation.PlayerGameState == ClientGameState.NoAssociatedPair || playerInformation.PlayerGameState == ClientGameState.ReconnectingNoAssociatedPair)
+                else if (
+                    playerInformation.PlayerGameState == ClientGameState.NoAssociatedPair || 
+                    playerInformation.PlayerGameState == ClientGameState.ReconnectingNoAssociatedPair)
                 {
                     statusText.text = noAssociatedPairString.Value;
                 }
