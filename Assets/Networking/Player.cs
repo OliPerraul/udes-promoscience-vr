@@ -261,7 +261,8 @@ namespace UdeS.Promoscience.Network
         [Client]
         void ClientInitialize()
         {
-            deviceUniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
+            // TODO
+            deviceUniqueIdentifier = Application.dataPath;// SystemInfo.deviceUniqueIdentifier;
             ServerDeviceName = SystemInfo.deviceModel;
 
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
