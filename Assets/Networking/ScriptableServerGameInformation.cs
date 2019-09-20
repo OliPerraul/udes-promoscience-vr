@@ -184,6 +184,11 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
+        public void BeginPlayback()
+        {
+            GameState = ServerGameState.ViewingPlayback;
+        }
+
         public void LoadGameInformationFromDatabase()
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN

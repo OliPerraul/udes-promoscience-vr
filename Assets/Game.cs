@@ -33,9 +33,6 @@ namespace UdeS.Promoscience
         [SerializeField]
         private ScriptableIntegerArray recordedSteps;
 
-        [SerializeField]
-        private UI.Announcement announcement;
-
         private static Game instance = null;
 
         public static Game Instance

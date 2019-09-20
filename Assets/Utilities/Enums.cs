@@ -24,6 +24,7 @@ namespace UdeS.Promoscience.Utils
         Tutorial = 1,
         GameRound = 2,
         Intermission = 3,
+        ViewingPlayback = 4,
     }
 
     public enum ClientGameState : int

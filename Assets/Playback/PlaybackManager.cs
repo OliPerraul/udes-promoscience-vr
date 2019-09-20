@@ -8,6 +8,8 @@ namespace UdeS.Promoscience.Playbacks
 {
     public class PlaybackManager : MonoBehaviour
     {
+        //[SerializeField]
+        //ScriptableServerGameInformation serverGameState;
 
         [SerializeField]
         ScriptableClientGameState gameState;
@@ -55,6 +57,7 @@ namespace UdeS.Promoscience.Playbacks
         public void Awake()
         {
             gameState.valueChangedEvent += OnGameStateChanged;
+            //serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
         }
 
 
@@ -65,6 +68,14 @@ namespace UdeS.Promoscience.Playbacks
                 BeginPlayback();
             }
         }
+
+        //public void OnServerGameStateChanged()
+        //{
+        //    if (serverGameState.GameState == ServerGameState.ViewingPlayback)
+        //    {
+        //        BeginPlayback();
+        //    }
+        //}
 
 
         public void BeginPlayback()
