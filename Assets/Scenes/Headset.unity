@@ -1125,6 +1125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverGameState: {fileID: 0}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   topDownCamera: {fileID: 1379671364}
   gameplayCamera: {fileID: 578517098}
@@ -6040,7 +6041,6 @@ GameObject:
   - component: {fileID: 290324895}
   - component: {fileID: 290324894}
   - component: {fileID: 290324893}
-  - component: {fileID: 290324896}
   - component: {fileID: 290324892}
   m_Layer: 0
   m_Name: HeadsetNetworkManager
@@ -6201,21 +6201,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &290324896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 290324891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b557fef1875f8a4cbbad922a4420ef7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
-  deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
-  serverIpAdress: {fileID: 11400000, guid: 07aac683d064d3440ab716d251d9585b, type: 2}
-  serverPort: 9995
 --- !u!1 &304873866
 GameObject:
   m_ObjectHideFlags: 0

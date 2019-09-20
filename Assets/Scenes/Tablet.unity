@@ -538,7 +538,6 @@ GameObject:
   - component: {fileID: 178970560}
   - component: {fileID: 178970559}
   - component: {fileID: 178970558}
-  - component: {fileID: 178970557}
   - component: {fileID: 178970556}
   m_Layer: 0
   m_Name: TabletNetworkManager
@@ -569,21 +568,6 @@ MonoBehaviour:
   m_OffsetX: 0
   m_OffsetY: 0
   serverIpAdress: {fileID: 11400000, guid: 07aac683d064d3440ab716d251d9585b, type: 2}
---- !u!114 &178970557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 178970555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b557fef1875f8a4cbbad922a4420ef7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
-  deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
-  serverIpAdress: {fileID: 11400000, guid: 07aac683d064d3440ab716d251d9585b, type: 2}
-  serverPort: 9995
 --- !u!114 &178970558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2505,6 +2489,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverGameState: {fileID: 0}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   topDownCamera: {fileID: 1943193780}
   gameplayCamera: {fileID: 2132406147}
@@ -3184,6 +3169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fde6711e3c032649b5edefeb4879106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serverGameState: {fileID: 0}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   gameData: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
   playerPlaybackTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,

@@ -27,17 +27,17 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private LocalizeString connectingToPairString;
 
-        [SerializeField]
-        private LocalizeString connectingToPairingServerString;
+        //[SerializeField]
+        //private LocalizeString connectingToPairingServerString;
 
-        [SerializeField]
-        private LocalizeString pairingRequestSentString;
+        //[SerializeField]
+        //private LocalizeString pairingRequestSentString;
 
-        [SerializeField]
-        private LocalizeString pairingResultSuccessString;
+        //[SerializeField]
+        //private LocalizeString pairingResultSuccessString;
 
-        [SerializeField]
-        private LocalizeString pairingResultFailString;
+        //[SerializeField]
+        //private LocalizeString pairingResultFailString;
 
         [SerializeField]
         private LocalizeString readyString;
@@ -98,8 +98,8 @@ namespace UdeS.Promoscience.UI
         ScriptableBoolean isConnectedToServer;
 
 
-        [SerializeField]
-        private float showConnectionDelay = 2f;
+        //[SerializeField]
+        //private float showConnectionDelay = 2f;
 
         [SerializeField]
         private float readyCloseDelay = 2f;
@@ -108,7 +108,7 @@ namespace UdeS.Promoscience.UI
         {
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
             isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
-            pairingStatus.valueChangedEvent += OnPairingStatusChanged;
+            //pairingStatus.valueChangedEvent += OnPairingStatusChanged;
             //gameState.valueChangedEvent += OmGameStateChanged;
 
             serverImage.color = serverImage.color.SetA(disconnectedAlpha);            
@@ -175,40 +175,29 @@ namespace UdeS.Promoscience.UI
         {
             Enable();
 
-            if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
+            if (isConnectedToServer.Value)
             {
-                if (isConnectedToServer.Value)
-                {
-                    if (isConnectedToPair.Value)
-                    {                        
-                        serverImage.color = serverImage.color.SetA(1);
-                        pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
-                        connectionStatusText.text = readyString.Value;
-                        StartCoroutine(ReadyClose());                        
-                    }
-                    else
-                    {    
-                        pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
-                        connectionStatusText.text = connectingToPairString.Value;                        
-                    }
+                if (isConnectedToPair.Value)
+                {                        
+                    serverImage.color = serverImage.color.SetA(1);
+                    pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
+                    connectionStatusText.text = readyString.Value;
+                    StartCoroutine(ReadyClose());                        
                 }
                 else
-                {                    
-                    serverImage.color = serverImage.color.SetA(disconnectedAlpha);
-                    connectionStatusText.text = connectingToServerString.Value;
+                {    
+                    pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
+                    connectionStatusText.text = connectingToPairString.Value;                        
                 }
             }
+            else
+            {                    
+                serverImage.color = serverImage.color.SetA(disconnectedAlpha);
+                connectionStatusText.text = connectingToServerString.Value;
+            }
+            
         }
 
-        IEnumerator ShowConnection()
-        {
-            yield return new WaitForSeconds(showConnectionDelay);
-
-            OnIsConnectedToPairValueChanged();
-            OnIsConnectedToServerValueChanged();     
-
-            yield return null;
-        }
 
         IEnumerator ReadyClose()
         {
@@ -216,24 +205,5 @@ namespace UdeS.Promoscience.UI
             Disable();           
         }
 
-        void OnPairingStatusChanged()
-        {
-            Disable();
-            switch (pairingStatus.Value)
-            {
-                case Network.ScriptablePairingStatus.ConnectionStatus.Pairing:
-                    connectionStatusText.text = pairingRequestSentString.Value;
-                    break;
-
-                case Network.ScriptablePairingStatus.ConnectionStatus.PairingFail:
-                    connectionStatusText.text = pairingResultFailString.Value;
-                    break;
-
-                case Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess:
-                    connectionStatusText.text = pairingResultSuccessString.Value;
-                    StartCoroutine(ShowConnection());
-                    break;
-            }
-        }
     }
 }
