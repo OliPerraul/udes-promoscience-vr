@@ -16,7 +16,7 @@ namespace UdeS.Promoscience.Network
         [System.Serializable]
         public enum ConnectionStatus
         {
-            Undefined,
+            Connecting,
             Pairing,
             PairingSuccess,
             PairingFail,
@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.Network
 
         public void Awake()
         {
-            value = ConnectionStatus.Pairing;        
+            value = ConnectionStatus.Connecting;        
         }
 
         public ConnectionStatus Value
