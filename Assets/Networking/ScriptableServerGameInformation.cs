@@ -9,7 +9,6 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.ScriptableObjects
 {
-
     [CreateAssetMenu(fileName = "Data", menuName = "Data/ServerGameState", order = 1)]
     public class ScriptableServerGameInformation : ScriptableObject
     {
@@ -19,7 +18,10 @@ namespace UdeS.Promoscience.ScriptableObjects
         [SerializeField]
         private ScriptableTeamList teams;
 
-        public List<Playbacks.PlayerSequenceData> PlayerSequences;
+        // TODO: these courses do not reflect the model
+        // They are simply created on playback
+        // Ideally, player should reference a course instead of refering to a course id 
+        public List<Playbacks.PlayerSequenceData> Sequences;
 
         public Action gameRoundChangedEvent;
 
@@ -33,7 +35,7 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public void OnEnable()
         {
-            PlayerSequences = new List<Playbacks.PlayerSequenceData>();
+            Sequences = new List<Playbacks.PlayerSequenceData>();
 
             foreach (ScriptableTeam team in teams.Teams)
             {
@@ -101,9 +103,8 @@ namespace UdeS.Promoscience.ScriptableObjects
             else
             {
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
                 player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
-#endif
+
                 SQLiteUtilities.InsertPlayerCourse(
                     player.ServerTeamId,
                     player.serverLabyrinthId,
@@ -217,6 +218,8 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
 
+                SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
+
                 if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial || 
                     player.ServerPlayerGameState == ClientGameState.Playing)
                 {
@@ -227,35 +230,57 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public void BeginPlayback()
         {
-            for (int i = 0; i < PlayerList.instance.list.Count; i++)
-            {
-                Player player = PlayerList.instance.GetPlayerWithId(i);
+            /*
+             TODO: 
+                
+                    foreach course
+                        foreach player
+                            player.SetState(FreezeAndPayAttentionToGlobalPlayback)
 
-                var sequence = new Playbacks.PlayerSequenceData();
+                        globalPlayback.add(course.steps)
+
+                    globalPlayback.StartGlobalPlayback();
+
+             TODO:
+
+                Playback.SequenceData should be replaced with Course
+                    We should simply feed the Course Values into the Playback
+
+             */
+
+            List<int> done = new List<int>();
+
+            // Foreach Course,
+            //      Foreach player in Course.players
+            foreach (Player player in PlayerList.instance.list)
+            {
+                // Tell clients to pay attention
+                if (player.ServerPlayerGameState == ClientGameState.WaitingPlayback ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalPlayback ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalPlayback ||
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
+                    player.ServerPlayerGameState == ClientGameState.Playing)
+                {
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalPlayback);
+                }
+
+                if (done.Contains(player.ServerCourseId))
+                    continue;
+
+                Playbacks.PlayerSequenceData sequence = new Playbacks.PlayerSequenceData();
                 sequence.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
-  
+
                 Queue<int> steps;
                 Queue<string> stepValues; //jsons
                 SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
                 sequence.Steps = steps.ToArray();
                 sequence.StepValues = stepValues.ToArray();
 
-                PlayerSequences.Add(sequence);
-
-                // Tell clients to pay attention
-                if (player.ServerPlayerGameState == ClientGameState.WaitingPlayback ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingLocalPlayback ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalPlayback ||
-                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial || 
-                    player.ServerPlayerGameState == ClientGameState.Playing)
-                {
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalPlayback);
-                }
-            }
+                done.Add(player.ServerCourseId);
+            }                           
 
             // Begin playback server
             GameState = ServerGameState.ViewingPlayback;
-
         }
 
         public void LoadGameInformationFromDatabase()

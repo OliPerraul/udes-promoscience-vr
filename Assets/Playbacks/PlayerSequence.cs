@@ -10,27 +10,18 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Playbacks
 {
+
     public class PlayerSequenceData
     {
         public ScriptableTeam Team;
 
         public int[] Steps;
-        public string[] StepValues; //jsons
 
-        //public 
-        //SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
+        public string[] StepValues;
     }
-
 
     public class PlayerSequence : MonoBehaviour
     {
-        //[SerializeField]
-        //private Path pathTemplate;
-
-        //private List<Path> paths;
-
-        //private Path path;
-
         [SerializeField]
         private float speed = 0.6f;
         

@@ -529,6 +529,35 @@ namespace UdeS.Promoscience.Utils
             }
         }
 
+        public static void SetCourseInactive(int courseId)
+        {
+            courseId = -1;
+
+            CreateDatabaseIfItDoesntExist();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "PRAGMA foreign_keys = ON";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText =
+                        " UPDATE " + COURSE +
+                        " SET " + COURSE_ACTIVE + " = " + 0 +
+                        " WHERE " + COURSE_ID + " = " + courseId;
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
         public static bool TryGetCourseId(int teamId, out int courseId)
         {
             courseId = -1;

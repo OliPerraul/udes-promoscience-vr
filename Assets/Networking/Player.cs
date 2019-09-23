@@ -10,9 +10,9 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Network
 {
-
     public class Player : NetworkBehaviour
-    {
+    {        
+
         public string deviceUniqueIdentifier = "";
         string deviceName = "";
 
@@ -81,19 +81,6 @@ namespace UdeS.Promoscience.Network
                 OnDeviceNameChanged();
             }
         }
-
-        //public int ServerTeamId
-        //{
-        //    get
-        //    {
-        //        return serverTeamId;
-        //    }
-        //    set
-        //    {
-        //        serverTeamId = value;
-        //        OnTeamIdChanged();
-        //    }
-        //}
 
         public int ServerTeamId
         {
@@ -176,14 +163,6 @@ namespace UdeS.Promoscience.Network
                 serverDeviceNameChangedEvent();
             }
         }
-
-        //void OnTeamIdChanged()
-        //{
-        //    if (serverTeamIdChangedEvent != null)
-        //    {
-        //        serverTeamIdChangedEvent();
-        //    }
-        //}
 
         void OnTeamIdChanged()
         {

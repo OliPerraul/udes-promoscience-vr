@@ -93,7 +93,7 @@ namespace UdeS.Promoscience.Playbacks
             worldPosition =
                 labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
-            foreach (PlayerSequenceData data in serverGameState.PlayerSequences)
+            foreach (PlayerSequenceData data in serverGameState.Sequences)
             {
                 var sequence = playerSequenceTemplate.Create(
                     data, 
