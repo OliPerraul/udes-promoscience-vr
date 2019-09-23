@@ -54,8 +54,6 @@ namespace UdeS.Promoscience.Playbacks
         [SerializeField]
         private float normalWidth = 1.25f;
 
-        //private List<Segment> segments;
-
         [SerializeField]
         private Segment currentSegment;
 
