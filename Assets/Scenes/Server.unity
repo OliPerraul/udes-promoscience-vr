@@ -2405,7 +2405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00008978134}
+  m_AnchoredPosition: {x: 0, y: -0.00009150726}
   m_SizeDelta: {x: -50, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1329621017
@@ -3002,13 +3002,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d5379311b7d58419d9a577d063a1d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  labyrinth: {fileID: 1065743937}
+  algorithm: {fileID: 2007468727}
   serverGameState: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   playerSequenceTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
     type: 2}
   algorithmSequenceTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
     type: 2}
-  labyrinth: {fileID: 1065743937}
-  algorithm: {fileID: 2007468727}
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
   playerSequenceSpeed: 0.5
   algorithmSequenceSpeed: 0.5

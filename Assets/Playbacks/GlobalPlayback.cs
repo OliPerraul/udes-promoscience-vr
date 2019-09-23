@@ -27,12 +27,6 @@ namespace UdeS.Promoscience.Playbacks
 
         [SerializeField]
         private ScriptableIntegerArray recordedSteps;
-
-        [SerializeField]
-        private float playerSequenceSpeed = 0.5f;
-
-        [SerializeField]
-        private float algorithmSequenceSpeed = 0.5f;
         
         private List<PlayerSequence> playerSequences;
         

@@ -31,11 +31,6 @@ namespace UdeS.Promoscience.Playbacks
         [SerializeField]
         private Algorithm algorithm;
 
-        [SerializeField]
-        private float playerPlaybackSpeed = 0.5f;
-
-        [SerializeField]
-        private float algorithmSequenceSpeed = 0.5f;
 
         private Vector2Int labyrinthPosition;
 
@@ -145,15 +140,16 @@ namespace UdeS.Promoscience.Playbacks
 
         IEnumerator AlgorithmSequenceCoroutine()
         {
-            List<Tile> tiles = algorithm.GetAlgorithmSteps();
+            //List<Tile> tiles = algorithm.GetAlgorithmSteps();
 
-            foreach (var tile in tiles)
-            {
-                algorithmSequence.Perform(tile);
-                yield return new WaitForSeconds(algorithmSequenceSpeed);
-            }
+            //foreach (var tile in tiles)
+            //{
+            //    algorithmSequence.Perform(tile);
+            //    yield return new WaitForSeconds(algorithmSequenceSpeed);
+            //}
 
             yield return null;
+
         }
 
 
