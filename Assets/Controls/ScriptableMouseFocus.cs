@@ -19,7 +19,7 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private MouseFocus value = MouseFocus.Menu;
 
-        public void Awake()
+        public void OnEnable()
         {
             value = MouseFocus.Menu;
         }

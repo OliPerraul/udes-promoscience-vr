@@ -13,7 +13,7 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public Action valueChangedEvent;
 
-        public void Awake()
+        public void OnEnable()
         {
             value = false;
         }

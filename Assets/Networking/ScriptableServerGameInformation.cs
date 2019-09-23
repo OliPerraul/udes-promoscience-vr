@@ -32,7 +32,8 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         ServerGameState gameState;
 
-        public void Awake()
+
+        public void OnEnable()
         {
             PlayerSequences = new List<Playbacks.PlayerSequenceData>();
         }

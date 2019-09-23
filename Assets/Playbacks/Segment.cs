@@ -62,7 +62,14 @@ namespace UdeS.Promoscience.Playbacks
             lineRenderer.enabled = !backtrack;
         }
 
-        public Segment Create(Transform transform, Vector3 origin, Vector3 destination, float time, float width, bool backtrack)
+        public Segment Create(
+            Transform transform, 
+            Vector3 origin, 
+            Vector3 destination, 
+            Material material, 
+            float time, 
+            float width, 
+            bool backtrack)
         {
             var segm = Instantiate(                
                 gameObject,
@@ -76,6 +83,7 @@ namespace UdeS.Promoscience.Playbacks
             segm.time = time;
             segm.lineRenderer.enabled = !backtrack;
             segm.lineRenderer.widthMultiplier = width;
+            segm.lineRenderer.material = material;
 
             return segm;
         }

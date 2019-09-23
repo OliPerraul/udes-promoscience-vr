@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         private ConnectionStatus value = ConnectionStatus.Pairing;
 
-        public void Awake()
+        public void OnEnable()
         {
             value = ConnectionStatus.Connecting;        
         }

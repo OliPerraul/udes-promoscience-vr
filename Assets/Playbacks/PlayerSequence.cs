@@ -74,6 +74,11 @@ namespace UdeS.Promoscience.Playbacks
         [SerializeField]
         private Vector3[] positions;
 
+        [SerializeField]
+        private Material templateSegmentMaterial;
+
+        private Material segmentMaterial;
+
         private Dictionary<Vector2Int, Segment> segments;
 
         public PlayerSequence Create(PlayerSequenceData data, Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
@@ -89,6 +94,8 @@ namespace UdeS.Promoscience.Playbacks
             sequence.targetPosition = worldPos;
             sequence.data = data;
             sequence.segments = new Dictionary<Vector2Int, Segment>();
+            sequence.segmentMaterial = new Material(templateSegmentMaterial);
+            sequence.segmentMaterial.color = data.Team.TeamColor;
 
             return sequence;
         }
@@ -132,8 +139,6 @@ namespace UdeS.Promoscience.Playbacks
             yield return null;
         }
 
-
-
         public void Draw(Tile[] tiles)
         {
             positions = tiles.Select
@@ -166,6 +171,7 @@ namespace UdeS.Promoscience.Playbacks
                     transform,
                     origin,
                     dest,
+                    segmentMaterial,
                     drawTime,
                     normalWidth,
                     backtrack);
