@@ -145,30 +145,28 @@ namespace UdeS.Promoscience.UI
         void OnIsConnectedToPairValueChanged()
         {
             Enable();
-            if (pairingStatus.Value == Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess)
-            {
 
-                if (isConnectedToPair.Value)
+            if (isConnectedToPair.Value)
+            {
+                if (isConnectedToServer.Value)
                 {
-                    if (isConnectedToServer.Value)
-                    {
-                        pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
-                        serverImage.color = serverImage.color.SetA(1);
-                        connectionStatusText.text = readyString.Value;
-                        StartCoroutine(ReadyClose());                        
-                    }
-                    else
-                    {                        
-                        serverImage.color = serverImage.color.SetA(disconnectedAlpha);
-                        connectionStatusText.text = connectingToServerString.Value;                        
-                    }
+                    pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
+                    serverImage.color = serverImage.color.SetA(1);
+                    connectionStatusText.text = readyString.Value;
+                    StartCoroutine(ReadyClose());                        
                 }
                 else
-                {                    
-                    pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
-                    connectionStatusText.text = connectingToPairString.Value;
+                {                        
+                    serverImage.color = serverImage.color.SetA(disconnectedAlpha);
+                    connectionStatusText.text = connectingToServerString.Value;                        
                 }
             }
+            else
+            {                    
+                pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
+                connectionStatusText.text = connectingToPairString.Value;
+            }
+            
         }
 
         void OnIsConnectedToServerValueChanged()
