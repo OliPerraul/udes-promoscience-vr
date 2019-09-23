@@ -9,6 +9,8 @@ using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using UdeS.Promoscience.UI;
 
+using System.Threading;
+using System;
 
 namespace UdeS.Promoscience.Network
 {
@@ -20,10 +22,12 @@ namespace UdeS.Promoscience.Network
         // Tablet, Headset
         public List<string> headsets;
         public List<string> tablets;
-        public Dictionary<NetworkConnection, string> connections;
-        public Dictionary<string, NetworkConnection> connectionsInverse;
+        //public Dictionary<int, NetworkConnection> connections;
+        public Dictionary<string, NetworkConnection> connections;
 
         public int serverPort = 9995;
+
+        private Mutex mutex;
 
         private void Start()
         {
@@ -32,11 +36,12 @@ namespace UdeS.Promoscience.Network
 
         public void Awake()
         {
+            mutex = new Mutex();
+
             headsets = new List<string>();
             tablets = new List<string>();
-            connections = new Dictionary<NetworkConnection, string>();
-            connectionsInverse = new Dictionary<string, NetworkConnection>();
-
+            //connections = new Dictionary<int, NetworkConnection>();
+            connections = new Dictionary<string, NetworkConnection>();
         }
 
         void Update()
@@ -51,8 +56,9 @@ namespace UdeS.Promoscience.Network
         {
             server = new NetworkServerSimple();
             server.RegisterHandler(MsgType.Connect, OnConnect);
-            server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
-            server.RegisterHandler(PairingRequestMessage.GetCustomMsgType(), OnPairingRequest);
+            //server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
+            server.RegisterHandler((short)CustomMsgType.PairingRequest, OnPairingRequest);
+            server.RegisterHandler((short)CustomMsgType.UnpairingRequest, OnUnpairingRequest);
             server.Listen(serverPort);
         }
 
@@ -67,53 +73,57 @@ namespace UdeS.Promoscience.Network
             clientConnectionList.Add(netMsg.conn);
         }
 
-        void OnDisconnect(NetworkMessage netMsg)
+        private void OnUnpairingRequest(NetworkMessage netMsg)
         {
             clientConnectionList.Remove(netMsg.conn);
-            string deviceId = null;
 
-            if (connections.TryGetValue(netMsg.conn, out deviceId))
+            PairingRequestMessage msg = netMsg.ReadMessage<PairingRequestMessage>();
+            string deviceId = msg.deviceId;
+
+            NetworkConnection conn;
+
+            mutex.WaitOne();
+
+            if (connections.TryGetValue(deviceId, out conn))
             {
-                // Try remove from headest
                 headsets.Remove(deviceId);
-                // Otherwise try remove from tablets
                 tablets.Remove(deviceId);
-
-                connections.Remove(netMsg.conn);
-                connectionsInverse.Remove(deviceId);
+                connections.Remove(deviceId);
             }
+
+            mutex.ReleaseMutex();
         }
 
         void OnPairingRequest(NetworkMessage netMsg)
         {
             PairingRequestMessage msg = netMsg.ReadMessage<PairingRequestMessage>();
-
             string headsetId = null;
             string tabletId = null;
-
             NetworkConnection tabletCon;
             NetworkConnection headsetCon;
 
-            if (!connections.TryGetValue(netMsg.conn, out headsetId))
-            {
-                tabletId = msg.deviceId;
-                headsetId = msg.deviceId;
+            mutex.WaitOne();
 
-                connections.Add(netMsg.conn, tabletId);
-                connectionsInverse.Add(tabletId, netMsg.conn);
+            tabletId = msg.deviceId;
+            headsetId = msg.deviceId;
+            tabletCon = netMsg.conn;
+            headsetCon = netMsg.conn;
+
+            if (!connections.ContainsKey(tabletId))
+            {
+                connections.Add(headsetId, headsetCon);
 
                 if (msg.deviceType == Utils.DeviceType.Tablet)
                 {
                     if (headsets.Count != 0)
                     {
                         headsetId = headsets[0];
-                        if (connectionsInverse.TryGetValue(headsetId, out headsetCon))
+                        if (connections.TryGetValue(headsetId, out headsetCon))
                         {
-                            Pair(netMsg.conn, tabletId, headsetCon, headsetId);
-                            // Remove paired ids from the pool
+                            Pair(tabletCon, tabletId, headsetCon, headsetId);
                             tablets.Remove(tabletId);
                             headsets.Remove(headsetId);
-                        }                        
+                        }
                     }
                     else
                     {
@@ -125,10 +135,9 @@ namespace UdeS.Promoscience.Network
                     if (tablets.Count != 0)
                     {
                         tabletId = tablets[0];
-                        if (connectionsInverse.TryGetValue(tabletId, out tabletCon))
+                        if (connections.TryGetValue(tabletId, out tabletCon))
                         {
-                            Pair(tabletCon, tabletId, netMsg.conn, headsetId);
-                            // Remove paired ids from the pool
+                            Pair(tabletCon, tabletId, headsetCon, headsetId);
                             tablets.Remove(tabletId);
                             headsets.Remove(headsetId);
                         }
@@ -143,6 +152,9 @@ namespace UdeS.Promoscience.Network
                     SendTargetPairingResult(netMsg.conn, false);
                 }
             }
+            
+
+            mutex.ReleaseMutex();
         }
 
         private bool Pair(NetworkConnection tabletConnection, string tabletId, NetworkConnection headsetConnection, string headsetId)

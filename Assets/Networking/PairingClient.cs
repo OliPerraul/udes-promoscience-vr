@@ -53,6 +53,8 @@ namespace UdeS.Promoscience.Network
                        
         void OnDisconnect(NetworkMessage netMsg)
         {
+            SendPairingRequest(false);
+
             StopClient();
         }
 
@@ -73,7 +75,8 @@ namespace UdeS.Promoscience.Network
             }
         }
 
-        public void SendPairingRequest()
+ 
+        public void SendPairingRequest(bool pairing=true)
         {
             PairingRequestMessage pairingRequestMsg = new PairingRequestMessage();
 
@@ -95,7 +98,9 @@ namespace UdeS.Promoscience.Network
                 pairingRequestMsg.deviceType = Utils.DeviceType.Headset;
             }
 
-            client.Send(pairingRequestMsg.GetMsgType(), pairingRequestMsg);
+            client.Send(
+                (short) (pairing ? CustomMsgType.PairingRequest : CustomMsgType.UnpairingRequest), 
+                pairingRequestMsg);
         }
 
     }

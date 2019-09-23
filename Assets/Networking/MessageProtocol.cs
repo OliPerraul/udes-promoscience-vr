@@ -14,6 +14,7 @@ namespace UdeS.Promoscience.Network
         AlgorithmRespect = 101,
         Directive = 102,
         PairingRequest = 103,
+        UnpairingRequest = 114,
         PairingResult = 104,
         PlayerInformation = 105,
         PlayerPaintTile = 106,
@@ -24,6 +25,7 @@ namespace UdeS.Promoscience.Network
         RequestForGameInformation = 111,
         ReturnToDivergencePointAnswer = 112,
         ReturnToDivergencePointRequest = 113
+
     }
 
     public class AlgorithmMessage : MessageBase
@@ -77,7 +79,26 @@ namespace UdeS.Promoscience.Network
 
         public Directive directive;
     }
+
     public class PairingRequestMessage : MessageBase
+    {
+        static CustomMsgType type = CustomMsgType.PairingRequest;
+
+        public static short GetCustomMsgType()
+        {
+            return (short)type;
+        }
+
+        public short GetMsgType()
+        {
+            return (short)type;
+        }
+
+        public Utils.DeviceType deviceType;
+        public string deviceId;
+    }
+
+    public class UnpairingRequestMessage : MessageBase
     {
         static CustomMsgType type = CustomMsgType.PairingRequest;
 
