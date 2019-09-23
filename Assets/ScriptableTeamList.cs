@@ -12,6 +12,14 @@ namespace UdeS.Promoscience.ScriptableObjects
         [SerializeField]
         List<ScriptableTeam> teamList = new List<ScriptableTeam>();
 
+        public IEnumerable<ScriptableTeam> Teams
+        {
+            get
+            {
+                return teamList;
+            }
+        }
+
         int counter = 0;
 
         public ScriptableTeam GetUnusedScriptableTeam()

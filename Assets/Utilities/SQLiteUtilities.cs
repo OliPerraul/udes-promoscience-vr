@@ -549,9 +549,9 @@ namespace UdeS.Promoscience.Utils
                     cmd.CommandText = "PRAGMA foreign_keys = ON";
                     cmd.ExecuteNonQuery();
                     
-                    cmd.CommandText = "SELECT Count(*) FROM " + COURSE + " WHERE " +
+                    cmd.CommandText = "SELECT * FROM " + COURSE + " WHERE " +
                         COURSE_TEAM_ID + "='" + teamId + "' AND " +
-                        COURSE_ACTIVE + "='" + 1;
+                        COURSE_ACTIVE + "='" + 1 + "'";
 
                     cmd.ExecuteNonQuery();
 
@@ -562,10 +562,10 @@ namespace UdeS.Promoscience.Utils
                         {
                             // TODO Assert only one course active for a given team
                             // Get active course id
-                            courseId = reader.GetInt32(0); // First column (courseId)
+                            courseId = int.Parse(reader[COURSE_ID].ToString());
                             res = true;
-
                         }
+
                         reader.Close();
                     }
                 }
@@ -596,11 +596,48 @@ namespace UdeS.Promoscience.Utils
                     cmd.CommandText = "PRAGMA foreign_keys = ON";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_ACTIVE + ") VALUES ('" + courseId + "', '" + teamId + "', '" + labyrinthId + "', '" + algorithmId + "', '" + 1 + "' );";
+                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_ACTIVE + ") VALUES ('" + courseId + "', '" + teamId + "', '" + labyrinthId + "', '" + algorithmId + "', '1');";
                     cmd.ExecuteNonQuery();                                             
                 }
             }
         }
+
+        public static void InsertPlayerTeam(
+            int teamId,
+            string teamName,
+            string teamColor,
+            string dateTime)
+        {
+            CreateDatabaseIfItDoesntExist();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+
+                    cmd.CommandText = "SELECT Count(*) FROM " + TEAM + " WHERE " + TEAM_ID + "='" + teamId + "'";
+                    cmd.ExecuteNonQuery();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            if (reader.GetInt32(0) == 0)
+                            {
+                                reader.Close();
+                                cmd.CommandText = "INSERT INTO " + TEAM + " (" + TEAM_ID + ", " + TEAM_NAME + ", " + TEAM_COLOR + ", " + TEAM_CREATION_DATE_TIME + ") VALUES ('" + teamId + "', '" + teamName + "', '" + teamColor + "', '" + dateTime + "');";
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                        reader.Close();
+                    }
+                }
+            }
+        }
+
 
         public static void InsertPlayerAction(
             int teamId, 
@@ -626,23 +663,6 @@ namespace UdeS.Promoscience.Utils
 
                     cmd.CommandText = "PRAGMA foreign_keys = ON";
                     cmd.ExecuteNonQuery();
-
-                    cmd.CommandText = "SELECT Count(*) FROM " + TEAM + " WHERE " + TEAM_ID + "='" + teamId + "'";
-                    cmd.ExecuteNonQuery();
-
-                    using (SqliteDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            if (reader.GetInt32(0) == 0)
-                            {
-                                reader.Close();
-                                cmd.CommandText = "INSERT INTO " + TEAM + " (" + TEAM_ID + ", " + TEAM_NAME + ", " + TEAM_COLOR + ", " + TEAM_CREATION_DATE_TIME + ") VALUES ('" + teamId + "', '" + teamName + "', '" + teamColor + "', '" + dateTime + "');";
-                                cmd.ExecuteNonQuery();
-                            }
-                        }
-                        reader.Close();
-                    }
 
                     cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  '" + eventValue + "',  '" + dateTime + "', '" + courseId + "');";
                     cmd.ExecuteNonQuery();
@@ -910,57 +930,6 @@ namespace UdeS.Promoscience.Utils
                 }
             }
         }
-
-        //public static int GetNextTeamID()
-        //{
-        //    int teamId = 0;
-        //    string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
-
-        //    using (SqliteConnection conn = new SqliteConnection(dbPath))
-        //    {
-        //        conn.Open();
-        //        using (SqliteCommand cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandType = CommandType.Text;
-        //            cmd.CommandText = "SELECT Count(*) FROM " + TEAM;
-        //            cmd.ExecuteNonQuery();
-
-        //            using (SqliteDataReader reader = cmd.ExecuteReader())
-        //            {
-        //                if (reader.Read())
-        //                {
-        //                    teamId = reader.GetInt32(0);
-        //                }
-        //                reader.Close();
-        //            }
-
-        //            bool isNotUnique = true;
-        //            while (isNotUnique)
-        //            {
-        //                teamId++;
-        //                cmd.CommandText = "SELECT Count(*) FROM " + TEAM + " WHERE " + TEAM_ID + "='" + teamId + "'";
-        //                cmd.ExecuteNonQuery();
-
-        //                using (SqliteDataReader reader = cmd.ExecuteReader())
-        //                {
-        //                    if (reader.Read())
-        //                    {
-        //                        if (reader.GetInt32(0) == 0)
-        //                        {
-        //                            isNotUnique = false;
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        isNotUnique = false;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return teamId;
-        //}
 
         public static int GetNextCourseID()
         {

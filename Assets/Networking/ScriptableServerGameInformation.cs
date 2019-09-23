@@ -21,7 +21,6 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public List<Playbacks.PlayerSequenceData> PlayerSequences;
 
-
         public Action gameRoundChangedEvent;
 
         public Action gameStateChangedEvent;
@@ -32,12 +31,19 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         ServerGameState gameState;
 
-
         public void OnEnable()
         {
             PlayerSequences = new List<Playbacks.PlayerSequenceData>();
-        }
 
+            foreach (ScriptableTeam team in teams.Teams)
+            {
+                SQLiteUtilities.InsertPlayerTeam(
+                    team.TeamId,
+                    team.TeamName,
+                    team.TeamColor.ToString(),                    
+                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            }
+        }
 
         public int GameRound
         {
@@ -82,6 +88,8 @@ namespace UdeS.Promoscience.ScriptableObjects
         }
 
         // TODO set course active false when finished
+        // Try find course ID initiated by a team member
+        // Otherwise assign new course
         public void AssignCourseId(Player player)
         {
             int courseId = -1;
@@ -103,7 +111,6 @@ namespace UdeS.Promoscience.ScriptableObjects
                     player.ServerCourseId);
             }
         }
-
 
         public void StartTutorial()
         {
