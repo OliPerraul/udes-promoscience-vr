@@ -245,7 +245,7 @@ namespace UdeS.Promoscience.Network
         void SendPlayerInformation()
         {
             PlayerInformationMessage msg = new PlayerInformationMessage();
-            msg.teamInformationId = playerInformation.PlayerTeamInformationId;
+            msg.teamId = playerInformation.PlayerTeamId;
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }

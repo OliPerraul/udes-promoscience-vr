@@ -157,12 +157,9 @@ namespace UdeS.Promoscience.Network
         void InitializeHeadsetInformation()
         {
             ScriptableTeam scriptableTeam = teamList.GetUnusedScriptableTeam();
-            int teamId = SQLiteUtilities.GetNextTeamID();
 
             player.serverAlgorithm = (Utils.Algorithm)(scriptableTeam.TeamId % 3) + 1;
-            player.ServerTeamId = teamId;
-            player.ServerTeamInformationId = scriptableTeam.TeamId;
-
+            player.ServerTeamId = scriptableTeam.TeamId;
             player.TargetSetTeamInformation(player.connectionToClient, scriptableTeam.TeamId);
             player.TargetSetPairedIpAdress(player.connectionToClient, "");
             player.TargetSetGameState(player.connectionToClient, ClientGameState.Ready);

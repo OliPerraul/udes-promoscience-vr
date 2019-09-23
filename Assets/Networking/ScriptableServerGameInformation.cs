@@ -81,6 +81,29 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
+        // TODO set course active false when finished
+        public void AssignCourseId(Player player)
+        {
+            int courseId = -1;
+
+            if (SQLiteUtilities.TryGetCourseId(player.ServerTeamId, out courseId))
+            {
+                player.ServerCourseId = courseId;
+            }
+            else
+            {
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+                player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
+#endif
+                SQLiteUtilities.InsertPlayerCourse(
+                    player.ServerTeamId,
+                    player.serverLabyrinthId,
+                    (int)player.serverAlgorithm,
+                    player.ServerCourseId);
+            }
+        }
+
 
         public void StartTutorial()
         {
@@ -103,9 +126,8 @@ namespace UdeS.Promoscience.ScriptableObjects
                     player.serverAlgorithm = algorithm;
                     player.serverLabyrinthId = tutorialLabyrinthId;
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-                    player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
-#endif
+                    AssignCourseId(player);
+
                     player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, tutorialLabyrinthId, algorithm);
                 }
             }
@@ -121,9 +143,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = tutorialLabyrinthId;
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
-#endif
+            AssignCourseId(player);
 
             player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, tutorialLabyrinthId, algorithm);
         }
@@ -147,9 +167,8 @@ namespace UdeS.Promoscience.ScriptableObjects
                     player.serverAlgorithm = algorithm;
                     player.serverLabyrinthId = GameRound;
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-                    player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
-#endif
+                    AssignCourseId(player);
+
                     player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
                 }
             }
@@ -165,9 +184,8 @@ namespace UdeS.Promoscience.ScriptableObjects
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = GameRound;
 
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
-#endif
+            AssignCourseId(player);
+
             player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
         }
 
@@ -207,7 +225,7 @@ namespace UdeS.Promoscience.ScriptableObjects
                 Player player = PlayerList.instance.GetPlayerWithId(i);
 
                 var sequence = new Playbacks.PlayerSequenceData();
-                sequence.Team = teams.GetScriptableTeamWithId(player.ServerTeamInformationId);
+                sequence.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
   
                 Queue<int> steps;
                 Queue<string> stepValues; //jsons
@@ -216,9 +234,6 @@ namespace UdeS.Promoscience.ScriptableObjects
                 sequence.StepValues = stepValues.ToArray();
 
                 PlayerSequences.Add(sequence);
-
-                // Begin playback server
-                GameState = ServerGameState.ViewingPlayback;
 
                 // Tell clients to pay attention
                 if (player.ServerPlayerGameState == ClientGameState.WaitingPlayback ||
@@ -231,6 +246,8 @@ namespace UdeS.Promoscience.ScriptableObjects
                 }
             }
 
+            // Begin playback server
+            GameState = ServerGameState.ViewingPlayback;
 
         }
 

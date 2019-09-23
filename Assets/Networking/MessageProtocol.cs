@@ -148,7 +148,7 @@ namespace UdeS.Promoscience.Network
             return (short)type;
         }
 
-        public int teamInformationId;
+        public int teamId;
 
     }
 

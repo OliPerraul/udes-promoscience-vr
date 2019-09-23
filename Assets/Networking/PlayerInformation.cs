@@ -12,8 +12,8 @@ namespace UdeS.Promoscience.Network
         Player player;
 
         int playerCourseId;
+ 
         int playerTeamId;
-        int playerTeamInformationId;
 
         string playerDeviceUniqueIdentifier;
 
@@ -40,14 +40,6 @@ namespace UdeS.Promoscience.Network
             get
             {
                 return playerTeamId;
-            }
-        }
-
-        public int PlayerTeamInformationId
-        {
-            get
-            {
-                return playerTeamInformationId;
             }
         }
 
@@ -78,23 +70,20 @@ namespace UdeS.Promoscience.Network
 
             playerCourseId = player.ServerCourseId;
             playerTeamId = player.ServerTeamId;
-            playerTeamInformationId = player.ServerTeamInformationId;
             playerGameState = player.ServerPlayerGameState;
 
-            player.serverCourseIdChangedEvent += OnPlayerCourseIdChanged;
+            player.serverCourseIdChangedEvent += OnPlayerCourseIdChanged;            
             player.serverTeamIdChangedEvent += OnPlayerTeamIdChanged;
-            player.serverTeamInformationIdChangedEvent += OnPlayerTeamInformationIdChanged;
             player.serverPlayerStatusChangedEvent += OnPlayerGameStateChanged;
 
             player.TargetSetGameState(player.connectionToClient, ClientGameState.Pairing);
         }
 
-        public PlayerInformation(int courseId, int teamId, int teamInformationId, string deviceUniqueIdentifier, ClientGameState gameState)
+        public PlayerInformation(int courseId, int teamId, string deviceUniqueIdentifier, ClientGameState gameState)
         {
             player = null;
             playerCourseId = courseId;
             playerTeamId = teamId;
-            playerTeamInformationId = teamInformationId;
             playerDeviceUniqueIdentifier = deviceUniqueIdentifier;
             playerGameState = gameState;
         }
@@ -115,11 +104,6 @@ namespace UdeS.Promoscience.Network
         void OnPlayerTeamIdChanged()
         {
             playerTeamId = player.ServerTeamId;
-        }
-
-        void OnPlayerTeamInformationIdChanged()
-        {
-            playerTeamInformationId = player.ServerTeamInformationId;
 
             if (playerTeamIdChangedEvent != null)
             {
@@ -151,23 +135,23 @@ namespace UdeS.Promoscience.Network
         {
             player = p;
 
-            if (player.serverDeviceType == DeviceType.Headset && playerGameState != ClientGameState.Pairing && playerGameState != ClientGameState.NoAssociatedPair)
+            if (player.serverDeviceType == DeviceType.Headset && 
+                playerGameState != ClientGameState.Pairing && 
+                playerGameState != ClientGameState.NoAssociatedPair)
             {
                 player.ServerCourseId = playerCourseId;
                 player.ServerTeamId = playerTeamId;
-                player.ServerTeamInformationId = playerTeamInformationId;
 
                 player.serverCourseIdChangedEvent += OnPlayerCourseIdChanged;
                 player.serverPlayerStatusChangedEvent += OnPlayerGameStateChanged;
 
                 player.TargetSetGameState(player.connectionToClient, ClientGameState.Reconnecting);
-                player.TargetSetTeamInformation(player.connectionToClient, playerTeamInformationId);
+                player.TargetSetTeamInformation(player.connectionToClient, playerTeamId);
             }
             else
             {
                 player.serverCourseIdChangedEvent += OnPlayerCourseIdChanged;
                 player.serverTeamIdChangedEvent += OnPlayerTeamIdChanged;
-                player.serverTeamInformationIdChangedEvent += OnPlayerTeamInformationIdChanged;
                 player.serverPlayerStatusChangedEvent += OnPlayerGameStateChanged;
 
                 player.TargetSetGameState(player.connectionToClient, ClientGameState.Pairing);

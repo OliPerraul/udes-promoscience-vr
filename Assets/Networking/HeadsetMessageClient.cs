@@ -158,7 +158,7 @@ namespace UdeS.Promoscience.Network
         void OnPlayerInformation(NetworkMessage netMsg)
         {
             PlayerInformationMessage msg = netMsg.ReadMessage<PlayerInformationMessage>();
-            playerInformation.SetPlayerInformation(msg.teamInformationId);
+            playerInformation.SetPlayerInformation(msg.teamId);
 
             gameState.Value = ClientGameState.Ready;
         }

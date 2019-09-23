@@ -157,9 +157,9 @@ namespace UdeS.Promoscience.UI
 
         void UpdateLobbyPlayerTeam()
         {
-            if (playerInformation.PlayerTeamInformationId != -1)
+            if (playerInformation.PlayerTeamId != -1)
             {
-                ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.PlayerTeamInformationId);
+                ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.PlayerTeamId);
                 teamNameText.text = team.TeamName;
                 color.color = team.TeamColor;
             }

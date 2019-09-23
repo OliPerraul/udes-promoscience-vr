@@ -44,14 +44,12 @@ namespace UdeS.Promoscience.Network
         GameAction serverPlayerGameAction;
         string serverPlayerGameActionValue;
         string serverPlayerGameActionDateTimeString;
-        int serverPlayerbacktrack = 0;
 
+        [SerializeField]
         int serverCourseId = -1;
-        int serverTeamId = -1;
-        int serverTeamInformationId = -1;
 
-        //[SerializeField]
-        //public UnityEngine.UI.Text DebugText;
+        [SerializeField]
+        int serverTeamId = -1;
 
         public Utils.DeviceType serverDeviceType = Utils.DeviceType.NoType;
         public Utils.Algorithm serverAlgorithm;
@@ -84,6 +82,19 @@ namespace UdeS.Promoscience.Network
             }
         }
 
+        //public int ServerTeamId
+        //{
+        //    get
+        //    {
+        //        return serverTeamId;
+        //    }
+        //    set
+        //    {
+        //        serverTeamId = value;
+        //        OnTeamIdChanged();
+        //    }
+        //}
+
         public int ServerTeamId
         {
             get
@@ -94,19 +105,6 @@ namespace UdeS.Promoscience.Network
             {
                 serverTeamId = value;
                 OnTeamIdChanged();
-            }
-        }
-
-        public int ServerTeamInformationId
-        {
-            get
-            {
-                return serverTeamInformationId;
-            }
-            set
-            {
-                serverTeamInformationId = value;
-                OnTeamInformationIdChanged();
             }
         }
 
@@ -147,14 +145,6 @@ namespace UdeS.Promoscience.Network
             }
         }
 
-        public int ServerPlayerBacktrack
-        {
-            get
-            {
-                return serverPlayerbacktrack;
-            }
-        }
-
         public void ServerSetPlayerGameAction(GameAction action, string dateTime, string value)
         {
             serverPlayerGameAction = action;
@@ -166,8 +156,8 @@ namespace UdeS.Promoscience.Network
 
         public Action serverCourseIdChangedEvent;
         public Action serverDeviceNameChangedEvent;
+        //public Action serverTeamIdChangedEvent;
         public Action serverTeamIdChangedEvent;
-        public Action serverTeamInformationIdChangedEvent;
         public Action serverPlayerStatusChangedEvent;
         public Action serverPlayerActionChangedEvent;
 
@@ -187,19 +177,19 @@ namespace UdeS.Promoscience.Network
             }
         }
 
+        //void OnTeamIdChanged()
+        //{
+        //    if (serverTeamIdChangedEvent != null)
+        //    {
+        //        serverTeamIdChangedEvent();
+        //    }
+        //}
+
         void OnTeamIdChanged()
         {
             if (serverTeamIdChangedEvent != null)
             {
                 serverTeamIdChangedEvent();
-            }
-        }
-
-        void OnTeamInformationIdChanged()
-        {
-            if (serverTeamInformationIdChangedEvent != null)
-            {
-                serverTeamInformationIdChangedEvent();
             }
         }
 
@@ -306,7 +296,7 @@ namespace UdeS.Promoscience.Network
         [Client]
         void SendCmdPlayerInformation()
         {
-            CmdSetPlayerInformation(playerInformation.PlayerTeamInformationId);
+            CmdSetPlayerInformation(playerInformation.PlayerTeamId);
         }
 
 #endregion
@@ -344,9 +334,9 @@ namespace UdeS.Promoscience.Network
         }
 
         [Command]
-        public void CmdSetPlayerInformation(int teamInformationId)
+        public void CmdSetPlayerInformation(int teamId)
         {
-            ServerTeamInformationId = teamInformationId;
+            ServerTeamId = teamId;
         }
 
 #endregion
@@ -448,9 +438,9 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetTeamInformation(NetworkConnection target, int teamInformationId)
+        public void TargetSetTeamInformation(NetworkConnection target, int teamId)
         {
-            playerInformation.SetPlayerInformation(teamInformationId);
+            playerInformation.SetPlayerInformation(teamId);
         }
 #endregion
 

@@ -11,13 +11,13 @@ namespace UdeS.Promoscience.ScriptableObjects
     {
         bool isInitialize = false;
 
-        int playerTeamInformationId;
+        int teamId;
 
-        public int PlayerTeamInformationId
+        public int PlayerTeamId
         {
             get
             {
-                return playerTeamInformationId;
+                return teamId;
             }
         }
 
@@ -39,9 +39,9 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
-        public void SetPlayerInformation(int teamInformationId)
+        public void SetPlayerInformation(int teamId)
         {
-            playerTeamInformationId = teamInformationId;
+            this.teamId = teamId;
 
             isInitialize = true;
 
