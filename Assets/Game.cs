@@ -85,7 +85,7 @@ namespace UdeS.Promoscience
                     controls.IsPlayerControlsEnabled = true;
                 }
             }
-            else if (gameState.Value == ClientGameState.ViewingPlayback)
+            else if (gameState.Value == ClientGameState.ViewingLocalPlayback)
             {
                 //gameCamera.ChangeState(Camera.State.Topdown);
 

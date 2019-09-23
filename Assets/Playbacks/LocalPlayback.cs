@@ -6,11 +6,9 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Playbacks
 {
-    public class PlaybackManager : MonoBehaviour
+    // Playback for a single team
+    public class LocalPlayback : MonoBehaviour
     {
-        [SerializeField]
-        ScriptableServerGameInformation serverGameState;
-
         [SerializeField]
         ScriptableClientGameState gameState;
 
@@ -18,14 +16,14 @@ namespace UdeS.Promoscience.Playbacks
         private ScriptableClientGameData gameData;
 
         [SerializeField]
-        private PlayerPlayback playerPlaybackTemplate;
+        private PlayerSequence playerSequenceTemplate;
 
-        private PlayerPlayback playerPlayback;
+        private PlayerSequence playerSequence;
 
         [SerializeField]
-        private AlgorithmPlayback algorithmPlaybackTemplate;
+        private AlgorithmSequence algorithmSequenceTemplate;
 
-        private AlgorithmPlayback algorithmPlayback;
+        private AlgorithmSequence algorithmSequence;
 
         [SerializeField]
         private Labyrinth labyrinth;
@@ -34,13 +32,10 @@ namespace UdeS.Promoscience.Playbacks
         private Algorithm algorithm;
 
         [SerializeField]
-        private ScriptableIntegerArray recordedSteps;
-
-        [SerializeField]
         private float playerPlaybackSpeed = 0.5f;
 
         [SerializeField]
-        private float algorithmPlaybackSpeed = 0.5f;
+        private float algorithmSequenceSpeed = 0.5f;
 
         private Vector2Int labyrinthPosition;
 
@@ -52,7 +47,7 @@ namespace UdeS.Promoscience.Playbacks
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                BeginPlayback();
+                Begin();
             }
         }
 
@@ -60,34 +55,33 @@ namespace UdeS.Promoscience.Playbacks
         {
             gameState.valueChangedEvent += OnGameStateChanged;
 
-            if(serverGameState != null)
-                serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
+            if(gameState != null)
+                gameState.valueChangedEvent += OnServerGameStateChanged;
         }
-
 
         public void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.ViewingPlayback)
+            if (gameState.Value == ClientGameState.ViewingLocalPlayback)
             {                
-                BeginPlayback();
+                Begin();
             }
         }
 
         public void OnServerGameStateChanged()
         {
-            if (serverGameState.GameState == ServerGameState.ViewingPlayback)
+            if (gameState.Value == ClientGameState.ViewingLocalPlayback)
             {                 
-                BeginPlayback();
+                Begin();
                 playbackActive = true;
             }
             else if(playbackActive)
             {
-                StopPlayback();
+                Stop();
                 playbackActive = false;
             }
         }
 
-        public void BeginPlayback()
+        public void Begin()
         {
             StopAllCoroutines();
 
@@ -97,66 +91,66 @@ namespace UdeS.Promoscience.Playbacks
             worldPosition =
                 labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
-            BeginPlayerPlayback();
-            BeginAlgorithmPlayback();
+            BeginPlayerSequence();
+            BeginAlgorithmSequence();
         }
 
-        public void StopPlayback()
+        public void Stop()
         {
             StopAllCoroutines();
             labyrinth.DestroyLabyrinth();
 
-            if (playerPlayback)
+            if (playerSequence)
             {
-                Destroy(playerPlayback.gameObject);
+                Destroy(playerSequence.gameObject);
             }
 
-            if (algorithmPlayback)
+            if (algorithmSequence)
             {
-                Destroy(algorithmPlayback.gameObject);
+                Destroy(algorithmSequence.gameObject);
             }
         }
 
-        private void BeginPlayerPlayback()
+        private void BeginPlayerSequence()
         {
-            if (playerPlayback != null)
-                Destroy(playerPlayback.gameObject);
+            //if (playerSequence != null)
+            //    Destroy(playerSequence.gameObject);
 
-            playerPlayback = playerPlaybackTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
-            StartCoroutine(PlayerPlaybackCoroutine());
+            //playerSequence = playerSequenceTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
+            //StartCoroutine(PlayerSequenceCoroutine());
         }
 
-        public IEnumerator PlayerPlaybackCoroutine()
+        public IEnumerator PlayerSequenceCoroutine()
         {
-            for(int i = 0; i < recordedSteps.Value.Length; i++)
+            for(int i = 0; i < gameData.ActionSteps.Length; i++)
             {
                 yield return StartCoroutine(
-                    playerPlayback.Perform(
-                        (GameAction)recordedSteps.Value[i], 
+                    playerSequence.Perform(
+                        (GameAction)gameData.ActionSteps[i], 
                         gameData.ActionValues[i]));                
             }
 
             yield return null;
         }
 
-        private void BeginAlgorithmPlayback()
+        private void BeginAlgorithmSequence()
         {
-            if (algorithmPlayback != null)
-                Destroy(algorithmPlayback.gameObject);
+            //if (algorithmSequence != null)
+                //Destroy(algorithmSequence.gameObject);
 
-            algorithmPlayback = algorithmPlaybackTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
+            //algorithmSequence = algorithmSequenceTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
 
-            StartCoroutine(AlgorithmPlaybackCoroutine());
+            //StartCoroutine(AlgorithmSequenceCoroutine());
         }
 
-        IEnumerator AlgorithmPlaybackCoroutine()
+        IEnumerator AlgorithmSequenceCoroutine()
         {
             List<Tile> tiles = algorithm.GetAlgorithmSteps();
 
             foreach (var tile in tiles)
             {
-                algorithmPlayback.Perform(tile);
-                yield return new WaitForSeconds(algorithmPlaybackSpeed);
+                algorithmSequence.Perform(tile);
+                yield return new WaitForSeconds(algorithmSequenceSpeed);
             }
 
             yield return null;

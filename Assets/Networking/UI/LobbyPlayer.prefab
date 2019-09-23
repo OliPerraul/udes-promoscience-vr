@@ -210,6 +210,10 @@ MonoBehaviour:
     type: 2}
   waitingForPairConnectionString: {fileID: 11400000, guid: ab2a0e2fd719f624da6f23cfc7ee15de,
     type: 2}
+  viewingLocalPlayback: {fileID: 11400000, guid: 5f2a60a3faa0f07419e145fe1bbceec9,
+    type: 2}
+  viewingGlobalPlayback: {fileID: 11400000, guid: 3a690f0a7ddaf0a45b219d427b5b2fa6,
+    type: 2}
   waitingPlaybackString: {fileID: 11400000, guid: 4027e1451c7bd7d40ab9e9c5c9063f36,
     type: 2}
   image: {fileID: 114918811949441476}

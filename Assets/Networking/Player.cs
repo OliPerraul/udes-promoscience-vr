@@ -16,7 +16,6 @@ namespace UdeS.Promoscience.Network
         public string deviceUniqueIdentifier = "";
         string deviceName = "";
 
-
         private void OnDestroy()
         {
             if (isServer)
@@ -418,14 +417,26 @@ namespace UdeS.Promoscience.Network
         }
 
         [TargetRpc]
-        public void TargetSetViewingPlayback(NetworkConnection target, int labyrinthId, int[] steps, string[] stepValues)
+        public void TargetSetViewingLocalPlayback(NetworkConnection target, int labyrinthId, int[] steps, string[] stepValues)
         {
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
-            recordedSteps.Value = steps;
+            //recordedSteps.Value = steps;
             gameData.ActionValues = stepValues;
-            gameState.Value = ClientGameState.ViewingPlayback;
+            gameData.ActionSteps = steps;
+            gameState.Value = ClientGameState.ViewingLocalPlayback;
         }
+
+        [TargetRpc]
+        public void TargetSetViewingGlobalPlayback(NetworkConnection target, int labyrinthId, int[] steps, string[] stepValues)
+        {
+            isRoundCompleted.Value = true;
+            gameRound.Value = labyrinthId;
+            
+            // No steps required, player watch server screen
+            gameState.Value = ClientGameState.ViewingGlobalPlayback;
+        }
+
 
         [TargetRpc]
         public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId, int[] steps)

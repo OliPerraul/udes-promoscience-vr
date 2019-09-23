@@ -5,7 +5,7 @@ using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience.Playbacks
 {
-    public class AlgorithmPlayback : MonoBehaviour
+    public class AlgorithmSequence : MonoBehaviour
     {
         [SerializeField]
         private float speed = 0.6f;
@@ -18,12 +18,12 @@ namespace UdeS.Promoscience.Playbacks
 
         private Tile lastTile;
 
-        public AlgorithmPlayback Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
+        public AlgorithmSequence Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
         {
-            AlgorithmPlayback character = Instantiate(
+            AlgorithmSequence character = Instantiate(
                 gameObject,
                 worldPos, Quaternion.identity)
-                .GetComponent<AlgorithmPlayback>();
+                .GetComponent<AlgorithmSequence>();
 
             character.labyrinth = labyrinth;
             character.labyrinthPosition = labpos;

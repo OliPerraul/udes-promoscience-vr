@@ -10,7 +10,19 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Playbacks
 {
-    public class PlayerPlayback : MonoBehaviour
+    public class PlayerSequenceData
+    {
+        public ScriptableTeam Team;
+
+        public int[] Steps;
+        public string[] StepValues; //jsons
+
+        //public 
+        //SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
+    }
+
+
+    public class PlayerSequence : MonoBehaviour
     {
         //[SerializeField]
         //private Path pathTemplate;
@@ -29,6 +41,8 @@ namespace UdeS.Promoscience.Playbacks
         private Vector2Int lastLabyrinthPosition;
 
         private Vector3 targetPosition;
+
+        private PlayerSequenceData data;
 
         private Vector3 lastPosition;
 
@@ -62,25 +76,21 @@ namespace UdeS.Promoscience.Playbacks
 
         private Dictionary<Vector2Int, Segment> segments;
 
-        public PlayerPlayback Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
+        public PlayerSequence Create(PlayerSequenceData data, Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
         {
-            PlayerPlayback playback = Instantiate(
+            PlayerSequence sequence = Instantiate(
                 gameObject,
                 worldPos, Quaternion.identity)
-                .GetComponent<PlayerPlayback>();
+                .GetComponent<PlayerSequence>();
 
-            playback.labyrinth = labyrinth;
-            playback.labyrinthPosition = labpos;
-            playback.transform.position = worldPos;
-            playback.targetPosition = worldPos;           
+            sequence.labyrinth = labyrinth;
+            sequence.labyrinthPosition = labpos;
+            sequence.transform.position = worldPos;
+            sequence.targetPosition = worldPos;
+            sequence.data = data;
+            sequence.segments = new Dictionary<Vector2Int, Segment>();
 
-            //playback.paths = new List<Path>();
-            //playback.path = pathTemplate.Create(playback.transform);
-            //playback.paths.Add(playback.path);
-            //playback.segments = new List<Segment>();
-            playback.segments = new Dictionary<Vector2Int, Segment>();
-
-            return playback;
+            return sequence;
         }
 
         public void OnValidate()
@@ -96,9 +106,6 @@ namespace UdeS.Promoscience.Playbacks
             }
         }
 
-        private int counter = 0;
-
-
         public void FixedUpdate()
         {
             if (currentSegment != null)
@@ -111,6 +118,21 @@ namespace UdeS.Promoscience.Playbacks
                 arrowHead.transform.position = currentSegment.Current;
             }
         }
+
+        public IEnumerator BeginCoroutine()
+        {
+            for (int i = 0; i < data.Steps.Length; i++)
+            {
+                yield return StartCoroutine(
+                    Perform(
+                        (GameAction)data.Steps[i],
+                        data.StepValues[i]));
+            }
+
+            yield return null;
+        }
+
+
 
         public void Draw(Tile[] tiles)
         {

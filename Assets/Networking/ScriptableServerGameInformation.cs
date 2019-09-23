@@ -5,6 +5,7 @@ using UnityEngine;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
+using System.Collections.Generic;
 
 namespace UdeS.Promoscience.ScriptableObjects
 {
@@ -15,7 +16,14 @@ namespace UdeS.Promoscience.ScriptableObjects
         [SerializeField]
         ScriptableLabyrinth labyrinthData;
 
+        [SerializeField]
+        private ScriptableTeamList teams;
+
+        public List<Playbacks.PlayerSequenceData> PlayerSequences;
+
+
         public Action gameRoundChangedEvent;
+
         public Action gameStateChangedEvent;
 
         const int tutorialLabyrinthId = 4;
@@ -23,6 +31,12 @@ namespace UdeS.Promoscience.ScriptableObjects
         int gameRound = 0;
 
         ServerGameState gameState;
+
+        public void Awake()
+        {
+            PlayerSequences = new List<Playbacks.PlayerSequenceData>();
+        }
+
 
         public int GameRound
         {
@@ -177,28 +191,46 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
 
-                if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial || player.ServerPlayerGameState == ClientGameState.Playing)
+                if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial || 
+                    player.ServerPlayerGameState == ClientGameState.Playing)
                 {
                     player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
                 }
             }
         }
 
-
-
         public void BeginPlayback()
         {
-            GameState = ServerGameState.ViewingPlayback;
-
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
 
-                if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial || player.ServerPlayerGameState == ClientGameState.Playing)
+                var sequence = new Playbacks.PlayerSequenceData();
+                sequence.Team = teams.GetScriptableTeamWithId(player.ServerTeamInformationId);
+  
+                Queue<int> steps;
+                Queue<string> stepValues; //jsons
+                SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
+                sequence.Steps = steps.ToArray();
+                sequence.StepValues = stepValues.ToArray();
+
+                PlayerSequences.Add(sequence);
+
+                // Begin playback server
+                GameState = ServerGameState.ViewingPlayback;
+
+                // Tell clients to pay attention
+                if (player.ServerPlayerGameState == ClientGameState.WaitingPlayback ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalPlayback ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalPlayback ||
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial || 
+                    player.ServerPlayerGameState == ClientGameState.Playing)
                 {
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingPlayback);
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalPlayback);
                 }
             }
+
+
         }
 
         public void LoadGameInformationFromDatabase()

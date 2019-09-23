@@ -76,7 +76,8 @@ namespace UdeS.Promoscience.Network
                 SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
 
                 // Use the steps for playback
-                player.TargetSetViewingPlayback(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray(), stepValues.ToArray());                
+                player.TargetSetViewingLocalPlayback(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray(), stepValues.ToArray());                
+
             }
             else if (player.serverDeviceType == Utils.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
             {

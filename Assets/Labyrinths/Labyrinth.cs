@@ -44,7 +44,7 @@ namespace UdeS.Promoscience
                 GenerateLabyrinthVisual();
                 gameState.Value = ClientGameState.Playing;
             }
-            else if (gameState.Value == ClientGameState.ViewingPlayback)
+            else if (gameState.Value == ClientGameState.ViewingLocalPlayback)
             {
                 GenerateLabyrinthVisual();
                 

@@ -54,7 +54,7 @@ GameObject:
   - component: {fileID: 4516401115351686}
   - component: {fileID: 114161750463648574}
   m_Layer: 0
-  m_Name: AlgorithmPlayback
+  m_Name: AlgorithmSequence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

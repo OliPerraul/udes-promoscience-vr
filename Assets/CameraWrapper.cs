@@ -44,7 +44,7 @@ namespace UdeS.Promoscience
 
         public void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.ViewingPlayback)
+            if (gameState.Value == ClientGameState.ViewingLocalPlayback)
             {
                 ChangeState(State.Topdown);
             }

@@ -2405,7 +2405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00009611775}
+  m_AnchoredPosition: {x: 0, y: -0.00008978134}
   m_SizeDelta: {x: -50, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1329621017
@@ -2999,21 +2999,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1856815490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fde6711e3c032649b5edefeb4879106, type: 3}
+  m_Script: {fileID: 11500000, guid: f1d5379311b7d58419d9a577d063a1d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   serverGameState: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  gameData: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
-  playerPlaybackTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
+  playerSequenceTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
     type: 2}
-  algorithmPlaybackTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
+  algorithmSequenceTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
     type: 2}
   labyrinth: {fileID: 1065743937}
   algorithm: {fileID: 2007468727}
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
-  playerPlaybackSpeed: 0.5
-  algorithmPlaybackSpeed: 0.5
+  playerSequenceSpeed: 0.5
+  algorithmSequenceSpeed: 0.5
 --- !u!4 &1856815492
 Transform:
   m_ObjectHideFlags: 0

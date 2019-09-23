@@ -68,6 +68,12 @@ namespace UdeS.Promoscience.UI
         ScriptableLocalizeString waitingForPairConnectionString;
 
         [SerializeField]
+        ScriptableLocalizeString viewingLocalPlayback;
+
+        [SerializeField]
+        ScriptableLocalizeString viewingGlobalPlayback;
+
+        [SerializeField]
         ScriptableLocalizeString waitingPlaybackString;
 
         [SerializeField]
@@ -237,6 +243,10 @@ namespace UdeS.Promoscience.UI
                     statusText.text = waitingForPairConnectionString.Value;
                 }
                 else if (playerInformation.PlayerGameState == ClientGameState.WaitingPlayback)
+                {
+                    statusText.text = waitingForPairConnectionString.Value;
+                }
+                else if (playerInformation.PlayerGameState == ClientGameState.ViewingLocalPlayback)
                 {
                     statusText.text = waitingForPairConnectionString.Value;
                 }

@@ -45,9 +45,10 @@ namespace UdeS.Promoscience.Utils
         WaitingForPairConnection = 13,
         GeneratingTutorialLabyrinthDataForTest = 14,
 
-        ViewingPlayback = 15,
-        WaitingPlayback = 16,
-        ConnectingSupport = 17,
+        ViewingLocalPlayback = 15,
+        ViewingGlobalPlayback = 16,
+        WaitingPlayback = 17,
+        
     }
 
     [Serializable]
