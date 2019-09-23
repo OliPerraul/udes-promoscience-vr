@@ -70,7 +70,22 @@ namespace UdeS.Promoscience.Playbacks
 
         private Dictionary<Vector2Int, Segment> segments;
 
-        public PlayerSequence Create(PlayerSequenceData data, Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
+        [SerializeField]
+        private float offsetCoefficient = 5;
+
+        private float offsetSize = 0;
+
+        private Vector3 offset = Vector3.zero;
+
+        private bool backtrack = false;
+
+
+        public PlayerSequence Create(
+            PlayerSequenceData data, 
+            int numSequences, 
+            Labyrinth labyrinth, 
+            Vector2Int labpos, 
+            Vector3 worldPos)
         {
             PlayerSequence sequence = Instantiate(
                 gameObject,
@@ -85,6 +100,10 @@ namespace UdeS.Promoscience.Playbacks
             sequence.segments = new Dictionary<Vector2Int, Segment>();
             sequence.segmentMaterial = new Material(templateSegmentMaterial);
             sequence.segmentMaterial.color = data.Team.TeamColor;
+
+            //TODO: use size of the map
+            sequence.offsetSize = numSequences * offsetCoefficient;
+            sequence.offset = new Vector3(1, 0, 0); // TODO get initial direction ,// labyrinth.GetStartDirection();
 
             return sequence;
         }
@@ -145,10 +164,12 @@ namespace UdeS.Promoscience.Playbacks
             }
         }
 
-        public IEnumerator DrawBetween(Vector2Int o, Vector2Int d, bool backtrack = false)
+        public IEnumerator Draw(Vector2Int o, Vector2Int d, bool backtrack = false)
         {
             Vector3 origin = labyrinth.GetLabyrinthPositionInWorldPosition(o);
             Vector3 dest = labyrinth.GetLabyrinthPositionInWorldPosition(d);
+                       
+            offset = Quaternion.AngleAxis(Vector3.Angle(origin, dest), Vector3.up) * offset;
 
             if (segments.TryGetValue(o, out currentSegment))
             {
@@ -158,8 +179,8 @@ namespace UdeS.Promoscience.Playbacks
             {
                 currentSegment = segmentTemplate.Create(
                     transform,
-                    origin,
-                    dest,
+                    offset + origin,
+                    offset + dest,
                     segmentMaterial,
                     drawTime,
                     normalWidth,
@@ -171,42 +192,33 @@ namespace UdeS.Promoscience.Playbacks
             yield return StartCoroutine(currentSegment.DrawCoroutine());
         }
 
-        bool backtrack = false;
-
         public IEnumerator Perform(GameAction gameAction, string info)
         {
             yield return new WaitForEndOfFrame();
 
             int forwardDirection = labyrinth.GetStartDirection();
-
             lastLabyrinthPosition = labyrinthPosition;
-            lastPosition = targetPosition;
             lastColor = labyrinth.GetTileColor(lastLabyrinthPosition);
-            //bool backtrack = lastColor == TileColor.Red;
 
             if (gameAction == GameAction.MoveUp)
             {
                 labyrinthPosition.y -= 1;
-                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-                yield return StartCoroutine(DrawBetween(lastLabyrinthPosition, labyrinthPosition, backtrack));
+                yield return StartCoroutine(Draw(lastLabyrinthPosition, labyrinthPosition, backtrack));
             }
             else if (gameAction == GameAction.MoveRight)
             {
                 labyrinthPosition.x += 1;
-                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-                yield return StartCoroutine(DrawBetween(lastLabyrinthPosition, labyrinthPosition, backtrack));
+                yield return StartCoroutine(Draw(lastLabyrinthPosition, labyrinthPosition, backtrack));
             }
             else if (gameAction == GameAction.MoveDown)
             {
                 labyrinthPosition.y += 1;
-                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-                yield return StartCoroutine(DrawBetween(lastLabyrinthPosition, labyrinthPosition, backtrack));
+                yield return StartCoroutine(Draw(lastLabyrinthPosition, labyrinthPosition, backtrack));
             }
             else if (gameAction == GameAction.MoveLeft)
             {
                 labyrinthPosition.x -= 1;
-                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-                yield return StartCoroutine(DrawBetween(lastLabyrinthPosition, labyrinthPosition, backtrack));       
+                yield return StartCoroutine(Draw(lastLabyrinthPosition, labyrinthPosition, backtrack));       
             }
             else if (gameAction == GameAction.PaintFloorRed)
             {

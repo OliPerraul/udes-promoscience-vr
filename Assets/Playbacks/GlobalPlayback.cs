@@ -95,11 +95,13 @@ namespace UdeS.Promoscience.Playbacks
 
             foreach (PlayerSequenceData data in serverGameState.Sequences)
             {
-                var sequence = playerSequenceTemplate.Create(
-                    data, 
-                    labyrinth, 
-                    labyrinthPosition, 
-                    worldPosition);
+                var sequence = 
+                    playerSequenceTemplate.Create(
+                        data,
+                        serverGameState.Sequences.Count,
+                        labyrinth, 
+                        labyrinthPosition, 
+                        worldPosition);
 
                 playerSequences.Add(sequence);
             }

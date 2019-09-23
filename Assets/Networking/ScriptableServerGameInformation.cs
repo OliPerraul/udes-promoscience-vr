@@ -266,6 +266,8 @@ namespace UdeS.Promoscience.ScriptableObjects
 
                 if (done.Contains(player.ServerCourseId))
                     continue;
+                done.Add(player.ServerCourseId);
+
 
                 Playbacks.PlayerSequenceData sequence = new Playbacks.PlayerSequenceData();
                 sequence.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
@@ -276,7 +278,7 @@ namespace UdeS.Promoscience.ScriptableObjects
                 sequence.Steps = steps.ToArray();
                 sequence.StepValues = stepValues.ToArray();
 
-                done.Add(player.ServerCourseId);
+                Sequences.Add(sequence);
             }                           
 
             // Begin playback server
