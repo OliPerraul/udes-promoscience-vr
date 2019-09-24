@@ -200,7 +200,7 @@ namespace UdeS.Promoscience.Playbacks
                 normalWidth,
                 backtrack);
 
-            segments.Add(o, currentSegment);
+            segments[o] = currentSegment;
 
             yield return StartCoroutine(currentSegment.DrawCoroutine());
         }

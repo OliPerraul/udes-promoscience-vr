@@ -16,10 +16,16 @@ namespace UdeS.Promoscience.UI
         ScriptableServerGameInformation serverGameInformation;
 
         [SerializeField]
-        List<GameObject> gameObjectsToActivateOnTutorial = new List<GameObject>();
+        List<GameObject> gameObjectsToActivateOnLobby = new List<GameObject>();
 
         [SerializeField]
-        List<GameObject> gameObjectsToHideOnTutorial = new List<GameObject>();
+        List<GameObject> gameObjectsToHideOnLobby = new List<GameObject>();
+
+        //[SerializeField]
+        //List<GameObject> gameObjectsToActivateOnTutorial = new List<GameObject>();
+
+        //[SerializeField]
+        //List<GameObject> gameObjectsToHideOnTutorial = new List<GameObject>();
 
         [SerializeField]
         List<GameObject> gameObjectsToActivateOnGameRound = new List<GameObject>();
@@ -27,11 +33,11 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         List<GameObject> gameObjectsToHideOnGameRound = new List<GameObject>();
 
-        [SerializeField]
-        List<GameObject> gameObjectsToActivateOnIntermission = new List<GameObject>();
+        //[SerializeField]
+        //List<GameObject> gameObjectsToActivateOnIntermission = new List<GameObject>();
 
-        [SerializeField]
-        List<GameObject> gameObjectsToHideOnIntermission = new List<GameObject>();
+        //[SerializeField]
+        //List<GameObject> gameObjectsToHideOnIntermission = new List<GameObject>();
 
         [SerializeField]
         List<GameObject> gameObjectsToActivateViewingPlayback = new List<GameObject>();
@@ -43,23 +49,28 @@ namespace UdeS.Promoscience.UI
         void OnEnable()
         {
             serverGameInformation.gameStateChangedEvent += OnValueChanged;
+
+            OnValueChanged();
+
         }
 
         void OnValueChanged()
         {
-            if (serverGameInformation.GameState == ServerGameState.Tutorial)
+            if (serverGameInformation.GameState == ServerGameState.Lobby ||
+                serverGameInformation.GameState == ServerGameState.Intermission)
             {
-                foreach (GameObject gObject in gameObjectsToActivateOnTutorial)
+                foreach (GameObject gObject in gameObjectsToActivateOnLobby)
                 {
                     gObject.SetActive(true);
                 }
 
-                foreach (GameObject gObject in gameObjectsToHideOnTutorial)
+                foreach (GameObject gObject in gameObjectsToHideOnLobby)
                 {
                     gObject.SetActive(false);
                 }
-            }
-            else if (serverGameInformation.GameState == ServerGameState.GameRound)
+            }            
+            else if (serverGameInformation.GameState == ServerGameState.GameRound ||
+                    serverGameInformation.GameState == ServerGameState.Tutorial)
             {
                 foreach (GameObject gObject in gameObjectsToActivateOnGameRound)
                 {
@@ -67,18 +78,6 @@ namespace UdeS.Promoscience.UI
                 }
 
                 foreach (GameObject gObject in gameObjectsToHideOnGameRound)
-                {
-                    gObject.SetActive(false);
-                }
-            }
-            else if (serverGameInformation.GameState == ServerGameState.Intermission)
-            {
-                foreach (GameObject gObject in gameObjectsToActivateOnIntermission)
-                {
-                    gObject.SetActive(true);
-                }
-
-                foreach (GameObject gObject in gameObjectsToHideOnIntermission)
                 {
                     gObject.SetActive(false);
                 }
