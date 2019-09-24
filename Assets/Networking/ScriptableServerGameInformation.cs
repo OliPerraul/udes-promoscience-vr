@@ -95,6 +95,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         public void AssignCourseId(Player player)
         {
             int courseId = -1;
+            SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
 
             if (SQLiteUtilities.TryGetCourseId(player.ServerTeamId, out courseId))
             {
@@ -207,6 +208,8 @@ namespace UdeS.Promoscience.ScriptableObjects
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = GameRound;
 
+            AssignCourseId(player);
+
             player.TargetSetGameWithSteps(player.connectionToClient, steps, data, sizeX, sizeY, GameRound, algorithm);
         }
 
@@ -248,6 +251,12 @@ namespace UdeS.Promoscience.ScriptableObjects
 
              */
 
+            Playbacks.PlayerSequenceData sequence;// = new Playbacks.PlayerSequenceData();
+            //sequence.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
+
+            Queue<int> steps;
+            Queue<string> stepValues; //jsons
+
             List<int> done = new List<int>();
 
             // Foreach Course,
@@ -266,20 +275,22 @@ namespace UdeS.Promoscience.ScriptableObjects
 
                 if (done.Contains(player.ServerCourseId))
                     continue;
+
                 done.Add(player.ServerCourseId);
 
+                SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
 
-                Playbacks.PlayerSequenceData sequence = new Playbacks.PlayerSequenceData();
+                sequence = new Playbacks.PlayerSequenceData();
                 sequence.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
 
-                Queue<int> steps;
-                Queue<string> stepValues; //jsons
+                //steps;
+                //Queue<string> stepValues; //jsons
                 SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
                 sequence.Steps = steps.ToArray();
                 sequence.StepValues = stepValues.ToArray();
 
                 Sequences.Add(sequence);
-            }                           
+            }
 
             // Begin playback server
             GameState = ServerGameState.ViewingPlayback;

@@ -26,6 +26,8 @@ namespace UdeS.Promoscience.Playbacks
 
         public Vector3 Destination;
 
+        public Vector3 Offset;
+
         private float time = 0.6f;
 
         public IEnumerator DrawCoroutine()
@@ -53,19 +55,11 @@ namespace UdeS.Promoscience.Playbacks
             lineRenderer.SetPosition(1, Destination);
         }
 
-        public void Overwrite(Vector3 origin, Vector3 dest, bool backtrack)
-        {
-            Enable(true);
-
-            Origin = origin;
-            Destination = dest;
-            lineRenderer.enabled = !backtrack;
-        }
-
         public Segment Create(
             Transform transform, 
             Vector3 origin, 
-            Vector3 destination, 
+            Vector3 destination,
+            Vector3 offset,
             Material material, 
             float time, 
             float width, 
@@ -78,12 +72,14 @@ namespace UdeS.Promoscience.Playbacks
                 transform)                
                 .GetComponent<Segment>();
 
-            segm.Origin = origin;
-            segm.Destination = destination;
+            segm.Offset = offset;
+            segm.Origin = origin + offset;
+            segm.Destination = destination + offset;
             segm.time = time;
             segm.lineRenderer.enabled = !backtrack;
             segm.lineRenderer.widthMultiplier = width;
             segm.lineRenderer.material = material;
+            segm.sprite.color = material.color;
 
             return segm;
         }
@@ -93,8 +89,6 @@ namespace UdeS.Promoscience.Playbacks
             lineRenderer.enabled = enable;
             sprite.enabled = enable;
         }
-
-
 
     }
 }

@@ -151,6 +151,7 @@ MonoBehaviour:
   positions: []
   templateSegmentMaterial: {fileID: 2100000, guid: 5336b7f35397bfa4480c785fec553b38,
     type: 2}
+  offsetCoefficient: 2
 --- !u!212 &212962245771792772
 SpriteRenderer:
   m_ObjectHideFlags: 1

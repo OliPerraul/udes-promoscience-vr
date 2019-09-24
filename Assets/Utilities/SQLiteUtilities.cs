@@ -531,8 +531,6 @@ namespace UdeS.Promoscience.Utils
 
         public static void SetCourseInactive(int courseId)
         {
-            courseId = -1;
-
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -556,7 +554,6 @@ namespace UdeS.Promoscience.Utils
                 }
             }
         }
-
 
         public static bool TryGetCourseId(int teamId, out int courseId)
         {
