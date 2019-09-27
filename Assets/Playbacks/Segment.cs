@@ -26,8 +26,6 @@ namespace UdeS.Promoscience.Playbacks
 
         public Vector3 Destination;
 
-        public Vector3 Offset;
-
         private float time = 0.6f;
 
         public IEnumerator DrawCoroutine()
@@ -59,7 +57,6 @@ namespace UdeS.Promoscience.Playbacks
             Transform transform, 
             Vector3 origin, 
             Vector3 destination,
-            Vector3 offset,
             Material material, 
             float time, 
             float width, 
@@ -72,9 +69,8 @@ namespace UdeS.Promoscience.Playbacks
                 transform)                
                 .GetComponent<Segment>();
 
-            segm.Offset = offset;
-            segm.Origin = origin + offset;
-            segm.Destination = destination + offset;
+            segm.Origin = origin;
+            segm.Destination = destination;
             segm.time = time;
             segm.lineRenderer.enabled = !backtrack;
             segm.lineRenderer.widthMultiplier = width;

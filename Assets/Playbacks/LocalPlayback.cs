@@ -120,7 +120,7 @@ namespace UdeS.Promoscience.Playbacks
             for(int i = 0; i < gameData.ActionSteps.Length; i++)
             {
                 yield return StartCoroutine(
-                    playerSequence.Perform(
+                    playerSequence.PerformCoroutine(
                         (GameAction)gameData.ActionSteps[i], 
                         gameData.ActionValues[i]));                
             }

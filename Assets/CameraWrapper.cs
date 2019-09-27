@@ -26,6 +26,8 @@ namespace UdeS.Promoscience
         [SerializeField]
         private UnityEngine.Camera oculusCameraRight;
 
+        public Camera Camera;
+
         public enum State
         {
             Topdown,
@@ -76,6 +78,7 @@ namespace UdeS.Promoscience
 
                     topDownCamera.gameObject.SetActive(true);
 
+                    Camera = topDownCamera;
 
                     break;
 
@@ -92,6 +95,8 @@ namespace UdeS.Promoscience
 
                     if (oculusCameraRight)
                         oculusCameraRight.gameObject.SetActive(true);
+
+                    Camera = gameplayCamera;
 
                     break;
             }

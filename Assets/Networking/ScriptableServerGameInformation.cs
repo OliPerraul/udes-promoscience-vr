@@ -18,10 +18,11 @@ namespace UdeS.Promoscience.ScriptableObjects
         [SerializeField]
         private ScriptableTeamList teams;
 
-        // TODO: these courses do not reflect the model
-        // They are simply created on playback
+        [SerializeField]
+        private Playbacks.ScriptablePlaybackOptions playbackOptions;
+
         // Ideally, player should reference a course instead of refering to a course id 
-        public List<Playbacks.PlayerSequenceData> Sequences;
+        public Dictionary<int, CourseData> Courses;
 
         public Action gameRoundChangedEvent;
 
@@ -35,7 +36,8 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public void OnEnable()
         {
-            Sequences = new List<Playbacks.PlayerSequenceData>();
+            gameState = ServerGameState.Lobby;
+            Courses = new Dictionary<int, CourseData>();
 
             foreach (ScriptableTeam team in teams.Teams)
             {
@@ -83,6 +85,16 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public void OnGameStateValueChanged()
         {
+            switch (GameState)
+            {
+                case ServerGameState.ViewingPlayback:
+                    break;
+
+                default:
+                    playbackOptions.Courses.Clear();
+                    break;
+            }
+            
             if (gameStateChangedEvent != null)
             {
                 gameStateChangedEvent();
@@ -92,7 +104,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         // TODO set course active false when finished
         // Try find course ID initiated by a team member
         // Otherwise assign new course
-        public void AssignCourseId(Player player)
+        public void AssignCourse(Player player)
         {
             int courseId = -1;
             SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
@@ -103,9 +115,13 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
             else
             {
+                CourseData course = new CourseData();
+                course.Id = SQLiteUtilities.GetNextCourseID();
+                course.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
+                course.Algorithm = player.serverAlgorithm;
+                Courses.Add(course.Id, course);
 
-                player.ServerCourseId = SQLiteUtilities.GetNextCourseID();
-
+                player.ServerCourseId = course.Id;
                 SQLiteUtilities.InsertPlayerCourse(
                     player.ServerTeamId,
                     player.serverLabyrinthId,
@@ -113,6 +129,16 @@ namespace UdeS.Promoscience.ScriptableObjects
                     player.ServerCourseId);
             }
         }
+
+        //// TODO set course active false when finished
+        //// Try find course ID initiated by a team member
+        //// Otherwise assign new course
+        //public void RemoveCourse(int course)
+        //{
+        //    SQLiteUtilities.SetCourseInactive(course);
+        //    Courses.Remove(course);
+        //}
+
 
         public void StartTutorial()
         {
@@ -135,7 +161,7 @@ namespace UdeS.Promoscience.ScriptableObjects
                     player.serverAlgorithm = algorithm;
                     player.serverLabyrinthId = tutorialLabyrinthId;
 
-                    AssignCourseId(player);
+                    AssignCourse(player);
 
                     player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, tutorialLabyrinthId, algorithm);
                 }
@@ -152,7 +178,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = tutorialLabyrinthId;
 
-            AssignCourseId(player);
+            AssignCourse(player);
 
             player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, tutorialLabyrinthId, algorithm);
         }
@@ -176,7 +202,7 @@ namespace UdeS.Promoscience.ScriptableObjects
                     player.serverAlgorithm = algorithm;
                     player.serverLabyrinthId = GameRound;
 
-                    AssignCourseId(player);
+                    AssignCourse(player);
 
                     player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
                 }
@@ -193,7 +219,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = GameRound;
 
-            AssignCourseId(player);
+            AssignCourse(player);
 
             player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
         }
@@ -208,7 +234,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = GameRound;
 
-            AssignCourseId(player);
+            AssignCourse(player);
 
             player.TargetSetGameWithSteps(player.connectionToClient, steps, data, sizeX, sizeY, GameRound, algorithm);
         }
@@ -220,7 +246,6 @@ namespace UdeS.Promoscience.ScriptableObjects
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
-
                 SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
 
                 if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial || 
@@ -232,35 +257,8 @@ namespace UdeS.Promoscience.ScriptableObjects
         }
 
         public void BeginPlayback()
-        {
-            /*
-             TODO: 
-                
-                    foreach course
-                        foreach player
-                            player.SetState(FreezeAndPayAttentionToGlobalPlayback)
-
-                        globalPlayback.add(course.steps)
-
-                    globalPlayback.StartGlobalPlayback();
-
-             TODO:
-
-                Playback.SequenceData should be replaced with Course
-                    We should simply feed the Course Values into the Playback
-
-             */
-
-            Playbacks.PlayerSequenceData sequence;// = new Playbacks.PlayerSequenceData();
-            //sequence.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
-
-            Queue<int> steps;
-            Queue<string> stepValues; //jsons
-
-            List<int> done = new List<int>();
-
-            // Foreach Course,
-            //      Foreach player in Course.players
+        {         
+             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
             {
                 // Tell clients to pay attention
@@ -272,25 +270,21 @@ namespace UdeS.Promoscience.ScriptableObjects
                 {
                     player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalPlayback);
                 }
-
-                if (done.Contains(player.ServerCourseId))
-                    continue;
-
-                done.Add(player.ServerCourseId);
-
-                SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
-
-                sequence = new Playbacks.PlayerSequenceData();
-                sequence.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
-
-                //steps;
-                //Queue<string> stepValues; //jsons
-                SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
-                sequence.Steps = steps.ToArray();
-                sequence.StepValues = stepValues.ToArray();
-
-                Sequences.Add(sequence);
             }
+
+            //CourseData courseData;
+            Queue<int> steps;
+            Queue<string> stepValues; //jsons
+            foreach(CourseData course in Courses.Values)
+            {
+                SQLiteUtilities.SetCourseInactive(course.Id);
+                SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
+                course.Steps = steps.ToArray();
+                course.StepValues = stepValues.ToArray();
+                playbackOptions.Courses.Add(course);
+            }
+
+            Courses.Clear();
 
             // Begin playback server
             GameState = ServerGameState.ViewingPlayback;

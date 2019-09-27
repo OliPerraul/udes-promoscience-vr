@@ -16,58 +16,59 @@ namespace UdeS.Promoscience.Playbacks.UI
         private UnityEngine.UI.Button exitButton;
 
         [SerializeField]
-        private Panel panel;
+        private Controls display;
 
-        [SerializeField]
-        private Panel panelExpanded;
-
-        private bool isPanelExpanded = false;
-
-        private Panel activePanel;
 
         public void Awake()
         {
-            panel.gameObject.SetActive(true);
-            panelExpanded.gameObject.SetActive(true);
-
-
-            panel.OnExpandHandler += OnExpand;
-            panelExpanded.OnExpandHandler += OnExpand;
+            display.gameObject.SetActive(true);
+            display.Enabled = false;
 
             openButton.onClick.AddListener(OnOpenClicked);
             exitButton.onClick.AddListener(OnExitClicked);
+            server.gameStateChangedEvent += OnGameStateChanged;
+        }
 
-            panelExpanded.gameObject.SetActive(false);
-            activePanel = panel;
+        private bool _enabled = false;
+
+        public bool Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+
+            set
+            {
+                _enabled = value;
+                openButton.gameObject.SetActive(_enabled);
+                exitButton.gameObject.SetActive(_enabled);
+                display.gameObject.SetActive(_enabled);
+            }
         }
 
         public void OnOpenClicked()
         {
-            activePanel.gameObject.SetActive(true);
-        }
-
-        public void OnExpand()
-        {
-            if (isPanelExpanded)
-            {
-                isPanelExpanded = false;
-                panel.gameObject.SetActive(true);
-                panelExpanded.gameObject.SetActive(false);
-                activePanel = panel;
-            }
-            else
-            {
-                isPanelExpanded = true;
-                panel.gameObject.SetActive(false);
-                panelExpanded.gameObject.SetActive(true);
-                activePanel = panelExpanded;
-            }
-         
+            display.Enabled = !display.Enabled;//SetActive(!display.gameObject.activeInHierarchy);
         }
 
         public void OnExitClicked()
         {
             server.EndRoundOrTutorial();
+        }
+
+        public void OnGameStateChanged()
+        {
+            switch (server.GameState)
+            {
+                case Utils.ServerGameState.ViewingPlayback:
+                    Enabled = true;
+                    break;
+
+                default:
+                    Enabled = false;
+                    break;
+            }
         }
 
     }

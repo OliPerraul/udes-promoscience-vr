@@ -9,6 +9,8 @@ namespace UdeS.Promoscience.Playbacks
     // Playback for a single team
     public class GlobalPlayback : MonoBehaviour
     {
+        [SerializeField]
+        private ScriptablePlaybackOptions playbackOptions;
 
         [SerializeField]
         private Labyrinth labyrinth;
@@ -24,12 +26,11 @@ namespace UdeS.Promoscience.Playbacks
 
         [SerializeField]
         private AlgorithmSequence algorithmSequenceTemplate;
-
-        [SerializeField]
-        private ScriptableIntegerArray recordedSteps;
         
         private List<PlayerSequence> playerSequences;
-        
+
+        private PlayerSequence currentSequence;
+
         private List<PlayerSequence> algorithmSequences;
 
         private Vector2Int labyrinthPosition;
@@ -61,15 +62,67 @@ namespace UdeS.Promoscience.Playbacks
             //playerSequence = new PlayerSe
             playerSequences = new List<PlayerSequence>();
             algorithmSequences = new List<PlayerSequence>();
-
-            if (serverGameState != null)
-                serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
+            serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
+            playbackOptions.valueChangeEvent += OnPlaybackOptionsChanged;
+            playbackOptions.OnActionHandler += OnPlaybackAction;
         }
 
+        public void OnProgress(float progress)
+        {
+            playbackOptions.SendProgress(progress);
+        }
 
+        public void OnPlaybackAction(PlaybackAction action, params object[] args)
+        {
+            switch (action)
+            {
+                case PlaybackAction.Previous:
+                    currentSequence.Previous();
+                    break;
+
+                case PlaybackAction.Next:
+                    currentSequence.Next();
+                    break;               
+
+                case PlaybackAction.Play:
+                    currentSequence.Resume();
+                    break;
+
+                case PlaybackAction.Resume:
+                    currentSequence.Resume();
+                    break;
+
+                case PlaybackAction.Pause:
+                    currentSequence.Pause();
+                    break;
+
+                case PlaybackAction.Stop:
+                    currentSequence.Stop();
+                    break;
+
+                case PlaybackAction.Slide:
+                    float current = (float)args[0];
+                    currentSequence.Move(current);
+
+                    break;
+            }
+        }
+
+        public void OnPlaybackOptionsChanged()
+        {
+            if (currentSequence != null)
+            {
+                currentSequence.OnProgressHandler -= OnProgress;
+            }
+
+            currentSequence = playerSequences[playbackOptions.CourseIndex];
+            currentSequence.OnProgressHandler += OnProgress;
+        }
+        
         public void OnServerGameStateChanged()
         {
-            if (serverGameState.GameState == ServerGameState.ViewingPlayback)
+            if (serverGameState.GameState == 
+                ServerGameState.ViewingPlayback)
             {
                 Begin();
                 playbackActive = true;
@@ -81,8 +134,6 @@ namespace UdeS.Promoscience.Playbacks
             }
         }
 
-
-
         public void Begin()
         {
             StopAllCoroutines();
@@ -93,12 +144,11 @@ namespace UdeS.Promoscience.Playbacks
             worldPosition =
                 labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
-            for(int i = 0; i < serverGameState.Sequences.Count; i++)
+            for(int i = 0; i < playbackOptions.Courses.Count; i++)
             {
                 var sequence = 
                     playerSequenceTemplate.Create(
-                        serverGameState.Sequences[i],
-                        i,
+                        playbackOptions.Courses[i],
                         labyrinth, 
                         labyrinthPosition, 
                         worldPosition);
@@ -106,23 +156,21 @@ namespace UdeS.Promoscience.Playbacks
                 playerSequences.Add(sequence);
             }
 
-            StartCoroutine(PlayerSequenceCoroutine());
-            //BeginPlayerSequence();
-            //BeginAlgorithmSequence();
+            if (playerSequences.Count != 0)
+            {
+                OnPlaybackOptionsChanged();
+            }
         }
 
         public IEnumerator PlayerSequenceCoroutine()
         {
             foreach (PlayerSequence sequence in playerSequences)
             {
-                yield return sequence.StartCoroutine(sequence.BeginCoroutine());
+                //yield return sequence.StartCoroutine(sequence.BeginCoroutine());
             }
 
             yield return null;
         }
-
-
-
 
 
 

@@ -29,6 +29,12 @@ namespace UdeS.Promoscience.ScriptableObjects
         [SerializeField]
         private LocalizeString tutorialString;
 
+        public static ScriptableAlgorithm Instance;
+
+        public void OnEnable()
+        {
+            Instance = this;
+        }
 
         public Utils.Algorithm Value
         {
@@ -50,20 +56,41 @@ namespace UdeS.Promoscience.ScriptableObjects
                 switch (value)
                 {
                     case Utils.Algorithm.LongestStraight:
-                        return tutorialString.Value;
+                        return longestStraightString.Value;
 
                     case Utils.Algorithm.RightHand:
-                        return tutorialString.Value;
+                        return rightHandString.Value;
 
                     case Utils.Algorithm.ShortestFlightDistance:
-                        return tutorialString.Value;
+                        return shortestFlightDistance.Value;
 
                     case Utils.Algorithm.Standard:
-                        return tutorialString.Value;
+                        return standardString.Value;
                         
                     default:
                         return "[?]";
                 }
+            }
+        }
+
+        public string GetName(Utils.Algorithm algorithm)
+        {
+            switch (algorithm)
+            {
+                case Utils.Algorithm.LongestStraight:
+                    return longestStraightString.Value;
+
+                case Utils.Algorithm.RightHand:
+                    return rightHandString.Value;
+
+                case Utils.Algorithm.ShortestFlightDistance:
+                    return shortestFlightDistance.Value;
+
+                case Utils.Algorithm.Standard:
+                    return standardString.Value;
+
+                default:
+                    return "[?]";
             }
         }
 

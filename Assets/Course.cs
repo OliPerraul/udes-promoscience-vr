@@ -6,42 +6,20 @@
 //using System.Collections.Generic;
 //using UdeS.Promoscience.Utils;
 
-//namespace UdeS.Promoscience
-//{
-//    public class Sequence
-//    {
-//        public int Id;
+using UdeS.Promoscience.ScriptableObjects;
 
-//        public ScriptableTeam Team;
+namespace UdeS.Promoscience
+{
+    public class CourseData
+    {
+        public int Id;
 
-//        public int[] Steps;
-//        public string[] StepValues; //jsons
+        public Utils.Algorithm Algorithm;
 
+        public ScriptableTeam Team;
 
-//        public Sequence(ScriptableTeam team, int id)
-//        {
-//            Team = team;
-//            Id = id;
-//        }
+        public int[] Steps;
 
-//        //public void GetSteps(out int[] steps, out string[] stepValues)
-//        //{
-//        //    Queue<int> stepsq;
-//        //    Queue<string> stepValuesq; //jsons
-//        //    SQLiteUtilities.GetPlayerStepsForCourse(Id, out stepsq, out stepValuesq);
-//        //    steps = stepsq.ToArray();
-//        //    stepValues = stepValuesq.ToArray();
-//        //}
-
-//        //public void RemovePlayer(Player player)
-//        //{
-//        //    players.Remove(player);
-//        //}
-
-//        //public void AddPlayer(Player player)
-//        //{
-//        //    players.Add(player);
-//        //}
-//    }
-
-//}
+        public string[] StepValues;
+    }
+}
