@@ -143,18 +143,22 @@ namespace UdeS.Promoscience.Playbacks
             if (stepIndex < 0)
                 return;
 
+            if (stepIndex == data.Steps.Length)
+                stepIndex = data.Steps.Length - 1;
+
+
             while (!IsMovement((GameAction)data.Steps[stepIndex]))
             {
                 stepIndex = stepIndex - 1 <= 0 ? 0 : stepIndex - 1;
             }
 
-
             Reverse(
                 (GameAction)data.Steps[stepIndex],
                 data.StepValues[stepIndex]);
 
-            movementIndex--;
-            stepIndex--;
+            movementIndex--;// = movementIndex - 1 <= 0 ? 0 : movementIndex - 1;
+            stepIndex--;  //stepIndex - 1 <= 0 ? 0 : stepIndex - 1;
+
             float progress = movementIndex < 0 ? 0 : ((float)movementIndex) / moveCount;
             OnProgressHandler.Invoke(progress);
         }
@@ -164,8 +168,11 @@ namespace UdeS.Promoscience.Playbacks
             if (data.Steps.Length == 0)
                 return;
 
-            if (stepIndex >= data.Steps.Length)
+            if (movementIndex >= moveCount)
                 return;
+
+            if (stepIndex < 0)
+                stepIndex = 0;
 
             while (!IsMovement((GameAction)data.Steps[stepIndex]))
             {
@@ -179,6 +186,8 @@ namespace UdeS.Promoscience.Playbacks
             movementIndex++;
             stepIndex++;
 
+            Debug.Log(stepIndex);
+
             float progress = movementIndex >= moveCount ? 1 : ((float)movementIndex) / moveCount;
             OnProgressHandler.Invoke(progress);
         }
@@ -191,6 +200,9 @@ namespace UdeS.Promoscience.Playbacks
 
             if (stepIndex >= data.Steps.Length)
                 yield return null;
+
+            if (stepIndex < 0)
+                stepIndex = 0;
 
             while (!IsMovement((GameAction)data.Steps[stepIndex]))
             {
@@ -503,7 +515,6 @@ namespace UdeS.Promoscience.Playbacks
             Move(0);
         }
 
-
         public IEnumerator ResumeCoroutine()
         {
             while (movementIndex < moveCount)
@@ -511,7 +522,6 @@ namespace UdeS.Promoscience.Playbacks
                 yield return StartCoroutine(NextCoroutine());
             }
         }
-
 
         public IEnumerator PerformCoroutine(GameAction gameAction, string info)
         {
