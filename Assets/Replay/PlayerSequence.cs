@@ -65,9 +65,14 @@ namespace UdeS.Promoscience.Replay
         private Vector3[] positions;
 
         [SerializeField]
-        private Material templateSegmentMaterial;
+        private Material templateMaterial;
 
-        private Material segmentMaterial;
+        [SerializeField]
+        private Material templateBacktrackMaterial;
+
+        private Material material;
+
+        private Material backtrackMaterial;
 
         private Dictionary<Vector2Int, Stack<Segment>> segments;
 
@@ -103,9 +108,14 @@ namespace UdeS.Promoscience.Replay
             sequence.data = data;
             sequence.MoveCount = sequence.data.Actions.Aggregate(0, (x, y) => IsMovement((GameAction)y) ? x + 1 : x);
             sequence.segments = new Dictionary<Vector2Int, Stack<Segment>>();
-            sequence.segmentMaterial = new Material(templateSegmentMaterial);
-            sequence.segmentMaterial.color = data.Team.TeamColor;
-            sequence.arrowHead.GetComponentInChildren<SpriteRenderer>().color = sequence.segmentMaterial.color;
+
+            sequence.material = new Material(templateMaterial);
+            sequence.material.color = data.Team.TeamColor;
+
+            sequence.backtrackMaterial = new Material(templateMaterial);
+            sequence.backtrackMaterial.color = data.Team.TeamColor;
+
+            sequence.arrowHead.GetComponentInChildren<SpriteRenderer>().color = sequence.material.color;
 
             return sequence;
         }
@@ -228,10 +238,9 @@ namespace UdeS.Promoscience.Replay
                     transform,
                     positions[i - 1],
                     positions[i],
-                    segmentMaterial,
+                    backtrack ? backtrackMaterial : material,
                     drawTime,
-                    normalWidth,
-                    backtrack);
+                    normalWidth);
 
                 segment.Draw();
                 stack.Push(segment);
@@ -258,10 +267,9 @@ namespace UdeS.Promoscience.Replay
                 transform,
                 origin,
                 dest,
-                segmentMaterial,
+                backtrack? backtrackMaterial : material,
                 drawTime,
-                normalWidth,
-                backtrack);
+                normalWidth);
 
             segments[o].Push(currentSegment);
             currentSegment.Draw();
@@ -287,10 +295,9 @@ namespace UdeS.Promoscience.Replay
                 transform,
                 origin,
                 dest,
-                segmentMaterial,
+                backtrack ? backtrackMaterial : material,
                 drawTime,
-                normalWidth,
-                backtrack);
+                normalWidth);
 
             segments[o].Push(currentSegment);
             yield return StartCoroutine(currentSegment.DrawCoroutine());

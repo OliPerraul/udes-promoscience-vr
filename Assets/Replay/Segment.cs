@@ -32,35 +32,34 @@ namespace UdeS.Promoscience.Replay
         {
             float t = 0;
             transform.position = Origin;
-            lineRenderer.SetPosition(0, Origin);
-            lineRenderer.SetPosition(1, Origin);
+            lineRenderer.SetPosition(0, Origin + Vector3.up);
+            lineRenderer.SetPosition(1, Origin+ Vector3.up);
 
             for (; t < time; t += Time.deltaTime)
             {
-                Current = Vector3.Lerp(Origin, Destination, t / time);
+                Current = Vector3.Lerp(Origin + Vector3.up, Destination+ Vector3.up, t / time);
                 lineRenderer.SetPosition(1, Current);
                 yield return null;
             }
 
-            lineRenderer.SetPosition(1, Destination);
+            lineRenderer.SetPosition(1, Destination + Vector3.up);
             yield return null;
         }
 
         public void Draw()
         {
             transform.position = Origin;
-            lineRenderer.SetPosition(0, Origin);
-            lineRenderer.SetPosition(1, Destination);
+            lineRenderer.SetPosition(0, Origin+ Vector3.up);
+            lineRenderer.SetPosition(1, Destination + Vector3.up);
         }
 
         public Segment Create(
             Transform transform, 
             Vector3 origin, 
             Vector3 destination,
-            Material material, 
+            Material material,
             float time, 
-            float width, 
-            bool backtrack)
+            float width)
         {
             var segm = Instantiate(                
                 gameObject,
@@ -72,19 +71,10 @@ namespace UdeS.Promoscience.Replay
             segm.Origin = origin;
             segm.Destination = destination;
             segm.time = time;
-            segm.lineRenderer.enabled = !backtrack;
-            segm.lineRenderer.widthMultiplier = width;
             segm.lineRenderer.material = material;
-            segm.sprite.color = material.color;
 
+            //segm.sprite.color = material.color;
             return segm;
         }
-
-        public void Enable(bool enable=true)
-        {
-            lineRenderer.enabled = enable;
-            sprite.enabled = enable;
-        }
-
     }
 }

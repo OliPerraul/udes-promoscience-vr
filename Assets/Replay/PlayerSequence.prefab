@@ -149,9 +149,10 @@ MonoBehaviour:
   positionsParent: {fileID: 4719467368811974}
   markers: []
   positions: []
-  templateSegmentMaterial: {fileID: 2100000, guid: 5336b7f35397bfa4480c785fec553b38,
+  templateMaterial: {fileID: 2100000, guid: 5336b7f35397bfa4480c785fec553b38, type: 2}
+  templateBacktrackMaterial: {fileID: 2100000, guid: 10f11f25b3b95284489f7bc916380b2e,
     type: 2}
-  offsetCoefficient: 2
+  MoveCount: 0
 --- !u!212 &212962245771792772
 SpriteRenderer:
   m_ObjectHideFlags: 1
