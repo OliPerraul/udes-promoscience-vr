@@ -16,7 +16,6 @@ namespace UdeS.Promoscience.Replay
         Slide,
     }
 
-    public delegate void OnProgress(float progress);
     public delegate void OnAction(ReplayAction action, params object[] args);
 
     public class ScriptableReplayOptions : ScriptableObject
@@ -31,9 +30,13 @@ namespace UdeS.Promoscience.Replay
 
         public OnAction OnActionHandler;
 
-        public Event OnSequenceFinishedHsndler;
+        public OnSequenceEvent OnSequenceChangedHandler;
 
-        public OnProgress OnProgressHandler;       
+        public OnEvent OnSequenceFinishedHandler;
+
+        public OnIntEvent OnMoveCountDeterminedHandler;
+
+        public OnIntEvent OnProgressHandler;       
 
         public List<CourseData> Courses;
 
@@ -83,14 +86,6 @@ namespace UdeS.Promoscience.Replay
             if (OnActionHandler != null)
             {
                 OnActionHandler.Invoke(action, args);
-            }
-        }
-
-        public void SendProgress(float progress)
-        {
-            if (OnProgressHandler != null)
-            {
-                OnProgressHandler.Invoke(progress);
             }
         }
 

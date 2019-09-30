@@ -1,4 +1,5 @@
 ﻿using Cirrus.Extensions;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,9 +19,9 @@ namespace UdeS.Promoscience.Replay.UI
         [SerializeField]
         private ScriptableReplayOptions playbackOptions;
 
-        public Event OnExpandHandler;
+        public OnEvent OnExpandHandler;
 
-        public Event OnCloseHandler;
+        public OnEvent OnCloseHandler;
 
         [SerializeField]
         private GameObject infoPanel;
@@ -103,10 +104,11 @@ namespace UdeS.Promoscience.Replay.UI
             previousButton.onClick.AddListener(OnPreviousClicked);
             nextButton.onClick.AddListener(OnNextClicked);
 
-            slider.onValueChanged.AddListener(OnSliderMoved);
-
+            slider.onValueChanged.AddListener(OnSliderMoved);           
 
             playbackOptions.OnProgressHandler += OnProgress;
+            playbackOptions.OnSequenceFinishedHandler += OnReplaySequenceFinished;
+            playbackOptions.OnSequenceChangedHandler += OnSequenceChanged;
         }
 
         public void OnGameStateChanged()
@@ -134,7 +136,14 @@ namespace UdeS.Promoscience.Replay.UI
             }
         }
 
-        public void OnProgress(float progress)
+        private void OnSequenceChanged(PlayerSequence sequence)
+        {
+            slider.minValue = 0;
+            slider.maxValue = sequence.MoveCount;
+        }
+
+
+        public void OnProgress(int progress)
         {
             sendSliderEvent = false;
             slider.value = progress;
@@ -195,11 +204,10 @@ namespace UdeS.Promoscience.Replay.UI
         {
             if (sendSliderEvent)
             {
-                playbackOptions.SendAction(ReplayAction.Slide, value);
+                playbackOptions.SendAction(ReplayAction.Slide, Mathf.RoundToInt(value));
             }
 
             sendSliderEvent = true;
-            previousSliderValue = value;
         }
 
         public void OnReplaySequenceFinished()

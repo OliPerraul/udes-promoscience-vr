@@ -3,12 +3,15 @@ using System.Collections;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
+using System;
 
 namespace UdeS.Promoscience.Replay
 {
     // Playback for a single team
     public class GlobalReplay : MonoBehaviour
     {
+        // (PlayerSequence sequence);
+
         [SerializeField]
         private ScriptableReplayOptions replayOptions;
 
@@ -67,56 +70,16 @@ namespace UdeS.Promoscience.Replay
             replayOptions.OnActionHandler += OnPlaybackAction;
         }
 
-        public void OnProgress(float progress)
+        public void OnProgress(int progress)
         {
-            replayOptions.SendProgress(progress);
+            if(replayOptions.OnProgressHandler != null)
+                replayOptions.OnProgressHandler.Invoke(progress);
         }
 
         public void OnPlaybackAction(ReplayAction action, params object[] args)
         {
-            switch (action)
-            {
-                case ReplayAction.Previous:
-
-                    if (currentSequence.HasPrevious)
-                    {
-                        currentSequence.Reverse();
-                    }
-
-                    break;
-
-                case ReplayAction.Next:
-
-                    if (currentSequence.HasNext)
-                    {
-                        currentSequence.Perform();
-                    }
-
-                    break;               
-
-                case ReplayAction.Play:
-                    currentSequence.Resume();
-                    break;
-
-                case ReplayAction.Resume:
-                    currentSequence.Resume();
-                    break;
-
-                case ReplayAction.Pause:
-                    currentSequence.Pause();
-                    break;
-
-                case ReplayAction.Stop:
-                    currentSequence.Stop();
-                    break;
-
-                case ReplayAction.Slide:
-
-                    float current = (float)args[0];
-                    currentSequence.Move(current);
-
-                    break;
-            }
+            if (currentSequence != null)
+                currentSequence.HandleAction(action, args);
         }
 
         public void OnPlaybackOptionsChanged()
@@ -128,8 +91,22 @@ namespace UdeS.Promoscience.Replay
 
             currentSequence = playerSequences[replayOptions.CourseIndex];
             currentSequence.OnProgressHandler += OnProgress;
+            currentSequence.OnSequenceFinishedHandler += OnSequenceFinished;
+
+            if (replayOptions.OnSequenceChangedHandler != null)
+            {
+                replayOptions.OnSequenceChangedHandler.Invoke(currentSequence);
+            }
         }
-        
+
+        private void OnSequenceFinished()
+        {
+            if (replayOptions.OnSequenceFinishedHandler != null)
+            {
+                replayOptions.OnSequenceFinishedHandler.Invoke();
+            }
+        }
+
         public void OnServerGameStateChanged()
         {
             if (serverGameState.GameState == 

@@ -6782,7 +6782,7 @@ GameObject:
   - component: {fileID: 1856815492}
   - component: {fileID: 1856815491}
   m_Layer: 0
-  m_Name: Playback
+  m_Name: Replay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6799,7 +6799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d5379311b7d58419d9a577d063a1d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playbackOptions: {fileID: 11400000, guid: bcecb0686a9667f48bf333db2a5f2ad0, type: 2}
+  replayOptions: {fileID: 11400000, guid: bcecb0686a9667f48bf333db2a5f2ad0, type: 2}
   labyrinth: {fileID: 1065743937}
   algorithm: {fileID: 2007468727}
   serverGameState: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}

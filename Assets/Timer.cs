@@ -22,7 +22,7 @@ namespace UdeS.Promoscience
             }
         }
 
-        public UdeS.Event OnTimeLimitHandler;
+        public UdeS.OnEvent OnTimeLimitHandler;
 
         public Timer(float limit, bool start = true, bool repeat = false)
         {
