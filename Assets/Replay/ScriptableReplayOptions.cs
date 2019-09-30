@@ -3,9 +3,9 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-namespace UdeS.Promoscience.Playbacks
+namespace UdeS.Promoscience.Replay
 {
-    public enum PlaybackAction
+    public enum ReplayAction
     {
         Previous,
         Next,
@@ -17,12 +17,11 @@ namespace UdeS.Promoscience.Playbacks
     }
 
     public delegate void OnProgress(float progress);
+    public delegate void OnAction(ReplayAction action, params object[] args);
 
-    public delegate void OnAction(PlaybackAction action, params object[] args);
-
-    public class ScriptablePlaybackOptions : ScriptableObject
+    public class ScriptableReplayOptions : ScriptableObject
     {
-        public enum PlaybackOption
+        public enum ReplayOption
         {
             Player,
             Algorithm
@@ -31,6 +30,8 @@ namespace UdeS.Promoscience.Playbacks
         public Action valueChangeEvent;
 
         public OnAction OnActionHandler;
+
+        public Event OnSequenceFinishedHsndler;
 
         public OnProgress OnProgressHandler;       
 
@@ -54,9 +55,9 @@ namespace UdeS.Promoscience.Playbacks
             }
         }
 
-        private PlaybackOption option;
+        private ReplayOption option;
 
-        public PlaybackOption Option
+        public ReplayOption Option
         {
             get
             {
@@ -77,7 +78,7 @@ namespace UdeS.Promoscience.Playbacks
             Courses = new List<CourseData>();            
         }
 
-        public void SendAction(PlaybackAction action, params object[] args)
+        public void SendAction(ReplayAction action, params object[] args)
         {
             if (OnActionHandler != null)
             {

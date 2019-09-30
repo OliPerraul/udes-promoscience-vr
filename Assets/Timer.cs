@@ -6,8 +6,6 @@ using System.Collections;
 
 namespace UdeS.Promoscience
 {
-    public delegate void OnTimeLimit();
-
     // A timer cannot be created in Start(), or Wake() because it needs the Clock, instead to create duiring init use OnEnable
     public class Timer
     {
@@ -24,7 +22,7 @@ namespace UdeS.Promoscience
             }
         }
 
-        public OnTimeLimit OnTimeLimitHandler;
+        public UdeS.Event OnTimeLimitHandler;
 
         public Timer(float limit, bool start = true, bool repeat = false)
         {

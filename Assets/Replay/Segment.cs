@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace UdeS.Promoscience.Playbacks
+namespace UdeS.Promoscience.Replay
 {
     public class Segment : MonoBehaviour
     {

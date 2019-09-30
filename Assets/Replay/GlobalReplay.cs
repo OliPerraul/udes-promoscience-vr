@@ -4,13 +4,13 @@ using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
 
-namespace UdeS.Promoscience.Playbacks
+namespace UdeS.Promoscience.Replay
 {
     // Playback for a single team
-    public class GlobalPlayback : MonoBehaviour
+    public class GlobalReplay : MonoBehaviour
     {
         [SerializeField]
-        private ScriptablePlaybackOptions playbackOptions;
+        private ScriptableReplayOptions replayOptions;
 
         [SerializeField]
         private Labyrinth labyrinth;
@@ -37,7 +37,7 @@ namespace UdeS.Promoscience.Playbacks
 
         private Vector3 worldPosition;
 
-        private bool playbackActive = false;
+        private bool replayActive = false;
 
         public void Update()
         {
@@ -63,44 +63,55 @@ namespace UdeS.Promoscience.Playbacks
             playerSequences = new List<PlayerSequence>();
             algorithmSequences = new List<PlayerSequence>();
             serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
-            playbackOptions.valueChangeEvent += OnPlaybackOptionsChanged;
-            playbackOptions.OnActionHandler += OnPlaybackAction;
+            replayOptions.valueChangeEvent += OnPlaybackOptionsChanged;
+            replayOptions.OnActionHandler += OnPlaybackAction;
         }
 
         public void OnProgress(float progress)
         {
-            playbackOptions.SendProgress(progress);
+            replayOptions.SendProgress(progress);
         }
 
-        public void OnPlaybackAction(PlaybackAction action, params object[] args)
+        public void OnPlaybackAction(ReplayAction action, params object[] args)
         {
             switch (action)
             {
-                case PlaybackAction.Previous:
-                    currentSequence.Previous();
+                case ReplayAction.Previous:
+
+                    if (currentSequence.HasPrevious)
+                    {
+                        currentSequence.Reverse();
+                    }
+
                     break;
 
-                case PlaybackAction.Next:
-                    currentSequence.Next();
+                case ReplayAction.Next:
+
+                    if (currentSequence.HasNext)
+                    {
+                        currentSequence.Perform();
+                    }
+
                     break;               
 
-                case PlaybackAction.Play:
+                case ReplayAction.Play:
                     currentSequence.Resume();
                     break;
 
-                case PlaybackAction.Resume:
+                case ReplayAction.Resume:
                     currentSequence.Resume();
                     break;
 
-                case PlaybackAction.Pause:
+                case ReplayAction.Pause:
                     currentSequence.Pause();
                     break;
 
-                case PlaybackAction.Stop:
+                case ReplayAction.Stop:
                     currentSequence.Stop();
                     break;
 
-                case PlaybackAction.Slide:
+                case ReplayAction.Slide:
+
                     float current = (float)args[0];
                     currentSequence.Move(current);
 
@@ -115,7 +126,7 @@ namespace UdeS.Promoscience.Playbacks
                 currentSequence.OnProgressHandler -= OnProgress;
             }
 
-            currentSequence = playerSequences[playbackOptions.CourseIndex];
+            currentSequence = playerSequences[replayOptions.CourseIndex];
             currentSequence.OnProgressHandler += OnProgress;
         }
         
@@ -125,12 +136,12 @@ namespace UdeS.Promoscience.Playbacks
                 ServerGameState.ViewingPlayback)
             {
                 Begin();
-                playbackActive = true;
+                replayActive = true;
             }
-            else if (playbackActive)
+            else if (replayActive)
             {
                 Stop();
-                playbackActive = false;
+                replayActive = false;
             }
         }
 
@@ -144,11 +155,11 @@ namespace UdeS.Promoscience.Playbacks
             worldPosition =
                 labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
-            for(int i = 0; i < playbackOptions.Courses.Count; i++)
+            for(int i = 0; i < replayOptions.Courses.Count; i++)
             {
                 var sequence = 
                     playerSequenceTemplate.Create(
-                        playbackOptions.Courses[i],
+                        replayOptions.Courses[i],
                         labyrinth, 
                         labyrinthPosition, 
                         worldPosition);

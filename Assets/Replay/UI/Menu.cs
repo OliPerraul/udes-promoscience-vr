@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UdeS.Promoscience.Playbacks.UI
+namespace UdeS.Promoscience.Replay.UI
 {
     public class Menu : MonoBehaviour
     {

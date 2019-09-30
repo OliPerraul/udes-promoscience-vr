@@ -3,7 +3,7 @@ using System.Collections;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 
-namespace UdeS.Promoscience.Playbacks
+namespace UdeS.Promoscience.Replay
 {
     public class AlgorithmSequence : MonoBehaviour
     {

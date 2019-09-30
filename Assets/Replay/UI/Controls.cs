@@ -5,12 +5,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UdeS.Promoscience.Playbacks.UI
+namespace UdeS.Promoscience.Replay.UI
 {
     public class Controls : MonoBehaviour
     {
-        public delegate void OnButton();
-
         [SerializeField]
         private Algorithm algorithm;
 
@@ -18,11 +16,11 @@ namespace UdeS.Promoscience.Playbacks.UI
         private ScriptableObjects.ScriptableServerGameInformation server;
 
         [SerializeField]
-        private ScriptablePlaybackOptions playbackOptions;
+        private ScriptableReplayOptions playbackOptions;
 
-        public OnButton OnExpandHandler;
+        public Event OnExpandHandler;
 
-        public OnButton OnCloseHandler;
+        public Event OnCloseHandler;
 
         [SerializeField]
         private GameObject infoPanel;
@@ -157,13 +155,13 @@ namespace UdeS.Promoscience.Playbacks.UI
             {
                 isPlaying = true;
                 playImage.sprite = stopSprite;
-                playbackOptions.SendAction(PlaybackAction.Play);
+                playbackOptions.SendAction(ReplayAction.Play);
             }
             else
             {
                 isPlaying = false;
                 playImage.sprite = playSprite;
-                playbackOptions.SendAction(PlaybackAction.Stop);
+                playbackOptions.SendAction(ReplayAction.Stop);
             }
         }
 
@@ -173,36 +171,41 @@ namespace UdeS.Promoscience.Playbacks.UI
             {
                 isPaused = true;
                 playImage.sprite = playSprite;
-                playbackOptions.SendAction(PlaybackAction.Pause);
+                playbackOptions.SendAction(ReplayAction.Pause);
             }
             else
             {
                 isPaused = false;
                 playImage.sprite = stopSprite;
-                playbackOptions.SendAction(PlaybackAction.Resume);
+                playbackOptions.SendAction(ReplayAction.Resume);
             }
         }
 
         public void OnPreviousClicked()
         {
-            playbackOptions.SendAction(PlaybackAction.Previous);
+            playbackOptions.SendAction(ReplayAction.Previous);
         }
 
         public void OnNextClicked()
         {
-            playbackOptions.SendAction(PlaybackAction.Next);
+            playbackOptions.SendAction(ReplayAction.Next);
         }
 
         public void OnSliderMoved(float value)
         {
             if (sendSliderEvent)
             {
-                playbackOptions.SendAction(PlaybackAction.Slide, value);
+                playbackOptions.SendAction(ReplayAction.Slide, value);
             }
 
             sendSliderEvent = true;
             previousSliderValue = value;
         }
 
+        public void OnReplaySequenceFinished()
+        {
+            isPlaying = false;
+            playImage.sprite = playSprite;
+        }
     }
 }

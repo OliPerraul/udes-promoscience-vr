@@ -18,8 +18,8 @@ namespace UdeS.Promoscience
 
         public ScriptableTeam Team;
 
-        public int[] Steps;
+        public int[] Actions;
 
-        public string[] StepValues;
+        public string[] ActionValues;
     }
 }

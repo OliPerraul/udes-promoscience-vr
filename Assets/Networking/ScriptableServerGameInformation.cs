@@ -19,7 +19,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         private ScriptableTeamList teams;
 
         [SerializeField]
-        private Playbacks.ScriptablePlaybackOptions playbackOptions;
+        private Replay.ScriptableReplayOptions playbackOptions;
 
         // Ideally, player should reference a course instead of refering to a course id 
         public Dictionary<int, CourseData> Courses;
@@ -279,8 +279,8 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
                 SQLiteUtilities.SetCourseInactive(course.Id);
                 SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
-                course.Steps = steps.ToArray();
-                course.StepValues = stepValues.ToArray();
+                course.Actions = steps.ToArray();
+                course.ActionValues = stepValues.ToArray();
                 playbackOptions.Courses.Add(course);
             }
 

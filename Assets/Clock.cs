@@ -7,8 +7,7 @@ namespace UdeS.Promoscience
 {
     public class Clock : MonoBehaviour
     {
-        public delegate void OnTick();
-        public OnTick OnTickedHandler;
+        public UdeS.Event OnTickedHandler;
 
         private static Clock _instance;
 

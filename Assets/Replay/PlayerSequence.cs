@@ -8,7 +8,7 @@ using Cirrus.Extensions;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace UdeS.Promoscience.Playbacks
+namespace UdeS.Promoscience.Replay
 {
     public class PlayerSequence : MonoBehaviour
     {
@@ -64,9 +64,9 @@ namespace UdeS.Promoscience.Playbacks
 
         private bool backtrack = false;
 
-        private int stepIndex = 0;
+        private int gameActionIndex = 0;
 
-        private int movementIndex = 0;
+        private int moveIndex = 0;
 
         private int moveCount = 0;
 
@@ -86,7 +86,7 @@ namespace UdeS.Promoscience.Playbacks
             sequence.transform.position = worldPos;
             sequence.targetPosition = worldPos;
             sequence.data = data;
-            sequence.moveCount = sequence.data.Steps.Aggregate(0, (x, y) => IsMovement((GameAction)y) ? x + 1 : x);
+            sequence.moveCount = sequence.data.Actions.Aggregate(0, (x, y) => IsMovement((GameAction)y) ? x + 1 : x);
             sequence.segments = new Dictionary<Vector2Int, Stack<Segment>>();
             sequence.segmentMaterial = new Material(templateSegmentMaterial);
             sequence.segmentMaterial.color = data.Team.TeamColor;
@@ -120,139 +120,6 @@ namespace UdeS.Promoscience.Playbacks
                 arrowHead.transform.position = currentSegment.Current;
             }
         }
-
-        public bool IsMovement(GameAction action)
-        {
-            switch (action)
-            {
-                case GameAction.MoveUp:
-                case GameAction.MoveDown:
-                case GameAction.MoveLeft:
-                case GameAction.MoveRight:
-                    return true;
-                default:
-                    return false;
-            }
-        }        
-
-        public void Previous()
-        {
-            if (data.Steps.Length == 0)
-                return;
-
-            if (stepIndex < 0)
-                return;
-
-            if (stepIndex == data.Steps.Length)
-                stepIndex = data.Steps.Length - 1;
-
-
-            while (!IsMovement((GameAction)data.Steps[stepIndex]))
-            {
-                stepIndex = stepIndex - 1 <= 0 ? 0 : stepIndex - 1;
-            }
-
-            Reverse(
-                (GameAction)data.Steps[stepIndex],
-                data.StepValues[stepIndex]);
-
-            movementIndex--;// = movementIndex - 1 <= 0 ? 0 : movementIndex - 1;
-            stepIndex--;  //stepIndex - 1 <= 0 ? 0 : stepIndex - 1;
-
-            float progress = movementIndex < 0 ? 0 : ((float)movementIndex) / moveCount;
-            OnProgressHandler.Invoke(progress);
-        }
-
-        public void Next()
-        {
-            if (data.Steps.Length == 0)
-                return;
-
-            if (movementIndex >= moveCount)
-                return;
-
-            if (stepIndex < 0)
-                stepIndex = 0;
-
-            while (!IsMovement((GameAction)data.Steps[stepIndex]))
-            {
-                stepIndex = stepIndex + 1 >= data.Steps.Length ? stepIndex - 1 : stepIndex + 1;
-            }
-
-            Perform(
-                (GameAction)data.Steps[stepIndex],
-                data.StepValues[stepIndex]);
-
-            movementIndex++;
-            stepIndex++;
-
-            Debug.Log(stepIndex);
-
-            float progress = movementIndex >= moveCount ? 1 : ((float)movementIndex) / moveCount;
-            OnProgressHandler.Invoke(progress);
-        }
-
-
-        public IEnumerator NextCoroutine()
-        {
-            if (data.Steps.Length == 0)
-                yield return null;
-
-            if (stepIndex >= data.Steps.Length)
-                yield return null;
-
-            if (stepIndex < 0)
-                stepIndex = 0;
-
-            while (!IsMovement((GameAction)data.Steps[stepIndex]))
-            {
-                stepIndex = stepIndex + 1 >= data.Steps.Length ? stepIndex - 1 : stepIndex + 1;
-            }
-
-            yield return StartCoroutine(PerformCoroutine(
-                (GameAction)data.Steps[stepIndex],
-                data.StepValues[stepIndex]));
-
-            movementIndex++;
-            stepIndex++;
-
-            float progress = movementIndex >= moveCount ? 1 : ((float)movementIndex) / moveCount;
-            OnProgressHandler.Invoke(progress);
-        }
-
-        public void Move(int target)
-        {
-            float sign = Mathf.Sign(target - movementIndex);
-
-            if (sign < 0)
-            {
-                for (int i = 0; i < moveCount; i++)
-                {
-                    if (movementIndex < target)
-                        return;
-
-                    Previous();
-                }
-            }
-            else
-            {
-                for (int i = 0; i < moveCount; i++)
-                {
-                    if (movementIndex >= target)
-                        return;
-
-                    Next();
-                }
-            }
-        }
-
-
-        public void Move(float progress)
-        {            
-            int target = Mathf.RoundToInt(progress * moveCount);
-            Move(target);
-        }
-
 
         public void Redraw(Tile[] tiles)
         {
@@ -349,7 +216,80 @@ namespace UdeS.Promoscience.Playbacks
             yield return StartCoroutine(currentSegment.DrawCoroutine());
         }
 
-        public void Reverse(GameAction gameAction, string info)
+        public bool IsMovement(GameAction action)
+        {
+            switch (action)
+            {
+                case GameAction.MoveUp:
+                case GameAction.MoveDown:
+                case GameAction.MoveLeft:
+                case GameAction.MoveRight:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public void Move(int target)
+        {
+            float sign = Mathf.Sign(target - moveIndex);
+
+            if (sign < 0)
+            {
+                for (; HasPrevious; Reverse()) ;
+            }
+            else
+            {
+                for (; HasNext; Perform()) ;
+            }
+        }
+
+        public void Move(float progress)
+        {
+            int target = Mathf.RoundToInt(progress * moveCount);
+            Move(target);
+        }
+
+        public bool HasPrevious
+        {
+            get
+            {
+                if (data.Actions.Length == 0)
+                    return false;
+
+                return moveIndex >= 0;
+            }
+        }
+
+
+        public void Reverse()
+        {
+            DoReverse(
+                (GameAction)data.Actions[gameActionIndex],
+                data.ActionValues[gameActionIndex]);
+
+            float progress = moveIndex < 0 ? 0 : ((float)moveIndex) / moveCount;
+            OnProgressHandler.Invoke(progress);
+
+            int index = gameActionIndex--;
+            while (!IsMovement((GameAction)data.Actions[index]) && index >= 0)
+            {
+                index--;
+            }
+
+            if (index < 0)
+                gameActionIndex = 0;
+            else
+                gameActionIndex = index;
+
+
+            // Clamp to stay within bounds;
+            // let index overflow: required by iteration
+            moveIndex = Mathf.Clamp(moveIndex, 0, moveCount - 1);
+            moveIndex--;
+        }
+
+        private void DoReverse(GameAction gameAction, string info)
         {
             Segment segment;
             switch (gameAction)
@@ -404,7 +344,48 @@ namespace UdeS.Promoscience.Playbacks
             }
         }
 
-        public void Perform(GameAction gameAction, string info)
+        public bool HasNext
+        {
+            get
+            {
+
+                if (data.Actions.Length == 0)
+                    return false;
+                
+                return moveIndex < moveCount;
+            }
+        }
+
+
+        public void Perform()
+        {
+            DoPerform(
+                (GameAction)data.Actions[gameActionIndex],
+                data.ActionValues[gameActionIndex]);
+
+         
+            int index = gameActionIndex++;
+            while (!IsMovement((GameAction)data.Actions[index]))
+            {
+                index = index + 1 >= data.Actions.Length ? index - 1 : index + 1;
+            }
+
+            if (index >= data.Actions.Length)
+                gameActionIndex = index;
+            else
+                gameActionIndex = index;
+
+            float progress = moveIndex >= moveCount ? 1 : ((float)moveIndex) / moveCount;
+            OnProgressHandler.Invoke(progress);
+
+            // Clamp to stay within bounds;
+            // Index overflow required by iteration
+            moveIndex = Mathf.Clamp(moveIndex, 0, moveCount - 1);
+            moveIndex++;
+
+        }
+
+        private void DoPerform(GameAction gameAction, string info)
         {
             lastLabyrinthPosition = labyrinthPosition;
             lastColor = labyrinth.GetTileColor(lastLabyrinthPosition);
@@ -497,33 +478,35 @@ namespace UdeS.Promoscience.Playbacks
             }
         }
 
-        public void Resume()
+
+        public IEnumerator PerformCoroutine()
         {
-            StartCoroutine(ResumeCoroutine());
-        }
-
-        public void Pause()
-        {
-            StopAllCoroutines();
-            Move(movementIndex-1);
-        }
+            yield return StartCoroutine(DoPerformCoroutine(
+                (GameAction)data.Actions[gameActionIndex],
+                data.ActionValues[gameActionIndex]));
 
 
-        public void Stop()
-        {           
-            StopAllCoroutines();
-            Move(0);
-        }
-
-        public IEnumerator ResumeCoroutine()
-        {
-            while (movementIndex < moveCount)
+            int index = gameActionIndex++;
+            while (!IsMovement((GameAction)data.Actions[index]))
             {
-                yield return StartCoroutine(NextCoroutine());
+                index = index + 1 >= data.Actions.Length ? index - 1 : index + 1;
             }
+
+            if (index >= data.Actions.Length)
+                gameActionIndex = index;
+            else
+                gameActionIndex = index;
+
+            float progress = moveIndex >= moveCount ? 1 : ((float)moveIndex) / moveCount;
+            OnProgressHandler.Invoke(progress);
+
+            // Clamp to stay within bounds;
+            // Index overflow required by iteration
+            moveIndex = Mathf.Clamp(moveIndex, 0, moveCount - 1);
+            moveIndex++;
         }
 
-        public IEnumerator PerformCoroutine(GameAction gameAction, string info)
+        public IEnumerator DoPerformCoroutine(GameAction gameAction, string info)
         {
             yield return new WaitForEndOfFrame();
             lastLabyrinthPosition = labyrinthPosition;
@@ -611,14 +594,6 @@ namespace UdeS.Promoscience.Playbacks
                     transform.position = targetPosition;
                     transform.rotation = actionInfo.rotation;
 
-                    //foreach (var pair in segments)
-                    //{
-                    //    if (pair.Value == null)
-                    //        continue;
-
-                    //    pair.Value.Enable(false);
-                    //}
-
                     Redraw(actionInfo.playerSteps);
 
                     break;
@@ -628,6 +603,32 @@ namespace UdeS.Promoscience.Playbacks
 
         }
 
+
+        public void Resume()
+        {
+            StartCoroutine(ResumeCoroutine());
+        }
+
+        public void Pause()
+        {
+            StopAllCoroutines();
+            Move(moveIndex - 1);
+        }
+
+
+        public void Stop()
+        {
+            StopAllCoroutines();
+            Move(0);
+        }
+
+        public IEnumerator ResumeCoroutine()
+        {
+            while (HasNext)
+            {
+                yield return StartCoroutine(PerformCoroutine());
+            }
+        }
 
     }
 }

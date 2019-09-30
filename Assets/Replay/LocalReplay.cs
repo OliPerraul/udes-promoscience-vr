@@ -4,7 +4,7 @@ using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
 
-namespace UdeS.Promoscience.Playbacks
+namespace UdeS.Promoscience.Replay
 {
     // Playback for a single team
     public class LocalPlayback : MonoBehaviour
@@ -120,7 +120,7 @@ namespace UdeS.Promoscience.Playbacks
             for(int i = 0; i < gameData.ActionSteps.Length; i++)
             {
                 yield return StartCoroutine(
-                    playerSequence.PerformCoroutine(
+                    playerSequence.DoPerformCoroutine(
                         (GameAction)gameData.ActionSteps[i], 
                         gameData.ActionValues[i]));                
             }
