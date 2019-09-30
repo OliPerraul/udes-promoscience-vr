@@ -85,7 +85,7 @@ namespace UdeS.Promoscience
                     controls.IsPlayerControlsEnabled = true;
                 }
             }
-            else if (gameState.Value == ClientGameState.ViewingLocalPlayback)
+            else if (gameState.Value == ClientGameState.ViewingLocalReplay)
             {
                 //gameCamera.ChangeState(Camera.State.Topdown);
 
@@ -118,7 +118,7 @@ namespace UdeS.Promoscience
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
-                gameState.Value = ClientGameState.WaitingPlayback;
+                gameState.Value = ClientGameState.WaitingReplay;
             }
             else
             {

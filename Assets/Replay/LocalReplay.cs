@@ -56,7 +56,7 @@ namespace UdeS.Promoscience.Replay
 
         public void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.ViewingLocalPlayback)
+            if (gameState.Value == ClientGameState.ViewingLocalReplay)
             {                
                 Begin();
             }
@@ -64,7 +64,7 @@ namespace UdeS.Promoscience.Replay
 
         public void OnServerGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.ViewingLocalPlayback)
+            if (gameState.Value == ClientGameState.ViewingLocalReplay)
             {                 
                 Begin();
                 playbackActive = true;

@@ -262,13 +262,13 @@ namespace UdeS.Promoscience.ScriptableObjects
             foreach (Player player in PlayerList.instance.list)
             {
                 // Tell clients to pay attention
-                if (player.ServerPlayerGameState == ClientGameState.WaitingPlayback ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingLocalPlayback ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalPlayback ||
+                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
                     player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
                     player.ServerPlayerGameState == ClientGameState.Playing)
                 {
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalPlayback);
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalReplay);
                 }
             }
 

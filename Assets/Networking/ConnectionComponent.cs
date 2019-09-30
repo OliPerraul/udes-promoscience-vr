@@ -67,7 +67,7 @@ namespace UdeS.Promoscience.Network
                     }
                 }
             }
-            else if (player.ServerPlayerGameState == ClientGameState.WaitingPlayback) 
+            else if (player.ServerPlayerGameState == ClientGameState.WaitingReplay) 
             {
                 // TODO
                 // Steps to recover

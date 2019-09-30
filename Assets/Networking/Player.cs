@@ -393,7 +393,7 @@ namespace UdeS.Promoscience.Network
             //recordedSteps.Value = steps;
             gameData.ActionValues = stepValues;
             gameData.ActionSteps = steps;
-            gameState.Value = ClientGameState.ViewingLocalPlayback;
+            gameState.Value = ClientGameState.ViewingLocalReplay;
         }
 
         [TargetRpc]
@@ -403,7 +403,7 @@ namespace UdeS.Promoscience.Network
             gameRound.Value = labyrinthId;
             
             // No steps required, player watch server screen
-            gameState.Value = ClientGameState.ViewingGlobalPlayback;
+            gameState.Value = ClientGameState.ViewingGlobalReplay;
         }
 
 

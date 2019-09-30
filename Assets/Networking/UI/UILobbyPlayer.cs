@@ -242,11 +242,11 @@ namespace UdeS.Promoscience.UI
                 {
                     statusText.text = waitingForPairConnectionString.Value;
                 }
-                else if (playerInformation.PlayerGameState == ClientGameState.WaitingPlayback)
+                else if (playerInformation.PlayerGameState == ClientGameState.WaitingReplay)
                 {
                     statusText.text = waitingForPairConnectionString.Value;
                 }
-                else if (playerInformation.PlayerGameState == ClientGameState.ViewingLocalPlayback)
+                else if (playerInformation.PlayerGameState == ClientGameState.ViewingLocalReplay)
                 {
                     statusText.text = waitingForPairConnectionString.Value;
                 }

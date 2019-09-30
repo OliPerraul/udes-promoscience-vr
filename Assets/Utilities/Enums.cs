@@ -45,9 +45,9 @@ namespace UdeS.Promoscience.Utils
         WaitingForPairConnection = 13,
         GeneratingTutorialLabyrinthDataForTest = 14,
 
-        ViewingLocalPlayback = 15,
-        ViewingGlobalPlayback = 16,
-        WaitingPlayback = 17,
+        ViewingLocalReplay = 15,
+        ViewingGlobalReplay = 16,
+        WaitingReplay = 17,
         
     }
 
