@@ -79,8 +79,6 @@ namespace UdeS.Promoscience.Replay
 
         private Dictionary<Vector2Int, Stack<Segment>> segments;
 
-        private bool backtrack = false;
-
         private int actionIndex = 0;
 
         private int moveIndex = 0;
@@ -89,9 +87,11 @@ namespace UdeS.Promoscience.Replay
 
         private bool isPlaying = false;
 
-        private Mutex mutex;
+        private bool isBacktracking = false;
 
-        private bool isReverse = true;
+        private bool isPaintingRed = false;
+
+        private Mutex mutex;
 
         public PlayerSequence Create(
             CourseData data,
@@ -115,9 +115,8 @@ namespace UdeS.Promoscience.Replay
             sequence.material = new Material(templateMaterial);
             sequence.material.color = data.Team.TeamColor;
 
-            sequence.backtrackMaterial = new Material(templateMaterial);
+            sequence.backtrackMaterial = new Material(templateBacktrackMaterial);
             sequence.backtrackMaterial.color = data.Team.TeamColor;
-
             sequence.arrowHead.GetComponentInChildren<SpriteRenderer>().color = sequence.material.color;
 
             return sequence;
@@ -241,44 +240,48 @@ namespace UdeS.Promoscience.Replay
                     transform,
                     positions[i - 1],
                     positions[i],
-                    backtrack ? backtrackMaterial : material,
+                    isBacktracking ? backtrackMaterial : material,
                     drawTime,
-                    normalWidth);
+                    isBacktracking ? backtrackWidth : normalWidth);
 
                 segment.Draw();
                 stack.Push(segment);
             }
         }
 
-        public void Draw(Vector2Int o, Vector3 origin, Vector3 dest, bool backtrack = false)
+        public void Draw(Vector2Int labOrigin, Vector2Int labDest, Vector3 origin, Vector3 dest)
         {
             Stack<Segment> stack;
-            if (segments.TryGetValue(o, out stack))
+            // Check to turn off dest
+            if (segments.TryGetValue(labDest, out stack))
             {
                 if (stack.Count > 0)
                 {
                     stack.Peek().gameObject.SetActive(false);
                 }
             }
-            else
-            {
+
+            // Check if origin was visited,
+            // Otherwise create the stack
+            if (!segments.TryGetValue(labOrigin, out stack))
+            {                
                 stack = new Stack<Segment>();
-                segments[o] = stack;
+                segments[labOrigin] = stack;
             }
 
             currentSegment = segmentTemplate.Create(
                 transform,
                 origin,
                 dest,
-                backtrack? backtrackMaterial : material,
+                isBacktracking ? backtrackMaterial : material,
                 drawTime,
-                normalWidth);
+                isBacktracking ? backtrackWidth : normalWidth);
 
-            segments[o].Push(currentSegment);
+            segments[labOrigin].Push(currentSegment);
             currentSegment.Draw();
         }
 
-        public IEnumerator DrawCoroutine(Vector2Int o, Vector3 origin, Vector3 dest, bool backtrack = false)
+        public IEnumerator DrawCoroutine(Vector2Int o, Vector3 origin, Vector3 dest)
         {
             Stack<Segment> stack;
             if (segments.TryGetValue(o, out stack))
@@ -298,9 +301,9 @@ namespace UdeS.Promoscience.Replay
                 transform,
                 origin,
                 dest,
-                backtrack ? backtrackMaterial : material,
+                isBacktracking ? backtrackMaterial : material,
                 drawTime,
-                normalWidth);
+                isBacktracking ? backtrackWidth : normalWidth);
 
             segments[o].Push(currentSegment);
             yield return StartCoroutine(currentSegment.DrawCoroutine());
@@ -314,6 +317,8 @@ namespace UdeS.Promoscience.Replay
                 case GameAction.MoveDown:
                 case GameAction.MoveLeft:
                 case GameAction.MoveRight:
+                case GameAction.PaintFloorRed:
+                case GameAction.PaintFloorYellow:
                     return true;
                 default:
                     return false;
@@ -380,8 +385,6 @@ namespace UdeS.Promoscience.Replay
 
             actionIndex = GetPreviousMovementAction();
 
-            isReverse = true;
-
             DoReverse(
                 (GameAction)data.Actions[actionIndex],
                 data.ActionValues[actionIndex]);
@@ -399,13 +402,14 @@ namespace UdeS.Promoscience.Replay
             {
                 case GameAction.MoveUp:
 
-                    labyrinthPosition.y += 1;
-                    segment = segments[labyrinthPosition].Pop();
-                    Destroy(segment.gameObject);
                     if (segments[labyrinthPosition].Count != 0)
                     {
                         segments[labyrinthPosition].Peek().gameObject.SetActive(true);
                     }
+
+                    labyrinthPosition.y += 1;
+                    segment = segments[labyrinthPosition].Pop();
+                    Destroy(segment.gameObject);
 
                     break;
 
@@ -423,27 +427,42 @@ namespace UdeS.Promoscience.Replay
 
                 case GameAction.MoveLeft:
 
-                    labyrinthPosition.x += 1;
-                    segment = segments[labyrinthPosition].Pop();
-                    Destroy(segment.gameObject);
                     if (segments[labyrinthPosition].Count != 0)
                     {
                         segments[labyrinthPosition].Peek().gameObject.SetActive(true);
                     }
+
+                    labyrinthPosition.x += 1;
+                    segment = segments[labyrinthPosition].Pop();
+                    Destroy(segment.gameObject);
 
                     break;
 
                 case GameAction.MoveRight:
 
-                    labyrinthPosition.x -= 1;
-                    segment = segments[labyrinthPosition].Pop();                   
-                    Destroy(segment.gameObject);
                     if (segments[labyrinthPosition].Count != 0)
                     {
                         segments[labyrinthPosition].Peek().gameObject.SetActive(true);
                     }
 
+                    labyrinthPosition.x -= 1;
+                    segment = segments[labyrinthPosition].Pop();                   
+                    Destroy(segment.gameObject);
+     
+
                     break;
+
+                //case GameAction.PaintFloorRed:
+
+                //    isBacktracking = true;
+
+                //    break;
+
+                //case GameAction.PaintFloorYellow:
+
+                //    isBacktracking = false;
+
+                //    break;
             }
         }
 
@@ -475,8 +494,6 @@ namespace UdeS.Promoscience.Replay
         {
             mutex.WaitOne();
 
-            isReverse = false;
-
             DoPerform(
                 (GameAction)data.Actions[actionIndex],
                 data.ActionValues[actionIndex]);
@@ -506,9 +523,9 @@ namespace UdeS.Promoscience.Replay
 
                     Draw(
                         lastLabyrinthPosition,
+                        labyrinthPosition,
                         origin,
-                        dest,
-                        backtrack);
+                        dest);
 
                     break;
 
@@ -519,9 +536,9 @@ namespace UdeS.Promoscience.Replay
 
                     Draw(
                         lastLabyrinthPosition,
+                        labyrinthPosition,
                         origin,
-                        dest,
-                        backtrack);
+                        dest);
 
                     break;
 
@@ -532,9 +549,9 @@ namespace UdeS.Promoscience.Replay
 
                     Draw(
                         lastLabyrinthPosition,
+                        labyrinthPosition,
                         origin,
-                        dest,
-                        backtrack);
+                        dest);
 
                     break;
 
@@ -545,9 +562,9 @@ namespace UdeS.Promoscience.Replay
 
                     Draw(
                         lastLabyrinthPosition,
+                        labyrinthPosition,
                         origin,
-                        dest,
-                        backtrack);
+                        dest);
 
                     break;
 
@@ -558,12 +575,12 @@ namespace UdeS.Promoscience.Replay
                     break;
 
                 case GameAction.PaintFloorRed:
-                    backtrack = true;
+                    isBacktracking = true;
 
                     break;
 
                 case GameAction.PaintFloorYellow:
-                    backtrack = false;
+                    isBacktracking = false;
 
                     break;
 
@@ -586,8 +603,6 @@ namespace UdeS.Promoscience.Replay
         public IEnumerator PerformCoroutine()
         {
             mutex.WaitOne();
-
-            isReverse = false;
 
             yield return StartCoroutine(DoPerformCoroutine(
                 (GameAction)data.Actions[actionIndex],
@@ -620,8 +635,7 @@ namespace UdeS.Promoscience.Replay
                     yield return StartCoroutine(DrawCoroutine(
                         lastLabyrinthPosition,
                         origin,
-                        dest,
-                        backtrack));
+                        dest));
 
                     break;
 
@@ -633,8 +647,7 @@ namespace UdeS.Promoscience.Replay
                     yield return StartCoroutine(DrawCoroutine(
                         lastLabyrinthPosition,
                         origin,
-                        dest,
-                        backtrack));
+                        dest));
 
                     break;
 
@@ -646,8 +659,7 @@ namespace UdeS.Promoscience.Replay
                     yield return StartCoroutine(DrawCoroutine(
                         lastLabyrinthPosition,
                         origin,
-                        dest,
-                        backtrack));
+                        dest));
 
                     break;
 
@@ -659,8 +671,7 @@ namespace UdeS.Promoscience.Replay
                     yield return StartCoroutine(DrawCoroutine(
                         lastLabyrinthPosition,
                         origin,
-                        dest,
-                        backtrack));
+                        dest));
 
                     break;
 
@@ -671,12 +682,12 @@ namespace UdeS.Promoscience.Replay
                     break;
 
                 case GameAction.PaintFloorRed:
-                    backtrack = true;
+                    isBacktracking = true;
 
                     break;
 
                 case GameAction.PaintFloorYellow:
-                    backtrack = false;
+                    isBacktracking = false;
 
                     break;
 

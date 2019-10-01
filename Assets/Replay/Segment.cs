@@ -72,6 +72,7 @@ namespace UdeS.Promoscience.Replay
             segm.Destination = destination;
             segm.time = time;
             segm.lineRenderer.material = material;
+            segm.lineRenderer.widthMultiplier = width;
 
             //segm.sprite.color = material.color;
             return segm;
