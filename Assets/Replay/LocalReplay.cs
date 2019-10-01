@@ -119,10 +119,10 @@ namespace UdeS.Promoscience.Replay
         {
             for(int i = 0; i < gameData.ActionSteps.Length; i++)
             {
-                yield return StartCoroutine(
-                    playerSequence.DoPerformCoroutine(
-                        (GameAction)gameData.ActionSteps[i], 
-                        gameData.ActionValues[i]));                
+                //yield return StartCoroutine(
+                //    playerSequence.DoPerformCoroutine(
+                //        (GameAction)gameData.ActionSteps[i], 
+                //        gameData.ActionValues[i]));                
             }
 
             yield return null;

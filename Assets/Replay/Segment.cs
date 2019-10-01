@@ -9,9 +9,6 @@ namespace UdeS.Promoscience.Replay
     public class Segment : MonoBehaviour
     {
         [SerializeField]
-        private SpriteRenderer sprite;
-
-        [SerializeField]
         private LineRenderer lineRenderer;
 
         public void OnValidate()
@@ -19,6 +16,8 @@ namespace UdeS.Promoscience.Replay
             if (lineRenderer == null)
                 lineRenderer = GetComponent<LineRenderer>();
         }
+
+        public Vector2Int LOrigin;
 
         public Vector3 Origin;
 
@@ -51,10 +50,12 @@ namespace UdeS.Promoscience.Replay
             transform.position = Origin;
             lineRenderer.SetPosition(0, Origin+ Vector3.up);
             lineRenderer.SetPosition(1, Destination + Vector3.up);
+            Current = Destination + Vector3.up;
         }
 
         public Segment Create(
-            Transform transform, 
+            Transform transform,
+            Vector2Int lorigin, // keep track of origin to remove from layout
             Vector3 origin, 
             Vector3 destination,
             Material material,
@@ -68,6 +69,7 @@ namespace UdeS.Promoscience.Replay
                 transform)                
                 .GetComponent<Segment>();
 
+            segm.LOrigin = lorigin;
             segm.Origin = origin;
             segm.Destination = destination;
             segm.time = time;
