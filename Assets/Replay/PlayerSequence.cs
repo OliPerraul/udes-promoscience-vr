@@ -47,6 +47,9 @@ namespace UdeS.Promoscience.Replay
         private float normalWidth = 1.25f;
 
         [SerializeField]
+        private float backtrackWidth = 2f;
+
+        [SerializeField]
         private Segment currentSegment;
 
         [SerializeField]
