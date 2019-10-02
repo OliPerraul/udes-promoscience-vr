@@ -30,9 +30,6 @@ namespace UdeS.Promoscience.Replay.UI
         private GameObject navigPanel;
 
         [SerializeField]
-        private Dropdown dropdown;
-
-        [SerializeField]
         private Sprite playSprite;
 
         [SerializeField]
@@ -94,11 +91,6 @@ namespace UdeS.Promoscience.Replay.UI
         // Use this for initialization
         private void Awake()
         {
-            server.gameStateChangedEvent += OnGameStateChanged;
-            dropdown.ClearOptions();
-
-            dropdown.onValueChanged.AddListener(OnDropdown);
-
             playButton.onClick.AddListener(OnPlayClicked);
             pauseButton.onClick.AddListener(OnPauseClicked);
             previousButton.onClick.AddListener(OnPreviousClicked);
@@ -111,30 +103,6 @@ namespace UdeS.Promoscience.Replay.UI
             playbackOptions.OnSequenceChangedHandler += OnSequenceChanged;
         }
 
-        public void OnGameStateChanged()
-        {
-            switch (server.GameState)
-            {
-                case Utils.ServerGameState.ViewingPlayback:
-
-                    dropdown.ClearOptions();
-
-                    List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
-                    foreach (CourseData course in playbackOptions.Courses)
-                    {
-                        options.Add(new Dropdown.OptionData(
-                            course.Team.name + " (" +
-                            ScriptableObjects.ScriptableAlgorithm.Instance.GetName(course.Algorithm) +
-                            ") "                            
-                            ));
-                    }                    
-                    
-                    dropdown.AddOptions(options);
-                    playbackOptions.CourseIndex = 0;
-
-                break;
-            }
-        }
 
         private void OnSequenceChanged(PlayerSequence sequence)
         {

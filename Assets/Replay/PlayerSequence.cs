@@ -9,6 +9,7 @@ using System.Linq;
 using System.Collections.Generic;
 
 using System.Threading;
+using System;
 
 namespace UdeS.Promoscience.Replay
 {
@@ -38,7 +39,6 @@ namespace UdeS.Promoscience.Replay
         private Vector3 lastPosition;
 
         private TileColor lastColor;
-        private Vector3 lastOffset;
 
         [SerializeField]
         private float drawTime = 0.6f;
@@ -94,6 +94,8 @@ namespace UdeS.Promoscience.Replay
 
         private Mutex mutex;
 
+        private Vector3 offset;
+
         public PlayerSequence Create(
             CourseData data,
             Labyrinth labyrinth,
@@ -114,6 +116,7 @@ namespace UdeS.Promoscience.Replay
             sequence.material.color = data.Team.TeamColor;            
             sequence.backtrackMaterial.color = data.Team.TeamColor;
             sequence.arrowHead.GetComponentInChildren<SpriteRenderer>().color = sequence.material.color;
+            //sequence.offse;
 
             return sequence;
         }
@@ -125,6 +128,7 @@ namespace UdeS.Promoscience.Replay
             segments = new Dictionary<Vector2Int, Stack<Segment>>();
             material = new Material(templateMaterial);
             backtrackMaterial = new Material(templateBacktrackMaterial);
+            
         }
 
         // TODO: remove debug
@@ -158,6 +162,11 @@ namespace UdeS.Promoscience.Replay
             {
                 arrowHead.gameObject.SetActive(false);
             }
+        }
+
+        public void AdjustOffset(int index, int total, float maxOffset)
+        {
+            offset = new Vector3(maxOffset, 0, 0) * ((float)index) / total;
         }
 
         public void HandleAction(ReplayAction action, params object[] args)

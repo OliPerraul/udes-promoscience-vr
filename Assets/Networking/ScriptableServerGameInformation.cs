@@ -22,7 +22,17 @@ namespace UdeS.Promoscience.ScriptableObjects
         private Replay.ScriptableReplayOptions playbackOptions;
 
         // Ideally, player should reference a course instead of refering to a course id 
-        public Dictionary<int, CourseData> Courses;
+        private Dictionary<int, CourseData> courses;
+
+        public IEnumerable<CourseData> Courses
+        {
+            get
+            {
+                return courses.Values;
+            }
+        }
+
+        public OnCourseEvent OnCourseAddedHandler;
 
         public Action gameRoundChangedEvent;
 
@@ -37,7 +47,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         public void OnEnable()
         {
             gameState = ServerGameState.Lobby;
-            Courses = new Dictionary<int, CourseData>();
+            courses = new Dictionary<int, CourseData>();
 
             foreach (ScriptableTeam team in teams.Teams)
             {
@@ -91,7 +101,7 @@ namespace UdeS.Promoscience.ScriptableObjects
                     break;
 
                 default:
-                    playbackOptions.Courses.Clear();
+                    //playbackOptions.Courses.Clear();
                     break;
             }
             
@@ -119,7 +129,12 @@ namespace UdeS.Promoscience.ScriptableObjects
                 course.Id = SQLiteUtilities.GetNextCourseID();
                 course.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
                 course.Algorithm = player.serverAlgorithm;
-                Courses.Add(course.Id, course);
+                courses.Add(course.Id, course);
+
+                if (OnCourseAddedHandler != null)
+                {
+                    OnCourseAddedHandler.Invoke(course);
+                }
 
                 player.ServerCourseId = course.Id;
                 SQLiteUtilities.InsertPlayerCourse(
@@ -129,16 +144,6 @@ namespace UdeS.Promoscience.ScriptableObjects
                     player.ServerCourseId);
             }
         }
-
-        //// TODO set course active false when finished
-        //// Try find course ID initiated by a team member
-        //// Otherwise assign new course
-        //public void RemoveCourse(int course)
-        //{
-        //    SQLiteUtilities.SetCourseInactive(course);
-        //    Courses.Remove(course);
-        //}
-
 
         public void StartTutorial()
         {
@@ -275,16 +280,15 @@ namespace UdeS.Promoscience.ScriptableObjects
             //CourseData courseData;
             Queue<int> steps;
             Queue<string> stepValues; //jsons
-            foreach(CourseData course in Courses.Values)
+            foreach(CourseData course in Courses)
             {
                 SQLiteUtilities.SetCourseInactive(course.Id);
                 SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
                 course.Actions = steps.ToArray();
                 course.ActionValues = stepValues.ToArray();
-                playbackOptions.Courses.Add(course);
             }
 
-            Courses.Clear();
+            //Courses.Clear();
 
             // Begin playback server
             GameState = ServerGameState.ViewingPlayback;

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace UdeS.Promoscience.Replay
 {
     // Playback for a single team
-    public class LocalPlayback : MonoBehaviour
+    public class LocalReplay : MonoBehaviour
     {
         [SerializeField]
         ScriptableClientGameState gameState;

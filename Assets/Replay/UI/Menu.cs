@@ -16,13 +16,13 @@ namespace UdeS.Promoscience.Replay.UI
         private UnityEngine.UI.Button exitButton;
 
         [SerializeField]
-        private Controls display;
+        private GameObject display;
 
 
         public void Awake()
         {
-            display.gameObject.SetActive(true);
-            display.Enabled = false;
+            display.SetActive(false);
+            //display.Enabled = false;
 
             openButton.onClick.AddListener(OnOpenClicked);
             exitButton.onClick.AddListener(OnExitClicked);
@@ -49,7 +49,7 @@ namespace UdeS.Promoscience.Replay.UI
 
         public void OnOpenClicked()
         {
-            display.Enabled = !display.Enabled;//SetActive(!display.gameObject.activeInHierarchy);
+            display.SetActive(!display.activeInHierarchy);//SetActive(!display.gameObject.activeInHierarchy);
         }
 
         public void OnExitClicked()

@@ -4,14 +4,13 @@ using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace UdeS.Promoscience.Replay
 {
     // Playback for a single team
     public class GlobalReplay : MonoBehaviour
     {
-        // (PlayerSequence sequence);
-
         [SerializeField]
         private ScriptableReplayOptions replayOptions;
 
@@ -26,21 +25,16 @@ namespace UdeS.Promoscience.Replay
 
         [SerializeField]
         private PlayerSequence playerSequenceTemplate;
-
-        [SerializeField]
-        private AlgorithmSequence algorithmSequenceTemplate;
         
-        private List<PlayerSequence> playerSequences;
+        private Dictionary<int, PlayerSequence> playerSequences;
 
-        private PlayerSequence currentSequence;
-
-        private List<PlayerSequence> algorithmSequences;
+        private List<PlayerSequence> activeSequences;
 
         private Vector2Int labyrinthPosition;
 
         private Vector3 worldPosition;
 
-        private bool replayActive = false;
+        private float maxOffset = 5f;
 
         public void Update()
         {
@@ -53,21 +47,25 @@ namespace UdeS.Promoscience.Replay
         public void OnValidate()
         {
             if (algorithm == null)
+            {
                 algorithm = FindObjectOfType<Algorithm>();
+            }
 
             if (labyrinth == null)
+            {
                 labyrinth = FindObjectOfType<Labyrinth>();
-        
+            }
         }
 
         public void Awake()
         {
-            //playerSequence = new PlayerSe
-            playerSequences = new List<PlayerSequence>();
-            algorithmSequences = new List<PlayerSequence>();
+            playerSequences = new Dictionary<int, PlayerSequence>();
+            activeSequences = new List<PlayerSequence>();
+
             serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
-            replayOptions.valueChangeEvent += OnPlaybackOptionsChanged;
-            replayOptions.OnActionHandler += OnPlaybackAction;
+            serverGameState.OnCourseAddedHandler += OnCourseAdded;
+
+            replayOptions.OnActionHandler += OnPlaybackAction;            
         }
 
         public void OnProgress(int progress)
@@ -78,26 +76,49 @@ namespace UdeS.Promoscience.Replay
 
         public void OnPlaybackAction(ReplayAction action, params object[] args)
         {
-            if (currentSequence != null)
-                currentSequence.HandleAction(action, args);
+            foreach (PlayerSequence sequence in activeSequences)
+            {
+                sequence.HandleAction(action, args);
+            }
         }
 
-        public void OnPlaybackOptionsChanged()
+        public void OnSequenceToggled(CourseData course, bool enabled)
         {
-            if (currentSequence != null)
+            playerSequences[course.Id].gameObject.SetActive(enabled);
+
+            if (!enabled)
             {
-                currentSequence.OnProgressHandler -= OnProgress;
+                activeSequences.Remove(playerSequences[course.Id]);
             }
 
-            currentSequence = playerSequences[replayOptions.CourseIndex];
-            currentSequence.OnProgressHandler += OnProgress;
-            currentSequence.OnSequenceFinishedHandler += OnSequenceFinished;
+            AdjustOffsets();      
+        }
 
-            if (replayOptions.OnSequenceChangedHandler != null)
+        public void AdjustOffsets()
+        {
+            for(int i = 0; i < activeSequences.Count; i++)
             {
-                replayOptions.OnSequenceChangedHandler.Invoke(currentSequence);
+                activeSequences[i].AdjustOffset(i, activeSequences.Count, maxOffset);
             }
         }
+        
+        //public void OnPlaybackOptionsChanged()
+        //{
+        //    if (currentSequence != null)
+        //    {
+        //        currentSequence.OnProgressHandler -= OnProgress;
+        //    }
+
+        //    currentSequence = playerSequences[replayOptions.CourseIndex];
+
+        //    currentSequence.OnProgressHandler += OnProgress;
+        //    currentSequence.OnSequenceFinishedHandler += OnSequenceFinished;
+
+        //    if (replayOptions.OnSequenceChangedHandler != null)
+        //    {
+        //        replayOptions.OnSequenceChangedHandler.Invoke(currentSequence);
+        //    }
+        //}
 
         private void OnSequenceFinished()
         {
@@ -113,12 +134,6 @@ namespace UdeS.Promoscience.Replay
                 ServerGameState.ViewingPlayback)
             {
                 Begin();
-                replayActive = true;
-            }
-            else if (replayActive)
-            {
-                Stop();
-                replayActive = false;
             }
         }
 
@@ -132,83 +147,51 @@ namespace UdeS.Promoscience.Replay
             worldPosition =
                 labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
-            for(int i = 0; i < replayOptions.Courses.Count; i++)
+            int idx = 0;
+
+            foreach(CourseData course in serverGameState.Courses)
             {
-                var sequence = 
+                var sequence =
                     playerSequenceTemplate.Create(
-                        replayOptions.Courses[i],
-                        labyrinth, 
-                        labyrinthPosition, 
+                        course,
+                        labyrinth,
+                        labyrinthPosition,
                         worldPosition);
 
-                playerSequences.Add(sequence);
+                playerSequences.Add(course.Id, sequence);
+                activeSequences.Add(sequence);
             }
 
-            if (playerSequences.Count != 0)
+            AdjustOffsets();
+        }
+
+        public void OnCourseAdded(CourseData course)
+        {
+            if (serverGameState.GameState == ServerGameState.ViewingPlayback)
             {
-                OnPlaybackOptionsChanged();
+                var sequence =
+                    playerSequenceTemplate.Create(
+                        course,
+                        labyrinth,
+                        labyrinthPosition,
+                        worldPosition);
+
+                playerSequences.Add(course.Id, sequence);
+                activeSequences.Add(sequence);
             }
         }
 
-        public IEnumerator PlayerSequenceCoroutine()
+        public void OnCourseRemoved(CourseData course)
         {
-            foreach (PlayerSequence sequence in playerSequences)
+            if (serverGameState.GameState == ServerGameState.ViewingPlayback)
             {
-                //yield return sequence.StartCoroutine(sequence.BeginCoroutine());
+
+                activeSequences.Remove(playerSequences[course.Id]);
+                playerSequences.Remove(course.Id);
+                AdjustOffsets();
             }
-
-            yield return null;
         }
 
-
-
-        public void Stop()
-        {
-            StopAllCoroutines();
-            labyrinth.DestroyLabyrinth();
-
-            //if (playerSequence)
-            //{
-            //    Destroy(playerSequence.gameObject);
-            //}
-
-            //if (algorithmSequence)
-            //{
-            //    Destroy(algorithmSequence.gameObject);
-            //}
-        }
-
-        private void BeginPlayerSequence()
-        {
-            //if (playerSequence != null)
-            //    Destroy(playerSequence.gameObject);
-
-            //playerSequence = playerSequenceTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
-            //StartCoroutine(PlayerSequenceCoroutine());
-        }
-
-        private void BeginAlgorithmSequence()
-        {
-            //if (algorithmSequence != null)
-            //    Destroy(algorithmSequence.gameObject);
-
-            //algorithmSequence = algorithmSequenceTemplate.Create(labyrinth, labyrinthPosition, worldPosition);
-
-            StartCoroutine(AlgorithmSequenceCoroutine());
-        }
-
-        IEnumerator AlgorithmSequenceCoroutine()
-        {
-            //List<Tile> tiles = algorithm.GetAlgorithmSteps();
-
-            //foreach (var tile in tiles)
-            //{
-            //    algorithmSequence.Perform(tile);
-            //    yield return new WaitForSeconds(algorithmSequenceSpeed);
-            //}
-
-            yield return null;
-        }
 
 
     }
