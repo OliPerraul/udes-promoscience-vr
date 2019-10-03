@@ -18,6 +18,10 @@ namespace UdeS.Promoscience.Replay.UI
 
         public OnSequenceToggled OnSequenceToggledHandler;
 
+        public GameObject Respect;
+
+        public GameObject Score;
+
         public SequenceToggleItem Create(Transform parent, CourseData course)
         {
             SequenceToggleItem item =
@@ -41,6 +45,11 @@ namespace UdeS.Promoscience.Replay.UI
 
         public void OnToggle(bool enabled)
         {
+            Respect.SetActive(enabled);
+
+            Score.SetActive(enabled);
+            
+
             if (OnSequenceToggledHandler != null)
             {
                 OnSequenceToggledHandler.Invoke(course, enabled);
