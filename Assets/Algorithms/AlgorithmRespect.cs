@@ -14,8 +14,8 @@ namespace UdeS.Promoscience
         [SerializeField]
         ScriptableAlgorithm algorithm;
 
-        [SerializeField]
-        ScriptableFloat algorithmRespect;
+        //[SerializeField]
+        //ScriptableFloat algorithmRespect;
 
         [SerializeField]
         ScriptableGameAction gameAction;
@@ -42,9 +42,6 @@ namespace UdeS.Promoscience
         ScriptableAction playerReachedTheEnd;
 
         [SerializeField]
-        ScriptableIntegerArray recordedSteps;
-
-        [SerializeField]
         ScriptableBoolean returnToDivergencePointAnswer;
 
         [SerializeField]
@@ -68,8 +65,6 @@ namespace UdeS.Promoscience
 
         bool isAlgorithmRespectActive = false;
 
-        int errorCounter;
-
         const float E = 2.71828f;
 
         readonly float[] rotationByDirection = { 0, 90, 180, 270 };
@@ -84,11 +79,11 @@ namespace UdeS.Promoscience
 
         Quaternion rotationAtDivergence;
 
-        private int backtrack = 0;
+        //private int backtrack = 0;
 
         void Start()
         {
-            gameState.valueChangedEvent += OnGameStateChanged;
+            gameState.clientStateChangedEvent += OnGameStateChanged;
             playerPaintTile.valueChangedEvent += OnPlayerPaintTile;
             labyrinthPositionChanged.action += OnLabyrinthPositionChanged;
             returnToDivergencePointAnswer.valueChangedEvent += OnReturnToDivergencePointAnswer;
@@ -116,7 +111,7 @@ namespace UdeS.Promoscience
                 {
                     SetAlgorithmStepsWithId(algorithm.Value);
 
-                    if (recordedSteps.Value.Length > 0)
+                    if (gameState.ActionSteps.Length > 0)
                     {
                         StartWithSteps();
                     }
@@ -139,7 +134,7 @@ namespace UdeS.Promoscience
         {
             if (labyrinthPosition != currentLabyrinthPosition)
             {
-                if (labyrinthPosition == labyrinth.GetLabyrithEndPosition() && !(algorithmRespect.Value < 1.0f))
+                if (labyrinthPosition == labyrinth.GetLabyrithEndPosition() && !(gameState.Respect < 1.0f))
                 {
                     gameAction.SetAction(GameAction.CompletedRound);
 
@@ -159,7 +154,7 @@ namespace UdeS.Promoscience
                         || (previousTileColor != algorithmSteps[playerSteps.Count - 1].color))
                     {
                         isDiverging.Value = true;
-                        algorithmRespect.Value = RespectValueComputation((new Vector2Int(
+                        gameState.Respect = RespectValueComputation((new Vector2Int(
                             playerSteps[playerSteps.Count - 1].x, 
                             playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
 
@@ -185,11 +180,11 @@ namespace UdeS.Promoscience
                         if (wrongColorTilesWhenDiverging.Count == 0)
                         {
                             isDiverging.Value = false;
-                            algorithmRespect.Value = 1.0f;
+                            gameState.Respect = 1.0f;
                         }
                         else
                         {
-                            algorithmRespect.Value = RespectValueComputation((
+                            gameState.Respect = RespectValueComputation((
                                 new Vector2Int(
                                     playerSteps[playerSteps.Count - 1].x, 
                                     playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
@@ -197,7 +192,7 @@ namespace UdeS.Promoscience
                     }
                     else
                     {
-                        algorithmRespect.Value = RespectValueComputation((
+                        gameState.Respect = RespectValueComputation((
                             new Vector2Int(
                                 playerSteps[playerSteps.Count - 1].x, 
                                 playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
@@ -224,7 +219,7 @@ namespace UdeS.Promoscience
                             {
                                 wrongColorTilesWhenDiverging.RemoveAt(i);
 
-                                algorithmRespect.Value = 
+                                gameState.Respect = 
                                     RespectValueComputation(
                                         (new Vector2Int(
                                             playerSteps[playerSteps.Count - 1].x, 
@@ -237,7 +232,7 @@ namespace UdeS.Promoscience
 
                     wrongColorTilesWhenDiverging.Add(new Tile(x, y, previousColor));
 
-                    algorithmRespect.Value = 
+                    gameState.Respect = 
                         RespectValueComputation(
                             (new Vector2Int(
                                 playerSteps[playerSteps.Count - 1].x,
@@ -275,10 +270,9 @@ namespace UdeS.Promoscience
         {
             playerSteps.Clear();
             wrongColorTilesWhenDiverging.Clear();
-            backtrack = 0;
-            errorCounter = 0;
+            gameState.ErrorCount = 0;
             isDiverging.Value = false;
-            algorithmRespect.Value = 1.0f;
+            gameState.Respect = 1.0f;
             currentLabyrinthPosition = labyrinth.GetLabyrithStartPosition();
             playerSteps.Add(new Tile(currentLabyrinthPosition.x, currentLabyrinthPosition.y, labyrinth.GetTileColor(currentLabyrinthPosition)));
         }
@@ -287,7 +281,7 @@ namespace UdeS.Promoscience
         {
             if (returnToDivergencePointAnswer.Value)
             {
-                errorCounter += 5;
+                gameState.ErrorCount += 5;
 
                 Tile[] tiles = wrongColorTilesWhenDiverging.ToArray(); 
 
@@ -317,7 +311,7 @@ namespace UdeS.Promoscience
 
         void StartWithSteps()
         {
-            int[] steps = recordedSteps.Value;
+            int[] steps = gameState.ActionSteps;
             int forwardDirection = labyrinth.GetStartDirection();
             TileColor[,] tiles = new TileColor[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
             Vector2Int position = labyrinth.GetLabyrithStartPosition();
@@ -379,7 +373,7 @@ namespace UdeS.Promoscience
                 }
                 else if (gameAction == GameAction.ReturnToDivergencePoint)
                 {
-                    errorCounter += 5;
+                    gameState.ErrorCount += 5;
 
                     position = new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y);
                     forwardDirection = GetForwardDirectionWithRotation(rotationAtDivergence);

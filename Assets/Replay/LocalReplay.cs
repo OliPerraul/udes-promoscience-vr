@@ -13,9 +13,6 @@ namespace UdeS.Promoscience.Replay
         ScriptableClientGameState gameState;
 
         [SerializeField]
-        private ScriptableClientGameData gameData;
-
-        [SerializeField]
         private PlayerSequence playerSequenceTemplate;
 
         private PlayerSequence playerSequence;
@@ -48,10 +45,10 @@ namespace UdeS.Promoscience.Replay
 
         public void Awake()
         {
-            gameState.valueChangedEvent += OnGameStateChanged;
+            gameState.clientStateChangedEvent += OnGameStateChanged;
 
             if(gameState != null)
-                gameState.valueChangedEvent += OnServerGameStateChanged;
+                gameState.clientStateChangedEvent += OnServerGameStateChanged;
         }
 
         public void OnGameStateChanged()
@@ -117,7 +114,7 @@ namespace UdeS.Promoscience.Replay
 
         public IEnumerator PlayerSequenceCoroutine()
         {
-            for(int i = 0; i < gameData.ActionSteps.Length; i++)
+            for(int i = 0; i < gameState.ActionSteps.Length; i++)
             {
                 //yield return StartCoroutine(
                 //    playerSequence.DoPerformCoroutine(

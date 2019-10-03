@@ -34,7 +34,23 @@ namespace UdeS.Promoscience.Replay
 
         private Vector3 worldPosition;
 
+        [SerializeField]
         private float maxOffset = 5f;
+
+        private int moveIndex = 0;
+
+        private int moveCount = -999;
+
+        private void SetMoveCount(int mvcnt)
+        {
+            moveCount = mvcnt;
+
+            if (replayOptions.OnMoveCountSetHandler != null)
+            {
+                replayOptions.OnMoveCountSetHandler(moveCount);
+            }
+        }
+
 
         public void Update()
         {
@@ -65,16 +81,23 @@ namespace UdeS.Promoscience.Replay
             serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
             serverGameState.OnCourseAddedHandler += OnCourseAdded;
 
-            replayOptions.OnActionHandler += OnPlaybackAction;            
+            replayOptions.OnActionHandler += OnReplayAction;
+            
+            replayOptions.OnSequenceToggledHandler += OnSequenceToggled;
         }
 
         public void OnProgress(int progress)
         {
-            if(replayOptions.OnProgressHandler != null)
-                replayOptions.OnProgressHandler.Invoke(progress);
+            if (progress > moveIndex)
+            {
+                moveIndex = progress;
+
+                if (replayOptions.OnProgressHandler != null)
+                    replayOptions.OnProgressHandler.Invoke(moveIndex);
+            }
         }
 
-        public void OnPlaybackAction(ReplayAction action, params object[] args)
+        public void OnReplayAction(ReplayAction action, params object[] args)
         {
             foreach (PlayerSequence sequence in activeSequences)
             {
@@ -90,35 +113,25 @@ namespace UdeS.Promoscience.Replay
             {
                 activeSequences.Remove(playerSequences[course.Id]);
             }
+            else
+            {
+                activeSequences.Add(playerSequences[course.Id]);
+            }
 
-            AdjustOffsets();      
+            if (activeSequences.Count != 0)
+            {
+                SetMoveCount(activeSequences.Max(x => x.MoveCount));
+                AdjustSequences();
+            }    
         }
 
-        public void AdjustOffsets()
+        public void AdjustSequences()
         {
             for(int i = 0; i < activeSequences.Count; i++)
             {
-                activeSequences[i].AdjustOffset(i, activeSequences.Count, maxOffset);
+                activeSequences[i].Adjust(i, activeSequences.Count, maxOffset);
             }
         }
-        
-        //public void OnPlaybackOptionsChanged()
-        //{
-        //    if (currentSequence != null)
-        //    {
-        //        currentSequence.OnProgressHandler -= OnProgress;
-        //    }
-
-        //    currentSequence = playerSequences[replayOptions.CourseIndex];
-
-        //    currentSequence.OnProgressHandler += OnProgress;
-        //    currentSequence.OnSequenceFinishedHandler += OnSequenceFinished;
-
-        //    if (replayOptions.OnSequenceChangedHandler != null)
-        //    {
-        //        replayOptions.OnSequenceChangedHandler.Invoke(currentSequence);
-        //    }
-        //}
 
         private void OnSequenceFinished()
         {
@@ -147,22 +160,12 @@ namespace UdeS.Promoscience.Replay
             worldPosition =
                 labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
-            int idx = 0;
-
             foreach(CourseData course in serverGameState.Courses)
             {
-                var sequence =
-                    playerSequenceTemplate.Create(
-                        course,
-                        labyrinth,
-                        labyrinthPosition,
-                        worldPosition);
-
-                playerSequences.Add(course.Id, sequence);
-                activeSequences.Add(sequence);
+                OnCourseAdded(course);
             }
 
-            AdjustOffsets();
+            //AdjustSequences();
         }
 
         public void OnCourseAdded(CourseData course)
@@ -176,8 +179,14 @@ namespace UdeS.Promoscience.Replay
                         labyrinthPosition,
                         worldPosition);
 
+                sequence.OnProgressHandler += OnProgress;
+
                 playerSequences.Add(course.Id, sequence);
                 activeSequences.Add(sequence);
+
+                SetMoveCount(sequence.MoveCount > moveCount ? sequence.MoveCount : moveCount);
+
+                AdjustSequences();
             }
         }
 
@@ -185,10 +194,12 @@ namespace UdeS.Promoscience.Replay
         {
             if (serverGameState.GameState == ServerGameState.ViewingPlayback)
             {
-
                 activeSequences.Remove(playerSequences[course.Id]);
                 playerSequences.Remove(course.Id);
-                AdjustOffsets();
+
+                SetMoveCount(activeSequences.Max(x => x.MoveCount));
+
+                AdjustSequences();
             }
         }
 

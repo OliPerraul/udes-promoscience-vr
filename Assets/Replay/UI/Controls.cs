@@ -100,14 +100,15 @@ namespace UdeS.Promoscience.Replay.UI
 
             playbackOptions.OnProgressHandler += OnProgress;
             playbackOptions.OnSequenceFinishedHandler += OnReplaySequenceFinished;
-            playbackOptions.OnSequenceChangedHandler += OnSequenceChanged;
+            //playbackOptions.OnSequenceChangedHandler += OnSequenceChanged;
+            playbackOptions.OnMoveCountSetHandler += OnSequenceChanged;
         }
 
 
-        private void OnSequenceChanged(PlayerSequence sequence)
+        private void OnSequenceChanged(int mvcnt)
         {
             slider.minValue = 0;
-            slider.maxValue = sequence.MoveCount;
+            slider.maxValue = mvcnt;
         }
 
 

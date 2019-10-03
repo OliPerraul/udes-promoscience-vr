@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.Network
 
             if (isClient)
             {
-                gameState.valueChangedEvent -= SendCmdPlayerGameState;
+                gameState.clientStateChangedEvent -= SendCmdPlayerGameState;
 
                 if (deviceType.Value == Utils.DeviceType.Headset)
                 {
@@ -214,14 +214,14 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         ScriptableIntegerArray recordedSteps;
 
-        [SerializeField]
-        private ScriptableClientGameData gameData;
+        //[SerializeField]
+        //private ScriptableClientGameData gameData;
 
         public override void OnStartLocalPlayer()
         {
             base.OnStartLocalPlayer();
 
-            gameState.valueChangedEvent += SendCmdPlayerGameState;
+            gameState.clientStateChangedEvent += SendCmdPlayerGameState;
 
             ClientInitialize();
         }
@@ -391,8 +391,8 @@ namespace UdeS.Promoscience.Network
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
             //recordedSteps.Value = steps;
-            gameData.ActionValues = stepValues;
-            gameData.ActionSteps = steps;
+            gameState.ActionValues = stepValues;
+            gameState.ActionSteps = steps;
             gameState.Value = ClientGameState.ViewingLocalReplay;
         }
 

@@ -13,8 +13,8 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         ScriptableAlgorithm algorithm;
 
-        [SerializeField]
-        ScriptableFloat algorithmRespect;
+        //[SerializeField]
+        //ScriptableFloat algorithmRespect;
 
         [SerializeField]
         ScriptableDirective directive;
@@ -118,7 +118,7 @@ namespace UdeS.Promoscience.Network
         {
             directive.valueChangedEvent += SendDirective;
             returnToDivergencePointRequest.action += SendReturnToDivergencePointRequest;
-            gameState.valueChangedEvent += OnGameStateChanged;
+            gameState.clientStateChangedEvent += OnGameStateChanged;
 
             isConnectedToPair.Value = true;
         }
@@ -127,7 +127,7 @@ namespace UdeS.Promoscience.Network
         {
             isConnectedToPair.Value = false;
 
-            gameState.valueChangedEvent -= OnGameStateChanged;
+            gameState.clientStateChangedEvent -= OnGameStateChanged;
             directive.valueChangedEvent -= SendDirective;
             returnToDivergencePointRequest.action -= SendReturnToDivergencePointRequest;
 
@@ -143,13 +143,13 @@ namespace UdeS.Promoscience.Network
         void OnAlgorithmRespect(NetworkMessage netMsg)
         {
             AlgorithmRespectMessage msg = netMsg.ReadMessage<AlgorithmRespectMessage>();
-            algorithmRespect.Value = msg.algorithmRespect;
+            gameState.Respect = msg.algorithmRespect;
 
-            if (algorithmRespect.Value >= 1 && isDiverging.Value)
+            if (gameState.Respect >= 1 && isDiverging.Value)
             {
                 isDiverging.Value = false;
             }
-            else if (algorithmRespect.Value < 1 && !isDiverging.Value)
+            else if (gameState.Respect < 1 && !isDiverging.Value)
             {
                 isDiverging.Value = true;
             }

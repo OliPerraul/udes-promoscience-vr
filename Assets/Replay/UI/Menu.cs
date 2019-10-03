@@ -22,8 +22,6 @@ namespace UdeS.Promoscience.Replay.UI
         public void Awake()
         {
             display.SetActive(false);
-            //display.Enabled = false;
-
             openButton.onClick.AddListener(OnOpenClicked);
             exitButton.onClick.AddListener(OnExitClicked);
             server.gameStateChangedEvent += OnGameStateChanged;
@@ -49,7 +47,7 @@ namespace UdeS.Promoscience.Replay.UI
 
         public void OnOpenClicked()
         {
-            display.SetActive(!display.activeInHierarchy);//SetActive(!display.gameObject.activeInHierarchy);
+            display.SetActive(!display.activeInHierarchy);
         }
 
         public void OnExitClicked()

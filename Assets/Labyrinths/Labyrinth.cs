@@ -29,7 +29,7 @@ namespace UdeS.Promoscience
 
         private void Start()
         {
-            gameState.valueChangedEvent += OnGameStateChanged;
+            gameState.clientStateChangedEvent += OnGameStateChanged;
         }
 
         public void OnGameStateChanged()

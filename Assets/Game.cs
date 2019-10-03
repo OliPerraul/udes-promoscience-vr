@@ -57,7 +57,7 @@ namespace UdeS.Promoscience
 
         void Start()
         {
-            gameState.valueChangedEvent += OnGameStateChanged;
+            gameState.clientStateChangedEvent += OnGameStateChanged;
 
             if (playerReachedTheEnd != null)
             {

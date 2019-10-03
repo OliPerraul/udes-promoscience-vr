@@ -38,7 +38,7 @@ namespace UdeS.Promoscience.Tests
 
         void Start()
         {
-            gameState.valueChangedEvent += OnGameStateChanged;
+            gameState.clientStateChangedEvent += OnGameStateChanged;
         }
 
 

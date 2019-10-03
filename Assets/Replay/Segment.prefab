@@ -52,10 +52,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29713947760e40842a0e2fc140af8b92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
   lineRenderer: {fileID: 120112166343802176}
-  Origin: {x: 0, y: 0, z: 0}
+  LOrigin: {x: 0, y: 0}
   Current: {x: 0, y: 0, z: 0}
+  Origin: {x: 0, y: 0, z: 0}
   Destination: {x: 0, y: 0, z: 0}
 --- !u!120 &120112166343802176
 LineRenderer:
@@ -145,7 +145,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0

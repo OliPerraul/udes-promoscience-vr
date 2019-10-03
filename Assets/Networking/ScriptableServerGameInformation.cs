@@ -121,6 +121,7 @@ namespace UdeS.Promoscience.ScriptableObjects
 
             if (SQLiteUtilities.TryGetCourseId(player.ServerTeamId, out courseId))
             {
+                Debug.Log("already id");
                 player.ServerCourseId = courseId;
             }
             else

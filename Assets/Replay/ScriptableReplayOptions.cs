@@ -38,7 +38,7 @@ namespace UdeS.Promoscience.Replay
 
         public OnEvent OnSequenceFinishedHandler;
 
-        public OnIntEvent OnMoveCountDeterminedHandler;
+        public OnIntEvent OnMoveCountSetHandler;
 
         public OnIntEvent OnProgressHandler;       
 

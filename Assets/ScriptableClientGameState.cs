@@ -14,7 +14,36 @@ namespace UdeS.Promoscience.ScriptableObjects
         [SerializeField]
         ClientGameState value;
 
-        public Action valueChangedEvent;
+        public Action clientStateChangedEvent;
+
+
+        public string[] ActionValues;
+
+        public int[] ActionSteps;
+
+        public int ErrorCount = 0;
+
+        private float respect;
+
+        public OnFloatEvent OnRespectChangedHandler;
+
+        public float Respect
+        {
+            get
+            {
+                return respect;
+            }
+
+            set
+            {
+                respect = value;
+                if (OnRespectChangedHandler != null)
+                {
+                    OnRespectChangedHandler.Invoke(respect);
+                }
+            }
+        }
+
 
         public void Awake()
         {
@@ -36,9 +65,9 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public void OnValueChanged()
         {
-            if (valueChangedEvent != null)
+            if (clientStateChangedEvent != null)
             {
-                valueChangedEvent();
+                clientStateChangedEvent();
             }
         }
     }

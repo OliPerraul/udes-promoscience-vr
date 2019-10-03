@@ -46,7 +46,7 @@ namespace UdeS.Promoscience.UI
 
             gameRound.valueChangedEvent += OnGameRoundValueChanged;
             timer.OnTimeLimitHandler += OnAnnouncementTimeOut;
-            gameState.valueChangedEvent += OnGameStateChanged;
+            gameState.clientStateChangedEvent += OnGameStateChanged;
 
             transform.GetChild(0).gameObject.SetActive(false);
          }

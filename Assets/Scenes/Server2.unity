@@ -4430,7 +4430,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 2
     m_MaxSize: 32
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
@@ -4481,7 +4481,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1305018712
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4536,8 +4536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toggle: {fileID: 2015109020}
   label: {fileID: 1222467515}
-  colorImage: {fileID: 312563185}
-  team: {fileID: 0}
+  colorImage: {fileID: 1431954287}
 --- !u!1 &1311816215
 GameObject:
   m_ObjectHideFlags: 0
@@ -5971,7 +5970,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -0.000061035156, y: -127.999954}
-  m_SizeDelta: {x: 0, y: 64}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1665041928
 MonoBehaviour:
@@ -6238,8 +6237,7 @@ MonoBehaviour:
   serverGameState: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   playerSequenceTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
     type: 2}
-  algorithmSequenceTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
-    type: 2}
+  maxOffset: 2.5
 --- !u!4 &1856815492
 Transform:
   m_ObjectHideFlags: 0
@@ -6436,8 +6434,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 8, y: 0}
-  m_SizeDelta: {x: -16, y: 0}
+  m_AnchoredPosition: {x: 16, y: 0}
+  m_SizeDelta: {x: -32, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1985043194
 MonoBehaviour:
@@ -6752,7 +6750,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2113685117
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6903,7 +6901,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 827849870}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999998
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

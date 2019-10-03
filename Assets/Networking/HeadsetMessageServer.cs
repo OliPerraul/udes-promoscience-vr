@@ -15,8 +15,8 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         ScriptableAlgorithm algorithm;
 
-        [SerializeField]
-        ScriptableFloat algorithmRespect;
+        //[SerializeField]
+        //ScriptableFloat algorithmRespect;
 
         [SerializeField]
         ScriptableDirective directive;
@@ -115,7 +115,7 @@ namespace UdeS.Promoscience.Network
         {
             clientConnection = netMsg.conn;
 
-            algorithmRespect.valueChangedEvent += SendAlgorithmRespect;
+            gameState.OnRespectChangedHandler += SendAlgorithmRespect;
             playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
             playerPosition.valueChangedEvent += SendPlayerPosition;
             playerReachedTheEnd.action += SendEndReached;
@@ -140,7 +140,7 @@ namespace UdeS.Promoscience.Network
 
             clientConnection = null;
 
-            algorithmRespect.valueChangedEvent -= SendAlgorithmRespect;
+            gameState.OnRespectChangedHandler -= SendAlgorithmRespect;
             playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
             playerPosition.valueChangedEvent -= SendPlayerPosition;
             playerReachedTheEnd.action -= SendEndReached;
@@ -177,7 +177,7 @@ namespace UdeS.Promoscience.Network
                     else
                     {
                         SendAlgorithm();
-                        SendAlgorithmRespect();
+                        SendAlgorithmRespect(gameState.Respect);
                         SendPlayerPosition();
                         SendPlayerRotation();
                         SendPlayerTilesToPaint();
@@ -189,7 +189,7 @@ namespace UdeS.Promoscience.Network
 
             if (!isRequestDelayed)
             {
-                gameState.valueChangedEvent += DelayedSendGameInformation;
+                gameState.clientStateChangedEvent += DelayedSendGameInformation;
                 isRequestDelayed = true;
             }
         }
@@ -207,7 +207,7 @@ namespace UdeS.Promoscience.Network
                     else
                     {
                         SendAlgorithm();
-                        SendAlgorithmRespect();
+                        SendAlgorithmRespect(gameState.Respect);
                         SendPlayerPosition();
                         SendPlayerRotation();
                         SendPlayerTilesToPaint();
@@ -227,11 +227,10 @@ namespace UdeS.Promoscience.Network
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 
-        void SendAlgorithmRespect()
+        void SendAlgorithmRespect(float respect)
         {
             AlgorithmRespectMessage msg = new AlgorithmRespectMessage();
-            msg.algorithmRespect = algorithmRespect.Value;
-
+            msg.algorithmRespect = respect;
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 

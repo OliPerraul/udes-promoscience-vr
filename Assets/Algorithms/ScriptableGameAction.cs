@@ -22,12 +22,21 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         [SerializeField]
         public Tile[] playerSteps;
+
+        [SerializeField]
+        public float respect = 0;
+
+        [SerializeField]
+        public int error = 0;
     }       
 
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/GameAction", order = 1)]
     public class ScriptableGameAction : ScriptableObject
     {
+        [SerializeField]
+        private ScriptableClientGameState gameState;
+
         [SerializeField]
         GameAction action;
 
@@ -68,7 +77,11 @@ namespace UdeS.Promoscience.ScriptableObjects
         {
             action = gameAction;
 
-            value = JsonUtility.ToJson(new ActionValue());
+            var actionValue = new ActionValue();
+            actionValue.respect = gameState.Respect;
+            actionValue.error = gameState.ErrorCount;
+
+            value = JsonUtility.ToJson(actionValue);
 
             DateTime actionDateTime = DateTime.Now;
 
@@ -93,6 +106,8 @@ namespace UdeS.Promoscience.ScriptableObjects
             actionValue.position = position;
             actionValue.rotation = rotation;
             actionValue.playerSteps = playerSteps;
+            actionValue.respect = gameState.Respect;
+            actionValue.error = gameState.ErrorCount;
 
             value = JsonUtility.ToJson(actionValue);
 

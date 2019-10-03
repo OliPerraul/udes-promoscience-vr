@@ -15,16 +15,16 @@ namespace UdeS.Promoscience
         private ScriptableClientGameState gameState;
 
         [SerializeField]
-        private UnityEngine.Camera topDownCamera;
+        private Camera topDownCamera;
 
         [SerializeField]
-        private UnityEngine.Camera gameplayCamera;
+        private Camera gameplayCamera;
 
         [SerializeField]
-        private UnityEngine.Camera oculusCameraLeft;
+        private Camera oculusCameraLeft;
 
         [SerializeField]
-        private UnityEngine.Camera oculusCameraRight;
+        private Camera oculusCameraRight;
 
         public Camera Camera;
 
@@ -38,7 +38,7 @@ namespace UdeS.Promoscience
 
         public void Awake()
         {
-            gameState.valueChangedEvent += OnGameStateChanged;
+            gameState.clientStateChangedEvent += OnGameStateChanged;
 
             if(serverGameState != null)
                 serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
