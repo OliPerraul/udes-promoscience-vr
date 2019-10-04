@@ -63,15 +63,13 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
-        public String DateTimeString
+        public string DateTimeString
         {
             get
             {
                 return dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
             }
         }
-
-
 
         public void SetAction(GameAction gameAction)
         {
