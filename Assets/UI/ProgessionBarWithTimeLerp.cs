@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.UI
     public class ProgessionBarWithTimeLerp : MonoBehaviour
     {
         [SerializeField]
-        ScriptableFloat progressRatio;
+        ScriptableClientGameState clientState;
 
         [SerializeField]
         ScriptableControler controls;
@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.UI
 
         void OnEnable()
         {
-            progressRatio.valueChangedEvent += OnValueChanged;
+            clientState.OnRespectChangedHandler += OnAlgorithmRespectChanged;
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
 
@@ -50,12 +50,12 @@ namespace UdeS.Promoscience.UI
         {
             if (isLerping)
             {
-                float lerpSpeedValue = currentValue < progressRatio.Value ? lerpSpeed : -lerpSpeed;
+                float lerpSpeedValue = currentValue < clientState.Respect ? lerpSpeed : -lerpSpeed;
                 float lerpValue = currentValue + Time.deltaTime * lerpSpeedValue;
-                if ((currentValue <= progressRatio.Value && lerpValue > progressRatio.Value) || (currentValue >= progressRatio.Value && lerpValue < progressRatio.Value))
+                if ((currentValue <= clientState.Respect && lerpValue > clientState.Respect) || (currentValue >= clientState.Respect && lerpValue < clientState.Respect))
                 {
                     isLerping = false;
-                    currentValue = progressRatio.Value;
+                    currentValue = clientState.Respect;
                     progress.transform.localScale = new Vector3(currentValue, 1, 1);
                 }
                 else
@@ -67,7 +67,7 @@ namespace UdeS.Promoscience.UI
         }
 
 
-        void OnValueChanged()
+        void OnAlgorithmRespectChanged(float value)
         {
             isLerping = true;
         }

@@ -1016,8 +1016,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fb27e4735ed9ee41b227b5c18d0a2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressRatio: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
-  controls: {fileID: 0}
+  clientState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   progress: {fileID: 1337953427}
 --- !u!1 &263742374
 GameObject:
@@ -1131,6 +1131,7 @@ MonoBehaviour:
   gameplayCamera: {fileID: 578517098}
   oculusCameraLeft: {fileID: 923469559}
   oculusCameraRight: {fileID: 209387145}
+  Camera: {fileID: 0}
 --- !u!114 &265111329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6083,7 +6084,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
-  algorithmRespect: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
   directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   gameRound: {fileID: 11400000, guid: eaa0ab69523e289469a32b6d7fdf0ae2, type: 2}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
@@ -43171,18 +43171,6 @@ MonoBehaviour:
   connectingToPairString:
     localizeString: {fileID: 0}
     defaultString: '[?]'
-  connectingToPairingServerString:
-    localizeString: {fileID: 0}
-    defaultString: '[?]'
-  pairingRequestSentString:
-    localizeString: {fileID: 0}
-    defaultString: '[?]'
-  pairingResultSuccessString:
-    localizeString: {fileID: 0}
-    defaultString: '[?]'
-  pairingResultFailString:
-    localizeString: {fileID: 0}
-    defaultString: '[?]'
   readyString:
     localizeString: {fileID: 0}
     defaultString: '[?]'
@@ -43199,7 +43187,6 @@ MonoBehaviour:
   teams: []
   isConnectedToPair: {fileID: 0}
   isConnectedToServer: {fileID: 0}
-  showConnectionDelay: 2
   readyCloseDelay: 2
 --- !u!1 &1398590744
 GameObject:
@@ -67607,7 +67594,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
-  algorithmRespect: {fileID: 11400000, guid: c15221d2577151b47b5aa929112c7c1a, type: 2}
   gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
@@ -67619,7 +67605,6 @@ MonoBehaviour:
     type: 2}
   playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
     type: 2}
-  recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
   returnToDivergencePointAnswer: {fileID: 11400000, guid: c0ec1a0d6508fb5428bb9521683f8580,
     type: 2}
   labyrinth: {fileID: 1452398573}

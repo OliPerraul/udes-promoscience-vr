@@ -10,20 +10,20 @@ namespace UdeS.Promoscience.UI
     public class ProgessionBar : MonoBehaviour
     {
         [SerializeField]
-        ScriptableFloat progressRatio;
+        ScriptableClientGameState clientState;
 
         [SerializeField]
         GameObject progress;
 
         void OnEnable()
         {
-            progressRatio.valueChangedEvent += OnValueChanged;
+            clientState.OnRespectChangedHandler += OnValueChanged;
         }
 
 
-        void OnValueChanged()
+        void OnValueChanged(float value)
         {
-            progress.transform.localScale = new Vector3(progressRatio.Value, 1, 1);
+            progress.transform.localScale = new Vector3(value, 1, 1);
         }
     }
 }
