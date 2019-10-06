@@ -18,7 +18,7 @@ namespace UdeS.Promoscience.Replay
 
         private Tile lastTile;
 
-        public AlgorithmSequence Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
+        public void Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
         {
             AlgorithmSequence character = Instantiate(
                 gameObject,
@@ -33,8 +33,11 @@ namespace UdeS.Promoscience.Replay
             lastTile.x = -99999;
             lastTile.y = -99999;
 
-            return character;
+            //return character;
         }
+
+
+
 
         public void FixedUpdate()
         {
@@ -67,4 +70,9 @@ namespace UdeS.Promoscience.Replay
             lastTile = tile;
         }         
     }
+
+
+
+
+
 }

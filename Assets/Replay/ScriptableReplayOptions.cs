@@ -18,7 +18,7 @@ namespace UdeS.Promoscience.Replay
 
     public delegate void OnAction(ReplayAction action, params object[] args);
 
-    public delegate void OnSequenceToggled(CourseData course, bool enabled);
+    public delegate void OnSequenceToggled(Course course, bool enabled);
 
     public class ScriptableReplayOptions : ScriptableObject
     {
@@ -34,7 +34,7 @@ namespace UdeS.Promoscience.Replay
 
         public OnSequenceToggled OnSequenceToggledHandler;
 
-        public OnSequenceEvent OnSequenceChangedHandler;
+        public OnCourseEvent OnSequenceSelectedHandler;
 
         public OnEvent OnSequenceFinishedHandler;
 
@@ -90,9 +90,6 @@ namespace UdeS.Promoscience.Replay
                 OnActionHandler.Invoke(action, args);
             }
         }
-
-        //public void On
-
 
     }
 }

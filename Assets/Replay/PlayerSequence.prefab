@@ -139,9 +139,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fe04ed6e47a13c4aa3652eb1895586d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  replayOptions: {fileID: 11400000, guid: bcecb0686a9667f48bf333db2a5f2ad0, type: 2}
   speed: 0.6
   drawTime: 0.6
   normalWidth: 0.5
+  backtrackWidth: 2
   currentSegment: {fileID: 0}
   arrowHead: {fileID: 1692986964761308}
   segmentTemplate: {fileID: 114929429646536852, guid: 1de607a1e6e990a4bbf60810b48cbff2,

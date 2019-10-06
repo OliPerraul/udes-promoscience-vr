@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using UdeS.Promoscience.ScriptableObjects;
+using System.Globalization;
 
 namespace UdeS.Promoscience.Replay.UI
 {
     public class SequenceToggleItem : MonoBehaviour
     {
+        [SerializeField]
+        private ScriptableReplayOptions replayOptions;
+
         [SerializeField]
         private UnityEngine.UI.Toggle toggle;
 
@@ -14,18 +20,21 @@ namespace UdeS.Promoscience.Replay.UI
         [SerializeField]
         private UnityEngine.UI.Image colorImage;
 
-        private CourseData course;
+        [SerializeField]
+        private Course course;
 
-        public OnSequenceToggled OnSequenceToggledHandler;
+        public UnityEngine.UI.Button button;
 
-        public GameObject Respect;
 
-        public GameObject Score;
 
-        public SequenceToggleItem Create(Transform parent, CourseData course)
+
+        //public UnityEngine.UI.Text scoreText;
+
+        public SequenceToggleItem Create(Transform parent, Course course)
         {
             SequenceToggleItem item =
                 Instantiate(gameObject, parent).GetComponent<SequenceToggleItem>();
+
             item.course = course;
             item.label.text = course.Team.name + " (" +
                             ScriptableObjects.ScriptableAlgorithm.Instance.GetName(course.Algorithm) +
@@ -33,6 +42,7 @@ namespace UdeS.Promoscience.Replay.UI
 
             item.colorImage.color = course.Team.TeamColor;
             item.gameObject.SetActive(true);
+            item.button.onClick.AddListener(OnClicked);
 
             return item;
         }
@@ -45,14 +55,17 @@ namespace UdeS.Promoscience.Replay.UI
 
         public void OnToggle(bool enabled)
         {
-            Respect.SetActive(enabled);
-
-            Score.SetActive(enabled);
-            
-
-            if (OnSequenceToggledHandler != null)
+            if (replayOptions.OnSequenceToggledHandler != null)
             {
-                OnSequenceToggledHandler.Invoke(course, enabled);
+                replayOptions.OnSequenceToggledHandler.Invoke(course, enabled);
+            }
+        }
+
+        public void OnClicked()
+        {
+            if (replayOptions.OnSequenceSelectedHandler != null)
+            {
+                replayOptions.OnSequenceSelectedHandler.Invoke(course);// enabled);
             }
         }
 

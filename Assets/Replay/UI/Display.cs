@@ -1,209 +1,81 @@
-﻿//using Cirrus.Extensions;
-//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
-//using UnityEngine.EventSystems;
-//using UnityEngine.UI;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-//namespace UdeS.Promoscience.Playbacks.UI
-//{
+namespace UdeS.Promoscience.Replay.UI
+{
+    public class Display : MonoBehaviour
+    {
+        [SerializeField]
+        private ScriptableObjects.ScriptableServerGameInformation server;
 
-//    public class Display : MonoBehaviour
-//    {
-//        public delegate void OnButton();
+        [SerializeField]
+        private UnityEngine.UI.Button openButton;
 
-//        [SerializeField]
-//        private Algorithm algorithm;
+         [SerializeField]
+        private UnityEngine.UI.Button exitButton;
 
-//        [SerializeField]
-//        private ScriptableObjects.ScriptableServerGameInformation server;
+        [SerializeField]
+        private GameObject sequenceToggle;
 
-//        [SerializeField]
-//        private ScriptablePlaybackOptions playbackOptions;
+        [SerializeField]
+        private SequencePopup SequencePopup;
 
-//        public OnButton OnExpandHandler;
+        public void Awake()
+        {
+            sequenceToggle.SetActive(false);
+            SequencePopup.gameObject.SetActive(false);
 
-//        public OnButton OnCloseHandler;
+            openButton.onClick.AddListener(OnOpenClicked);
+            exitButton.onClick.AddListener(OnExitClicked);
+            server.gameStateChangedEvent += OnGameStateChanged;
 
-//        [SerializeField]
-//        private GameObject infoPanel;
+            //replayO
 
-//        [SerializeField]
-//        private GameObject navigPanel;
+        }
 
-//        [SerializeField]
-//        private Dropdown dropdown;
+        private bool _enabled = false;
 
-//        [SerializeField]
-//        private Sprite playSprite;
+        public bool Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
 
-//        [SerializeField]
-//        private Sprite stopSprite;
+            set
+            {
+                _enabled = value;
+                openButton.gameObject.SetActive(_enabled);
+                exitButton.gameObject.SetActive(_enabled);
+                sequenceToggle.gameObject.SetActive(_enabled);
+            }
+        }
 
-//        [SerializeField]
-//        private Sprite pauseSprite;
+        public void OnOpenClicked()
+        {
+            SequencePopup.gameObject.SetActive(!sequenceToggle.activeInHierarchy);
+            sequenceToggle.SetActive(!sequenceToggle.activeInHierarchy);
+        }
 
-//        [SerializeField]
-//        private Image playImage;
+        public void OnExitClicked()
+        {
+            server.EndRoundOrTutorial();
+        }
 
-//        [SerializeField]
-//        private Button playButton;
+        public void OnGameStateChanged()
+        {
+            switch (server.GameState)
+            {
+                case Utils.ServerGameState.ViewingPlayback:
+                    Enabled = true;
+                    break;
 
-//        [SerializeField]
-//        private Button pauseButton;
+                default:
+                    Enabled = false;
+                    break;
+            }
+        }
 
-//        [SerializeField]
-//        private Image pauseImage;
-
-//        [SerializeField]
-//        private Button previousButton;
-
-//        private bool sendSliderEvent = true;
-
-//        private float previousSliderValue = 0;
-
-//        [SerializeField]
-//        private Slider slider;
-
-//        [SerializeField]
-//        private Button nextButton;
-
-//        private bool enabled = false;
-
-//        public bool Enabled
-//        {
-//            get
-//            {
-//                return enabled;
-//            }
-
-//            set
-//            {
-//                enabled = value;
-//                infoPanel.SetActive(enabled);
-//                navigPanel.SetActive(enabled);
-//            }
-//        }
-
-//        public void OnValidate()
-//        {
-//            if (algorithm == null)
-//            {
-//                algorithm = FindObjectOfType<Algorithm>();
-//            }
-//        }
-
-//        // Use this for initialization
-//        private void Awake()
-//        {
-//            server.gameStateChangedEvent += OnGameStateChanged;
-//            dropdown.ClearOptions();
-
-//            dropdown.onValueChanged.AddListener(OnDropdown);
-
-//            playButton.onClick.AddListener(OnPlayClicked);
-//            pauseButton.onClick.AddListener(OnPauseClicked);
-//            previousButton.onClick.AddListener(OnPreviousClicked);
-//            nextButton.onClick.AddListener(OnNextClicked);
-
-//            slider.onValueChanged.AddListener(OnSliderMoved);
-
-
-//            playbackOptions.OnProgressHandler += OnProgress;
-//        }
-
-//        public void OnGameStateChanged()
-//        {
-//            switch (server.GameState)
-//            {
-//                case Utils.ServerGameState.ViewingPlayback:
-
-//                    dropdown.ClearOptions();
-
-//                    List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
-//                    foreach (CourseData course in playbackOptions.Courses)
-//                    {
-//                        options.Add(new Dropdown.OptionData(
-//                            course.Team.name + " (" +
-//                            ScriptableObjects.ScriptableAlgorithm.Instance.GetName(course.Algorithm) +
-//                            ") "                            
-//                            ));
-//                    }                    
-                    
-//                    dropdown.AddOptions(options);
-//                    playbackOptions.CourseIndex = 0;
-
-//                break;
-//            }
-//        }
-
-//        public void OnProgress(float progress)
-//        {
-//            sendSliderEvent = false;
-//            slider.value = progress;
-//        }
-
-//        public void OnDropdown(int index)
-//        {
-//            playbackOptions.CourseIndex = index;
-//        }
-
-//        private bool isPlaying = false;
-
-//        private bool isPaused = false;
-
-//        public void OnPlayClicked()
-//        {
-//            if (!isPlaying)
-//            {
-//                isPlaying = true;
-//                playImage.sprite = stopSprite;
-//                playbackOptions.SendAction(PlaybackAction.Play);
-//            }
-//            else
-//            {
-//                isPlaying = false;
-//                playImage.sprite = playSprite;
-//                playbackOptions.SendAction(PlaybackAction.Stop);
-//            }
-//        }
-
-//        public void OnPauseClicked()
-//        {
-//            if (!isPaused)
-//            {
-//                isPaused = true;
-//                playImage.sprite = playSprite;
-//                playbackOptions.SendAction(PlaybackAction.Pause);
-//            }
-//            else
-//            {
-//                isPaused = false;
-//                playImage.sprite = stopSprite;
-//                playbackOptions.SendAction(PlaybackAction.Resume);
-//            }
-//        }
-
-//        public void OnPreviousClicked()
-//        {
-//            playbackOptions.SendAction(PlaybackAction.Previous);
-//        }
-
-//        public void OnNextClicked()
-//        {
-//            playbackOptions.SendAction(PlaybackAction.Next);
-//        }
-
-//        public void OnSliderMoved(float value)
-//        {
-//            if (sendSliderEvent)
-//            {
-//                playbackOptions.SendAction(PlaybackAction.Slide, previousSliderValue, value);
-//            }
-
-//            sendSliderEvent = true;
-//            previousSliderValue = value;
-//        }
-
-//    }
-//}
+    }
+}

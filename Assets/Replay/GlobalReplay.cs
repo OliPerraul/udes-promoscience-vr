@@ -24,6 +24,9 @@ namespace UdeS.Promoscience.Replay
         ScriptableServerGameInformation serverGameState;
 
         [SerializeField]
+        private AlgorithmSequence algorithmSequence;
+
+        [SerializeField]
         private PlayerSequence playerSequenceTemplate;
         
         private Dictionary<int, PlayerSequence> playerSequences;
@@ -33,6 +36,7 @@ namespace UdeS.Promoscience.Replay
         private Vector2Int labyrinthPosition;
 
         private Vector3 worldPosition;
+
 
         [SerializeField]
         private float maxOffset = 5f;
@@ -105,7 +109,7 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        public void OnSequenceToggled(CourseData course, bool enabled)
+        public void OnSequenceToggled(Course course, bool enabled)
         {
             playerSequences[course.Id].gameObject.SetActive(enabled);
 
@@ -160,7 +164,7 @@ namespace UdeS.Promoscience.Replay
             worldPosition =
                 labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
-            foreach(CourseData course in serverGameState.Courses)
+            foreach(Course course in serverGameState.Courses)
             {
                 OnCourseAdded(course);
             }
@@ -168,7 +172,7 @@ namespace UdeS.Promoscience.Replay
             //AdjustSequences();
         }
 
-        public void OnCourseAdded(CourseData course)
+        public void OnCourseAdded(Course course)
         {
             if (serverGameState.GameState == ServerGameState.ViewingPlayback)
             {
@@ -179,8 +183,6 @@ namespace UdeS.Promoscience.Replay
                         labyrinthPosition,
                         worldPosition);
 
-                sequence.OnProgressHandler += OnProgress;
-
                 playerSequences.Add(course.Id, sequence);
                 activeSequences.Add(sequence);
 
@@ -190,7 +192,7 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        public void OnCourseRemoved(CourseData course)
+        public void OnCourseRemoved(Course course)
         {
             if (serverGameState.GameState == ServerGameState.ViewingPlayback)
             {

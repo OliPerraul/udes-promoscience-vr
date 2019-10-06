@@ -37,26 +37,18 @@ namespace UdeS.Promoscience.Replay.UI
                         Destroy(child.gameObject);
                     }
 
-                    foreach (CourseData course in server.Courses)
+                    foreach (Course course in server.Courses)
                     {
+                        if (course == null)
+                            continue;
+
                         SequenceToggleItem item = scrollItemTemplate.Create(
                             scrollContentParent,                            
                             course);
-
-                        item.OnSequenceToggledHandler += OnSequenceToggled;
                     }
 
                     break;
             }
         }
-
-        public void OnSequenceToggled(CourseData course, bool enabled)
-        {
-            if (replayOptions.OnSequenceToggledHandler != null)
-            {
-                replayOptions.OnSequenceToggledHandler.Invoke(course, enabled);
-            }
-        }
-
     }
 }

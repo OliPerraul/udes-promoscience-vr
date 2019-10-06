@@ -14,10 +14,20 @@ namespace UdeS.Promoscience.Replay
         [SerializeField]
         private Material material;
 
+        [SerializeField]
+        private BoxCollider boxCollider;
+
+        public OnEvent OnMouseEvent;
+
+
         public void OnValidate()
         {
             if (lineRenderer == null)
                 lineRenderer = GetComponent<LineRenderer>();
+
+            if (boxCollider == null)
+                boxCollider = GetComponent<BoxCollider>();
+
         }
 
         public Vector2Int LOrigin;
@@ -53,6 +63,7 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
+
         private float offsetAmount = 0f;
 
         private float maxOffsetSize = 0f;
@@ -80,8 +91,12 @@ namespace UdeS.Promoscience.Replay
         {
             maxOffsetSize = maxSize;
             offsetAmount = amount;
-            //lineRenderer.material = mat;
+
+
+           
             Draw();
+
+
         }
 
         private float time = 0.6f;
@@ -110,6 +125,15 @@ namespace UdeS.Promoscience.Replay
             lineRenderer.material = material;
             lineRenderer.SetPosition(0, Origin);
             lineRenderer.SetPosition(1, Destination);
+
+            boxCollider.size = new Vector3(Length, 0.175f, 0.25f);
+            Vector3 midPoint = (Origin + Destination) / 2;
+
+            transform.position = midPoint;
+
+            transform.rotation = Quaternion.Euler(0, 90, 0);
+            transform.rotation = Quaternion.FromToRotation(transform.forward, (Destination - Origin).normalized);//.To);
+
             Current = Destination;
         }
 
@@ -141,5 +165,8 @@ namespace UdeS.Promoscience.Replay
 
             return segm;
         }
+
+
+
     }
 }

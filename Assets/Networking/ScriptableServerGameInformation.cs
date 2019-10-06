@@ -22,9 +22,9 @@ namespace UdeS.Promoscience.ScriptableObjects
         private Replay.ScriptableReplayOptions playbackOptions;
 
         // Ideally, player should reference a course instead of refering to a course id 
-        private Dictionary<int, CourseData> courses;
+        private Dictionary<int, Course> courses;
 
-        public IEnumerable<CourseData> Courses
+        public IEnumerable<Course> Courses
         {
             get
             {
@@ -47,7 +47,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         public void OnEnable()
         {
             gameState = ServerGameState.Lobby;
-            courses = new Dictionary<int, CourseData>();
+            courses = new Dictionary<int, Course>();
 
             foreach (ScriptableTeam team in teams.Teams)
             {
@@ -126,7 +126,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
             else
             {
-                CourseData course = new CourseData();
+                Course course = new Course();
                 course.Id = SQLiteUtilities.GetNextCourseID();
                 course.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
                 course.Algorithm = player.serverAlgorithm;
@@ -281,7 +281,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             //CourseData courseData;
             Queue<int> steps;
             Queue<string> stepValues; //jsons
-            foreach(CourseData course in Courses)
+            foreach(Course course in Courses)
             {
                 SQLiteUtilities.SetCourseInactive(course.Id);
                 SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
