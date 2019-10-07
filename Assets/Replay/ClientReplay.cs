@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace UdeS.Promoscience.Replay
 {
     // Playback for a single team
-    public class LocalReplay : MonoBehaviour
+    public class ClientReplay : MonoBehaviour
     {
         [SerializeField]
         ScriptableClientGameState gameState;
@@ -27,7 +27,6 @@ namespace UdeS.Promoscience.Replay
 
         [SerializeField]
         private Algorithm algorithm;
-
 
         private Vector2Int labyrinthPosition;
 

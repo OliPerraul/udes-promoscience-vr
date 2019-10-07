@@ -2,77 +2,189 @@
 using System.Collections;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace UdeS.Promoscience.Replay
 {
-    public class AlgorithmSequence : MonoBehaviour
+    public class AlgorithmSequence : Sequence
     {
-        [SerializeField]
-        private float speed = 0.6f;
-        
-        private Labyrinth labyrinth;
+        private Algorithm algorithm;
 
-        private Vector2Int labyrinthPosition;
+        private List<Tile> tiles;
 
-        private Vector3 targetPosition;
+        private Dictionary<Vector2Int, Stack<TileColor>> dictionary;
 
-        private Tile lastTile;
+        private int moveIndex = 0;
 
-        public void Create(Labyrinth labyrinth, Vector2Int labpos, Vector3 worldPos)
+        public override int MoveIndex
         {
-            AlgorithmSequence character = Instantiate(
+            get
+            {
+                return moveIndex;
+            }
+        }
+
+        public override int MoveCount
+        {
+            get
+            {
+                return tiles.Count;
+            }
+        }
+
+        public AlgorithmSequence Create(
+            Labyrinth labyrinth,
+            Algorithm algorithm,
+            Vector2Int startPosition)
+        {
+            AlgorithmSequence sequence = Instantiate(
                 gameObject,
-                worldPos, Quaternion.identity)
+                labyrinth.GetLabyrinthPositionInWorldPosition(startPosition), Quaternion.identity)
                 .GetComponent<AlgorithmSequence>();
 
-            character.labyrinth = labyrinth;
-            character.labyrinthPosition = labpos;
-            character.transform.position = worldPos;
-            character.targetPosition = worldPos;
+            sequence.labyrinth = labyrinth;
+            sequence.labyrinthPosition = startPosition;            
+            sequence.algorithm = algorithm;
+            sequence.tiles = algorithm.GetAlgorithmSteps();
 
-            lastTile.x = -99999;
-            lastTile.y = -99999;
-
-            //return character;
+            return sequence;
         }
 
-
-
-
-        public void FixedUpdate()
+        public override void Awake()
         {
-            transform.position = Vector3.Lerp(transform.position, targetPosition, speed);
+            base.Awake();
+
+            dictionary = new Dictionary<Vector2Int, Stack<TileColor>>();
+
         }
 
-        public void Perform(Tile tile)
+        public override void FixedUpdate()
         {
-            int forwardDirection = labyrinth.GetStartDirection();
+            base.FixedUpdate();
+        }
 
-            // If tile is adjacent, lerp, otherwise teleport
-            // left
-            if (
-                (tile.x == lastTile.x - 1 && tile.y == lastTile.y) ||
-                (tile.x == lastTile.x + 1 && tile.y == lastTile.y) ||
-                (tile.x == lastTile.x && tile.y == lastTile.y - 1) ||
-                (tile.x == lastTile.x && tile.y == lastTile.y + 1) ||
-                (tile.x == lastTile.x && tile.y == lastTile.y))
+        protected override void Move(int target)
+        {
+            if (target == moveIndex)
+                return;
+
+            if (Mathf.Sign(target - moveIndex) < 0)
             {
-                labyrinthPosition = tile.Position;
-                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
+                while (HasPrevious)
+                {
+                    if (moveIndex <= target)
+                    {
+                        return;
+                    }
+
+                    Reverse();
+                }
             }
             else
             {
-                labyrinthPosition = tile.Position;
-                targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-                transform.position = targetPosition;
+                while (HasNext)
+                {
+                    if (moveIndex >= target)
+                    {
+                        return;
+                    }
+
+                    Perform();
+                }
             }
 
-            lastTile = tile;
-        }         
+        }
+
+        private void PaintTile(Tile tile)
+        {
+            labyrinth.SetTileColor(tile.Position, tile.color);
+        }
+
+        private void PaintTile(Vector2Int position, TileColor action)
+        {
+            labyrinth.SetTileColor(position, action);
+        }
+
+        protected override IEnumerator PerformCoroutine()
+        {
+            Perform();
+            yield return new WaitForSeconds(speed);
+            yield return null;
+        }
+
+        protected override void Perform()
+        {
+            Stack<TileColor> stack;
+
+            if (!dictionary.TryGetValue(labyrinthPosition, out stack))
+            {
+                stack = new Stack<TileColor>();
+                stack.Push(TileColor.Grey); // add base color
+                dictionary.Add(labyrinthPosition, stack);
+            }
+
+            PaintTile(tiles[moveIndex]);
+            stack.Push(tiles[moveIndex].color);
+
+            moveIndex++;
+            if (moveIndex < MoveCount)
+            {
+                labyrinthPosition = tiles[moveIndex].Position;
+            }
+
+
+            if (replayOptions.OnProgressHandler != null)
+            {
+                replayOptions.OnProgressHandler.Invoke(moveIndex);
+            }
+        }
+
+        protected override void Reverse()
+        {
+            Stack<TileColor> stack;
+
+            moveIndex--;
+            labyrinthPosition = tiles[moveIndex].Position;
+
+            if (dictionary.TryGetValue(labyrinthPosition, out stack))
+            {
+                stack.Pop();
+                PaintTile(labyrinthPosition, stack.Peek());
+            }
+
+            if (replayOptions.OnProgressHandler != null)
+            {
+                replayOptions.OnProgressHandler.Invoke(moveIndex);
+            }
+        }
+
+        public override void Play()
+        {
+            throw new System.NotImplementedException();
+        }
+
+
+        public override void Pause()
+        {
+            isPlaying = false;
+            StopAllCoroutines();
+            Move(moveIndex - 1);
+        }
+
+
+        public override void Stop()
+        {
+            isPlaying = false;
+            StopAllCoroutines();
+            Move(0);
+        }
     }
 
 
-
-
-
 }
+
+
+
+
+

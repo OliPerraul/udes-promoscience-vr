@@ -9,7 +9,7 @@ using System.Linq;
 namespace UdeS.Promoscience.Replay
 {
     // Playback for a single team
-    public class GlobalReplay : MonoBehaviour
+    public class ServerReplay : MonoBehaviour
     {
         [SerializeField]
         private ScriptableReplayOptions replayOptions;
@@ -24,6 +24,8 @@ namespace UdeS.Promoscience.Replay
         ScriptableServerGameInformation serverGameState;
 
         [SerializeField]
+        private AlgorithmSequence algorithmSequenceTemplate;
+
         private AlgorithmSequence algorithmSequence;
 
         [SerializeField]
@@ -84,10 +86,80 @@ namespace UdeS.Promoscience.Replay
 
             serverGameState.gameStateChangedEvent += OnServerGameStateChanged;
             serverGameState.OnCourseAddedHandler += OnCourseAdded;
-
-            replayOptions.OnActionHandler += OnReplayAction;
-            
+      
             replayOptions.OnSequenceToggledHandler += OnSequenceToggled;
+            replayOptions.OnActionHandler += OnReplayAction;
+
+        }
+        
+        public void Resume()
+        {
+            List<Sequence> sequences = new List<Sequence>();
+            sequences.AddRange(activeSequences.Cast<Sequence>());
+            sequences.Add(algorithmSequence);
+
+            StartCoroutine(ResumeCoroutine(sequences));
+
+        }
+
+        public IEnumerator ResumeCoroutine(List<Sequence> sequences)
+        {
+            while (sequences.Count != 0)
+            {  
+                foreach (var sq in sequences)
+                {
+                    sq.Resume();
+                }
+
+                for (int i = sequences.Count - 1; i >= 0; i--) //  var sq in sequences)
+                {
+                    yield return sequences[i].ResumeCoroutineResult;
+
+                    if(!sequences[i].IsPlaying)
+                    {
+                        sequences.Remove(sequences[i]);
+                    }
+                }
+            }
+        }
+
+        public void OnReplayAction(ReplayAction action, params object[] args)
+        {
+            switch (action)
+            {
+                // TODO: Handle play/ stop from replay object and not sequences
+                // to prevent synch issues
+
+                case ReplayAction.Play:
+
+                    Resume();
+
+                    break;
+
+                case ReplayAction.Resume:
+                    Resume();
+                    break;
+
+                case ReplayAction.Pause:
+
+                    //mutex.WaitOne();
+
+                    //Pause();
+
+                    //mutex.ReleaseMutex();
+
+                    break;
+
+                case ReplayAction.Stop:
+
+                    //mutex.WaitOne();
+
+                    //Stop();
+
+                    //mutex.ReleaseMutex();
+
+                    break;
+            }
         }
 
         public void OnProgress(int progress)
@@ -98,14 +170,6 @@ namespace UdeS.Promoscience.Replay
 
                 if (replayOptions.OnProgressHandler != null)
                     replayOptions.OnProgressHandler.Invoke(moveIndex);
-            }
-        }
-
-        public void OnReplayAction(ReplayAction action, params object[] args)
-        {
-            foreach (PlayerSequence sequence in activeSequences)
-            {
-                sequence.HandleAction(action, args);
             }
         }
 
@@ -159,6 +223,7 @@ namespace UdeS.Promoscience.Replay
             StopAllCoroutines();
 
             labyrinth.GenerateLabyrinthVisual();
+
             labyrinthPosition = labyrinth.GetLabyrithStartPosition();
 
             worldPosition =
@@ -169,7 +234,16 @@ namespace UdeS.Promoscience.Replay
                 OnCourseAdded(course);
             }
 
-            //AdjustSequences();
+            algorithmSequence =
+                algorithmSequenceTemplate.Create(
+                    labyrinth,
+                    algorithm,
+                    labyrinthPosition);
+
+            if (algorithmSequence.MoveCount > moveCount)
+            {
+                SetMoveCount(algorithmSequence.MoveCount);
+            }
         }
 
         public void OnCourseAdded(Course course)
@@ -180,8 +254,7 @@ namespace UdeS.Promoscience.Replay
                     playerSequenceTemplate.Create(
                         course,
                         labyrinth,
-                        labyrinthPosition,
-                        worldPosition);
+                        labyrinthPosition);
 
                 playerSequences.Add(course.Id, sequence);
                 activeSequences.Add(sequence);

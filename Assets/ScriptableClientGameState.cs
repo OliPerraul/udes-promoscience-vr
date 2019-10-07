@@ -44,7 +44,6 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
-
         public void Awake()
         {
             value = ClientGameState.Connecting;

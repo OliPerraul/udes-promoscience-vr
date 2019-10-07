@@ -52,6 +52,9 @@ namespace UdeS.Promoscience
             }
         }
 
+        /// <summary>
+        /// Warning JSON parsing done here!
+        /// </summary>
         public ActionValue CurrentActionValue
         {
             get

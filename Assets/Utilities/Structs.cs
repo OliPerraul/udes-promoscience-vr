@@ -31,6 +31,12 @@ namespace UdeS.Promoscience.Utils
             {
                 return new Vector2Int(x, y);
             }
+
+            set
+            {
+                x = value.x;
+                y = value.y;
+            }
         }
 
     }

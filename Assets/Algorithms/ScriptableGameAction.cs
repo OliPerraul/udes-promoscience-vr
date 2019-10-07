@@ -12,13 +12,16 @@ namespace UdeS.Promoscience.ScriptableObjects
     public class ActionValue
     {
         [SerializeField]
+        public Tile tile;
+
+        [SerializeField]
+        public Tile[] tiles;
+
+        [SerializeField]
         public Vector2Int position;
 
         [SerializeField]
         public Quaternion rotation;
-
-        [SerializeField]
-        public Tile[] tiles;
 
         [SerializeField]
         public Tile[] playerSteps;
@@ -36,9 +39,13 @@ namespace UdeS.Promoscience.ScriptableObjects
     {
         [SerializeField]
         private ScriptableClientGameState gameState;
+        
+        // TODO: fix weird globally available variables (put in client game state)
+        [SerializeField]
+        private ScriptableTile playerPaintTile;
 
         [SerializeField]
-        GameAction action;
+        private GameAction action;
 
         DateTime dateTime;
 
@@ -78,6 +85,8 @@ namespace UdeS.Promoscience.ScriptableObjects
             var actionValue = new ActionValue();
             actionValue.respect = gameState.Respect;
             actionValue.error = gameState.ErrorCount;
+            actionValue.tile = playerPaintTile.Tile;
+            
 
             value = JsonUtility.ToJson(actionValue);
 
@@ -106,6 +115,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             actionValue.playerSteps = playerSteps;
             actionValue.respect = gameState.Respect;
             actionValue.error = gameState.ErrorCount;
+            actionValue.tile = playerPaintTile.Tile;
 
             value = JsonUtility.ToJson(actionValue);
 

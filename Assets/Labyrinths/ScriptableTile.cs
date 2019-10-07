@@ -12,15 +12,19 @@ namespace UdeS.Promoscience.ScriptableObjects
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Tile", order = 1)]
     public class ScriptableTile : ScriptableObject
     {
-        Vector2Int tilePosition;
-        TileColor tileColor;
-        TileColor tilePreviousColor;
+        //private Vector2Int tilePosition;
+
+        //private TileColor tileColor;
+
+        private TileColor tilePreviousColor;
+
+        private Tile tile;
 
         public Action valueChangedEvent;
 
         public void OnEnable()
         {
-            tileColor = TileColor.Yellow;
+            tile.color = TileColor.Yellow;
         }
 
 
@@ -28,7 +32,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         {
             get
             {
-                return tilePosition;
+                return tile.Position;
             }
         }
 
@@ -36,7 +40,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         {
             get
             {
-                return tileColor;
+                return tile.color;
             }
         }
 
@@ -48,10 +52,18 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
+        public Tile Tile
+        {
+            get
+            {
+                return tile;
+            }
+        }
+
         public void SetTile(Vector2Int position, TileColor color, TileColor previousColor)
         {
-            tilePosition = position;
-            tileColor = color;
+            tile.Position = position;
+            tile.color = color;
             tilePreviousColor = previousColor;
 
             OnValueChanged();
