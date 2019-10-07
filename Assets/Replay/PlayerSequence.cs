@@ -1,15 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
-using UdeS.Promoscience.Utils;
-using UdeS.Promoscience.ScriptableObjects;
-
-using Cirrus.Extensions;
-
-using System.Linq;
+﻿using System.Collections;
 using System.Collections.Generic;
-
-using System.Threading;
-using System;
+using System.Linq;
+using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Utils;
+using UnityEngine;
 
 namespace UdeS.Promoscience.Replay
 {
@@ -51,13 +45,26 @@ namespace UdeS.Promoscience.Replay
 
         private Material backtrackMaterial;
 
+        /// <summary>
+        /// Contains the list of all segments (Active or innactive)
+        /// We use this to adjust offset when needed
+        /// </summary>
         private List<Segment> segments;
 
+        /// <summary>
+        /// contains the layout of the map. Used to hide places where we have already visited
+        /// </summary>
         private Dictionary<Vector2Int, Stack<Segment>> dictionary;
 
-        // We use a list because 'ReturnToDivergent' has many segments to undo when reverting
-        // TODO further simplify the Reverse code using a stack of ActionValue
-        private Stack<List<Segment>> stack;
+        /// <summary>
+        /// Contains the list of segments added in a particular step (usually 1, return to divergent many)
+        /// </summary>
+        private Stack<List<Segment>> added;
+
+        /// <summary>
+        /// Contains the list of segments added in a particular step (usually 1, return to divergent many)
+        /// </summary>
+        private Stack<List<Segment>> removed;
 
         private int moveIndex = 0;
 
@@ -130,7 +137,8 @@ namespace UdeS.Promoscience.Replay
         {
             base.Awake();
 
-            stack = new Stack<List<Segment>>();
+            added = new Stack<List<Segment>>();
+            removed = new Stack<List<Segment>>();
             dictionary = new Dictionary<Vector2Int, Stack<Segment>>();
             segments = new List<Segment>();
 
@@ -166,7 +174,7 @@ namespace UdeS.Promoscience.Replay
                 replayOptions.OnSequenceSelectedHandler.Invoke(course);
         }
 
-        public Segment AddSegment(Vector2Int lo, Vector2Int ld, Vector3 origin, Vector3 dest)
+        public Segment AddSegment(List<Segment> list, Vector2Int lo, Vector2Int ld, Vector3 origin, Vector3 dest)
         {
             Stack<Segment> stack;
             // Check to turn off dest
@@ -208,60 +216,67 @@ namespace UdeS.Promoscience.Replay
                 isBacktracking ? backtrackWidth : normalWidth);
 
             currentSegment.OnMouseEvent += OnMouseEvent;
-
-            // Add to history
-            List<Segment> list = new List<Segment>();
-            this.stack.Push(list);
-            list.Add(currentSegment);
-            segments.Add(currentSegment);
-
-            // Add to segment layout
-            dictionary[lo].Push(currentSegment);
+                        
+            segments.Add(currentSegment); // List<Segment> segments
+            stack.Push(currentSegment); // Dictionary<Vector2int, Segment> dictionary
+            list.Add(currentSegment); // Stack<List<Segment>> stack
 
             return currentSegment;
         }
 
-
-        // TODO: Use in return to divergent location
-        private void Redraw(Tile[] tiles)
+        // Use in return to divergent location
+        private void Redraw(Tile[] playerSteps, Tile[] wrong)
         {
-            Vector3[] positions = tiles.Select
-                    (x => labyrinth.GetLabyrinthPositionInWorldPosition(x.Position)).ToArray();
+            //Vector3[] positions = wrong.Select
+            //        (x => labyrinth.GetLabyrinthPositionInWorldPosition(x.Position)).ToArray();
 
-            Segment segment;
-            Stack<Segment> stack;
-            for (int i = 1; i < tiles.Length; i++)
+            // Hide path
+            Stack<Segment> stk;
+            List<Segment> removed = new List<Segment>();
+            for (int i = 0; i < wrong.Length; i++)
             {
-                Vector3 offset = Vector3.zero;
-                if (dictionary.TryGetValue(tiles[i].Position, out stack))
+                if(dictionary.TryGetValue(wrong[i].Position, out stk))
                 {
-                    stack.Peek().gameObject.SetActive(false);
-                }
-                else
-                {
-                    stack = new Stack<Segment>();
-                    dictionary[tiles[i].Position] = stack;
-                }
+                    stk.Peek().gameObject.SetActive(false);
+                    removed.Add(stk.Peek());
 
-                Vector3 origin = labyrinth.GetLabyrinthPositionInWorldPosition(tiles[i - 1].Position);
-                Vector3 dest = labyrinth.GetLabyrinthPositionInWorldPosition(tiles[i].Position);
+                    this.removed.Push(removed);
+                }
+            }
 
-                Segment sgm = AddSegment(tiles[i - 1].Position, tiles[i].Position, origin, dest);
+            // Redraw
+            List<Segment> added = new List<Segment>();
+            for (int i = 1; i < playerSteps.Length; i++)
+            {
+                Vector3 origin = labyrinth.GetLabyrinthPositionInWorldPosition(playerSteps[i - 1].Position);
+                Vector3 dest = labyrinth.GetLabyrinthPositionInWorldPosition(playerSteps[i].Position);
+
+                Segment sgm = AddSegment(added, playerSteps[i - 1].Position, playerSteps[i].Position, origin, dest);
                 currentSegment.Draw();
                 currentSegment.AdjustOffset(((float)index) / total, maxOffset);
             }
+
+            this.added.Push(added);
         }
 
         private void Draw(Vector2Int labOrigin, Vector2Int labDest, Vector3 origin, Vector3 dest)
         {
-            Segment sgm = AddSegment(labOrigin, labDest, origin, dest);
+            List<Segment> list = new List<Segment>();
+            Segment sgm = AddSegment(list, labOrigin, labDest, origin, dest);
+            added.Push(list);
+            removed.Push(null);
+
             sgm.Draw();
             sgm.AdjustOffset(((float)index) / total, maxOffset);
         }
 
         private IEnumerator DrawCoroutine(Vector2Int lo, Vector2Int ld, Vector3 origin, Vector3 dest)
         {
-            Segment sgm = AddSegment(lo, ld, origin, dest);
+            List<Segment> addedList = new List<Segment>();
+            Segment sgm = AddSegment(addedList, lo, ld, origin, dest);
+            added.Push(addedList);
+            removed.Push(null);
+
             yield return StartCoroutine(sgm.DrawCoroutine());
         }
 
@@ -273,6 +288,7 @@ namespace UdeS.Promoscience.Replay
                 case GameAction.MoveDown:
                 case GameAction.MoveLeft:
                 case GameAction.MoveRight:
+                case GameAction.ReturnToDivergencePoint:
                     return true;
                 default:
                     return false;
@@ -308,9 +324,7 @@ namespace UdeS.Promoscience.Replay
                     Perform();
                 }
             }
-
         }
-
 
         // TODO why not simply "Pop a stack"
         private int GetPreviousMovementAction()
@@ -339,24 +353,47 @@ namespace UdeS.Promoscience.Replay
 
         private void DoReverse(GameAction gameAction, ActionValue value)
         {
-            Segment sgm = null;
             isBacktracking = value.tile.color == TileColor.Red;
             isMovingBackward = gameAction == GameAction.MoveUp || gameAction == GameAction.MoveLeft;
 
-            // TODO handle multiple segments (return to divergent)
-            if (stack.Count != 0)
+            Stack<Segment> stk;
+            if (dictionary.TryGetValue(labyrinthPosition, out stk))
             {
-                sgm = stack.Pop().First();
-                segments.Remove(sgm);
-                dictionary[sgm.LOrigin].Pop();
-                labyrinthPosition = sgm.LOrigin;
-                Destroy(sgm.gameObject);
+                if (stk.Count != 0)
+                {
+                    stk.Peek().gameObject.SetActive(true);
+                }
             }
 
-            if (stack.Count != 0)
+            // Remove added
+            if (added.Count != 0)
             {
-                currentSegment = stack.Peek().First();
-                currentSegment.gameObject.SetActive(true);
+                List<Segment> sgms = added.Pop();
+
+                foreach (Segment sgm in sgms)
+                {
+                    dictionary[sgm.LOrigin].Pop();
+                    labyrinthPosition = sgm.LOrigin;
+
+                    segments.Remove(sgm);
+                    Destroy(sgm.gameObject);
+                }
+            }
+
+            // Restore removed (Used only by return to divergent)
+            if (removed.Count != 0 && removed.Peek() != null)
+            {
+                List<Segment> sgms = removed.Pop();
+
+                foreach (Segment sgm in sgms)
+                {
+                    sgm.gameObject.SetActive(true);
+                }
+            }
+
+            if (added.Count != 0)
+            {
+                currentSegment = added.Peek().First();
             }
         }
 
@@ -478,14 +515,8 @@ namespace UdeS.Promoscience.Replay
 
                 case GameAction.ReturnToDivergencePoint:
 
-                    //ActionValue actionInfo = JsonUtility.FromJson<ActionValue>(info);
                     labyrinthPosition = value.position;
-                    //targetPosition = labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-
-                    //transform.position = targetPosition;
-                    transform.rotation = value.rotation;
-
-                    Redraw(value.playerSteps);
+                    Redraw(value.playerSteps, value.wrongTiles);
 
                     break;
             }
@@ -592,7 +623,7 @@ namespace UdeS.Promoscience.Replay
                     //transform.position = targetPosition;
                     transform.rotation = actionInfo.rotation;
 
-                    Redraw(actionInfo.playerSteps);
+                    Redraw(actionInfo.playerSteps, actionInfo.wrongTiles);
                     break;
             }
 

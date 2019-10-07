@@ -15,7 +15,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         public Tile tile;
 
         [SerializeField]
-        public Tile[] tiles;
+        public Tile[] wrongTiles;
 
         [SerializeField]
         public Vector2Int position;
@@ -31,8 +31,7 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         [SerializeField]
         public int error = 0;
-    }       
-
+    }
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/GameAction", order = 1)]
     public class ScriptableGameAction : ScriptableObject
@@ -109,7 +108,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             DateTime actionDateTime = DateTime.Now;
 
             var actionValue = new ActionValue();
-            actionValue.tiles = tiles;
+            actionValue.wrongTiles = tiles; // corrections
             actionValue.position = position;
             actionValue.rotation = rotation;
             actionValue.playerSteps = playerSteps;

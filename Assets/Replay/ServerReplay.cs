@@ -234,16 +234,16 @@ namespace UdeS.Promoscience.Replay
                 OnCourseAdded(course);
             }
 
-            algorithmSequence =
-                algorithmSequenceTemplate.Create(
-                    labyrinth,
-                    algorithm,
-                    labyrinthPosition);
+            //algorithmSequence =
+            //    algorithmSequenceTemplate.Create(
+            //        labyrinth,
+            //        algorithm,
+            //        labyrinthPosition);
 
-            if (algorithmSequence.MoveCount > moveCount)
-            {
-                SetMoveCount(algorithmSequence.MoveCount);
-            }
+            //if (algorithmSequence.MoveCount > moveCount)
+            //{
+            //    SetMoveCount(algorithmSequence.MoveCount);
+            //}
         }
 
         public void OnCourseAdded(Course course)
