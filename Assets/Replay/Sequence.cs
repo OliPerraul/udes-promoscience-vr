@@ -53,7 +53,7 @@ namespace UdeS.Promoscience.Replay
                 if (MoveCount == 0)
                     return false;
 
-                return MoveIndex < MoveCount;
+                return moveIndex < MoveCount;
             }
         }
 
@@ -64,19 +64,34 @@ namespace UdeS.Promoscience.Replay
                 if (MoveCount == 0)
                     return false;
 
-                return MoveIndex > 0;
+                return moveIndex > 0;
             }
         }
 
         public abstract int MoveCount { get; }
 
 
-        public abstract int MoveIndex { get; }
+        protected int moveIndex;
 
 
         protected abstract void Move(int target);
 
         protected abstract void Reverse();
+
+        public void DecreaseIndex()
+        {
+            moveIndex--;
+
+            if (replayOptions.OnProgressHandler != null)
+                replayOptions.OnProgressHandler.Invoke(moveIndex);
+        }
+
+        public void IncreaseIndex()
+        {
+            moveIndex++;
+            if (replayOptions.OnProgressHandler != null)
+                replayOptions.OnProgressHandler.Invoke(moveIndex);
+        }
 
         protected abstract void Perform();
 
@@ -124,6 +139,7 @@ namespace UdeS.Promoscience.Replay
             while (HasNext)
             {
                 yield return StartCoroutine(PerformCoroutine());
+                IncreaseIndex();
                 yield return null;
             }
 
@@ -151,6 +167,7 @@ namespace UdeS.Promoscience.Replay
                     if (HasPrevious)
                     {
                         Reverse();
+                        DecreaseIndex();
                     }
 
                     mutex.ReleaseMutex();
@@ -170,6 +187,9 @@ namespace UdeS.Promoscience.Replay
                     {
                         Perform();
                     }
+
+                    // Allow overflow to maintain synch with other sequ
+                    IncreaseIndex();
 
                     mutex.ReleaseMutex();
 

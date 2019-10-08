@@ -15,6 +15,9 @@ namespace UdeS.Promoscience.Replay
         private Material material;
 
         [SerializeField]
+        private Material materialAlpha;
+
+        [SerializeField]
         private BoxCollider boxCollider;
 
         public OnEvent OnMouseEvent;
@@ -31,6 +34,17 @@ namespace UdeS.Promoscience.Replay
         }
 
         public Vector2Int LOrigin;
+
+
+        public bool Alpha
+        {
+            set
+            {
+                lineRenderer.material = value ? materialAlpha : material;
+            }
+        }
+
+        public Vector2Int LDest;
 
         public Vector3 Current;
 
@@ -90,13 +104,7 @@ namespace UdeS.Promoscience.Replay
         public void AdjustOffset(float amount, float maxSize)
         {
             maxOffsetSize = maxSize;
-            offsetAmount = amount;
-
-
-           
-            Draw();
-
-
+            offsetAmount = amount;         
         }
 
         private float time = 0.6f;
@@ -140,10 +148,12 @@ namespace UdeS.Promoscience.Replay
         public Segment Create(
             Transform transform,
             Vector2Int lorigin, // keep track of origin to remove from layout
+            Vector2Int ldest, // keep track of origin to remove from layout
             Vector3 origin, 
             Vector3 destination,
             Vector3 offsetDirection,
             Material material,
+            Material materialAlpha,
             float time, 
             float width)
         {
@@ -155,6 +165,7 @@ namespace UdeS.Promoscience.Replay
                 .GetComponent<Segment>();
 
             segm.LOrigin = lorigin;
+            segm.LDest = ldest;
             segm.origin = origin;
             segm.destination = destination;
             segm.time = time;
@@ -162,6 +173,7 @@ namespace UdeS.Promoscience.Replay
             segm.lineRenderer.widthMultiplier = width;
             segm.offsetDirection = offsetDirection;
             segm.material = material;
+            segm.materialAlpha = materialAlpha;
 
             return segm;
         }

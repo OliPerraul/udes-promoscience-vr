@@ -17,14 +17,6 @@ namespace UdeS.Promoscience.Replay
 
         private int moveIndex = 0;
 
-        public override int MoveIndex
-        {
-            get
-            {
-                return moveIndex;
-            }
-        }
-
         public override int MoveCount
         {
             get
