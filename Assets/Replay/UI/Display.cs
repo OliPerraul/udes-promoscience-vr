@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,8 +13,11 @@ namespace UdeS.Promoscience.Replay.UI
         [SerializeField]
         private UnityEngine.UI.Button openButton;
 
-         [SerializeField]
+        [SerializeField]
         private UnityEngine.UI.Button exitButton;
+
+        [SerializeField]
+        private UnityEngine.UI.Button overlayButton;
 
         [SerializeField]
         private GameObject sequenceToggle;
@@ -21,17 +25,35 @@ namespace UdeS.Promoscience.Replay.UI
         [SerializeField]
         private SequencePopup SequencePopup;
 
-        public void Awake()
+        [SerializeField]
+        private GameObject overlay;
+
+        private bool init = false;
+
+        public void OnEnable()
         {
+            if (init)
+                return;
+
+            init = true;
+
             sequenceToggle.SetActive(false);
             SequencePopup.gameObject.SetActive(false);
 
             openButton.onClick.AddListener(OnOpenClicked);
             exitButton.onClick.AddListener(OnExitClicked);
+            overlayButton.onClick.AddListener(OnOverlayClicked);
+
             server.gameStateChangedEvent += OnGameStateChanged;
 
             //replayO
 
+        }
+
+        private void OnOverlayClicked()
+        {
+            Debug.Log("clicked");
+            overlay.SetActive(!overlay.activeSelf);
         }
 
         private bool _enabled = false;

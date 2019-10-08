@@ -103,13 +103,9 @@ namespace UdeS.Promoscience.Replay
         /// </summary>
         private Stack<List<Segment>> removed;
 
-        private int moveIndex = 0;
-
-
-
         private int moveCount = 0;
 
-        public override int MoveCount
+        public override int LocalMoveCount
         {
             get
             {
@@ -121,9 +117,7 @@ namespace UdeS.Promoscience.Replay
 
         private bool isMovingBackward = false;
 
-        private int index = 0;
-
-        private int total = 0;
+        private float offsetAmount = 0f;
 
         private float maxOffset = 0f;
 
@@ -152,18 +146,14 @@ namespace UdeS.Promoscience.Replay
             return sequence;
         }
 
-        public void Adjust(int index, int total, float maxOffset)
+        public void Adjust(float amount)// maxOffset)
         {
-            this.index = index;
-            this.total = total;
-            this.maxOffset = maxOffset;
-
-            float amount = ((float)index) / total;
+            this.offsetAmount = amount;
 
             //Segment sgm;
             foreach (Segment sgm in segments)
             {
-                sgm.AdjustOffset(amount, maxOffset);                
+                sgm.AdjustOffset(amount);                
             }
         }
 
@@ -220,6 +210,11 @@ namespace UdeS.Promoscience.Replay
             Stack<Segment> origins;
             Stack<Segment> destinations;
 
+
+            // Check if dest was visited,
+            // Otherwise create the stack
+
+
             if (this.destinations.TryGetValue(ld, out destinations))
             {
                 if (destinations.Count > 0)
@@ -257,7 +252,6 @@ namespace UdeS.Promoscience.Replay
                 origins = new Stack<Segment>();
                 this.origins[lo] = origins;
             }
-
 
             Quaternion rotation = Quaternion.LookRotation(
                 destPosition - originPosition,
@@ -312,7 +306,7 @@ namespace UdeS.Promoscience.Replay
                 Vector3 dest = labyrinth.GetLabyrinthPositionInWorldPosition(playerSteps[i].Position);
 
                 AddSegment(added, removed, playerSteps[i - 1].Position, playerSteps[i].Position);
-                CurrentSegment.AdjustOffset(((float)index) / total, maxOffset);
+                CurrentSegment.AdjustOffset(offsetAmount);
                 CurrentSegment.Draw();
             }
 
@@ -330,7 +324,7 @@ namespace UdeS.Promoscience.Replay
             this.added.Push(added);
             this.removed.Push(removed);
 
-            CurrentSegment.AdjustOffset(((float)index) / total, maxOffset);
+            CurrentSegment.AdjustOffset(offsetAmount);
             CurrentSegment.Draw();
         }
 
@@ -343,7 +337,7 @@ namespace UdeS.Promoscience.Replay
             added.Push(addedList);
             removed.Push(removedList);
 
-            CurrentSegment.AdjustOffset(((float)index) / total, maxOffset);
+            CurrentSegment.AdjustOffset(offsetAmount);
             yield return StartCoroutine(CurrentSegment.DrawCoroutine());
         }
 
@@ -359,39 +353,6 @@ namespace UdeS.Promoscience.Replay
                     return true;
                 default:
                     return false;
-            }
-        }
-
-        protected override void Move(int target)
-        {
-            if (target == moveIndex)
-                return;
-
-            if (Mathf.Sign(target - moveIndex) < 0)
-            {
-                while (HasPrevious)
-                {
-                    if (moveIndex <= target)
-                    {
-                        return;
-                    }
-
-                    Reverse();
-                    DecreaseIndex();
-                }
-            }
-            else
-            {
-                while(HasNext)
-                {
-                    if (moveIndex >= target)
-                    {                        
-                        return;
-                    }
-
-                    Perform();
-                    IncreaseIndex();
-                }
             }
         }
 
@@ -541,15 +502,10 @@ namespace UdeS.Promoscience.Replay
                 course.CurrentActionValue));
 
             course.CurrentActionIndex = GetNextMovementAction();
-
-            moveIndex++;
-            if(replayOptions.OnProgressHandler != null)
-            replayOptions.OnProgressHandler.Invoke(moveIndex);
         }
 
         private IEnumerator DoPerformCoroutine(GameAction gameAction, ActionValue value)
         {
-            yield return new WaitForEndOfFrame();
 
             lastLabyrinthPosition = labyrinthPosition;
             lastColor = labyrinth.GetTileColor(lastLabyrinthPosition);
@@ -611,26 +567,6 @@ namespace UdeS.Promoscience.Replay
             yield return null;
         }
 
-        public override void Play()
-        {
-            //throw new NotImplementedException();
-        }
-
-
-        public override void Pause()
-        {
-            isPlaying = false;
-            StopAllCoroutines();
-            Move(moveIndex - 1);
-        }
-
-
-        public override void Stop()
-        {
-            isPlaying = false;
-            StopAllCoroutines();
-            Move(0);
-        }
 
     }
 }

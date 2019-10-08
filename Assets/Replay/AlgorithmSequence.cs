@@ -15,9 +15,7 @@ namespace UdeS.Promoscience.Replay
 
         private Dictionary<Vector2Int, Stack<TileColor>> dictionary;
 
-        private int moveIndex = 0;
-
-        public override int MoveCount
+        public override int LocalMoveCount
         {
             get
             {
@@ -48,7 +46,6 @@ namespace UdeS.Promoscience.Replay
             base.Awake();
 
             dictionary = new Dictionary<Vector2Int, Stack<TileColor>>();
-
         }
 
         public override void FixedUpdate()
@@ -56,37 +53,6 @@ namespace UdeS.Promoscience.Replay
             base.FixedUpdate();
         }
 
-        protected override void Move(int target)
-        {
-            if (target == moveIndex)
-                return;
-
-            if (Mathf.Sign(target - moveIndex) < 0)
-            {
-                while (HasPrevious)
-                {
-                    if (moveIndex <= target)
-                    {
-                        return;
-                    }
-
-                    Reverse();
-                }
-            }
-            else
-            {
-                while (HasNext)
-                {
-                    if (moveIndex >= target)
-                    {
-                        return;
-                    }
-
-                    Perform();
-                }
-            }
-
-        }
 
         private void PaintTile(Tile tile)
         {
@@ -107,6 +73,11 @@ namespace UdeS.Promoscience.Replay
 
         protected override void Perform()
         {
+            if (IsWithinRange)
+            {
+                labyrinthPosition = tiles[replayOptions.GlobalMoveIndex].Position;
+            }
+
             Stack<TileColor> stack;
 
             if (!dictionary.TryGetValue(labyrinthPosition, out stack))
@@ -116,61 +87,27 @@ namespace UdeS.Promoscience.Replay
                 dictionary.Add(labyrinthPosition, stack);
             }
 
-            PaintTile(tiles[moveIndex]);
-            stack.Push(tiles[moveIndex].color);
-
-            moveIndex++;
-            if (moveIndex < MoveCount)
-            {
-                labyrinthPosition = tiles[moveIndex].Position;
-            }
-
-
-            if (replayOptions.OnProgressHandler != null)
-            {
-                replayOptions.OnProgressHandler.Invoke(moveIndex);
-            }
+            PaintTile(tiles[replayOptions.GlobalMoveIndex]);
+            stack.Push(tiles[replayOptions.GlobalMoveIndex].color);
         }
 
         protected override void Reverse()
         {
             Stack<TileColor> stack;
 
-            moveIndex--;
-            labyrinthPosition = tiles[moveIndex].Position;
+            labyrinthPosition = tiles[replayOptions.GlobalMoveIndex].Position;
 
             if (dictionary.TryGetValue(labyrinthPosition, out stack))
             {
                 stack.Pop();
-                PaintTile(labyrinthPosition, stack.Peek());
-            }
-
-            if (replayOptions.OnProgressHandler != null)
-            {
-                replayOptions.OnProgressHandler.Invoke(moveIndex);
+                if (stack.Count != 0)
+                {
+                    PaintTile(labyrinthPosition, stack.Peek());
+                }
             }
         }
 
-        public override void Play()
-        {
-            throw new System.NotImplementedException();
-        }
 
-
-        public override void Pause()
-        {
-            isPlaying = false;
-            StopAllCoroutines();
-            Move(moveIndex - 1);
-        }
-
-
-        public override void Stop()
-        {
-            isPlaying = false;
-            StopAllCoroutines();
-            Move(0);
-        }
     }
 
 

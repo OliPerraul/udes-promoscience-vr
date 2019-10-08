@@ -42,7 +42,7 @@ namespace UdeS.Promoscience.Replay.UI
 
             item.colorImage.color = course.Team.TeamColor;
             item.gameObject.SetActive(true);
-            item.button.onClick.AddListener(OnClicked);
+            item.button.onClick.AddListener(item.OnClicked);
 
             return item;
         }

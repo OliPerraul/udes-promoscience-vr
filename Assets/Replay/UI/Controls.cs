@@ -98,7 +98,7 @@ namespace UdeS.Promoscience.Replay.UI
 
             slider.onValueChanged.AddListener(OnSliderMoved);           
 
-            playbackOptions.OnProgressHandler += OnProgress;
+            playbackOptions.OnMoveIndexChanged += OnProgress;
             playbackOptions.OnSequenceFinishedHandler += OnReplaySequenceFinished;
             //playbackOptions.OnSequenceChangedHandler += OnSequenceChanged;
             playbackOptions.OnMoveCountSetHandler += OnSequenceChanged;

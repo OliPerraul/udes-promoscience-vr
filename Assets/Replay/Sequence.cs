@@ -46,60 +46,25 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        protected bool HasNext
+        protected bool IsWithinRange
         {
             get
             {
-                if (MoveCount == 0)
+                if (LocalMoveCount == 0)
                     return false;
 
-                return moveIndex < MoveCount;
+                return replayOptions.GlobalMoveIndex >= 0 && replayOptions.GlobalMoveIndex < LocalMoveCount;
             }
         }
 
-        protected bool HasPrevious
-        {
-            get
-            {
-                if (MoveCount == 0)
-                    return false;
-
-                return moveIndex > 0;
-            }
-        }
-
-        public abstract int MoveCount { get; }
+        public abstract int LocalMoveCount { get; }
 
 
-        protected int moveIndex;
-
-
-        protected abstract void Move(int target);
+        //protected abstract void Move(int target);
 
         protected abstract void Reverse();
 
-        public void DecreaseIndex()
-        {
-            moveIndex--;
-
-            if (replayOptions.OnProgressHandler != null)
-                replayOptions.OnProgressHandler.Invoke(moveIndex);
-        }
-
-        public void IncreaseIndex()
-        {
-            moveIndex++;
-            if (replayOptions.OnProgressHandler != null)
-                replayOptions.OnProgressHandler.Invoke(moveIndex);
-        }
-
         protected abstract void Perform();
-
-        public abstract void Play();
-
-        public abstract void Stop();
-
-        public abstract void Pause();
 
         //public abstract void Resume();
 
@@ -107,8 +72,6 @@ namespace UdeS.Promoscience.Replay
         public virtual void Awake()
         {
             mutex = new Mutex();
-
-            replayOptions.OnActionHandler += OnReplayAction;
         }
 
 
@@ -136,10 +99,9 @@ namespace UdeS.Promoscience.Replay
         {
             isPlaying = true;
 
-            while (HasNext)
+            while (IsWithinRange)
             {
                 yield return StartCoroutine(PerformCoroutine());
-                IncreaseIndex();
                 yield return null;
             }
 
@@ -151,92 +113,31 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        public virtual void OnReplayAction(ReplayAction action, params object[] args)
+        public virtual void Next()
         {
-            switch (action)
+            //if (isPlaying)
+            //{
+            //    Pause();
+            //}
+
+            if (IsWithinRange)
             {
-                case ReplayAction.Previous:
+                Perform();
+            }
+        }
 
-                    mutex.WaitOne();
 
-                    if (isPlaying)
-                    {
-                        Pause();
-                    }
 
-                    if (HasPrevious)
-                    {
-                        Reverse();
-                        DecreaseIndex();
-                    }
+        public virtual void Previous()
+        {
+            //if (isPlaying)
+            //{
+            //    Pause();
+            //}
 
-                    mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayAction.Next:
-
-                    mutex.WaitOne();
-
-                    if (isPlaying)
-                    {
-                        Pause();
-                    }
-
-                    if (HasNext)
-                    {
-                        Perform();
-                    }
-
-                    // Allow overflow to maintain synch with other sequ
-                    IncreaseIndex();
-
-                    mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayAction.Slide:
-
-                    mutex.WaitOne();
-
-                    int current = (int)args[0];
-                    Move(current);
-
-                    mutex.ReleaseMutex();
-
-                    break;
-
-                //case ReplayAction.Play:
-                    
-                //    Move(0);
-                //    Resume();
-
-                //    break;
-
-                //case ReplayAction.Resume:
-                //    Resume();
-
-                //    break;
-
-                //case ReplayAction.Pause:
-
-                //    mutex.WaitOne();
-
-                //    Pause();
-
-                //    mutex.ReleaseMutex();
-
-                //    break;
-
-                case ReplayAction.Stop:
-
-                    mutex.WaitOne();
-
-                    Stop();
-
-                    mutex.ReleaseMutex();
-
-                    break;
+            if (IsWithinRange)
+            {
+                Reverse();
             }
         }
     }

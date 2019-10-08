@@ -9,6 +9,9 @@ namespace UdeS.Promoscience.Replay
     public class Segment : MonoBehaviour
     {
         [SerializeField]
+        private float overlayHeight = 50f;
+
+        [SerializeField]
         private LineRenderer lineRenderer;
 
         [SerializeField]
@@ -22,6 +25,7 @@ namespace UdeS.Promoscience.Replay
 
         public OnEvent OnMouseEvent;
 
+        private bool isDrawing = false;
 
         public void OnValidate()
         {
@@ -30,12 +34,10 @@ namespace UdeS.Promoscience.Replay
 
             if (boxCollider == null)
                 boxCollider = GetComponent<BoxCollider>();
-
         }
 
         public Vector2Int LOrigin;
-
-
+        
         public bool Alpha
         {
             set
@@ -47,8 +49,7 @@ namespace UdeS.Promoscience.Replay
         public Vector2Int LDest;
 
         public Vector3 Current;
-
-
+        
         public float Length
         {
             get
@@ -63,7 +64,7 @@ namespace UdeS.Promoscience.Replay
         {
             get
             {
-                return origin + SideOffset - FrontOffset + Vector3.up;
+                return origin + SideOffset + FrontOffset + Vector3.up * overlayHeight;
             }
         }
 
@@ -73,38 +74,40 @@ namespace UdeS.Promoscience.Replay
         {
             get
             {
-                return destination + SideOffset + FrontOffset + Vector3.up;
+                return destination + SideOffset + FrontOffset + Vector3.up * overlayHeight;
             }
         }
 
-
+        [SerializeField]
         private float offsetAmount = 0f;
 
-        private float maxOffsetSize = 0f;
-
+        [SerializeField]
         private Vector3 offsetDirection;
 
         private Vector3 SideOffset
         {
             get
             {
-                return offsetDirection * maxOffsetSize * offsetAmount;
+                return offsetDirection * offsetAmount;
             }
         }
-
 
         private Vector3 FrontOffset
         {
             get
             {
-                return (destination - origin).normalized * maxOffsetSize * offsetAmount;
+                return (destination - origin).normalized * offsetAmount;
             }
         }
 
-        public void AdjustOffset(float amount, float maxSize)
+        public void AdjustOffset(float amount)
         {
-            maxOffsetSize = maxSize;
-            offsetAmount = amount;         
+            offsetAmount = amount;
+
+            Current = isDrawing ? Current : Destination;
+
+            lineRenderer.SetPosition(0, Origin);
+            lineRenderer.SetPosition(1, Current);
         }
 
         private float time = 0.6f;
@@ -115,6 +118,7 @@ namespace UdeS.Promoscience.Replay
             transform.position = Origin;
             lineRenderer.SetPosition(0, Origin);
             lineRenderer.SetPosition(1, Origin);
+            isDrawing = true;
 
             for (; t < time; t += Time.deltaTime)
             {
@@ -124,6 +128,8 @@ namespace UdeS.Promoscience.Replay
             }
 
             lineRenderer.SetPosition(1, Destination);
+            isDrawing = false;
+
             yield return null;
         }
 
@@ -140,7 +146,7 @@ namespace UdeS.Promoscience.Replay
             transform.position = midPoint;
 
             transform.rotation = Quaternion.Euler(0, 90, 0);
-            transform.rotation = Quaternion.FromToRotation(transform.forward, (Destination - Origin).normalized);//.To);
+            transform.rotation = Quaternion.FromToRotation(transform.forward, (Destination - Origin).normalized);
 
             Current = Destination;
         }
@@ -174,7 +180,7 @@ namespace UdeS.Promoscience.Replay
             segm.offsetDirection = offsetDirection;
             segm.material = material;
             segm.materialAlpha = materialAlpha;
-
+            
             return segm;
         }
 
