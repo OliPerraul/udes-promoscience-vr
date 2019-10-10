@@ -34,7 +34,7 @@ namespace UdeS.Promoscience.Replay
 
         protected Mutex mutex;
 
-        protected Vector2Int labyrinthPosition;
+        protected Vector2Int lposition;
 
         protected Coroutine coroutineResult;
 

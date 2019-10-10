@@ -34,7 +34,7 @@ namespace UdeS.Promoscience.Replay
                 .GetComponent<AlgorithmSequence>();
 
             sequence.labyrinth = labyrinth;
-            sequence.labyrinthPosition = startPosition;            
+            sequence.lposition = startPosition;            
             sequence.algorithm = algorithm;
             sequence.tiles = algorithm.GetAlgorithmSteps();
 
@@ -75,16 +75,16 @@ namespace UdeS.Promoscience.Replay
         {
             if (IsWithinRange)
             {
-                labyrinthPosition = tiles[replayOptions.GlobalMoveIndex].Position;
+                lposition = tiles[replayOptions.GlobalMoveIndex].Position;
             }
 
             Stack<TileColor> stack;
 
-            if (!dictionary.TryGetValue(labyrinthPosition, out stack))
+            if (!dictionary.TryGetValue(lposition, out stack))
             {
                 stack = new Stack<TileColor>();
                 stack.Push(TileColor.Grey); // add base color
-                dictionary.Add(labyrinthPosition, stack);
+                dictionary.Add(lposition, stack);
             }
 
             PaintTile(tiles[replayOptions.GlobalMoveIndex]);
@@ -95,14 +95,14 @@ namespace UdeS.Promoscience.Replay
         {
             Stack<TileColor> stack;
 
-            labyrinthPosition = tiles[replayOptions.GlobalMoveIndex].Position;
+            lposition = tiles[replayOptions.GlobalMoveIndex].Position;
 
-            if (dictionary.TryGetValue(labyrinthPosition, out stack))
+            if (dictionary.TryGetValue(lposition, out stack))
             {
                 stack.Pop();
                 if (stack.Count != 0)
                 {
-                    PaintTile(labyrinthPosition, stack.Peek());
+                    PaintTile(lposition, stack.Peek());
                 }
             }
         }

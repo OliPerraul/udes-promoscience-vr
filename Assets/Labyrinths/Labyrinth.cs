@@ -158,17 +158,21 @@ namespace UdeS.Promoscience
 
         //Labyrith start should always be in a dead end
         public int GetStartDirection()
-        {
+        {            
+            // up
             int direction = 0;
 
+            // right
             if (GetIsTileWalkable(startPosition.x + 1, startPosition.y))
             {
                 direction = 1;
             }
+            // down
             else if (GetIsTileWalkable(startPosition.x, startPosition.y + 1))
             {
                 direction = 2;
             }
+            // Left
             else if (GetIsTileWalkable(startPosition.x - 1, startPosition.y))
             {
                 direction = 3;

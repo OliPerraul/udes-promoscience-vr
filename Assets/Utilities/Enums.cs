@@ -54,6 +54,8 @@ namespace UdeS.Promoscience.Utils
     [Serializable]
     public enum GameAction : int
     {
+        //Start = -1,
+        // Because the actions do not start with a 'Start' we add it after the facts (see playback code)...
         MoveUp = 0,
         MoveRight = 1,
         MoveDown = 2,

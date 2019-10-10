@@ -24,8 +24,20 @@ namespace UdeS.Promoscience.Replay
         private BoxCollider boxCollider;
 
         public OnEvent OnMouseEvent;
-
+        
         private bool isDrawing = false;
+
+        public Vector2Int LPosition;
+
+        private float time = 0.6f;
+
+        [SerializeField]
+        private float offsetAmount = 0f;
+
+        private bool isTurn = false;
+
+        private bool isInversed = false;
+
 
         public void OnValidate()
         {
@@ -36,8 +48,22 @@ namespace UdeS.Promoscience.Replay
                 boxCollider = GetComponent<BoxCollider>();
         }
 
-        public Vector2Int LOrigin;
-        
+        public Quaternion Direction
+        {
+
+            get
+            {
+                return isTurn ?
+                    Quaternion.LookRotation(
+                        destination - middle,
+                        Vector3.up) :
+
+                    Quaternion.LookRotation(
+                        destination - origin,
+                        Vector3.up);
+            }
+        }
+
         public bool Alpha
         {
             set
@@ -46,9 +72,7 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        public Vector2Int LDest;
-
-        public Vector3 Current;
+        public Vector3 Interpolation;
         
         public float Length
         {
@@ -58,13 +82,26 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
+        private Vector3 middle;
+
+        // The only reason to have middle is for turns.
+        public Vector3 Middle
+        {
+            get
+            {
+                // If a turn, we need to add both offsets
+                // Otherwise the offset is the same: just add one
+                return middle + OriginOffset + DestinationOffset + Vector3.up * overlayHeight;
+            }
+        }
+
         private Vector3 origin;
 
         public Vector3 Origin
         {
             get
             {
-                return origin + SideOffset + FrontOffset + Vector3.up * overlayHeight;
+                return origin + OriginOffset + Vector3.up * overlayHeight;
             }
         }
 
@@ -74,29 +111,26 @@ namespace UdeS.Promoscience.Replay
         {
             get
             {
-                return destination + SideOffset + FrontOffset + Vector3.up * overlayHeight;
+                return destination + DestinationOffset + Vector3.up * overlayHeight;
             }
         }
 
-        [SerializeField]
-        private float offsetAmount = 0f;
-
-        [SerializeField]
-        private Vector3 offsetDirection;
-
-        private Vector3 SideOffset
+        private Vector3 OriginOffset
         {
             get
             {
-                return offsetDirection * offsetAmount;
+                // If turn the offset is calculated from the pivot, otherwise the same as the destination
+                var rotation = isTurn ? Quaternion.LookRotation(middle - origin) : Quaternion.LookRotation(destination - origin);
+                return rotation * Vector3.right * (isInversed ? -offsetAmount : offsetAmount);
             }
         }
 
-        private Vector3 FrontOffset
+        private Vector3 DestinationOffset
         {
             get
             {
-                return (destination - origin).normalized * offsetAmount;
+                var rotation = isTurn ? Quaternion.LookRotation(destination - middle) : Quaternion.LookRotation(destination - origin);
+                return rotation * Vector3.right * (isInversed ? -offsetAmount : offsetAmount);
             }
         }
 
@@ -104,13 +138,21 @@ namespace UdeS.Promoscience.Replay
         {
             offsetAmount = amount;
 
-            Current = isDrawing ? Current : Destination;
+            Interpolation = isDrawing ? Interpolation : Destination;
 
-            lineRenderer.SetPosition(0, Origin);
-            lineRenderer.SetPosition(1, Current);
+            // TODO interpolation
+            if (isTurn)
+            {
+                lineRenderer.SetPosition(0, Origin);
+                lineRenderer.SetPosition(1, Middle);
+                lineRenderer.SetPosition(2, Destination);
+            }
+            else
+            {
+                lineRenderer.SetPosition(0, Origin);
+                lineRenderer.SetPosition(1, Destination);                
+            }
         }
-
-        private float time = 0.6f;
 
         public IEnumerator DrawCoroutine()
         {
@@ -122,8 +164,8 @@ namespace UdeS.Promoscience.Replay
 
             for (; t < time; t += Time.deltaTime)
             {
-                Current = Vector3.Lerp(Origin, Destination, t / time);
-                lineRenderer.SetPosition(1, Current);
+                Interpolation = Vector3.Lerp(Origin, Destination, t / time);
+                lineRenderer.SetPosition(1, Interpolation);
                 yield return null;
             }
 
@@ -136,28 +178,36 @@ namespace UdeS.Promoscience.Replay
         public void Draw()
         {
             transform.position = Origin;
-            lineRenderer.material = material;
-            lineRenderer.SetPosition(0, Origin);
-            lineRenderer.SetPosition(1, Destination);
 
+            if (isTurn)
+            {
+                lineRenderer.SetPosition(0, Origin);
+                lineRenderer.SetPosition(1, Middle);
+                lineRenderer.SetPosition(2, Destination);
+            }
+            else
+            {
+                lineRenderer.SetPosition(0, Origin);
+                lineRenderer.SetPosition(1, Destination);
+            }
+
+            // Add collider to the segment (not super important)
             boxCollider.size = new Vector3(Length, 0.175f, 0.25f);
             Vector3 midPoint = (Origin + Destination) / 2;
-
             transform.position = midPoint;
-
             transform.rotation = Quaternion.Euler(0, 90, 0);
             transform.rotation = Quaternion.FromToRotation(transform.forward, (Destination - Origin).normalized);
 
-            Current = Destination;
+            Interpolation = Destination;
         }
 
-        public Segment Create(
+        public Segment CreateTurn(
             Transform transform,
-            Vector2Int lorigin, // keep track of origin to remove from layout
-            Vector2Int ldest, // keep track of origin to remove from layout
-            Vector3 origin, 
+            Vector2Int lposition, // keep track of origin to remove from layout
+            Vector3 origin,
+            Vector3 middle,
             Vector3 destination,
-            Vector3 offsetDirection,
+            bool isInversed,
             Material material,
             Material materialAlpha,
             float time, 
@@ -170,19 +220,95 @@ namespace UdeS.Promoscience.Replay
                 transform)                
                 .GetComponent<Segment>();
 
-            segm.LOrigin = lorigin;
-            segm.LDest = ldest;
+            segm.isTurn = true;
+            segm.lineRenderer.positionCount = 3;
+
+            segm.LPosition = lposition;
+            segm.origin = origin;
+            segm.middle = middle;
+            segm.destination = destination;
+            segm.time = time;
+            segm.lineRenderer.material = material;
+            segm.lineRenderer.widthMultiplier = width;
+            segm.lineRenderer.positionCount = 3;
+            segm.isInversed = isInversed;
+            segm.material = material;
+            segm.materialAlpha = materialAlpha;    
+
+            return segm;
+        }
+
+        public Segment Create(
+            Transform transform,
+            Vector2Int lposition, // keep track of origin to remove from layout
+            Vector3 origin,
+            Vector3 destination,
+            bool isInversed,
+            Material material,
+            Material materialAlpha,
+            float time,
+            float width)
+        {
+            var segm = Instantiate(
+                gameObject,
+                Vector3.zero,
+                Quaternion.identity,
+                transform)
+                .GetComponent<Segment>();
+
+            segm.isTurn = false;
+            segm.lineRenderer.positionCount = 2;
+
+            segm.LPosition = lposition;
             segm.origin = origin;
             segm.destination = destination;
             segm.time = time;
             segm.lineRenderer.material = material;
             segm.lineRenderer.widthMultiplier = width;
-            segm.offsetDirection = offsetDirection;
+            segm.isInversed = isInversed;
             segm.material = material;
             segm.materialAlpha = materialAlpha;
-            
+
             return segm;
         }
+
+
+
+        //public Segment Create(
+        //    Transform transform,
+        //    Vector2Int lposition, // keep track of origin to remove from layout
+        //    Vector3 origin,
+        //    Vector3 middle,
+        //    Vector3 destination,
+        //    bool isTurn,
+        //    bool isInversed,
+        //    Material material,
+        //    Material materialAlpha,
+        //    float time,
+        //    float width)
+        //{
+        //    var segm = Instantiate(
+        //        gameObject,
+        //        Vector3.zero,
+        //        Quaternion.identity,
+        //        transform)
+        //        .GetComponent<Segment>();
+
+        //    segm.LPosition = lposition;
+        //    segm.origin = origin;
+        //    segm.middle = middle;
+        //    segm.destination = destination;
+        //    segm.time = time;
+        //    segm.lineRenderer.material = material;
+        //    segm.lineRenderer.widthMultiplier = width;
+        //    segm.lineRenderer.positionCount = 3;
+        //    segm.isInversed = isInversed;
+        //    segm.isTurn = isTurn;
+        //    segm.material = material;
+        //    segm.materialAlpha = materialAlpha;
+
+        //    return segm;
+        //}
 
 
 
