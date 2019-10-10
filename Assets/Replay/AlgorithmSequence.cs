@@ -23,6 +23,39 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
+        private int moveIndex = 0;
+
+        public override int LocalMoveIndex
+        {
+            get
+            {
+                return moveIndex;
+            }
+        }
+
+        protected override bool HasPrevious
+        {
+            get
+            {
+                if (LocalMoveCount == 0)
+                    return false;
+
+                return moveIndex >= 0;
+            }
+        }
+
+        protected override bool HasNext
+        {
+            get
+            {
+                if (LocalMoveCount == 0)
+                    return false;
+
+                return moveIndex < LocalMoveCount;
+            }
+        }
+
+
         public AlgorithmSequence Create(
             Labyrinth labyrinth,
             Algorithm algorithm,
@@ -34,7 +67,8 @@ namespace UdeS.Promoscience.Replay
                 .GetComponent<AlgorithmSequence>();
 
             sequence.labyrinth = labyrinth;
-            sequence.lposition = startPosition;            
+            sequence.lposition = startPosition;
+            sequence.startlposition = startPosition;
             sequence.algorithm = algorithm;
             sequence.tiles = algorithm.GetAlgorithmSteps();
 
@@ -64,21 +98,25 @@ namespace UdeS.Promoscience.Replay
             labyrinth.SetTileColor(position, action);
         }
 
-        protected override IEnumerator PerformCoroutine()
+        protected override IEnumerator DoNextCoroutine()
         {
-            Perform();
+            DoNext();
             yield return new WaitForSeconds(speed);
             yield return null;
         }
 
-        protected override void Perform()
+        protected override void DoNext()
         {
-            if (IsWithinRange)
-            {
-                lposition = tiles[replayOptions.GlobalMoveIndex].Position;
-            }
+            // Clamp
+            moveIndex = HasPrevious ?
+                (HasNext ?
+                    moveIndex :
+                    LocalMoveCount - 1) :
+                0;
+            
+            lposition = tiles[moveIndex].Position;
 
-            Stack<TileColor> stack;
+            Stack <TileColor> stack;
 
             if (!dictionary.TryGetValue(lposition, out stack))
             {
@@ -87,30 +125,40 @@ namespace UdeS.Promoscience.Replay
                 dictionary.Add(lposition, stack);
             }
 
-            PaintTile(tiles[replayOptions.GlobalMoveIndex]);
-            stack.Push(tiles[replayOptions.GlobalMoveIndex].color);
+            PaintTile(tiles[moveIndex]);
+            stack.Push(tiles[moveIndex].color);
+
+            moveIndex++;
         }
 
-        protected override void Reverse()
+        protected override void DoPrevious()
         {
+            moveIndex--;
+
+            // Clamp
+            moveIndex = HasPrevious ?
+                (HasNext ?
+                    moveIndex :
+                    LocalMoveCount - 1) :
+                0;
+
             Stack<TileColor> stack;
 
-            lposition = tiles[replayOptions.GlobalMoveIndex].Position;
+            lposition = HasPrevious ? tiles[moveIndex].Position : startlposition;
 
             if (dictionary.TryGetValue(lposition, out stack))
             {
-                stack.Pop();
                 if (stack.Count != 0)
                 {
-                    PaintTile(lposition, stack.Peek());
+                    stack.Pop();
+                    if (stack.Count != 0)
+                    {
+                        PaintTile(lposition, stack.Peek());
+                    }
                 }
             }
         }
-
-
     }
-
-
 }
 
 

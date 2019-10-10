@@ -36,6 +36,8 @@ namespace UdeS.Promoscience.Replay
 
         protected Vector2Int lposition;
 
+        protected Vector2Int startlposition;
+
         protected Coroutine coroutineResult;
 
         public Coroutine ResumeCoroutineResult
@@ -46,25 +48,27 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        protected bool IsWithinRange
+        protected abstract bool HasPrevious { get; }
+
+        protected abstract bool HasNext { get; }
+
+        public virtual bool WithinBounds
         {
             get
             {
-                if (LocalMoveCount == 0)
-                    return false;
-
-                return replayOptions.GlobalMoveIndex >= 0 && replayOptions.GlobalMoveIndex < LocalMoveCount;
+                return replayOptions.GlobalMoveIndex < LocalMoveCount;
             }
         }
 
         public abstract int LocalMoveCount { get; }
 
+        public abstract int LocalMoveIndex { get; }
 
         //protected abstract void Move(int target);
 
-        protected abstract void Reverse();
+        protected abstract void DoPrevious();
 
-        protected abstract void Perform();
+        protected abstract void DoNext();
 
         //public abstract void Resume();
 
@@ -87,7 +91,7 @@ namespace UdeS.Promoscience.Replay
         }
 
 
-        protected abstract IEnumerator PerformCoroutine();
+        protected abstract IEnumerator DoNextCoroutine();
 
         public virtual void Resume()
         {
@@ -99,9 +103,9 @@ namespace UdeS.Promoscience.Replay
         {
             isPlaying = true;
 
-            while (IsWithinRange)
+            while (HasPrevious)
             {
-                yield return StartCoroutine(PerformCoroutine());
+                yield return StartCoroutine(DoNextCoroutine());
                 yield return null;
             }
 
@@ -115,29 +119,44 @@ namespace UdeS.Promoscience.Replay
 
         public virtual void Next()
         {
-            //if (isPlaying)
-            //{
-            //    Pause();
-            //}
-
-            if (IsWithinRange)
+            if (HasNext)
             {
-                Perform();
+                DoNext();
             }
         }
 
-
-
         public virtual void Previous()
         {
-            //if (isPlaying)
-            //{
-            //    Pause();
-            //}
-
-            if (IsWithinRange)
+            if (HasPrevious)
             {
-                Reverse();
+                DoPrevious();
+            }
+        }
+
+        public void Move(int target)
+        {
+            if (target == LocalMoveIndex)
+                return;
+
+            if (Mathf.Sign(LocalMoveIndex - target) < 0)
+            {
+                while (HasNext)
+                {
+                    if (LocalMoveIndex == target)
+                        return;
+
+                    Next();
+                }
+            }
+            else
+            {
+                while (HasPrevious)
+                {
+                    if (LocalMoveIndex == target)
+                        return;
+
+                    Previous();       
+                }
             }
         }
     }

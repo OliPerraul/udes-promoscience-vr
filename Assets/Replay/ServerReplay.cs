@@ -121,7 +121,7 @@ namespace UdeS.Promoscience.Replay
 
             foreach (var sq in sequences)
             {
-                sq.Next();
+                if(sq.WithinBounds) sq.Next();
             }
 
             replayOptions.GlobalMoveIndex++;
@@ -137,7 +137,7 @@ namespace UdeS.Promoscience.Replay
 
             foreach (var sq in sequences)
             {
-                sq.Previous();
+                if (sq.WithinBounds) sq.Previous();
             }
         }
 
@@ -148,41 +148,12 @@ namespace UdeS.Promoscience.Replay
             sequences.AddRange(activeSequences.Cast<Sequence>());
             sequences.Add(algorithmSequence);
 
-            if (target == replayOptions.GlobalMoveIndex)
-                return;
+            replayOptions.GlobalMoveIndex = target;
 
-            if (Mathf.Sign(replayOptions.GlobalMoveIndex - target) < 0)
+            foreach (var sq in sequences)
             {
-                while (replayOptions.HasNext)
-                {
-                    if (replayOptions.GlobalMoveIndex == target)
-                        return;
-
-                    foreach (var sq in sequences)
-                    {
-                        sq.Next();
-                    }
-
-                    replayOptions.GlobalMoveIndex++;
-
-                }
+                sq.Move(target);
             }
-            else
-            {
-                while (replayOptions.HasPrevious)
-                {
-                    if (replayOptions.GlobalMoveIndex == target)
-                        return;
-
-                    replayOptions.GlobalMoveIndex--;
-
-                    foreach (var sq in sequences)
-                    {
-                        sq.Previous();
-                    }
-                }
-            }
-
         }
 
         public virtual void Pause()
@@ -230,8 +201,12 @@ namespace UdeS.Promoscience.Replay
 
                 case ReplayAction.Slide:
 
+                    mutex.WaitOne();
+
                     int current = (int)args[0];
                     Move(current);
+                    
+                    mutex.ReleaseMutex();
 
                     break;
 
@@ -272,7 +247,6 @@ namespace UdeS.Promoscience.Replay
         {
             if (candidateMvcnt > replayOptions.GlobalMoveCount)
                 replayOptions.GlobalMoveCount = candidateMvcnt;
-
         }
 
 
@@ -291,8 +265,13 @@ namespace UdeS.Promoscience.Replay
 
             if (activeSequences.Count != 0)
             {
+                // Adjust move count to biggest sequence
                 TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
-                AdjustSequences();
+
+                // Let all sqnces catch up     
+                Move(replayOptions.GlobalMoveIndex);
+
+                AdjustOffsets();
             }
         }
 
@@ -307,11 +286,11 @@ namespace UdeS.Promoscience.Replay
                 (tileWidth / (activeSequences.Count + 1));
         }
 
-        public void AdjustSequences()
+        public void AdjustOffsets()
         {
             for (int i = 0; i < activeSequences.Count; i++)
             {
-                activeSequences[i].Adjust(GetOffsetAmount(i));
+                activeSequences[i].AdjustOffset(GetOffsetAmount(i));
             }
         }
 
@@ -395,7 +374,7 @@ namespace UdeS.Promoscience.Replay
 
                 TrySetMoveCount(sequence.LocalMoveCount);
 
-                AdjustSequences();
+                AdjustOffsets();
             }
         }
 
@@ -408,7 +387,7 @@ namespace UdeS.Promoscience.Replay
 
                 TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
 
-                AdjustSequences();
+                AdjustOffsets();
             }
         }
 

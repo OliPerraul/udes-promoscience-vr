@@ -62,6 +62,23 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
+        protected override bool HasNext
+        {
+            get
+            {
+                return course.HasNext;
+            }
+        }
+
+        protected override bool HasPrevious
+        {
+            get
+            {
+                return course.HasPrevious;
+            }
+        }
+
+
         [SerializeField]
         private GameObject arrowHead;
 
@@ -104,13 +121,19 @@ namespace UdeS.Promoscience.Replay
         /// </summary>
         private Stack<List<Segment>> removed;
 
-        private int moveCount = 0;
-
         public override int LocalMoveCount
         {
             get
             {
-                return moveCount;
+                return course.MoveCount;
+            }
+        }
+
+        public override int LocalMoveIndex
+        {
+            get
+            {
+                return course.MoveIndex;
             }
         }
 
@@ -129,12 +152,12 @@ namespace UdeS.Promoscience.Replay
                 .GetComponent<PlayerSequence>();
 
             sequence.labyrinth = labyrinth;
+            sequence.startlposition = startPosition;
             sequence.lposition = startPosition;
             sequence.prevlposition = startPosition;
             sequence.nextlposition = startPosition;
 
             sequence.course = course;
-            sequence.moveCount = sequence.course.MoveCount;
             sequence.material.color = course.Team.TeamColor;            
             sequence.backtrackMaterial.color = course.Team.TeamColor;
 
@@ -146,7 +169,7 @@ namespace UdeS.Promoscience.Replay
             return sequence;
         }
 
-        public void Adjust(float amount)// maxOffset)
+        public void AdjustOffset(float amount)// maxOffset)
         {
             this.offsetAmount = amount;
 
@@ -448,14 +471,10 @@ namespace UdeS.Promoscience.Replay
         }
 
 
-        protected override void Reverse()
+        protected override void DoPrevious()
         {
-            course.DecrementMovementAction();
+            course.Previous();
 
-            isBacktracking = course.CurrentActionValue.tile.color == TileColor.Red;
-            //direction = course.CurrentAction;// == GameAction.MoveUp || course.CurrentAction == GameAction.MoveLeft;
-
-            // Remove added
             if (added.Count != 0)
             {
                 List<Segment> sgms = added.Pop();
@@ -463,7 +482,6 @@ namespace UdeS.Promoscience.Replay
                 foreach (Segment sgm in sgms)
                 {
                     dictionary[sgm.LPosition].Pop();
-
                     segments.Remove(sgm);
                     Destroy(sgm.gameObject);
                 }
@@ -479,9 +497,16 @@ namespace UdeS.Promoscience.Replay
                 }
             }
 
+            nextlposition = lposition;
+
             if (added.Count != 0)
             {
-                CurrentSegment = added.Peek().First();
+                CurrentSegment = added.Peek().First();                
+                lposition = CurrentSegment.LPosition;
+            }
+            else
+            {
+                lposition = startlposition;
             }
         }
 
@@ -494,7 +519,7 @@ namespace UdeS.Promoscience.Replay
             return lpos;
         }
         
-        protected override void Perform()
+        protected override void DoNext()
         {
             if (course.CurrentAction == GameAction.ReturnToDivergencePoint)
             {
@@ -512,10 +537,10 @@ namespace UdeS.Promoscience.Replay
                 Draw(prevlposition, lposition, nextlposition);
             }
 
-            course.IncrementtMovementAction();
+            course.Next();
         }
 
-        protected override IEnumerator PerformCoroutine()
+        protected override IEnumerator DoNextCoroutine()
         {
             if (course.CurrentAction == GameAction.ReturnToDivergencePoint)
             {
@@ -535,7 +560,7 @@ namespace UdeS.Promoscience.Replay
                 StartCoroutine(DrawCoroutine(prevlposition, lposition, nextlposition));
             }
 
-            course.IncrementtMovementAction();
+            course.Next();
             yield return null;
         }
 

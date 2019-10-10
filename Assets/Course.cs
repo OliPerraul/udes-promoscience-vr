@@ -10,11 +10,12 @@ using System.Linq;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 
+// TODO: course iterator vs. course as separate class?
+
 namespace UdeS.Promoscience
 {
     public delegate void OnCourseEvent(Course course);
 
-    //[]
     public class Course
     {
         public int Id;
@@ -35,7 +36,7 @@ namespace UdeS.Promoscience
 
         private int previousIndex = 0;
 
-        public int CurrentActionIndex
+        private int CurrentActionIndex
         {
             get
             {
@@ -48,6 +49,16 @@ namespace UdeS.Promoscience
                 currentActionIndex = value;
                 if(OnActionIndexChangedHandler!=null)
                 OnActionIndexChangedHandler.Invoke(this);
+            }
+        }
+
+        private int moveIndex = 0;
+
+        public int MoveIndex
+        {
+            get
+            {
+                return moveIndex;
             }
         }
 
@@ -66,11 +77,18 @@ namespace UdeS.Promoscience
             }
         }
 
+        private int moveCount = -1;
+
         public int MoveCount
         {
             get
             {
-                return Actions.Aggregate(0, (x, y) => IsMovement((GameAction)y) ? x + 1 : x);
+                if (moveCount < 0)
+                {
+                    moveCount = Actions.Aggregate(0, (x, y) => IsMovement((GameAction)y) ? x + 1 : x);
+                }
+
+                return moveCount;
             }
         }
 
@@ -85,20 +103,20 @@ namespace UdeS.Promoscience
             return index >= Actions.Length ? Actions.Length - 1 : index;
         }
 
-        private GameAction GetNextMovementAction()
-        {
-            int index = CurrentActionIndex + 1;
-            while (index < Actions.Length && !IsMovement((GameAction)Actions[index]))
-            {
-                index++;
-            }
+        //private GameAction GetNextMovementAction()
+        //{
+        //    int index = CurrentActionIndex + 1;
+        //    while (index < Actions.Length && !IsMovement((GameAction)Actions[index]))
+        //    {
+        //        index++;
+        //    }
 
-            index = index >= Actions.Length ? Actions.Length - 1 : index;
-            return (GameAction)Actions[index];
-        }
+        //    index = index >= Actions.Length ? Actions.Length - 1 : index;
+        //    return (GameAction)Actions[index];
+        //}
 
         // TODO why not simply "Pop a stack"
-        private int GetPreviousMovementAction()
+        private int GetPreviousMovementIndex()
         {
             int index = CurrentActionIndex - 1;
             while (index >= 0 && !IsMovement((GameAction)Actions[index]))
@@ -109,31 +127,69 @@ namespace UdeS.Promoscience
             return index < 0 ? 0 : index;
         }
 
-
-        public bool IncrementtMovementAction()
+        public bool Next()
         {
+            moveIndex = HasPrevious ?
+                (HasNext ?
+                    moveIndex :
+                    MoveCount - 1) :
+                0;
+
+            moveIndex++;
+
             currentActionIndex = GetNextMovementIndex();
             return true;
         }      
 
 
-        public bool DecrementMovementAction()
+        public bool Previous()
         {
-            currentActionIndex = GetPreviousMovementAction();
+            moveIndex = HasPrevious ?
+                (HasNext ?
+                    moveIndex :
+                    MoveCount - 1) :
+                0;
+
+            moveIndex--;
+
+            currentActionIndex = GetPreviousMovementIndex();
             return true;
         }
 
 
-        public Utils.GameAction CurrentAction
+        public bool HasPrevious
         {
             get
             {
-                return (Utils.GameAction)Actions[currentActionIndex];
+                if (MoveCount == 0)
+                    return false;
+
+                return moveIndex >= 0;
+            }
+        }
+
+        public bool HasNext
+        {
+            get
+            {
+                if (MoveCount == 0)
+                    return false;
+
+                return moveIndex < MoveCount;
+            }
+        }
+
+
+        public GameAction CurrentAction
+        {
+            get
+            {
+                return (GameAction)Actions[currentActionIndex];
             }
         }
 
         /// <summary>
-        /// Warning JSON parsing done here!
+        /// Warning JSON parsing done here! (TODO: remove property)
         /// </summary>
         public ActionValue CurrentActionValue
         {
