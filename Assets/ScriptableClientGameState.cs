@@ -16,6 +16,14 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public Action clientStateChangedEvent;
 
+        public void OnEnable()
+        {
+            value = ClientGameState.Connecting;
+            ErrorCount = 0;
+            previousRespect = 1;
+            respect = 1;
+        }
+
 
         public string[] ActionValues;
 
@@ -57,11 +65,6 @@ namespace UdeS.Promoscience.ScriptableObjects
                     OnRespectChangedHandler.Invoke(respect);
                 }
             }
-        }
-
-        public void Awake()
-        {
-            value = ClientGameState.Connecting;
         }
 
         public ClientGameState Value

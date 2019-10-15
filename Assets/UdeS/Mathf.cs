@@ -10,7 +10,7 @@ namespace UdeS
         // Use this for initialization
         public static bool Approximately(this float val, float other, float epsilon = 0.01f)
         {
-            return UnityEngine.Mathf.Approximately(val, other);
+            return Mathf.Abs(val - other) < epsilon;
         }
     }
 
