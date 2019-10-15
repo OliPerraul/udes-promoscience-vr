@@ -47,6 +47,9 @@ namespace UdeS.Promoscience.ScriptableObjects
 
             set
             {
+                if (respect.Approximately(value))
+                    return;
+
                 previousRespect = respect;
                 respect = value;
                 if (OnRespectChangedHandler != null)
