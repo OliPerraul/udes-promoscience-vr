@@ -5,8 +5,11 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replay.UI
 {
-    public class Display : MonoBehaviour
+    public class HUD : MonoBehaviour
     {
+        [SerializeField]
+        private ScriptableReplayOptions replayOptions;
+
         [SerializeField]
         private ScriptableObjects.ScriptableServerGameInformation server;
 
@@ -18,6 +21,9 @@ namespace UdeS.Promoscience.Replay.UI
 
         [SerializeField]
         private UnityEngine.UI.Button overlayButton;
+
+        [SerializeField]
+        private UnityEngine.UI.Button algorithmButton;
 
         [SerializeField]
         private GameObject sequenceToggle;
@@ -43,6 +49,7 @@ namespace UdeS.Promoscience.Replay.UI
             openButton.onClick.AddListener(OnOpenClicked);
             exitButton.onClick.AddListener(OnExitClicked);
             overlayButton.onClick.AddListener(OnOverlayClicked);
+            algorithmButton.onClick.AddListener(OnAlgorithmClicked);
 
             server.gameStateChangedEvent += OnGameStateChanged;
 
@@ -50,9 +57,13 @@ namespace UdeS.Promoscience.Replay.UI
 
         }
 
+        public void OnAlgorithmClicked()
+        {
+            replayOptions.SendAction(ReplayAction.ToggleAlgorithm);
+        }
+
         private void OnOverlayClicked()
         {
-            Debug.Log("clicked");
             overlay.SetActive(!overlay.activeSelf);
         }
 
@@ -71,6 +82,8 @@ namespace UdeS.Promoscience.Replay.UI
                 openButton.gameObject.SetActive(_enabled);
                 exitButton.gameObject.SetActive(_enabled);
                 sequenceToggle.gameObject.SetActive(_enabled);
+                SequencePopup.gameObject.SetActive(_enabled);
+
             }
         }
 
@@ -78,6 +91,8 @@ namespace UdeS.Promoscience.Replay.UI
         {
             SequencePopup.gameObject.SetActive(!sequenceToggle.activeInHierarchy);
             sequenceToggle.SetActive(!sequenceToggle.activeInHierarchy);
+            overlayButton.gameObject.SetActive(!overlayButton.gameObject.activeInHierarchy);
+            algorithmButton.gameObject.SetActive(!algorithmButton.gameObject.activeInHierarchy);
         }
 
         public void OnExitClicked()

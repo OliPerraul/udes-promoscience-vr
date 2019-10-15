@@ -14,6 +14,7 @@ namespace UdeS.Promoscience.Replay
         Pause,
         Resume,
         Slide,
+        ToggleAlgorithm
     }
 
     public delegate void OnAction(ReplayAction action, params object[] args);

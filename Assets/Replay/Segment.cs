@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replay
 {
-    public class Segment : MonoBehaviour
+    public class Segment : SequenceElement
     {
         [SerializeField]
         private float overlayHeight = 50f;
@@ -27,14 +27,16 @@ namespace UdeS.Promoscience.Replay
         
         private bool isDrawing = false;
 
+        private bool isTurnFinished = false;
+
+        private bool isTurn = false;
+
         public Vector2Int LPosition;
 
         private float time = 0.6f;
 
         [SerializeField]
         private float offsetAmount = 0f;
-
-        private bool isTurn = false;
 
         private bool isInversed = false;
 
@@ -48,19 +50,35 @@ namespace UdeS.Promoscience.Replay
                 boxCollider = GetComponent<BoxCollider>();
         }
 
-        public Quaternion Direction
+        private Direction direction;
+
+        public Direction Direction
+        {
+            get
+            {
+                return direction;
+            }
+        }
+
+        public Quaternion Rotation
         {
 
             get
             {
-                return isTurn ?
-                    Quaternion.LookRotation(
-                        destination - middle,
-                        Vector3.up) :
+                return 
+                    isDrawing ?
+                        Quaternion.LookRotation(
+                            lerpDest - lerpOrigin,
+                            Vector3.up) :
 
-                    Quaternion.LookRotation(
-                        destination - origin,
-                        Vector3.up);
+                        isTurn ?
+                            Quaternion.LookRotation(
+                                destination - middle,
+                                Vector3.up) :
+
+                            Quaternion.LookRotation(
+                                destination - origin,
+                                Vector3.up);
             }
         }
 
@@ -72,8 +90,12 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        public Vector3 Interpolation;
-        
+        public Vector3 Position;
+
+        private Vector3 lerpOrigin;
+
+        private Vector3 lerpDest;
+
         public float Length
         {
             get
@@ -134,71 +156,124 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        public void AdjustOffset(float amount)
+        public virtual void AdjustOffset(float amount)
         {
             offsetAmount = amount;
 
-            Interpolation = isDrawing ? Interpolation : Destination;
+            Position = isDrawing ? Position : Destination;
+            transform.position = Destination;
 
-            // TODO interpolation
-            if (isTurn)
+            if (isDrawing)
             {
-                lineRenderer.SetPosition(0, Origin);
-                lineRenderer.SetPosition(1, Middle);
-                lineRenderer.SetPosition(2, Destination);
+                if (isTurnFinished)
+                {
+                    lineRenderer.SetPosition(0, Origin);
+                    lineRenderer.SetPosition(1, Middle);
+                }
+                else
+                {
+                    lineRenderer.SetPosition(1, Origin);
+                }
             }
             else
-            {
-                lineRenderer.SetPosition(0, Origin);
-                lineRenderer.SetPosition(1, Destination);                
+            { 
+                // TODO interpolation
+                if (isTurn)
+                {
+                    lineRenderer.SetPosition(0, Origin);
+                    lineRenderer.SetPosition(1, Middle);
+                    lineRenderer.SetPosition(2, Destination);
+                }
+                else
+                {
+                    lineRenderer.SetPosition(0, Origin);
+                    lineRenderer.SetPosition(1, Destination);
+                }
             }
         }
 
         public IEnumerator DrawCoroutine()
         {
             float t = 0;
-            transform.position = Origin;
-            lineRenderer.SetPosition(0, Origin);
-            lineRenderer.SetPosition(1, Origin);
-            isDrawing = true;
 
-            for (; t < time; t += Time.deltaTime)
+            isDrawing = true;
+            
+            if (isTurn)
             {
-                Interpolation = Vector3.Lerp(Origin, Destination, t / time);
-                lineRenderer.SetPosition(1, Interpolation);
-                yield return null;
+                transform.position = Middle;
+
+                lineRenderer.SetPosition(0, Origin);
+                lineRenderer.SetPosition(1, Origin);
+                lineRenderer.SetPosition(2, Origin);
+
+                isTurnFinished = false;
+
+                lerpOrigin = Origin;
+                lerpDest = Middle;
+
+                for (; t < time/2; t += Time.deltaTime)
+                {
+                    Position = Vector3.Lerp(lerpOrigin, lerpDest, t / (time/2));
+                    lineRenderer.SetPosition(1, Position);
+                    yield return null;
+                }
+
+                isTurnFinished = true;
+
+                lerpOrigin = Middle;
+                lerpDest = Destination;
+
+                t = 0;
+
+                for (; t < time/2; t += Time.deltaTime)
+                {
+                    Position = Vector3.Lerp(Middle, Destination, t / (time/2));
+                    lineRenderer.SetPosition(2, Position);
+                    yield return null;
+                }                
+            }
+            else
+            {
+                transform.position = (Origin + Destination) / 2;
+
+
+                lerpOrigin = Origin;
+                lerpDest = Destination;
+
+                lineRenderer.SetPosition(0, Origin);
+                lineRenderer.SetPosition(1, Origin);
+
+                for (; t < time; t += Time.deltaTime)
+                {
+                    Position = Vector3.Lerp(Origin, Destination, t / time);
+                    lineRenderer.SetPosition(1, Position);
+                    yield return null;
+                }
+
+                lineRenderer.SetPosition(1, Destination);
             }
 
-            lineRenderer.SetPosition(1, Destination);
             isDrawing = false;
-
             yield return null;
         }
 
         public void Draw()
         {
-            transform.position = Origin;
+            Position = Destination;
 
             if (isTurn)
             {
+                transform.position = Middle;
                 lineRenderer.SetPosition(0, Origin);
                 lineRenderer.SetPosition(1, Middle);
                 lineRenderer.SetPosition(2, Destination);
             }
             else
             {
+                transform.position = (Origin + Destination) / 2;
                 lineRenderer.SetPosition(0, Origin);
                 lineRenderer.SetPosition(1, Destination);
             }
-
-            // Add collider to the segment (not super important)
-            boxCollider.size = new Vector3(Length, 0.175f, 0.25f);
-            Vector3 midPoint = (Origin + Destination) / 2;
-            transform.position = midPoint;
-            transform.rotation = Quaternion.Euler(0, 90, 0);
-            transform.rotation = Quaternion.FromToRotation(transform.forward, (Destination - Origin).normalized);
-
-            Interpolation = Destination;
         }
 
         public Segment CreateTurn(
@@ -207,6 +282,7 @@ namespace UdeS.Promoscience.Replay
             Vector3 origin,
             Vector3 middle,
             Vector3 destination,
+            Direction direction,
             bool isInversed,
             Material material,
             Material materialAlpha,
@@ -227,6 +303,7 @@ namespace UdeS.Promoscience.Replay
             segm.origin = origin;
             segm.middle = middle;
             segm.destination = destination;
+            segm.direction = direction;
             segm.time = time;
             segm.lineRenderer.material = material;
             segm.lineRenderer.widthMultiplier = width;
@@ -243,6 +320,7 @@ namespace UdeS.Promoscience.Replay
             Vector2Int lposition, // keep track of origin to remove from layout
             Vector3 origin,
             Vector3 destination,
+            Direction direction,
             bool isInversed,
             Material material,
             Material materialAlpha,
@@ -262,6 +340,7 @@ namespace UdeS.Promoscience.Replay
             segm.LPosition = lposition;
             segm.origin = origin;
             segm.destination = destination;
+            segm.direction = direction;
             segm.time = time;
             segm.lineRenderer.material = material;
             segm.lineRenderer.widthMultiplier = width;
@@ -271,46 +350,5 @@ namespace UdeS.Promoscience.Replay
 
             return segm;
         }
-
-
-
-        //public Segment Create(
-        //    Transform transform,
-        //    Vector2Int lposition, // keep track of origin to remove from layout
-        //    Vector3 origin,
-        //    Vector3 middle,
-        //    Vector3 destination,
-        //    bool isTurn,
-        //    bool isInversed,
-        //    Material material,
-        //    Material materialAlpha,
-        //    float time,
-        //    float width)
-        //{
-        //    var segm = Instantiate(
-        //        gameObject,
-        //        Vector3.zero,
-        //        Quaternion.identity,
-        //        transform)
-        //        .GetComponent<Segment>();
-
-        //    segm.LPosition = lposition;
-        //    segm.origin = origin;
-        //    segm.middle = middle;
-        //    segm.destination = destination;
-        //    segm.time = time;
-        //    segm.lineRenderer.material = material;
-        //    segm.lineRenderer.widthMultiplier = width;
-        //    segm.lineRenderer.positionCount = 3;
-        //    segm.isInversed = isInversed;
-        //    segm.isTurn = isTurn;
-        //    segm.material = material;
-        //    segm.materialAlpha = materialAlpha;
-
-        //    return segm;
-        //}
-
-
-
     }
 }

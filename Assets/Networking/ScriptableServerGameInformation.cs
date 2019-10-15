@@ -24,7 +24,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         // Ideally, player should reference a course instead of refering to a course id 
         private Dictionary<int, Course> courses;
 
-        public IEnumerable<Course> Courses
+        public ICollection<Course> Courses
         {
             get
             {
@@ -125,10 +125,13 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
             else
             {
-                Course course = new Course();
-                course.Id = SQLiteUtilities.GetNextCourseID();
-                course.Team = teams.GetScriptableTeamWithId(player.ServerTeamId);
-                course.Algorithm = player.serverAlgorithm;
+                Course course = new Course
+                {
+                    Id = SQLiteUtilities.GetNextCourseID(),
+                    Team = teams.GetScriptableTeamWithId(player.ServerTeamId),
+                    Algorithm = player.serverAlgorithm
+                };
+
                 courses.Add(course.Id, course);
 
                 if (OnCourseAddedHandler != null)
@@ -284,6 +287,14 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
                 SQLiteUtilities.SetCourseInactive(course.Id);
                 SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
+
+                // Add sentinel values
+                // TODO put somewhere else? Maybe from the headset?
+                steps.Enqueue((int)GameAction.EndMovement);
+                steps.Enqueue((int)GameAction.Finish);
+                stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
+                stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
+
                 course.Actions = steps.ToArray();
                 course.ActionValues = stepValues.ToArray();
             }

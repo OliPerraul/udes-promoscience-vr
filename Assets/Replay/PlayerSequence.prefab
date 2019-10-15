@@ -141,20 +141,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   replayOptions: {fileID: 11400000, guid: bcecb0686a9667f48bf333db2a5f2ad0, type: 2}
   speed: 0.6
+  errorIndicatorTemplate: {fileID: 114973429251363308, guid: 1de607a1e6e990a4bbf60810b48cbff2,
+    type: 2}
   drawTime: 0.6
   normalWidth: 0.5
   backtrackWidth: 2
   currentSegment: {fileID: 0}
   arrowHead: {fileID: 1692986964761308}
-  segmentTemplate: {fileID: 114929429646536852, guid: 1de607a1e6e990a4bbf60810b48cbff2,
+  segmentTemplate: {fileID: 114929429646536852, guid: 86507623fe7a1ba4b90c8c68268a1e3f,
     type: 2}
-  positionsParent: {fileID: 4719467368811974}
-  markers: []
-  positions: []
+  previousSegmentAlpha: 0.5
   templateMaterial: {fileID: 2100000, guid: 5336b7f35397bfa4480c785fec553b38, type: 2}
   templateBacktrackMaterial: {fileID: 2100000, guid: 10f11f25b3b95284489f7bc916380b2e,
     type: 2}
-  MoveCount: 0
 --- !u!212 &212962245771792772
 SpriteRenderer:
   m_ObjectHideFlags: 1

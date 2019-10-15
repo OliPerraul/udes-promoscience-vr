@@ -103,7 +103,7 @@ namespace UdeS.Promoscience.Replay
         {
             isPlaying = true;
 
-            while (HasPrevious)
+            while (HasNext)
             {
                 yield return StartCoroutine(DoNextCoroutine());
                 yield return null;
@@ -119,6 +119,8 @@ namespace UdeS.Promoscience.Replay
 
         public virtual void Next()
         {
+            Stop();
+
             if (HasNext)
             {
                 DoNext();
@@ -131,6 +133,20 @@ namespace UdeS.Promoscience.Replay
             {
                 DoPrevious();
             }
+        }
+
+        public virtual void Stop()
+        {
+            if (coroutineResult != null)
+            {
+                StopCoroutine(coroutineResult);
+                coroutineResult = null;
+            }
+        }
+
+        public virtual void AdjustOffset(float ofst)
+        {
+
         }
 
         public void Move(int target)
@@ -152,10 +168,10 @@ namespace UdeS.Promoscience.Replay
             {
                 while (HasPrevious)
                 {
+                    Previous();
+
                     if (LocalMoveIndex == target)
                         return;
-
-                    Previous();       
                 }
             }
         }

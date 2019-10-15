@@ -71,6 +71,8 @@ namespace UdeS.Promoscience
                 case GameAction.MoveLeft:
                 case GameAction.MoveRight:
                 case GameAction.ReturnToDivergencePoint:
+                case GameAction.EndMovement:
+                case GameAction.Finish://sentinel value
                     return true;
                 default:
                     return false;
@@ -129,11 +131,11 @@ namespace UdeS.Promoscience
 
         public bool Next()
         {
-            moveIndex = HasPrevious ?
-                (HasNext ?
+            moveIndex = HasNext ?
+                (HasPrevious ?
                     moveIndex :
-                    MoveCount - 1) :
-                0;
+                    0) :
+             moveIndex - 1;
 
             moveIndex++;
 
@@ -145,9 +147,9 @@ namespace UdeS.Promoscience
         public bool Previous()
         {
             moveIndex = HasPrevious ?
-                (HasNext ?
-                    moveIndex :
-                    MoveCount - 1) :
+                (HasNext ? 
+                    moveIndex : 
+                    moveCount) :
                 0;
 
             moveIndex--;

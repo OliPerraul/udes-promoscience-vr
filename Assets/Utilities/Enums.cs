@@ -71,7 +71,11 @@ namespace UdeS.Promoscience.Utils
         ReceivedDirectiveStop = 12,
         ReceivedDirectiveTurnLeft = 13,
         ReceivedDirectiveTurnRight = 14,
-        ReceivedDirectiveUturn = 15
+        ReceivedDirectiveUturn = 15,
+
+        // TODO combine?
+        EndMovement = 16, 
+        Finish = 17 // Sentinel value
     }
 
     [Serializable]

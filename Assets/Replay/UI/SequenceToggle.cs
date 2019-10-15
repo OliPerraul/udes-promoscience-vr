@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 namespace UdeS.Promoscience.Replay.UI
 {
@@ -18,6 +19,8 @@ namespace UdeS.Promoscience.Replay.UI
         [SerializeField]
         private Transform scrollContentParent;
 
+        private SequenceToggleItem firstItem = null;
+
         public void Awake()
         {
             server.gameStateChangedEvent += OnGameStateChanged;
@@ -28,6 +31,8 @@ namespace UdeS.Promoscience.Replay.UI
             switch (server.GameState)
             {
                 case Utils.ServerGameState.ViewingPlayback:
+
+                    firstItem = null;
 
                     foreach (Transform child in scrollContentParent)
                     {
@@ -45,6 +50,14 @@ namespace UdeS.Promoscience.Replay.UI
                         SequenceToggleItem item = scrollItemTemplate.Create(
                             scrollContentParent,                            
                             course);
+
+                        firstItem = item;
+                    }
+
+                    // Select the first item by default
+                    if (firstItem != null)
+                    {
+                        firstItem.OnClicked();
                     }
 
                     break;

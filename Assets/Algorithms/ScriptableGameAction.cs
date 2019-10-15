@@ -15,6 +15,9 @@ namespace UdeS.Promoscience.ScriptableObjects
         public Tile tile;
 
         [SerializeField]
+        public TileColor previousColor;
+
+        [SerializeField]
         public Tile[] wrongTiles;
 
         [SerializeField]
@@ -40,8 +43,13 @@ namespace UdeS.Promoscience.ScriptableObjects
         private ScriptableClientGameState gameState;
         
         // TODO: fix weird globally available variables (put in client game state)
+        // playerPaintTile vs paintingColor?
         [SerializeField]
         private ScriptableTile playerPaintTile;
+
+        //[SerializeField]
+        //private ScriptableTileColor paintingColor;
+
 
         [SerializeField]
         private GameAction action;
@@ -81,13 +89,12 @@ namespace UdeS.Promoscience.ScriptableObjects
         {
             action = gameAction;
 
-            var actionValue = new ActionValue();
-            actionValue.respect = gameState.Respect;
-            actionValue.error = gameState.ErrorCount;
-            actionValue.tile = playerPaintTile.Tile;
-            
-
-            value = JsonUtility.ToJson(actionValue);
+            value = JsonUtility.ToJson(new ActionValue
+            {
+                respect = gameState.Respect,
+                error = gameState.ErrorCount,
+                previousColor = playerPaintTile.Tile.color//.Value;//.Tile;
+            });
 
             DateTime actionDateTime = DateTime.Now;
 
@@ -107,16 +114,16 @@ namespace UdeS.Promoscience.ScriptableObjects
                 
             DateTime actionDateTime = DateTime.Now;
 
-            var actionValue = new ActionValue();
-            actionValue.wrongTiles = tiles; // corrections
-            actionValue.position = position;
-            actionValue.rotation = rotation;
-            actionValue.playerSteps = playerSteps;
-            actionValue.respect = gameState.Respect;
-            actionValue.error = gameState.ErrorCount;
-            actionValue.tile = playerPaintTile.Tile;
-
-            value = JsonUtility.ToJson(actionValue);
+            value = JsonUtility.ToJson(new ActionValue
+            {
+                wrongTiles = tiles, // corrections
+                position = position,
+                rotation = rotation,
+                playerSteps = playerSteps,
+                respect = gameState.Respect,
+                error = gameState.ErrorCount,
+                previousColor = playerPaintTile.TilePreviousColor
+            });
 
             if (actionDateTime == dateTime)//Doesn't seems o be working, there is event that have the same milliseconds
             {

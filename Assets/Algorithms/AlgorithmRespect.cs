@@ -285,14 +285,14 @@ namespace UdeS.Promoscience
 
                 Tile[] tiles = wrongColorTilesWhenDiverging.ToArray(); 
 
-                Vector2Int gridPos = 
+                Vector2Int lpos = 
                     new Vector2Int(
                         playerSteps[playerSteps.Count - 1].x, 
                         playerSteps[playerSteps.Count - 1].y);
 
                 Vector3 position = labyrinth.GetLabyrinthPositionInWorldPosition(
-                    gridPos.x,
-                    gridPos.y) + 
+                    lpos.x,
+                    lpos.y) + 
                     new Vector3(0, cameraRig.Transform.position.y, 0);                
 
                 playerPositionRotationAndTiles.SetPositionRotationAndTiles(
@@ -302,7 +302,7 @@ namespace UdeS.Promoscience
 
                 gameAction.SetAction(
                     GameAction.ReturnToDivergencePoint, 
-                    gridPos, 
+                    lpos, 
                     rotationAtDivergence, 
                     tiles,
                     playerSteps.ToArray());

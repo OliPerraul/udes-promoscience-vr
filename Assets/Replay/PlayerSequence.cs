@@ -27,6 +27,9 @@ namespace UdeS.Promoscience.Replay
         protected Vector2Int prevlposition;
 
         [SerializeField]
+        protected ErrorIndicator errorIndicatorTemplate;
+
+        [SerializeField]
         private float drawTime = 0.6f;
 
         [SerializeField]
@@ -146,37 +149,32 @@ namespace UdeS.Promoscience.Replay
             Labyrinth labyrinth,
             Vector2Int startPosition)
         {
-            PlayerSequence sequence = Instantiate(
-                gameObject,
-                labyrinth.GetLabyrinthPositionInWorldPosition(startPosition), Quaternion.identity)
-                .GetComponent<PlayerSequence>();
+            PlayerSequence sequence = this.Create(labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
 
             sequence.labyrinth = labyrinth;
             sequence.startlposition = startPosition;
             sequence.lposition = startPosition;
             sequence.prevlposition = startPosition;
             sequence.nextlposition = startPosition;
-
             sequence.course = course;
-            sequence.material.color = course.Team.TeamColor;            
+            sequence.material.color = course.Team.TeamColor;
             sequence.backtrackMaterial.color = course.Team.TeamColor;
-
             sequence.materialAlpha.color = course.Team.TeamColor.SetA(previousSegmentAlpha);
             sequence.backtrackMaterialAlpha.color = course.Team.TeamColor.SetA(previousSegmentAlpha);
 
-            sequence.arrowHead.GetComponentInChildren<SpriteRenderer>().color = sequence.material.color;    
-            
+            sequence.arrowHead.GetComponentInChildren<SpriteRenderer>().color = sequence.material.color;
+
             return sequence;
         }
 
-        public void AdjustOffset(float amount)// maxOffset)
+        public override void AdjustOffset(float amount)// maxOffset)
         {
             this.offsetAmount = amount;
 
             //Segment sgm;
             foreach (Segment sgm in segments)
             {
-                sgm.AdjustOffset(amount);                
+                sgm.AdjustOffset(amount);
             }
         }
 
@@ -190,7 +188,7 @@ namespace UdeS.Promoscience.Replay
             dictionary = new Dictionary<Vector2Int, Stack<Segment>>();
 
             segments = new List<Segment>();
-            material = new Material(templateMaterial);          
+            material = new Material(templateMaterial);
             backtrackMaterial = new Material(templateBacktrackMaterial);
             materialAlpha = new Material(templateMaterial);
             backtrackMaterialAlpha = new Material(templateBacktrackMaterial);
@@ -205,10 +203,9 @@ namespace UdeS.Promoscience.Replay
             {
                 arrowHead.gameObject.SetActive(true);
 
-                arrowHead.transform.rotation = currentSegment.Direction;
+                arrowHead.transform.rotation = currentSegment.Rotation;
 
-
-                arrowHead.transform.position = currentSegment.Interpolation;
+                arrowHead.transform.position = currentSegment.Position;
             }
             else
             {
@@ -222,7 +219,7 @@ namespace UdeS.Promoscience.Replay
                 replayOptions.OnSequenceSelectedHandler.Invoke(course);
         }
 
-        public Vector3 GetDirectionTileBound(Direction action)
+        public Vector3 GetTileEdgePositionFromDirection(Direction action)
         {
             switch (action)
             {
@@ -231,7 +228,7 @@ namespace UdeS.Promoscience.Replay
 
                 case Direction.Up:
                     return (Vector3.forward * Constants.TILE_SIZE / 2);
-                
+
                 case Direction.Left:
                     return (Vector3.right * -Constants.TILE_SIZE / 2);
 
@@ -296,23 +293,57 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
+        public bool IsOppositeDirection(Direction direction, Direction other)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    return
+                        other == Direction.Down ||
+                        other == Direction.Right;
+
+                case Direction.Down:
+                    return
+                        other == Direction.Up ||
+                        other == Direction.Left;
+
+                case Direction.Left:
+                    return
+                        other == Direction.Down ||
+                        other == Direction.Right;
+
+                case Direction.Right:
+                    return
+                        other == Direction.Up ||
+                        other == Direction.Left;
+
+                default:
+                    return false;
+            }
+        }
+
         public Segment AddSegment(
-            List<Segment> added, 
+            List<Segment> added,
             List<Segment> removed,
-            Vector2Int prevlpos, 
-            Vector2Int lpos, 
+            Vector2Int prevlpos,
+            Vector2Int lpos,
             Vector2Int nextlpos)
         {
+            Direction direction = GetDirection(prevlpos, lpos);
+
+            bool isInversed = false;
 
             Stack<Segment> stack;
             // Check if dest was visited,
             // Otherwise create the stack
-            if (this.dictionary.TryGetValue(lpos, out stack))
+            if (dictionary.TryGetValue(lpos, out stack))
             {
                 if (stack.Count > 0)
                 {
-                    if (!removed.Contains(stack.Peek()))
+                    // If segment is visible and we walk on top of it. Hide it..
+                    if (!removed.Contains(stack.Peek()) && stack.Peek().gameObject.activeSelf)
                     {
+                        isInversed = IsOppositeDirection(direction, stack.Peek().Direction);
                         stack.Peek().gameObject.SetActive(false);
                         removed.Add(stack.Peek());
                     }
@@ -324,29 +355,32 @@ namespace UdeS.Promoscience.Replay
                 dictionary[lpos] = stack;
             }
 
-            Direction direction = GetDirection(prevlpos, nextlpos);
-
-            Vector3 current = labyrinth.GetLabyrinthPositionInWorldPosition(lpos);            
-            Vector3 origin = current + GetDirectionTileBound(GetDirection(lpos, prevlpos));
-            Vector3 destination = current + GetDirectionTileBound(GetDirection(lpos, nextlpos));
+            Vector3 current = labyrinth.GetLabyrinthPositionInWorldPosition(lpos);
+            Vector3 origin = current + GetTileEdgePositionFromDirection(GetDirection(lpos, prevlpos));
+            Vector3 destination = current + GetTileEdgePositionFromDirection(GetDirection(lpos, nextlpos));
 
             bool isTurn = GetDirection(prevlpos, lpos) != GetDirection(lpos, nextlpos);
+
+            float time = drawTime;
 
             // Start
             if (prevlpos == lpos)
             {
+                time /= 2;
                 isTurn = false;
                 origin = current;
             }
             // End
             else if (lpos == nextlpos)
             {
+                time /= 2;
                 isTurn = false;
                 destination = current;
             }
             // Dead-end
             else if (nextlpos == prevlpos)
             {
+                time /= 2;
                 isTurn = false;
                 destination = current;
             }
@@ -358,21 +392,23 @@ namespace UdeS.Promoscience.Replay
                     origin,
                     current,
                     destination,
-                    isBacktracking,
+                    direction,
+                    isInversed,
                     isBacktracking ? backtrackMaterial : material,
                     isBacktracking ? backtrackMaterialAlpha : materialAlpha,
-                    drawTime,
+                    time,
                     isBacktracking ? backtrackWidth : normalWidth) :
 
                 segmentTemplate.Create(
                     transform,
                     lpos,
                     origin,
-                    destination,                    
-                    isBacktracking,
+                    destination,
+                    direction,
+                    isInversed,
                     isBacktracking ? backtrackMaterial : material,
                     isBacktracking ? backtrackMaterialAlpha : materialAlpha,
-                    drawTime,
+                    time,
                     isBacktracking ? backtrackWidth : normalWidth);
 
             CurrentSegment.OnMouseEvent += OnMouseEvent;
@@ -385,76 +421,77 @@ namespace UdeS.Promoscience.Replay
         }
 
         // Use in return to divergent location
-        private void Redraw(Tile[] playerSteps, Tile[] wrong)
+        private void Redraw(List<Segment> added, List<Segment> removed, Tile[] playerSteps, Tile[] wrong)
         {
-            //Vector3[] positions = wrong.Select
-            //        (x => labyrinth.GetLabyrinthPositionInWorldPosition(x.Position)).ToArray();
-
             // Hide path
             Stack<Segment> stk;
-            List<Segment> removed = new List<Segment>();
             for (int i = 0; i < wrong.Length; i++)
             {
-                if(dictionary.TryGetValue(wrong[i].Position, out stk))
+                if (dictionary.TryGetValue(wrong[i].Position, out stk))
                 {
                     stk.Peek().gameObject.SetActive(false);
                     removed.Add(stk.Peek());
                 }
             }
 
-            // Redraw
-            List<Segment> added = new List<Segment>();
-            // TODO draw last tile??
-            for (int i = 1; i < playerSteps.Length -1; i++)
+            // Remove last step (not also included in wrong path)
+            if (dictionary.TryGetValue(lposition, out stk))
             {
-                Vector3 origin = labyrinth.GetLabyrinthPositionInWorldPosition(playerSteps[i - 1].Position);
+                stk.Peek().gameObject.SetActive(false);
+                removed.Add(stk.Peek());
+            }
 
-                Vector3 dest = labyrinth.GetLabyrinthPositionInWorldPosition(playerSteps[i].Position);                
+
+            isBacktracking = playerSteps[0].color == TileColor.Red;
+            Vector2Int prevlpos = playerSteps[0].Position;
+            Vector2Int lpos = prevlpos;
+            Vector2Int nextlpos = prevlpos;
+
+            // n-1 steps
+            for (int i = 1; i < playerSteps.Length; i++)
+            {
+                prevlpos = lpos;
+                lpos = nextlpos;
+                nextlpos = playerSteps[i].Position;
+                isBacktracking = playerSteps[i].color == TileColor.Red;
 
                 AddSegment(
-                    added, 
-                    removed, 
-                    playerSteps[i - 1].Position, 
-                    playerSteps[i].Position,
-                    playerSteps[i + 1].Position);
+                    added,
+                    removed,
+                    prevlpos,
+                    lpos,
+                    nextlpos);
 
                 CurrentSegment.AdjustOffset(offsetAmount);
                 CurrentSegment.Draw();
             }
-
-            this.added.Push(added);
-            this.removed.Push(removed);
         }
 
         private void Draw(
-            Vector2Int prevlpos, 
-            Vector2Int lpos, 
+            List<Segment> added,
+            List<Segment> removed,
+            Vector2Int prevlpos,
+            Vector2Int lpos,
             Vector2Int nextlpos)
         {
-            List<Segment> added = new List<Segment>();
-            List<Segment> removed = new List<Segment>();
-
             AddSegment(
-                added, 
+                added,
                 removed,
                 prevlpos,
                 lpos,
                 nextlpos);
-
-            this.added.Push(added);
-            this.removed.Push(removed);
 
             CurrentSegment.AdjustOffset(offsetAmount);
             CurrentSegment.Draw();
         }
 
         private IEnumerator DrawCoroutine(
+            List<Segment> addedList,
+            List<Segment> removedList,
             Vector2Int prevlpos,
             Vector2Int lpos,
             Vector2Int nextlpos)
         {
-            List<Segment> addedList = new List<Segment>();
-            List<Segment> removedList = new List<Segment>();
             AddSegment(
                 addedList,
                 removedList,
@@ -463,8 +500,6 @@ namespace UdeS.Promoscience.Replay
                 nextlpos
                 );
 
-            added.Push(addedList);
-            removed.Push(removedList);
 
             CurrentSegment.AdjustOffset(offsetAmount);
             yield return StartCoroutine(CurrentSegment.DrawCoroutine());
@@ -473,7 +508,7 @@ namespace UdeS.Promoscience.Replay
 
         protected override void DoPrevious()
         {
-            course.Previous();
+            if (returnedToDivergent) returnedToDivergent = false;
 
             if (added.Count != 0)
             {
@@ -501,40 +536,72 @@ namespace UdeS.Promoscience.Replay
 
             if (added.Count != 0)
             {
-                CurrentSegment = added.Peek().First();                
+                CurrentSegment = added.Peek().First();
                 lposition = CurrentSegment.LPosition;
             }
-            else
-            {
-                lposition = startlposition;
-            }
+
+            course.Previous();
         }
 
         public Vector2Int GetMoveDestination(Vector2Int lpos, GameAction action)
         {
+            // From ReturnToDivergent, EndAction, CompleteRound
+            // Simply walk to the 'nextlpos', we do not increment nextlpos
+
             lpos.y += action == GameAction.MoveUp ? -1 : 0;
             lpos.y += action == GameAction.MoveDown ? 1 : 0;
             lpos.x += action == GameAction.MoveLeft ? -1 : 0;
             lpos.x += action == GameAction.MoveRight ? 1 : 0;
             return lpos;
         }
-        
+
+        private ActionValue previousActionValue;
+        private bool returnedToDivergent = false;
+
         protected override void DoNext()
         {
-            if (course.CurrentAction == GameAction.ReturnToDivergencePoint)
+            if (course.CurrentAction != GameAction.Finish)
             {
-                var value = course.CurrentActionValue;
-                lposition = value.position;
-                Redraw(value.playerSteps, value.wrongTiles);
-            }
-            else
-            {
-                isBacktracking = course.CurrentActionValue.tile.color == TileColor.Red;
-                
+                List<Segment> added = new List<Segment>();
+                List<Segment> removed = new List<Segment>();
+
+                if (returnedToDivergent)
+                {
+                    Redraw(
+                        added,
+                        removed,
+                        previousActionValue.playerSteps,
+                        previousActionValue.wrongTiles);
+
+                    // Are we redrawing from the start ?
+                    // Yes: current == next
+                    // No: current != next
+                    lposition = previousActionValue.playerSteps.Length > 1 ?
+                        previousActionValue.playerSteps[previousActionValue.playerSteps.Length - 2].Position :
+                        previousActionValue.position;
+
+                    nextlposition = previousActionValue.position;
+                }
+
+                isBacktracking = course.CurrentActionValue.previousColor == TileColor.Red;
+
                 prevlposition = lposition;
                 lposition = nextlposition;
                 nextlposition = GetMoveDestination(lposition, course.CurrentAction);
-                Draw(prevlposition, lposition, nextlposition);
+
+                Draw(added, removed, prevlposition, lposition, nextlposition);
+
+                if (returnedToDivergent)
+                {
+                    errorIndicatorTemplate.Create(added.Last().transform);
+                }
+
+                returnedToDivergent = course.CurrentAction == GameAction.ReturnToDivergencePoint;
+                previousActionValue = course.CurrentActionValue;
+
+                this.added.Push(added);
+                this.removed.Push(removed);
+
             }
 
             course.Next();
@@ -542,22 +609,32 @@ namespace UdeS.Promoscience.Replay
 
         protected override IEnumerator DoNextCoroutine()
         {
+            List<Segment> added = new List<Segment>();
+            List<Segment> removed = new List<Segment>();
+
             if (course.CurrentAction == GameAction.ReturnToDivergencePoint)
             {
-                // TODO
                 var value = course.CurrentActionValue;
                 lposition = value.position;
-                Redraw(value.playerSteps, value.wrongTiles);
+
+                Redraw(added, removed, value.playerSteps, value.wrongTiles);
+
+                // Add error indicator
+                errorIndicatorTemplate.Create(
+                    added.Last().transform,
+                    course.Team.TeamColor);
+
                 yield return new WaitForSeconds(speed);
             }
             else
             {
-                isBacktracking = course.CurrentActionValue.tile.color == TileColor.Red;
+                isBacktracking = course.CurrentActionValue.previousColor == TileColor.Red;
+
                 prevlposition = lposition;
-                lposition = GetMoveDestination(lposition, course.CurrentAction);
+                lposition = nextlposition;
                 nextlposition = GetMoveDestination(lposition, course.CurrentAction);
 
-                StartCoroutine(DrawCoroutine(prevlposition, lposition, nextlposition));
+                yield return StartCoroutine(DrawCoroutine(added, removed, prevlposition, lposition, nextlposition));
             }
 
             course.Next();
