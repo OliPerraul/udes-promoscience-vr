@@ -300,8 +300,14 @@ namespace UdeS.Promoscience
                     rotationAtDivergence, 
                     tiles);
 
+                gameState.Respect =
+                    RespectValueComputation(
+                        (new Vector2Int(
+                            playerSteps[playerSteps.Count - 1].x,
+                            playerSteps[playerSteps.Count - 1].y) - lpos).magnitude + wrongColorTilesWhenDiverging.Count);
+
                 gameAction.SetAction(
-                    GameAction.ReturnToDivergencePoint, 
+                    GameAction.ReturnToDivergencePoint,
                     lpos, 
                     rotationAtDivergence, 
                     tiles,

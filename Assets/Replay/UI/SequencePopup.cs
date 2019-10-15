@@ -63,7 +63,9 @@ namespace UdeS.Promoscience.Replay.UI
         private void OnCourseActionIndexChanged(Course course)
         {
             if (course.CurrentAction == Utils.GameAction.Finish ||
-                course.CurrentAction == Utils.GameAction.EndMovement)
+                course.CurrentAction == Utils.GameAction.EndMovement)// ||
+                //course.CurrentAction == Utils.GameAction.ReturnToDivergencePoint ||
+                //course.CurrentAction == Utils.GameAction.CompletedRound)
             {
                 return;
             }

@@ -20,7 +20,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         {
             value = ClientGameState.Connecting;
             ErrorCount = 0;
-            previousRespect = 1;
+            //previousRespect = 1;
             respect = 1;
         }
 
