@@ -62,12 +62,14 @@ namespace UdeS.Promoscience.Replay.UI
 
         private void OnCourseActionIndexChanged(Course course)
         {
-            Debug.Log(course.CurrentAction);
+            if (course.CurrentAction == Utils.GameAction.Finish ||
+                course.CurrentAction == Utils.GameAction.EndMovement)
+            {
+                return;
+            }
 
-            ActionValue value = course.CurrentActionValue;
-
-            respectText.text = value.respect.ToString("P1");
-            scoreText.text = value.error.ToString();
+            respectText.text = course.PreviousActionValue.respect.ToString("P0");
+            scoreText.text = course.PreviousActionValue.error.ToString();            
         }
 
 

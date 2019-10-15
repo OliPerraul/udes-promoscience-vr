@@ -34,8 +34,6 @@ namespace UdeS.Promoscience
 
         private int currentActionIndex = 0;
 
-        private int previousIndex = 0;
-
         private int CurrentActionIndex
         {
             get
@@ -45,7 +43,10 @@ namespace UdeS.Promoscience
 
             set
             {
-                previousIndex = currentActionIndex;
+                if (value != currentActionIndex)
+                {
+                    previousValue = CurrentActionValue;
+                }                
 
                 currentActionIndex = value;
 
@@ -202,6 +203,14 @@ namespace UdeS.Promoscience
             get
             {
                 return UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[CurrentActionIndex]);
+            }
+        }
+
+        public ActionValue PreviousActionValue
+        {
+            get
+            {
+                return previousValue;
             }
         }
 

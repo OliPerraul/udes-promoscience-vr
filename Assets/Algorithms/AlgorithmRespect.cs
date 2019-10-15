@@ -281,7 +281,7 @@ namespace UdeS.Promoscience
         {
             if (returnToDivergencePointAnswer.Value)
             {
-                gameState.ErrorCount += 5;
+                gameState.ErrorCount += 1;
 
                 Tile[] tiles = wrongColorTilesWhenDiverging.ToArray(); 
 

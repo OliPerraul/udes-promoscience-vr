@@ -299,22 +299,22 @@ namespace UdeS.Promoscience.Replay
             {
                 case Direction.Up:
                     return
-                        other == Direction.Down ||
-                        other == Direction.Right;
+                        other == Direction.Down;// ||
+                        //other == Direction.Right;
 
                 case Direction.Down:
                     return
-                        other == Direction.Up ||
-                        other == Direction.Left;
+                        other == Direction.Up;// ||
+                        //other == Direction.Left;
 
                 case Direction.Left:
                     return
-                        other == Direction.Down ||
+                        //other == Direction.Down ||
                         other == Direction.Right;
 
                 case Direction.Right:
                     return
-                        other == Direction.Up ||
+                        //other == Direction.Up ||
                         other == Direction.Left;
 
                 default:
@@ -609,25 +609,29 @@ namespace UdeS.Promoscience.Replay
 
         protected override IEnumerator DoNextCoroutine()
         {
-            List<Segment> added = new List<Segment>();
-            List<Segment> removed = new List<Segment>();
-
-            if (course.CurrentAction == GameAction.ReturnToDivergencePoint)
+            if (course.CurrentAction != GameAction.Finish)
             {
-                var value = course.CurrentActionValue;
-                lposition = value.position;
+                List<Segment> added = new List<Segment>();
+                List<Segment> removed = new List<Segment>();
 
-                Redraw(added, removed, value.playerSteps, value.wrongTiles);
+                if (returnedToDivergent)
+                {
+                    Redraw(
+                        added,
+                        removed,
+                        previousActionValue.playerSteps,
+                        previousActionValue.wrongTiles);
 
-                // Add error indicator
-                errorIndicatorTemplate.Create(
-                    added.Last().transform,
-                    course.Team.TeamColor);
+                    // Are we redrawing from the start ?
+                    // Yes: current == next
+                    // No: current != next
+                    lposition = previousActionValue.playerSteps.Length > 1 ?
+                        previousActionValue.playerSteps[previousActionValue.playerSteps.Length - 2].Position :
+                        previousActionValue.position;
 
-                yield return new WaitForSeconds(speed);
-            }
-            else
-            {
+                    nextlposition = previousActionValue.position;
+                }
+
                 isBacktracking = course.CurrentActionValue.previousColor == TileColor.Red;
 
                 prevlposition = lposition;
@@ -635,10 +639,21 @@ namespace UdeS.Promoscience.Replay
                 nextlposition = GetMoveDestination(lposition, course.CurrentAction);
 
                 yield return StartCoroutine(DrawCoroutine(added, removed, prevlposition, lposition, nextlposition));
+
+                if (returnedToDivergent)
+                {
+                    errorIndicatorTemplate.Create(added.Last().transform);
+                }
+
+                returnedToDivergent = course.CurrentAction == GameAction.ReturnToDivergencePoint;
+                previousActionValue = course.CurrentActionValue;
+
+                this.added.Push(added);
+                this.removed.Push(removed);
+
             }
 
             course.Next();
-            yield return null;
         }
 
 
