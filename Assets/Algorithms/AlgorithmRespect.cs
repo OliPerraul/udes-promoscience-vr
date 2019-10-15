@@ -373,7 +373,7 @@ namespace UdeS.Promoscience
                 }
                 else if (gameAction == GameAction.ReturnToDivergencePoint)
                 {
-                    gameState.ErrorCount += 5;
+                    gameState.ErrorCount += 1;
 
                     position = new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y);
                     forwardDirection = GetForwardDirectionWithRotation(rotationAtDivergence);

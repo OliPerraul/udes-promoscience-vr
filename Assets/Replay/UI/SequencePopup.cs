@@ -2,11 +2,18 @@
 using System.Collections;
 using UdeS.Promoscience.ScriptableObjects;
 using Cirrus.Extensions;
+using System.Linq;
 
 namespace UdeS.Promoscience.Replay.UI
 {
     public class SequencePopup : MonoBehaviour
     {
+        [SerializeField]
+        private ScriptableReplayOptions replayOptions;
+
+        [SerializeField]
+        private ScriptableServerGameInformation server;
+
         [SerializeField]
         private UnityEngine.UI.Text scoreText;
 
@@ -16,41 +23,67 @@ namespace UdeS.Promoscience.Replay.UI
         [SerializeField]
         private UnityEngine.UI.Image image;
 
-        [SerializeField]
-        private ScriptableReplayOptions replayOptions;
 
         private Course course;
 
-        public void Awake()
+        private bool init = false;
+
+        public void OnEnable()
         {
-            replayOptions.OnSequenceSelectedHandler += OnSequenceSelected;            
+            if (init)
+                return;
+
+            init = true;
+
+            replayOptions.OnSequenceSelectedHandler += OnSequenceSelected;
+            server.gameStateChangedEvent += OnGameStateChanged;
         }
 
-        public void OnSequenceSelected(Course course)
+        public void OnSequenceSelected(Course newCourse)
         {
-            if (course == null)
+            if (newCourse == null)
                 return;
 
-            if (this.course == course)
+            if (course == newCourse)
                 return;
 
-            if(course != null)
+            if (course != null)
+            {
                 course.OnActionIndexChangedHandler -= OnCourseActionIndexChanged;
+            }          
 
-            this.course = course;
+            course = newCourse;
 
-            image.color = course.Team.TeamColor.SetA(image.color.a);
-            course.OnActionIndexChangedHandler += OnCourseActionIndexChanged;
+            image.color = newCourse.Team.TeamColor.SetA(image.color.a);
+            newCourse.OnActionIndexChangedHandler += OnCourseActionIndexChanged;
 
-            OnCourseActionIndexChanged(course);
+            OnCourseActionIndexChanged(newCourse);
         }
 
         private void OnCourseActionIndexChanged(Course course)
         {
+            Debug.Log(course.CurrentAction);
+
             ActionValue value = course.CurrentActionValue;
 
-            respectText.text = value.respect.ToString("P1");// CultureInfo.InvariantCulture);
+            respectText.text = value.respect.ToString("P1");
             scoreText.text = value.error.ToString();
+        }
+
+
+        public void OnGameStateChanged()
+        {
+            switch (server.GameState)
+            {
+                case Utils.ServerGameState.ViewingPlayback:
+
+                    if(server.Courses.Count != 0)
+                    {
+                        OnSequenceSelected(server.Courses.First());
+                    }
+
+                    break;
+            }
         }
 
 

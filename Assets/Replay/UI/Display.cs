@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replay.UI
 {
-    public class HUD : MonoBehaviour
+    public class Display : MonoBehaviour
     {
         [SerializeField]
         private ScriptableReplayOptions replayOptions;
@@ -52,9 +52,6 @@ namespace UdeS.Promoscience.Replay.UI
             algorithmButton.onClick.AddListener(OnAlgorithmClicked);
 
             server.gameStateChangedEvent += OnGameStateChanged;
-
-            //replayO
-
         }
 
         public void OnAlgorithmClicked()

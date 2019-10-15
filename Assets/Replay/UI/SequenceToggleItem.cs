@@ -37,7 +37,7 @@ namespace UdeS.Promoscience.Replay.UI
 
             item.course = course;
             item.label.text = course.Team.name + " (" +
-                            ScriptableObjects.ScriptableAlgorithm.Instance.GetName(course.Algorithm) +
+                            ScriptableAlgorithm.Instance.GetName(course.Algorithm) +
                             ") ";
 
             item.colorImage.color = course.Team.TeamColor;

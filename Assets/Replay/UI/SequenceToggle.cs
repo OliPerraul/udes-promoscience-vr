@@ -9,7 +9,6 @@ namespace UdeS.Promoscience.Replay.UI
         [SerializeField]
         private ScriptableReplayOptions replayOptions;
 
-
         [SerializeField]
         private ScriptableObjects.ScriptableServerGameInformation server;
 
@@ -52,12 +51,6 @@ namespace UdeS.Promoscience.Replay.UI
                             course);
 
                         firstItem = item;
-                    }
-
-                    // Select the first item by default
-                    if (firstItem != null)
-                    {
-                        firstItem.OnClicked();
                     }
 
                     break;

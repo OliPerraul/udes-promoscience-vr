@@ -46,9 +46,13 @@ namespace UdeS.Promoscience
             set
             {
                 previousIndex = currentActionIndex;
+
                 currentActionIndex = value;
-                if(OnActionIndexChangedHandler!=null)
-                OnActionIndexChangedHandler.Invoke(this);
+
+                if (OnActionIndexChangedHandler != null)
+                {
+                    OnActionIndexChangedHandler.Invoke(this);
+                }
             }
         }
 
@@ -139,7 +143,7 @@ namespace UdeS.Promoscience
 
             moveIndex++;
 
-            currentActionIndex = GetNextMovementIndex();
+            CurrentActionIndex = GetNextMovementIndex();
             return true;
         }      
 
@@ -154,7 +158,7 @@ namespace UdeS.Promoscience
 
             moveIndex--;
 
-            currentActionIndex = GetPreviousMovementIndex();
+            CurrentActionIndex = GetPreviousMovementIndex();
             return true;
         }
 
@@ -186,7 +190,7 @@ namespace UdeS.Promoscience
         {
             get
             {
-                return (GameAction)Actions[currentActionIndex];
+                return (GameAction)Actions[CurrentActionIndex];
             }
         }
 
@@ -197,7 +201,7 @@ namespace UdeS.Promoscience
         {
             get
             {
-                return UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[currentActionIndex]);
+                return UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[CurrentActionIndex]);
             }
         }
 
