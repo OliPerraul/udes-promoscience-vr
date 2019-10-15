@@ -91,7 +91,7 @@ namespace UdeS.Promoscience.ScriptableObjects
 
             value = JsonUtility.ToJson(new ActionValue
             {
-                respect = gameState.PreviousRespect,
+                respect = gameState.Respect,
                 error = gameState.ErrorCount,
                 previousColor = playerPaintTile.Tile.color//.Value;//.Tile;
             });
@@ -120,7 +120,7 @@ namespace UdeS.Promoscience.ScriptableObjects
                 position = position,
                 rotation = rotation,
                 playerSteps = playerSteps,
-                respect = gameState.PreviousRespect,
+                respect = gameState.Respect,
                 error = gameState.ErrorCount,
                 previousColor = playerPaintTile.TilePreviousColor
             });

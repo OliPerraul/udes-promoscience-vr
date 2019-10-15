@@ -110,18 +110,6 @@ namespace UdeS.Promoscience
             return index >= Actions.Length ? Actions.Length - 1 : index;
         }
 
-        //private GameAction GetNextMovementAction()
-        //{
-        //    int index = CurrentActionIndex + 1;
-        //    while (index < Actions.Length && !IsMovement((GameAction)Actions[index]))
-        //    {
-        //        index++;
-        //    }
-
-        //    index = index >= Actions.Length ? Actions.Length - 1 : index;
-        //    return (GameAction)Actions[index];
-        //}
-
         // TODO why not simply "Pop a stack"
         private int GetPreviousMovementIndex()
         {
@@ -213,9 +201,9 @@ namespace UdeS.Promoscience
         {
             get
             {
-                return CurrentActionIndex == 0 ?
-                    UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[0]) :
-                    UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[CurrentActionIndex-1]);
+                return HasPrevious ?
+                    UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[GetPreviousMovementIndex()]):
+                    UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[0]);
             }
         }
 

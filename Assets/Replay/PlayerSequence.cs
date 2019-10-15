@@ -555,7 +555,6 @@ namespace UdeS.Promoscience.Replay
             return lpos;
         }
 
-        private ActionValue previousActionValue;
         private bool returnedToDivergent = false;
 
         protected override void DoNext()
@@ -570,17 +569,17 @@ namespace UdeS.Promoscience.Replay
                     Redraw(
                         added,
                         removed,
-                        previousActionValue.playerSteps,
-                        previousActionValue.wrongTiles);
+                        course.PreviousActionValue.playerSteps,
+                        course.PreviousActionValue.wrongTiles);
 
                     // Are we redrawing from the start ?
                     // Yes: current == next
                     // No: current != next
-                    lposition = previousActionValue.playerSteps.Length > 1 ?
-                        previousActionValue.playerSteps[previousActionValue.playerSteps.Length - 2].Position :
-                        previousActionValue.position;
+                    lposition = course.PreviousActionValue.playerSteps.Length > 1 ?
+                        course.PreviousActionValue.playerSteps[course.PreviousActionValue.playerSteps.Length - 2].Position :
+                        course.PreviousActionValue.position;
 
-                    nextlposition = previousActionValue.position;
+                    nextlposition = course.PreviousActionValue.position;
                 }
 
                 isBacktracking = course.CurrentActionValue.previousColor == TileColor.Red;
@@ -597,7 +596,6 @@ namespace UdeS.Promoscience.Replay
                 }
 
                 returnedToDivergent = course.CurrentAction == GameAction.ReturnToDivergencePoint;
-                previousActionValue = course.CurrentActionValue;
 
                 this.added.Push(added);
                 this.removed.Push(removed);
@@ -619,17 +617,17 @@ namespace UdeS.Promoscience.Replay
                     Redraw(
                         added,
                         removed,
-                        previousActionValue.playerSteps,
-                        previousActionValue.wrongTiles);
+                        course.PreviousActionValue.playerSteps,
+                        course.PreviousActionValue.wrongTiles);
 
                     // Are we redrawing from the start ?
                     // Yes: current == next
                     // No: current != next
-                    lposition = previousActionValue.playerSteps.Length > 1 ?
-                        previousActionValue.playerSteps[previousActionValue.playerSteps.Length - 2].Position :
-                        previousActionValue.position;
+                    lposition = course.PreviousActionValue.playerSteps.Length > 1 ?
+                        course.PreviousActionValue.playerSteps[course.PreviousActionValue.playerSteps.Length - 2].Position :
+                        course.PreviousActionValue.position;
 
-                    nextlposition = previousActionValue.position;
+                    nextlposition = course.PreviousActionValue.position;
                 }
 
                 isBacktracking = course.CurrentActionValue.previousColor == TileColor.Red;
@@ -646,7 +644,6 @@ namespace UdeS.Promoscience.Replay
                 }
 
                 returnedToDivergent = course.CurrentAction == GameAction.ReturnToDivergencePoint;
-                previousActionValue = course.CurrentActionValue;
 
                 this.added.Push(added);
                 this.removed.Push(removed);

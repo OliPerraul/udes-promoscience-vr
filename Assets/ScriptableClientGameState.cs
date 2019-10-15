@@ -31,20 +31,10 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public int ErrorCount = 0;
 
-        private float previousRespect;
-
         private float respect;
 
         public OnFloatEvent OnRespectChangedHandler;
 
-
-        public float PreviousRespect
-        {
-            get
-            {
-                return previousRespect;
-            }
-        }
 
         public float Respect
         {
@@ -58,7 +48,6 @@ namespace UdeS.Promoscience.ScriptableObjects
                 if (respect.Approximately(value))
                     return;
 
-                previousRespect = respect;
                 respect = value;
                 if (OnRespectChangedHandler != null)
                 {
