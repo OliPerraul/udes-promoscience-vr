@@ -206,11 +206,16 @@ namespace UdeS.Promoscience
             }
         }
 
+        /// <summary>
+        /// Warning JSON parsing done here! (TODO: remove property)
+        /// </summary>
         public ActionValue PreviousActionValue
         {
             get
             {
-                return previousValue;
+                return CurrentActionIndex == 0 ?
+                    UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[0]) :
+                    UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[CurrentActionIndex-1]);
             }
         }
 
