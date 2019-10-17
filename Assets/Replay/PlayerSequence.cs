@@ -18,23 +18,30 @@ namespace UdeS.Promoscience.Replay
         Left = 3
     }
 
-    public class State
-    {
-        public Dictionary<Vector2Int, Segment> Segments;
-        public Dictionary<Vector2Int, Error> Errors;
-
-
-
-    }
-
-
     public class PlayerSequence : Sequence
     {
+        public class State
+        {
+            // Simply hold the references to the segments gameobject
+            // Does not contain reference to new segments per state
+            public Dictionary<Vector2Int, Segment> Segments = new Dictionary<Vector2Int, Segment>();
+
+            public Dictionary<Vector2Int, Segment> Errors = new Dictionary<Vector2Int, Segment>();
+
+            public Segment Head;
+
+            public Vector2Int PrevLPos;
+
+            public Vector2Int LPos;
+
+            public Vector2Int NextLPos;
+
+            public GameAction Action;
+
+            public ActionValue ActionValue;
+        }
+
         private Course course;
-
-        protected Vector2Int nextlposition;
-
-        protected Vector2Int prevlposition;
 
         [SerializeField]
         protected Error errorIndicatorTemplate;
@@ -48,30 +55,14 @@ namespace UdeS.Promoscience.Replay
         [SerializeField]
         private float backtrackWidth = 2f;
 
-        [SerializeField]
-        private Segment currentSegment;
-
         private Segment CurrentSegment
         {
             get
             {
-                return currentSegment;
-            }
+                if (CurrentState == null)
+                    return null;
 
-            set
-            {
-                if (currentSegment != null)
-                {
-                    currentSegment.Alpha = true;
-                }
-
-                currentSegment = value;
-
-                if (currentSegment != null)
-                {
-                    currentSegment.Alpha = false;
-                }
-
+                return CurrentState.Head;
             }
         }
 
@@ -90,7 +81,6 @@ namespace UdeS.Promoscience.Replay
                 return course.HasPrevious;
             }
         }
-
 
         [SerializeField]
         private GameObject arrowHead;
@@ -119,21 +109,29 @@ namespace UdeS.Promoscience.Replay
         /// Contains the list of all segments (Active or innactive)
         /// We use this to adjust offset when needed
         /// </summary>
+        private List<State> states;
+
+        private int stateIndex = 0;
+
+        private State CurrentState {
+            get {
+                if (stateIndex >= states.Count)
+                    return null;
+                return states[stateIndex];
+            }
+        }
+
+        private State PreviousState
+        {
+            get
+            {
+                return states[stateIndex-1];
+            }
+        }
+
+        // List of all segments added so that they can be adjusted
         private List<Segment> segments;
 
-        private Dictionary<Vector2Int, Stack<Segment>> segmentDictionary;
-
-        private Dictionary<Vector2Int, Stack<Segment>> errorDictionary;
-
-        /// <summary>
-        /// Contains the list of segments added in a particular step (usually 1, return to divergent many)
-        /// </summary>
-        private Stack<List<Segment>> added;
-
-        /// <summary>
-        /// Contains the list of segments added in a particular step (usually 1, return to divergent many)
-        /// </summary>
-        private Stack<List<Segment>> removed;
 
         public override int LocalMoveCount
         {
@@ -161,10 +159,6 @@ namespace UdeS.Promoscience.Replay
             PlayerSequence sequence = this.Create(labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
 
             sequence.labyrinth = labyrinth;
-            sequence.startlposition = startPosition;
-            sequence.lposition = startPosition;
-            sequence.prevlposition = startPosition;
-            sequence.nextlposition = startPosition;
             sequence.course = course;
             sequence.material.color = course.Team.TeamColor;
             sequence.backtrackMaterial.color = course.Team.TeamColor;
@@ -172,6 +166,15 @@ namespace UdeS.Promoscience.Replay
             sequence.backtrackMaterialAlpha.color = course.Team.TeamColor.SetA(previousSegmentAlpha);
 
             sequence.arrowHead.GetComponentInChildren<SpriteRenderer>().color = sequence.material.color;
+
+            sequence.states.Add(new State
+            {
+                PrevLPos = startPosition,
+                LPos = startPosition,
+                NextLPos = startPosition
+
+            });
+
 
             return sequence;
         }
@@ -191,30 +194,26 @@ namespace UdeS.Promoscience.Replay
         {
             base.Awake();
 
-            added = new Stack<List<Segment>>();
-            removed = new Stack<List<Segment>>();
-
-            segmentDictionary = new Dictionary<Vector2Int, Stack<Segment>>();
-            errorDictionary = new Dictionary<Vector2Int, Stack<Segment>>();
-
-            segments = new List<Segment>();
+            // Never destroy segments (merely deactivate them
+            states = new List<State>();
             material = new Material(templateMaterial);
             backtrackMaterial = new Material(templateBacktrackMaterial);
             materialAlpha = new Material(templateMaterial);
             backtrackMaterialAlpha = new Material(templateBacktrackMaterial);
+            segments = new List<Segment>();
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
 
-            if (currentSegment != null)
+            if (CurrentSegment != null)
             {
                 arrowHead.gameObject.SetActive(true);
 
-                arrowHead.transform.rotation = currentSegment.Rotation;
+                arrowHead.transform.rotation = CurrentSegment.Rotation;
 
-                arrowHead.transform.position = currentSegment.Position;
+                arrowHead.transform.position = CurrentSegment.Position;
             }
             else
             {
@@ -222,172 +221,78 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        public void OnMouseEvent()
+        // Use in return to divergent location
+        private void ReturnToDivergent(State state, Tile[] playerSteps, Tile[] wrong)
         {
-            if (replayOptions.OnSequenceSelectedHandler != null)
-                replayOptions.OnSequenceSelectedHandler.Invoke(course);
-        }
+            // Hide path
+            Segment sgm;
 
-        public Vector3 GetTileEdgePositionFromDirection(Direction action)
-        {
-            switch (action)
+            for (int i = 0; i < wrong.Length; i++)
             {
-                case Direction.Down:
-                    return (Vector3.forward * -Constants.TILE_SIZE / 2);
-
-                case Direction.Up:
-                    return (Vector3.forward * Constants.TILE_SIZE / 2);
-
-                case Direction.Left:
-                    return (Vector3.right * -Constants.TILE_SIZE / 2);
-
-                case Direction.Right:
-                    return (Vector3.right * Constants.TILE_SIZE / 2);
-            }
-
-            return Vector3.zero;
-        }
-
-        public float GetDirectionSideOffset(Direction direction)
-        {
-            switch (direction)
-            {
-                case Direction.Down:
-                    return 1f;
-                case Direction.Up:
-                    return -1f;
-
-                case Direction.Right:
-                case Direction.Left:
-                    return 0;
-            }
-
-            return 0;
-        }
-
-        public float GetDirectionFrontOffset(Direction direction)
-        {
-            switch (direction)
-            {
-                case Direction.Right:
-                    return -1f;
-                case Direction.Left:
-                    return 1f;
-
-                case Direction.Down:
-                case Direction.Up:
-                    return 0;
-            }
-
-            return 0;
-        }
-
-        public Direction GetDirection(Vector2Int origin, Vector2Int destination)
-        {
-            if (origin.y < destination.y)
-            {
-                return Direction.Down;
-            }
-            else if (origin.y > destination.y)
-            {
-                return Direction.Up;
-            }
-            else if (origin.x > destination.x)
-            {
-                return Direction.Left;
-            }
-            else
-            {
-                return Direction.Right;
-            }
-        }
-
-        public bool IsOppositeDirection(Direction direction, Direction other)
-        {
-            switch (direction)
-            {
-                case Direction.Up:
-                    return
-                        other == Direction.Down;// ||
-                                                //other == Direction.Right;
-
-                case Direction.Down:
-                    return
-                        other == Direction.Up;// ||
-                                              //other == Direction.Left;
-
-                case Direction.Left:
-                    return
-                        //other == Direction.Down ||
-                        other == Direction.Right;
-
-                case Direction.Right:
-                    return
-                        //other == Direction.Up ||
-                        other == Direction.Left;
-
-                default:
-                    return false;
-            }
-        }
-
-        public void DoRemove(List<Segment> removed, Vector2Int lpos, Dictionary<Vector2Int, Stack<Segment>> source)
-        {
-            Stack<Segment> stack;
-
-            // Check if dest was visited,
-            // Otherwise create the stack
-            if (source.TryGetValue(lpos, out stack))
-            {
-                // Remove destroyed segment               
-                while (stack.Count != 0 && stack.Peek() == null)
+                if (state.Segments.TryGetValue(wrong[i].Position, out sgm))
                 {
-                    stack.Pop();
-                }
-
-                if (stack.Count > 0)
-                {
-                    // If segment is visible and we walk on top of it. Hide it..
-                    if (!removed.Contains(stack.Peek()) &&
-                        stack.Peek().gameObject.activeSelf)
+                    if (sgm != null)
                     {
-                        stack.Peek().gameObject.SetActive(false);
-                        removed.Add(stack.Peek());
+                        sgm.gameObject.SetActive(false);
                     }
+
+                    state.Segments.Remove(wrong[i].Position);
                 }
             }
-            else
+
+            // Hide current position
+            if (state.Segments.TryGetValue(state.LPos, out sgm))
             {
-                stack = new Stack<Segment>();
-                source[lpos] = stack;
+                if (sgm != null)
+                {
+                    sgm.gameObject.SetActive(false);
+                }
+
+                state.Segments.Remove(state.LPos);
+            }
+
+            bool isBacktracking = playerSteps[0].color == TileColor.Red;
+            Vector2Int prevlpos = playerSteps[0].Position;
+            Vector2Int lpos = prevlpos;
+            Vector2Int nextlpos = prevlpos;
+
+            // n-1 steps
+            for (int i = 1; i < playerSteps.Length; i++)
+            {
+                prevlpos = lpos;
+                lpos = nextlpos;
+                nextlpos = playerSteps[i].Position;
+                isBacktracking = playerSteps[i].color == TileColor.Red;
+
+                UpdateState(
+                    CurrentState,
+                    prevlpos,
+                    lpos,
+                    nextlpos,
+                    isBacktracking);
             }
         }
 
-        public void Remove(
-            List<Segment> removed,
-            Vector2Int lpos)
-        {
-            DoRemove(removed, lpos, segmentDictionary);
-            DoRemove(removed, lpos, errorDictionary);
-        }
 
-        public Segment Add(
-            List<Segment> added,
+        public void UpdateState(
+            State state,
             Vector2Int prevlpos,
             Vector2Int lpos,
             Vector2Int nextlpos,
-            bool isBacktracking,
-            bool isError=false)
+            bool isBacktrack,
+            bool isError = false)
         {
-            Direction direction = GetDirection(prevlpos, lpos);
+            Direction direction = Utils.GetDirection(prevlpos, lpos);
 
             bool isInversed = false;
 
             Vector3 middle = labyrinth.GetLabyrinthPositionInWorldPosition(lpos);
-            Vector3 origin = middle + GetTileEdgePositionFromDirection(GetDirection(lpos, prevlpos));
-            Vector3 destination = middle + GetTileEdgePositionFromDirection(GetDirection(lpos, nextlpos));
+            Vector3 origin = middle + Utils.GetTileEdgePositionFromDirection(Utils.GetDirection(lpos, prevlpos));
+            Vector3 destination = middle + Utils.GetTileEdgePositionFromDirection(Utils.GetDirection(lpos, nextlpos));
 
-            bool isTurn = GetDirection(prevlpos, lpos) != GetDirection(lpos, nextlpos);
+            bool isTurn =
+                Utils.GetDirection(prevlpos, lpos) !=
+                Utils.GetDirection(lpos, nextlpos);
 
             float time = drawTime;
 
@@ -413,7 +318,41 @@ namespace UdeS.Promoscience.Replay
                 destination = middle;
             }
 
-            CurrentSegment = isTurn ?
+            Segment sgm;
+
+            if (isError)
+            {
+                // Remove error
+                if (state.Segments.TryGetValue(lpos, out sgm))
+                {
+                    if (sgm != null)
+                    {
+                        sgm.gameObject.SetActive(false);
+                    }
+
+                    state.Errors.Remove(lpos);
+                }
+
+                // Add error
+                sgm = errorIndicatorTemplate.Create(transform, origin, middle, destination, isInversed, isTurn);
+                state.Errors.Add(lpos, sgm);
+                segments.Add(sgm);
+            }
+
+            // Remove segment
+            if (state.Segments.TryGetValue(lpos, out sgm))
+            {
+                if (sgm != null)
+                {
+                    isInversed = Utils.IsOppositeDirection(direction, sgm.Direction);
+                    sgm.gameObject.SetActive(false);
+                }
+
+                state.Segments.Remove(lpos);
+            }
+
+            // Add segment
+            sgm = isTurn ?
                 segmentTemplate.CreateTurn(
                     transform,
                     origin,
@@ -421,104 +360,65 @@ namespace UdeS.Promoscience.Replay
                     destination,
                     direction,
                     isInversed,
-                    isBacktracking ? backtrackMaterial : material,
-                    isBacktracking ? backtrackMaterialAlpha : materialAlpha,
+                    isBacktrack ? backtrackMaterial : material,
+                    isBacktrack ? backtrackMaterialAlpha : materialAlpha,
                     time,
-                    isBacktracking ? backtrackWidth : normalWidth) :
+                    isBacktrack ? backtrackWidth : normalWidth) :
                 segmentTemplate.Create(
                     transform,
                     origin,
                     destination,
                     direction,
                     isInversed,
-                    isBacktracking ? backtrackMaterial : material,
-                    isBacktracking ? backtrackMaterialAlpha : materialAlpha,
+                    isBacktrack ? backtrackMaterial : material,
+                    isBacktrack ? backtrackMaterialAlpha : materialAlpha,
                     time,
-                    isBacktracking ? backtrackWidth : normalWidth);
+                    isBacktrack ? backtrackWidth : normalWidth);
 
-            segmentDictionary[lpos].Push(CurrentSegment);
+            state.Segments.Add(lpos, sgm);
+            segments.Add(state.Head); // List<Segment> segments
 
-            if (isError)
-            {
-                var err = errorIndicatorTemplate.Create(transform, origin, middle, destination, isInversed, isTurn);
-                errorDictionary[lpos].Push(err);
-                added.Add(err);
-            }
-
-            segments.Add(CurrentSegment); // List<Segment> segments
-            added.Add(CurrentSegment); // Stack<List<Segment>> stack
-            
-            return CurrentSegment;
+            state.Head = sgm;
         }
 
-        // Use in return to divergent location
-        private void Redraw(List<Segment> added, List<Segment> removed, Tile[] playerSteps, Tile[] wrong)
+        public void DrawState(State state)
         {
-            // Hide path
-            for (int i = 0; i < wrong.Length; i++)
+            foreach (var sgm in state.Segments.Values)
             {
-                Remove(removed, wrong[i].Position);
+                if (sgm == null)
+                    return;
+
+                sgm.gameObject.SetActive(true);
+                sgm.AdjustOffset(offsetAmount);
+                sgm.Draw();
             }
 
-            // Hide current position
-            Remove(removed, lposition);
-
-            bool isBacktracking = playerSteps[0].color == TileColor.Red;
-            Vector2Int prevlpos = playerSteps[0].Position;
-            Vector2Int lpos = prevlpos;
-            Vector2Int nextlpos = prevlpos;
-
-            // n-1 steps
-            for (int i = 1; i < playerSteps.Length; i++)
+            foreach (var sgm in state.Errors.Values)
             {
-                prevlpos = lpos;
-                lpos = nextlpos;
-                nextlpos = playerSteps[i].Position;
-                isBacktracking = playerSteps[i].color == TileColor.Red;
+                if (sgm == null)
+                    return;
 
-                Add(
-                    added,
-                    prevlpos,
-                    lpos,
-                    nextlpos,
-                    isBacktracking);
-            }
-
-            foreach (var sgm in added)
-            {
+                sgm.gameObject.SetActive(true);
                 sgm.AdjustOffset(offsetAmount);
                 sgm.Draw();
             }
         }
 
-        private void Draw(
-            List<Segment> added,
-            List<Segment> removed,
-            Vector2Int prevlpos,
-            Vector2Int lpos,
-            Vector2Int nextlpos,
-            bool isBacktracking,
-            bool isError=false)
+        public void HideState(State state)
         {
-            Remove(
-                removed, 
-                lpos);
-
-            Add(
-                added,
-                prevlpos,
-                lpos,
-                nextlpos,
-                isBacktracking,
-                isError);
-
-            foreach (var sgm in added)
+            foreach (var sgm in state.Segments.Values)
             {
-                sgm.AdjustOffset(offsetAmount);
-                sgm.Draw();
+                if (sgm == null)
+                    return;
+
+                sgm.gameObject.SetActive(false);
             }
-        }
-    
+
+            foreach (var sgm in state.Errors.Values)
+            {
+                sgm.gameObject.SetActive(false);
+            }
+        }   
 
         private IEnumerator DrawCoroutine(
             List<Segment> addedList,
@@ -529,58 +429,28 @@ namespace UdeS.Promoscience.Replay
             bool isBacktracking,
             bool isError = false)
         {
-            Add(
-                addedList,
-                prevlpos,
-                lpos,
-                nextlpos,
-                isBacktracking,
-                isError
-                );
+            //Add(
+            //    addedList,
+            //    prevlpos,
+            //    lpos,
+            //    nextlpos,
+            //    isBacktracking,
+            //    isError
+            //    );
 
-            CurrentSegment.AdjustOffset(offsetAmount);
-            yield return StartCoroutine(CurrentSegment.DrawCoroutine());
+            //CurrentSegment.AdjustOffset(offsetAmount);
+            //yield return StartCoroutine(CurrentSegment.DrawCoroutine());
+            yield return null;
         }
 
         protected override void DoPrevious()
         {
             if (course.CurrentAction != GameAction.Finish)
             {
-                if (isReturnedToDivergent) isReturnedToDivergent = false;
+                HideState(CurrentState);
+                DrawState(PreviousState);
 
-                if (added.Count != 0)
-                {
-                    List<Segment> sgms = added.Pop();
-
-                    foreach (Segment sgm in sgms)
-                    {                   
-                        segments.Remove(sgm);
-                        Destroy(sgm.gameObject);
-                    }
-                }
-
-                if (removed.Count != 0 && removed.Peek() != null)
-                {
-                    List<Segment> sgms = removed.Pop();
-
-                    foreach (Segment sgm in sgms)
-                    {
-                        sgm.gameObject.SetActive(true);
-                    }
-                }
-
-                nextlposition = lposition;
-                lposition = prevlposition;
-                prevlposition = GetMoveOrigin(lposition, course.PreviousAction);
-
-                Stack<Segment> stk;
-                if (segmentDictionary.TryGetValue(lposition, out stk))
-                {
-                    if (stk.Count != 0)
-                    {
-                        CurrentSegment = stk.Peek();
-                    }
-                }
+                stateIndex--;
             }
 
             course.Previous();
@@ -590,89 +460,83 @@ namespace UdeS.Promoscience.Replay
 
         }
 
-        public Vector2Int GetMoveDestination(Vector2Int lpos, GameAction action)
-        {
-            // From ReturnToDivergent, EndAction, CompleteRound
-            // Simply walk to the 'nextlpos', we do not increment nextlpos
-
-            lpos.y += action == GameAction.MoveUp ? -1 : 0;
-            lpos.y += action == GameAction.MoveDown ? 1 : 0;
-            lpos.x += action == GameAction.MoveLeft ? -1 : 0;
-            lpos.x += action == GameAction.MoveRight ? 1 : 0;
-            return lpos;
-        }
-
-        public Vector2Int GetMoveOrigin(Vector2Int lpos, GameAction action)
-        {
-            // From ReturnToDivergent, EndAction, CompleteRound
-            // Simply walk to the 'nextlpos', we do not increment nextlpos
-
-            lpos.y += action == GameAction.MoveUp ? 1 : 0;
-            lpos.y += action == GameAction.MoveDown ? -1 : 0;
-            lpos.x += action == GameAction.MoveLeft ? 1 : 0;
-            lpos.x += action == GameAction.MoveRight ? -1 : 0;
-            return lpos;
-        }
-
-
-        private bool isReturnedToDivergent = false;
-
-        private ActionValue previousValue;
-
         protected override void DoNext()
         {
             if (course.CurrentAction != GameAction.Finish)
             {
-                List<Segment> added = new List<Segment>();
-                List<Segment> removed = new List<Segment>();
+                stateIndex++;
 
-                bool isError = false;
-
-                if (isReturnedToDivergent)
+                if (stateIndex < states.Count)
+                // If the state was already visited
+                // Simply redraw it
                 {
-                    isError = true;
-
-                    Redraw(
-                        added,
-                        removed,
-                        previousValue.playerSteps,
-                        previousValue.wrongTiles);
-
-                    // Are we redrawing from the start ?
-                    // Yes: current == next
-                    // No: current != next
-                    lposition = previousValue.playerSteps.Length > 1 ?
-                        previousValue.playerSteps[previousValue.playerSteps.Length - 2].Position :
-                        previousValue.playerSteps[previousValue.playerSteps.Length - 1].Position;
-
-                    nextlposition = previousValue.playerSteps[previousValue.playerSteps.Length - 1].Position;
+                    HideState(PreviousState);
+                    DrawState(CurrentState);
                 }
+                else
+                // We need to create the state
+                {
+                    states.Add(
+                            new State
+                            {
+                                // Copy the previous state
+                                Segments = new Dictionary<Vector2Int, Segment>(PreviousState.Segments),
+                                Errors = new Dictionary<Vector2Int, Segment>(PreviousState.Errors),
+                                //PrevLPos = PreviousState.LPos,
+                                //LPos = PreviousState.NextLPos,
+                                //NextLPos = Utils.GetMoveDestination(PreviousState.NextLPos, course.CurrentAction),
+                                ActionValue = course.CurrentActionValue,
+                                Action = course.CurrentAction
+                            }
+                        );
 
-                isReturnedToDivergent = course.CurrentAction == GameAction.ReturnToDivergencePoint;
-                previousValue = course.CurrentActionValue;
+                    bool isError = false;
 
-                bool isBacktracking = course.CurrentActionValue.previousColor == TileColor.Red;
+                    if (PreviousState.Action == GameAction.ReturnToDivergencePoint)
+                    {
+                        isError = true;
 
-                prevlposition = lposition;
-                lposition = nextlposition;
-                nextlposition = GetMoveDestination(lposition, course.CurrentAction);
+                        ReturnToDivergent(
+                            CurrentState,
+                            PreviousState.ActionValue.playerSteps,
+                            PreviousState.ActionValue.wrongTiles);
 
-                Draw(
-                    added, 
-                    removed, 
-                    prevlposition, 
-                    lposition, 
-                    nextlposition,
-                    isBacktracking,
-                    isError);
+                        // Are we redrawing from the start ?
+                        CurrentState.PrevLPos = PreviousState.ActionValue.playerSteps.Length > 1 ?
+                            PreviousState.ActionValue.playerSteps[PreviousState.ActionValue.playerSteps.Length - 2].Position :
+                            PreviousState.ActionValue.playerSteps[PreviousState.ActionValue.playerSteps.Length - 1].Position;
 
-                this.added.Push(added);
-                this.removed.Push(removed);
+                        CurrentState.LPos =
+                            PreviousState.ActionValue.playerSteps[PreviousState.ActionValue.playerSteps.Length - 1].Position;
 
-                course.Next();
+                        CurrentState.NextLPos = Utils.GetMoveDestination(
+                            CurrentState.LPos, 
+                            course.CurrentAction);
+                    }
+                    else
+                    {
+                        CurrentState.PrevLPos = PreviousState.LPos;
+                        CurrentState.LPos = PreviousState.NextLPos;
+                        CurrentState.NextLPos = Utils.GetMoveDestination(PreviousState.NextLPos, course.CurrentAction);
+                    }
 
-                if (course.OnPlayerSequenceProgressedHandler != null)
-                    course.OnPlayerSequenceProgressedHandler.Invoke();
+
+                    bool isBacktrack = course.CurrentActionValue.previousColor == TileColor.Red;
+
+                    UpdateState(
+                        CurrentState,
+                        CurrentState.PrevLPos, 
+                        CurrentState.LPos, 
+                        CurrentState.NextLPos, 
+                        isBacktrack, 
+                        isError);
+
+                    DrawState(CurrentState);
+                    course.Next();
+
+                    if (course.OnPlayerSequenceProgressedHandler != null)
+                        course.OnPlayerSequenceProgressedHandler.Invoke();
+                }
             }
         }
 

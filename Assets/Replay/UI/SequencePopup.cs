@@ -62,8 +62,8 @@ namespace UdeS.Promoscience.Replay.UI
 
         private void OnCourseActionIndexChanged()//Course course)
         {
-            if (course.CurrentAction == Utils.GameAction.Finish ||
-                course.CurrentAction == Utils.GameAction.EndMovement)// ||
+            if (course.CurrentAction == Promoscience.Utils.GameAction.Finish ||
+                course.CurrentAction == Promoscience.Utils.GameAction.EndMovement)// ||
                 //course.CurrentAction == Utils.GameAction.ReturnToDivergencePoint ||
                 //course.CurrentAction == Utils.GameAction.CompletedRound)
             {
@@ -79,7 +79,7 @@ namespace UdeS.Promoscience.Replay.UI
         {
             switch (server.GameState)
             {
-                case Utils.ServerGameState.ViewingPlayback:
+                case Promoscience.Utils.ServerGameState.ViewingPlayback:
 
                     if(server.Courses.Count != 0)
                     {

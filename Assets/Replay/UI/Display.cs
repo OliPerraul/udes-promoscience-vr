@@ -101,7 +101,7 @@ namespace UdeS.Promoscience.Replay.UI
         {
             switch (server.GameState)
             {
-                case Utils.ServerGameState.ViewingPlayback:
+                case Promoscience.Utils.ServerGameState.ViewingPlayback:
                     Enabled = true;
                     break;
 

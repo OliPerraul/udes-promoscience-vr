@@ -34,9 +34,9 @@ namespace UdeS.Promoscience.Replay
         void Update()
         {
             // TODO if playback
-            if (serverGameState.GameState == Utils.ServerGameState.ViewingPlayback)
+            if (serverGameState.GameState == Promoscience.Utils.ServerGameState.ViewingPlayback)
             {
-                if (Utils.UI.IsUIElementActive())
+                if (Promoscience.Utils.UI.IsUIElementActive())
                     return;
 
                 float scroll = Input.GetAxis("Mouse ScrollWheel");
