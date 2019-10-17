@@ -49,18 +49,18 @@ namespace UdeS.Promoscience.Replay.UI
 
             if (course != null)
             {
-                course.OnActionIndexChangedHandler -= OnCourseActionIndexChanged;
+                course.OnPlayerSequenceProgressedHandler -= OnCourseActionIndexChanged;
             }          
 
             course = newCourse;
 
             image.color = newCourse.Team.TeamColor.SetA(image.color.a);
-            newCourse.OnActionIndexChangedHandler += OnCourseActionIndexChanged;
+            newCourse.OnPlayerSequenceProgressedHandler += OnCourseActionIndexChanged;
 
-            OnCourseActionIndexChanged(newCourse);
+            OnCourseActionIndexChanged();
         }
 
-        private void OnCourseActionIndexChanged(Course course)
+        private void OnCourseActionIndexChanged()//Course course)
         {
             if (course.CurrentAction == Utils.GameAction.Finish ||
                 course.CurrentAction == Utils.GameAction.EndMovement)// ||

@@ -39,18 +39,6 @@ namespace UdeS.Promoscience.Replay
                 if (Utils.UI.IsUIElementActive())
                     return;
 
-                Ray ray = camera.Camera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 100.0f))
-                {
-                    Segment sgm = hit.collider.GetComponent<Replay.Segment>();
-                    if (sgm != null)
-                    {
-                        if (sgm.OnMouseEvent != null)
-                            sgm.OnMouseEvent.Invoke();
-                    }
-                }
-
                 float scroll = Input.GetAxis("Mouse ScrollWheel");
                 camera.Camera.orthographicSize += scroll * scaleSpeed;
 

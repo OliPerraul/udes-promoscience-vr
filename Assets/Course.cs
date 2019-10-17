@@ -30,7 +30,9 @@ namespace UdeS.Promoscience
 
         public OnCourseEvent OnActionIndexChangedHandler;
 
-        private ActionValue previousValue;
+        public OnEvent OnPlayerSequenceProgressedHandler;
+
+        private ActionValue previousActionValue;
 
         private int currentActionIndex = 0;
 
@@ -45,7 +47,7 @@ namespace UdeS.Promoscience
             {
                 if (value != currentActionIndex)
                 {
-                    previousValue = CurrentActionValue;
+                    previousActionValue = CurrentActionValue;
                 }                
 
                 currentActionIndex = value;
@@ -202,8 +204,21 @@ namespace UdeS.Promoscience
             get
             {
                 return HasPrevious ?
-                    UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[GetPreviousMovementIndex()]):
+                    UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[GetPreviousMovementIndex()]) :
                     UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[0]);
+            }
+        }
+
+        /// <summary>
+        /// Warning JSON parsing done here! (TODO: remove property)
+        /// </summary>
+        public GameAction PreviousAction
+        {
+            get
+            {
+                return HasPrevious ?
+                    (GameAction)Actions[GetPreviousMovementIndex()] :
+                    (GameAction) Actions[0];
             }
         }
 

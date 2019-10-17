@@ -1,11 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿//using UnityEngine;
+//using System.Collections;
 
-namespace UdeS.Promoscience.Replay
-{
+//namespace UdeS.Promoscience.Replay
+//{
 
-    public class SequenceElement : MonoBehaviour
-    {
+// TODO: make segment and error inherit
 
-    }
-}
+//    public class SequenceElement : MonoBehaviour
+//    {
+
+//    }
+//}

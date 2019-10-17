@@ -6,51 +6,43 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replay
 {
-    public class Segment : SequenceElement
+    public class Segment : MonoBehaviour
     {
         [SerializeField]
-        private float overlayHeight = 50f;
+        protected float overlayHeight = 50f;
 
         [SerializeField]
-        private LineRenderer lineRenderer;
+        protected LineRenderer lineRenderer;
 
         [SerializeField]
-        private Material material;
+        protected Material material;
 
         [SerializeField]
-        private Material materialAlpha;
-
-        [SerializeField]
-        private BoxCollider boxCollider;
-
-        public OnEvent OnMouseEvent;
+        protected Material materialAlpha;
         
-        private bool isDrawing = false;
+        protected bool isDrawing = false;
 
-        private bool isTurnFinished = false;
+        protected bool isTurnFinished = false;
 
-        private bool isTurn = false;
+        protected bool isTurn = false;
 
-        public Vector2Int LPosition;
+        //public Vector2Int LPosition;
 
-        private float time = 0.6f;
+        protected float time = 0.6f;
 
         [SerializeField]
-        private float offsetAmount = 0f;
+        protected float offsetAmount = 0f;
 
-        private bool isInversed = false;
+        protected bool isInversed = false;
 
 
-        public void OnValidate()
+        public virtual void OnValidate()
         {
             if (lineRenderer == null)
                 lineRenderer = GetComponent<LineRenderer>();
-
-            if (boxCollider == null)
-                boxCollider = GetComponent<BoxCollider>();
         }
 
-        private Direction direction;
+        protected Direction direction;
 
         public Direction Direction
         {
@@ -92,9 +84,9 @@ namespace UdeS.Promoscience.Replay
 
         public Vector3 Position;
 
-        private Vector3 lerpOrigin;
+        protected Vector3 lerpOrigin;
 
-        private Vector3 lerpDest;
+        protected Vector3 lerpDest;
 
         public float Length
         {
@@ -104,7 +96,7 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        private Vector3 middle;
+        protected Vector3 middle;
 
         // The only reason to have middle is for turns.
         public Vector3 Middle
@@ -117,9 +109,9 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        private Vector3 origin;
+        protected Vector3 origin;
 
-        public Vector3 Origin
+        public virtual Vector3 Origin
         {
             get
             {
@@ -127,7 +119,7 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        private Vector3 destination;
+        protected Vector3 destination;
 
         public Vector3 Destination
         {
@@ -137,7 +129,7 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        private Vector3 OriginOffset
+        protected virtual Vector3 OriginOffset
         {
             get
             {
@@ -147,7 +139,7 @@ namespace UdeS.Promoscience.Replay
             }
         }
 
-        private Vector3 DestinationOffset
+        protected Vector3 DestinationOffset
         {
             get
             {
@@ -236,7 +228,6 @@ namespace UdeS.Promoscience.Replay
             {
                 transform.position = (Origin + Destination) / 2;
 
-
                 lerpOrigin = Origin;
                 lerpDest = Destination;
 
@@ -257,7 +248,7 @@ namespace UdeS.Promoscience.Replay
             yield return null;
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
             Position = Destination;
 
@@ -278,7 +269,6 @@ namespace UdeS.Promoscience.Replay
 
         public Segment CreateTurn(
             Transform transform,
-            Vector2Int lposition, // keep track of origin to remove from layout
             Vector3 origin,
             Vector3 middle,
             Vector3 destination,
@@ -299,7 +289,6 @@ namespace UdeS.Promoscience.Replay
             segm.isTurn = true;
             segm.lineRenderer.positionCount = 3;
 
-            segm.LPosition = lposition;
             segm.origin = origin;
             segm.middle = middle;
             segm.destination = destination;
@@ -317,7 +306,6 @@ namespace UdeS.Promoscience.Replay
 
         public Segment Create(
             Transform transform,
-            Vector2Int lposition, // keep track of origin to remove from layout
             Vector3 origin,
             Vector3 destination,
             Direction direction,
@@ -327,17 +315,11 @@ namespace UdeS.Promoscience.Replay
             float time,
             float width)
         {
-            var segm = Instantiate(
-                gameObject,
-                Vector3.zero,
-                Quaternion.identity,
-                transform)
-                .GetComponent<Segment>();
+            var segm = this.Create(transform);
 
             segm.isTurn = false;
             segm.lineRenderer.positionCount = 2;
 
-            segm.LPosition = lposition;
             segm.origin = origin;
             segm.destination = destination;
             segm.direction = direction;
