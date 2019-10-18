@@ -4,7 +4,7 @@ using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Labyrinths
 {
     public class TileInformation : MonoBehaviour
     {

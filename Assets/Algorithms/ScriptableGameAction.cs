@@ -45,7 +45,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         // TODO: fix weird globally available variables (put in client game state)
         // playerPaintTile vs paintingColor?
         [SerializeField]
-        private ScriptableTile playerPaintTile;
+        private Labyrinths.ScriptableTile playerPaintTile;
 
         //[SerializeField]
         //private ScriptableTileColor paintingColor;

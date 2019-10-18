@@ -44,13 +44,13 @@ namespace UdeS.Promoscience.Network
         ScriptableQuaternion playerRotation;
 
         [SerializeField]
-        ScriptableTile playerPaintTile;
+        Labyrinths.ScriptableTile playerPaintTile;
 
         [SerializeField]
         ScriptableAction playerReachedTheEnd;
 
         [SerializeField]
-        ScriptableTileArray playerTilesToPaint;
+        Labyrinths.ScriptableTileArray playerTilesToPaint;
 
         [SerializeField]
         ScriptableBoolean returnToDivergencePointAnswer;

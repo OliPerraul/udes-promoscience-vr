@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.Tests
         StandardAlgorithm standardAlgorithm;
 
         [SerializeField]
-        Labyrinth labyrinth;
+        Labyrinths.Labyrinth labyrinth;
 
         [SerializeField]
         GameObject sphere;

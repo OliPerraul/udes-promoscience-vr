@@ -23,7 +23,7 @@ namespace UdeS.Promoscience.Replay
         private AlgorithmSequence algorithmSequence;
 
         [SerializeField]
-        private Labyrinth labyrinth;
+        private Labyrinths.Labyrinth labyrinth;
 
         [SerializeField]
         private Algorithm algorithm;

@@ -7,7 +7,7 @@ namespace UdeS.Promoscience.Replay.UI
     public class SequenceToggle : MonoBehaviour
     {
         [SerializeField]
-        private ScriptableReplayOptions replayOptions;
+        private ScriptableReplayController replayOptions;
 
         [SerializeField]
         private ScriptableObjects.ScriptableServerGameInformation server;

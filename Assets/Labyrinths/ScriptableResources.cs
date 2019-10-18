@@ -3,12 +3,15 @@ using System.Collections;
 using UdeS.Promoscience.Utils;
 using UnityEngine;
 
-namespace UdeS.Promoscience.ScriptableObjects
+namespace UdeS.Promoscience.Labyrinths
 {
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Ressources", order = 1)]
-    public class ScriptableRessources : ScriptableObject
+    public class ScriptableResources : ScriptableObject
     {
+        [SerializeField]
+        public Labyrinth Labyrinth; 
+
         [SerializeField]
         GameObject startTilePrefab;
         [SerializeField]
@@ -17,7 +20,6 @@ namespace UdeS.Promoscience.ScriptableObjects
         GameObject endTilePrefab;
         [SerializeField]
         GameObject wallTilePrefab;
-
 
         [SerializeField]
         GameObject romeStartTilePrefab;
@@ -35,7 +37,6 @@ namespace UdeS.Promoscience.ScriptableObjects
         GameObject romeVerticalWallBTilePrefab;
         [SerializeField]
         GameObject romeTowerWallTilePrefab;
-
 
         [SerializeField]
         GameObject ptolStartTilePrefab;

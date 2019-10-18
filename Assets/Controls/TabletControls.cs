@@ -27,13 +27,13 @@ namespace UdeS.Promoscience
         ScriptableQuaternion playerRotation;
 
         [SerializeField]
-        ScriptableTile playerPaintTile;
+        Labyrinths.ScriptableTile playerPaintTile;
 
         [SerializeField]
-        ScriptableTileArray playerTilesToPaint;
+        Labyrinths.ScriptableTileArray playerTilesToPaint;
 
         [SerializeField]
-        Labyrinth labyrinth;
+        Labyrinths.Labyrinth labyrinth;
 
         [SerializeField]
         Transform cameraTransform;

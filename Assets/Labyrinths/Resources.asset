@@ -9,8 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2d69920a88c41c46a94f5e65c718a52, type: 3}
-  m_Name: Ressources
+  m_Name: Resources
   m_EditorClassIdentifier: 
+  Labyrinth: {fileID: 114960978338339494, guid: f697c43a84beec044840ffc7981c5b14,
+    type: 2}
   startTilePrefab: {fileID: 1213397253378824, guid: dd6b3d5434963ad4a972a7780440af19,
     type: 2}
   floorTilePrefab: {fileID: 1933259691003538, guid: fdebb61143ef46e4c95996d62f99aff4,

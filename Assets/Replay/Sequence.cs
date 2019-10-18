@@ -15,9 +15,9 @@ namespace UdeS.Promoscience.Replay
     public abstract class Sequence : MonoBehaviour
     {
         [SerializeField]
-        protected ScriptableReplayOptions replayOptions;
+        protected ScriptableReplayController replayOptions;
 
-        protected Labyrinth labyrinth;
+        protected Labyrinths.Labyrinth labyrinth;
 
         protected bool isPlaying = false;
 

@@ -6,19 +6,58 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
+using Cirrus.Extensions;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Labyrinths
 {
+    [System.Serializable]
+    public class Camera
+    {
+        [SerializeField]
+        public UnityEngine.Camera Source;
+
+        [SerializeField]
+        public float HeightOffset;
+
+        [SerializeField]
+        public GameObject Overlay;
+
+        public void Split(
+            int horizontal,
+            int vertical,
+            int index)
+        {
+            Source.rect = new Rect(
+                ((float)index.Mod(horizontal)) / horizontal,
+                ((float)index / horizontal) / horizontal,
+                1f / horizontal,
+                1f / vertical);
+        }
+    }
+
     public class Labyrinth : MonoBehaviour
     {
         [SerializeField]
-        ScriptableClientGameState gameState;
+        private ScriptableClientGameState gameState;
 
         [SerializeField]
-        ScriptableLabyrinth labyrinthData;
+        public Camera Camera;
 
         [SerializeField]
-        ScriptableRessources ressources;
+        private ScriptableLabyrinth Resource;
+
+        private IData data;
+
+        IData Data
+        {
+            get
+            {
+                return Resource == null ? Resource : data;
+            }
+        }
+
+        [SerializeField]
+        ScriptableResources ressources;
 
         GameObject[,] labyrinthTiles;
 
@@ -62,7 +101,7 @@ namespace UdeS.Promoscience
                 DestroyLabyrinth();
             }
 
-            SetLabyrith();
+            PopulateLabyrinth();
 
             labyrinthTiles = new GameObject[labyrinth.GetLength(0), labyrinth.GetLength(1)];
 
@@ -73,23 +112,33 @@ namespace UdeS.Promoscience
                     labyrinthTiles[x, y] = InstantiateLabyrithTile(x, y, labyrinth[x, y]);
                 }
             }
+
+            Camera.Source.transform.position += GetLabyrinthPositionInWorldPosition(0, 0);
+            Camera.Source.transform.position += new Vector3(
+                labyrinthTiles.GetLength(0) *Constants.TILE_SIZE,
+                0,
+                -labyrinthTiles.GetLength(1) * Constants.TILE_SIZE)/ 2;
         }
 
-        void SetLabyrith()
+        void PopulateLabyrinth()
         {
-            labyrinth = new int[labyrinthData.GetLabyrithXLenght(), labyrinthData.GetLabyrithYLenght()];
+            labyrinth = new int[Data.sizeX, Data.sizeY];
 
             for (int x = 0; x < labyrinth.GetLength(0); x++)
             {
                 for (int y = 0; y < labyrinth.GetLength(1); y++)
                 {
-                    labyrinth[x, y] = labyrinthData.GetLabyrithValueAt(x, y);
+                    labyrinth[x, y] = Data.GetLabyrithValueAt(x, y);
 
-                    if (labyrinth[x, y] >= Constants.TILE_START_START_ID && labyrinth[x, y] <= Constants.TILE_START_END_ID)
+                    if (
+                        labyrinth[x, y] >= Constants.TILE_START_START_ID && 
+                        labyrinth[x, y] <= Constants.TILE_START_END_ID)
                     {
                         startPosition = new Vector2Int(x, y);
                     }
-                    else if (labyrinth[x, y] >= Constants.TILE_END_START_ID && labyrinth[x, y] <= Constants.TILE_END_END_ID)
+                    else if (
+                        labyrinth[x, y] >= Constants.TILE_END_START_ID && 
+                        labyrinth[x, y] <= Constants.TILE_END_END_ID)
                     {
                         endPosition = new Vector2Int(x, y);
                     }
@@ -100,6 +149,7 @@ namespace UdeS.Promoscience
         GameObject InstantiateLabyrithTile(int x, int y, int tileId)
         {
             GameObject tile = null;
+
             Vector3 tilePosition = GetLabyrinthPositionInWorldPosition(x, y);
 
             tile = Instantiate(ressources.GetTilePrefabWithId(tileId), tilePosition, Quaternion.identity, gameObject.transform);
@@ -249,11 +299,19 @@ namespace UdeS.Promoscience
         {
             foreach (Transform child in transform)
             {
-                GameObject.Destroy(child.gameObject);
+                Destroy(child.gameObject);
             }
 
             labyrinthTiles = null;
-
         }
+
+        public Labyrinth Create(Transform transform, IData data)
+        {
+            var labyrinth = this.Create(transform);
+            labyrinth.data = data;
+            return labyrinth;
+        }
+
+        
     }
 }

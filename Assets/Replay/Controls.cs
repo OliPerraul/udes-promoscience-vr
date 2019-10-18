@@ -13,7 +13,7 @@ namespace UdeS.Promoscience.Replay
         private ScriptableServerGameInformation serverGameState;
 
         [SerializeField]
-        private CameraWrapper camera;
+        private Camera camera;
 
         [SerializeField]
         private float scaleSpeed = 0.5f;
@@ -25,10 +25,7 @@ namespace UdeS.Promoscience.Replay
 
         public void OnValidate()
         {
-            if (camera == null)
-            {
-                camera = FindObjectOfType<CameraWrapper>();
-            }
+
         }
 
         void Update()
@@ -40,7 +37,7 @@ namespace UdeS.Promoscience.Replay
                     return;
 
                 float scroll = Input.GetAxis("Mouse ScrollWheel");
-                camera.Camera.orthographicSize += scroll * scaleSpeed;
+                camera.orthographicSize += scroll * scaleSpeed;
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -50,10 +47,10 @@ namespace UdeS.Promoscience.Replay
 
                 if (Input.GetMouseButton(0))
                 {
-                    Vector3 pos = camera.Camera.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
+                    Vector3 pos = camera.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
                     Vector3 move = new Vector3(pos.x * dragSpeed, 0, pos.y * dragSpeed);
 
-                    camera.Camera.transform.Translate(move, Space.World);
+                    camera.transform.Translate(move, Space.World);
                 }
 
             }

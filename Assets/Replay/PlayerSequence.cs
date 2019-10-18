@@ -158,7 +158,7 @@ namespace UdeS.Promoscience.Replay
 
         public PlayerSequence Create(
             Course course,
-            Labyrinth labyrinth,
+            Labyrinths.Labyrinth labyrinth,
             Vector2Int startPosition)
         {
             PlayerSequence sequence = this.Create(labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));

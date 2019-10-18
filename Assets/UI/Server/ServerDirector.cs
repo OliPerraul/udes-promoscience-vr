@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace UdeS.Promoscience.UI.Server
 {
-    public class ServerUIDirector : MonoBehaviour
+    public class ServerDirector : MonoBehaviour
     {
         [System.Serializable]
         public class Step
@@ -78,8 +78,8 @@ namespace UdeS.Promoscience.UI.Server
             {
                 if ((stp.Flags & serverGameInformation.GameState) != 0)
                 {
-                    stp.gameObjectsToActivate.ForEach(x => x.SetActive(true));
-                    stp.gameObjectsToDeactivate.ForEach(x => x.SetActive(false));
+                    stp.gameObjectsToActivate.ForEach(x => { if (x != null) x.SetActive(true); });
+                    stp.gameObjectsToDeactivate.ForEach(x => { if (x != null) x.SetActive(false); });
                 }
             }
         }

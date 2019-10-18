@@ -13,13 +13,16 @@ namespace UdeS.Promoscience.ScriptableObjects
     public class ScriptableServerGameInformation : ScriptableObject
     {
         [SerializeField]
-        ScriptableLabyrinth labyrinthData;
+        private Resources resources;
+
+        [SerializeField]
+        Labyrinths.ScriptableLabyrinth labyrinthData;
 
         [SerializeField]
         private ScriptableTeamList teams;
 
         [SerializeField]
-        private Replay.ScriptableReplayOptions playbackOptions;
+        private Replay.ScriptableReplayController playbackOptions;
 
         // Ideally, player should reference a course instead of refering to a course id 
         private Dictionary<int, Course> courses;
@@ -264,7 +267,26 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
-        public void BeginPlayback()
+        public void BeginFinalReplay()
+        {
+            // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
+            foreach (Player player in PlayerList.instance.list)
+            {
+                // Tell clients to pay attention
+                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
+                    player.ServerPlayerGameState == ClientGameState.Playing)
+                {
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalReplay);
+                }
+            }
+
+            GameState = ServerGameState.FinalReplay;
+        }
+
+        public void BeginIntermissionReplay()
         {         
              // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -297,8 +319,6 @@ namespace UdeS.Promoscience.ScriptableObjects
                 course.ActionValues = stepValues.ToArray();
             }
 
-            //Courses.Clear();
-
             // Begin playback server
             GameState = ServerGameState.IntermissionReplay;
         }
@@ -308,7 +328,6 @@ namespace UdeS.Promoscience.ScriptableObjects
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             SQLiteUtilities.SetServerGameInformation(this);
 #endif
-
             gameStateChangedEvent += SaveGameInformationToDatabase;//Work only because gameRound is always updated right before gameState
         }
 

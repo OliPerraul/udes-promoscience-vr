@@ -14,7 +14,7 @@ namespace UdeS.Promoscience
         ScriptableControler controls;
 
         [SerializeField]
-        Labyrinth labyrinth;
+        Labyrinths.Labyrinth labyrinth;
 
         [SerializeField]
         GameObject distanceDisplay;

@@ -11,7 +11,7 @@ namespace UdeS.Promoscience
     public class ShortestFlightDistanceAlgorithm : MonoBehaviour
     {
         [SerializeField]
-        Labyrinth labyrinth;
+        Labyrinths.Labyrinth labyrinth;
 
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };

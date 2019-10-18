@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Replay.UI
         private ScriptableObjects.ScriptableServerGameInformation server;
 
         [SerializeField]
-        private ScriptableReplayOptions playbackOptions;
+        private ScriptableReplayController playbackOptions;
 
         public OnEvent OnExpandHandler;
 
@@ -104,13 +104,11 @@ namespace UdeS.Promoscience.Replay.UI
             playbackOptions.OnMoveCountSetHandler += OnSequenceChanged;
         }
 
-
         private void OnSequenceChanged(int mvcnt)
         {
             slider.minValue = 0;
             slider.maxValue = mvcnt;
         }
-
 
         public void OnProgress(int progress)
         {

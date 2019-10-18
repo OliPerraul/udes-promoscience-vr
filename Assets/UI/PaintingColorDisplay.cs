@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.UI
         ScriptableControler controls;
 
         [SerializeField]
-        ScriptableTileColor paintingColor;
+        Labyrinths.ScriptableTileColor paintingColor;
 
         [SerializeField]
         GameObject colorRings;

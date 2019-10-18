@@ -22,13 +22,13 @@ namespace UdeS.Promoscience
         ScriptableBoolean isDiverging;
 
         [SerializeField]
-        Labyrinth labyrinth;
+        Labyrinths.Labyrinth labyrinth;
 
         [SerializeField]
         GameObject waitingForNextRoundRoom;
 
         [SerializeField]
-        private CameraWrapper gameCamera;
+        private Camera gameCamera;
 
         [SerializeField]
         private ScriptableIntegerArray recordedSteps;

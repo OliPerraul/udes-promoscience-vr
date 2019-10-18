@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.Tests
         ScriptableClientGameState gameState;
 
         [SerializeField]
-        ScriptableLabyrinth labyrinthData;
+        Labyrinths.ScriptableLabyrinth labyrinthData;
 
         void Start()
         {

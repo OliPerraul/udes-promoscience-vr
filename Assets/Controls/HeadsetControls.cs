@@ -42,16 +42,16 @@ namespace UdeS.Promoscience
         ScriptableQuaternion playerRotation;
 
         [SerializeField]
-        ScriptableTile playerPaintTile;
+        Labyrinths.ScriptableTile playerPaintTile;
 
         [SerializeField]
         ScriptablePositionRotationAndTile playerPositionRotationAndTiles;
 
         [SerializeField]
-        ScriptableTileColor paintingColor;
+        Labyrinths.ScriptableTileColor paintingColor;
 
         [SerializeField]
-        Labyrinth labyrinth;
+        Labyrinths.Labyrinth labyrinth;
 
         [SerializeField]
         private Controls.CameraRigWrapper cameraRig;

@@ -33,7 +33,7 @@ namespace UdeS.Promoscience
         ScriptableAction labyrinthPositionChanged;
 
         [SerializeField]
-        ScriptableTile playerPaintTile;
+        Labyrinths.ScriptableTile playerPaintTile;
 
         [SerializeField]
         ScriptablePositionRotationAndTile playerPositionRotationAndTiles;
@@ -45,7 +45,7 @@ namespace UdeS.Promoscience
         ScriptableBoolean returnToDivergencePointAnswer;
 
         [SerializeField]
-        Labyrinth labyrinth;
+        Labyrinths.Labyrinth labyrinth;
 
         [SerializeField]
         RightHandAlgorithm rightHandAlgorithm;

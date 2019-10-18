@@ -28,7 +28,7 @@ namespace UdeS.Promoscience.Utils
         GameRound = 1 << 2,
         Intermission = 1 << 3,
         IntermissionReplay = 1 << 4,
-        FinalReplay = 1 << 5,
+        FinalReplay = 1 << 5,        
     }
 
     [Serializable]

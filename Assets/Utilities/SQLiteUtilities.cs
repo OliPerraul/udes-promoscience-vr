@@ -396,7 +396,56 @@ namespace UdeS.Promoscience.Utils
             }
         }
 
-        public static void ReadLabyrinthDataFromId(int id, ref int sizeX, ref int sizeY, ref int[] data)
+        public static List<Labyrinths.IData> GetLabyrinths()
+        {
+            List<Labyrinths.IData> labyrinths = new List<Labyrinths.IData>();
+
+            CreateDatabaseIfItDoesntExist();                     
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.CommandText = "SELECT * FROM " + LABYRINTH;
+                    cmd.ExecuteNonQuery();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string[] specs = reader[LABYRINTH_SPECS].ToString().Split();
+                            int[] labyrinthSpecs = Array.ConvertAll(specs, int.Parse);
+
+                            Labyrinths.Data labyrinth = new Labyrinths.Data
+                            {
+                                currentId = int.Parse(reader[LABYRINTH_ID].ToString()),
+                                sizeX = labyrinthSpecs[0],
+                                sizeY = labyrinthSpecs[1],
+                                data = new int[labyrinthSpecs[0] * labyrinthSpecs[1]]
+                            };
+
+                            for (int i = 0; i < labyrinth.sizeX * labyrinth.sizeY; i++)
+                            {
+                                labyrinth.data[i] = labyrinthSpecs[i + 2];
+                            }
+
+                            labyrinths.Add(labyrinth);
+
+                        }
+
+                        reader.Close();
+                    }
+                }
+            }
+
+            return labyrinths;
+        }
+
+        public static void ReadLabyrinthDataFromId(int id, Labyrinths.IData labyrinth)
         {
             CreateDatabaseIfItDoesntExist();
 
@@ -417,13 +466,13 @@ namespace UdeS.Promoscience.Utils
                         {
                             string[] specs = reader[LABYRINTH_SPECS].ToString().Split();
                             int[] labyrinthSpecs = Array.ConvertAll(specs, int.Parse);
-                            sizeX = labyrinthSpecs[0];
-                            sizeY = labyrinthSpecs[1];
-                            data = new int[sizeX * sizeY];
+                            labyrinth.sizeX = labyrinthSpecs[0];
+                            labyrinth.sizeY = labyrinthSpecs[1];
+                            labyrinth.data = new int[labyrinth.sizeX * labyrinth.sizeY];
 
-                            for (int i = 0; i < sizeX * sizeY; i++)
+                            for (int i = 0; i < labyrinth.sizeX * labyrinth.sizeY; i++)
                             {
-                                data[i] = labyrinthSpecs[i + 2];
+                                labyrinth.data[i] = labyrinthSpecs[i + 2];
                             }
                         }
 
@@ -1010,6 +1059,7 @@ namespace UdeS.Promoscience.Utils
             return courseId;
         }
 
+        // TODO load from json?
         static void InsertBasicLabyrinths()
         {
             //Labyrinth Tutorial

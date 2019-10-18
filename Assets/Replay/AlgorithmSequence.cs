@@ -57,7 +57,7 @@ namespace UdeS.Promoscience.Replay
 
 
         public AlgorithmSequence Create(
-            Labyrinth labyrinth,
+            Labyrinths.Labyrinth labyrinth,
             Algorithm algorithm,
             Vector2Int startPosition)
         {

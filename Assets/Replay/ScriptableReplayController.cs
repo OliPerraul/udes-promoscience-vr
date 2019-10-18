@@ -14,20 +14,32 @@ namespace UdeS.Promoscience.Replay
         Pause,
         Resume,
         Slide,
-        ToggleAlgorithm
+        ToggleAlgorithm,
+        ToggleLabyrinth
     }
 
     public delegate void OnAction(ReplayAction action, params object[] args);
 
     public delegate void OnSequenceToggled(Course course, bool enabled);
 
-    public class ScriptableReplayOptions : ScriptableObject
+    public class ScriptableReplayController : ScriptableObject
     {
         public enum ReplayOption
         {
             Player,
             Algorithm
         }
+
+        private Dictionary<int, Labyrinths.Labyrinth> labyrinths;
+
+        public ICollection<Labyrinths.Labyrinth> Labyrinths
+        {
+            get
+            {
+                return labyrinths.Values;
+            }
+        }
+
 
         public Action valueChangeEvent;
 

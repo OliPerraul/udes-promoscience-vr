@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Network
         ScriptablePlayerInformation playerInformation;
 
         [SerializeField]
-        ScriptableTile playerPaintTile;
+        Labyrinths.ScriptableTile playerPaintTile;
 
         [SerializeField]
         ScriptableVector3 playerPosition;
@@ -58,7 +58,7 @@ namespace UdeS.Promoscience.Network
         ScriptableAction returnToDivergencePointRequest;
 
         [SerializeField]
-        Labyrinth labyrinth;
+        Labyrinths.Labyrinth labyrinth;
 
         NetworkServerSimple server = null;
         NetworkConnection clientConnection = null;

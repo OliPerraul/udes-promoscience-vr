@@ -12,7 +12,7 @@ namespace UdeS.Promoscience
     public class LongestStraightAlgorithm : MonoBehaviour
     {
         [SerializeField]
-        Labyrinth labyrinth;
+        Labyrinths.Labyrinth labyrinth;
 
         bool asReachedTheEnd;
         bool[] isDirectionWalkableAndNotVisited = new bool[4];

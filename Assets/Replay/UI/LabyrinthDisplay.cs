@@ -5,38 +5,38 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replay.UI
 {
-    public class Replay : MonoBehaviour
+    public class LabyrinthDisplay : MonoBehaviour
     {
         [SerializeField]
-        private ScriptableReplayOptions replayOptions;
+        protected ScriptableReplayController replayOptions;
 
         [SerializeField]
-        private ScriptableObjects.ScriptableServerGameInformation server;
+        protected ScriptableObjects.ScriptableServerGameInformation server;
 
         [SerializeField]
-        private UnityEngine.UI.Button openButton;
+        protected UnityEngine.UI.Button openButton;
 
         [SerializeField]
-        private UnityEngine.UI.Button exitButton;
+        protected UnityEngine.UI.Button exitButton;
 
         [SerializeField]
-        private UnityEngine.UI.Button overlayButton;
+        protected UnityEngine.UI.Button overlayButton;
 
         [SerializeField]
-        private UnityEngine.UI.Button algorithmButton;
+        protected UnityEngine.UI.Button algorithmButton;
 
         [SerializeField]
-        private GameObject sequenceToggle;
+        protected GameObject sequenceToggle;
 
         [SerializeField]
-        private SequencePopup SequencePopup;
+        protected SequencePopup SequencePopup;
 
         [SerializeField]
         private GameObject overlay;
 
-        private bool init = false;
+        protected bool init = false;
 
-        public void OnEnable()
+        public virtual void OnEnable()
         {
             if (init)
                 return;
@@ -57,21 +57,18 @@ namespace UdeS.Promoscience.Replay.UI
 
         public void OnGameStateChanged()
         {
-            switch (server.GameState)
-            {
-                case Promoscience.Utils.ServerGameState.IntermissionReplay:
-                case Promoscience.Utils.ServerGameState.FinalReplay:
-                    Enabled = true;
-                    break;
+            //switch (server.GameState)
+            //{
+            //    case Promoscience.Utils.ServerGameState.IntermissionReplay:
+            //    case Promoscience.Utils.ServerGameState.FinalReplay:
+            //        Enabled = true;
+            //        break;
 
-                default:
-                    Enabled = false;
-                    break;
-            }
+            //    default:
+            //        Enabled = false;
+            //        break;
+            //}
         }
-
-
-
 
 
         public void OnAlgorithmClicked()
@@ -86,7 +83,7 @@ namespace UdeS.Promoscience.Replay.UI
 
         private bool _enabled = false;
 
-        public bool Enabled
+        public virtual bool Enabled
         {
             get
             {

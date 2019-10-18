@@ -6,15 +6,15 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
-namespace UdeS.Promoscience.ScriptableObjects
+namespace UdeS.Promoscience.Labyrinths
 {
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Labyrinth", order = 1)]
-    public class ScriptableLabyrinth : ScriptableObject
+    public class ScriptableLabyrinth : ScriptableObject, IData
     {
-        int currentId = -1;
-        int[] data;
-        int sizeX;
-        int sizeY;
+        public int currentId { get; set; }
+        public int[] data { get; set; }
+        public int sizeX { get; set; }
+        public int sizeY { get; set; }
 
         public Action valueChangedEvent;
 
@@ -32,7 +32,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                 currentId = id;
-                SQLiteUtilities.ReadLabyrinthDataFromId(id, ref sizeX, ref sizeY, ref data);
+                SQLiteUtilities.ReadLabyrinthDataFromId(id, this);
 
                 OnValueChanged();
 #endif

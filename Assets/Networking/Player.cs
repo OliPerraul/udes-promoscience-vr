@@ -203,7 +203,7 @@ namespace UdeS.Promoscience.Network
         ScriptableBoolean isRoundCompleted;
 
         [SerializeField]
-        ScriptableLabyrinth labyrinthData;
+        Labyrinths.ScriptableLabyrinth labyrinthData;
 
         [SerializeField]
         ScriptableString pairedIpAdress;
