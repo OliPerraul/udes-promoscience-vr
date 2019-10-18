@@ -50,7 +50,7 @@ namespace UdeS.Promoscience.Replay.UI
             if (course != null)
             {
                 course.OnPlayerSequenceProgressedHandler -= OnCourseActionIndexChanged;
-            }          
+            }
 
             course = newCourse;
 
@@ -62,16 +62,14 @@ namespace UdeS.Promoscience.Replay.UI
 
         private void OnCourseActionIndexChanged()//Course course)
         {
-            if (course.CurrentAction == Promoscience.Utils.GameAction.Finish ||
-                course.CurrentAction == Promoscience.Utils.GameAction.EndMovement)// ||
-                //course.CurrentAction == Utils.GameAction.ReturnToDivergencePoint ||
-                //course.CurrentAction == Utils.GameAction.CompletedRound)
+            //if (course.CurrentAction == Promoscience.Utils.GameAction.Finish ||
+            if (course.CurrentAction == Promoscience.Utils.GameAction.EndMovement)// ||
             {
                 return;
             }
 
             respectText.text = course.PreviousActionValue.respect.ToString("P0");
-            scoreText.text = course.PreviousActionValue.error.ToString();            
+            scoreText.text = course.PreviousActionValue.error.ToString();
         }
 
 
@@ -79,9 +77,9 @@ namespace UdeS.Promoscience.Replay.UI
         {
             switch (server.GameState)
             {
-                case Promoscience.Utils.ServerGameState.ViewingPlayback:
+                case Promoscience.Utils.ServerGameState.IntermissionReplay:
 
-                    if(server.Courses.Count != 0)
+                    if (server.Courses.Count != 0)
                     {
                         OnSequenceSelected(server.Courses.First());
                     }

@@ -79,7 +79,7 @@ namespace UdeS.Promoscience
                 case GameAction.MoveRight:
                 case GameAction.ReturnToDivergencePoint:
                 case GameAction.EndMovement:
-                case GameAction.Finish://sentinel value
+                //case GameAction.Finish://sentinel value
                     return true;
                 default:
                     return false;
@@ -161,7 +161,7 @@ namespace UdeS.Promoscience
                 if (MoveCount == 0)
                     return false;
 
-                return moveIndex >= 0;
+                return moveIndex > 0;
             }
         }
 

@@ -11,11 +11,9 @@ namespace UdeS.Promoscience.Utils
         {
             if (EventSystem.current.currentSelectedGameObject != null)
             {
-                //if (IF != null)
-                {
-                    return true;
-                }
+                return true;                
             }
+
             return false;
         }
     }

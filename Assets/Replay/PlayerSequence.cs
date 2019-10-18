@@ -39,6 +39,8 @@ namespace UdeS.Promoscience.Replay
             public GameAction Action;
 
             public ActionValue ActionValue;
+
+            public bool IsBacktracking = false;
         }
 
         private Course course;
@@ -113,10 +115,13 @@ namespace UdeS.Promoscience.Replay
 
         private int stateIndex = 0;
 
-        private State CurrentState {
-            get {
+        private State CurrentState
+        {
+            get
+            {
                 if (stateIndex >= states.Count)
                     return null;
+
                 return states[stateIndex];
             }
         }
@@ -124,8 +129,8 @@ namespace UdeS.Promoscience.Replay
         private State PreviousState
         {
             get
-            {
-                return states[stateIndex-1];
+            {                
+                return stateIndex == 0 ? states[stateIndex] : states[stateIndex - 1];
             }
         }
 
@@ -175,7 +180,6 @@ namespace UdeS.Promoscience.Replay
 
             });
 
-
             return sequence;
         }
 
@@ -222,7 +226,7 @@ namespace UdeS.Promoscience.Replay
         }
 
         // Use in return to divergent location
-        private void ReturnToDivergent(State state, Tile[] playerSteps, Tile[] wrong)
+        private void ReturnToDivergent(State state, Vector2Int fromlpos, Tile[] playerSteps, Tile[] wrong)
         {
             // Hide path
             Segment sgm;
@@ -241,14 +245,14 @@ namespace UdeS.Promoscience.Replay
             }
 
             // Hide current position
-            if (state.Segments.TryGetValue(state.LPos, out sgm))
+            if (state.Segments.TryGetValue(fromlpos, out sgm))
             {
                 if (sgm != null)
                 {
                     sgm.gameObject.SetActive(false);
                 }
 
-                state.Segments.Remove(state.LPos);
+                state.Segments.Remove(fromlpos);
             }
 
             bool isBacktracking = playerSteps[0].color == TileColor.Red;
@@ -418,179 +422,108 @@ namespace UdeS.Promoscience.Replay
             {
                 sgm.gameObject.SetActive(false);
             }
-        }   
+        }
 
-        private IEnumerator DrawCoroutine(
-            List<Segment> addedList,
-            List<Segment> removedList,
-            Vector2Int prevlpos,
-            Vector2Int lpos,
-            Vector2Int nextlpos,
-            bool isBacktracking,
-            bool isError = false)
+        public void AddState()
         {
-            //Add(
-            //    addedList,
-            //    prevlpos,
-            //    lpos,
-            //    nextlpos,
-            //    isBacktracking,
-            //    isError
-            //    );
+            states.Add(
+                new State
+                {
+                    // Copy the previous state
+                    Segments = new Dictionary<Vector2Int, Segment>(PreviousState.Segments),
+                    Errors = new Dictionary<Vector2Int, Segment>(PreviousState.Errors),
+                    Head = PreviousState.Head,
+                    ActionValue = course.CurrentActionValue,
+                    Action = course.CurrentAction
+                }
+            );
 
-            //CurrentSegment.AdjustOffset(offsetAmount);
-            //yield return StartCoroutine(CurrentSegment.DrawCoroutine());
-            yield return null;
+            bool isError = false;
+
+            if (PreviousState.Action == GameAction.ReturnToDivergencePoint)
+            {
+                isError = true;
+
+                ReturnToDivergent(
+                    CurrentState,
+                    PreviousState.LPos,
+                    PreviousState.ActionValue.playerSteps,
+                    PreviousState.ActionValue.wrongTiles);
+
+                CurrentState.PrevLPos =
+                    PreviousState.ActionValue.playerSteps.Length > 1 ?
+                    PreviousState.ActionValue.playerSteps[PreviousState.ActionValue.playerSteps.Length - 2].Position :
+                    PreviousState.ActionValue.playerSteps[PreviousState.ActionValue.playerSteps.Length - 1].Position;
+
+                CurrentState.LPos =
+                    PreviousState.ActionValue.playerSteps[PreviousState.ActionValue.playerSteps.Length - 1].Position;
+
+                CurrentState.NextLPos = Utils.GetMoveDestination(
+                    CurrentState.LPos,
+                    course.CurrentAction);
+            }
+            else
+            {
+                CurrentState.PrevLPos = PreviousState.LPos;
+                CurrentState.LPos = PreviousState.NextLPos;
+                CurrentState.NextLPos = Utils.GetMoveDestination(PreviousState.NextLPos, course.CurrentAction);
+            }
+
+            bool isBacktrack = course.CurrentActionValue.previousColor == TileColor.Red;
+
+            UpdateState(
+                CurrentState,
+                CurrentState.PrevLPos,
+                CurrentState.LPos,
+                CurrentState.NextLPos,
+                isBacktrack,
+                isError);
         }
 
         protected override void DoPrevious()
         {
-            if (course.CurrentAction != GameAction.Finish)
-            {
-                HideState(CurrentState);
-                DrawState(PreviousState);
+            HideState(CurrentState);
+            DrawState(PreviousState);
 
-                stateIndex--;
-            }
+            stateIndex--;
+
 
             course.Previous();
 
             if (course.OnPlayerSequenceProgressedHandler != null)
                 course.OnPlayerSequenceProgressedHandler.Invoke();
-
         }
 
         protected override void DoNext()
         {
-            if (course.CurrentAction != GameAction.Finish)
+            HideState(CurrentState);
+
+            stateIndex++;
+
+            // If the state was already visited
+            // Simply redraw it
+            // Else We need to create the state
+            if (stateIndex >= states.Count)
             {
-                stateIndex++;
-
-                if (stateIndex < states.Count)
-                // If the state was already visited
-                // Simply redraw it
-                {
-                    HideState(PreviousState);
-                    DrawState(CurrentState);
-                }
-                else
-                // We need to create the state
-                {
-                    states.Add(
-                            new State
-                            {
-                                // Copy the previous state
-                                Segments = new Dictionary<Vector2Int, Segment>(PreviousState.Segments),
-                                Errors = new Dictionary<Vector2Int, Segment>(PreviousState.Errors),
-                                //PrevLPos = PreviousState.LPos,
-                                //LPos = PreviousState.NextLPos,
-                                //NextLPos = Utils.GetMoveDestination(PreviousState.NextLPos, course.CurrentAction),
-                                ActionValue = course.CurrentActionValue,
-                                Action = course.CurrentAction
-                            }
-                        );
-
-                    bool isError = false;
-
-                    if (PreviousState.Action == GameAction.ReturnToDivergencePoint)
-                    {
-                        isError = true;
-
-                        ReturnToDivergent(
-                            CurrentState,
-                            PreviousState.ActionValue.playerSteps,
-                            PreviousState.ActionValue.wrongTiles);
-
-                        // Are we redrawing from the start ?
-                        CurrentState.PrevLPos = PreviousState.ActionValue.playerSteps.Length > 1 ?
-                            PreviousState.ActionValue.playerSteps[PreviousState.ActionValue.playerSteps.Length - 2].Position :
-                            PreviousState.ActionValue.playerSteps[PreviousState.ActionValue.playerSteps.Length - 1].Position;
-
-                        CurrentState.LPos =
-                            PreviousState.ActionValue.playerSteps[PreviousState.ActionValue.playerSteps.Length - 1].Position;
-
-                        CurrentState.NextLPos = Utils.GetMoveDestination(
-                            CurrentState.LPos, 
-                            course.CurrentAction);
-                    }
-                    else
-                    {
-                        CurrentState.PrevLPos = PreviousState.LPos;
-                        CurrentState.LPos = PreviousState.NextLPos;
-                        CurrentState.NextLPos = Utils.GetMoveDestination(PreviousState.NextLPos, course.CurrentAction);
-                    }
-
-
-                    bool isBacktrack = course.CurrentActionValue.previousColor == TileColor.Red;
-
-                    UpdateState(
-                        CurrentState,
-                        CurrentState.PrevLPos, 
-                        CurrentState.LPos, 
-                        CurrentState.NextLPos, 
-                        isBacktrack, 
-                        isError);
-
-                    DrawState(CurrentState);
-                    course.Next();
-
-                    if (course.OnPlayerSequenceProgressedHandler != null)
-                        course.OnPlayerSequenceProgressedHandler.Invoke();
-                }
+                AddState();
             }
+
+            DrawState(CurrentState);
+
+            course.Next();
+
+            if (course.OnPlayerSequenceProgressedHandler != null)
+                course.OnPlayerSequenceProgressedHandler.Invoke();
         }
 
         protected override IEnumerator DoNextCoroutine()
         {
-            yield return null;
-            //if (course.CurrentAction != GameAction.Finish)
-            //{
-            //    List<Segment> added = new List<Segment>();
-            //    List<Segment> removed = new List<Segment>();
+            DoNext();
 
-            //    if (isReturnedToDivergent)
-            //    {
-            //        Redraw(
-            //            added,
-            //            removed,
-            //            previousValue.playerSteps,
-            //            previousValue.wrongTiles);
-
-            //        // Are we redrawing from the start ?
-            //        // Yes: current == next
-            //        // No: current != next
-            //        lposition = 
-            //            previousValue.playerSteps.Length > 1 ?
-            //            previousValue.playerSteps[previousValue.playerSteps.Length - 2].Position :
-            //            previousValue.position;
-
-            //        nextlposition = previousValue.position;
-            //    }
-
-            //    previousValue = course.CurrentActionValue;
-            //    isBacktracking = course.CurrentActionValue.previousColor == TileColor.Red;
-
-            //    prevlposition = lposition;
-            //    lposition = nextlposition;
-            //    nextlposition = GetMoveDestination(lposition, course.CurrentAction);
-
-            //    yield return StartCoroutine(DrawCoroutine(added, removed, prevlposition, lposition, nextlposition));
-
-            //    if (isReturnedToDivergent)
-            //    {
-            //        errorIndicatorTemplate.Create(added.Last().transform);
-            //    }
-                
-            //    isReturnedToDivergent = course.CurrentAction == GameAction.ReturnToDivergencePoint;
-
-            //    this.added.Push(added);
-            //    this.removed.Push(removed);
-
-            //    if (course.OnPlayerSequenceProgressedHandler != null)
-            //        course.OnPlayerSequenceProgressedHandler.Invoke();
-            //}
-
-            //course.Next();
+            if (CurrentState.Head != null)
+            {
+                yield return StartCoroutine(CurrentState.Head.DrawCoroutine());
+            }
         }
 
     }

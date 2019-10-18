@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Replay
                 if (LocalMoveCount == 0)
                     return false;
 
-                return moveIndex >= 0;
+                return moveIndex > 0;
             }
         }
 

@@ -9,6 +9,7 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Utils
 {
+    [Serializable]
     public enum Algorithm : int
     {
         Tutorial = 0,
@@ -18,15 +19,19 @@ namespace UdeS.Promoscience.Utils
         Standard = 3
     }
 
-    public enum ServerGameState : int
+    [System.Serializable]
+    public enum ServerGameState// : int
     {
-        Lobby = 0,
-        Tutorial = 1,
-        GameRound = 2,
-        Intermission = 3,
-        ViewingPlayback = 4,
+        None = 0,//1 << 0,
+        Lobby = 1 << 0,
+        Tutorial = 1 << 1,
+        GameRound = 1 << 2,
+        Intermission = 1 << 3,
+        IntermissionReplay = 1 << 4,
+        FinalReplay = 1 << 5,
     }
 
+    [Serializable]
     public enum ClientGameState : int
     {
         NotReady = 0,
@@ -75,7 +80,7 @@ namespace UdeS.Promoscience.Utils
 
         // TODO combine?
         EndMovement = 16, 
-        Finish = 17 // Sentinel value
+        //Finish = 17 // Sentinel value
     }
 
     [Serializable]

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replay.UI
 {
-    public class Display : MonoBehaviour
+    public class Replay : MonoBehaviour
     {
         [SerializeField]
         private ScriptableReplayOptions replayOptions;
@@ -54,6 +54,26 @@ namespace UdeS.Promoscience.Replay.UI
             server.gameStateChangedEvent += OnGameStateChanged;
         }
 
+
+        public void OnGameStateChanged()
+        {
+            switch (server.GameState)
+            {
+                case Promoscience.Utils.ServerGameState.IntermissionReplay:
+                case Promoscience.Utils.ServerGameState.FinalReplay:
+                    Enabled = true;
+                    break;
+
+                default:
+                    Enabled = false;
+                    break;
+            }
+        }
+
+
+
+
+
         public void OnAlgorithmClicked()
         {
             replayOptions.SendAction(ReplayAction.ToggleAlgorithm);
@@ -95,20 +115,6 @@ namespace UdeS.Promoscience.Replay.UI
         public void OnExitClicked()
         {
             server.EndRoundOrTutorial();
-        }
-
-        public void OnGameStateChanged()
-        {
-            switch (server.GameState)
-            {
-                case Promoscience.Utils.ServerGameState.ViewingPlayback:
-                    Enabled = true;
-                    break;
-
-                default:
-                    Enabled = false;
-                    break;
-            }
         }
 
     }

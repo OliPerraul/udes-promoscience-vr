@@ -54,7 +54,7 @@ namespace UdeS.Promoscience
 
         public void OnServerGameStateChanged()
         {
-            if (serverGameState.GameState == ServerGameState.ViewingPlayback)
+            if (serverGameState.GameState == ServerGameState.IntermissionReplay)
             {
                 ChangeState(State.Topdown);
             }

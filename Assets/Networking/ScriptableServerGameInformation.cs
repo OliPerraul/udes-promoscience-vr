@@ -97,7 +97,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         {
             switch (GameState)
             {
-                case ServerGameState.ViewingPlayback:
+                case ServerGameState.IntermissionReplay:
                     break;
 
                 default:
@@ -291,8 +291,6 @@ namespace UdeS.Promoscience.ScriptableObjects
                 // Add sentinel values
                 // TODO put somewhere else? Maybe from the headset?
                 steps.Enqueue((int)GameAction.EndMovement);
-                steps.Enqueue((int)GameAction.Finish);
-                stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
                 stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
 
                 course.Actions = steps.ToArray();
@@ -302,7 +300,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             //Courses.Clear();
 
             // Begin playback server
-            GameState = ServerGameState.ViewingPlayback;
+            GameState = ServerGameState.IntermissionReplay;
         }
 
         public void LoadGameInformationFromDatabase()

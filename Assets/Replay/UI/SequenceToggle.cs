@@ -29,7 +29,7 @@ namespace UdeS.Promoscience.Replay.UI
         {
             switch (server.GameState)
             {
-                case Promoscience.Utils.ServerGameState.ViewingPlayback:
+                case Promoscience.Utils.ServerGameState.IntermissionReplay:
 
                     firstItem = null;
 
