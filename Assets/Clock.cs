@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cirrus;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace UdeS.Promoscience
 {
     public class Clock : MonoBehaviour
     {
-        public UdeS.OnEvent OnTickedHandler;
+        public OnEvent OnTickedHandler;
 
         private static Clock _instance;
 

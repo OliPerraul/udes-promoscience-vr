@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Cirrus;
 
 // TODO: use in cooldown
 
@@ -22,7 +23,7 @@ namespace UdeS.Promoscience
             }
         }
 
-        public UdeS.OnEvent OnTimeLimitHandler;
+        public OnEvent OnTimeLimitHandler;
 
         public Timer(float limit, bool start = true, bool repeat = false)
         {

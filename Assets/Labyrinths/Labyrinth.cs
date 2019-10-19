@@ -22,18 +22,29 @@ namespace UdeS.Promoscience.Labyrinths
         [SerializeField]
         public GameObject Overlay;
 
+        public void Maximize()
+        {
+            Source.rect = new Rect(0, 0, 1, 1);
+        }
+
+
         public void Split(
             int horizontal,
             int vertical,
             int index)
         {
+            var x = ((float)index.Mod(horizontal));
+            var y = ((float)(index / horizontal));
+
             Source.rect = new Rect(
-                ((float)index.Mod(horizontal)) / horizontal,
-                ((float)index / horizontal) / horizontal,
+                x / horizontal,
+                y / vertical,
                 1f / horizontal,
                 1f / vertical);
         }
     }
+
+    public delegate void OnLabyrinthEvent(Labyrinth labyrinth);
 
     public class Labyrinth : MonoBehaviour
     {

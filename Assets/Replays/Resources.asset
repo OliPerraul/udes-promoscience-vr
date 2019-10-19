@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32575a46b5c39d42b8ab2ae68a5ac77, type: 3}
+  m_Name: Resources
+  m_EditorClassIdentifier: 
+  Segment: {fileID: 114929429646536852, guid: 86507623fe7a1ba4b90c8c68268a1e3f, type: 2}
+  PlayerSequence: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
+    type: 2}
+  AlgorithmSequence: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
+    type: 2}
+  ToggleItem: {fileID: 0}
+  LabyrinthButton: {fileID: 0}

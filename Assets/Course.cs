@@ -6,6 +6,8 @@
 //using System.Collections.Generic;
 //using UdeS.Promoscience.Utils;
 
+using Cirrus;
+using Cirrus.Extensions;
 using System.Linq;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;

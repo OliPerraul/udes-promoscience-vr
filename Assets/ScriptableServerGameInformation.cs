@@ -22,7 +22,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         private ScriptableTeamList teams;
 
         [SerializeField]
-        private Replay.ScriptableReplayController playbackOptions;
+        private Replays.ScriptableController playbackOptions;
 
         // Ideally, player should reference a course instead of refering to a course id 
         private Dictionary<int, Course> courses;

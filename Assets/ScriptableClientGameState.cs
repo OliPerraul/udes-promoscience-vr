@@ -5,6 +5,8 @@ using UnityEngine;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
+using Cirrus;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.ScriptableObjects
 {
