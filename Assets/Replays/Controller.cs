@@ -31,7 +31,7 @@ namespace UdeS.Promoscience.Replays
         void Update()
         {
             // TODO if playback
-            if (serverGameState.GameState == Promoscience.Utils.ServerGameState.IntermissionReplay)
+            if (serverGameState.GameState == Promoscience.Utils.ServerGameState.Replay)
             {
                 if (Promoscience.Utils.UI.IsUIElementActive())
                     return;

@@ -11,6 +11,8 @@ namespace UdeS.Promoscience.Replays.Advanced
         [SerializeField]
         private Resource resource;
 
+        //private List
+
         [SerializeField]
         private ScriptableController replayController;
 
@@ -120,35 +122,36 @@ namespace UdeS.Promoscience.Replays.Advanced
                 }
             }
 
-            replayController.LabyrinthIdPairs.Clear();
+            replayController.IdLabyrinthPairs.Clear();
         }
 
         public override void OnServerGameStateChanged()
         {
             if (server.GameState ==
-                ServerGameState.FinalReplay)
+                ServerGameState.AdvancedReplay)
             {
                 Clear();
 
-                var labyrinthData = SQLiteUtilities.GetLabyrinths();
-
-                for (int i = 0; i < labyrinthData.Count; i++)
+                int i = 0;
+                foreach(var data in replayController.LabyrinthsData)
                 {
-                    Labyrinths.Labyrinth labyrinth = resources.Labyrinth.Create(transform, labyrinthData[i]);
+                    Labyrinths.Labyrinth labyrinth = resources.Labyrinth.Create(transform, data);
                     labyrinth.GenerateLabyrinthVisual();
                     labyrinth.transform.position = Vector3.down * resource.SelectionOffset * i;
                     Vector3 offset = labyrinth.GetLabyrinthPositionInWorldPosition(0, 0);
                     labyrinth.transform.position -= offset;
-                    replayController.LabyrinthIdPairs.Add(labyrinthData[i].currentId, labyrinth);
+                    replayController.IdLabyrinthPairs.Add(data.currentId, labyrinth);
 
                     labyrinth.Camera.Split(
                         resource.MaxHorizontal,
-                        labyrinthData.Count/resource.MaxHorizontal,
+                        replayController.LabyrinthsData.Count/resource.MaxHorizontal,
                         i);
 
                     labyrinth.Camera.Source.transform.position += Vector3.up * resource.SelectionOffset/2;
 
                     labyrinth.Camera.Source.gameObject.SetActive(true);
+
+                    i++;
                 }
 
                 StartCoroutine(DelayedOnAdvancedReplay());

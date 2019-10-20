@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.Replays.Advanced
 {
@@ -8,7 +9,25 @@ namespace UdeS.Promoscience.Replays.Advanced
     {
         private Dictionary<int, Labyrinths.Labyrinth> labyrinths;
 
+        //private List<Cours>
+
         public Cirrus.OnEvent OnAdvancedReplayHandler;
+
+        public ICollection<Labyrinths.IData> labyrinthsData;
+
+        public ICollection<Labyrinths.IData> LabyrinthsData
+        {
+            get
+            {
+                if (labyrinthsData == null || labyrinthsData.Count == 0)
+                {
+                    labyrinthsData = SQLiteUtilities.GetLabyrinths();
+                }
+
+                return labyrinthsData;
+            }
+        }
+
 
         public ICollection<Labyrinths.Labyrinth> Labyrinths
         {
@@ -18,7 +37,7 @@ namespace UdeS.Promoscience.Replays.Advanced
             }
         }
 
-        public IDictionary<int, Labyrinths.Labyrinth> LabyrinthIdPairs
+        public IDictionary<int, Labyrinths.Labyrinth> IdLabyrinthPairs
         {
             get
             {
@@ -30,6 +49,7 @@ namespace UdeS.Promoscience.Replays.Advanced
         {
             base.OnEnable();
             labyrinths = new Dictionary<int, Labyrinths.Labyrinth>();
+            labyrinthsData = new List<Labyrinths.IData>();
         }
     }
 }

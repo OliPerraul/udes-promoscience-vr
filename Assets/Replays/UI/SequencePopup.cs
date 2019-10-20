@@ -77,7 +77,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             switch (server.GameState)
             {
-                case Promoscience.Utils.ServerGameState.IntermissionReplay:
+                case Promoscience.Utils.ServerGameState.Replay:
 
                     if (server.Courses.Count != 0)
                     {

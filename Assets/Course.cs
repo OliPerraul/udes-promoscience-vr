@@ -20,6 +20,8 @@ namespace UdeS.Promoscience
 
     public class Course
     {
+        public int LabyrinthId;
+
         public int Id;
 
         public Utils.Algorithm Algorithm;

@@ -100,7 +100,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         {
             switch (GameState)
             {
-                case ServerGameState.IntermissionReplay:
+                case ServerGameState.Replay:
                     break;
 
                 default:
@@ -122,7 +122,8 @@ namespace UdeS.Promoscience.ScriptableObjects
             int courseId = -1;
             SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
 
-            if (SQLiteUtilities.TryGetCourseId(player.ServerTeamId, out courseId))
+            // Try to get an active course
+            if (SQLiteUtilities.TryGetActiveCourseId(player.ServerTeamId, out courseId))
             {
                 player.ServerCourseId = courseId;
             }
@@ -132,7 +133,9 @@ namespace UdeS.Promoscience.ScriptableObjects
                 {
                     Id = SQLiteUtilities.GetNextCourseID(),
                     Team = teams.GetScriptableTeamWithId(player.ServerTeamId),
-                    Algorithm = player.serverAlgorithm
+                    Algorithm = player.serverAlgorithm,
+                    LabyrinthId = GameRound
+                    
                 };
 
                 courses.Add(course.Id, course);
@@ -283,7 +286,7 @@ namespace UdeS.Promoscience.ScriptableObjects
                 }
             }
 
-            GameState = ServerGameState.FinalReplay;
+            GameState = ServerGameState.AdvancedReplay;
         }
 
         public void BeginIntermissionReplay()
@@ -320,7 +323,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
 
             // Begin playback server
-            GameState = ServerGameState.IntermissionReplay;
+            GameState = ServerGameState.Replay;
         }
 
         public void LoadGameInformationFromDatabase()

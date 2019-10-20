@@ -604,7 +604,7 @@ namespace UdeS.Promoscience.Utils
             }
         }
 
-        public static bool TryGetCourseId(int teamId, out int courseId)
+        public static bool TryGetActiveCourseId(int teamId, out int courseId)
         {
             courseId = -1;
 

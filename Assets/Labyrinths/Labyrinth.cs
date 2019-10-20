@@ -33,11 +33,13 @@ namespace UdeS.Promoscience.Labyrinths
             int vertical,
             int index)
         {
-            var x = ((float)index.Mod(horizontal));
+            var x =  ((float)index.Mod(horizontal));
+            
             var y = ((float)(index / horizontal));
+            y = (vertical - 1) - y;
 
             Source.rect = new Rect(
-                x / horizontal,
+                (x / horizontal),
                 y / vertical,
                 1f / horizontal,
                 1f / vertical);

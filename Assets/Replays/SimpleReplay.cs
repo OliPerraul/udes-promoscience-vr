@@ -328,7 +328,7 @@ namespace UdeS.Promoscience.Replays
         public override void OnServerGameStateChanged()
         {
             if (serverGameState.GameState ==
-                ServerGameState.IntermissionReplay)
+                ServerGameState.Replay)
             {
                 Begin();
             }
@@ -388,7 +388,7 @@ namespace UdeS.Promoscience.Replays
 
         public void OnCourseAdded(Course course)
         {
-            if (serverGameState.GameState == ServerGameState.IntermissionReplay)
+            if (serverGameState.GameState == ServerGameState.Replay)
             {
                 var sequence =
                     playerSequenceTemplate.Create(
@@ -407,7 +407,7 @@ namespace UdeS.Promoscience.Replays
 
         public void OnCourseRemoved(Course course)
         {
-            if (serverGameState.GameState == ServerGameState.IntermissionReplay)
+            if (serverGameState.GameState == ServerGameState.Replay)
             {
                 activeSequences.Remove(playerSequences[course.Id]);
                 playerSequences.Remove(course.Id);

@@ -42,13 +42,11 @@ namespace UdeS.Promoscience.Replays.Advanced.UI
             labyrinthButtons = new List<LabyrinthButton>();
 
             replayController.OnAdvancedReplayHandler += OnAdvancedReplay;
-      
-        }       
+
+        }
 
         public void OnClicked(Labyrinths.Labyrinth labyrinth)
         {
-            Debug.Log("hello");
-
             labyrinthDisplay.Enabled = true;
             Enabled = false;
 
@@ -65,10 +63,10 @@ namespace UdeS.Promoscience.Replays.Advanced.UI
 
         public override void OnServerChangedState()
         {
-            if (server.GameState == 
-                Promoscience.Utils.ServerGameState.FinalReplay)
+            if (server.GameState ==
+                Promoscience.Utils.ServerGameState.AdvancedReplay)
             {
-                
+
             }
         }
 
@@ -79,20 +77,25 @@ namespace UdeS.Promoscience.Replays.Advanced.UI
             GameObject horizontal = null;
 
             int i = 0;
-            foreach(var l in  replayController.Labyrinths)
+            Labyrinths.Labyrinth l;
+            foreach (var data in replayController.LabyrinthsData)
             {
-                if (i % resource.MaxHorizontal == 0)
+                if (replayController.IdLabyrinthPairs.TryGetValue(data.currentId, out l))
                 {
-                    horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
-                    horizontal.gameObject.SetActive(true);
+                    if (i % resource.MaxHorizontal == 0)
+                    {
+                        horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
+                        horizontal.gameObject.SetActive(true);
+                    }
+
+                    var button = labyrinthButtonTemplate.Create(horizontal.transform, l);
+                    button.name = "btn " + i;
+                    button.gameObject.SetActive(true);
+                    labyrinthButtons.Add(button);
+                    button.OnClickedHandler += OnClicked;
+
+                    i++;
                 }
-
-                var button = labyrinthButtonTemplate.Create(horizontal.transform, l);                
-                button.gameObject.SetActive(true);
-                labyrinthButtons.Add(button);
-                button.OnClickedHandler += OnClicked;
-
-                i++;
             }
         }
     }
