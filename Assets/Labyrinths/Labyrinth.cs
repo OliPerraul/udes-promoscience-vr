@@ -69,6 +69,14 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
+        public int Id
+        {
+            get
+            {
+                return data.currentId;
+            }
+        }
+
         [SerializeField]
         ScriptableResources ressources;
 
@@ -318,9 +326,9 @@ namespace UdeS.Promoscience.Labyrinths
             labyrinthTiles = null;
         }
 
-        public Labyrinth Create(Transform transform, IData data)
+        public Labyrinth Create(IData data)
         {
-            var labyrinth = this.Create(transform);
+            var labyrinth = this.Create();
             labyrinth.data = data;
             return labyrinth;
         }

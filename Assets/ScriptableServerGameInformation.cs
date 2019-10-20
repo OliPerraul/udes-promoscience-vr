@@ -21,9 +21,6 @@ namespace UdeS.Promoscience.ScriptableObjects
         [SerializeField]
         private ScriptableTeamList teams;
 
-        [SerializeField]
-        private Replays.ScriptableController playbackOptions;
-
         // Ideally, player should reference a course instead of refering to a course id 
         private Dictionary<int, Course> courses;
 
@@ -134,8 +131,7 @@ namespace UdeS.Promoscience.ScriptableObjects
                     Id = SQLiteUtilities.GetNextCourseID(),
                     Team = teams.GetScriptableTeamWithId(player.ServerTeamId),
                     Algorithm = player.serverAlgorithm,
-                    LabyrinthId = GameRound
-                    
+                    LabyrinthId = GameRound                    
                 };
 
                 courses.Add(course.Id, course);

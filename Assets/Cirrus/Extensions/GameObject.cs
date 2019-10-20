@@ -50,5 +50,10 @@ namespace Cirrus.Extensions
         {
             return Object.Instantiate(behv.gameObject, parent).GetComponent<T>();
         }
+
+        public static T Create<T>(this T behv) where T : MonoBehaviour
+        {
+            return Object.Instantiate(behv.gameObject).GetComponent<T>();
+        }
     }
 }

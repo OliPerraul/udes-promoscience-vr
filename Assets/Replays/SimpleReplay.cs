@@ -386,6 +386,8 @@ namespace UdeS.Promoscience.Replays
 
         }
 
+
+
         public void OnCourseAdded(Course course)
         {
             if (serverGameState.GameState == ServerGameState.Replay)

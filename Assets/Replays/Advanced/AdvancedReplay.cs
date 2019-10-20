@@ -3,6 +3,7 @@ using System.Collections;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UdeS.Promoscience.Replays.Advanced
 {
@@ -53,6 +54,9 @@ namespace UdeS.Promoscience.Replays.Advanced
 
                     lab.gameObject.SetActive(true);
                     lab.Camera.Maximize();
+
+                    IEnumerable<Course> courses =  server.Courses.Where(x => x.LabyrinthId == lab.Id);
+
 
                     break;
 
@@ -135,7 +139,7 @@ namespace UdeS.Promoscience.Replays.Advanced
                 int i = 0;
                 foreach(var data in replayController.LabyrinthsData)
                 {
-                    Labyrinths.Labyrinth labyrinth = resources.Labyrinth.Create(transform, data);
+                    Labyrinths.Labyrinth labyrinth = labyrinthResources.Labyrinth.Create(data);
                     labyrinth.GenerateLabyrinthVisual();
                     labyrinth.transform.position = Vector3.down * resource.SelectionOffset * i;
                     Vector3 offset = labyrinth.GetLabyrinthPositionInWorldPosition(0, 0);
