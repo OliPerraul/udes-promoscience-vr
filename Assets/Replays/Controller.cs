@@ -5,8 +5,6 @@ using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Replays
 {
-    //public 
-
     public class Controller : MonoBehaviour
     {
         [SerializeField]
@@ -28,10 +26,10 @@ namespace UdeS.Promoscience.Replays
 
         }
 
-        void Update()
+        public void Update()
         {
             // TODO if playback
-            if (serverGameState.GameState == Promoscience.Utils.ServerGameState.Replay)
+            if (serverGameState.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
             {
                 if (Promoscience.Utils.UI.IsUIElementActive())
                     return;

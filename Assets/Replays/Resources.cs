@@ -13,11 +13,5 @@ namespace UdeS.Promoscience.Replays
 
         [SerializeField]
         public AlgorithmSequence AlgorithmSequence;
-
-        [SerializeField]
-        public UI.SequenceToggleItem ToggleItem;
-
-        [SerializeField]
-        public Advanced.UI.LabyrinthButton LabyrinthButton;
     }
 }

@@ -27,7 +27,6 @@ namespace UdeS.Promoscience.Labyrinths
             Source.rect = new Rect(0, 0, 1, 1);
         }
 
-
         public void Split(
             int horizontal,
             int vertical,
@@ -59,13 +58,13 @@ namespace UdeS.Promoscience.Labyrinths
         [SerializeField]
         private ScriptableLabyrinth Resource;
 
-        private IData data;
+        private IData data = null;
 
         IData Data
         {
             get
             {
-                return Resource == null ? Resource : data;
+                return data == null ? Resource : data;
             }
         }
 
@@ -90,6 +89,21 @@ namespace UdeS.Promoscience.Labyrinths
         private void Start()
         {
             gameState.clientStateChangedEvent += OnGameStateChanged;
+        }
+
+        public void SetCamera(
+            int numLabyrinths, 
+            int maxHorizontal,
+            float offset,
+            int index)
+        {
+            Camera.Split(
+                maxHorizontal,
+                numLabyrinths / maxHorizontal,
+                index);
+
+            Camera.Source.transform.position += Vector3.up * offset / 2;
+            Camera.Source.gameObject.SetActive(true);
         }
 
         public void OnGameStateChanged()
@@ -332,7 +346,6 @@ namespace UdeS.Promoscience.Labyrinths
             labyrinth.data = data;
             return labyrinth;
         }
-
         
     }
 }

@@ -15,10 +15,10 @@ namespace UdeS.Promoscience.Network
         Player player;
 
         [SerializeField]
-        ScriptableTeamList teamList;
+        private ScriptableTeamList teamList;
 
         [SerializeField]
-        ScriptableServerGameInformation serverGameInformation;
+        private ScriptableServerGameInformation serverGameInformation;
 
         [SerializeField]
         ScriptableServerPlayerInformation serverPlayerInformation;

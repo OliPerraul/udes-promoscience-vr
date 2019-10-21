@@ -1,63 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
+using System;
+using System.Linq;
+using System.Threading;
 using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays
 {
+    // Playback for a single team
     public abstract class Replay : MonoBehaviour
     {
-        //[SerializeField]
-        protected abstract ScriptableController ReplayController { get; }
+        [SerializeField]
+        public ScriptableServerGameInformation Server;
 
         [SerializeField]
-        protected Labyrinths.ScriptableResources labyrinthResources;
-        
-        [SerializeField]
-        protected Resources resources;
+        public Resources Resources;
 
         [SerializeField]
-        protected ScriptableServerGameInformation server;
+        public Labyrinths.ScriptableResources LabyrinthResources;
 
-  
-        public virtual void OnReplayAction(ReplayAction action, params object[] args)
-        {
-
-        }
+        public abstract ScriptableController Controller { get; }
 
         public abstract void OnServerGameStateChanged();
 
+        [SerializeField]
+        protected Algorithm algorithm;
+
+        public virtual void OnValidate()
+        {
+            if (algorithm == null)
+            {
+                algorithm = FindObjectOfType<Algorithm>();
+            }
+        }
 
         public virtual void Awake()
         {
-            server.gameStateChangedEvent += OnServerGameStateChanged;
-            ReplayController.OnActionHandler += OnReplayAction;
+            Server.gameStateChangedEvent += OnServerGameStateChanged;
         }
-
-        // Create replay object on replay...
-        public Replay Create(Labyrinths.Labyrinth labyrinth, IEnumerable<Course> courses)
-        {
-            var rpl = this.Create();
-            //rpl.
-            return null;
-        }
-
-        public virtual void AddCourse(Course course)
-        {
-            //var sequence =
-            //    resources.PlayerSequence.Create(
-            //        course,
-            //        labyrinth,
-            //        labyrinthPosition);
-
-            //playerSequences.Add(course.Id, sequence);
-            //activeSequences.Add(sequence);
-
-            //TrySetMoveCount(sequence.LocalMoveCount);
-
-            //AdjustOffsets();
-        }
-
     }
 }

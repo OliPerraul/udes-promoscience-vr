@@ -28,7 +28,6 @@ namespace UdeS.Promoscience.Replays.Advanced
             }
         }
 
-
         public ICollection<Labyrinths.Labyrinth> Labyrinths
         {
             get

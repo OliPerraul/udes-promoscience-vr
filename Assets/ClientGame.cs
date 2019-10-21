@@ -7,7 +7,7 @@ using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience
 {
-    public class Game : MonoBehaviour
+    public class ClientGame : MonoBehaviour
     {
         [SerializeField]
         ScriptableControler controls;
@@ -33,9 +33,9 @@ namespace UdeS.Promoscience
         [SerializeField]
         private ScriptableIntegerArray recordedSteps;
 
-        private static Game instance = null;
+        private static ClientGame instance = null;
 
-        public static Game Instance
+        public static ClientGame Instance
         {
             get {
 

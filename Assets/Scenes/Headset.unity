@@ -887,6 +887,48 @@ Transform:
   m_Father: {fileID: 1235251268}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &214417220
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &231656076
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,7 +1148,6 @@ GameObject:
   - component: {fileID: 265111331}
   - component: {fileID: 265111330}
   - component: {fileID: 265111329}
-  - component: {fileID: 265111328}
   m_Layer: 0
   m_Name: HeadsetAvatar
   m_TagString: Untagged
@@ -1114,24 +1155,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &265111328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 265111327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverGameState: {fileID: 0}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  topDownCamera: {fileID: 1379671364}
-  gameplayCamera: {fileID: 578517098}
-  oculusCameraLeft: {fileID: 923469559}
-  oculusCameraRight: {fileID: 209387145}
-  Camera: {fileID: 0}
 --- !u!114 &265111329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1160,7 +1183,7 @@ MonoBehaviour:
   playerPositionRotationAndTiles: {fileID: 11400000, guid: a4032a8e9782c4645a8d9b69310a00e5,
     type: 2}
   paintingColor: {fileID: 11400000, guid: 9133d07fab49c954287c105288cfda6c, type: 2}
-  labyrinth: {fileID: 1452398573}
+  labyrinth: {fileID: 1290205603}
   cameraRig: {fileID: 265111330}
 --- !u!114 &265111330
 MonoBehaviour:
@@ -6100,7 +6123,7 @@ MonoBehaviour:
     type: 2}
   returnToDivergencePointRequest: {fileID: 11400000, guid: bc147a0c74a996b44b71cb26b81651f0,
     type: 2}
-  labyrinth: {fileID: 1452398573}
+  labyrinth: {fileID: 1290205603}
   serverPort: 9996
 --- !u!114 &290324894
 MonoBehaviour:
@@ -11809,7 +11832,7 @@ Prefab:
         type: 2}
       propertyPath: labyrinth
       value: 
-      objectReference: {fileID: 1452398573}
+      objectReference: {fileID: 0}
     - target: {fileID: 114077497795959622, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
       propertyPath: algorithm
@@ -11819,7 +11842,7 @@ Prefab:
         type: 2}
       propertyPath: labyrinth
       value: 
-      objectReference: {fileID: 1452398573}
+      objectReference: {fileID: 0}
     - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
       propertyPath: waitingForNextRoundRoom
@@ -11829,8 +11852,9 @@ Prefab:
         type: 2}
       propertyPath: gameCamera
       value: 
-      objectReference: {fileID: 265111328}
-    m_RemovedComponents: []
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114077497795959622, guid: 28f07edcf181f89438fcbae02eeecc82, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 28f07edcf181f89438fcbae02eeecc82, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &561596719
@@ -38057,6 +38081,12 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224910818808330038, guid: 0b9da81d81d98dc408a7dcfd3ee3ae9d,
     type: 2}
   m_PrefabInternal: {fileID: 1281469344}
+--- !u!114 &1290205603 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114960978338339494, guid: f697c43a84beec044840ffc7981c5b14,
+    type: 2}
+  m_PrefabInternal: {fileID: 214417220}
+  m_Script: {fileID: 11500000, guid: 940ca2b7de768b8438f3b382a6cdd036, type: 3}
 --- !u!1 &1291056704
 GameObject:
   m_ObjectHideFlags: 0
@@ -43103,11 +43133,6 @@ Prefab:
     - {fileID: 81361513038467546, guid: 8cdb3b398b3b3174f8f5990cb85da817, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 8cdb3b398b3b3174f8f5990cb85da817, type: 2}
   m_IsPrefabAsset: 0
---- !u!20 &1379671364 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 20051979929503488, guid: 8cdb3b398b3b3174f8f5990cb85da817,
-    type: 2}
-  m_PrefabInternal: {fileID: 1379671363}
 --- !u!4 &1379671365 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4279321665560392, guid: 8cdb3b398b3b3174f8f5990cb85da817,
@@ -47913,13 +47938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d863f367e290a5b42940e1beca77c4d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  labyrinth: {fileID: 0}
-  distanceDisplay: {fileID: 1022698878}
-  targetDisplay: {fileID: 0}
-  textDisplay: {fileID: 367234509}
-  cameraRig: {fileID: 265111330}
-  raycastStartPoint: {fileID: 2111713274}
 --- !u!1 &1413730717
 GameObject:
   m_ObjectHideFlags: 0
@@ -48053,49 +48071,6 @@ MonoBehaviour:
     type: 2}
   confirmationPanel: {fileID: 351146638}
   grabbedMouseFocus: {fileID: 0}
---- !u!1 &1452398572
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1452398574}
-  - component: {fileID: 1452398573}
-  m_Layer: 0
-  m_Name: Labyrinth
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1452398573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1452398572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 940ca2b7de768b8438f3b382a6cdd036, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
-  ressources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
---- !u!4 &1452398574
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1452398572}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1463888894
 GameObject:
   m_ObjectHideFlags: 0
@@ -67545,7 +67520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aa0364522b725e43a636aada198922f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1452398573}
+  labyrinth: {fileID: 1290205603}
 --- !u!114 &1630531313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67557,7 +67532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9085870fe91de8b4abab6553bd11f1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1452398573}
+  labyrinth: {fileID: 1290205603}
 --- !u!114 &1630531314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67569,7 +67544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eee8c225a1910d0428fe59158bb8692f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1452398573}
+  labyrinth: {fileID: 1290205603}
 --- !u!114 &1630531315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67581,7 +67556,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6150ba9d456f2bb438af8ec61e41c15f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1452398573}
+  labyrinth: {fileID: 1290205603}
 --- !u!114 &1630531316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67607,7 +67582,7 @@ MonoBehaviour:
     type: 2}
   returnToDivergencePointAnswer: {fileID: 11400000, guid: c0ec1a0d6508fb5428bb9521683f8580,
     type: 2}
-  labyrinth: {fileID: 1452398573}
+  labyrinth: {fileID: 1290205603}
   rightHandAlgorithm: {fileID: 1630531315}
   longestStraightAlgorithm: {fileID: 1630531314}
   shortestFlightDistanceAlgorithm: {fileID: 1630531313}

@@ -16,14 +16,17 @@ namespace UdeS.Promoscience.ScriptableObjects
         private Resources resources;
 
         [SerializeField]
-        Labyrinths.ScriptableLabyrinth labyrinthData;
+        private Replays.Resources replayResources;
+
+        [SerializeField]
+        private Labyrinths.ScriptableLabyrinth labyrinthData;
 
         [SerializeField]
         private ScriptableTeamList teams;
 
         // Ideally, player should reference a course instead of refering to a course id 
         private Dictionary<int, Course> courses;
-
+                  
         public ICollection<Course> Courses
         {
             get
@@ -32,17 +35,21 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
+        private Replays.Replay replay;
+
         public OnCourseEvent OnCourseAddedHandler;
 
         public Action gameRoundChangedEvent;
 
         public Action gameStateChangedEvent;
 
-        const int tutorialLabyrinthId = 4;
+        private const int tutorialLabyrinthId = 4;
 
-        int gameRound = 0;
+        private int gameRound = 0;
 
-        ServerGameState gameState;
+        private ServerGameState gameState;
+
+
 
         public void OnEnable()
         {
@@ -97,7 +104,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         {
             switch (GameState)
             {
-                case ServerGameState.Replay:
+                case ServerGameState.SimpleReplay:
                     break;
 
                 default:
@@ -266,7 +273,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
-        public void BeginFinalReplay()
+        public void BeginAdvancedReplay()
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -285,7 +292,9 @@ namespace UdeS.Promoscience.ScriptableObjects
             GameState = ServerGameState.AdvancedReplay;
         }
 
-        public void BeginIntermissionReplay()
+
+
+        public void BeginSimpleReplay()
         {         
              // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -319,7 +328,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
 
             // Begin playback server
-            GameState = ServerGameState.Replay;
+            GameState = ServerGameState.SimpleReplay;
         }
 
         public void LoadGameInformationFromDatabase()

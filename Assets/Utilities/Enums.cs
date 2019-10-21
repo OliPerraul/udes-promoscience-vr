@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.Utils
         Tutorial = 1 << 1,
         GameRound = 1 << 2,
         Intermission = 1 << 3,
-        Replay = 1 << 4,
+        SimpleReplay = 1 << 4,
         AdvancedReplay = 1 << 5,        
     }
 

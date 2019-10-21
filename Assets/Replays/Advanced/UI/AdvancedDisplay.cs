@@ -7,10 +7,10 @@ namespace UdeS.Promoscience.Replays.Advanced.UI
 {
     public class AdvancedDisplay : Replays.UI.MainDisplay
     {
-        private List<LabyrinthButton> labyrinthButtons;
-
         [SerializeField]
-        private Resource resource;
+        public Resource resource;
+
+        private List<LabyrinthButton> labyrinthButtons;
 
         protected override Replays.ScriptableController ReplayController
         {

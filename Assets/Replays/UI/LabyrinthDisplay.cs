@@ -36,6 +36,11 @@ namespace UdeS.Promoscience.Replays.UI
 
         protected bool init = false;
 
+        public virtual void Awake()
+        {
+            gameObject.SetActive(false);
+        }
+
         public virtual void OnEnable()
         {
             if (init)

@@ -41,9 +41,14 @@ namespace UdeS.Promoscience.Utils
         const string COURSE_TEAM_ID = TEAM_ID;
         const string COURSE_LABYRINTH_ID = LABYRINTH_ID;
         const string COURSE_NO_ALGO = "NoAlgo";
-        // Boolean value used to determine weather the given course is active or is
-        // merely kept for playback
-        const string COURSE_ACTIVE = "Active";
+        // Enum value used to determine the course status
+        const string COURSE_STATUS = "CourseStatus";
+        // active: whether the course is currently played
+        const int COURSE_STATUS_ACTIVE = 0;
+        // current: whether the course is used in the current play session
+        const int COURSE_STATUS_SESSION = 1;
+        // finished: whether the course is kept merely for historical reason
+        const int COURSE_STATUS_FINISHED = 0;
 
         //Event table column
         const string EVENT_ID = "EventID";
@@ -100,7 +105,7 @@ namespace UdeS.Promoscience.Utils
                                       COURSE_TEAM_ID + " INTEGER(10) NOT NULL, " +
                                       COURSE_LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
                                       COURSE_NO_ALGO + " INTEGER(10) NOT NULL, " +
-                                      COURSE_ACTIVE + " INTEGER(1) NOT NULL, " +
+                                      COURSE_STATUS + " INTEGER(1) NOT NULL, " +
                                       "PRIMARY KEY(" + COURSE_ID + "), " +
                                       "FOREIGN KEY(" + COURSE_TEAM_ID + ") REFERENCES " + TEAM + "(" + TEAM_ID + "), " +
                                       "FOREIGN KEY(" + COURSE_LABYRINTH_ID + ") REFERENCES " + LABYRINTH + "(" + LABYRINTH_ID + ")); ";
@@ -217,13 +222,13 @@ namespace UdeS.Promoscience.Utils
                     cmd.CommandText = "INSERT INTO " + LABYRINTH + " (" + LABYRINTH_ID + ", " + LABYRINTH_SPECS + ") VALUES (2, 'ahah2');";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_ACTIVE + ") VALUES (1, 2, 1, 55, 0);";
+                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_STATUS + ") VALUES (1, 2, 1, 55, 0);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_ACTIVE + ") VALUES (2, 2, 2, 3, 0);";
+                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_STATUS + ") VALUES (2, 2, 2, 3, 0);";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_ACTIVE + ") VALUES (3, 1, 2, 154, 0);";
+                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_STATUS + ") VALUES (3, 1, 2, 154, 0);";
                     cmd.ExecuteNonQuery();
 
                     cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_ID + ", " + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES (1, 33, '{}', DATETIME('2018-08-27',  '13:10:10'), 3);";
@@ -240,7 +245,6 @@ namespace UdeS.Promoscience.Utils
                 }
             }
         }
-
 
         public static void ReadDatabase()
         {
@@ -395,6 +399,53 @@ namespace UdeS.Promoscience.Utils
                 }
             }
         }
+
+        public static List<Course> GetSessionCoursesForLabyrinth(int labyrinthId)
+        {
+            List<Course> courses = new List<Course>();
+
+            CreateDatabaseIfItDoesntExist();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "PRAGMA foreign_keys = ON";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "SELECT * FROM " + COURSE + " WHERE " +
+                        COURSE_LABYRINTH_ID + "='" + labyrinthId + "' AND " +
+                        COURSE_STATUS + "='" + COURSE_STATUS_SESSION + "'";
+
+                    cmd.ExecuteNonQuery();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        // If active course
+                        while (reader.Read())
+                        {
+                            courses.Add(new Course
+                                {
+                                    LabyrinthId = labyrinthId,
+                                    Id = int.Parse(reader[COURSE_ID].ToString())
+
+                                });
+
+                        };                       
+
+                        reader.Close();
+                    }
+                }                
+            }
+
+            return courses;
+        }
+
 
         public static List<Labyrinths.IData> GetLabyrinths()
         {
@@ -596,7 +647,7 @@ namespace UdeS.Promoscience.Utils
 
                     cmd.CommandText =
                         " UPDATE " + COURSE +
-                        " SET " + COURSE_ACTIVE + " = " + 0 +
+                        " SET " + COURSE_STATUS + " = " + COURSE_STATUS_SESSION +
                         " WHERE " + COURSE_ID + " = " + courseId;
 
                     cmd.ExecuteNonQuery();
@@ -626,7 +677,7 @@ namespace UdeS.Promoscience.Utils
                     
                     cmd.CommandText = "SELECT * FROM " + COURSE + " WHERE " +
                         COURSE_TEAM_ID + "='" + teamId + "' AND " +
-                        COURSE_ACTIVE + "='" + 1 + "'";
+                        COURSE_STATUS + "='" + 1 + "'";
 
                     cmd.ExecuteNonQuery();
 
@@ -671,7 +722,7 @@ namespace UdeS.Promoscience.Utils
                     cmd.CommandText = "PRAGMA foreign_keys = ON";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_ACTIVE + ") VALUES ('" + courseId + "', '" + teamId + "', '" + labyrinthId + "', '" + algorithmId + "', '1');";
+                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_STATUS + ") VALUES ('" + courseId + "', '" + teamId + "', '" + labyrinthId + "', '" + algorithmId + "', '" + COURSE_STATUS_ACTIVE + "');";
                     cmd.ExecuteNonQuery();                                             
                 }
             }

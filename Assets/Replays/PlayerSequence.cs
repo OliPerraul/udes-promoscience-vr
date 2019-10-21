@@ -200,10 +200,15 @@ namespace UdeS.Promoscience.Replays
 
             // Never destroy segments (merely deactivate them
             states = new List<State>();
+
             material = new Material(templateMaterial);
+
             backtrackMaterial = new Material(templateBacktrackMaterial);
+
             materialAlpha = new Material(templateMaterial);
+
             backtrackMaterialAlpha = new Material(templateBacktrackMaterial);
+
             segments = new List<Segment>();
         }
 

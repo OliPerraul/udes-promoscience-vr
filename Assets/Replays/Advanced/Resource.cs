@@ -8,7 +8,5 @@ namespace UdeS.Promoscience.Replays.Advanced
         [SerializeField]
         public int MaxHorizontal = 2;
 
-        [SerializeField]
-        public float SelectionOffset = 60;
     }
 }

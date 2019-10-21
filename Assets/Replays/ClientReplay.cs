@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.Replays
 {
     public class ClientReplay : Replay
     {
-        protected override ScriptableController ReplayController
+        public override ScriptableController Controller
         {
             get
             {

@@ -26,13 +26,9 @@ namespace UdeS.Promoscience.Replays
 
     public abstract class ScriptableController : ScriptableObject
     {
-        public enum ReplayOption
-        {
-            Player,
-            Algorithm
-        }
+        public OnIntEvent valueChangeEvent;
 
-        public Action valueChangeEvent;
+        public OnEvent OnLabyrinthReplayHandler;
 
         public OnAction OnActionHandler;
 
@@ -67,7 +63,7 @@ namespace UdeS.Promoscience.Replays
                 index = value;
 
                 if (valueChangeEvent != null)
-                    valueChangeEvent();
+                    valueChangeEvent.Invoke(index);
             }
         }
 
@@ -133,26 +129,6 @@ namespace UdeS.Promoscience.Replays
                 return GlobalMoveIndex > 0;
             }
         }
-
-
-        private ReplayOption option;
-
-        public ReplayOption Option
-        {
-            get
-            {
-                return option;
-            }
-
-            set
-            {
-                option = value;
-
-                if (valueChangeEvent != null)
-                    valueChangeEvent();
-            }
-        }
-
 
         public void SendAction(ReplayAction action, params object[] args)
         {

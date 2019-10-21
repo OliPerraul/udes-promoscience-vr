@@ -483,7 +483,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4403001938476882, guid: 3c326b37a6a4b02448eb591b9e6c121a, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1634689534996100, guid: 3c326b37a6a4b02448eb591b9e6c121a, type: 2}
       propertyPath: m_Name
@@ -1369,6 +1369,48 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 224910818808330038, guid: 0b9da81d81d98dc408a7dcfd3ee3ae9d,
     type: 2}
   m_PrefabInternal: {fileID: 1903480520}
+--- !u!1001 &441256333
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4651009083039308, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f697c43a84beec044840ffc7981c5b14, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &498989481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1553,49 +1595,6 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
---- !u!1 &590990570
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 590990572}
-  - component: {fileID: 590990571}
-  m_Layer: 0
-  m_Name: Labyrinth
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &590990571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 590990570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 940ca2b7de768b8438f3b382a6cdd036, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
-  ressources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
---- !u!4 &590990572
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 590990570}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.8197186, y: 1.0323831, z: 2.0817564}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &615104637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1643,7 +1642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aa0364522b725e43a636aada198922f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labyrinth: {fileID: 590990571}
+  labyrinth: {fileID: 849229898}
 --- !u!114 &615104640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1655,7 +1654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9085870fe91de8b4abab6553bd11f1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labyrinth: {fileID: 590990571}
+  labyrinth: {fileID: 849229898}
 --- !u!114 &615104641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1667,7 +1666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6150ba9d456f2bb438af8ec61e41c15f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labyrinth: {fileID: 590990571}
+  labyrinth: {fileID: 849229898}
 --- !u!114 &615104642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1679,7 +1678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eee8c225a1910d0428fe59158bb8692f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  labyrinth: {fileID: 590990571}
+  labyrinth: {fileID: 849229898}
 --- !u!4 &615104643
 Transform:
   m_ObjectHideFlags: 0
@@ -1936,7 +1935,7 @@ RectTransform:
   - {fileID: 232565334}
   - {fileID: 87892523}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1948,6 +1947,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1339688833138618, guid: 0b9da81d81d98dc408a7dcfd3ee3ae9d,
     type: 2}
   m_PrefabInternal: {fileID: 1903480520}
+--- !u!114 &849229898 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114960978338339494, guid: f697c43a84beec044840ffc7981c5b14,
+    type: 2}
+  m_PrefabInternal: {fileID: 441256333}
+  m_Script: {fileID: 11500000, guid: 940ca2b7de768b8438f3b382a6cdd036, type: 3}
 --- !u!1 &912133086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,7 +1963,6 @@ GameObject:
   m_Component:
   - component: {fileID: 912133088}
   - component: {fileID: 912133087}
-  - component: {fileID: 1092863918}
   m_Layer: 0
   m_Name: TabletAvatar
   m_TagString: Untagged
@@ -1986,7 +1990,7 @@ MonoBehaviour:
   playerRotation: {fileID: 11400000, guid: 2a36872cafdb21144af5591f6351885b, type: 2}
   playerPaintTile: {fileID: 11400000, guid: 7301fc4899778e3459a66b0b9b95ffb4, type: 2}
   playerTilesToPaint: {fileID: 11400000, guid: e2a59109816f01f4b8f87b6ce5112b02, type: 2}
-  labyrinth: {fileID: 590990571}
+  labyrinth: {fileID: 849229898}
   cameraTransform: {fileID: 2132406151}
 --- !u!4 &912133088
 Transform:
@@ -2476,25 +2480,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1082966039}
   m_CullTransparentMesh: 0
---- !u!114 &1092863918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114353022368083574, guid: 98bb625919cf56c42bc9b50ddbc0b615,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 912133086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverGameState: {fileID: 0}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  topDownCamera: {fileID: 1943193780}
-  gameplayCamera: {fileID: 2132406147}
-  oculusCameraLeft: {fileID: 0}
-  oculusCameraRight: {fileID: 0}
-  Camera: {fileID: 0}
 --- !u!1 &1095700605
 GameObject:
   m_ObjectHideFlags: 0
@@ -2703,7 +2688,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1150753925
 GameObject:
@@ -2754,8 +2739,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c69da9b69c580a458f73bef6beb7707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
 --- !u!1 &1211690961
 GameObject:
   m_ObjectHideFlags: 0
@@ -2899,13 +2882,13 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4110188661362624, guid: 28f07edcf181f89438fcbae02eeecc82, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
       propertyPath: labyrinth
       value: 
-      objectReference: {fileID: 590990571}
+      objectReference: {fileID: 849229898}
     - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
       propertyPath: waitingForNextRoundRoom
@@ -2915,7 +2898,7 @@ Prefab:
         type: 2}
       propertyPath: gameCamera
       value: 
-      objectReference: {fileID: 1092863918}
+      objectReference: {fileID: 0}
     - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
       propertyPath: announcement
@@ -2925,7 +2908,7 @@ Prefab:
         type: 2}
       propertyPath: labyrinth
       value: 
-      objectReference: {fileID: 590990571}
+      objectReference: {fileID: 0}
     - target: {fileID: 114077497795959622, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
       propertyPath: algorithm
@@ -2935,7 +2918,7 @@ Prefab:
         type: 2}
       propertyPath: playbackManager
       value: 
-      objectReference: {fileID: 1562544500}
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114077497795959622, guid: 28f07edcf181f89438fcbae02eeecc82, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 28f07edcf181f89438fcbae02eeecc82, type: 2}
@@ -3142,53 +3125,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1411562911}
   m_CullTransparentMesh: 0
---- !u!1 &1562544499
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1562544501}
-  - component: {fileID: 1562544500}
-  m_Layer: 0
-  m_Name: Playback
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1562544500
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1562544499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fde6711e3c032649b5edefeb4879106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  playerSequenceTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
-    type: 2}
-  algorithmSequenceTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
-    type: 2}
-  labyrinth: {fileID: 590990571}
-  algorithm: {fileID: 615104638}
---- !u!4 &1562544501
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1562544499}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1577521898 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224702435597594978, guid: 4f3da2fa505774c4a822cee53b6b225a,

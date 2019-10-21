@@ -11,106 +11,58 @@ namespace UdeS.Promoscience.Replays.Advanced
     {
         [SerializeField]
         private Resource resource;
-
-        //private List
-
+               
         [SerializeField]
-        private ScriptableController replayController;
+        public ScriptableController controller;
 
-        protected override Replays.ScriptableController ReplayController
+        public override Replays.ScriptableController Controller
         {
             get
             {
-                return replayController;
+                return AdvancedController;
             }
         }
 
         [SerializeField]
-        private Algorithm algorithm;
+        public float SelectionOffset = 60;
 
-        public override void OnEnable()
+        private LabyrinthReplay labyrinthReplay;
+
+        protected ScriptableController AdvancedController
         {
-            base.OnEnable();
-
-            if (init) return;
-
-            base.OnEnable();
+            get
+            {
+                return controller;
+            }
         }
 
-        public override void OnReplayAction(ReplayAction action, params object[] args)
-        {
-            base.OnReplayAction(action, args);
+        private IEnumerable<Course> courses;
 
+        public override void Awake()
+        {
+            base.Awake();
+
+            Controller.OnActionHandler += OnReplayAction;
+        }
+
+        public virtual void OnReplayAction(ReplayAction action, params object[] args)
+        {
             switch (action)
             {
                 case ReplayAction.ToggleLabyrinth:
 
                     Labyrinths.Labyrinth lab = (Labyrinths.Labyrinth) args[0];
 
-                    foreach (Labyrinths.Labyrinth l in replayController.Labyrinths)
+                    foreach (Labyrinths.Labyrinth l in AdvancedController.Labyrinths)
                     {
                         l.gameObject.SetActive(false);
                     }
 
-                    lab.gameObject.SetActive(true);
-                    lab.Camera.Maximize();
+                    courses =  SQLiteUtilities.GetSessionCoursesForLabyrinth(lab.Id);
 
-                    IEnumerable<Course> courses =  server.Courses.Where(x => x.LabyrinthId == lab.Id);
+                    labyrinthReplay = new LabyrinthReplay(this, lab, algorithm, courses);
 
-
-                    break;
-
-                // TODO: Handle play/ stop from replay object and not sequences
-                // to prevent synch issues
-                case ReplayAction.ToggleAlgorithm:
-
-                    break;
-
-                case ReplayAction.Play:
-
-
-                    break;
-
-                case ReplayAction.Resume:
-
-                    break;
-
-                case ReplayAction.Pause:
-
-                    //mutex.WaitOne();
-
-                    //Pause();
-
-                    //mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayAction.Slide:
-
-
-
-                    break;
-
-
-                case ReplayAction.Next:
-
-
-
-                    break;
-
-                case ReplayAction.Previous:
-
-
-
-                    break;
-
-                case ReplayAction.Stop:
-
-                    //mutex.WaitOne();
-
-                    //Stop();
-
-                    //mutex.ReleaseMutex();
+                    labyrinthReplay.Start();
 
                     break;
             }
@@ -118,42 +70,40 @@ namespace UdeS.Promoscience.Replays.Advanced
 
         public virtual void Clear()
         {
-            if (replayController.Labyrinths.Count != 0)
+            if (AdvancedController.Labyrinths.Count != 0)
             {
-                foreach (var l in replayController.Labyrinths)
+                foreach (var l in AdvancedController.Labyrinths)
                 {
                     Destroy(l.gameObject);
                 }
             }
 
-            replayController.IdLabyrinthPairs.Clear();
+            AdvancedController.IdLabyrinthPairs.Clear();
         }
+
 
         public override void OnServerGameStateChanged()
         {
-            if (server.GameState ==
+            if (Server.GameState ==
                 ServerGameState.AdvancedReplay)
             {
                 Clear();
 
                 int i = 0;
-                foreach(var data in replayController.LabyrinthsData)
+                foreach(var data in AdvancedController.LabyrinthsData)
                 {
-                    Labyrinths.Labyrinth labyrinth = labyrinthResources.Labyrinth.Create(data);
+                    Labyrinths.Labyrinth labyrinth = LabyrinthResources.Labyrinth.Create(data);
                     labyrinth.GenerateLabyrinthVisual();
-                    labyrinth.transform.position = Vector3.down * resource.SelectionOffset * i;
+                    labyrinth.transform.position = Vector3.down * SelectionOffset * i;
                     Vector3 offset = labyrinth.GetLabyrinthPositionInWorldPosition(0, 0);
                     labyrinth.transform.position -= offset;
-                    replayController.IdLabyrinthPairs.Add(data.currentId, labyrinth);
+                    AdvancedController.IdLabyrinthPairs.Add(data.currentId, labyrinth);
 
-                    labyrinth.Camera.Split(
-                        resource.MaxHorizontal,
-                        replayController.LabyrinthsData.Count/resource.MaxHorizontal,
+                    labyrinth.SetCamera(
+                        AdvancedController.LabyrinthsData.Count, 
+                        resource.MaxHorizontal, 
+                        SelectionOffset, 
                         i);
-
-                    labyrinth.Camera.Source.transform.position += Vector3.up * resource.SelectionOffset/2;
-
-                    labyrinth.Camera.Source.gameObject.SetActive(true);
 
                     i++;
                 }
@@ -166,9 +116,9 @@ namespace UdeS.Promoscience.Replays.Advanced
         {
             yield return new WaitForEndOfFrame();
 
-            if (replayController.OnAdvancedReplayHandler != null)
+            if (AdvancedController.OnAdvancedReplayHandler != null)
             {
-                replayController.OnAdvancedReplayHandler.Invoke();
+                AdvancedController.OnAdvancedReplayHandler.Invoke();
             }
 
             yield return null;

@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.ScriptableObjects
     public class ScriptableAlgorithm : ScriptableObject
     {
         [SerializeField]
-        Utils.Algorithm value;
+        public Utils.Algorithm value;
 
         public Action valueChangedEvent;
 
