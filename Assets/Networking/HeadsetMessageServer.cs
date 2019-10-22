@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.Network
         ScriptableInteger gameRound;
 
         [SerializeField]
-        ScriptableClientGameState gameState;
+        ScriptableClientGameState clientState;
 
         [SerializeField]
         ScriptableBoolean isConnectedToPair;
@@ -57,10 +57,8 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         ScriptableAction returnToDivergencePointRequest;
 
-        [SerializeField]
-        Labyrinths.Labyrinth labyrinth;
-
         NetworkServerSimple server = null;
+
         NetworkConnection clientConnection = null;
 
         bool isRequestDelayed = false;
@@ -115,7 +113,7 @@ namespace UdeS.Promoscience.Network
         {
             clientConnection = netMsg.conn;
 
-            gameState.OnRespectChangedHandler += SendAlgorithmRespect;
+            clientState.OnRespectChangedHandler += SendAlgorithmRespect;
             playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
             playerPosition.valueChangedEvent += SendPlayerPosition;
             playerReachedTheEnd.action += SendEndReached;
@@ -140,7 +138,7 @@ namespace UdeS.Promoscience.Network
 
             clientConnection = null;
 
-            gameState.OnRespectChangedHandler -= SendAlgorithmRespect;
+            clientState.OnRespectChangedHandler -= SendAlgorithmRespect;
             playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
             playerPosition.valueChangedEvent -= SendPlayerPosition;
             playerReachedTheEnd.action -= SendEndReached;
@@ -166,7 +164,7 @@ namespace UdeS.Promoscience.Network
             RequestForGameInformationMessage msg = netMsg.ReadMessage<RequestForGameInformationMessage>();
             gameRoundRequest = msg.gameRound;
 
-            if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.WaitingForNextRound)
+            if (clientState.Value == ClientGameState.Playing || clientState.Value == ClientGameState.PlayingTutorial || clientState.Value == ClientGameState.WaitingForNextRound)
             {
                 if (gameRoundRequest == gameRound.Value)
                 {
@@ -177,7 +175,7 @@ namespace UdeS.Promoscience.Network
                     else
                     {
                         SendAlgorithm();
-                        SendAlgorithmRespect(gameState.Respect);
+                        SendAlgorithmRespect(clientState.Respect);
                         SendPlayerPosition();
                         SendPlayerRotation();
                         SendPlayerTilesToPaint();
@@ -189,14 +187,14 @@ namespace UdeS.Promoscience.Network
 
             if (!isRequestDelayed)
             {
-                gameState.clientStateChangedEvent += DelayedSendGameInformation;
+                clientState.clientStateChangedEvent += DelayedSendGameInformation;
                 isRequestDelayed = true;
             }
         }
 
         void DelayedSendGameInformation()
         {
-            if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.WaitingForNextRound)
+            if (clientState.Value == ClientGameState.Playing || clientState.Value == ClientGameState.PlayingTutorial || clientState.Value == ClientGameState.WaitingForNextRound)
             {
                 if (gameRoundRequest == gameRound.Value)
                 {
@@ -207,7 +205,7 @@ namespace UdeS.Promoscience.Network
                     else
                     {
                         SendAlgorithm();
-                        SendAlgorithmRespect(gameState.Respect);
+                        SendAlgorithmRespect(clientState.Respect);
                         SendPlayerPosition();
                         SendPlayerRotation();
                         SendPlayerTilesToPaint();
@@ -278,7 +276,7 @@ namespace UdeS.Promoscience.Network
         void SendPlayerTilesToPaint()
         {
             PlayerTilesToPaintMessage msg = new PlayerTilesToPaintMessage();
-            msg.tiles = labyrinth.GetTilesToPaint();
+            msg.tiles = clientState.Labyrinth.GetTilesToPaint();
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }

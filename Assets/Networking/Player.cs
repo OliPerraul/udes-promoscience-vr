@@ -13,10 +13,7 @@ namespace UdeS.Promoscience.Network
     public class Player : NetworkBehaviour
     {
         [SerializeField]
-        private Algorithms.Resources algorithmResources;
-
-        [SerializeField]
-        private ScriptableClientGameState client;
+        private Resources resources;
 
         public string deviceUniqueIdentifier = "";
         string deviceName = "";
@@ -31,7 +28,7 @@ namespace UdeS.Promoscience.Network
 
             if (isClient)
             {
-                gameState.clientStateChangedEvent -= SendCmdPlayerGameState;
+                client.clientStateChangedEvent -= SendCmdPlayerGameState;
 
                 if (deviceType.Value == Utils.DeviceType.Headset)
                 {
@@ -201,7 +198,7 @@ namespace UdeS.Promoscience.Network
         ScriptableInteger gameRound;
 
         [SerializeField]
-        ScriptableClientGameState gameState;
+        ScriptableClientGameState client;
 
         [SerializeField]
         ScriptableBoolean isRoundCompleted;
@@ -225,7 +222,7 @@ namespace UdeS.Promoscience.Network
         {
             base.OnStartLocalPlayer();
 
-            gameState.clientStateChangedEvent += SendCmdPlayerGameState;
+            client.clientStateChangedEvent += SendCmdPlayerGameState;
 
             ClientInitialize();
         }
@@ -257,14 +254,14 @@ namespace UdeS.Promoscience.Network
             CmdSetDeviceName(ServerDeviceName);
             CmdSetUniqueIdentifier(deviceUniqueIdentifier);
 
-            gameState.Value = ClientGameState.Connecting;
+            client.Value = ClientGameState.Connecting;
         }
 
         [Client]
         void SendCmdPlayerAction()
         {
-            if (gameState.Value == ClientGameState.Playing ||
-                gameState.Value == ClientGameState.PlayingTutorial)
+            if (client.Value == ClientGameState.Playing ||
+                client.Value == ClientGameState.PlayingTutorial)
             {
                 CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString, gameAction.Value);
             }
@@ -273,7 +270,7 @@ namespace UdeS.Promoscience.Network
         [Client]
         void SendCmdPlayerGameState()
         {
-            CmdSetPlayerGameState(gameState.Value);
+            CmdSetPlayerGameState(client.Value);
         }
 
         [Client]
@@ -329,7 +326,7 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetGameState(NetworkConnection target, ClientGameState state)
         {
-            gameState.Value = state;
+            client.Value = state;
         }
 
         [TargetRpc]
@@ -337,9 +334,9 @@ namespace UdeS.Promoscience.Network
         {
             pairedIpAdress.Value = ipAdress;
 
-            if (gameState.Value == ClientGameState.Pairing)
+            if (client.Value == ClientGameState.Pairing)
             {
-                gameState.Value = ClientGameState.Paired;
+                client.Value = ClientGameState.Paired;
             }
         }
 
@@ -354,26 +351,28 @@ namespace UdeS.Promoscience.Network
         {
             recordedSteps.Value = new int[0];
 
-            client.Labyrinth = new Labyrinths.Data
-            {
-                data = data,
-                sizeX = sizeX,
-                sizeY = sizeY,
-                currentId = labyrinthId
-            };
+            client.LabyrinthData = new Labyrinths.Data(
+                labyrinthId,
+                data,
+                sizeX,
+                sizeY
+                );
+            
+            client.Labyrinth = resources.Labyrinths.Labyrinth.Create(client.LabyrinthData);
 
-            client.Algorithm = algorithmResources.CreateAlgorithm(algo, client.Labyrinth);
+            client.Algorithm = resources.Algorithms.CreateAlgorithm(algo, client.LabyrinthData);
 
             isRoundCompleted.Value = false;
+
             gameRound.Value = labyrinthId;
 
             if (algo == Algorithm.Tutorial)
             {
-                gameState.Value = ClientGameState.TutorialLabyrinthReady;
+                client.Value = ClientGameState.TutorialLabyrinthReady;
             }
             else
             {
-                gameState.Value = ClientGameState.LabyrithReady;
+                client.Value = ClientGameState.LabyrinthReady;
             }
         }
 
@@ -389,26 +388,32 @@ namespace UdeS.Promoscience.Network
         {
             recordedSteps.Value = steps;
 
-            client.Labyrinth = new Labyrinths.Data
-            {
-                data = data,
-                sizeX = sizeX,
-                sizeY = sizeY,
-                currentId = labyrinthId
-            };
+            client.LabyrinthData = new Labyrinths.Data(
+                labyrinthId,
+                data,
+                sizeX,
+                sizeY);
+            //{
+            //    data = data,
+            //    sizeX = sizeX,
+            //    sizeY = sizeY,
+            //    currentId = labyrinthId
+            //};
 
-            client.Algorithm = algorithmResources.CreateAlgorithm(algo, client.Labyrinth);
+            client.Labyrinth = resources.Labyrinths.Labyrinth.Create(client.LabyrinthData);
+
+            client.Algorithm = resources.Algorithms.CreateAlgorithm(algo, client.LabyrinthData);
 
             isRoundCompleted.Value = false;
             gameRound.Value = labyrinthId;
 
             if (algo == Algorithm.Tutorial)
             {
-                gameState.Value = ClientGameState.TutorialLabyrinthReady;
+                client.Value = ClientGameState.TutorialLabyrinthReady;
             }
             else
             {
-                gameState.Value = ClientGameState.LabyrithReady;
+                client.Value = ClientGameState.LabyrinthReady;
             }
         }
 
@@ -418,9 +423,9 @@ namespace UdeS.Promoscience.Network
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
             //recordedSteps.Value = steps;
-            gameState.ActionValues = stepValues;
-            gameState.ActionSteps = steps;
-            gameState.Value = ClientGameState.ViewingLocalReplay;
+            client.ActionValues = stepValues;
+            client.ActionSteps = steps;
+            client.Value = ClientGameState.ViewingLocalReplay;
         }
 
         [TargetRpc]
@@ -430,7 +435,7 @@ namespace UdeS.Promoscience.Network
             gameRound.Value = labyrinthId;
             
             // No steps required, player watch server screen
-            gameState.Value = ClientGameState.ViewingGlobalReplay;
+            client.Value = ClientGameState.ViewingGlobalReplay;
         }
 
 
@@ -440,7 +445,7 @@ namespace UdeS.Promoscience.Network
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
             recordedSteps.Value = steps; 
-            gameState.Value = ClientGameState.WaitingForNextRound;
+            client.Value = ClientGameState.WaitingForNextRound;
         }
 
         [TargetRpc]

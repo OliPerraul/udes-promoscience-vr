@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.Algorithms
         ScriptableControler controls;
 
         [SerializeField]
-        Labyrinths.Labyrinth labyrinth;
+        private ScriptableClientGameState client;
 
         [SerializeField]
         GameObject distanceDisplay;
@@ -78,8 +78,8 @@ namespace UdeS.Promoscience.Algorithms
             {
                 if (raycastHit.transform.tag == TAG_WALL)
                 {
-                    Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
-                    Vector2Int hitWallPosition = labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.transform.position.x, raycastHit.transform.position.z);
+                    Vector2Int currentPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+                    Vector2Int hitWallPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.transform.position.x, raycastHit.transform.position.z);
 
                     if (hitWallPosition.x == currentPosition.x || hitWallPosition.y == currentPosition.y)
                     {
@@ -92,7 +92,7 @@ namespace UdeS.Promoscience.Algorithms
 
                             while (y != hitWallPosition.y)
                             {
-                                if (!labyrinth.GetIsTileWalkable(currentPosition.x, y))
+                                if (!client.Labyrinth.GetIsTileWalkable(currentPosition.x, y))
                                 {
                                     isFirstWallInLine = false;
                                     break;
@@ -108,7 +108,7 @@ namespace UdeS.Promoscience.Algorithms
 
                             while (x != hitWallPosition.x)
                             {
-                                if (!labyrinth.GetIsTileWalkable(x, currentPosition.y))
+                                if (!client.Labyrinth.GetIsTileWalkable(x, currentPosition.y))
                                 {
                                     isFirstWallInLine = false;
                                     break;
@@ -127,8 +127,8 @@ namespace UdeS.Promoscience.Algorithms
                 }
                 else if (raycastHit.transform.tag == TAG_FLOOR)
                 {
-                    Vector2Int currentPosition = labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
-                    Vector2Int hitPosition = labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.point.x, raycastHit.point.z);
+                    Vector2Int currentPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+                    Vector2Int hitPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.point.x, raycastHit.point.z);
 
                     if (hitPosition == currentPosition
                             || hitPosition == (currentPosition + new Vector2Int(xByDirection[0], yByDirection[0]))
@@ -136,7 +136,7 @@ namespace UdeS.Promoscience.Algorithms
                             || hitPosition == (currentPosition + new Vector2Int(xByDirection[2], yByDirection[2]))
                             || hitPosition == (currentPosition + new Vector2Int(xByDirection[3], yByDirection[3])))
                     {
-                        distance = (labyrinth.GetLabyrithEndPosition() - hitPosition).magnitude;
+                        distance = (client.Labyrinth.GetLabyrithEndPosition() - hitPosition).magnitude;
                         distance = Mathf.Round(distance * 10) / 10;
                         text = "<color=lime>" + distance.ToString() + "</color>";
                     }

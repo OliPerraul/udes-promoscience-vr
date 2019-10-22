@@ -12,6 +12,9 @@ namespace UdeS.Promoscience
     public class TabletControls : MonoBehaviour
     {
         [SerializeField]
+        private ScriptableClientGameState client;
+
+        [SerializeField]
         ScriptableControler controls;
 
         [SerializeField]
@@ -31,9 +34,6 @@ namespace UdeS.Promoscience
 
         [SerializeField]
         Labyrinths.ScriptableTileArray playerTilesToPaint;
-
-        [SerializeField]
-        Labyrinths.Labyrinth labyrinth;
 
         [SerializeField]
         Transform cameraTransform;
@@ -184,7 +184,7 @@ namespace UdeS.Promoscience
 
         void PaintTile(Vector2Int position, TileColor color)
         {
-            GameObject tile = labyrinth.GetTile(position);
+            GameObject tile = client.Labyrinth.GetTile(position);
             Algorithms.FloorPainter floorPainter = tile.GetComponentInChildren<Algorithms.FloorPainter>();
 
             if (floorPainter != null)
@@ -206,8 +206,14 @@ namespace UdeS.Promoscience
             positionQueue.Clear();
             rotationQueue.Clear();
 
+            int direction = 0;
+
             cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
-            int direction = labyrinth.GetStartDirection();
+
+            if (client.Labyrinth != null)
+            {
+                direction = client.Labyrinth.GetStartDirection();
+            }
 
             Quaternion rotation = new Quaternion(0, 0, 0, 0);
 

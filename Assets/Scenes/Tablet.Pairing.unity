@@ -571,7 +571,6 @@ GameObject:
   m_Component:
   - component: {fileID: 912133088}
   - component: {fileID: 912133087}
-  - component: {fileID: 1092863918}
   m_Layer: 0
   m_Name: TabletAvatar
   m_TagString: Untagged
@@ -591,6 +590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ed9baf2765a3e40874a00a0b1574a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  client: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
@@ -599,7 +599,6 @@ MonoBehaviour:
   playerRotation: {fileID: 11400000, guid: 2a36872cafdb21144af5591f6351885b, type: 2}
   playerPaintTile: {fileID: 11400000, guid: 7301fc4899778e3459a66b0b9b95ffb4, type: 2}
   playerTilesToPaint: {fileID: 11400000, guid: e2a59109816f01f4b8f87b6ce5112b02, type: 2}
-  labyrinth: {fileID: 0}
   cameraTransform: {fileID: 2132406151}
 --- !u!4 &912133088
 Transform:
@@ -618,24 +617,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1092863918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 114353022368083574, guid: 98bb625919cf56c42bc9b50ddbc0b615,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 912133086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverGameState: {fileID: 0}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  topDownCamera: {fileID: 1943193780}
-  gameplayCamera: {fileID: 2132406147}
-  oculusCameraLeft: {fileID: 0}
-  oculusCameraRight: {fileID: 0}
 --- !u!1 &1114945676
 GameObject:
   m_ObjectHideFlags: 0

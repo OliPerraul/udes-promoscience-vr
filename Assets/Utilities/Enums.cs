@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Utils
         NoAssociatedPair = 3,
         Paired = 4,
         Ready = 5,
-        LabyrithReady = 6,
+        LabyrinthReady = 6,
         TutorialLabyrinthReady = 7,
         PlayingTutorial = 8,
         Playing = 9,

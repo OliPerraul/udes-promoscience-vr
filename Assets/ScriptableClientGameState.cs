@@ -16,9 +16,27 @@ namespace UdeS.Promoscience.ScriptableObjects
         public OnEvent OnLabyrinthChangedHandler;
 
         [SerializeField]
-        private Labyrinths.IData labyrinth;
+        private Labyrinths.IData labyrinthData;
 
-        public Labyrinths.IData Labyrinth
+        public Labyrinths.IData LabyrinthData
+        {
+            get
+            {
+                return labyrinthData;
+            }
+
+            set
+            {
+                labyrinthData = value;
+
+                if (OnLabyrinthChangedHandler != null)
+                    OnLabyrinthChangedHandler.Invoke();
+            }
+        }
+
+        private Labyrinths.Labyrinth labyrinth;
+
+        public Labyrinths.Labyrinth Labyrinth
         {
             get
             {
@@ -28,9 +46,6 @@ namespace UdeS.Promoscience.ScriptableObjects
             set
             {
                 labyrinth = value;
-
-                if (OnLabyrinthChangedHandler != null)
-                    OnLabyrinthChangedHandler.Invoke();
             }
         }
 
@@ -69,24 +84,25 @@ namespace UdeS.Promoscience.ScriptableObjects
             respect = 1;
         }
 
-        public OnEvent OnCourseChangedHandler;
+        // TODO replace algorithm and labyrinth fields by Course
+        //public OnEvent OnCourseChangedHandler;
 
-        public Course course;
+        //public Course course;
 
-        public Course Course
-        {
-            get
-            {
-                return course;
-            }
+        //public Course Course
+        //{
+        //    get
+        //    {
+        //        return course;
+        //    }
 
-            set
-            {
-                course = value;
-                if(OnCourseChangedHandler != null)
-                    OnCourseChangedHandler.Invoke();
-            }
-        }
+        //    set
+        //    {
+        //        course = value;
+        //        if(OnCourseChangedHandler != null)
+        //            OnCourseChangedHandler.Invoke();
+        //    }
+        //}
 
         public string[] ActionValues;
 

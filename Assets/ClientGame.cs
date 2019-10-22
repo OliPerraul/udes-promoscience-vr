@@ -13,17 +13,14 @@ namespace UdeS.Promoscience
         ScriptableControler controls;
 
         [SerializeField]
-        ScriptableClientGameState gameState;               
+        ScriptableClientGameState client;               
 
         [SerializeField]
         ScriptableAction playerReachedTheEnd;
 
         [SerializeField]
         ScriptableBoolean isDiverging;
-
-        [SerializeField]
-        Labyrinths.Labyrinth labyrinth;
-
+        
         [SerializeField]
         GameObject waitingForNextRoundRoom;
 
@@ -33,7 +30,7 @@ namespace UdeS.Promoscience
 
         void Start()
         {
-            gameState.clientStateChangedEvent += OnGameStateChanged;
+            client.clientStateChangedEvent += OnGameStateChanged;
 
             if (playerReachedTheEnd != null)
             {
@@ -43,7 +40,17 @@ namespace UdeS.Promoscience
 
         public void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
+
+            if (
+                client.Value == ClientGameState.TutorialLabyrinthReady ||
+                client.Value == ClientGameState.LabyrinthReady)
+            {
+                client.Labyrinth.GenerateLabyrinthVisual();
+                client.Value = ClientGameState.PlayingTutorial;
+            }
+            else if (
+                client.Value == ClientGameState.Playing ||
+                client.Value == ClientGameState.PlayingTutorial)
             {
                 if (controls != null)
                 {
@@ -61,14 +68,14 @@ namespace UdeS.Promoscience
                     controls.IsPlayerControlsEnabled = true;
                 }
             }
-            else if (gameState.Value == ClientGameState.ViewingLocalReplay)
+            else if (client.Value == ClientGameState.ViewingLocalReplay)
             {
                 //gameCamera.ChangeState(Camera.State.Topdown);
 
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();
             }
-            else if (gameState.Value == ClientGameState.WaitingForNextRound)
+            else if (client.Value == ClientGameState.WaitingForNextRound)
             {
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();
@@ -88,17 +95,17 @@ namespace UdeS.Promoscience
                 isDiverging.Value = false;
             }
 
-            if (gameState.Value == ClientGameState.PlayingTutorial ||
-                gameState.Value == ClientGameState.Playing)
+            if (client.Value == ClientGameState.PlayingTutorial ||
+                client.Value == ClientGameState.Playing)
             {
                 controls.IsPlayerControlsEnabled = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
-                gameState.Value = ClientGameState.WaitingReplay;
+                client.Value = ClientGameState.WaitingReplay;
             }
             else
             {
-                gameState.Value = ClientGameState.WaitingForNextRound;
+                client.Value = ClientGameState.WaitingForNextRound;
             }
         }
     }

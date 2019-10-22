@@ -230,13 +230,13 @@ namespace UdeS.Promoscience.Tests
             data[(12 * sizeY) + 11] = Constants.TILE_KART_VERTICAL_WALL_ID;
             data[(12 * sizeY) + 12] = Constants.TILE_KART_TOWER_WALL_ID;
 
-            client.Labyrinth = new Labyrinths.Data
-            {
-                data = data,
-                sizeX = sizeX,
-                sizeY = sizeY,
-                currentId = id
-            };
+            client.LabyrinthData = new Labyrinths.Data(
+                id,
+                data,
+                sizeX,
+                sizeY
+                );
+            
         }
     }
 }

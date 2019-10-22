@@ -56,7 +56,7 @@ namespace UdeS.Promoscience.UI
                 Message = tutorialString.Value + "\n" +
                      "(" + client.Algorithm.Name + ")";
             }
-            else if (client.Value == Utils.ClientGameState.LabyrithReady)
+            else if (client.Value == Utils.ClientGameState.LabyrinthReady)
             {
                 Message = roundString.Value + " " + gameRound.Value.ToString() + "\n" +
                     "(" + client.Algorithm.Name + ")";

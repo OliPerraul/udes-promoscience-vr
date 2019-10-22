@@ -4,6 +4,7 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using System.Collections.Generic;
 using System.Linq;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays.Advanced
 {
@@ -49,6 +50,18 @@ namespace UdeS.Promoscience.Replays.Advanced
         {
             switch (action)
             {
+                case ReplayAction.ExitReplay:
+
+                    int i = 0;
+                    foreach (Labyrinths.Labyrinth l in AdvancedController.Labyrinths)
+                    {
+                        l.gameObject.SetActive(true);
+                        SetLabyrinthCamera(l, i);
+                        i++;
+                    }
+
+                    break;
+
                 case ReplayAction.ToggleLabyrinth:
 
                     Labyrinths.Labyrinth lab = (Labyrinths.Labyrinth) args[0];
@@ -74,13 +87,23 @@ namespace UdeS.Promoscience.Replays.Advanced
         {
             if (AdvancedController.Labyrinths.Count != 0)
             {
+                //int i = 0;
                 foreach (var l in AdvancedController.Labyrinths)
                 {
                     Destroy(l.gameObject);
+                    
                 }
             }
 
             AdvancedController.IdLabyrinthPairs.Clear();
+        }
+
+        public virtual void SetLabyrinthCamera(Labyrinths.Labyrinth labyrinth, int i)
+        {
+            labyrinth.SetCamera(
+                AdvancedController.LabyrinthsData.Count,
+                resource.MaxHorizontal,
+                i);
         }
 
 
@@ -92,7 +115,7 @@ namespace UdeS.Promoscience.Replays.Advanced
                 Clear();
 
                 int i = 0;
-                foreach(var data in AdvancedController.LabyrinthsData)
+                foreach (var data in AdvancedController.LabyrinthsData)
                 {
                     Labyrinths.Labyrinth labyrinth = LabyrinthResources.Labyrinth.Create(data);
                     labyrinth.GenerateLabyrinthVisual();
@@ -101,16 +124,24 @@ namespace UdeS.Promoscience.Replays.Advanced
                     labyrinth.transform.position -= offset;
                     AdvancedController.IdLabyrinthPairs.Add(data.currentId, labyrinth);
 
-                    labyrinth.SetCamera(
-                        AdvancedController.LabyrinthsData.Count, 
-                        resource.MaxHorizontal, 
-                        SelectionOffset, 
-                        i);
+                    SetLabyrinthCamera(labyrinth, i);
 
                     i++;
                 }
 
                 StartCoroutine(DelayedOnAdvancedReplay());
+            }
+            else
+            {
+                if (labyrinthReplay != null)
+                {
+                    labyrinthReplay.Clear();
+                }
+
+                foreach (var l in AdvancedController.Labyrinths)
+                {
+                    l.gameObject.Destroy();
+                }
             }
         }
 

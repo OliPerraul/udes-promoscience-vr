@@ -14,6 +14,9 @@ namespace UdeS.Promoscience.Replays.UI
         protected ScriptableObjects.ScriptableServerGameInformation server;
 
         [SerializeField]
+        protected Controls controls;
+
+        [SerializeField]
         protected UnityEngine.UI.Button openButton;
 
         [SerializeField]
@@ -95,10 +98,12 @@ namespace UdeS.Promoscience.Replays.UI
             set
             {
                 _enabled = value;
+                gameObject.SetActive(_enabled);
                 openButton.gameObject.SetActive(_enabled);
                 exitButton.gameObject.SetActive(_enabled);
                 sequenceToggle.gameObject.SetActive(_enabled);
                 sequencePopup.gameObject.SetActive(_enabled);
+                controls.gameObject.SetActive(_enabled);
 
             }
         }
@@ -113,7 +118,9 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnExitClicked()
         {
-            server.EndRoundOrTutorial();
+            //server.EndRoundOrTutorial();
+            Enabled = false;
+            replayOptions.SendAction(ReplayAction.ExitReplay);
         }
 
     }

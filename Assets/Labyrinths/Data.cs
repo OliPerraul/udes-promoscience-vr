@@ -49,6 +49,25 @@ namespace UdeS.Promoscience.Labyrinths
         public int sizeX { get; set; }
         public int sizeY { get; set; }
 
+        public Data()
+        {
+        }
+
+        public Data(int id, int[] data, int sizex, int sizey)
+        {
+            this.currentId = id;
+            this.data = data;
+            this.sizeX = sizex;
+            this.sizeY = sizey;
+
+            // TODO replace
+            SetLabyrithData(
+                data,
+                sizeX,
+                sizeY,
+                currentId);
+        }
+
         private Vector2Int startPos;
 
         public Vector2Int StartPos
@@ -62,7 +81,6 @@ namespace UdeS.Promoscience.Labyrinths
         {
             get { return endPos; }
         }
-
 
         public Action valueChangedEvent;
 
@@ -105,16 +123,34 @@ namespace UdeS.Promoscience.Labyrinths
             return sizeY;
         }
 
-        public void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
+        public void SetLabyrithData(
+            int[] labyrinthData, 
+            int labyrinthSizeX, 
+            int labyrinthSizeY, 
+            int id)
         {
-            if (id != currentId)
-            {
-                currentId = id;
-                data = labyrinthData;
-                sizeX = labyrinthSizeX;
-                sizeY = labyrinthSizeY;
+            currentId = id;
+            data = labyrinthData;
+            sizeX = labyrinthSizeX;
+            sizeY = labyrinthSizeY;
 
-                OnValueChanged();
+            for (int x = 0; x < sizeX; x++)
+            {
+                for (int y = 0; y < sizeY; y++)
+                {
+                    if (
+                        GetLabyrithValueAt(x, y) >= Constants.TILE_START_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Constants.TILE_START_END_ID)
+                    {
+                        startPos = new Vector2Int(x, y);
+                    }
+                    else if (
+                        GetLabyrithValueAt(x, y) >= Constants.TILE_END_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Constants.TILE_END_END_ID)
+                    {
+                        endPos = new Vector2Int(x, y);
+                    }
+                }
             }
         }
 
@@ -147,8 +183,6 @@ namespace UdeS.Promoscience.Labyrinths
                         }
                     }
                 }
-
-                OnValueChanged();
             }
         }
 

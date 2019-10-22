@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4110188661362624}
   - component: {fileID: 114013648485032704}
   - component: {fileID: 114069852616093710}
-  - component: {fileID: 114077497795959622}
   - component: {fileID: 82137802747922868}
   - component: {fileID: 114298733568807416}
   m_Layer: 0
@@ -162,38 +161,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  client: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
     type: 2}
   isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
-  labyrinth: {fileID: 0}
   waitingForNextRoundRoom: {fileID: 0}
-  gameCamera: {fileID: 0}
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
-  announcement: {fileID: 0}
---- !u!114 &114077497795959622
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1307779207878956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fde6711e3c032649b5edefeb4879106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
-  gameData: {fileID: 11400000, guid: d27dd8f5edc246043b0cfeaa8ba0459c, type: 2}
-  gameCamera: {fileID: 0}
-  playerPlaybackTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
-    type: 2}
-  algorithmPlaybackTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
-    type: 2}
-  labyrinth: {fileID: 0}
-  algorithm: {fileID: 0}
-  recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
-  playerPlaybackSpeed: 0.5
-  algorithmPlaybackSpeed: 0.5
 --- !u!114 &114298733568807416
 MonoBehaviour:
   m_ObjectHideFlags: 1

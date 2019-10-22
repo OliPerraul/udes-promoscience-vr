@@ -64,14 +64,13 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void OnEnable()
         {
-            data = new Data();
+            //data = new Data();
         }
 
         public void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
         {
             data.SetLabyrithData(labyrinthData, labyrinthSizeX, labyrinthSizeY, id);
-        }
-        
+        }        
 
         public void SetLabyrithData(int[,] map, int id)
         {

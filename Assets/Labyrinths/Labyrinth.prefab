@@ -270,7 +270,7 @@ MonoBehaviour:
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   Camera:
     Source: {fileID: 20389824531960314}
-    HeightOffset: 0
+    HeightOffset: 30
     Overlay: {fileID: 1895812823229446}
   scriptableData: {fileID: 0}
   ressources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}

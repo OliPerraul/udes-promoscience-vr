@@ -333,7 +333,7 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void Clear()
         {
-            Object.Destroy(emptyLabyrinth);
+            Object.Destroy(emptyLabyrinth);            
 
             foreach (Sequence sq in algorithmSequences)
             {

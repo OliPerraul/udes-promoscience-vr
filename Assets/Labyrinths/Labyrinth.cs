@@ -95,15 +95,12 @@ namespace UdeS.Promoscience.Labyrinths
         public void SetCamera(
             int numLabyrinths, 
             int maxHorizontal,
-            float offset,
             int index)
         {
             Camera.Split(
                 maxHorizontal,
                 numLabyrinths / maxHorizontal,
-                index);
-
-            Camera.Source.transform.position += Vector3.up * offset / 2;
+                index);            
         }
 
         public void OnGameStateChanged()
@@ -113,7 +110,7 @@ namespace UdeS.Promoscience.Labyrinths
                 GenerateLabyrinthVisual();
                 gameState.Value = ClientGameState.PlayingTutorial;
             }
-            else if (gameState.Value == ClientGameState.LabyrithReady)
+            else if (gameState.Value == ClientGameState.LabyrinthReady)
             {
                 GenerateLabyrinthVisual();
                 gameState.Value = ClientGameState.Playing;
@@ -153,6 +150,8 @@ namespace UdeS.Promoscience.Labyrinths
                 labyrinthTiles.GetLength(0) *Constants.TILE_SIZE,
                 0,
                 -labyrinthTiles.GetLength(1) * Constants.TILE_SIZE)/ 2;
+
+            Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
         }
 
         void PopulateLabyrinth()

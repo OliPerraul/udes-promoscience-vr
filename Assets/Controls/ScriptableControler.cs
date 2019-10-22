@@ -18,6 +18,12 @@ namespace UdeS.Promoscience.ScriptableObjects
         public Action isControlsEnableValueChangedEvent;
         public Action isPlayerControlsEnableValueChangedEvent;
 
+        public void OnEnable()
+        {
+            IsControlsEnabled = false;
+            IsPlayerControlsEnabled = false;
+        } 
+
         public bool IsControlsEnabled
         {
             get

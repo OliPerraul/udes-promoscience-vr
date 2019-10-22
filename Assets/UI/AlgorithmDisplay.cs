@@ -18,21 +18,6 @@ namespace UdeS.Promoscience.UI
         ScriptableControler controls;
 
         [SerializeField]
-        ScriptableLocalizeString algorithmString;
-
-        [SerializeField]
-        ScriptableLocalizeString longestStraightString;
-
-        [SerializeField]
-        ScriptableLocalizeString rightHandString;
-
-        [SerializeField]
-        ScriptableLocalizeString shortestFlightString;
-
-        [SerializeField]
-        ScriptableLocalizeString standardAlgorithmString;
-
-        [SerializeField]
         GameObject display;
 
         [SerializeField]
@@ -40,15 +25,15 @@ namespace UdeS.Promoscience.UI
 
         void OnEnable()
         {
-            client.OnCourseChangedHandler += OnAlgorithmValueChanged;
+            client.OnAlgorithmChangedHandler += OnAlgorithmValueChanged;
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
             controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
 
         void OnAlgorithmValueChanged()
         {
-            string s = algorithmString.Value + " : ";
-            s += client.Course.Algorithm.Name;
+            string s = "";
+            s += client.Algorithm.Name;
             text.text = s;
         }
 

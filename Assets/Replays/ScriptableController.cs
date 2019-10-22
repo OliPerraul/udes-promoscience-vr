@@ -17,7 +17,8 @@ namespace UdeS.Promoscience.Replays
         Resume,
         Slide,
         ToggleAlgorithm,
-        ToggleLabyrinth
+        ToggleLabyrinth,
+        ExitReplay
     }
 
     public delegate void OnAction(ReplayAction action, params object[] args);

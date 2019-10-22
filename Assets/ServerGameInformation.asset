@@ -11,6 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40f6efd1854f10249858285136525aa5, type: 3}
   m_Name: ServerGameInformation
   m_EditorClassIdentifier: 
-  labyrinthData: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  algorithmResources: {fileID: 11400000, guid: 58ee88a6f79924d48a13a8385e6413d2, type: 2}
   teams: {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682, type: 2}
-  playbackOptions: {fileID: 11400000, guid: bcecb0686a9667f48bf333db2a5f2ad0, type: 2}

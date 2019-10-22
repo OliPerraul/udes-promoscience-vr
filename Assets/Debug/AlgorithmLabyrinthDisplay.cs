@@ -15,9 +15,6 @@ namespace UdeS.Promoscience.Tests
         ScriptableClientGameState client;
 
         [SerializeField]
-        Labyrinths.Labyrinth labyrinth;
-
-        [SerializeField]
         GameObject sphere;
 
         List<GameObject> objectList = new List<GameObject>();
@@ -49,7 +46,7 @@ namespace UdeS.Promoscience.Tests
                 Debug.Log("algorithmStepsPosition #" + i + " : " + algorithmStepsPosition[i].x + " , " + algorithmStepsPosition[i].y + " , " + algorithmStepsPosition[i].color);
 
                 GameObject obj = Instantiate(sphere, GetWorldPosition(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
-                Algorithms.FloorPainter floorPainter = labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<Algorithms.FloorPainter>();
+                Algorithms.FloorPainter floorPainter = client.Labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<Algorithms.FloorPainter>();
 
                 if (floorPainter != null)
                 {
@@ -64,7 +61,7 @@ namespace UdeS.Promoscience.Tests
         {
             Vector3 worldPos = new Vector3();
 
-            Vector2Int startPosition = labyrinth.GetLabyrithStartPosition();
+            Vector2Int startPosition = client.Labyrinth.GetLabyrithStartPosition();
 
             worldPos.x = (x - startPosition.x) * Constants.TILE_SIZE;
             worldPos.y = 0.5f;

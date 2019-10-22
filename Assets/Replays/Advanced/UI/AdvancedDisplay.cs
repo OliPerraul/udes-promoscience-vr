@@ -32,6 +32,8 @@ namespace UdeS.Promoscience.Replays.Advanced.UI
         [SerializeField]
         private GameObject buttonsHorizontalTemplate;
 
+        //private Replays.UI.LabyrinthDisplay labyrinthDisplay;
+
 
         public override void OnEnable()
         {
@@ -43,6 +45,18 @@ namespace UdeS.Promoscience.Replays.Advanced.UI
 
             replayController.OnAdvancedReplayHandler += OnAdvancedReplay;
 
+            replayController.OnActionHandler += OnAction;
+
+        }
+
+        public void OnAction(ReplayAction action, params object[] args)
+        {
+            switch (action)
+            {
+                case ReplayAction.ExitReplay:
+                    Enabled = true;
+                    break;
+            }
         }
 
         public void OnClicked(Labyrinths.Labyrinth labyrinth)

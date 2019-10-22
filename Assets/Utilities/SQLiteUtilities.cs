@@ -470,13 +470,12 @@ namespace UdeS.Promoscience.Utils
                             string[] specs = reader[LABYRINTH_SPECS].ToString().Split();
                             int[] labyrinthSpecs = Array.ConvertAll(specs, int.Parse);
 
-                            Labyrinths.Data labyrinth = new Labyrinths.Data
-                            {
-                                currentId = int.Parse(reader[LABYRINTH_ID].ToString()),
-                                sizeX = labyrinthSpecs[0],
-                                sizeY = labyrinthSpecs[1],
-                                data = new int[labyrinthSpecs[0] * labyrinthSpecs[1]]
-                            };
+                            Labyrinths.Data labyrinth = new Labyrinths.Data(
+                                int.Parse(reader[LABYRINTH_ID].ToString()),
+                                new int[labyrinthSpecs[0] * labyrinthSpecs[1]],
+                                labyrinthSpecs[0],
+                                labyrinthSpecs[1]
+                                );
 
                             for (int i = 0; i < labyrinth.sizeX * labyrinth.sizeY; i++)
                             {
@@ -524,6 +523,13 @@ namespace UdeS.Promoscience.Utils
                             {
                                 labyrinth.data[i] = labyrinthSpecs[i + 2];
                             }
+
+                            // TODO replace
+                            labyrinth.SetLabyrithData(
+                                labyrinth.data,
+                                labyrinth.sizeX,
+                                labyrinth.sizeY,
+                                labyrinth.currentId);
                         }
 
                         reader.Close();
