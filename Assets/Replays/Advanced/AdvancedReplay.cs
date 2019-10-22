@@ -142,6 +142,8 @@ namespace UdeS.Promoscience.Replays.Advanced
                 {
                     l.gameObject.Destroy();
                 }
+
+                AdvancedController.Clear();
             }
         }
 

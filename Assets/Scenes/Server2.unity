@@ -1652,6 +1652,7 @@ MonoBehaviour:
     gameObjectsToActivate:
     - {fileID: 1148003490}
     - {fileID: 639283370}
+    - {fileID: 1361706058}
     gameObjectsToDeactivate:
     - {fileID: 1149360019}
     - {fileID: 925179509}
@@ -8453,7 +8454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000037908194}
+  m_AnchoredPosition: {x: 0, y: 0.000023643506}
   m_SizeDelta: {x: -50, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1329621017

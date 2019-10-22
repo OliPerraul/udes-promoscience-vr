@@ -2,16 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UdeS.Promoscience.Utils;
+using System;
 
 namespace UdeS.Promoscience.Replays.Advanced
 {
     public class ScriptableController : Replays.ScriptableController
     {
-        private Dictionary<int, Labyrinths.Labyrinth> labyrinths;
-
+        
         //private List<Cours>
 
         public Cirrus.OnEvent OnAdvancedReplayHandler;
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            labyrinths = new Dictionary<int, Labyrinths.Labyrinth>();
+            labyrinthsData = new List<Labyrinths.IData>();
+        }
+
 
         public ICollection<Labyrinths.IData> labyrinthsData;
 
@@ -32,23 +40,29 @@ namespace UdeS.Promoscience.Replays.Advanced
         {
             get
             {
-                return labyrinths.Values;
+                return IdLabyrinthPairs.Values;
             }
         }
+
+        private Dictionary<int, Labyrinths.Labyrinth> labyrinths;
 
         public IDictionary<int, Labyrinths.Labyrinth> IdLabyrinthPairs
         {
             get
             {
+                if (labyrinths == null)
+                    labyrinths = new Dictionary<int, Labyrinths.Labyrinth>();
                 return labyrinths;
             }
         }
 
-        public override void OnEnable()
+        public void Clear()
         {
-            base.OnEnable();
-            labyrinths = new Dictionary<int, Labyrinths.Labyrinth>();
-            labyrinthsData = new List<Labyrinths.IData>();
+            if(labyrinthsData != null)
+                labyrinthsData.Clear();
+
+            if(labyrinths != null)
+                labyrinths.Clear();
         }
     }
 }
