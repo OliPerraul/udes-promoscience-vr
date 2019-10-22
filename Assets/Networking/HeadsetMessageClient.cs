@@ -10,11 +10,11 @@ namespace UdeS.Promoscience.Network
 {
     public class HeadsetMessageClient : MonoBehaviour
     {
-        [SerializeField]
-        ScriptableAlgorithm algorithm;
-
         //[SerializeField]
         //ScriptableFloat algorithmRespect;
+        [SerializeField]
+        private Resources resources;
+
 
         [SerializeField]
         ScriptableDirective directive;
@@ -137,7 +137,7 @@ namespace UdeS.Promoscience.Network
         void OnAlgorithm(NetworkMessage netMsg)
         {
             AlgorithmMessage msg = netMsg.ReadMessage<AlgorithmMessage>();
-            algorithm.Value = msg.algorithm;
+            //gameState.Algorithm = resources.CreateAlgorithm(msg.algorithm);
         }
 
         void OnAlgorithmRespect(NetworkMessage netMsg)

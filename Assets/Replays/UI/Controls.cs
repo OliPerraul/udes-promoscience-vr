@@ -11,8 +11,6 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class Controls : MonoBehaviour
     {
-        [SerializeField]
-        private Algorithm algorithm;
 
         [SerializeField]
         private ScriptableObjects.ScriptableServerGameInformation server;
@@ -83,10 +81,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnValidate()
         {
-            if (algorithm == null)
-            {
-                algorithm = FindObjectOfType<Algorithm>();
-            }
+
         }
 
         // Use this for initialization

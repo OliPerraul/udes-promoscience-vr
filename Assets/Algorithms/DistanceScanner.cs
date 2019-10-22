@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Algorithms
 {
     public class DistanceScanner : MonoBehaviour
     {

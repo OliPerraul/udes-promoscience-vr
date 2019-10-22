@@ -1170,7 +1170,7 @@ MonoBehaviour:
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  client: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   forwardDirection: {fileID: 11400000, guid: 9d9bde1f7e90c1b46aa5622fe0910c1b, type: 2}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
@@ -6106,7 +6106,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f33c6b94a8328d84481b39afb9c2f645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
   directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   gameRound: {fileID: 11400000, guid: eaa0ab69523e289469a32b6d7fdf0ae2, type: 2}
   gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
@@ -11837,12 +11836,12 @@ Prefab:
         type: 2}
       propertyPath: algorithm
       value: 
-      objectReference: {fileID: 1630531311}
+      objectReference: {fileID: 0}
     - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
       propertyPath: labyrinth
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1290205603}
     - target: {fileID: 114069852616093710, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 2}
       propertyPath: waitingForNextRoundRoom
@@ -27403,7 +27402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d461a42996b3d924aa8ae43f30f83203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
+  client: {fileID: 0}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   algorithmString: {fileID: 11400000, guid: 359ee761643462e4b9ce35c6bfe738ee, type: 2}
   longestStraightString: {fileID: 11400000, guid: 2a11923c14f145f4d828ed5d8c3abbcd,
@@ -32493,7 +32492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d461a42996b3d924aa8ae43f30f83203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
+  client: {fileID: 0}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   algorithmString: {fileID: 11400000, guid: 359ee761643462e4b9ce35c6bfe738ee, type: 2}
   longestStraightString: {fileID: 11400000, guid: 2a11923c14f145f4d828ed5d8c3abbcd,
@@ -67480,12 +67479,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1630531317}
-  - component: {fileID: 1630531314}
-  - component: {fileID: 1630531315}
-  - component: {fileID: 1630531313}
-  - component: {fileID: 1630531312}
   - component: {fileID: 1630531316}
-  - component: {fileID: 1630531311}
   m_Layer: 0
   m_Name: Algorithm
   m_TagString: Untagged
@@ -67493,70 +67487,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1630531311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1630531310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1c077f441b13a442b064702ccb9a826, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  algo: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
-  rightHandAlgorithm: {fileID: 1630531315}
-  longestStraightAlgorithm: {fileID: 1630531314}
-  shortestFlightDistanceAlgorithm: {fileID: 1630531313}
-  standardAlgorithm: {fileID: 1630531312}
---- !u!114 &1630531312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1630531310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aa0364522b725e43a636aada198922f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1290205603}
---- !u!114 &1630531313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1630531310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085870fe91de8b4abab6553bd11f1f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1290205603}
---- !u!114 &1630531314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1630531310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eee8c225a1910d0428fe59158bb8692f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1290205603}
---- !u!114 &1630531315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1630531310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6150ba9d456f2bb438af8ec61e41c15f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 1290205603}
 --- !u!114 &1630531316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67568,9 +67498,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba4fdb716754c8f4a926fbf408ca00d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithm: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
   gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
+  client: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
   isRoundCompleted: {fileID: 11400000, guid: e97778b7be0c6ef4684d9b10501cc0dc, type: 2}
   labyrinthPositionChanged: {fileID: 11400000, guid: 9cd2cda09a0f1684e883e7263786dccc,
@@ -67583,10 +67512,6 @@ MonoBehaviour:
   returnToDivergencePointAnswer: {fileID: 11400000, guid: c0ec1a0d6508fb5428bb9521683f8580,
     type: 2}
   labyrinth: {fileID: 1290205603}
-  rightHandAlgorithm: {fileID: 1630531315}
-  longestStraightAlgorithm: {fileID: 1630531314}
-  shortestFlightDistanceAlgorithm: {fileID: 1630531313}
-  standardAlgorithm: {fileID: 1630531312}
   cameraRig: {fileID: 265111330}
 --- !u!4 &1630531317
 Transform:

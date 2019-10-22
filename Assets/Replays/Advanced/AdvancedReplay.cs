@@ -58,9 +58,11 @@ namespace UdeS.Promoscience.Replays.Advanced
                         l.gameObject.SetActive(false);
                     }
 
+                    lab.gameObject.SetActive(true);
+
                     courses =  SQLiteUtilities.GetSessionCoursesForLabyrinth(lab.Id);
 
-                    labyrinthReplay = new LabyrinthReplay(this, lab, algorithm, courses);
+                    labyrinthReplay = new LabyrinthReplay(this, lab, courses);
 
                     labyrinthReplay.Start();
 

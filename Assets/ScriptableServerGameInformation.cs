@@ -13,13 +13,7 @@ namespace UdeS.Promoscience.ScriptableObjects
     public class ScriptableServerGameInformation : ScriptableObject
     {
         [SerializeField]
-        private Resources resources;
-
-        [SerializeField]
-        private Replays.Resources replayResources;
-
-        [SerializeField]
-        private Labyrinths.ScriptableLabyrinth labyrinthData;
+        private Algorithms.Resources algorithmResources;
 
         [SerializeField]
         private ScriptableTeamList teams;
@@ -32,6 +26,19 @@ namespace UdeS.Promoscience.ScriptableObjects
             get
             {
                 return courses.Values;
+            }
+        }
+
+        //[SerializeField]
+        //private Labyrinths.ScriptableLabyrinth labyrinthData;
+
+        public Labyrinths.IData currentLabyrinth;
+
+        public Labyrinths.IData CurrentLabyrinth
+        {
+            get
+            {
+                return currentLabyrinth;
             }
         }
 
@@ -48,8 +55,6 @@ namespace UdeS.Promoscience.ScriptableObjects
         private int gameRound = 0;
 
         private ServerGameState gameState;
-
-
 
         public void OnEnable()
         {
@@ -118,11 +123,13 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
-        // TODO set course active false when finished
         // Try find course ID initiated by a team member
         // Otherwise assign new course
-        public void AssignCourse(Player player)
+        //
+        // Returns true if created a course
+        public void AssignCourse(Player player)//, out Course course)
         {
+            Course course = null;
             int courseId = -1;
             SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
 
@@ -130,16 +137,21 @@ namespace UdeS.Promoscience.ScriptableObjects
             if (SQLiteUtilities.TryGetActiveCourseId(player.ServerTeamId, out courseId))
             {
                 player.ServerCourseId = courseId;
+                //return false;
             }
             else
             {
-                Course course = new Course
+                var labyrinth = new Labyrinths.Data();
+
+                course = new Course
                 {
                     Id = SQLiteUtilities.GetNextCourseID(),
                     Team = teams.GetScriptableTeamWithId(player.ServerTeamId),
-                    Algorithm = player.serverAlgorithm,
-                    LabyrinthId = GameRound                    
+                    Labyrinth = labyrinth,
+                    Algorithm = algorithmResources.CreateAlgorithm(player.serverAlgorithm, labyrinth)                                     
                 };
+
+                SQLiteUtilities.ReadLabyrinthDataFromId(GameRound, course.Labyrinth);
 
                 courses.Add(course.Id, course);
 
@@ -154,16 +166,18 @@ namespace UdeS.Promoscience.ScriptableObjects
                     player.serverLabyrinthId,
                     (int)player.serverAlgorithm,
                     player.ServerCourseId);
+
+                //return true;
             }
         }
 
         public void StartTutorial()
         {
+            GameRound = tutorialLabyrinthId;
             GameState = ServerGameState.Tutorial;
 
-            int[] data = labyrinthData.GetLabyrithDataWithId(tutorialLabyrinthId);
-            int sizeX = labyrinthData.GetLabyrithXLenght();
-            int sizeY = labyrinthData.GetLabyrithYLenght();
+            currentLabyrinth = new Labyrinths.Data();
+            SQLiteUtilities.ReadLabyrinthDataFromId(GameRound, CurrentLabyrinth);
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
@@ -174,30 +188,40 @@ namespace UdeS.Promoscience.ScriptableObjects
                     player.ServerPlayerGameState == ClientGameState.Playing || 
                     player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
                 {
-                    Utils.Algorithm algorithm = Utils.Algorithm.Tutorial;
+                    Algorithm algorithm = Algorithm.Tutorial;
                     player.serverAlgorithm = algorithm;
+
                     player.serverLabyrinthId = tutorialLabyrinthId;
 
                     AssignCourse(player);
 
-                    player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, tutorialLabyrinthId, algorithm);
+                    // TODO send course json over??
+                    player.TargetSetGame(
+                        player.connectionToClient, 
+                        currentLabyrinth.data, 
+                        currentLabyrinth.sizeX, 
+                        currentLabyrinth.sizeY, 
+                        tutorialLabyrinthId, 
+                        algorithm);
                 }
             }
         }
 
         public void StartTutorial(Player player)
         {
-            int[] data = labyrinthData.GetLabyrithDataWithId(tutorialLabyrinthId);
-            int sizeX = labyrinthData.GetLabyrithXLenght();
-            int sizeY = labyrinthData.GetLabyrithYLenght();
-
-            Utils.Algorithm algorithm = Utils.Algorithm.Tutorial;
+            Algorithm algorithm = Algorithm.Tutorial;
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = tutorialLabyrinthId;
 
             AssignCourse(player);
 
-            player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, tutorialLabyrinthId, algorithm);
+            player.TargetSetGame(
+                player.connectionToClient, 
+                currentLabyrinth.data, 
+                currentLabyrinth.sizeX, 
+                currentLabyrinth.sizeY, 
+                tutorialLabyrinthId, 
+                algorithm);
         }
 
         public void StartNextGameRound()
@@ -205,55 +229,68 @@ namespace UdeS.Promoscience.ScriptableObjects
             GameRound = (GameRound % 3) + 1;
             GameState = ServerGameState.GameRound;
 
-            int[] data = labyrinthData.GetLabyrithDataWithId(GameRound);
-            int sizeX = labyrinthData.GetLabyrithXLenght();
-            int sizeY = labyrinthData.GetLabyrithYLenght();
+            currentLabyrinth = new Labyrinths.Data();
+            SQLiteUtilities.ReadLabyrinthDataFromId(GameRound, CurrentLabyrinth);
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
 
-                if (player.ServerPlayerGameState == ClientGameState.Ready || player.ServerPlayerGameState == ClientGameState.PlayingTutorial || player.ServerPlayerGameState == ClientGameState.Playing || player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
+                if (player.ServerPlayerGameState == ClientGameState.Ready || 
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial || 
+                    player.ServerPlayerGameState == ClientGameState.Playing || 
+                    player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
                 {
-                    Utils.Algorithm algorithm = (Utils.Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
+                    Algorithm algorithm = (Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
                     player.serverAlgorithm = algorithm;
                     player.serverLabyrinthId = GameRound;
 
                     AssignCourse(player);
 
-                    player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
+                    player.TargetSetGame(
+                        player.connectionToClient, 
+                        CurrentLabyrinth.data, 
+                        CurrentLabyrinth.sizeX, 
+                        CurrentLabyrinth.sizeY, 
+                        GameRound, 
+                        algorithm);
                 }
             }
         }
 
         public void StartGameRound(Player player)
         {
-            int[] data = labyrinthData.GetLabyrithDataWithId(GameRound);
-            int sizeX = labyrinthData.GetLabyrithXLenght();
-            int sizeY = labyrinthData.GetLabyrithYLenght();
-
-            Utils.Algorithm algorithm = (Utils.Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
+            Algorithm algorithm = (Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = GameRound;
 
             AssignCourse(player);
 
-            player.TargetSetGame(player.connectionToClient, data, sizeX, sizeY, GameRound, algorithm);
+            player.TargetSetGame(
+                player.connectionToClient, 
+                CurrentLabyrinth.data, 
+                CurrentLabyrinth.sizeX,
+                CurrentLabyrinth.sizeY,
+                GameRound,
+                algorithm);
         }
 
         public void StartGameRoundWithSteps(Player player, int[] steps)
         {
-            int[] data = labyrinthData.GetLabyrithDataWithId(GameRound);
-            int sizeX = labyrinthData.GetLabyrithXLenght();
-            int sizeY = labyrinthData.GetLabyrithYLenght();
 
-            Utils.Algorithm algorithm = (Utils.Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
+            Algorithm algorithm = (Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = GameRound;
 
             AssignCourse(player);
 
-            player.TargetSetGameWithSteps(player.connectionToClient, steps, data, sizeX, sizeY, GameRound, algorithm);
+            player.TargetSetGameWithSteps(
+                player.connectionToClient, 
+                steps, CurrentLabyrinth.data, 
+                CurrentLabyrinth.sizeX, 
+                CurrentLabyrinth.sizeY, 
+                GameRound, 
+                algorithm);
         }
 
         public void EndRoundOrTutorial()

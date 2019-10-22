@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.UI
     public class AlgorithmDisplay : MonoBehaviour
     {
         [SerializeField]
-        ScriptableAlgorithm algorithm;
+        ScriptableClientGameState client;
 
         [SerializeField]
         ScriptableControler controls;
@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.UI
 
         void OnEnable()
         {
-            algorithm.valueChangedEvent += OnAlgorithmValueChanged;
+            client.OnCourseChangedHandler += OnAlgorithmValueChanged;
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
             controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
@@ -48,24 +48,7 @@ namespace UdeS.Promoscience.UI
         void OnAlgorithmValueChanged()
         {
             string s = algorithmString.Value + " : ";
-
-            if (algorithm.Value == Utils.Algorithm.LongestStraight)
-            {
-                s += longestStraightString.Value;
-            }
-            else if (algorithm.Value == Utils.Algorithm.RightHand)
-            {
-                s += rightHandString.Value;
-            }
-            else if (algorithm.Value == Utils.Algorithm.ShortestFlightDistance)
-            {
-                s += shortestFlightString.Value;
-            }
-            else if (algorithm.Value == Utils.Algorithm.Standard)
-            {
-                s += standardAlgorithmString.Value;
-            }
-
+            s += client.Course.Algorithm.Name;
             text.text = s;
         }
 

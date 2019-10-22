@@ -6,47 +6,29 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Algorithms
 {
-    public class Algorithm : MonoBehaviour
+    public abstract class Algorithm
     {
-        [SerializeField]
-        private ScriptableAlgorithm algo;
+        protected Resource resource;
 
-        [SerializeField]
-        RightHandAlgorithm rightHandAlgorithm;
+        protected Labyrinths.IData labyrinth;
 
-        [SerializeField]
-        LongestStraightAlgorithm longestStraightAlgorithm;
+        public string Name {
+            get
+            {
+                return resource.Name;
+            }
+        }
 
-        [SerializeField]
-        ShortestFlightDistanceAlgorithm shortestFlightDistanceAlgorithm;
+        public abstract List<Tile> GetAlgorithmSteps();
 
-        [SerializeField]
-        StandardAlgorithm standardAlgorithm;
+        public abstract Utils.Algorithm Id { get; }
 
-        public List<Tile> GetAlgorithmSteps()
+        public Algorithm(Resource resource, Labyrinths.IData labyrinth)
         {
-            List<Tile> algorithmSteps = null;
-
-            if (algo.Value == Utils.Algorithm.RightHand)
-            {
-                algorithmSteps = rightHandAlgorithm.GetAlgorithmSteps();
-            }
-            else if (algo.Value == Utils.Algorithm.LongestStraight)
-            {
-                algorithmSteps = longestStraightAlgorithm.GetAlgorithmSteps();
-            }
-            else if (algo.Value == Utils.Algorithm.ShortestFlightDistance)
-            {
-                algorithmSteps = shortestFlightDistanceAlgorithm.GetAlgorithmSteps();
-            }
-            else if (algo.Value == Utils.Algorithm.Standard)
-            {
-                algorithmSteps = standardAlgorithm.GetAlgorithmSteps();
-            }
-
-            return algorithmSteps;
+            this.resource = resource;
+            this.labyrinth = labyrinth;
         }
     }
 }

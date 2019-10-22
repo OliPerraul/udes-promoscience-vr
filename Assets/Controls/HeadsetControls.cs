@@ -21,7 +21,7 @@ namespace UdeS.Promoscience
         ScriptableGameAction gameAction;
 
         [SerializeField]
-        ScriptableClientGameState gameState;
+        ScriptableClientGameState client;
 
         [SerializeField]
         ScriptableInteger forwardDirection;
@@ -411,7 +411,7 @@ namespace UdeS.Promoscience
             if (color != tileColor)
             {
                 GameObject tile = labyrinth.GetTile(position);
-                FloorPainter floorPainter = tile.GetComponentInChildren<FloorPainter>();
+                Algorithms.FloorPainter floorPainter = tile.GetComponentInChildren<Algorithms.FloorPainter>();
 
                 if (floorPainter != null)
                 {
@@ -523,7 +523,7 @@ namespace UdeS.Promoscience
         {
             cameraRig.Transform.position = new Vector3(0, cameraRig.Transform.position.y, 0);
 
-            if (gameState.Value == ClientGameState.WaitingForNextRound)
+            if (client.Value == ClientGameState.WaitingForNextRound)
             {
                 forwardDirection.Value = 0;
             }

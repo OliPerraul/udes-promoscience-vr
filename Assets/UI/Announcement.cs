@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.UI
     {
 
         [SerializeField]
-        ScriptableClientGameState gameState;
+        ScriptableClientGameState client;
 
         [SerializeField]
         private ScriptableInteger gameRound;
@@ -35,10 +35,6 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private LocalizeString roundString;
 
-        [SerializeField]
-        private ScriptableAlgorithm algorithm;
-
-
 
         public void Awake()
         {
@@ -46,7 +42,7 @@ namespace UdeS.Promoscience.UI
 
             gameRound.valueChangedEvent += OnGameRoundValueChanged;
             timer.OnTimeLimitHandler += OnAnnouncementTimeOut;
-            gameState.clientStateChangedEvent += OnGameStateChanged;
+            client.clientStateChangedEvent += OnGameStateChanged;
 
             transform.GetChild(0).gameObject.SetActive(false);
          }
@@ -55,15 +51,15 @@ namespace UdeS.Promoscience.UI
 
         private void OnGameStateChanged()
         {
-            if (gameState.Value == Utils.ClientGameState.TutorialLabyrinthReady)
+            if (client.Value == Utils.ClientGameState.TutorialLabyrinthReady)
             {
                 Message = tutorialString.Value + "\n" +
-                     "(" + algorithm.Name + ")";
+                     "(" + client.Algorithm.Name + ")";
             }
-            else if (gameState.Value == Utils.ClientGameState.LabyrithReady)
+            else if (client.Value == Utils.ClientGameState.LabyrithReady)
             {
                 Message = roundString.Value + " " + gameRound.Value.ToString() + "\n" +
-                    "(" + algorithm.Name + ")";
+                    "(" + client.Algorithm.Name + ")";
             }
 
         }

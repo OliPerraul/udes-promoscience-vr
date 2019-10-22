@@ -11,12 +11,34 @@ namespace UdeS.Promoscience.Labyrinths
     public interface IData
     {
         int currentId { get; set; }
+
         int[] data { get; set; }
+
         int sizeX { get; set; }
+
         int sizeY { get; set; }
 
         int GetLabyrithValueAt(int x, int y);
+
+        int GetLabyrithXLenght();
+
+        int GetLabyrithYLenght();
+
+        Vector2Int StartPos { get; }
+
+        Vector2Int EndPos { get; }
+
+        bool GetIsTileWalkable(int x, int y);
+        
+        bool GetIsTileWalkable(Vector2Int tile);
+
+        int StartDirection { get; }
+
+        void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id);
+
+        void SetLabyrithData(int[,] map, int id);
     }
+
 
     // TODO from json (combine with ScriptableObect)
     [Serializable]
@@ -26,6 +48,21 @@ namespace UdeS.Promoscience.Labyrinths
         public int[] data { get; set; }
         public int sizeX { get; set; }
         public int sizeY { get; set; }
+
+        private Vector2Int startPos;
+
+        public Vector2Int StartPos
+        {
+            get { return startPos; }
+        }
+
+        private Vector2Int endPos;
+
+        public Vector2Int EndPos
+        {
+            get { return endPos; }
+        }
+
 
         public Action valueChangedEvent;
 
@@ -37,7 +74,7 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-public int[] GetLabyrithDataWithId(int id)
+        public int[] GetLabyrithDataWithId(int id)
         {
             if (id != currentId)
             {
@@ -68,6 +105,18 @@ public int[] GetLabyrithDataWithId(int id)
             return sizeY;
         }
 
+        public void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
+        {
+            if (id != currentId)
+            {
+                currentId = id;
+                data = labyrinthData;
+                sizeX = labyrinthSizeX;
+                sizeY = labyrinthSizeY;
+
+                OnValueChanged();
+            }
+        }
 
         public void SetLabyrithData(int[,] map, int id)
         {
@@ -83,6 +132,19 @@ public int[] GetLabyrithDataWithId(int id)
                     for (int y = 0; y < sizeY; y++)
                     {
                         data[(x * sizeY) + y] = map[x, y];
+
+                        if (
+                            GetLabyrithValueAt(x, y) >= Constants.TILE_START_START_ID &&
+                            GetLabyrithValueAt(x, y) <= Constants.TILE_START_END_ID)
+                        {
+                            startPos = new Vector2Int(x, y);
+                        }
+                        else if (
+                            GetLabyrithValueAt(x, y) >= Constants.TILE_END_START_ID &&
+                            GetLabyrithValueAt(x, y) <= Constants.TILE_END_END_ID)
+                        {
+                            endPos = new Vector2Int(x, y);
+                        }
                     }
                 }
 
@@ -90,18 +152,58 @@ public int[] GetLabyrithDataWithId(int id)
             }
         }
 
-        public void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
-        {
-            if (id != currentId)
-            {
-                currentId = id;
-                data = labyrinthData;
-                sizeX = labyrinthSizeX;
-                sizeY = labyrinthSizeY;
 
-                OnValueChanged();
+        public bool GetIsTileWalkable(int x, int y)
+        {
+
+            if (x >= 0 && x < GetLabyrithXLenght() && y >= 0 && y < GetLabyrithYLenght())
+            {
+                if ((GetLabyrithValueAt(x, y) >= Constants.TILE_FLOOR_START_ID && GetLabyrithValueAt(x, y) <= Constants.TILE_FLOOR_END_ID)
+                    || (GetLabyrithValueAt(x, y) >= Constants.TILE_START_START_ID && GetLabyrithValueAt(x, y) <= Constants.TILE_START_END_ID)
+                    || (GetLabyrithValueAt(x, y) >= Constants.TILE_END_START_ID && GetLabyrithValueAt(x, y) <= Constants.TILE_END_END_ID))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool GetIsTileWalkable(Vector2Int tile)
+        {
+            return GetIsTileWalkable(tile.x, tile.y);
+        }
+
+
+        //Labyrith start should always be in a dead end
+        public int StartDirection
+        {
+            get
+            {
+                // up
+                int direction = 0;
+
+                // right
+                if (GetIsTileWalkable(StartPos.x + 1, StartPos.y))
+                {
+                    direction = 1;
+                }
+                // down
+                else if (GetIsTileWalkable(StartPos.x, StartPos.y + 1))
+                {
+                    direction = 2;
+                }
+                // Left
+                else if (GetIsTileWalkable(StartPos.x - 1, StartPos.y))
+                {
+                    direction = 3;
+                }
+
+                return direction;
             }
         }
+
+
     }
 }
 

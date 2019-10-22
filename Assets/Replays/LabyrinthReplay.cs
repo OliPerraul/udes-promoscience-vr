@@ -45,6 +45,7 @@ namespace UdeS.Promoscience.Replays
 
             playerSequences = new Dictionary<int, PlayerSequence>();
             activeSequences = new List<PlayerSequence>();
+            algorithmSequences = new List<AlgorithmSequence>();
 
             //replay..gameStateChangedEvent += OnServerGameStateChanged;
             replay.Server.OnCourseAddedHandler += OnCourseAdded;
@@ -58,21 +59,21 @@ namespace UdeS.Promoscience.Replays
                 OnCourseAdded(course);
             }
 
-            algorithmSequences.Add(
-                replay.Resources.AlgorithmSequence.Create(
-                    labyrinth,
-                    algorithm,
-                    labyrinthPosition));
+            //TrySetMoveCount(algorithmSequences.Max(x => x.LocalMoveCount));
 
-            TrySetMoveCount(algorithmSequences.Max(x => x.LocalMoveCount));
+            //algorithmSequences.Add(
+            //    replay.Resources.AlgorithmSequence.Create(
+            //        labyrinth,
+
+            //        labyrinthPosition));
 
         }
 
         public virtual void Start()
         {
-            labyrinth.GenerateLabyrinthVisual();
-            emptyLabyrinth = labyrinth.Create();
-            emptyLabyrinth.gameObject.SetActive(false);
+            //labyrinth.GenerateLabyrinthVisual();
+            //emptyLabyrinth = labyrinth.Create();
+            //emptyLabyrinth.gameObject.SetActive(false);
 
             labyrinthPosition = labyrinth.GetLabyrithStartPosition();
 
@@ -99,266 +100,267 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-            public virtual void Next()
+        public virtual void Next()
+        {
+            if (isPlaying)
             {
-                if (isPlaying)
-                {
-                    Pause();
-                }
-
-                foreach (var sq in algorithmSequences)
-                {
-                    if (sq.WithinBounds) sq.Next();
-                }
-
-                foreach (var sq in activeSequences)
-                {
-                    if (sq.WithinBounds) sq.Next();
-                }
-
-                replay.Controller.GlobalMoveIndex++;
+                Pause();
             }
 
-            public virtual void Previous()
+            foreach (var sq in algorithmSequences)
             {
-                if (isPlaying)
-                {
-                    Pause();
-                }
-
-                replay.Controller.GlobalMoveIndex--;
-
-
-                foreach (var sq in algorithmSequences)
-                {
-                    if (sq.WithinBounds) sq.Previous();
-                }
-
-                foreach (var sq in activeSequences)
-                {
-                    if (sq.WithinBounds) sq.Previous();
-                }
+                if (sq.WithinBounds) sq.Next();
             }
 
-            public virtual void Move(int target)
+            foreach (var sq in activeSequences)
             {
-                replay.Controller.GlobalMoveIndex = target;
-
-                foreach (var sq in algorithmSequences)
-                {
-                    sq.Move(target);
-                }
-
-
-                foreach (var sq in activeSequences)
-                {
-                    sq.Move(target);
-                }
+                if (sq.WithinBounds) sq.Next();
             }
 
-            public virtual void Pause()
+            replay.Controller.GlobalMoveIndex++;
+        }
+
+        public virtual void Previous()
+        {
+            if (isPlaying)
             {
-                if (!isPlaying)
-                    return;
+                Pause();
+            }
 
-                foreach (var sq in algorithmSequences)
-                {
-                    sq.Stop();// (target);
-                }
+            replay.Controller.GlobalMoveIndex--;
 
-                foreach (var sq in activeSequences)
-                {
-                    sq.Stop();
-                }
 
-                Move(replay.Controller.GlobalMoveIndex);
+            foreach (var sq in algorithmSequences)
+            {
+                if (sq.WithinBounds) sq.Previous();
+            }
 
-                isPlaying = false;
+            foreach (var sq in activeSequences)
+            {
+                if (sq.WithinBounds) sq.Previous();
+            }
+        }
+
+        public virtual void Move(int target)
+        {
+            replay.Controller.GlobalMoveIndex = target;
+
+            foreach (var sq in algorithmSequences)
+            {
+                sq.Move(target);
             }
 
 
-            public virtual void Stop()
+            foreach (var sq in activeSequences)
             {
-                foreach (var sq in algorithmSequences)
-                {
-                    sq.Stop();// (target);
-                }
+                sq.Move(target);
+            }
+        }
 
-                foreach (var sq in activeSequences)
-                {
-                    sq.Stop();
-                }
+        public virtual void Pause()
+        {
+            if (!isPlaying)
+                return;
 
-                Move(0);
-
-                isPlaying = false;
+            foreach (var sq in algorithmSequences)
+            {
+                sq.Stop();// (target);
             }
 
-
-            public virtual void OnReplayAction(ReplayAction action, params object[] args)
+            foreach (var sq in activeSequences)
             {
-                switch (action)
+                sq.Stop();
+            }
+
+            Move(replay.Controller.GlobalMoveIndex);
+
+            isPlaying = false;
+        }
+
+
+        public virtual void Stop()
+        {
+            foreach (var sq in algorithmSequences)
+            {
+                sq.Stop();// (target);
+            }
+
+            foreach (var sq in activeSequences)
+            {
+                sq.Stop();
+            }
+
+            Move(0);
+
+            isPlaying = false;
+        }
+
+
+        public virtual void OnReplayAction(ReplayAction action, params object[] args)
+        {
+            switch (action)
+            {
+                // TODO: Handle play/ stop from replay object and not sequences
+                // to prevent synch issues
+                case ReplayAction.ToggleAlgorithm:
+                    isAlgorithmToggled = !isAlgorithmToggled;
+                    emptyLabyrinth.gameObject.SetActive(!isAlgorithmToggled);
+                    labyrinth.gameObject.SetActive(isAlgorithmToggled);
+                    break;
+
+                case ReplayAction.Play:
+
+                    Resume();
+
+                    break;
+
+                case ReplayAction.Resume:
+                    Resume();
+                    break;
+
+                case ReplayAction.Pause:
+
+                    //mutex.WaitOne();
+
+                    //Pause();
+
+                    //mutex.ReleaseMutex();
+
+                    break;
+
+                case ReplayAction.Slide:
+
+                    mutex.WaitOne();
+
+                    int current = (int)args[0];
+                    Move(current);
+
+                    mutex.ReleaseMutex();
+
+                    break;
+
+
+                case ReplayAction.Next:
+
+                    mutex.WaitOne();
+
+                    Next();
+
+                    mutex.ReleaseMutex();
+
+                    break;
+
+                case ReplayAction.Previous:
+
+                    mutex.WaitOne();
+
+                    Previous();
+
+                    mutex.ReleaseMutex();
+
+                    break;
+
+                case ReplayAction.Stop:
+
+                    //mutex.WaitOne();
+
+                    //Stop();
+
+                    //mutex.ReleaseMutex();
+
+                    break;
+            }
+        }
+
+        public void TrySetMoveCount(int candidateMvcnt)
+        {
+            if (candidateMvcnt > replay.Controller.GlobalMoveCount)
+                replay.Controller.GlobalMoveCount = candidateMvcnt;
+        }
+
+        public void OnSequenceToggled(Course course, bool enabled)
+        {
+            playerSequences[course.Id].gameObject.SetActive(enabled);
+
+            if (!enabled)
+            {
+                activeSequences.Remove(playerSequences[course.Id]);
+            }
+            else
+            {
+                activeSequences.Add(playerSequences[course.Id]);
+            }
+
+            if (activeSequences.Count != 0)
+            {
+                // Adjust move count to biggest sequence
+                TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
+
+                // Let all sqnces catch up     
+                Move(Mathf.Clamp(replay.Controller.GlobalMoveIndex, 0, replay.Controller.GlobalMoveCount));
+
+                AdjustOffsets();
+            }
+        }
+
+        public virtual float GetOffsetAmount(float idx)
+        {
+            return
+                // origin of segment at the center, move it to the left
+                (-Promoscience.Utils.Constants.TILE_SIZE / 2) +
+                // number of offsets (minimum 1 to align back at the center if no other sgms)
+                (idx + 1) *
+                // width of the level divided by the amount of sequences we are trying to fit
+                // Number of player sequences + 1 (active sequences contains algorithm)
+                (Promoscience.Utils.Constants.TILE_SIZE / (activeSequences.Count + 1));
+        }
+
+        public virtual void AdjustOffsets()
+        {
+            for (int i = 0; i < activeSequences.Count; i++)
+            {
+                activeSequences[i].AdjustOffset(GetOffsetAmount(i));
+            }
+        }
+
+        protected virtual void OnSequenceFinished()
+        {
+            if (replay.Controller.OnSequenceFinishedHandler != null)
+            {
+                replay.Controller.OnSequenceFinishedHandler.Invoke();
+            }
+        }
+
+        public virtual void Clear()
+        {
+            Object.Destroy(emptyLabyrinth);
+
+            foreach (Sequence sq in algorithmSequences)
+            {
+                if (sq != null)
                 {
-                    // TODO: Handle play/ stop from replay object and not sequences
-                    // to prevent synch issues
-                    case ReplayAction.ToggleAlgorithm:
-                        isAlgorithmToggled = !isAlgorithmToggled;
-                        emptyLabyrinth.gameObject.SetActive(!isAlgorithmToggled);
-                        labyrinth.gameObject.SetActive(isAlgorithmToggled);
-                        break;
-
-                    case ReplayAction.Play:
-
-                        Resume();
-
-                        break;
-
-                    case ReplayAction.Resume:
-                        Resume();
-                        break;
-
-                    case ReplayAction.Pause:
-
-                        //mutex.WaitOne();
-
-                        //Pause();
-
-                        //mutex.ReleaseMutex();
-
-                        break;
-
-                    case ReplayAction.Slide:
-
-                        mutex.WaitOne();
-
-                        int current = (int)args[0];
-                        Move(current);
-
-                        mutex.ReleaseMutex();
-
-                        break;
-
-
-                    case ReplayAction.Next:
-
-                        mutex.WaitOne();
-
-                        Next();
-
-                        mutex.ReleaseMutex();
-
-                        break;
-
-                    case ReplayAction.Previous:
-
-                        mutex.WaitOne();
-
-                        Previous();
-
-                        mutex.ReleaseMutex();
-
-                        break;
-
-                    case ReplayAction.Stop:
-
-                        //mutex.WaitOne();
-
-                        //Stop();
-
-                        //mutex.ReleaseMutex();
-
-                        break;
+                    Object.Destroy(sq.gameObject);
                 }
             }
 
-            public void TrySetMoveCount(int candidateMvcnt)
+            foreach (Sequence sq in playerSequences.Values)
             {
-                if (candidateMvcnt > replay.Controller.GlobalMoveCount)
-                    replay.Controller.GlobalMoveCount = candidateMvcnt;
-            }
-
-            public void OnSequenceToggled(Course course, bool enabled)
-            {
-                playerSequences[course.Id].gameObject.SetActive(enabled);
-
-                if (!enabled)
+                if (sq != null)
                 {
-                    activeSequences.Remove(playerSequences[course.Id]);
-                }
-                else
-                {
-                    activeSequences.Add(playerSequences[course.Id]);
-                }
-
-                if (activeSequences.Count != 0)
-                {
-                    // Adjust move count to biggest sequence
-                    TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
-
-                    // Let all sqnces catch up     
-                    Move(Mathf.Clamp(replay.Controller.GlobalMoveIndex, 0, replay.Controller.GlobalMoveCount));
-
-                    AdjustOffsets();
+                    Object.Destroy(sq.gameObject);
                 }
             }
 
-            public virtual float GetOffsetAmount(float idx)
+            playerSequences.Clear();
+
+            activeSequences.Clear();
+        }
+
+        public void OnCourseAdded(Course course)
+        {
+            if (replay.Server.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
             {
-                return
-                    // origin of segment at the center, move it to the left
-                    (-Promoscience.Utils.Constants.TILE_SIZE / 2) +
-                    // number of offsets (minimum 1 to align back at the center if no other sgms)
-                    (idx + 1) *
-                    // width of the level divided by the amount of sequences we are trying to fit
-                    // Number of player sequences + 1 (active sequences contains algorithm)
-                    (Promoscience.Utils.Constants.TILE_SIZE / (activeSequences.Count + 1));
-            }
-
-            public virtual void AdjustOffsets()
-            {
-                for (int i = 0; i < activeSequences.Count; i++)
-                {
-                    activeSequences[i].AdjustOffset(GetOffsetAmount(i));
-                }
-            }
-
-            protected virtual void OnSequenceFinished()
-            {
-                if (replay.Controller.OnSequenceFinishedHandler != null)
-                {
-                    replay.Controller.OnSequenceFinishedHandler.Invoke();
-                }
-            }
-
-            public virtual void Clear()
-            {
-                Object.Destroy(emptyLabyrinth);//.DestroyLabyrinth();
-            
-
-                foreach (Sequence sq in algorithmSequences)
-                {
-                    if (sq != null)
-                    {
-                        Object.Destroy(sq.gameObject);
-                    }
-                }
-
-                foreach (Sequence sq in playerSequences.Values)
-                {
-                    if (sq != null)
-                    {
-                        Object.Destroy(sq.gameObject);
-                    }
-                }
-
-                playerSequences.Clear();
-
-                activeSequences.Clear();
-            }
-
-            public void OnCourseAdded(Course course)
-            {
-                if (replay.Server.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
+                if (!playerSequences.ContainsKey(course.Id))
                 {
                     var sequence =
                         replay.Resources.PlayerSequence.Create(
@@ -369,23 +371,34 @@ namespace UdeS.Promoscience.Replays
                     playerSequences.Add(course.Id, sequence);
                     activeSequences.Add(sequence);
 
+
+                    var algorithmSeq =
+                        replay.Resources.AlgorithmSequence.Create(
+                            labyrinth,
+                            course.Algorithm,
+                            labyrinthPosition
+                            );
+
+                    algorithmSequences.Add(algorithmSeq);
+
                     TrySetMoveCount(sequence.LocalMoveCount);
 
                     AdjustOffsets();
                 }
             }
+        }
 
-            public void OnCourseRemoved(Course course)
+        public void OnCourseRemoved(Course course)
+        {
+            if (replay.Server.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
             {
-                if (replay.Server.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
-                {
-                    activeSequences.Remove(playerSequences[course.Id]);
-                    playerSequences.Remove(course.Id);
+                activeSequences.Remove(playerSequences[course.Id]);
+                playerSequences.Remove(course.Id);
 
-                    TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
+                TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
 
-                    AdjustOffsets();
-                }
-            }    
+                AdjustOffsets();
+            }
+        }
     }
 }

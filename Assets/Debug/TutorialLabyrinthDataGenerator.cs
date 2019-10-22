@@ -11,22 +11,19 @@ namespace UdeS.Promoscience.Tests
     public class TutorialLabyrinthDataGenerator : MonoBehaviour
     {
         [SerializeField]
-        ScriptableClientGameState gameState;
-
-        [SerializeField]
-        Labyrinths.ScriptableLabyrinth labyrinthData;
+        ScriptableClientGameState client;
 
         void Start()
         {
-            gameState.clientStateChangedEvent += OnGameStateChanged;
+            client.clientStateChangedEvent += OnGameStateChanged;
         }
 
         void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.GeneratingTutorialLabyrinthDataForTest)
+            if (client.Value == ClientGameState.GeneratingTutorialLabyrinthDataForTest)
             {
                 GenerateTutorialLabyrinthData();
-                gameState.Value = ClientGameState.TutorialLabyrinthReady;
+                client.Value = ClientGameState.TutorialLabyrinthReady;
             }
         }
 
@@ -233,7 +230,13 @@ namespace UdeS.Promoscience.Tests
             data[(12 * sizeY) + 11] = Constants.TILE_KART_VERTICAL_WALL_ID;
             data[(12 * sizeY) + 12] = Constants.TILE_KART_TOWER_WALL_ID;
 
-            labyrinthData.SetLabyrithData(data, sizeX, sizeY, id);
+            client.Labyrinth = new Labyrinths.Data
+            {
+                data = data,
+                sizeX = sizeX,
+                sizeY = sizeY,
+                currentId = id
+            };
         }
     }
 }

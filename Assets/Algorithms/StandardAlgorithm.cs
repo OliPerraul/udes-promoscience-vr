@@ -6,12 +6,11 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Algorithms
 {
-    public class StandardAlgorithm : MonoBehaviour
+    public class StandardAlgorithm : Algorithm
     {
-        [SerializeField]
-        Labyrinths.Labyrinth labyrinth;
+        public StandardAlgorithm(Resource res, Labyrinths.IData labyrinth) : base(res, labyrinth) { }
 
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
@@ -22,7 +21,16 @@ namespace UdeS.Promoscience
 
         List<Tile> algorithmSteps;
 
-        public List<Tile> GetAlgorithmSteps()
+
+        public override Utils.Algorithm Id
+        {
+            get
+            {
+                return Utils.Algorithm.Standard;
+            }
+        }
+
+        public override List<Tile> GetAlgorithmSteps()
         {
             algorithmSteps = new List<Tile>();
 
@@ -33,11 +41,11 @@ namespace UdeS.Promoscience
 
             bool asReachedTheEnd = false;
 
-            int direction = labyrinth.GetStartDirection();
+            int direction = labyrinth.StartDirection;
 
             tileColor = TileColor.Yellow;
-            position = labyrinth.GetLabyrithStartPosition();
-            Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
+            position = labyrinth.StartPos;
+            Vector2Int endPosition = labyrinth.EndPos;
 
             algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
 

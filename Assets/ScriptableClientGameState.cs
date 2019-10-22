@@ -13,8 +13,51 @@ namespace UdeS.Promoscience.ScriptableObjects
     [CreateAssetMenu(fileName = "Data", menuName = "Data/ClientGameState", order = 1)]
     public class ScriptableClientGameState : ScriptableObject
     {
+        public OnEvent OnLabyrinthChangedHandler;
+
         [SerializeField]
-        ClientGameState value;
+        private Labyrinths.IData labyrinth;
+
+        public Labyrinths.IData Labyrinth
+        {
+            get
+            {
+                return labyrinth;
+            }
+
+            set
+            {
+                labyrinth = value;
+
+                if (OnLabyrinthChangedHandler != null)
+                    OnLabyrinthChangedHandler.Invoke();
+            }
+        }
+
+        public OnEvent OnAlgorithmChangedHandler;
+
+        [SerializeField]
+        private Algorithms.Algorithm algorithm;
+
+        public Algorithms.Algorithm Algorithm
+        {
+            get
+            {
+                return algorithm;
+            }
+
+            set
+            {
+                algorithm = value;
+
+                if(OnAlgorithmChangedHandler != null)
+                    OnAlgorithmChangedHandler.Invoke();
+            }
+        }
+
+
+        [SerializeField]
+        private ClientGameState value;
 
         public Action clientStateChangedEvent;
 
@@ -26,6 +69,24 @@ namespace UdeS.Promoscience.ScriptableObjects
             respect = 1;
         }
 
+        public OnEvent OnCourseChangedHandler;
+
+        public Course course;
+
+        public Course Course
+        {
+            get
+            {
+                return course;
+            }
+
+            set
+            {
+                course = value;
+                if(OnCourseChangedHandler != null)
+                    OnCourseChangedHandler.Invoke();
+            }
+        }
 
         public string[] ActionValues;
 
@@ -36,7 +97,6 @@ namespace UdeS.Promoscience.ScriptableObjects
         private float respect;
 
         public OnFloatEvent OnRespectChangedHandler;
-
 
         public float Respect
         {

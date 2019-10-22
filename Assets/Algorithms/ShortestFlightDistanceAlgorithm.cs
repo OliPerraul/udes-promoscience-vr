@@ -6,12 +6,11 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Algorithms
 {
-    public class ShortestFlightDistanceAlgorithm : MonoBehaviour
+    public class ShortestFlightDistanceAlgorithm : Algorithm
     {
-        [SerializeField]
-        Labyrinths.Labyrinth labyrinth;
+        public ShortestFlightDistanceAlgorithm(Resource res, Labyrinths.IData lab) : base(res, lab) { }
 
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
@@ -22,7 +21,15 @@ namespace UdeS.Promoscience
 
         List<Tile> algorithmSteps;
 
-        public List<Tile> GetAlgorithmSteps()
+        public override Utils.Algorithm Id
+        {
+            get
+            {
+                return Utils.Algorithm.ShortestFlightDistance;
+            }
+        }
+
+        public override List<Tile> GetAlgorithmSteps()
         {
             algorithmSteps = new List<Tile>();
 
@@ -33,19 +40,17 @@ namespace UdeS.Promoscience
 
             bool asReachedTheEnd = false;
 
-            int direction = labyrinth.GetStartDirection();
+            int direction = labyrinth.StartDirection;
 
             tileColor = TileColor.Yellow;
-            position = labyrinth.GetLabyrithStartPosition();
-            Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
+            position = labyrinth.StartPos;
+            Vector2Int endPosition = labyrinth.EndPos;
 
             algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
 
 
             while (!asReachedTheEnd)
             {
-
-
                 bool[] isDirectionWalkableAndNotVisited = new bool[4];
                 isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
                 isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]];

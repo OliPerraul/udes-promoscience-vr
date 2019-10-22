@@ -13,10 +13,7 @@ namespace UdeS.Promoscience.Replays
     // Playback for a single team
     public class SimpleReplay : Replay
     {
-
-
-        private LabyrinthReplay labyrinthReplay;
-        
+        private LabyrinthReplay labyrinthReplay;        
 
         [SerializeField]
         private ScriptableController replayController;
@@ -41,15 +38,11 @@ namespace UdeS.Promoscience.Replays
             if (Server.GameState ==
                 ServerGameState.SimpleReplay)
             {
-                Labyrinths.Data labyrinthData = new Labyrinths.Data();
-
-                SQLiteUtilities.ReadLabyrinthDataFromId(Server.GameRound, labyrinthData);
-
-                Labyrinths.Labyrinth labyrinth = LabyrinthResources.Labyrinth.Create(labyrinthData);
+                Labyrinths.Labyrinth labyrinth = LabyrinthResources.Labyrinth.Create(Server.CurrentLabyrinth);
                 
-                var courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(labyrinthData.currentId);
+                var courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(Server.CurrentLabyrinth.currentId);
                 
-                labyrinthReplay = new LabyrinthReplay(this, labyrinth, algorithm, courses);
+                labyrinthReplay = new LabyrinthReplay(this, labyrinth, courses);
 
                 labyrinthReplay.Start();
             }

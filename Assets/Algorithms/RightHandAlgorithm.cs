@@ -6,17 +6,24 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Algorithms
 {
-    public class RightHandAlgorithm : MonoBehaviour
+    public class RightHandAlgorithm : Algorithm
     {
-        [SerializeField]
-        Labyrinths.Labyrinth labyrinth;
+        public RightHandAlgorithm(Resource res, Labyrinths.IData lab) : base(res, lab) { }
 
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-        public List<Tile> GetAlgorithmSteps()
+        public override Utils.Algorithm Id
+        {
+            get
+            {
+                return Utils.Algorithm.RightHand;
+            }
+        }
+
+        public override List<Tile> GetAlgorithmSteps()
         {
             List<Tile> algorithmSteps = new List<Tile>();
 
@@ -24,9 +31,9 @@ namespace UdeS.Promoscience
 
             bool asReachedTheEnd = false;
 
-            int direction = labyrinth.GetStartDirection();
-            Vector2Int position = labyrinth.GetLabyrithStartPosition();
-            Vector2Int endPosition = labyrinth.GetLabyrithEndPosition();
+            int direction = labyrinth.StartDirection;
+            Vector2Int position = labyrinth.StartPos;
+            Vector2Int endPosition = labyrinth.EndPos;
             algorithmSteps.Add(new Tile(position.x, position.y, TileColor.Yellow));
             alreadyVisitedTile[position.x, position.y] = true;
 

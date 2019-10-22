@@ -26,15 +26,9 @@ namespace UdeS.Promoscience.Replays
 
         public abstract void OnServerGameStateChanged();
 
-        [SerializeField]
-        protected Algorithm algorithm;
-
         public virtual void OnValidate()
         {
-            if (algorithm == null)
-            {
-                algorithm = FindObjectOfType<Algorithm>();
-            }
+
         }
 
         public virtual void Awake()

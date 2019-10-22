@@ -9,7 +9,7 @@ namespace UdeS.Promoscience.Replays
 {
     public class AlgorithmSequence : Sequence
     {
-        private Algorithm algorithm;
+        private Algorithms.Algorithm algorithm;
 
         private List<Tile> tiles;
 
@@ -58,7 +58,7 @@ namespace UdeS.Promoscience.Replays
 
         public AlgorithmSequence Create(
             Labyrinths.Labyrinth labyrinth,
-            Algorithm algorithm,
+            Algorithms.Algorithm algorithm,
             Vector2Int startPosition)
         {
             AlgorithmSequence sequence = Instantiate(

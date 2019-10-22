@@ -345,18 +345,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d5379311b7d58419d9a577d063a1d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
+  Server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
+  Resources: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
+  LabyrinthResources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
   replayController: {fileID: 11400000, guid: f8370f6283b19044db4460f5665bacee, type: 2}
-  isAlgorithmToggled: 1
-  labyrinth: {fileID: 0}
-  algorithm: {fileID: 2007468727}
-  serverGameState: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
-  algorithmSequenceTemplate: {fileID: 114161750463648574, guid: 84e50ea42f8f5004eb0acdfc59403435,
-    type: 2}
-  playerSequenceTemplate: {fileID: 114216879037146624, guid: 87db04232ffddbd4f8fe756dfeb0e812,
-    type: 2}
-  tileWidth: 5
 --- !u!114 &64117440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,7 +361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverGameState: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
-  camera: {fileID: 1031168292}
+  camera: {fileID: 0}
   scaleSpeed: 0.5
   dragSpeed: 2
 --- !u!114 &64117441
@@ -394,7 +386,7 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     gameObjectsToDeactivate: []
-  - name: Replay
+  - name: SimpleReplay
     Flag1: 16
     Flag2: 0
     Flag3: 0
@@ -415,7 +407,7 @@ Transform:
   m_Children:
   - {fileID: 2022558463}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &71189289
 GameObject:
@@ -1664,7 +1656,7 @@ MonoBehaviour:
     - {fileID: 1149360019}
     - {fileID: 925179509}
     - {fileID: 1506148475}
-  - name: Replay
+  - name: SimpleReplay
     Flag1: 16
     Flag2: 32
     Flag3: 0
@@ -1714,7 +1706,7 @@ Transform:
   m_Children:
   - {fileID: 100682428}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &241224031
 Prefab:
@@ -3912,8 +3904,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1031168293}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &552776834
 GameObject:
@@ -4264,7 +4256,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc3b860b1c2fbe41be202f3f3c65747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithm: {fileID: 2007468727}
   server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   playbackOptions: {fileID: 11400000, guid: f8370f6283b19044db4460f5665bacee, type: 2}
   infoPanel: {fileID: 0}
@@ -4568,8 +4559,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 451540406}
   m_HandleRect: {fileID: 451540405}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6716,68 +6707,6 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!1 &1031168291
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1031168293}
-  - component: {fileID: 1031168292}
-  - component: {fileID: 1031168294}
-  m_Layer: 0
-  m_Name: Camera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1031168292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1031168291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6f10118d2e448140b042757a986a434, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1031168293
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1031168291}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 534669905}
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1031168294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1031168291}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 341f174288f68b442a7009e7a0889357, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serverGameStateSteps:
-  - name: AdvancedReplay
-    Flag1: 32
-    Flag2: 0
-    Flag3: 0
-    gameObjectsToActivate: []
-    gameObjectsToDeactivate: []
-  serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
-    type: 2}
 --- !u!1 &1067473424
 GameObject:
   m_ObjectHideFlags: 0
@@ -8523,7 +8452,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000091552734}
+  m_AnchoredPosition: {x: 0, y: 0.000093067865}
   m_SizeDelta: {x: -50, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1329621017
@@ -11470,7 +11399,7 @@ Transform:
   m_Children:
   - {fileID: 1987378783}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1856815493
 MonoBehaviour:
@@ -11484,7 +11413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverGameState: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
-  camera: {fileID: 1031168292}
+  camera: {fileID: 0}
   scaleSpeed: 0.5
   dragSpeed: 2
 --- !u!114 &1856815494
@@ -11498,11 +11427,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0cde39bb8bd138488aecca659ce9de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
+  Server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
+  Resources: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
+  LabyrinthResources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
   resource: {fileID: 11400000, guid: d450c8a7342568e4e96b38e51732c86e, type: 2}
-  replayController: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
-  algorithm: {fileID: 2007468727}
+  controller: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
+  SelectionOffset: 60
 --- !u!114 &1856815495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11522,7 +11452,7 @@ MonoBehaviour:
     gameObjectsToActivate:
     - {fileID: 2107834311}
     gameObjectsToDeactivate: []
-  - name: Replay
+  - name: SimpleReplay
     Flag1: 16
     Flag2: 0
     Flag3: 0
@@ -12996,103 +12926,6 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2005221631}
   m_CullTransparentMesh: 0
---- !u!1 &2007468726
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2007468732}
-  - component: {fileID: 2007468730}
-  - component: {fileID: 2007468731}
-  - component: {fileID: 2007468729}
-  - component: {fileID: 2007468728}
-  - component: {fileID: 2007468727}
-  m_Layer: 0
-  m_Name: Algorithm
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2007468727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2007468726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1c077f441b13a442b064702ccb9a826, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  algo: {fileID: 11400000, guid: b634bf5d50534cc4f8ee0e60faa31a3f, type: 2}
-  rightHandAlgorithm: {fileID: 2007468731}
-  longestStraightAlgorithm: {fileID: 2007468730}
-  shortestFlightDistanceAlgorithm: {fileID: 2007468729}
-  standardAlgorithm: {fileID: 2007468728}
---- !u!114 &2007468728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2007468726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aa0364522b725e43a636aada198922f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 0}
---- !u!114 &2007468729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2007468726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085870fe91de8b4abab6553bd11f1f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 0}
---- !u!114 &2007468730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2007468726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eee8c225a1910d0428fe59158bb8692f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 0}
---- !u!114 &2007468731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2007468726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6150ba9d456f2bb438af8ec61e41c15f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  labyrinth: {fileID: 0}
---- !u!4 &2007468732
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2007468726}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2022558462
 GameObject:
   m_ObjectHideFlags: 0
@@ -13859,7 +13692,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc3b860b1c2fbe41be202f3f3c65747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  algorithm: {fileID: 2007468727}
   server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   playbackOptions: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
   infoPanel: {fileID: 0}

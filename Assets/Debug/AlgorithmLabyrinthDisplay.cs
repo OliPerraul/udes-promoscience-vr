@@ -12,19 +12,7 @@ namespace UdeS.Promoscience.Tests
     public class AlgorithmLabyrinthDisplay : MonoBehaviour
     {
         [SerializeField]
-        ScriptableClientGameState gameState;
-
-        [SerializeField]
-        RightHandAlgorithm rightHandAlgorithm;
-
-        [SerializeField]
-        LongestStraightAlgorithm longestStraightAlgorithm;
-
-        [SerializeField]
-        ShortestFlightDistanceAlgorithm shortestFlightDistanceAlgorithm;
-
-        [SerializeField]
-        StandardAlgorithm standardAlgorithm;
+        ScriptableClientGameState client;
 
         [SerializeField]
         Labyrinths.Labyrinth labyrinth;
@@ -38,13 +26,13 @@ namespace UdeS.Promoscience.Tests
 
         void Start()
         {
-            gameState.clientStateChangedEvent += OnGameStateChanged;
+            client.clientStateChangedEvent += OnGameStateChanged;
         }
 
 
         void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.PlayingTutorial || gameState.Value == ClientGameState.Playing)
+            if (client.Value == ClientGameState.PlayingTutorial || client.Value == ClientGameState.Playing)
             {
                 GenerateVisualForAlgorithm(Utils.Algorithm.ShortestFlightDistance);
             }
@@ -52,22 +40,7 @@ namespace UdeS.Promoscience.Tests
 
         void GenerateVisualForAlgorithm(Utils.Algorithm algorithm)
         {
-            if (algorithm == Utils.Algorithm.RightHand)
-            {
-                algorithmStepsPosition = rightHandAlgorithm.GetAlgorithmSteps();
-            }
-            else if (algorithm == Utils.Algorithm.LongestStraight)
-            {
-                algorithmStepsPosition = longestStraightAlgorithm.GetAlgorithmSteps();
-            }
-            else if (algorithm == Utils.Algorithm.ShortestFlightDistance)
-            {
-                algorithmStepsPosition = shortestFlightDistanceAlgorithm.GetAlgorithmSteps();
-            }
-            else if (algorithm == Utils.Algorithm.Standard)
-            {
-                algorithmStepsPosition = standardAlgorithm.GetAlgorithmSteps();
-            }
+            algorithmStepsPosition = client.Algorithm.GetAlgorithmSteps();
 
             Debug.Log("algorithmStepsPosition Count : " + algorithmStepsPosition.Count);
 
@@ -75,8 +48,8 @@ namespace UdeS.Promoscience.Tests
             {
                 Debug.Log("algorithmStepsPosition #" + i + " : " + algorithmStepsPosition[i].x + " , " + algorithmStepsPosition[i].y + " , " + algorithmStepsPosition[i].color);
 
-                GameObject obj = (GameObject)Instantiate(sphere, GetWorldPosition(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
-                FloorPainter floorPainter = labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<FloorPainter>();
+                GameObject obj = Instantiate(sphere, GetWorldPosition(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
+                Algorithms.FloorPainter floorPainter = labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<Algorithms.FloorPainter>();
 
                 if (floorPainter != null)
                 {

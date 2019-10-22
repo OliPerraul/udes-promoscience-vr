@@ -12,8 +12,8 @@ namespace UdeS.Promoscience.Network
 {
     public class HeadsetMessageServer : MonoBehaviour
     {
-        [SerializeField]
-        ScriptableAlgorithm algorithm;
+        //[SerializeField]
+        //ScriptableAlgorithm algorithm;
 
         //[SerializeField]
         //ScriptableFloat algorithmRespect;
@@ -222,7 +222,7 @@ namespace UdeS.Promoscience.Network
         void SendAlgorithm()
         {
             AlgorithmMessage msg = new AlgorithmMessage();
-            msg.algorithm = algorithm.Value;
+            //msg.algorithm = algorithm.Value;
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }

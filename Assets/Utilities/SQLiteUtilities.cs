@@ -446,7 +446,6 @@ namespace UdeS.Promoscience.Utils
             return courses;
         }
 
-
         public static List<Labyrinths.IData> GetLabyrinths()
         {
             List<Labyrinths.IData> labyrinths = new List<Labyrinths.IData>();

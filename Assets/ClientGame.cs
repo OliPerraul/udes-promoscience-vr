@@ -13,7 +13,7 @@ namespace UdeS.Promoscience
         ScriptableControler controls;
 
         [SerializeField]
-        ScriptableClientGameState gameState;
+        ScriptableClientGameState gameState;               
 
         [SerializeField]
         ScriptableAction playerReachedTheEnd;
@@ -28,32 +28,8 @@ namespace UdeS.Promoscience
         GameObject waitingForNextRoundRoom;
 
         [SerializeField]
-        private Camera gameCamera;
-
-        [SerializeField]
         private ScriptableIntegerArray recordedSteps;
 
-        private static ClientGame instance = null;
-
-        public static ClientGame Instance
-        {
-            get {
-
-                return instance;
-            }
-        }
-
-        public void Awake()
-        {
-            if (instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            instance = this;
-            DontDestroyOnLoad(gameObject);   
-        }
 
         void Start()
         {

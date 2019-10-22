@@ -7,12 +7,11 @@ using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Algorithms
 {
-    public class LongestStraightAlgorithm : MonoBehaviour
+    public class LongestStraightAlgorithm : Algorithm
     {
-        [SerializeField]
-        Labyrinths.Labyrinth labyrinth;
+        public LongestStraightAlgorithm(Resource res, Labyrinths.IData lab) : base(res, lab) { }
 
         bool asReachedTheEnd;
         bool[] isDirectionWalkableAndNotVisited = new bool[4];
@@ -33,7 +32,15 @@ namespace UdeS.Promoscience
         //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
         List<Vector3Int> lastVisitedIntersection;
 
-        public List<Tile> GetAlgorithmSteps()
+        public override Utils.Algorithm Id
+        {
+            get
+            {
+                return Utils.Algorithm.LongestStraight;
+            }
+        }
+
+        public override List<Tile> GetAlgorithmSteps()
         {
             algorithmSteps = new List<Tile>();
             lastVisitedIntersection = new List<Vector3Int>();
@@ -42,11 +49,13 @@ namespace UdeS.Promoscience
 
             asReachedTheEnd = false;
 
-            int direction = labyrinth.GetStartDirection();
+            int direction = labyrinth.StartDirection;
 
             tileColor = TileColor.Yellow;
-            position = labyrinth.GetLabyrithStartPosition();
-            endPosition = labyrinth.GetLabyrithEndPosition();
+
+            position = labyrinth.StartPos;
+
+            endPosition = labyrinth.EndPos;
 
             algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
 

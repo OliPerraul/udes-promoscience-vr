@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f12d41a1bf220840a8382dbc89b4115, type: 3}
+  m_Name: Resources
+  m_EditorClassIdentifier: 
+  StandardAlgorithm: {fileID: 11400000, guid: 5dc9f5c546d72fa4a8e185cd0c84a263, type: 2}
+  ShortestFlightDistanceAlgorithm: {fileID: 11400000, guid: 66578de105ec8d1489ccf604dcb425c2,
+    type: 2}
+  RightHandAlgorithm: {fileID: 11400000, guid: 36f8d84de20b16345a67e1febc8e86d3, type: 2}
+  LongestStraightAlgorithm: {fileID: 11400000, guid: 29bc87a953103ab419c0864f2f9203d2,
+    type: 2}

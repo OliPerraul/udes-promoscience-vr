@@ -7,6 +7,7 @@ using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 using Cirrus.Extensions;
+using UdeS.Promoscience.Algorithms;
 
 namespace UdeS.Promoscience.Labyrinths
 {
@@ -56,7 +57,7 @@ namespace UdeS.Promoscience.Labyrinths
         public Camera Camera;
 
         [SerializeField]
-        private ScriptableLabyrinth Resource;
+        private ScriptableLabyrinth scriptableData;
 
         private IData data = null;
 
@@ -64,7 +65,7 @@ namespace UdeS.Promoscience.Labyrinths
         {
             get
             {
-                return data == null ? Resource : data;
+                return data == null ? scriptableData : data;
             }
         }
 
@@ -103,7 +104,6 @@ namespace UdeS.Promoscience.Labyrinths
                 index);
 
             Camera.Source.transform.position += Vector3.up * offset / 2;
-            Camera.Source.gameObject.SetActive(true);
         }
 
         public void OnGameStateChanged()
@@ -268,25 +268,12 @@ namespace UdeS.Promoscience.Labyrinths
 
         public bool GetIsTileWalkable(int x, int y)
         {
-            if (labyrinth == null)
-                return false;
-
-            if (x >= 0 && x < labyrinth.GetLength(0) && y >= 0 && y < labyrinth.GetLength(1))
-            {
-                if ((labyrinth[x, y] >= Constants.TILE_FLOOR_START_ID && labyrinth[x, y] <= Constants.TILE_FLOOR_END_ID)
-                    || (labyrinth[x, y] >= Constants.TILE_START_START_ID && labyrinth[x, y] <= Constants.TILE_START_END_ID)
-                    || (labyrinth[x, y] >= Constants.TILE_END_START_ID && labyrinth[x, y] <= Constants.TILE_END_END_ID))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return data.GetIsTileWalkable(x, y);
         }
 
         public bool GetIsTileWalkable(Vector2Int tile)
         {
-            return GetIsTileWalkable(tile.x, tile.y);
+            return data.GetIsTileWalkable(tile);
         }
 
         public TileColor GetTileColor(Vector2Int tile)

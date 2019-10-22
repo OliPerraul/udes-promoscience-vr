@@ -26,7 +26,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1606812944889548
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,5 +272,5 @@ MonoBehaviour:
     Source: {fileID: 20389824531960314}
     HeightOffset: 0
     Overlay: {fileID: 1895812823229446}
-  Resource: {fileID: 11400000, guid: 5a7aa93e14dd57e4fb7e575cfaaf504e, type: 2}
+  scriptableData: {fileID: 0}
   ressources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
