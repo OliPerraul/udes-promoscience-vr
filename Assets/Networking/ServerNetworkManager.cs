@@ -13,8 +13,8 @@ namespace UdeS.Promoscience.Network
     {
         public static ServerNetworkManager instance;
 
-        [SerializeField]
-        ScriptableServerGameInformation serverGameInformation;
+        //[SerializeField]
+        //ScriptableServerGameInformation serverGameInformation;
 
         [SerializeField]
         ScriptableServerPlayerInformation serverPlayerInformation;
@@ -45,7 +45,7 @@ namespace UdeS.Promoscience.Network
             if (!isServerStarted)
             {
                 isServerStarted = true;
-                serverGameInformation.LoadGameInformationFromDatabase();
+                ServerGame.Instance.LoadGameInformationFromDatabase();
                 serverPlayerInformation.LoadPlayerInformationFromDatabase();
                 playerDisconnectfromServerEvent += serverPlayerInformation.OnPlayerDisconnect;
                 StartServer();
@@ -89,7 +89,7 @@ namespace UdeS.Promoscience.Network
         {
             StopServer();
 
-            serverGameInformation.ClearGameInformation();
+            ServerGame.Instance.ClearGameInformation();
             serverPlayerInformation.ClearPlayerInformation();
 
             Application.Quit();

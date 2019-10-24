@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.Algorithms
 {
     public class StandardAlgorithm : Algorithm
     {
-        public StandardAlgorithm(Resource res, Labyrinths.IData labyrinth) : base(res, labyrinth) { }
+        public StandardAlgorithm(Resource res) : base(res) { }
 
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
@@ -30,7 +30,7 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
-        public override List<Tile> GetAlgorithmSteps()
+        public override List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth)
         {
             algorithmSteps = new List<Tile>();
 

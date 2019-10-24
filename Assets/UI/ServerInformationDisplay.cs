@@ -13,8 +13,8 @@ namespace UdeS.Promoscience.UI
 
     public class ServerInformationDisplay : MonoBehaviour
     {
-        [SerializeField]
-        ScriptableServerGameInformation serverGameInformation;
+        //[SerializeField]
+        //ScriptableServerGameInformation serverGameInformation;
 
         [SerializeField]
         ScriptableLocalizeString gameRoundString;
@@ -42,8 +42,8 @@ namespace UdeS.Promoscience.UI
 
         void OnEnable()
         {
-            serverGameInformation.gameRoundChangedEvent += OnGameRoundChanged;
-            serverGameInformation.gameStateChangedEvent += OnGameStateChanged;
+            ServerGame.Instance.gameRoundChangedEvent += OnGameRoundChanged;
+            ServerGame.Instance.gameStateChangedEvent += OnGameStateChanged;
             OnGameRoundChanged();
             OnGameStateChanged();
 
@@ -51,26 +51,26 @@ namespace UdeS.Promoscience.UI
 
         void OnGameRoundChanged()
         {
-            serverGameRoundText.text = gameRoundString.Value + " : " + serverGameInformation.GameRound;
+            serverGameRoundText.text = gameRoundString.Value + " : " + ServerGame.Instance.GameRound;
         }
 
         void OnGameStateChanged()
         {
             string s = gameStateString.Value + " : ";
 
-            if (serverGameInformation.GameState == ServerGameState.Lobby)
+            if (ServerGame.Instance.GameState == ServerGameState.Lobby)
             {
                 s += lobbyString.Value;
             }
-            else if (serverGameInformation.GameState == ServerGameState.Tutorial)
+            else if (ServerGame.Instance.GameState == ServerGameState.Tutorial)
             {
                 s += tutorialString.Value;
             }
-            else if (serverGameInformation.GameState == ServerGameState.GameRound)
+            else if (ServerGame.Instance.GameState == ServerGameState.GameRound)
             {
                 s += playingRoundString.Value;
             }
-            else if (serverGameInformation.GameState == ServerGameState.Intermission)
+            else if (ServerGame.Instance.GameState == ServerGameState.Intermission)
             {
                 s += intermissionString.Value;
             }

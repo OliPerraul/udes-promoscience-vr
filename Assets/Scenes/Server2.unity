@@ -162,7 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replayOptions: {fileID: 11400000, guid: f8370f6283b19044db4460f5665bacee, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   scoreText: {fileID: 1901380151}
   respectText: {fileID: 552776836}
   image: {fileID: 469746125}
@@ -345,7 +344,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d5379311b7d58419d9a577d063a1d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   Resources: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
   LabyrinthResources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
   replayController: {fileID: 11400000, guid: f8370f6283b19044db4460f5665bacee, type: 2}
@@ -360,7 +358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 970d6fb43428e1e49bc7a63b92cfaefb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverGameState: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   camera: {fileID: 0}
   scaleSpeed: 0.5
   dragSpeed: 2
@@ -393,8 +390,6 @@ MonoBehaviour:
     gameObjectsToActivate:
     - {fileID: 0}
     gameObjectsToDeactivate: []
-  serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
-    type: 2}
 --- !u!4 &64117442
 Transform:
   m_ObjectHideFlags: 0
@@ -407,7 +402,7 @@ Transform:
   m_Children:
   - {fileID: 2022558463}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &71189289
 GameObject:
@@ -565,8 +560,6 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
-  serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
-    type: 2}
   serverPlayerInformation: {fileID: 11400000, guid: 3feeeb45d324b214994235177b056084,
     type: 2}
 --- !u!4 &74985583
@@ -1693,8 +1686,6 @@ MonoBehaviour:
     Flag3: 0
     gameObjectsToActivate: []
     gameObjectsToDeactivate: []
-  serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
-    type: 2}
 --- !u!4 &221652415
 Transform:
   m_ObjectHideFlags: 0
@@ -1708,7 +1699,7 @@ Transform:
   - {fileID: 534669905}
   - {fileID: 100682428}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &241224031
 Prefab:
@@ -2145,7 +2136,7 @@ RectTransform:
   m_Children:
   - {fileID: 1964857781}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2322,8 +2313,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b507933cece4a64e82cf1766fb219b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
-    type: 2}
   gameRoundString: {fileID: 11400000, guid: a3c915a5b6fd803448ff62eb6199fd15, type: 2}
   gameStateString: {fileID: 11400000, guid: bcdc6f133d663d64aa5bafe636f22b25, type: 2}
   intermissionString: {fileID: 11400000, guid: d7e6fc28d84e9ae45a8f555765a21c93, type: 2}
@@ -2381,7 +2370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb85c6a7055cd5546bf4a3bd639051bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  replayOptions: {fileID: 0}
+  replayController: {fileID: 0}
   toggle: {fileID: 677653393}
   label: {fileID: 502041102}
   colorImage: {fileID: 176389673}
@@ -4035,7 +4024,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replayOptions: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   scrollItemTemplate: {fileID: 1978398913}
   scrollContentParent: {fileID: 53809751}
 --- !u!1 &566797854
@@ -4258,7 +4246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc3b860b1c2fbe41be202f3f3c65747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   playbackOptions: {fileID: 11400000, guid: f8370f6283b19044db4460f5665bacee, type: 2}
   infoPanel: {fileID: 0}
   navigPanel: {fileID: 606627577}
@@ -4562,7 +4549,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 451540405}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999994
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4681,7 +4668,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
+      - m_Target: {fileID: 1537123205}
         m_MethodName: StartNextGameRound
         m_Mode: 1
         m_Arguments:
@@ -5959,7 +5946,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replayOptions: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   scoreText: {fileID: 1861960784}
   respectText: {fileID: 2050920593}
   image: {fileID: 76545900}
@@ -6335,7 +6321,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
+      - m_Target: {fileID: 1537123205}
         m_MethodName: BeginAdvancedReplay
         m_Mode: 1
         m_Arguments:
@@ -7516,7 +7502,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
+      - m_Target: {fileID: 1537123205}
         m_MethodName: StartTutorial
         m_Mode: 1
         m_Arguments:
@@ -8454,7 +8440,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000023643506}
+  m_AnchoredPosition: {x: 0, y: 0.00008462285}
   m_SizeDelta: {x: -50, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1329621017
@@ -9337,7 +9323,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replayOptions: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   controls: {fileID: 0}
   openButton: {fileID: 468765706}
   exitButton: {fileID: 1216939641}
@@ -9358,7 +9343,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resources: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   labyrinthDisplay: {fileID: 1431010552}
   replayController: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
 --- !u!114 &1431010554
@@ -9373,8 +9357,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverGameStateSteps: []
-  serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
-    type: 2}
 --- !u!1001 &1443028783
 Prefab:
   m_ObjectHideFlags: 0
@@ -9738,7 +9720,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
+      - m_Target: {fileID: 1537123205}
         m_MethodName: EndRoundOrTutorial
         m_Mode: 1
         m_Arguments:
@@ -9854,6 +9836,46 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1511634016}
   m_CullTransparentMesh: 0
+--- !u!1 &1537123204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1537123206}
+  - component: {fileID: 1537123205}
+  m_Layer: 0
+  m_Name: Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1537123205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1537123204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d3444d9b8c0f64b8d8cbb9432325e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1537123206
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1537123204}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1553893311
 GameObject:
   m_ObjectHideFlags: 0
@@ -10013,7 +10035,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &1600564700
 GameObject:
@@ -11433,7 +11455,7 @@ Transform:
   m_Children:
   - {fileID: 1987378783}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1856815493
 MonoBehaviour:
@@ -11446,7 +11468,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 970d6fb43428e1e49bc7a63b92cfaefb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverGameState: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   camera: {fileID: 0}
   scaleSpeed: 0.5
   dragSpeed: 2
@@ -11461,7 +11482,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0cde39bb8bd138488aecca659ce9de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   Resources: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
   LabyrinthResources: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
   resource: {fileID: 11400000, guid: d450c8a7342568e4e96b38e51732c86e, type: 2}
@@ -11493,8 +11513,6 @@ MonoBehaviour:
     gameObjectsToActivate:
     - {fileID: 0}
     gameObjectsToDeactivate: []
-  serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
-    type: 2}
 --- !u!1 &1861960782
 GameObject:
   m_ObjectHideFlags: 0
@@ -11630,7 +11648,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replayOptions: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   controls: {fileID: 2101485193}
   openButton: {fileID: 609252765}
   exitButton: {fileID: 375839888}
@@ -11651,8 +11668,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serverGameStateSteps: []
-  serverGameInformation: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
-    type: 2}
 --- !u!1 &1891346517
 GameObject:
   m_ObjectHideFlags: 0
@@ -12099,7 +12114,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   replayOptions: {fileID: 11400000, guid: f8370f6283b19044db4460f5665bacee, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   scrollItemTemplate: {fileID: 313941373}
   scrollContentParent: {fileID: 1774394260}
 --- !u!1 &1971382809
@@ -12270,7 +12284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb85c6a7055cd5546bf4a3bd639051bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  replayOptions: {fileID: 0}
+  replayController: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
   toggle: {fileID: 1124283105}
   label: {fileID: 1216594566}
   colorImage: {fileID: 1827408228}
@@ -13665,8 +13679,7 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c,
-        type: 2}
+      objectReference: {fileID: 1537123205}
     - target: {fileID: 114896132728136572, guid: 0594ff68a002b0c489015be281826522,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -13892,7 +13905,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc3b860b1c2fbe41be202f3f3c65747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   playbackOptions: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}
   infoPanel: {fileID: 0}
   navigPanel: {fileID: 2101485191}
@@ -13954,7 +13966,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resources: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
-  server: {fileID: 11400000, guid: ba3019711f919be499bd2a503eb23a3c, type: 2}
   labyrinthDisplay: {fileID: 1867529987}
   resource: {fileID: 11400000, guid: d450c8a7342568e4e96b38e51732c86e, type: 2}
   replayController: {fileID: 11400000, guid: 591698c3e713442408ddfbb1ed0c9c30, type: 2}

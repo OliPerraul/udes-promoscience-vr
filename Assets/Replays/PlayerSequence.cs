@@ -57,6 +57,9 @@ namespace UdeS.Promoscience.Replays
         [SerializeField]
         private float backtrackWidth = 2f;
 
+        [SerializeField]
+        private float cameraHeightDifference = 10f;
+
         private Segment CurrentSegment
         {
             get
@@ -157,12 +160,14 @@ namespace UdeS.Promoscience.Replays
         private float offsetAmount = 0f;
 
         public PlayerSequence Create(
+            Replay replay,
             Course course,
             Labyrinths.Labyrinth labyrinth,
             Vector2Int startPosition)
         {
             PlayerSequence sequence = this.Create(labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
 
+            sequence.replay = replay;
             sequence.labyrinth = labyrinth;
             sequence.course = course;
             sequence.material.color = course.Team.TeamColor;
@@ -343,7 +348,7 @@ namespace UdeS.Promoscience.Replays
                 }
 
                 // Add error
-                sgm = errorIndicatorTemplate.Create(transform, origin, middle, destination, isInversed, isTurn);
+                sgm = errorIndicatorTemplate.Create(transform, origin, middle, destination, isInversed, isTurn, labyrinth.Camera.HeightOffset);
                 state.Errors.Add(lpos, sgm);
                 segments.Add(sgm);
             }
@@ -372,7 +377,8 @@ namespace UdeS.Promoscience.Replays
                     isBacktrack ? backtrackMaterial : material,
                     isBacktrack ? backtrackMaterialAlpha : materialAlpha,
                     time,
-                    isBacktrack ? backtrackWidth : normalWidth) :
+                    isBacktrack ? backtrackWidth : normalWidth,
+                    labyrinth.Camera.HeightOffset - cameraHeightDifference) :
                 segmentTemplate.Create(
                     transform,
                     origin,
@@ -382,7 +388,8 @@ namespace UdeS.Promoscience.Replays
                     isBacktrack ? backtrackMaterial : material,
                     isBacktrack ? backtrackMaterialAlpha : materialAlpha,
                     time,
-                    isBacktrack ? backtrackWidth : normalWidth);
+                    isBacktrack ? backtrackWidth : normalWidth,
+                    labyrinth.Camera.HeightOffset - cameraHeightDifference);
 
             state.Segments.Add(lpos, sgm);
             segments.Add(state.Head); // List<Segment> segments

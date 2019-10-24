@@ -360,7 +360,7 @@ namespace UdeS.Promoscience.Network
             
             client.Labyrinth = resources.Labyrinths.Labyrinth.Create(client.LabyrinthData);
 
-            client.Algorithm = resources.Algorithms.CreateAlgorithm(algo, client.LabyrinthData);
+            client.Algorithm = resources.Algorithms.CreateAlgorithm(algo);//, client.LabyrinthData);
 
             isRoundCompleted.Value = false;
 
@@ -402,7 +402,7 @@ namespace UdeS.Promoscience.Network
 
             client.Labyrinth = resources.Labyrinths.Labyrinth.Create(client.LabyrinthData);
 
-            client.Algorithm = resources.Algorithms.CreateAlgorithm(algo, client.LabyrinthData);
+            client.Algorithm = resources.Algorithms.CreateAlgorithm(algo);/// client.LabyrinthData);
 
             isRoundCompleted.Value = false;
             gameRound.Value = labyrinthId;

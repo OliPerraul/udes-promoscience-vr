@@ -33,9 +33,11 @@ namespace UdeS.Promoscience.Replays
             Vector3 middle,
             Vector3 destination,
             bool isInversed,
-            bool isTurn)
+            bool isTurn,
+            float heightOffset)
         {
             var segm = this.Create(transform);
+            segm.heightOffset = heightOffset;
             segm.isTurn = isTurn;
             segm.origin = origin;
             segm.destination = destination;

@@ -16,9 +16,13 @@ namespace UdeS.Promoscience.Replays
         Pause,
         Resume,
         Slide,
+
         ToggleAlgorithm,
-        ToggleLabyrinth,
-        ExitReplay
+        SelectLabyrinth,
+
+        ExitReplay,
+        AddCourse,
+        Reset
     }
 
     public delegate void OnAction(ReplayAction action, params object[] args);
@@ -28,6 +32,8 @@ namespace UdeS.Promoscience.Replays
     public abstract class ScriptableController : ScriptableObject
     {
         public OnIntEvent valueChangeEvent;
+
+        public IEnumerable<Course> Courses;
 
         public OnEvent OnLabyrinthReplayHandler;
 

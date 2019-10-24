@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.Network
     public class ActionSaverComponent : NetworkBehaviour
     {
         [SerializeField]
-        ScriptableTeamList teamList;
+        Teams.Resources teamList;
 
         [SerializeField]
         Player player;
@@ -39,7 +39,7 @@ namespace UdeS.Promoscience.Network
                 player.ServerPlayerGameState == ClientGameState.PlayingTutorial )
             {
                 int teamId = player.ServerTeamId;
-                ScriptableTeam team = teamList.GetScriptableTeamWithId(player.ServerTeamId);
+                Teams.ScriptableTeam team = teamList.GetScriptableTeamWithId(player.ServerTeamId);
                 string teamName = team.TeamName;
                 string teamColor = team.TeamColor.ToString();
                 int courseId = player.ServerCourseId;

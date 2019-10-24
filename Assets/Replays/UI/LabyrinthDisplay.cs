@@ -10,8 +10,8 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         protected ScriptableController replayOptions;
 
-        [SerializeField]
-        protected ScriptableObjects.ScriptableServerGameInformation server;
+        //[SerializeField]
+        //protected ServerGametion server;
 
         [SerializeField]
         protected Controls controls;
@@ -56,7 +56,7 @@ namespace UdeS.Promoscience.Replays.UI
             overlayButton.onClick.AddListener(OnOverlayClicked);
             algorithmButton.onClick.AddListener(OnAlgorithmClicked);
 
-            server.gameStateChangedEvent += OnGameStateChanged;
+            ServerGame.Instance.gameStateChangedEvent += OnGameStateChanged;
         }
 
 

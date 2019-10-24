@@ -37,7 +37,7 @@ namespace UdeS.Promoscience.Replays.Advanced
             }
         }
 
-        private IEnumerable<Course> courses;
+        
 
         public override void Awake()
         {
@@ -62,7 +62,7 @@ namespace UdeS.Promoscience.Replays.Advanced
 
                     break;
 
-                case ReplayAction.ToggleLabyrinth:
+                case ReplayAction.SelectLabyrinth:
 
                     Labyrinths.Labyrinth lab = (Labyrinths.Labyrinth) args[0];
 
@@ -73,9 +73,10 @@ namespace UdeS.Promoscience.Replays.Advanced
 
                     lab.gameObject.SetActive(true);
 
-                    courses =  SQLiteUtilities.GetSessionCoursesForLabyrinth(lab.Id);
+                    var cc = SQLiteUtilities.GetSessionCourses();
+                    AdvancedController.Courses =  SQLiteUtilities.GetSessionCoursesForLabyrinth(lab.Id);
 
-                    labyrinthReplay = new LabyrinthReplay(this, lab, courses);
+                    labyrinthReplay = new LabyrinthReplay(this, lab);
 
                     labyrinthReplay.Start();
 
@@ -109,7 +110,7 @@ namespace UdeS.Promoscience.Replays.Advanced
 
         public override void OnServerGameStateChanged()
         {
-            if (Server.GameState ==
+            if (ServerGame.Instance.GameState ==
                 ServerGameState.AdvancedReplay)
             {
                 Clear();

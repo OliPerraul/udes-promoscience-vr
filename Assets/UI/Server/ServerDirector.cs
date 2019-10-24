@@ -51,8 +51,8 @@ namespace UdeS.Promoscience.UI.Server
         [SerializeField]
         private List<Step> serverGameStateSteps;
 
-        [SerializeField]
-        private ScriptableServerGameInformation serverGameInformation;
+        //[SerializeField]
+        //private ScriptableServerGameInformation serverGameInformation;
 
         private bool init = false;
 
@@ -67,7 +67,7 @@ namespace UdeS.Promoscience.UI.Server
 
             init = true;
 
-            serverGameInformation.gameStateChangedEvent += OnValueChanged;
+            ServerGame.Instance.gameStateChangedEvent += OnValueChanged;
 
             OnValueChanged();
         }
@@ -76,7 +76,7 @@ namespace UdeS.Promoscience.UI.Server
         {
             foreach (var stp in serverGameStateSteps)
             {
-                if ((stp.Flags & serverGameInformation.GameState) != 0)
+                if ((stp.Flags & ServerGame.Instance.GameState) != 0)
                 {
                     stp.gameObjectsToActivate.ForEach(x => { if (x != null) x.SetActive(true); });
                     stp.gameObjectsToDeactivate.ForEach(x => { if (x != null) x.SetActive(false); });

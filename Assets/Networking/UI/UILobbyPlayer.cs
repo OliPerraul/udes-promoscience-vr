@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.UI
         ScriptableServerPlayerInformation playersInformation;
 
         [SerializeField]
-        ScriptableTeamList teamList;
+        Teams.Resources teamList;
 
         [SerializeField]
         ScriptableLocalizeString connectingString;
@@ -159,7 +159,7 @@ namespace UdeS.Promoscience.UI
         {
             if (playerInformation.PlayerTeamId != -1)
             {
-                ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.PlayerTeamId);
+                Teams.ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.PlayerTeamId);
                 teamNameText.text = team.TeamName;
                 color.color = team.TeamColor;
             }

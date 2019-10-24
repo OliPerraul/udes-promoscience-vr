@@ -233,7 +233,7 @@ namespace UdeS.Promoscience.Algorithms
 
         void SetAlgorithmSteps()
         {
-            algorithmSteps = client.Algorithm.GetAlgorithmSteps();
+            algorithmSteps = client.Algorithm.GetAlgorithmSteps(client.LabyrinthData);
         }
 
         float RespectValueComputation(float x)

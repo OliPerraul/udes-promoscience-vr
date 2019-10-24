@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.Algorithms
 {
     public class RightHandAlgorithm : Algorithm
     {
-        public RightHandAlgorithm(Resource res, Labyrinths.IData lab) : base(res, lab) { }
+        public RightHandAlgorithm(Resource res) : base(res) { }
 
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
@@ -23,7 +23,7 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
-        public override List<Tile> GetAlgorithmSteps()
+        public override List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth)
         {
             List<Tile> algorithmSteps = new List<Tile>();
 

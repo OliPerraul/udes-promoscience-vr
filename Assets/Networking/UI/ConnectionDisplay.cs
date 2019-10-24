@@ -86,7 +86,7 @@ namespace UdeS.Promoscience.UI
         }
 
         [SerializeField]
-        private List<ScriptableTeam> teams;
+        private List<Teams.ScriptableTeam> teams;
 
         //[SerializeField]
         //private Button button;

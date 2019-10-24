@@ -9,7 +9,6 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.ScriptableObjects
 {
-
     [CreateAssetMenu(fileName = "Data", menuName = "Data/ServerPlayerInformation", order = 1)]
     public class ScriptableServerPlayerInformation : ScriptableObject
     {

@@ -18,17 +18,29 @@ namespace UdeS.Promoscience
 {
     public delegate void OnCourseEvent(Course course);
 
+    public enum CourseStatus
+    {
+        // current: whether the course is used in the current play session (used for current replay)
+        Active = 0,
+        // current: whether the course is used in the current play session (used for the final replay)
+        Session = 1,
+        // finished: whether the course is kept merely for historical reason
+        Finished = 2
+    }
+
     public class Course
     {
         public int Id;
 
         public int LabyrinthId;
 
+        public CourseStatus Status;
+
         public Labyrinths.IData Labyrinth;
 
         public Algorithms.Algorithm Algorithm;
 
-        public ScriptableTeam Team;
+        public Teams.ScriptableTeam Team;
 
         public int[] Actions;
 

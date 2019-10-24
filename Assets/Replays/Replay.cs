@@ -13,8 +13,8 @@ namespace UdeS.Promoscience.Replays
     // Playback for a single team
     public abstract class Replay : MonoBehaviour
     {
-        [SerializeField]
-        public ScriptableServerGameInformation Server;
+        //[SerializeField]
+        //public ScriptableServerGameInformation Server;
 
         [SerializeField]
         public Resources Resources;
@@ -33,7 +33,7 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void Awake()
         {
-            Server.gameStateChangedEvent += OnServerGameStateChanged;
+            ServerGame.Instance.gameStateChangedEvent += OnServerGameStateChanged;
         }
     }
 }

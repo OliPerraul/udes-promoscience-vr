@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace UdeS.Promoscience.ScriptableObjects
+namespace UdeS.Promoscience.Teams
 {
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Team", order = 1)]
@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         int teamId;
 
         [SerializeField]
-        ScriptableLocalizeString teamName;
+        ScriptableObjects.ScriptableLocalizeString teamName;
 
         [SerializeField]
         Color teamColor;

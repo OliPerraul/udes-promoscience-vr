@@ -13,8 +13,8 @@ namespace UdeS.Promoscience.Replays
 
     public abstract class Sequence : MonoBehaviour
     {
-        [SerializeField]
-        protected ScriptableController replayController;
+        //[SerializeField]
+        protected Replay replay;
 
         protected Labyrinths.Labyrinth labyrinth;
 
@@ -55,7 +55,7 @@ namespace UdeS.Promoscience.Replays
         {
             get
             {
-                return replayController.GlobalMoveIndex < LocalMoveCount;
+                return replay.Controller.GlobalMoveIndex < LocalMoveCount;
             }
         }
 
@@ -110,9 +110,9 @@ namespace UdeS.Promoscience.Replays
 
             isPlaying = false;
 
-            if (replayController.OnSequenceFinishedHandler != null)
+            if (replay.Controller.OnSequenceFinishedHandler != null)
             {
-                replayController.OnSequenceFinishedHandler.Invoke();
+                replay.Controller.OnSequenceFinishedHandler.Invoke();
             }
         }
 

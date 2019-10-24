@@ -9,8 +9,8 @@ namespace UdeS.Promoscience.Replays
 {
     public class Segment : MonoBehaviour
     {
-        [SerializeField]
-        protected float overlayHeight = 50f;
+        //[SerializeField]
+        protected float heightOffset = 25f;
 
         [SerializeField]
         protected LineRenderer lineRenderer;
@@ -106,7 +106,7 @@ namespace UdeS.Promoscience.Replays
             {
                 // If a turn, we need to add both offsets
                 // Otherwise the offset is the same: just add one
-                return middle + OriginOffset + DestinationOffset + Vector3.up * overlayHeight;
+                return middle + OriginOffset + DestinationOffset + Vector3.up * heightOffset;
             }
         }
 
@@ -116,7 +116,7 @@ namespace UdeS.Promoscience.Replays
         {
             get
             {
-                return origin + OriginOffset + Vector3.up * overlayHeight;
+                return origin + OriginOffset + Vector3.up * heightOffset;
             }
         }
 
@@ -126,7 +126,7 @@ namespace UdeS.Promoscience.Replays
         {
             get
             {
-                return destination + DestinationOffset + Vector3.up * overlayHeight;
+                return destination + DestinationOffset + Vector3.up * heightOffset;
             }
         }
 
@@ -278,7 +278,8 @@ namespace UdeS.Promoscience.Replays
             Material material,
             Material materialAlpha,
             float time, 
-            float width)
+            float width,
+            float heightOffset)
         {
             var segm = Instantiate(                
                 gameObject,
@@ -290,6 +291,7 @@ namespace UdeS.Promoscience.Replays
             segm.isTurn = true;
             segm.lineRenderer.positionCount = 3;
 
+            segm.heightOffset = heightOffset;
             segm.origin = origin;
             segm.middle = middle;
             segm.destination = destination;
@@ -314,13 +316,15 @@ namespace UdeS.Promoscience.Replays
             Material material,
             Material materialAlpha,
             float time,
-            float width)
+            float width,
+            float heightOffset)
         {
             var segm = this.Create(transform);
 
             segm.isTurn = false;
             segm.lineRenderer.positionCount = 2;
 
+            segm.heightOffset = heightOffset;
             segm.origin = origin;
             segm.destination = destination;
             segm.direction = direction;

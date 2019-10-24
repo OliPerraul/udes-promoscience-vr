@@ -11,7 +11,7 @@ namespace UdeS.Promoscience.Algorithms
 {
     public class LongestStraightAlgorithm : Algorithm
     {
-        public LongestStraightAlgorithm(Resource res, Labyrinths.IData lab) : base(res, lab) { }
+        public LongestStraightAlgorithm(Resource res) : base(res) { }
 
         bool asReachedTheEnd;
         bool[] isDirectionWalkableAndNotVisited = new bool[4];
@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
-        public override List<Tile> GetAlgorithmSteps()
+        public override List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth)
         {
             algorithmSteps = new List<Tile>();
             lastVisitedIntersection = new List<Vector3Int>();
@@ -63,30 +63,30 @@ namespace UdeS.Promoscience.Algorithms
 
             while (!asReachedTheEnd)
             {
-                directionStraight[0] = alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]] ? 0 : GetStraightLenghtInDirection(new Vector2Int(position.x, position.y), 0);
-                directionStraight[1] = alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]] ? 0 : GetStraightLenghtInDirection(new Vector2Int(position.x, position.y), 1);
-                directionStraight[2] = alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]] ? 0 : GetStraightLenghtInDirection(new Vector2Int(position.x, position.y), 2);
-                directionStraight[3] = alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]] ? 0 : GetStraightLenghtInDirection(new Vector2Int(position.x, position.y), 3);
+                directionStraight[0] = alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 0);
+                directionStraight[1] = alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 1);
+                directionStraight[2] = alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 2);
+                directionStraight[3] = alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 3);
 
                 if (directionStraight[0] > 0 && directionStraight[0] >= directionStraight[1] && directionStraight[0] >= directionStraight[2] && directionStraight[0] >= directionStraight[3])
                 {
                     direction = 0;
-                    MoveInDirection(direction);
+                    MoveInDirection(labyrinth, direction);
                 }
                 else if (directionStraight[1] > 0 && directionStraight[1] >= directionStraight[2] && directionStraight[1] >= directionStraight[3])
                 {
                     direction = 1;
-                    MoveInDirection(direction);
+                    MoveInDirection(labyrinth, direction);
                 }
                 else if (directionStraight[2] > 0 && directionStraight[2] >= directionStraight[3])
                 {
                     direction = 2;
-                    MoveInDirection(direction);
+                    MoveInDirection(labyrinth, direction);
                 }
                 else if (directionStraight[3] > 0)
                 {
                     direction = 3;
-                    MoveInDirection(direction);
+                    MoveInDirection(labyrinth, direction);
                 }
                 else
                 {
@@ -138,7 +138,7 @@ namespace UdeS.Promoscience.Algorithms
             return algorithmSteps;
         }
 
-        void MoveInDirection(int direction)
+        void MoveInDirection(Labyrinths.IData labyrinth, int direction)
         {
             for (int i = 0; i < directionStraight[direction]; i++)
             {
@@ -173,7 +173,7 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
-        int GetStraightLenghtInDirection(Vector2Int position, int direction)
+        int GetStraightLenghtInDirection(Labyrinths.IData labyrinth, Vector2Int position, int direction)
         {
             int straightLenght = 0;
 

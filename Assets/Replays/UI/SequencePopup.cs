@@ -11,8 +11,8 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private ScriptableController replayOptions;
 
-        [SerializeField]
-        private ScriptableServerGameInformation server;
+        //[SerializeField]
+        //private ScriptableServerGameInformation server;
 
         [SerializeField]
         private UnityEngine.UI.Text scoreText;
@@ -36,7 +36,7 @@ namespace UdeS.Promoscience.Replays.UI
             init = true;
 
             replayOptions.OnSequenceSelectedHandler += OnSequenceSelected;
-            server.gameStateChangedEvent += OnGameStateChanged;
+            //server.gameStateChangedEvent += OnGameStateChanged;
         }
 
         public void OnSequenceSelected(Course newCourse)
@@ -73,20 +73,20 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-        public void OnGameStateChanged()
-        {
-            switch (server.GameState)
-            {
-                case Promoscience.Utils.ServerGameState.SimpleReplay:
+        //public void OnGameStateChanged()
+        //{
+        //    switch (server.GameState)
+        //    {
+        //        case Promoscience.Utils.ServerGameState.SimpleReplay:
 
-                    if (server.Courses.Count != 0)
-                    {
-                        OnSequenceSelected(server.Courses.First());
-                    }
+        //            if (server.Courses.Count != 0)
+        //            {
+        //                OnSequenceSelected(server.Courses.First());
+        //            }
 
-                    break;
-            }
-        }
+        //            break;
+        //    }
+        //}
 
 
     }

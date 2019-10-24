@@ -61,7 +61,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         private IData data = null;
 
-        IData Data
+        public IData Data
         {
             get
             {

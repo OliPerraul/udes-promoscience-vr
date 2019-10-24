@@ -12,8 +12,8 @@ namespace UdeS.Promoscience.Replays.UI
     public class Controls : MonoBehaviour
     {
 
-        [SerializeField]
-        private ScriptableObjects.ScriptableServerGameInformation server;
+        //[SerializeField]
+        //private ScriptableObjects.ScriptableServerGameInformation server;
 
         [SerializeField]
         private ScriptableController playbackOptions;

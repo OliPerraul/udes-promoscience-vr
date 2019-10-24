@@ -64,7 +64,7 @@ namespace UdeS.Promoscience.Replays.Advanced.UI
             labyrinthDisplay.Enabled = true;
             Enabled = false;
 
-            replayController.SendAction(ReplayAction.ToggleLabyrinth, labyrinth);
+            replayController.SendAction(ReplayAction.SelectLabyrinth, labyrinth);
         }
 
         public void Clear()
@@ -77,7 +77,7 @@ namespace UdeS.Promoscience.Replays.Advanced.UI
 
         public override void OnServerChangedState()
         {
-            if (server.GameState ==
+            if (ServerGame.Instance.GameState ==
                 Promoscience.Utils.ServerGameState.AdvancedReplay)
             {
 

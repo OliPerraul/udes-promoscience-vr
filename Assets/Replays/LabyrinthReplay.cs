@@ -14,8 +14,6 @@ namespace UdeS.Promoscience.Replays
 
         public Labyrinths.Labyrinth emptyLabyrinth;
 
-        private IEnumerable<Course> courses;
-
         protected Vector2Int labyrinthPosition;
 
         protected Vector3 worldPosition;
@@ -34,11 +32,10 @@ namespace UdeS.Promoscience.Replays
 
         public LabyrinthReplay(
             Replay replay,
-            Labyrinths.Labyrinth labyrinth,
-            IEnumerable<Course> courses)
+            Labyrinths.Labyrinth labyrinth)            
         {
             this.replay = replay;
-            this.courses = courses;
+            //this.courses = courses;
             this.labyrinth = labyrinth;
 
             mutex = new System.Threading.Mutex();
@@ -48,23 +45,16 @@ namespace UdeS.Promoscience.Replays
             algorithmSequences = new List<AlgorithmSequence>();
 
             //replay..gameStateChangedEvent += OnServerGameStateChanged;
-            replay.Server.OnCourseAddedHandler += OnCourseAdded;
+            ServerGame.Instance.OnCourseAddedHandler += OnCourseAdded;
 
             replay.Controller.OnSequenceToggledHandler += OnSequenceToggled;
             replay.Controller.OnActionHandler += OnReplayAction;
-
-
-            foreach (Course course in courses)
-            {
-                OnCourseAdded(course);
-            }
 
             //TrySetMoveCount(algorithmSequences.Max(x => x.LocalMoveCount));
 
             //algorithmSequences.Add(
             //    replay.Resources.AlgorithmSequence.Create(
             //        labyrinth,
-
             //        labyrinthPosition));
 
         }
@@ -82,6 +72,11 @@ namespace UdeS.Promoscience.Replays
 
             labyrinth.gameObject.SetActive(true);
             labyrinth.Camera.Maximize();
+
+            foreach (Course course in replay.Controller.Courses)
+            {
+                OnCourseAdded(course);
+            }
         }
 
 
@@ -358,47 +353,47 @@ namespace UdeS.Promoscience.Replays
 
         public void OnCourseAdded(Course course)
         {
-            if (replay.Server.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
+            if (!playerSequences.ContainsKey(course.Id))
             {
-                if (!playerSequences.ContainsKey(course.Id))
-                {
-                    var sequence =
-                        replay.Resources.PlayerSequence.Create(
-                            course,
-                            labyrinth,
-                            labyrinthPosition);
+                var sequence =
+                    replay.Resources.PlayerSequence.Create(
+                        replay,
+                        course,
+                        labyrinth,
+                        labyrinthPosition);
 
-                    playerSequences.Add(course.Id, sequence);
-                    activeSequences.Add(sequence);
+                playerSequences.Add(course.Id, sequence);
+                activeSequences.Add(sequence);
 
 
-                    var algorithmSeq =
-                        replay.Resources.AlgorithmSequence.Create(
-                            labyrinth,
-                            course.Algorithm,
-                            labyrinthPosition
-                            );
+                var algorithmSeq =
+                    replay.Resources.AlgorithmSequence.Create(
+                        replay,
+                        labyrinth,
+                        course.Algorithm,
+                        labyrinthPosition
+                        );
 
-                    algorithmSequences.Add(algorithmSeq);
+                algorithmSequences.Add(algorithmSeq);
 
-                    TrySetMoveCount(sequence.LocalMoveCount);
+                TrySetMoveCount(sequence.LocalMoveCount);
+                               
+                AdjustOffsets();
 
-                    AdjustOffsets();
-                }
+                replay.Controller.SendAction(ReplayAction.AddCourse, true, course);
             }
         }
 
         public void OnCourseRemoved(Course course)
         {
-            if (replay.Server.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
-            {
-                activeSequences.Remove(playerSequences[course.Id]);
-                playerSequences.Remove(course.Id);
+            activeSequences.Remove(playerSequences[course.Id]);
+            playerSequences.Remove(course.Id);
 
-                TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
+            TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
 
-                AdjustOffsets();
-            }
+            AdjustOffsets();
+
+            replay.Controller.SendAction(ReplayAction.AddCourse, false, course);
         }
     }
 }

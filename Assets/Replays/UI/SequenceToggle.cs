@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Linq;
+using System.Collections.Generic;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays.UI
 {
@@ -9,8 +11,8 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private ScriptableController replayOptions;
 
-        [SerializeField]
-        private ScriptableObjects.ScriptableServerGameInformation server;
+        //[SerializeField]
+        //private ScriptableObjects.ScriptableServerGameInformation server;
 
         [SerializeField]
         private SequenceToggleItem scrollItemTemplate;
@@ -18,42 +20,55 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private Transform scrollContentParent;
 
+        [SerializeField]
+        private Dictionary<int, SequenceToggleItem> items;
+
+
         private SequenceToggleItem firstItem = null;
 
         public void Awake()
         {
-            server.gameStateChangedEvent += OnGameStateChanged;
+            //server.gameStateChangedEvent += OnGameStateChanged;
+            items = new Dictionary<int, SequenceToggleItem>();
+            replayOptions.OnActionHandler += OnReplayAction;
         }
 
-        public void OnGameStateChanged()
+        public void OnReplayAction(ReplayAction action, params object[] args)
         {
-            switch (server.GameState)
+            if(action == ReplayAction.Reset)
             {
-                case Promoscience.Utils.ServerGameState.SimpleReplay:
+                foreach (Transform child in scrollContentParent)
+                {
+                    if (!child.gameObject.activeSelf)
+                        continue;
 
-                    firstItem = null;
+                    Destroy(child.gameObject);
+                }
+            }
+            else if (action == ReplayAction.AddCourse)
+            {
+                bool added = (bool)args[0];
+                var course = (Course)args[1];
 
-                    foreach (Transform child in scrollContentParent)
+                if (added)
+                {
+                    if (items.ContainsKey(course.Id))
+                        return;
+
+                    SequenceToggleItem item = scrollItemTemplate.Create(
+                        scrollContentParent,
+                        course);
+
+                    items.Add(course.Id, item);
+                }
+                else
+                {
+                    SequenceToggleItem item;
+                    if (items.TryGetValue(course.Id, out item))
                     {
-                        if (!child.gameObject.activeSelf)
-                            continue;
-
-                        Destroy(child.gameObject);
+                        item.gameObject.Destroy();
                     }
-
-                    foreach (Course course in server.Courses)
-                    {
-                        if (course == null)
-                            continue;
-
-                        SequenceToggleItem item = scrollItemTemplate.Create(
-                            scrollContentParent,                            
-                            course);
-
-                        firstItem = item;
-                    }
-
-                    break;
+                }
             }
         }
     }

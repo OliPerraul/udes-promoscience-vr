@@ -4,6 +4,7 @@ using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
 using System.Threading;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays
 {
@@ -57,20 +58,19 @@ namespace UdeS.Promoscience.Replays
 
 
         public AlgorithmSequence Create(
+            Replay replay,
             Labyrinths.Labyrinth labyrinth,
             Algorithms.Algorithm algorithm,
             Vector2Int startPosition)
         {
-            AlgorithmSequence sequence = Instantiate(
-                gameObject,
-                labyrinth.GetLabyrinthPositionInWorldPosition(startPosition), Quaternion.identity)
-                .GetComponent<AlgorithmSequence>();
+            var sequence = this.Create(labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
 
+            sequence.replay = replay;
             sequence.labyrinth = labyrinth;
             sequence.lposition = startPosition;
             sequence.startlposition = startPosition;
             sequence.algorithm = algorithm;
-            sequence.tiles = algorithm.GetAlgorithmSteps();
+            sequence.tiles = algorithm.GetAlgorithmSteps(labyrinth.Data);
 
             return sequence;
         }

@@ -7,8 +7,8 @@ namespace UdeS.Promoscience.Replays
 {
     public class Controller : MonoBehaviour
     {
-        [SerializeField]
-        private ScriptableServerGameInformation serverGameState;
+        //[SerializeField]
+        //private ScriptableServerGameInformation serverGameState;
 
         [SerializeField]
         private Camera camera;
@@ -29,7 +29,7 @@ namespace UdeS.Promoscience.Replays
         public void Update()
         {
             // TODO if playback
-            if (serverGameState.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
+            if (ServerGame.Instance.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
             {
                 if (Promoscience.Utils.UI.IsUIElementActive())
                     return;

@@ -37,7 +37,7 @@ namespace UdeS.Promoscience.Tests
 
         void GenerateVisualForAlgorithm(Utils.Algorithm algorithm)
         {
-            algorithmStepsPosition = client.Algorithm.GetAlgorithmSteps();
+            algorithmStepsPosition = client.Algorithm.GetAlgorithmSteps(client.LabyrinthData);
 
             Debug.Log("algorithmStepsPosition Count : " + algorithmStepsPosition.Count);
 

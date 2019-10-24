@@ -14,11 +14,11 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         Player player;
 
-        [SerializeField]
-        private ScriptableTeamList teamList;
+        //[SerializeField]
+        //private Teams.Resources teamList;
 
-        [SerializeField]
-        private ScriptableServerGameInformation serverGameInformation;
+        //[SerializeField]
+        //private ScriptableServerGameInformation serverGameInformation;
 
         [SerializeField]
         ScriptableServerPlayerInformation serverPlayerInformation;
@@ -76,7 +76,7 @@ namespace UdeS.Promoscience.Network
                 SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
 
                 // Use the steps for playback
-                player.TargetSetViewingLocalPlayback(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray(), stepValues.ToArray());                
+                player.TargetSetViewingLocalPlayback(player.connectionToClient, ServerGame.Instance.GameRound, steps.ToArray(), stepValues.ToArray());                
 
             }
             else if (player.serverDeviceType == Utils.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
@@ -89,12 +89,12 @@ namespace UdeS.Promoscience.Network
                 }
                 else
                 {
-                    if (serverGameInformation.GameState == ServerGameState.GameRound && player.ServerCourseId != -1)
+                    if (ServerGame.Instance.GameState == ServerGameState.GameRound && player.ServerCourseId != -1)
                     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                         int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
 #endif
-                        if (courseLabyrinthId == serverGameInformation.GameRound)
+                        if (courseLabyrinthId == ServerGame.Instance.GameRound)
                         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
@@ -106,14 +106,14 @@ namespace UdeS.Promoscience.Network
                             {
                                 // Use the steps for playback
                                 player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                                player.TargetSetRoundCompleted(player.connectionToClient, serverGameInformation.GameRound, steps.ToArray());
+                                player.TargetSetRoundCompleted(player.connectionToClient, ServerGame.Instance.GameRound, steps.ToArray());
                             }
                             else
                             {
                                 if (steps.Count > 0)
                                 {
                                     // Connection drop, used the steps to resume where you were
-                                    serverGameInformation.StartGameRoundWithSteps(player, steps.ToArray());
+                                    ServerGame.Instance.StartGameRoundWithSteps(player, steps.ToArray());
                                     player.TargetSetPairedIpAdress(player.connectionToClient, "");
                                 }
                                 else
@@ -139,15 +139,15 @@ namespace UdeS.Promoscience.Network
             }
             else if (player.ServerPlayerGameState == ClientGameState.Ready)
             {
-                if (serverGameInformation.GameState == ServerGameState.Tutorial)
+                if (ServerGame.Instance.GameState == ServerGameState.Tutorial)
                 {
-                    serverGameInformation.StartTutorial(player);
+                    ServerGame.Instance.StartTutorial(player);
                 }
-                else if (serverGameInformation.GameState == ServerGameState.GameRound)
+                else if (ServerGame.Instance.GameState == ServerGameState.GameRound)
                 {
-                    serverGameInformation.StartGameRound(player);
+                    ServerGame.Instance.StartGameRound(player);
                 }
-                else if (serverGameInformation.GameState == ServerGameState.Intermission)
+                else if (ServerGame.Instance.GameState == ServerGameState.Intermission)
                 {
                     player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
                 }
@@ -156,7 +156,7 @@ namespace UdeS.Promoscience.Network
 
         void InitializeHeadsetInformation()
         {
-            ScriptableTeam scriptableTeam = teamList.GetUnusedScriptableTeam();
+            Teams.ScriptableTeam scriptableTeam = Teams.Resources.Instance.GetUnusedScriptableTeam();
 
             player.serverAlgorithm = (Utils.Algorithm)(scriptableTeam.TeamId % 3) + 1;
             player.ServerTeamId = scriptableTeam.TeamId;

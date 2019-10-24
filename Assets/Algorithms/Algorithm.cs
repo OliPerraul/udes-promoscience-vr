@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.Algorithms
     {
         protected Resource resource;
 
-        protected Labyrinths.IData labyrinth;
+        //protected Labyrinths.IData labyrinth;
 
         public string Name {
             get
@@ -21,14 +21,14 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
-        public abstract List<Tile> GetAlgorithmSteps();
+        public abstract List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth);
 
         public abstract Utils.Algorithm Id { get; }
 
-        public Algorithm(Resource resource, Labyrinths.IData labyrinth)
+        public Algorithm(Resource resource)//, Labyrinths.IData labyrinth)
         {
             this.resource = resource;
-            this.labyrinth = labyrinth;
+            //this.labyrinth = labyrinth;
         }
     }
 }

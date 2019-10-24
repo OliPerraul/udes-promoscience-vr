@@ -9,7 +9,7 @@ namespace UdeS.Promoscience.Replays.UI
     public class SequenceToggleItem : MonoBehaviour
     {
         [SerializeField]
-        private ScriptableController replayOptions;
+        private ScriptableController replayController;
 
         [SerializeField]
         private UnityEngine.UI.Toggle toggle;
@@ -55,17 +55,17 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnToggle(bool enabled)
         {
-            if (replayOptions.OnSequenceToggledHandler != null)
+            if (replayController.OnSequenceToggledHandler != null)
             {
-                replayOptions.OnSequenceToggledHandler.Invoke(course, enabled);
+                replayController.OnSequenceToggledHandler.Invoke(course, enabled);
             }
         }
 
         public void OnClicked()
         {
-            if (replayOptions.OnSequenceSelectedHandler != null)
+            if (replayController.OnSequenceSelectedHandler != null)
             {
-                replayOptions.OnSequenceSelectedHandler.Invoke(course);// enabled);
+                replayController.OnSequenceSelectedHandler.Invoke(course);// enabled);
             }
         }
 

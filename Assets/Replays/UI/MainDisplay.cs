@@ -12,8 +12,8 @@ namespace UdeS.Promoscience.Replays.UI
 
         protected abstract ScriptableController ReplayController { get; }
 
-        [SerializeField]
-        protected ScriptableObjects.ScriptableServerGameInformation server;
+        //[SerializeField]
+        //protected ServerGame.InstancameInformation server;
 
         [SerializeField]
         protected LabyrinthDisplay labyrinthDisplay;
@@ -26,7 +26,7 @@ namespace UdeS.Promoscience.Replays.UI
 
             init = false;
 
-            server.gameStateChangedEvent += OnServerChangedState;
+            ServerGame.Instance.gameStateChangedEvent += OnServerChangedState;
         }
 
         public abstract void OnServerChangedState();
