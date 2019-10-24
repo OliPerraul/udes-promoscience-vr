@@ -51,12 +51,12 @@ namespace UdeS.Promoscience.UI
 
         private void OnGameStateChanged()
         {
-            if (client.Value == Utils.ClientGameState.TutorialLabyrinthReady)
+            if (client.Value == ClientGameState.TutorialLabyrinthReady)
             {
                 Message = tutorialString.Value + "\n" +
                      "(" + client.Algorithm.Name + ")";
             }
-            else if (client.Value == Utils.ClientGameState.LabyrinthReady)
+            else if (client.Value == ClientGameState.LabyrinthReady)
             {
                 Message = roundString.Value + " " + gameRound.Value.ToString() + "\n" +
                     "(" + client.Algorithm.Name + ")";

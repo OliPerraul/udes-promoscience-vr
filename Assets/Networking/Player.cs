@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Network
@@ -30,11 +30,11 @@ namespace UdeS.Promoscience.Network
             {
                 client.clientStateChangedEvent -= SendCmdPlayerGameState;
 
-                if (deviceType.Value == Utils.DeviceType.Headset)
+                if (deviceType.Value == Promoscience.DeviceType.Headset)
                 {
                     gameAction.valueChangedEvent -= SendCmdPlayerAction;
                 }
-                else if (deviceType.Value == Utils.DeviceType.Tablet)
+                else if (deviceType.Value == Promoscience.DeviceType.Tablet)
                 {
                     playerInformation.playerInformationChangedEvent -= SendCmdPlayerInformation;
                 }
@@ -54,8 +54,8 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         int serverTeamId = -1;
 
-        public Utils.DeviceType serverDeviceType = Utils.DeviceType.NoType;
-        public Utils.Algorithm serverAlgorithm;
+        public Promoscience.DeviceType serverDeviceType = Promoscience.DeviceType.NoType;
+        public Promoscience.Algorithm serverAlgorithm;
 
         public int serverLabyrinthId;
 
@@ -241,11 +241,11 @@ namespace UdeS.Promoscience.Network
 
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-            if (deviceType.Value == Utils.DeviceType.Tablet)
+            if (deviceType.Value == Promoscience.DeviceType.Tablet)
             {
                 playerInformation.playerInformationChangedEvent += SendCmdPlayerInformation;
             }
-            else if (deviceType.Value == Utils.DeviceType.Headset)
+            else if (deviceType.Value == Promoscience.DeviceType.Headset)
             {
                 gameAction.valueChangedEvent += SendCmdPlayerAction;
             }
@@ -284,7 +284,7 @@ namespace UdeS.Promoscience.Network
 #region Command
 
         [Command]
-        void CmdSetDeviceType(Utils.DeviceType type)
+        void CmdSetDeviceType(Promoscience.DeviceType type)
         {
             serverDeviceType = type;
         }

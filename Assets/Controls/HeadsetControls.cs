@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 
@@ -92,6 +92,8 @@ namespace UdeS.Promoscience
             playerPositionRotationAndTiles.valueChangedEvent += OnPlayerPositionRotationAndTiles;
         }
 
+        // TODO: fix player movment: this is a big mess 
+        // Why not just snap position to the grid
         void Update()
         {
             if (cameraRig.IsPrimaryTouchPadDown)
@@ -223,22 +225,29 @@ namespace UdeS.Promoscience
                         PaintCurrentPositionTile(true);
                     }
                 }
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            {
 
                 if (isMoving)
                 {
-                    float xi = ((moveSpeed * moveSpeed) / (-2 * Constants.MOVEMENT_ACCELERATION)) + 1;
+                    float xi = ((moveSpeed * moveSpeed) / (-2 * Utils.MOVEMENT_ACCELERATION)) + 1;
 
                     if (isChainingMovement)
                     {
                         xi += 1;
                     }
 
-                    moveSpeed = 
-                        xi < lerpValue ? 
-                            moveSpeed - (Time.deltaTime * Constants.MOVEMENT_ACCELERATION) : 
-                            moveSpeed + (Time.deltaTime * Constants.MOVEMENT_ACCELERATION);
+                    moveSpeed =
+                        xi < lerpValue ?
+                            moveSpeed - (Time.deltaTime * Utils.MOVEMENT_ACCELERATION) :
+                            moveSpeed + (Time.deltaTime * Utils.MOVEMENT_ACCELERATION);
 
-                    lerpValue += Time.deltaTime * moveSpeed * Constants.MOVEMENT_SPEED;
+                    lerpValue += Time.deltaTime * moveSpeed * Utils.MOVEMENT_SPEED;
 
                     if (lerpValue >= 1)
                     {
@@ -275,14 +284,14 @@ namespace UdeS.Promoscience
                 }
                 else if (isTurningLeft || isTurningRight)
                 {
-                    float xi = ((turnSpeed * turnSpeed) / (-2 * Constants.TURNING_ACCELERATION)) + 1;
+                    float xi = ((turnSpeed * turnSpeed) / (-2 * Utils.TURNING_ACCELERATION)) + 1;
 
                     if (isChainingMovement)
                     {
                         xi++;
                     }
 
-                    turnSpeed = xi < lerpValue ? turnSpeed - (Time.deltaTime * Constants.TURNING_ACCELERATION) : turnSpeed + (Time.deltaTime * Constants.TURNING_ACCELERATION);
+                    turnSpeed = xi < lerpValue ? turnSpeed - (Time.deltaTime * Utils.TURNING_ACCELERATION) : turnSpeed + (Time.deltaTime * Utils.TURNING_ACCELERATION);
                     lerpValue += Time.deltaTime * turnSpeed;
 
                     if (lerpValue >= 1)
@@ -342,21 +351,19 @@ namespace UdeS.Promoscience
                     lastLabyrinthPosition = labyrinthPosition;
                     labyrinthPositionChanged.FireAction();
                 }
-            }
-        }
 
-        private void FixedUpdate()
-        {
-            if (cameraRig.Transform.position != lastPosition)
-            {
-                playerPosition.Value = cameraRig.Transform.position;
-                lastPosition = cameraRig.Transform.position;
-            }
 
-            if (cameraRig.Transform.rotation != lastRotation)
-            {
-                playerRotation.Value = cameraRig.Transform.rotation;
-                lastRotation = cameraRig.Transform.rotation;
+                if (cameraRig.Transform.position != lastPosition)
+                {
+                    playerPosition.Value = cameraRig.Transform.position;
+                    lastPosition = cameraRig.Transform.position;
+                }
+
+                if (cameraRig.Transform.rotation != lastRotation)
+                {
+                    playerRotation.Value = cameraRig.Transform.rotation;
+                    lastRotation = cameraRig.Transform.rotation;
+                }
             }
         }
 
@@ -365,7 +372,10 @@ namespace UdeS.Promoscience
             if (CheckIfMovementIsValidInDirectionFromPosition(direction, cameraRig.Transform.position))
             {
                 fromPosition = cameraRig.Transform.position;
-                targetPosition = fromPosition + (new Vector3(xByDirection[direction] * Constants.TILE_SIZE, 0, -yByDirection[direction] * Constants.TILE_SIZE));
+
+                Vector2Int lpos = Utils.GetMoveDestination(lastLabyrinthPosition, (Direction) forwardDirection.Value);
+                Vector3 pos = ClientGame.Instance.client.Labyrinth.GetLabyrinthPositionInWorldPosition(lpos);
+                targetPosition = new Vector3(pos.x, targetPosition.y, pos.z);
 
                 isMoving = true;
             }

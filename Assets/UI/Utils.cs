@@ -2,10 +2,9 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 
-namespace UdeS.Promoscience.Utils
+namespace UdeS.Promoscience.UI
 {
-
-    public static class UI
+    public static class Utils
     {
         public static bool IsUIElementActive()
         {

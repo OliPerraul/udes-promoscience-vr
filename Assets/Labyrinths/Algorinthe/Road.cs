@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Generator
@@ -32,13 +32,13 @@ namespace UdeS.Promoscience.Generator
             switch (st)
             {
                 case 1:
-                    return Constants.TILE_ROME_FLOOR_ID;
+                    return Utils.TILE_ROME_FLOOR_ID;
                 case 2:
-                    return Constants.TILE_PTOL_FLOOR_ID;
+                    return Utils.TILE_PTOL_FLOOR_ID;
                 case 3:
-                    return Constants.TILE_BRIT_FLOOR_ID;
+                    return Utils.TILE_BRIT_FLOOR_ID;
                 default:
-                    return Constants.TILE_KART_FLOOR_ID;
+                    return Utils.TILE_KART_FLOOR_ID;
             }
         }
     }

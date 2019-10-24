@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.UI
 {
@@ -212,17 +212,17 @@ namespace UdeS.Promoscience.UI
                 {
                     string text = playingString.Value;
 
-                    if (playerInformation.Player.serverDeviceType == Utils.DeviceType.Headset)
+                    if (playerInformation.Player.serverDeviceType == Promoscience.DeviceType.Headset)
                     {
-                        if (playerInformation.Player.serverAlgorithm == Utils.Algorithm.ShortestFlightDistance)
+                        if (playerInformation.Player.serverAlgorithm == Promoscience.Algorithm.ShortestFlightDistance)
                         {
                             text += " - " + shortestFlightString.Value;
                         }
-                        else if (playerInformation.Player.serverAlgorithm == Utils.Algorithm.LongestStraight)
+                        else if (playerInformation.Player.serverAlgorithm == Promoscience.Algorithm.LongestStraight)
                         {
                             text += " - " + longestStraightString.Value;
                         }
-                        else if (playerInformation.Player.serverAlgorithm == Utils.Algorithm.Standard)
+                        else if (playerInformation.Player.serverAlgorithm == Promoscience.Algorithm.Standard)
                         {
                             text += " - " + standardAlgorithmString.Value;
                         }

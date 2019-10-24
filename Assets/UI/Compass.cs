@@ -4,7 +4,7 @@ using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.UI
 {
@@ -31,7 +31,7 @@ namespace UdeS.Promoscience.UI
         {
             if (indicator.gameObject.activeSelf)
             {
-                indicator.LookAt(indicator.position + new Vector3(100 * Constants.TILE_SIZE * xByDirection[direction], 0, 100 * Constants.TILE_SIZE * -yByDirection[direction]));
+                indicator.LookAt(indicator.position + new Vector3(100 * Promoscience.Utils.TILE_SIZE * xByDirection[direction], 0, 100 * Promoscience.Utils.TILE_SIZE * -yByDirection[direction]));
             }
         }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using System.Linq;
 
 namespace UdeS.Promoscience.UI.Server

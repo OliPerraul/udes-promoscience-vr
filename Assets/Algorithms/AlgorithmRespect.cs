@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+////using UdeS.Promoscience.Utils;
 //using UdeS.Promoscience.Game;
 using UdeS.Promoscience.Network;
 
@@ -238,7 +238,7 @@ namespace UdeS.Promoscience.Algorithms
 
         float RespectValueComputation(float x)
         {
-            return Mathf.Pow(E, -x / Constants.TILE_SIZE);
+            return Mathf.Pow(E, -x / Utils.TILE_SIZE);
         }
 
         void ResetAlgorithmRespect()

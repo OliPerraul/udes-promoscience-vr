@@ -4,13 +4,13 @@
 //using System;
 //using UdeS.Promoscience.Network;
 //using System.Collections.Generic;
-//using UdeS.Promoscience.Utils;
+////using UdeS.Promoscience.Utils;
 
 using Cirrus;
 using Cirrus.Extensions;
 using System.Linq;
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 
 // TODO: course iterator vs. course as separate class?
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.Algorithms
 {
@@ -37,7 +37,7 @@ namespace UdeS.Promoscience.Algorithms
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-        float raycastRange = 100 * Constants.TILE_SIZE;
+        float raycastRange = 100 * Utils.TILE_SIZE;
 
         void Start()
         {

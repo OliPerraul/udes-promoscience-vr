@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Labyrinths
@@ -139,14 +139,14 @@ namespace UdeS.Promoscience.Labyrinths
                 for (int y = 0; y < sizeY; y++)
                 {
                     if (
-                        GetLabyrithValueAt(x, y) >= Constants.TILE_START_START_ID &&
-                        GetLabyrithValueAt(x, y) <= Constants.TILE_START_END_ID)
+                        GetLabyrithValueAt(x, y) >= Utils.TILE_START_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Utils.TILE_START_END_ID)
                     {
                         startPos = new Vector2Int(x, y);
                     }
                     else if (
-                        GetLabyrithValueAt(x, y) >= Constants.TILE_END_START_ID &&
-                        GetLabyrithValueAt(x, y) <= Constants.TILE_END_END_ID)
+                        GetLabyrithValueAt(x, y) >= Utils.TILE_END_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Utils.TILE_END_END_ID)
                     {
                         endPos = new Vector2Int(x, y);
                     }
@@ -170,14 +170,14 @@ namespace UdeS.Promoscience.Labyrinths
                         data[(x * sizeY) + y] = map[x, y];
 
                         if (
-                            GetLabyrithValueAt(x, y) >= Constants.TILE_START_START_ID &&
-                            GetLabyrithValueAt(x, y) <= Constants.TILE_START_END_ID)
+                            GetLabyrithValueAt(x, y) >= Utils.TILE_START_START_ID &&
+                            GetLabyrithValueAt(x, y) <= Utils.TILE_START_END_ID)
                         {
                             startPos = new Vector2Int(x, y);
                         }
                         else if (
-                            GetLabyrithValueAt(x, y) >= Constants.TILE_END_START_ID &&
-                            GetLabyrithValueAt(x, y) <= Constants.TILE_END_END_ID)
+                            GetLabyrithValueAt(x, y) >= Utils.TILE_END_START_ID &&
+                            GetLabyrithValueAt(x, y) <= Utils.TILE_END_END_ID)
                         {
                             endPos = new Vector2Int(x, y);
                         }
@@ -192,9 +192,9 @@ namespace UdeS.Promoscience.Labyrinths
 
             if (x >= 0 && x < GetLabyrithXLenght() && y >= 0 && y < GetLabyrithYLenght())
             {
-                if ((GetLabyrithValueAt(x, y) >= Constants.TILE_FLOOR_START_ID && GetLabyrithValueAt(x, y) <= Constants.TILE_FLOOR_END_ID)
-                    || (GetLabyrithValueAt(x, y) >= Constants.TILE_START_START_ID && GetLabyrithValueAt(x, y) <= Constants.TILE_START_END_ID)
-                    || (GetLabyrithValueAt(x, y) >= Constants.TILE_END_START_ID && GetLabyrithValueAt(x, y) <= Constants.TILE_END_END_ID))
+                if ((GetLabyrithValueAt(x, y) >= Utils.TILE_FLOOR_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_FLOOR_END_ID)
+                    || (GetLabyrithValueAt(x, y) >= Utils.TILE_START_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_START_END_ID)
+                    || (GetLabyrithValueAt(x, y) >= Utils.TILE_END_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_END_END_ID))
                 {
                     return true;
                 }

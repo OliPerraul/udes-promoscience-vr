@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.Replays
 {
@@ -23,16 +23,16 @@ namespace UdeS.Promoscience.Replays
             switch (action)
             {
                 case Direction.Down:
-                    return (Vector3.forward * -Constants.TILE_SIZE / 2);
+                    return (Vector3.forward * -Promoscience.Utils.TILE_SIZE / 2);
 
                 case Direction.Up:
-                    return (Vector3.forward * Constants.TILE_SIZE / 2);
+                    return (Vector3.forward * Promoscience.Utils.TILE_SIZE / 2);
 
                 case Direction.Left:
-                    return (Vector3.right * -Constants.TILE_SIZE / 2);
+                    return (Vector3.right * -Promoscience.Utils.TILE_SIZE / 2);
 
                 case Direction.Right:
-                    return (Vector3.right * Constants.TILE_SIZE / 2);
+                    return (Vector3.right * Promoscience.Utils.TILE_SIZE / 2);
             }
 
             return Vector3.zero;

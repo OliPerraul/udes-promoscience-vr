@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 
@@ -32,11 +32,11 @@ namespace UdeS.Promoscience.Algorithms
         //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
         List<Vector3Int> lastVisitedIntersection;
 
-        public override Utils.Algorithm Id
+        public override Promoscience.Algorithm Id
         {
             get
             {
-                return Utils.Algorithm.LongestStraight;
+                return Promoscience.Algorithm.LongestStraight;
             }
         }
 

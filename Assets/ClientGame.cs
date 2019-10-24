@@ -3,30 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience
 {
     public class ClientGame : MonoBehaviour
     {
-        [SerializeField]
-        ScriptableControler controls;
+        public static ClientGame Instance;
 
         [SerializeField]
-        ScriptableClientGameState client;               
+        private ScriptableControler controls;
+
+        // TODO combine with this class
+        [SerializeField]
+        public ScriptableClientGameState client;
 
         [SerializeField]
-        ScriptableAction playerReachedTheEnd;
+        private ScriptableAction playerReachedTheEnd;
 
         [SerializeField]
-        ScriptableBoolean isDiverging;
+        private ScriptableBoolean isDiverging;
         
         [SerializeField]
-        GameObject waitingForNextRoundRoom;
+        private GameObject waitingForNextRoundRoom;
 
         [SerializeField]
         private ScriptableIntegerArray recordedSteps;
 
+        public void Awake()
+        {
+            Instance = this;
+        }
 
         void Start()
         {

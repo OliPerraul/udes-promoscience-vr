@@ -89,13 +89,13 @@ namespace UdeS.Promoscience.Network
 
             string deviceName = SystemInfo.deviceModel;
 
-            if (deviceType.Value == Utils.DeviceType.Tablet)
+            if (deviceType.Value == Promoscience.DeviceType.Tablet)
             {
-                pairingRequestMsg.deviceType = Utils.DeviceType.Tablet;
+                pairingRequestMsg.deviceType = Promoscience.DeviceType.Tablet;
             }
-            else if (deviceType.Value == Utils.DeviceType.Headset)
+            else if (deviceType.Value == Promoscience.DeviceType.Headset)
             {
-                pairingRequestMsg.deviceType = Utils.DeviceType.Headset;
+                pairingRequestMsg.deviceType = Promoscience.DeviceType.Headset;
             }
 
             client.Send(

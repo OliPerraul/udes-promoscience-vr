@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
 using System.Threading;

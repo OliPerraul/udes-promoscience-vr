@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Algorithms
@@ -22,11 +22,11 @@ namespace UdeS.Promoscience.Algorithms
         List<Tile> algorithmSteps;
 
 
-        public override Utils.Algorithm Id
+        public override Promoscience.Algorithm Id
         {
             get
             {
-                return Utils.Algorithm.Standard;
+                return Promoscience.Algorithm.Standard;
             }
         }
 

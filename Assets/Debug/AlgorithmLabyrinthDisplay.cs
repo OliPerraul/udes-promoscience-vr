@@ -4,7 +4,7 @@ using UnityEngine;
 
 using UdeS.Promoscience;
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Tests
@@ -31,11 +31,11 @@ namespace UdeS.Promoscience.Tests
         {
             if (client.Value == ClientGameState.PlayingTutorial || client.Value == ClientGameState.Playing)
             {
-                GenerateVisualForAlgorithm(Utils.Algorithm.ShortestFlightDistance);
+                GenerateVisualForAlgorithm(Promoscience.Algorithm.ShortestFlightDistance);
             }
         }
 
-        void GenerateVisualForAlgorithm(Utils.Algorithm algorithm)
+        void GenerateVisualForAlgorithm(Promoscience.Algorithm algorithm)
         {
             algorithmStepsPosition = client.Algorithm.GetAlgorithmSteps(client.LabyrinthData);
 
@@ -63,9 +63,9 @@ namespace UdeS.Promoscience.Tests
 
             Vector2Int startPosition = client.Labyrinth.GetLabyrithStartPosition();
 
-            worldPos.x = (x - startPosition.x) * Constants.TILE_SIZE;
+            worldPos.x = (x - startPosition.x) * Utils.TILE_SIZE;
             worldPos.y = 0.5f;
-            worldPos.z = (-y + startPosition.y) * Constants.TILE_SIZE;
+            worldPos.z = (-y + startPosition.y) * Utils.TILE_SIZE;
 
             return worldPos;
         }

@@ -84,13 +84,13 @@ namespace UdeS.Promoscience.UI
             
             switch (deviceType.Value)
             {
-                case Utils.DeviceType.Headset:
+                case Promoscience.DeviceType.Headset:
                     headsetImage.color = headsetImage.color.SetA(1);
                     pairedDeviceImage = tabletImage;
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
                     break;
 
-                case Utils.DeviceType.Tablet:
+                case Promoscience.DeviceType.Tablet:
                     tabletImage.color = tabletImage.color.SetA(1);
                     pairedDeviceImage = headsetImage;
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);

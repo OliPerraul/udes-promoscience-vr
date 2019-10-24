@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+////using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Algorithms
@@ -15,11 +15,11 @@ namespace UdeS.Promoscience.Algorithms
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-        public override Utils.Algorithm Id
+        public override Promoscience.Algorithm Id
         {
             get
             {
-                return Utils.Algorithm.RightHand;
+                return Promoscience.Algorithm.RightHand;
             }
         }
 

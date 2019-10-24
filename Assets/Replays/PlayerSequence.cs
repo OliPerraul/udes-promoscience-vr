@@ -3,20 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UnityEngine;
 
 namespace UdeS.Promoscience.Replays
 {
     public delegate void OnSequenceEvent(PlayerSequence sequence);
-
-    public enum Direction
-    {
-        Up = 0,
-        Right = 1,
-        Down = 2,
-        Left = 3
-    }
 
     public class PlayerSequence : Sequence
     {

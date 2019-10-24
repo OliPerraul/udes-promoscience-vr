@@ -29,9 +29,9 @@ namespace UdeS.Promoscience.Replays
         public void Update()
         {
             // TODO if playback
-            if (ServerGame.Instance.GameState == Promoscience.Utils.ServerGameState.SimpleReplay)
+            if (ServerGame.Instance.GameState == Promoscience.ServerGameState.SimpleReplay)
             {
-                if (Promoscience.Utils.UI.IsUIElementActive())
+                if (Promoscience.UI.Utils.IsUIElementActive())
                     return;
 
                 float scroll = Input.GetAxis("Mouse ScrollWheel");

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Network
@@ -57,7 +57,7 @@ namespace UdeS.Promoscience.Network
                 }
                 else
                 {
-                    if (player.serverDeviceType == Utils.DeviceType.Headset)
+                    if (player.serverDeviceType == Promoscience.DeviceType.Headset)
                     {
                         InitializeHeadsetInformation();
                     }
@@ -79,7 +79,7 @@ namespace UdeS.Promoscience.Network
                 player.TargetSetViewingLocalPlayback(player.connectionToClient, ServerGame.Instance.GameRound, steps.ToArray(), stepValues.ToArray());                
 
             }
-            else if (player.serverDeviceType == Utils.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
+            else if (player.serverDeviceType == Promoscience.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
             {
                 pairedId = SQLiteUtilities.GetPairing(player.deviceUniqueIdentifier, player.serverDeviceType);
 
@@ -158,7 +158,7 @@ namespace UdeS.Promoscience.Network
         {
             Teams.ScriptableTeam scriptableTeam = Teams.Resources.Instance.GetUnusedScriptableTeam();
 
-            player.serverAlgorithm = (Utils.Algorithm)(scriptableTeam.TeamId % 3) + 1;
+            player.serverAlgorithm = (Promoscience.Algorithm)(scriptableTeam.TeamId % 3) + 1;
             player.ServerTeamId = scriptableTeam.TeamId;
             player.TargetSetTeamInformation(player.connectionToClient, scriptableTeam.TeamId);
             player.TargetSetPairedIpAdress(player.connectionToClient, "");

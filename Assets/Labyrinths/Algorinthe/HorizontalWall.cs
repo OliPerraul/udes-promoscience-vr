@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Generator
@@ -33,13 +33,13 @@ namespace UdeS.Promoscience.Generator
                 switch (st)
                 {
                     case 1:
-                        return Constants.TILE_ROME_HORIZONTAL_WALL_ID;
+                        return Utils.TILE_ROME_HORIZONTAL_WALL_ID;
                     case 2:
-                        return Constants.TILE_PTOL_HORIZONTAL_WALL_ID;
+                        return Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
                     case 3:
-                        return Constants.TILE_BRIT_HORIZONTAL_WALL_ID;
+                        return Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
                     default:
-                        return Constants.TILE_KART_HORIZONTAL_WALL_ID;
+                        return Utils.TILE_KART_HORIZONTAL_WALL_ID;
                 }
             }
             else
@@ -47,13 +47,13 @@ namespace UdeS.Promoscience.Generator
                 switch (st)
                 {
                     case 1:
-                        return Constants.TILE_ROME_HORIZONTAL_WALL_B_ID;
+                        return Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
                     case 2:
-                        return Constants.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+                        return Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
                     case 3:
-                        return Constants.TILE_BRIT_HORIZONTAL_WALL_ID;
+                        return Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
                     default:
-                        return Constants.TILE_KART_HORIZONTAL_WALL_B_ID;
+                        return Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
                 }
             }
         }

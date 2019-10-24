@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 using Cirrus.Extensions;
@@ -162,9 +162,9 @@ namespace UdeS.Promoscience.Labyrinths
 
             Camera.Source.transform.position += GetLabyrinthPositionInWorldPosition(0, 0);
             Camera.Source.transform.position += new Vector3(
-                labyrinthTiles.GetLength(0) *Constants.TILE_SIZE,
+                labyrinthTiles.GetLength(0) * Utils.TILE_SIZE,
                 0,
-                -labyrinthTiles.GetLength(1) * Constants.TILE_SIZE)/ 2;
+                -labyrinthTiles.GetLength(1) * Utils.TILE_SIZE)/ 2;
 
             Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
         }
@@ -208,7 +208,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public Vector3 GetLabyrinthPositionInWorldPosition(int x, int y)
         {
-            return new Vector3((x - StartPosition.x) * Constants.TILE_SIZE, 0, (-y + StartPosition.y) * Constants.TILE_SIZE);
+            return new Vector3((x - StartPosition.x) * Utils.TILE_SIZE, 0, (-y + StartPosition.y) * Utils.TILE_SIZE);
         }
 
         public Vector3 GetLabyrinthPositionInWorldPosition(Vector2Int position)
@@ -218,7 +218,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public Vector2Int GetWorldPositionInLabyrinthPosition(float x, float y)
         {
-            return new Vector2Int(Mathf.RoundToInt((x / Constants.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-y / Constants.TILE_SIZE)) + StartPosition.y);
+            return new Vector2Int(Mathf.RoundToInt((x / Utils.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-y / Utils.TILE_SIZE)) + StartPosition.y);
         }
 
         public Vector2Int GetLabyrithStartPosition()

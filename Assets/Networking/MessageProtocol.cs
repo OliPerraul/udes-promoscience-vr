@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Network
@@ -42,7 +42,7 @@ namespace UdeS.Promoscience.Network
             return (short)type;
         }
 
-        public Utils.Algorithm algorithm;
+        public Promoscience.Algorithm algorithm;
     }
 
     public class AlgorithmRespectMessage : MessageBase
@@ -94,7 +94,7 @@ namespace UdeS.Promoscience.Network
             return (short)type;
         }
 
-        public Utils.DeviceType deviceType;
+        public Promoscience.DeviceType deviceType;
         public string deviceId;
     }
 
@@ -112,7 +112,7 @@ namespace UdeS.Promoscience.Network
             return (short)type;
         }
 
-        public Utils.DeviceType deviceType;
+        public Promoscience.DeviceType deviceType;
         public string deviceId;
     }
 

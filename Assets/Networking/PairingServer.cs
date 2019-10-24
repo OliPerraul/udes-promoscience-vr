@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using UdeS.Promoscience.UI;
 
@@ -113,7 +113,7 @@ namespace UdeS.Promoscience.Network
             {
                 connections.Add(headsetId, headsetCon);
 
-                if (msg.deviceType == Utils.DeviceType.Tablet)
+                if (msg.deviceType == Promoscience.DeviceType.Tablet)
                 {
                     if (headsets.Count != 0)
                     {
@@ -130,7 +130,7 @@ namespace UdeS.Promoscience.Network
                         tablets.Add(tabletId);
                     }
                 }
-                else if (msg.deviceType == Utils.DeviceType.Headset)
+                else if (msg.deviceType == Promoscience.DeviceType.Headset)
                 {
                     if (tablets.Count != 0)
                     {

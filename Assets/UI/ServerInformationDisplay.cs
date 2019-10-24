@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.UI
 {

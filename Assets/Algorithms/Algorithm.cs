@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+////using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Algorithms
@@ -23,7 +23,7 @@ namespace UdeS.Promoscience.Algorithms
 
         public abstract List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth);
 
-        public abstract Utils.Algorithm Id { get; }
+        public abstract Promoscience.Algorithm Id { get; }
 
         public Algorithm(Resource resource)//, Labyrinths.IData labyrinth)
         {

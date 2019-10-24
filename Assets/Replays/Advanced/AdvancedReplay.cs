@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Utils;
+//using UdeS.Promoscience.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using Cirrus.Extensions;

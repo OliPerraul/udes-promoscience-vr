@@ -24,21 +24,21 @@ namespace UdeS.Promoscience.Algorithms
         [SerializeField]
         public Resource LongestStraightAlgorithm;
 
-        public Algorithm CreateAlgorithm(Utils.Algorithm id)
+        public Algorithm CreateAlgorithm(Promoscience.Algorithm id)
             //Labyrinths.IData labyrinth)
         {
             switch (id)
             {
-                case Utils.Algorithm.LongestStraight:
+                case Promoscience.Algorithm.LongestStraight:
                     return new LongestStraightAlgorithm(RightHandAlgorithm);
 
-                case Utils.Algorithm.Standard:
+                case Promoscience.Algorithm.Standard:
                     return new StandardAlgorithm(RightHandAlgorithm);
 
-                case Utils.Algorithm.RightHand:
+                case Promoscience.Algorithm.RightHand:
                     return new RightHandAlgorithm(RightHandAlgorithm);
 
-                case Utils.Algorithm.ShortestFlightDistance:
+                case Promoscience.Algorithm.ShortestFlightDistance:
                     return new ShortestFlightDistanceAlgorithm(RightHandAlgorithm);
                 default:
                     return null;

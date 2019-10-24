@@ -78,7 +78,7 @@ namespace UdeS.Promoscience.Replays.Advanced.UI
         public override void OnServerChangedState()
         {
             if (ServerGame.Instance.GameState ==
-                Promoscience.Utils.ServerGameState.AdvancedReplay)
+                ServerGameState.AdvancedReplay)
             {
 
             }
