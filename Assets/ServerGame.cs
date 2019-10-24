@@ -374,22 +374,22 @@ namespace UdeS.Promoscience
                 }
             }
 
-            //CourseData courseData;
-            Queue<int> steps;
-            Queue<string> stepValues; //jsons
-            foreach (Course course in Courses)
-            {
-                SQLiteUtilities.SetCourseInactive(course.Id);
-                SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
+            ////CourseData courseData;
+            //Queue<int> steps;
+            //Queue<string> stepValues; //jsons
+            //foreach (Course course in Courses)
+            //{
+            //    SQLiteUtilities.SetCourseInactive(course.Id);
+            //    SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
 
-                // Add sentinel values
-                // TODO put somewhere else? Maybe from the headset?
-                steps.Enqueue((int)GameAction.EndMovement);
-                stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
+            //    // Add sentinel values
+            //    // TODO put somewhere else? Maybe from the headset?
+            //    steps.Enqueue((int)GameAction.EndMovement);
+            //    stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
 
-                course.Actions = steps.ToArray();
-                course.ActionValues = stepValues.ToArray();
-            }
+            //    course.Actions = steps.ToArray();
+            //    course.ActionValues = stepValues.ToArray();
+            //}
 
             // Begin playback server
             GameState = ServerGameState.SimpleReplay;

@@ -49,14 +49,7 @@ namespace UdeS.Promoscience.Replays
 
             replay.Controller.OnSequenceToggledHandler += OnSequenceToggled;
             replay.Controller.OnActionHandler += OnReplayAction;
-
-            //TrySetMoveCount(algorithmSequences.Max(x => x.LocalMoveCount));
-
-            //algorithmSequences.Add(
-            //    replay.Resources.AlgorithmSequence.Create(
-            //        labyrinth,
-            //        labyrinthPosition));
-
+                       
         }
 
         public virtual void Start()
@@ -72,6 +65,8 @@ namespace UdeS.Promoscience.Replays
 
             labyrinth.gameObject.SetActive(true);
             labyrinth.Camera.Maximize();
+
+            //TrySetMoveCount(algorithmSequences.Max(x => x.LocalMoveCount));
 
             foreach (Course course in replay.Controller.Courses)
             {
@@ -124,7 +119,6 @@ namespace UdeS.Promoscience.Replays
 
             replay.Controller.GlobalMoveIndex--;
 
-
             foreach (var sq in algorithmSequences)
             {
                 if (sq.WithinBounds) sq.Previous();
@@ -172,7 +166,6 @@ namespace UdeS.Promoscience.Replays
             isPlaying = false;
         }
 
-
         public virtual void Stop()
         {
             foreach (var sq in algorithmSequences)
@@ -189,7 +182,6 @@ namespace UdeS.Promoscience.Replays
 
             isPlaying = false;
         }
-
 
         public virtual void OnReplayAction(ReplayAction action, params object[] args)
         {
@@ -238,7 +230,7 @@ namespace UdeS.Promoscience.Replays
                 case ReplayAction.Next:
 
                     mutex.WaitOne();
-
+                                       
                     Next();
 
                     mutex.ReleaseMutex();
@@ -363,7 +355,10 @@ namespace UdeS.Promoscience.Replays
                         labyrinthPosition);
 
                 playerSequences.Add(course.Id, sequence);
+
                 activeSequences.Add(sequence);
+
+                TrySetMoveCount(sequence.LocalMoveCount);
 
 
                 var algorithmSeq =
@@ -374,9 +369,9 @@ namespace UdeS.Promoscience.Replays
                         labyrinthPosition
                         );
 
-                algorithmSequences.Add(algorithmSeq);
+                algorithmSequences.Add(algorithmSeq);              
 
-                TrySetMoveCount(sequence.LocalMoveCount);
+                TrySetMoveCount(algorithmSeq.LocalMoveCount);
                                
                 AdjustOffsets();
 

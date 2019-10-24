@@ -84,8 +84,23 @@ namespace UdeS.Promoscience.Labyrinths
 
         int[,] labyrinth;
 
-        Vector2Int startPosition;
-        Vector2Int endPosition;
+        Vector2Int StartPosition
+        {
+            get
+            {
+                return data.StartPos;
+            }
+        }
+
+
+        Vector2Int EndPosition
+        {
+            get
+            {
+                return data.EndPos;
+            }
+        }
+
 
         private void Start()
         {
@@ -164,18 +179,18 @@ namespace UdeS.Promoscience.Labyrinths
                 {
                     labyrinth[x, y] = Data.GetLabyrithValueAt(x, y);
 
-                    if (
-                        labyrinth[x, y] >= Constants.TILE_START_START_ID && 
-                        labyrinth[x, y] <= Constants.TILE_START_END_ID)
-                    {
-                        startPosition = new Vector2Int(x, y);
-                    }
-                    else if (
-                        labyrinth[x, y] >= Constants.TILE_END_START_ID && 
-                        labyrinth[x, y] <= Constants.TILE_END_END_ID)
-                    {
-                        endPosition = new Vector2Int(x, y);
-                    }
+                    //if (
+                    //    labyrinth[x, y] >= Constants.TILE_START_START_ID && 
+                    //    labyrinth[x, y] <= Constants.TILE_START_END_ID)
+                    //{
+                    //    startPosition = new Vector2Int(x, y);
+                    //}
+                    //else if (
+                    //    labyrinth[x, y] >= Constants.TILE_END_START_ID && 
+                    //    labyrinth[x, y] <= Constants.TILE_END_END_ID)
+                    //{
+                    //    endPosition = new Vector2Int(x, y);
+                    //}
                 }
             }
         }
@@ -193,7 +208,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public Vector3 GetLabyrinthPositionInWorldPosition(int x, int y)
         {
-            return new Vector3((x - startPosition.x) * Constants.TILE_SIZE, 0, (-y + startPosition.y) * Constants.TILE_SIZE);
+            return new Vector3((x - StartPosition.x) * Constants.TILE_SIZE, 0, (-y + StartPosition.y) * Constants.TILE_SIZE);
         }
 
         public Vector3 GetLabyrinthPositionInWorldPosition(Vector2Int position)
@@ -203,21 +218,21 @@ namespace UdeS.Promoscience.Labyrinths
 
         public Vector2Int GetWorldPositionInLabyrinthPosition(float x, float y)
         {
-            return new Vector2Int(Mathf.RoundToInt((x / Constants.TILE_SIZE)) + startPosition.x, Mathf.RoundToInt((-y / Constants.TILE_SIZE)) + startPosition.y);
+            return new Vector2Int(Mathf.RoundToInt((x / Constants.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-y / Constants.TILE_SIZE)) + StartPosition.y);
         }
 
         public Vector2Int GetLabyrithStartPosition()
         {
-            return startPosition;
+            return StartPosition;
         }
 
         public Vector2Int GetLabyrithEndPosition()
         {
-            return endPosition;
+            return EndPosition;
         }
         public Vector3 GetLabyrithEndPositionInWorldPosition()
         {
-            return GetLabyrinthPositionInWorldPosition(endPosition.x, endPosition.y);
+            return GetLabyrinthPositionInWorldPosition(EndPosition.x, EndPosition.y);
         }
 
         public int GetLabyrithXLenght()
@@ -247,17 +262,17 @@ namespace UdeS.Promoscience.Labyrinths
             int direction = 0;
 
             // right
-            if (GetIsTileWalkable(startPosition.x + 1, startPosition.y))
+            if (GetIsTileWalkable(StartPosition.x + 1, StartPosition.y))
             {
                 direction = 1;
             }
             // down
-            else if (GetIsTileWalkable(startPosition.x, startPosition.y + 1))
+            else if (GetIsTileWalkable(StartPosition.x, StartPosition.y + 1))
             {
                 direction = 2;
             }
             // Left
-            else if (GetIsTileWalkable(startPosition.x - 1, startPosition.y))
+            else if (GetIsTileWalkable(StartPosition.x - 1, StartPosition.y))
             {
                 direction = 3;
             }

@@ -443,6 +443,11 @@ namespace UdeS.Promoscience.Utils
                             GetPlayerStepsForCourse(id, out steps, out stepValues);
                             //int teamId
 
+                            //// Add sentinel values
+                            //// TODO put somewhere else? Maybe from the headset?
+                            //steps.Enqueue((int)GameAction.EndMovement);
+                            //stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
+
                             courses.Add(new Course
                             {
                                 LabyrinthId = lid,
@@ -1176,13 +1181,13 @@ namespace UdeS.Promoscience.Utils
             return playerSteps;
         }
 
-        public static void GetPlayerStepsForCourse(int courseId, out Queue<int> playerSteps, out Queue<string> stepValues)
+        public static void GetPlayerStepsForCourse(int courseId, out Queue<int> steps, out Queue<string> stepValues)
         {
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
-            playerSteps = new Queue<int>();
+            steps = new Queue<int>();
             stepValues = new Queue<string>();
 
             using (SqliteConnection conn = new SqliteConnection(dbPath))
@@ -1201,13 +1206,21 @@ namespace UdeS.Promoscience.Utils
                     {
                         while (reader.Read())
                         {
-                            playerSteps.Enqueue(int.Parse(reader[EVENT_TYPE].ToString()));
+                            steps.Enqueue(int.Parse(reader[EVENT_TYPE].ToString()));
                             stepValues.Enqueue(reader[EVENT_VALUE].ToString());
                         }
 
                         reader.Close();
                     }
                 }
+            }
+
+            if (steps.Count != 0)
+            {
+                // Add sentinel values
+                // TODO put somewhere else? Maybe from the headset?
+                steps.Enqueue((int)GameAction.EndMovement);
+                stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
             }
         }
 

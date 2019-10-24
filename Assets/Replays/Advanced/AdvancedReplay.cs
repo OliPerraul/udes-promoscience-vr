@@ -121,8 +121,8 @@ namespace UdeS.Promoscience.Replays.Advanced
                     Labyrinths.Labyrinth labyrinth = LabyrinthResources.Labyrinth.Create(data);
                     labyrinth.GenerateLabyrinthVisual();
                     labyrinth.transform.position = Vector3.down * SelectionOffset * i;
-                    Vector3 offset = labyrinth.GetLabyrinthPositionInWorldPosition(0, 0);
-                    labyrinth.transform.position -= offset;
+                    //Vector3 offset = labyrinth.GetLabyrinthPositionInWorldPosition(0, 0);
+                    //labyrinth.transform.position -= offset;
                     AdvancedController.IdLabyrinthPairs.Add(data.currentId, labyrinth);
 
                     SetLabyrinthCamera(labyrinth, i);

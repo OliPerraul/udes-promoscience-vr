@@ -233,7 +233,11 @@ namespace UdeS.Promoscience
                         xi += 1;
                     }
 
-                    moveSpeed = xi < lerpValue ? moveSpeed - (Time.deltaTime * Constants.MOVEMENT_ACCELERATION) : moveSpeed + (Time.deltaTime * Constants.MOVEMENT_ACCELERATION);
+                    moveSpeed = 
+                        xi < lerpValue ? 
+                            moveSpeed - (Time.deltaTime * Constants.MOVEMENT_ACCELERATION) : 
+                            moveSpeed + (Time.deltaTime * Constants.MOVEMENT_ACCELERATION);
+
                     lerpValue += Time.deltaTime * moveSpeed * Constants.MOVEMENT_SPEED;
 
                     if (lerpValue >= 1)
