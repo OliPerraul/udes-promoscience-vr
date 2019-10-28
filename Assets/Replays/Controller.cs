@@ -10,8 +10,8 @@ namespace UdeS.Promoscience.Replays
         //[SerializeField]
         //private ScriptableServerGameInformation serverGameState;
 
-        [SerializeField]
-        private Camera camera;
+        //[SerializeField]
+        //private Camera camera;
 
         [SerializeField]
         private float scaleSpeed = 0.5f;
@@ -28,30 +28,31 @@ namespace UdeS.Promoscience.Replays
 
         public void Update()
         {
-            // TODO if playback
-            if (ServerGame.Instance.GameState == Promoscience.ServerGameState.SimpleReplay)
-            {
-                if (Promoscience.UI.Utils.IsUIElementActive())
-                    return;
+            //// TODO if playback
+            //if (Server.Instance.GameState == ServerGameState.SimpleReplay ||
+            //    Server.Instance.GameState == ServerGameState.AdvancedReplay)
+            //{
+            //    if (Promoscience.UI.Utils.IsUIElementActive())
+            //        return;
 
-                float scroll = Input.GetAxis("Mouse ScrollWheel");
-                camera.orthographicSize += scroll * scaleSpeed;
+            //    float scroll = Input.GetAxis("Mouse ScrollWheel");
+            //    camera.orthographicSize += scroll * scaleSpeed;
 
-                if (Input.GetMouseButtonDown(0))
-                {
-                    dragOrigin = Input.mousePosition;
-                    return;
-                }
+            //    if (Input.GetMouseButtonDown(0))
+            //    {
+            //        dragOrigin = Input.mousePosition;
+            //        return;
+            //    }
 
-                if (Input.GetMouseButton(0))
-                {
-                    Vector3 pos = camera.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-                    Vector3 move = new Vector3(pos.x * dragSpeed, 0, pos.y * dragSpeed);
+            //    if (Input.GetMouseButton(0))
+            //    {
+            //        Vector3 pos = camera.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
+            //        Vector3 move = new Vector3(pos.x * dragSpeed, 0, pos.y * dragSpeed);
 
-                    camera.transform.Translate(move, Space.World);
-                }
+            //        camera.transform.Translate(move, Space.World);
+            //    }
 
-            }
+            //}
         }
     }
 }

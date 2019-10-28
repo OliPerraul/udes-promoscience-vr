@@ -35,12 +35,14 @@ namespace UdeS.Promoscience.Replays
 
         public override void OnServerGameStateChanged()
         {
-            if (ServerGame.Instance.GameState ==
+            if (Server.Instance.GameState ==
                 ServerGameState.SimpleReplay)
             {
-                Labyrinths.Labyrinth labyrinth = LabyrinthResources.Labyrinth.Create(ServerGame.Instance.CurrentLabyrinth);
+                Labyrinths.Labyrinth labyrinth = LabyrinthResources
+                    .GetLabyrinth(Server.Instance.CurrentLabyrinth)
+                    .Create(Server.Instance.CurrentLabyrinth);
                 
-                Controller.Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(ServerGame.Instance.CurrentLabyrinth.currentId);
+                Controller.Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(Server.Instance.CurrentLabyrinth.currentId);
                 
                 labyrinthReplay = new LabyrinthReplay(this, labyrinth);
 

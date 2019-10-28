@@ -22,21 +22,33 @@ namespace UdeS.Promoscience.Replays.UI
 
         [SerializeField]
         private Dictionary<int, SequenceToggleItem> items;
+        
+        private SequenceToggleItem first = null;
 
-
-        private SequenceToggleItem firstItem = null;
-
-        public void Awake()
+        private bool init = false;
+        
+        public void OnEnable()
         {
-            //server.gameStateChangedEvent += OnGameStateChanged;
+            if (init) return;
+
+            init = true;
+                        
             items = new Dictionary<int, SequenceToggleItem>();
             replayOptions.OnActionHandler += OnReplayAction;
+        }
+
+        public IEnumerator DelayedSelectCoroutine(SequenceToggleItem item)
+        {
+            yield return new WaitForEndOfFrame();            
+            item.OnClicked();
         }
 
         public void OnReplayAction(ReplayAction action, params object[] args)
         {
             if(action == ReplayAction.Reset)
             {
+                first = null;
+
                 foreach (Transform child in scrollContentParent)
                 {
                     if (!child.gameObject.activeSelf)
@@ -44,6 +56,8 @@ namespace UdeS.Promoscience.Replays.UI
 
                     Destroy(child.gameObject);
                 }
+
+                items.Clear();
             }
             else if (action == ReplayAction.AddCourse)
             {
@@ -60,6 +74,12 @@ namespace UdeS.Promoscience.Replays.UI
                         course);
 
                     items.Add(course.Id, item);
+
+                    if (first == null)
+                    {
+                        first = item;
+                        StartCoroutine(DelayedSelectCoroutine(first));
+                    }
                 }
                 else
                 {

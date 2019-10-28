@@ -16,8 +16,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         ScriptableServerPlayerInformation playersInformation;
 
-        [SerializeField]
-        Teams.Resources teamList;
+        //[SerializeField]
+        //Teams.Resources teamList;
 
         [SerializeField]
         ScriptableLocalizeString connectingString;
@@ -159,7 +159,7 @@ namespace UdeS.Promoscience.UI
         {
             if (playerInformation.PlayerTeamId != -1)
             {
-                Teams.ScriptableTeam team = teamList.GetScriptableTeamWithId(playerInformation.PlayerTeamId);
+                Teams.ScriptableTeam team = Teams.Resources.Instance.GetScriptableTeamWithId(playerInformation.PlayerTeamId);
                 teamNameText.text = team.TeamName;
                 color.color = team.TeamColor;
             }
@@ -212,17 +212,17 @@ namespace UdeS.Promoscience.UI
                 {
                     string text = playingString.Value;
 
-                    if (playerInformation.Player.serverDeviceType == Promoscience.DeviceType.Headset)
+                    if (playerInformation.Player.serverDeviceType == DeviceType.Headset)
                     {
-                        if (playerInformation.Player.serverAlgorithm == Promoscience.Algorithm.ShortestFlightDistance)
+                        if (playerInformation.Player.serverAlgorithm == Algorithms.Id.ShortestFlightDistance)
                         {
                             text += " - " + shortestFlightString.Value;
                         }
-                        else if (playerInformation.Player.serverAlgorithm == Promoscience.Algorithm.LongestStraight)
+                        else if (playerInformation.Player.serverAlgorithm == Algorithms.Id.LongestStraight)
                         {
                             text += " - " + longestStraightString.Value;
                         }
-                        else if (playerInformation.Player.serverAlgorithm == Promoscience.Algorithm.Standard)
+                        else if (playerInformation.Player.serverAlgorithm == Algorithms.Id.Standard)
                         {
                             text += " - " + standardAlgorithmString.Value;
                         }

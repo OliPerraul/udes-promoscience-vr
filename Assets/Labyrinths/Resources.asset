@@ -11,7 +11,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2d69920a88c41c46a94f5e65c718a52, type: 3}
   m_Name: Resources
   m_EditorClassIdentifier: 
-  Labyrinth: {fileID: 114960978338339494, guid: f697c43a84beec044840ffc7981c5b14,
+  LabyrinthSmall: {fileID: 114960978338339494, guid: ec672ff3d7d1d1047b19df996724e006,
+    type: 2}
+  LabyrinthMedium: {fileID: 114960978338339494, guid: f697c43a84beec044840ffc7981c5b14,
+    type: 2}
+  LabyrinthLarge: {fileID: 114960978338339494, guid: c17c76a5f8f58f149a4e08af8c7e26d5,
     type: 2}
   startTilePrefab: {fileID: 1213397253378824, guid: dd6b3d5434963ad4a972a7780440af19,
     type: 2}

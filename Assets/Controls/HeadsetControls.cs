@@ -20,8 +20,8 @@ namespace UdeS.Promoscience
         [SerializeField]
         ScriptableGameAction gameAction;
 
-        [SerializeField]
-        ScriptableClientGameState client;
+        //[SerializeField]
+        //ScriptableClientGameState client;
 
         [SerializeField]
         ScriptableInteger forwardDirection;
@@ -339,7 +339,7 @@ namespace UdeS.Promoscience
                     }
                 }
 
-                Vector2Int labyrinthPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+                Vector2Int labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
 
                 if (labyrinthPosition != lastLabyrinthPosition)
                 {
@@ -374,8 +374,8 @@ namespace UdeS.Promoscience
                 fromPosition = cameraRig.Transform.position;
 
                 Vector2Int lpos = Utils.GetMoveDestination(lastLabyrinthPosition, (Direction) forwardDirection.Value);
-                Vector3 pos = ClientGame.Instance.client.Labyrinth.GetLabyrinthPositionInWorldPosition(lpos);
-                targetPosition = new Vector3(pos.x, targetPosition.y, pos.z);
+                Vector3 pos = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(lpos);
+                targetPosition = new Vector3(pos.x, fromPosition.y, pos.z);
 
                 isMoving = true;
             }
@@ -407,21 +407,21 @@ namespace UdeS.Promoscience
 
         bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
         {
-            Vector2Int labyrinthPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(position.x, position.z);
+            Vector2Int labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(position.x, position.z);
 
             labyrinthPosition.x += xByDirection[direction];
             labyrinthPosition.y += yByDirection[direction];
 
-            return client.Labyrinth.GetIsTileWalkable(labyrinthPosition);
+            return Client.Instance.Labyrinth.GetIsTileWalkable(labyrinthPosition);
         }
 
         void PaintTile(Vector2Int position, TileColor color, bool saveAction)
         {
-            TileColor tileColor = client.Labyrinth.GetTileColor(position);
+            TileColor tileColor = Client.Instance.Labyrinth.GetTileColor(position);
 
             if (color != tileColor)
             {
-                GameObject tile = client.Labyrinth.GetTile(position);
+                GameObject tile = Client.Instance.Labyrinth.GetTile(position);
                 Algorithms.FloorPainter floorPainter = tile.GetComponentInChildren<Algorithms.FloorPainter>();
 
                 if (floorPainter != null)
@@ -457,7 +457,7 @@ namespace UdeS.Promoscience
 
         void PaintCurrentPositionTile(bool saveAction)
         {
-            Vector2Int position = client.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+            Vector2Int position = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
 
             PaintTile(position, paintingColor.Value, saveAction);
         }
@@ -534,17 +534,17 @@ namespace UdeS.Promoscience
         {
             cameraRig.Transform.position = new Vector3(0, cameraRig.Transform.position.y, 0);
 
-            if (client.Value == ClientGameState.WaitingForNextRound)
+            if (Client.Instance.State == ClientGameState.WaitingForNextRound)
             {
                 forwardDirection.Value = 0;
             }
             else
             {
-                forwardDirection.Value = client.Labyrinth.GetStartDirection();
+                forwardDirection.Value = Client.Instance.Labyrinth.GetStartDirection();
             }
 
-            if(client.Labyrinth != null)
-            lastLabyrinthPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(0, 0);
+            if(Client.Instance.Labyrinth != null)
+            lastLabyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(0, 0);
 
             Quaternion rotation = new Quaternion(0, 0, 0, 0);
 
@@ -583,7 +583,7 @@ namespace UdeS.Promoscience
                 PaintTile(tiles[i].x, tiles[i].y, tiles[i].color, false);
             }
 
-            lastLabyrinthPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+            lastLabyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
             labyrinthPositionChanged.FireAction();
 
             paintingColor.Value = TileColor.Yellow;

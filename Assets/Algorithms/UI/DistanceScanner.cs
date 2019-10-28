@@ -11,10 +11,10 @@ namespace UdeS.Promoscience.Algorithms
     public class DistanceScanner : MonoBehaviour
     {
         [SerializeField]
-        ScriptableControler controls;
+        private LocalizeString distanceText;
 
         [SerializeField]
-        private ScriptableClientGameState client;
+        ScriptableControler controls;
 
         [SerializeField]
         GameObject distanceDisplay;
@@ -37,12 +37,39 @@ namespace UdeS.Promoscience.Algorithms
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-        float raycastRange = 100 * Utils.TILE_SIZE;
+        float raycastRange = 100 * Promoscience.Utils.TILE_SIZE;
 
         void Start()
         {
-            controls.isControlsEnableValueChangedEvent += OnIsControlsEnableValueChangedEvent;
-            controls.isPlayerControlsEnableValueChangedEvent += OnIsControlsEnableValueChangedEvent;
+            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            //controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+        }
+
+        void OnClientStateChanged()
+        {
+            switch (Client.Instance.State)
+            {
+                case ClientGameState.Playing:
+                case ClientGameState.PlayingTutorial:
+                    if (Client.Instance.Algorithm.Id == Promoscience.Algorithms.Id.LongestStraight ||
+                        Client.Instance.Algorithm.Id == Promoscience.Algorithms.Id.ShortestFlightDistance)
+                    {
+                        distanceDisplay.SetActive(true);
+                        targetDisplay.SetActive(true);
+                    }
+                    else
+                    {
+                        distanceDisplay.SetActive(false);
+                        targetDisplay.SetActive(false);
+                    }
+                    break;
+
+                default:
+                    distanceDisplay.SetActive(false);
+                    targetDisplay.SetActive(false);
+                    break;
+
+            }
         }
 
         void Update()
@@ -53,24 +80,11 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
-        void OnIsControlsEnableValueChangedEvent()
-        {
-            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
-            {
-                distanceDisplay.SetActive(true);
-                targetDisplay.SetActive(true);
-            }
-            else
-            {
-                distanceDisplay.SetActive(false);
-                targetDisplay.SetActive(false);
-            }
-        }
 
         void ExecuteDistanceScan()
         {
             float distance = 0;
-            string text = "";
+            string text = "<color=red>" + "?" + "</color>";
             Ray ray = new Ray(raycastStartPoint.position, raycastStartPoint.forward);
             RaycastHit raycastHit;
 
@@ -78,8 +92,8 @@ namespace UdeS.Promoscience.Algorithms
             {
                 if (raycastHit.transform.tag == TAG_WALL)
                 {
-                    Vector2Int currentPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
-                    Vector2Int hitWallPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.transform.position.x, raycastHit.transform.position.z);
+                    Vector2Int currentPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+                    Vector2Int hitWallPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.transform.position.x, raycastHit.transform.position.z);
 
                     if (hitWallPosition.x == currentPosition.x || hitWallPosition.y == currentPosition.y)
                     {
@@ -92,7 +106,7 @@ namespace UdeS.Promoscience.Algorithms
 
                             while (y != hitWallPosition.y)
                             {
-                                if (!client.Labyrinth.GetIsTileWalkable(currentPosition.x, y))
+                                if (!Client.Instance.Labyrinth.GetIsTileWalkable(currentPosition.x, y))
                                 {
                                     isFirstWallInLine = false;
                                     break;
@@ -108,7 +122,7 @@ namespace UdeS.Promoscience.Algorithms
 
                             while (x != hitWallPosition.x)
                             {
-                                if (!client.Labyrinth.GetIsTileWalkable(x, currentPosition.y))
+                                if (!Client.Instance.Labyrinth.GetIsTileWalkable(x, currentPosition.y))
                                 {
                                     isFirstWallInLine = false;
                                     break;
@@ -127,8 +141,8 @@ namespace UdeS.Promoscience.Algorithms
                 }
                 else if (raycastHit.transform.tag == TAG_FLOOR)
                 {
-                    Vector2Int currentPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
-                    Vector2Int hitPosition = client.Labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.point.x, raycastHit.point.z);
+                    Vector2Int currentPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+                    Vector2Int hitPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.point.x, raycastHit.point.z);
 
                     if (hitPosition == currentPosition
                             || hitPosition == (currentPosition + new Vector2Int(xByDirection[0], yByDirection[0]))
@@ -136,9 +150,9 @@ namespace UdeS.Promoscience.Algorithms
                             || hitPosition == (currentPosition + new Vector2Int(xByDirection[2], yByDirection[2]))
                             || hitPosition == (currentPosition + new Vector2Int(xByDirection[3], yByDirection[3])))
                     {
-                        distance = (client.Labyrinth.GetLabyrithEndPosition() - hitPosition).magnitude;
+                        distance = (Client.Instance.Labyrinth.GetLabyrithEndPosition() - hitPosition).magnitude;
                         distance = Mathf.Round(distance * 10) / 10;
-                        text = "<color=lime>" + distance.ToString() + "</color>";
+                        text = " <color=lime>" + distance.ToString() + "</color>";
                     }
                 }
 
@@ -151,7 +165,7 @@ namespace UdeS.Promoscience.Algorithms
                 targetDisplay.SetActive(false);
             }
 
-            textDisplay.text = text;
+            textDisplay.text = distanceText.Value + text;
         }
     }
 }

@@ -100,7 +100,7 @@ namespace UdeS.Promoscience.Replays.Advanced
         }
 
         public virtual void SetLabyrinthCamera(Labyrinths.Labyrinth labyrinth, int i)
-        {
+        {          
             labyrinth.SetCamera(
                 AdvancedController.LabyrinthsData.Count,
                 resource.MaxHorizontal,
@@ -110,7 +110,7 @@ namespace UdeS.Promoscience.Replays.Advanced
 
         public override void OnServerGameStateChanged()
         {
-            if (ServerGame.Instance.GameState ==
+            if (Server.Instance.GameState ==
                 ServerGameState.AdvancedReplay)
             {
                 Clear();
@@ -118,7 +118,10 @@ namespace UdeS.Promoscience.Replays.Advanced
                 int i = 0;
                 foreach (var data in AdvancedController.LabyrinthsData)
                 {
-                    Labyrinths.Labyrinth labyrinth = LabyrinthResources.Labyrinth.Create(data);
+                    Labyrinths.Labyrinth labyrinth = LabyrinthResources
+                        .GetLabyrinth(data)
+                        .Create(data);
+
                     labyrinth.GenerateLabyrinthVisual();
                     labyrinth.transform.position = Vector3.down * SelectionOffset * i;
                     //Vector3 offset = labyrinth.GetLabyrinthPositionInWorldPosition(0, 0);

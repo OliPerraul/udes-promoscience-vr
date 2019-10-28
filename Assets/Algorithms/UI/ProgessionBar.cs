@@ -9,15 +9,27 @@ namespace UdeS.Promoscience.UI
 {
     public class ProgessionBar : MonoBehaviour
     {
-        [SerializeField]
-        ScriptableClientGameState clientState;
+        //[SerializeField]
+        //ScriptableClientGameState clientState;
 
         [SerializeField]
         GameObject progress;
 
+        private bool init = false;
+
+        public void Awake()
+        {
+            if (transform.childCount != 0)
+                transform.GetChild(0).gameObject.SetActive(false);
+        }
+
         void OnEnable()
         {
-            clientState.OnRespectChangedHandler += OnValueChanged;
+            if (init) return;
+
+            init = true;
+
+            Client.Instance.OnRespectChangedHandler += OnValueChanged;
         }
 
 

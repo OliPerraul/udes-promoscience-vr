@@ -27,13 +27,37 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private ScriptableBoolean grabbedMouseFocus;
 
+        private bool init = false;
+
 
         void OnEnable()
         {
+            if (init) return;
+
+            init = true;
+
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
             returnToDivergencePointRequest.action += OnScriptableAction;
             isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
+            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
         }
+
+        void OnClientStateChanged()
+        {
+            switch (Client.Instance.State)
+            {
+                case ClientGameState.Playing:
+                case ClientGameState.PlayingTutorial:
+                    transform.GetChild(0).gameObject.SetActive(true);
+                    break;
+
+                default:
+                    transform.GetChild(0).gameObject.SetActive(false);
+                    break;
+
+            }
+        }
+
 
         void OnControlsEnableValueChanged()
         {

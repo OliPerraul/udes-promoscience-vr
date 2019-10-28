@@ -50,8 +50,8 @@ namespace UdeS.Promoscience.Labyrinths
 
     public class Labyrinth : MonoBehaviour
     {
-        [SerializeField]
-        private ScriptableClientGameState gameState;
+        //[SerializeField]
+        //private ScriptableClientGameState gameState;
 
         [SerializeField]
         public Camera Camera;
@@ -104,7 +104,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         private void Start()
         {
-            gameState.clientStateChangedEvent += OnGameStateChanged;
+            //Client.Instance.clientStateChangedEvent += OnGameStateChanged;
         }
 
         public void SetCamera(
@@ -112,6 +112,8 @@ namespace UdeS.Promoscience.Labyrinths
             int maxHorizontal,
             int index)
         {
+            Camera.Source.gameObject.SetActive(true);
+
             Camera.Split(
                 maxHorizontal,
                 numLabyrinths / maxHorizontal,
@@ -120,25 +122,25 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.TutorialLabyrinthReady)
-            {
-                GenerateLabyrinthVisual();
-                gameState.Value = ClientGameState.PlayingTutorial;
-            }
-            else if (gameState.Value == ClientGameState.LabyrinthReady)
-            {
-                GenerateLabyrinthVisual();
-                gameState.Value = ClientGameState.Playing;
-            }
-            else if (gameState.Value == ClientGameState.ViewingLocalReplay)
-            {
-                GenerateLabyrinthVisual();
+            //if (Client.Instance.State == ClientGameState.TutorialLabyrinthReady)
+            //{
+            //    GenerateLabyrinthVisual();
+            //    Client.Instance.State = ClientGameState.PlayingTutorial;
+            //}
+            //else if (Client.Instance.State == ClientGameState.LabyrinthReady)
+            //{
+            //    GenerateLabyrinthVisual();
+            //    Client.Instance.State = ClientGameState.Playing;
+            //}
+            //else if (Client.Instance.State == ClientGameState.ViewingLocalReplay)
+            //{
+            //    GenerateLabyrinthVisual();
                 
-            }
-            else if (gameState.Value == ClientGameState.WaitingForNextRound)
-            {
-                DestroyLabyrinth();
-            }
+            //}
+            //else if (Client.Instance.State == ClientGameState.WaitingForNextRound)
+            //{
+            //    DestroyLabyrinth();
+            //}
         }
 
         public void GenerateLabyrinthVisual()
@@ -162,9 +164,9 @@ namespace UdeS.Promoscience.Labyrinths
 
             Camera.Source.transform.position += GetLabyrinthPositionInWorldPosition(0, 0);
             Camera.Source.transform.position += new Vector3(
-                labyrinthTiles.GetLength(0) * Utils.TILE_SIZE,
+                labyrinthTiles.GetLength(0) * Promoscience.Utils.TILE_SIZE,
                 0,
-                -labyrinthTiles.GetLength(1) * Utils.TILE_SIZE)/ 2;
+                -labyrinthTiles.GetLength   (1) * Promoscience.Utils.TILE_SIZE)/ 2;
 
             Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
         }
@@ -178,19 +180,6 @@ namespace UdeS.Promoscience.Labyrinths
                 for (int y = 0; y < labyrinth.GetLength(1); y++)
                 {
                     labyrinth[x, y] = Data.GetLabyrithValueAt(x, y);
-
-                    //if (
-                    //    labyrinth[x, y] >= Constants.TILE_START_START_ID && 
-                    //    labyrinth[x, y] <= Constants.TILE_START_END_ID)
-                    //{
-                    //    startPosition = new Vector2Int(x, y);
-                    //}
-                    //else if (
-                    //    labyrinth[x, y] >= Constants.TILE_END_START_ID && 
-                    //    labyrinth[x, y] <= Constants.TILE_END_END_ID)
-                    //{
-                    //    endPosition = new Vector2Int(x, y);
-                    //}
                 }
             }
         }
@@ -208,7 +197,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public Vector3 GetLabyrinthPositionInWorldPosition(int x, int y)
         {
-            return new Vector3((x - StartPosition.x) * Utils.TILE_SIZE, 0, (-y + StartPosition.y) * Utils.TILE_SIZE);
+            return new Vector3((x - StartPosition.x) * Promoscience.Utils.TILE_SIZE, 0, (-y + StartPosition.y) * Promoscience.Utils.TILE_SIZE);
         }
 
         public Vector3 GetLabyrinthPositionInWorldPosition(Vector2Int position)
@@ -218,7 +207,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public Vector2Int GetWorldPositionInLabyrinthPosition(float x, float y)
         {
-            return new Vector2Int(Mathf.RoundToInt((x / Utils.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-y / Utils.TILE_SIZE)) + StartPosition.y);
+            return new Vector2Int(Mathf.RoundToInt((x / Promoscience.Utils.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-y / Promoscience.Utils.TILE_SIZE)) + StartPosition.y);
         }
 
         public Vector2Int GetLabyrithStartPosition()
@@ -344,7 +333,7 @@ namespace UdeS.Promoscience.Labyrinths
         public Labyrinth Create(IData data)
         {
             var labyrinth = this.Create();
-            labyrinth.data = data;
+            labyrinth.data = data;            
             return labyrinth;
         }
         

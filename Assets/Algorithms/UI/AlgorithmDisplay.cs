@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience;
@@ -8,42 +9,44 @@ using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.UI
 {
-    public class Compass : MonoBehaviour
+    public class AlgorithmDisplay : MonoBehaviour
     {
+        //[SerializeField]
+        //ScriptableClientGameState client;
+
         [SerializeField]
         ScriptableControler controls;
 
         [SerializeField]
-        Transform indicator;
+        GameObject display;
 
-        int direction = 0;
-
-        readonly int[] xByDirection = { 0, 1, 0, -1 };
-        readonly int[] yByDirection = { -1, 0, 1, 0 };
+        [SerializeField]
+        Text text;
 
         void OnEnable()
         {
+            Client.Instance.OnAlgorithmChangedHandler += OnAlgorithmValueChanged;
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
             controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
 
-        void Update()
+        void OnAlgorithmValueChanged()
         {
-            if (indicator.gameObject.activeSelf)
-            {
-                indicator.LookAt(indicator.position + new Vector3(100 * Promoscience.Utils.TILE_SIZE * xByDirection[direction], 0, 100 * Promoscience.Utils.TILE_SIZE * -yByDirection[direction]));
-            }
+            string s = "";
+            s += Client.Instance.Algorithm.Name;
+            text.text = s;
         }
 
         void OnControlsEnableValueChanged()
         {
             if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
             {
-                indicator.gameObject.SetActive(true);
+                display.gameObject.SetActive(true);
+                OnAlgorithmValueChanged();
             }
             else
             {
-                indicator.gameObject.SetActive(false);
+                display.gameObject.SetActive(false);
             }
         }
     }

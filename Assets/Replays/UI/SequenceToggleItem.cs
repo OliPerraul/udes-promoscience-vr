@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Globalization;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays.UI
 {
@@ -26,14 +27,9 @@ namespace UdeS.Promoscience.Replays.UI
         public UnityEngine.UI.Button button;
 
 
-
-
-        //public UnityEngine.UI.Text scoreText;
-
         public SequenceToggleItem Create(Transform parent, Course course)
         {
-            SequenceToggleItem item =
-                Instantiate(gameObject, parent).GetComponent<SequenceToggleItem>();
+            SequenceToggleItem item = this.Create(parent);
 
             item.course = course;
             item.label.text = course.Team.name + " (" +
@@ -65,7 +61,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             if (replayController.OnSequenceSelectedHandler != null)
             {
-                replayController.OnSequenceSelectedHandler.Invoke(course);// enabled);
+                replayController.OnSequenceSelectedHandler.Invoke(course);
             }
         }
 

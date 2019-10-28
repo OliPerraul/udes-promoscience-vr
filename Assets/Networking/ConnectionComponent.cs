@@ -76,7 +76,7 @@ namespace UdeS.Promoscience.Network
                 SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
 
                 // Use the steps for playback
-                player.TargetSetViewingLocalPlayback(player.connectionToClient, ServerGame.Instance.GameRound, steps.ToArray(), stepValues.ToArray());                
+                player.TargetSetViewingLocalPlayback(player.connectionToClient, Server.Instance.GameRound, steps.ToArray(), stepValues.ToArray());                
 
             }
             else if (player.serverDeviceType == Promoscience.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
@@ -89,12 +89,12 @@ namespace UdeS.Promoscience.Network
                 }
                 else
                 {
-                    if (ServerGame.Instance.GameState == ServerGameState.GameRound && player.ServerCourseId != -1)
+                    if (Server.Instance.GameState == ServerGameState.GameRound && player.ServerCourseId != -1)
                     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                         int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
 #endif
-                        if (courseLabyrinthId == ServerGame.Instance.GameRound)
+                        if (courseLabyrinthId == Server.Instance.GameRound)
                         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
@@ -106,14 +106,14 @@ namespace UdeS.Promoscience.Network
                             {
                                 // Use the steps for playback
                                 player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                                player.TargetSetRoundCompleted(player.connectionToClient, ServerGame.Instance.GameRound, steps.ToArray());
+                                player.TargetSetRoundCompleted(player.connectionToClient, Server.Instance.GameRound, steps.ToArray());
                             }
                             else
                             {
                                 if (steps.Count > 0)
                                 {
                                     // Connection drop, used the steps to resume where you were
-                                    ServerGame.Instance.StartGameRoundWithSteps(player, steps.ToArray());
+                                    Server.Instance.StartGameRoundWithSteps(player, steps.ToArray());
                                     player.TargetSetPairedIpAdress(player.connectionToClient, "");
                                 }
                                 else
@@ -139,15 +139,15 @@ namespace UdeS.Promoscience.Network
             }
             else if (player.ServerPlayerGameState == ClientGameState.Ready)
             {
-                if (ServerGame.Instance.GameState == ServerGameState.Tutorial)
+                if (Server.Instance.GameState == ServerGameState.Tutorial)
                 {
-                    ServerGame.Instance.StartTutorial(player);
+                    Server.Instance.StartTutorial(player);
                 }
-                else if (ServerGame.Instance.GameState == ServerGameState.GameRound)
+                else if (Server.Instance.GameState == ServerGameState.GameRound)
                 {
-                    ServerGame.Instance.StartGameRound(player);
+                    Server.Instance.StartGameRound(player);
                 }
-                else if (ServerGame.Instance.GameState == ServerGameState.Intermission)
+                else if (Server.Instance.GameState == ServerGameState.Intermission)
                 {
                     player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
                 }
@@ -158,7 +158,7 @@ namespace UdeS.Promoscience.Network
         {
             Teams.ScriptableTeam scriptableTeam = Teams.Resources.Instance.GetUnusedScriptableTeam();
 
-            player.serverAlgorithm = (Promoscience.Algorithm)(scriptableTeam.TeamId % 3) + 1;
+            player.serverAlgorithm = (Promoscience.Algorithms.Id)(scriptableTeam.TeamId % 3) + 1;
             player.ServerTeamId = scriptableTeam.TeamId;
             player.TargetSetTeamInformation(player.connectionToClient, scriptableTeam.TeamId);
             player.TargetSetPairedIpAdress(player.connectionToClient, "");

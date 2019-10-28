@@ -10,18 +10,18 @@ namespace UdeS.Promoscience
     {
         public OnEvent OnTickedHandler;
 
-        private static Clock _instance;
+        private static Clock instance;
 
         public void Awake()
         {
-            _instance = this;
+            instance = this;
         }
         
 
         public static Clock Instance
         {
             get {
-                return _instance;
+                return instance;
             }
         }
 

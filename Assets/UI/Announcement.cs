@@ -8,9 +8,8 @@ namespace UdeS.Promoscience.UI
 {
     public class Announcement : MonoBehaviour
     {
-
-        [SerializeField]
-        ScriptableClientGameState client;
+        //[SerializeField]
+        //ScriptableClientGameState client;
 
         [SerializeField]
         private ScriptableInteger gameRound;
@@ -42,7 +41,7 @@ namespace UdeS.Promoscience.UI
 
             gameRound.valueChangedEvent += OnGameRoundValueChanged;
             timer.OnTimeLimitHandler += OnAnnouncementTimeOut;
-            client.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
 
             transform.GetChild(0).gameObject.SetActive(false);
          }
@@ -51,15 +50,18 @@ namespace UdeS.Promoscience.UI
 
         private void OnGameStateChanged()
         {
-            if (client.Value == ClientGameState.TutorialLabyrinthReady)
+            if (Client.Instance.State == ClientGameState.TutorialLabyrinthReady ||
+                Client.Instance.State == ClientGameState.PlayingTutorial)
             {
                 Message = tutorialString.Value + "\n" +
-                     "(" + client.Algorithm.Name + ")";
+                     "(" + Client.Instance.Algorithm.Name + ")";
             }
-            else if (client.Value == ClientGameState.LabyrinthReady)
+            else if (Client.Instance.State == ClientGameState.LabyrinthReady ||
+                Client.Instance.State == ClientGameState.Playing
+                )
             {
                 Message = roundString.Value + " " + gameRound.Value.ToString() + "\n" +
-                    "(" + client.Algorithm.Name + ")";
+                    "(" + Client.Instance.Algorithm.Name + ")";
             }
 
         }

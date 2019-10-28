@@ -278,7 +278,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &67905972
 GameObject:
@@ -972,7 +972,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fb27e4735ed9ee41b227b5c18d0a2c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientState: {fileID: 0}
   controls: {fileID: 0}
   progress: {fileID: 1337953427}
 --- !u!1 &263742374
@@ -1096,7 +1095,6 @@ MonoBehaviour:
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
-  client: {fileID: 0}
   forwardDirection: {fileID: 11400000, guid: 9d9bde1f7e90c1b46aa5622fe0910c1b, type: 2}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
@@ -1142,7 +1140,7 @@ Transform:
   - {fileID: 1277893027}
   - {fileID: 1300027172}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &276611082
 GameObject:
@@ -6565,7 +6563,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4403001938476882, guid: 3c326b37a6a4b02448eb591b9e6c121a, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1634689534996100, guid: 3c326b37a6a4b02448eb591b9e6c121a, type: 2}
       propertyPath: m_Name
@@ -27067,16 +27065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d461a42996b3d924aa8ae43f30f83203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  client: {fileID: 0}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  algorithmString: {fileID: 11400000, guid: 359ee761643462e4b9ce35c6bfe738ee, type: 2}
-  longestStraightString: {fileID: 11400000, guid: 2a11923c14f145f4d828ed5d8c3abbcd,
-    type: 2}
-  rightHandString: {fileID: 11400000, guid: e7f30e2fdde13874c8106a7e4969cfbf, type: 2}
-  shortestFlightString: {fileID: 11400000, guid: 576b4d870d7816e46ba15f87c9a38160,
-    type: 2}
-  standardAlgorithmString: {fileID: 11400000, guid: 28ef717dfeb2055438332deb3e5aca84,
-    type: 2}
   display: {fileID: 1007835330}
   text: {fileID: 276611084}
 --- !u!1 &1007835330
@@ -32157,16 +32146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d461a42996b3d924aa8ae43f30f83203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  client: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  algorithmString: {fileID: 11400000, guid: 359ee761643462e4b9ce35c6bfe738ee, type: 2}
-  longestStraightString: {fileID: 11400000, guid: 2a11923c14f145f4d828ed5d8c3abbcd,
-    type: 2}
-  rightHandString: {fileID: 11400000, guid: e7f30e2fdde13874c8106a7e4969cfbf, type: 2}
-  shortestFlightString: {fileID: 11400000, guid: 576b4d870d7816e46ba15f87c9a38160,
-    type: 2}
-  standardAlgorithmString: {fileID: 11400000, guid: 28ef717dfeb2055438332deb3e5aca84,
-    type: 2}
   display: {fileID: 860929047}
   text: {fileID: 801171511}
 --- !u!1 &1116757794
@@ -42682,7 +42662,6 @@ MonoBehaviour:
     localizeString: {fileID: 0}
     defaultString: '[?]'
   grabbedMouseFocus: {fileID: 0}
-  gameState: {fileID: 0}
   headsetImage: {fileID: 0}
   tabletImage: {fileID: 0}
   serverImage: {fileID: 0}
@@ -91476,6 +91455,56 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2111991899}
   m_Mesh: {fileID: 4300010, guid: c515c245eef79834ca4097a5367d0a89, type: 3}
+--- !u!1 &2117918770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2117918772}
+  - component: {fileID: 2117918771}
+  m_Layer: 0
+  m_Name: Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2117918771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2117918770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1b65bd747aa5d45b69b80a55442b51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
+    type: 2}
+  isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
+  waitingForNextRoundRoom: {fileID: 0}
+  recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
+  value: 0
+  ActionValues: []
+  ActionSteps: 
+  ErrorCount: 0
+--- !u!4 &2117918772
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2117918770}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2127320687
 GameObject:
   m_ObjectHideFlags: 0

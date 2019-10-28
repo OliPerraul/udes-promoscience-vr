@@ -21,11 +21,11 @@ namespace UdeS.Promoscience.Algorithms
 
         List<Tile> algorithmSteps;
 
-        public override Promoscience.Algorithm Id
+        public override Promoscience.Algorithms.Id Id
         {
             get
             {
-                return Promoscience.Algorithm.ShortestFlightDistance;
+                return Promoscience.Algorithms.Id.ShortestFlightDistance;
             }
         }
 

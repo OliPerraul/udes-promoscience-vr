@@ -26,6 +26,7 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
+
         public int sizeX { get { return data.sizeX; } set { data.sizeX = value; } }
         public int sizeY { get { return data.sizeY; } set { data.sizeY = value; } }
 

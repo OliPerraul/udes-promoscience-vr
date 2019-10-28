@@ -8,9 +8,10 @@ using UdeS.Promoscience.ScriptableObjects;
 namespace UdeS.Promoscience
 {
     public class AudioManager : MonoBehaviour
-    {
-        [SerializeField]
-        ScriptableClientGameState gameState;
+    { 
+        //{
+    //    [SerializeField]
+    //    ScriptableClientGameState gameState;
 
         [SerializeField]
         AudioSource musicSource;
@@ -26,18 +27,18 @@ namespace UdeS.Promoscience
 
         void Start()
         {
-            gameState.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
         }
 
         void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.Playing)
+            if (Client.Instance.State == ClientGameState.Playing)
             {
                 musicSource.clip = classicLoopMusic;
                 musicSource.volume = 1f;
                 musicSource.Play();
             }
-            else if (gameState.Value == ClientGameState.PlayingTutorial)
+            else if (Client.Instance.State == ClientGameState.PlayingTutorial)
             {
                 musicSource.clip = modernLoopMusic;
                 musicSource.volume = 0.1f;

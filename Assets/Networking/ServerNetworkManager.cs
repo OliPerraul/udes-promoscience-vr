@@ -45,7 +45,7 @@ namespace UdeS.Promoscience.Network
             if (!isServerStarted)
             {
                 isServerStarted = true;
-                ServerGame.Instance.LoadGameInformationFromDatabase();
+                Server.Instance.LoadGameInformationFromDatabase();
                 serverPlayerInformation.LoadPlayerInformationFromDatabase();
                 playerDisconnectfromServerEvent += serverPlayerInformation.OnPlayerDisconnect;
                 StartServer();
@@ -89,7 +89,7 @@ namespace UdeS.Promoscience.Network
         {
             StopServer();
 
-            ServerGame.Instance.ClearGameInformation();
+            Server.Instance.ClearGameInformation();
             serverPlayerInformation.ClearPlayerInformation();
 
             Application.Quit();

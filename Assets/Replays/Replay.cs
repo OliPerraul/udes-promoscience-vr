@@ -33,7 +33,7 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void Awake()
         {
-            ServerGame.Instance.gameStateChangedEvent += OnServerGameStateChanged;
+            Server.Instance.gameStateChangedEvent += OnServerGameStateChanged;
         }
     }
 }

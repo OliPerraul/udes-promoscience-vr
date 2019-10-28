@@ -11,8 +11,8 @@ namespace UdeS.Promoscience.Tests
 {
     public class AlgorithmLabyrinthDisplay : MonoBehaviour
     {
-        [SerializeField]
-        ScriptableClientGameState client;
+        //[SerializeField]
+        //ScriptableClientGameState client;
 
         [SerializeField]
         GameObject sphere;
@@ -23,21 +23,21 @@ namespace UdeS.Promoscience.Tests
 
         void Start()
         {
-            client.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
         }
 
 
         void OnGameStateChanged()
         {
-            if (client.Value == ClientGameState.PlayingTutorial || client.Value == ClientGameState.Playing)
+            if (Client.Instance.State == ClientGameState.PlayingTutorial || Client.Instance.State == ClientGameState.Playing)
             {
-                GenerateVisualForAlgorithm(Promoscience.Algorithm.ShortestFlightDistance);
+                GenerateVisualForAlgorithm(Promoscience.Algorithms.Id.ShortestFlightDistance);
             }
         }
 
-        void GenerateVisualForAlgorithm(Promoscience.Algorithm algorithm)
+        void GenerateVisualForAlgorithm(Promoscience.Algorithms.Id algorithm)
         {
-            algorithmStepsPosition = client.Algorithm.GetAlgorithmSteps(client.LabyrinthData);
+            algorithmStepsPosition = Client.Instance.Algorithm.GetAlgorithmSteps(Client.Instance.LabyrinthData);
 
             Debug.Log("algorithmStepsPosition Count : " + algorithmStepsPosition.Count);
 
@@ -46,7 +46,7 @@ namespace UdeS.Promoscience.Tests
                 Debug.Log("algorithmStepsPosition #" + i + " : " + algorithmStepsPosition[i].x + " , " + algorithmStepsPosition[i].y + " , " + algorithmStepsPosition[i].color);
 
                 GameObject obj = Instantiate(sphere, GetWorldPosition(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
-                Algorithms.FloorPainter floorPainter = client.Labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<Algorithms.FloorPainter>();
+                Algorithms.FloorPainter floorPainter = Client.Instance.Labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<Algorithms.FloorPainter>();
 
                 if (floorPainter != null)
                 {
@@ -61,11 +61,11 @@ namespace UdeS.Promoscience.Tests
         {
             Vector3 worldPos = new Vector3();
 
-            Vector2Int startPosition = client.Labyrinth.GetLabyrithStartPosition();
+            Vector2Int startPosition = Client.Instance.Labyrinth.GetLabyrithStartPosition();
 
-            worldPos.x = (x - startPosition.x) * Utils.TILE_SIZE;
+            worldPos.x = (x - startPosition.x) * Promoscience.Utils.TILE_SIZE;
             worldPos.y = 0.5f;
-            worldPos.z = (-y + startPosition.y) * Utils.TILE_SIZE;
+            worldPos.z = (-y + startPosition.y) * Promoscience.Utils.TILE_SIZE;
 
             return worldPos;
         }

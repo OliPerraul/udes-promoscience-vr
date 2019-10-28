@@ -28,24 +28,34 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject redRing;
 
+        private bool init = false;
+
         void OnEnable()
         {
-            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-            controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            if (init) return;
+
+            init = true;
+
             paintingColor.valueChangedEvent += OnPaintingColorValueChanged;
+            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
         }
 
-        void OnControlsEnableValueChanged()
+        void OnClientStateChanged()
         {
-            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            switch (Client.Instance.State)
             {
-                colorRings.gameObject.SetActive(true);
-            }
-            else
-            {
-                colorRings.gameObject.SetActive(false);
+                case ClientGameState.Playing:
+                case ClientGameState.PlayingTutorial:
+                    colorRings.gameObject.SetActive(true);
+                    break;
+
+                default:
+                    colorRings.gameObject.SetActive(false);
+                    break;
+
             }
         }
+
 
         void OnPaintingColorValueChanged()
         {

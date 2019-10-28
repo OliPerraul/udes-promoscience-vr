@@ -23,9 +23,6 @@ namespace UdeS.Promoscience.Network
         ScriptableInteger gameRound;
 
         [SerializeField]
-        ScriptableClientGameState gameState;
-
-        [SerializeField]
         ScriptableBoolean isConnectedToPair;
 
         [SerializeField]
@@ -93,7 +90,7 @@ namespace UdeS.Promoscience.Network
             }
             else
             {
-                gameState.Value = ClientGameState.Ready;
+                Client.Instance.State = ClientGameState.Ready;
             }
         }
 
@@ -108,7 +105,7 @@ namespace UdeS.Promoscience.Network
 
         void OnGameStateChanged()
         {
-            if (gameState.Value == ClientGameState.Playing || gameState.Value == ClientGameState.PlayingTutorial)
+            if (Client.Instance.State == ClientGameState.Playing || Client.Instance.State == ClientGameState.PlayingTutorial)
             {
                 SendRequestForGameInformation();
             }
@@ -118,7 +115,7 @@ namespace UdeS.Promoscience.Network
         {
             directive.valueChangedEvent += SendDirective;
             returnToDivergencePointRequest.action += SendReturnToDivergencePointRequest;
-            gameState.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
 
             isConnectedToPair.Value = true;
         }
@@ -127,7 +124,7 @@ namespace UdeS.Promoscience.Network
         {
             isConnectedToPair.Value = false;
 
-            gameState.clientStateChangedEvent -= OnGameStateChanged;
+            Client.Instance.clientStateChangedEvent -= OnGameStateChanged;
             directive.valueChangedEvent -= SendDirective;
             returnToDivergencePointRequest.action -= SendReturnToDivergencePointRequest;
 
@@ -143,13 +140,13 @@ namespace UdeS.Promoscience.Network
         void OnAlgorithmRespect(NetworkMessage netMsg)
         {
             AlgorithmRespectMessage msg = netMsg.ReadMessage<AlgorithmRespectMessage>();
-            gameState.Respect = msg.algorithmRespect;
+            Client.Instance.Respect = msg.algorithmRespect;
 
-            if (gameState.Respect >= 1 && isDiverging.Value)
+            if (Client.Instance.Respect >= 1 && isDiverging.Value)
             {
                 isDiverging.Value = false;
             }
-            else if (gameState.Respect < 1 && !isDiverging.Value)
+            else if (Client.Instance.Respect < 1 && !isDiverging.Value)
             {
                 isDiverging.Value = true;
             }
@@ -160,7 +157,7 @@ namespace UdeS.Promoscience.Network
             PlayerInformationMessage msg = netMsg.ReadMessage<PlayerInformationMessage>();
             playerInformation.SetPlayerInformation(msg.teamId);
 
-            gameState.Value = ClientGameState.Ready;
+            Client.Instance.State = ClientGameState.Ready;
         }
 
         void OnPlayerPaintTile(NetworkMessage netMsg)

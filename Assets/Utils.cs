@@ -45,16 +45,6 @@ namespace UdeS.Promoscience
         Left = 3
     }
 
-    [Serializable]
-    public enum Algorithm : int
-    {
-        Tutorial = 0,
-        RightHand = 0,
-        ShortestFlightDistance = 1,
-        LongestStraight = 2,
-        Standard = 3
-    }
-
     [System.Serializable]
     public enum ServerGameState// : int
     {
@@ -117,6 +107,8 @@ namespace UdeS.Promoscience
         // TODO combine?
         EndMovement = 16,
         //Finish = 17 // Sentinel value
+
+        Unknown = 32
     }
 
     [Serializable]

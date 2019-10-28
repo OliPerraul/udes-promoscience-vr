@@ -11,8 +11,8 @@ namespace UdeS.Promoscience
 
     public class TabletControls : MonoBehaviour
     {
-        [SerializeField]
-        private ScriptableClientGameState client;
+        //[SerializeField]
+        //private ScriptableClientGameState client;
 
         [SerializeField]
         ScriptableControler controls;
@@ -42,7 +42,7 @@ namespace UdeS.Promoscience
         bool isTurning = false;
 
         const float fixedTimestep = 0.03f;//Value of TimeManager Fixed Timestep
-        const float maxMovementDistance = Utils.TILE_SIZE;
+        const float maxMovementDistance = Promoscience.Utils.TILE_SIZE;
         const float maxRotationAngle = 45;
 
         float movementLerpValue = 0;
@@ -184,7 +184,7 @@ namespace UdeS.Promoscience
 
         void PaintTile(Vector2Int position, TileColor color)
         {
-            GameObject tile = client.Labyrinth.GetTile(position);
+            GameObject tile = Client.Instance.Labyrinth.GetTile(position);
             Algorithms.FloorPainter floorPainter = tile.GetComponentInChildren<Algorithms.FloorPainter>();
 
             if (floorPainter != null)
@@ -210,9 +210,9 @@ namespace UdeS.Promoscience
 
             cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
 
-            if (client.Labyrinth != null)
+            if (Client.Instance.Labyrinth != null)
             {
-                direction = client.Labyrinth.GetStartDirection();
+                direction = Client.Instance.Labyrinth.GetStartDirection();
             }
 
             Quaternion rotation = new Quaternion(0, 0, 0, 0);

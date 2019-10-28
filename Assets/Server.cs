@@ -9,7 +9,7 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience
 {
-    public class ServerGame : MonoBehaviour
+    public class Server : MonoBehaviour
     {
         public Labyrinths.IData CurrentLabyrinth
         {
@@ -50,14 +50,22 @@ namespace UdeS.Promoscience
         public Labyrinths.IData currentLabyrinth;
 
 
-        private static ServerGame instance = null;
+        private static Server instance = null;
 
-        public static ServerGame Instance
+        public static Server Instance
         {
             get
             {
 
                 return instance;
+            }
+        }
+
+        public static bool IsApplicationServer
+        {
+            get
+            {
+                return Instance == null;
             }
         }
 
@@ -216,7 +224,7 @@ namespace UdeS.Promoscience
                     player.ServerPlayerGameState == ClientGameState.Playing ||
                     player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
                 {
-                    Algorithm algorithm = Algorithm.Tutorial;
+                    Algorithms.Id algorithm = Algorithms.Id.Tutorial;
                     player.serverAlgorithm = algorithm;
 
                     player.serverLabyrinthId = tutorialLabyrinthId;
@@ -230,14 +238,15 @@ namespace UdeS.Promoscience
                         currentLabyrinth.sizeX,
                         currentLabyrinth.sizeY,
                         tutorialLabyrinthId,
-                        algorithm);
+                        algorithm,
+                        true);
                 }
             }
         }
 
         public void StartTutorial(Player player)
         {
-            Algorithm algorithm = Algorithm.Tutorial;
+            Algorithms.Id algorithm = Algorithms.Id.Tutorial;
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = tutorialLabyrinthId;
 
@@ -249,7 +258,8 @@ namespace UdeS.Promoscience
                 currentLabyrinth.sizeX,
                 currentLabyrinth.sizeY,
                 tutorialLabyrinthId,
-                algorithm);
+                algorithm,
+                isTutorial: true);
         }
 
         public void StartNextGameRound()
@@ -269,7 +279,7 @@ namespace UdeS.Promoscience
                     player.ServerPlayerGameState == ClientGameState.Playing ||
                     player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
                 {
-                    Algorithm algorithm = (Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
+                    Algorithms.Id algorithm = (Algorithms.Id)((player.ServerTeamId + GameRound) % 3) + 1;
                     player.serverAlgorithm = algorithm;
                     player.serverLabyrinthId = GameRound;
 
@@ -281,14 +291,15 @@ namespace UdeS.Promoscience
                         CurrentLabyrinth.sizeX,
                         CurrentLabyrinth.sizeY,
                         GameRound,
-                        algorithm);
+                        algorithm,
+                        false);
                 }
             }
         }
 
         public void StartGameRound(Player player)
         {
-            Algorithm algorithm = (Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
+            Algorithms.Id algorithm = (Algorithms.Id)((player.ServerTeamId + GameRound) % 3) + 1;
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = GameRound;
 
@@ -300,13 +311,14 @@ namespace UdeS.Promoscience
                 CurrentLabyrinth.sizeX,
                 CurrentLabyrinth.sizeY,
                 GameRound,
-                algorithm);
+                algorithm,
+                false);
         }
 
         public void StartGameRoundWithSteps(Player player, int[] steps)
         {
 
-            Algorithm algorithm = (Algorithm)((player.ServerTeamId + GameRound) % 3) + 1;
+            Algorithms.Id algorithm = (Algorithms.Id)((player.ServerTeamId + GameRound) % 3) + 1;
             player.serverAlgorithm = algorithm;
             player.serverLabyrinthId = GameRound;
 
@@ -318,7 +330,8 @@ namespace UdeS.Promoscience
                 CurrentLabyrinth.sizeX,
                 CurrentLabyrinth.sizeY,
                 GameRound,
-                algorithm);
+                algorithm,
+                false); // TODO start with steps tutorial??
         }
 
         public void EndRoundOrTutorial()
@@ -334,6 +347,7 @@ namespace UdeS.Promoscience
                     player.ServerPlayerGameState == ClientGameState.Playing)
                 {
                     player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
+                    player.TargetSetEndRoundOrTutorial(player.connectionToClient);
                 }
             }
         }

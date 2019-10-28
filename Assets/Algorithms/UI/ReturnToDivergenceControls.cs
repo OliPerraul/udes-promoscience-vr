@@ -35,7 +35,26 @@ namespace UdeS.Promoscience.UI
             isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
             playerReachedTheEnd.action += OnPlayerReachedTheEnd;
             returnToDivergencePointAnswer.valueChangedEvent += OnReturnToDivergencePointAnswer;
+            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
         }
+
+
+        void OnClientStateChanged()
+        {
+            switch (Client.Instance.State)
+            {
+                case ClientGameState.Playing:
+                case ClientGameState.PlayingTutorial:
+                    transform.GetChild(0).gameObject.SetActive(true);
+                    break;
+
+                default:
+                    transform.GetChild(0).gameObject.SetActive(false);
+                    break;
+
+            }
+        }
+
 
         void OnControlsEnableValueChanged()
         {

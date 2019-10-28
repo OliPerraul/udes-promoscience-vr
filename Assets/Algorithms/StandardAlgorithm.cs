@@ -22,11 +22,11 @@ namespace UdeS.Promoscience.Algorithms
         List<Tile> algorithmSteps;
 
 
-        public override Promoscience.Algorithm Id
+        public override Id Id
         {
             get
             {
-                return Promoscience.Algorithm.Standard;
+                return Id.Standard;
             }
         }
 

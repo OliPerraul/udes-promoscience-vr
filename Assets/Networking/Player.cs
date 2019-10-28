@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Network
 {
@@ -28,7 +29,7 @@ namespace UdeS.Promoscience.Network
 
             if (isClient)
             {
-                client.clientStateChangedEvent -= SendCmdPlayerGameState;
+                Client.Instance.clientStateChangedEvent -= SendCmdPlayerGameState;
 
                 if (deviceType.Value == Promoscience.DeviceType.Headset)
                 {
@@ -55,7 +56,7 @@ namespace UdeS.Promoscience.Network
         int serverTeamId = -1;
 
         public Promoscience.DeviceType serverDeviceType = Promoscience.DeviceType.NoType;
-        public Promoscience.Algorithm serverAlgorithm;
+        public Promoscience.Algorithms.Id serverAlgorithm;
 
         public int serverLabyrinthId;
 
@@ -197,8 +198,8 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         ScriptableInteger gameRound;
 
-        [SerializeField]
-        ScriptableClientGameState client;
+        //[SerializeField]
+        //ScriptableClientGameState client;
 
         [SerializeField]
         ScriptableBoolean isRoundCompleted;
@@ -222,7 +223,7 @@ namespace UdeS.Promoscience.Network
         {
             base.OnStartLocalPlayer();
 
-            client.clientStateChangedEvent += SendCmdPlayerGameState;
+            Client.Instance.clientStateChangedEvent += SendCmdPlayerGameState;
 
             ClientInitialize();
         }
@@ -254,14 +255,14 @@ namespace UdeS.Promoscience.Network
             CmdSetDeviceName(ServerDeviceName);
             CmdSetUniqueIdentifier(deviceUniqueIdentifier);
 
-            client.Value = ClientGameState.Connecting;
+            Client.Instance.State = ClientGameState.Connecting;
         }
 
         [Client]
         void SendCmdPlayerAction()
         {
-            if (client.Value == ClientGameState.Playing ||
-                client.Value == ClientGameState.PlayingTutorial)
+            if (Client.Instance.State == ClientGameState.Playing ||
+                Client.Instance.State == ClientGameState.PlayingTutorial)
             {
                 CmdSetPlayerAction(gameAction.Action, gameAction.DateTimeString, gameAction.Value);
             }
@@ -270,7 +271,7 @@ namespace UdeS.Promoscience.Network
         [Client]
         void SendCmdPlayerGameState()
         {
-            CmdSetPlayerGameState(client.Value);
+            CmdSetPlayerGameState(Client.Instance.State);
         }
 
         [Client]
@@ -326,7 +327,7 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetGameState(NetworkConnection target, ClientGameState state)
         {
-            client.Value = state;
+            Client.Instance.State = state;
         }
 
         [TargetRpc]
@@ -334,9 +335,9 @@ namespace UdeS.Promoscience.Network
         {
             pairedIpAdress.Value = ipAdress;
 
-            if (client.Value == ClientGameState.Pairing)
+            if (Client.Instance.State == ClientGameState.Pairing)
             {
-                client.Value = ClientGameState.Paired;
+                Client.Instance.State = ClientGameState.Paired;
             }
         }
 
@@ -347,33 +348,32 @@ namespace UdeS.Promoscience.Network
             int sizeX, 
             int sizeY, 
             int labyrinthId, 
-            Algorithm algo)
+            Algorithms.Id algo,
+            bool isTutorial)
         {
             recordedSteps.Value = new int[0];
 
-            client.LabyrinthData = new Labyrinths.Data(
+            Client.Instance.LabyrinthData = new Labyrinths.Data(
                 labyrinthId,
                 data,
                 sizeX,
                 sizeY
                 );
-            
-            client.Labyrinth = resources.Labyrinths.Labyrinth.Create(client.LabyrinthData);
 
-            client.Algorithm = resources.Algorithms.CreateAlgorithm(algo);//, client.LabyrinthData);
+            Client.Instance.Labyrinth = 
+                resources.Labyrinths
+                .GetLabyrinth(Client.Instance.LabyrinthData)
+                .Create(Client.Instance.LabyrinthData);
+
+            Client.Instance.Algorithm = resources.Algorithms.CreateAlgorithm(algo);//, client.LabyrinthData);
 
             isRoundCompleted.Value = false;
 
             gameRound.Value = labyrinthId;
 
-            if (algo == Algorithm.Tutorial)
-            {
-                client.Value = ClientGameState.TutorialLabyrinthReady;
-            }
-            else
-            {
-                client.Value = ClientGameState.LabyrinthReady;
-            }
+            Client.Instance.State = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
+
+
         }
 
         [TargetRpc]
@@ -384,37 +384,28 @@ namespace UdeS.Promoscience.Network
             int sizeX, 
             int sizeY, 
             int labyrinthId, 
-            Algorithm algo)
+            Algorithms.Id algo,
+            bool isTutorial)
         {
             recordedSteps.Value = steps;
 
-            client.LabyrinthData = new Labyrinths.Data(
+            Client.Instance.LabyrinthData = new Labyrinths.Data(
                 labyrinthId,
                 data,
                 sizeX,
                 sizeY);
-            //{
-            //    data = data,
-            //    sizeX = sizeX,
-            //    sizeY = sizeY,
-            //    currentId = labyrinthId
-            //};
 
-            client.Labyrinth = resources.Labyrinths.Labyrinth.Create(client.LabyrinthData);
 
-            client.Algorithm = resources.Algorithms.CreateAlgorithm(algo);/// client.LabyrinthData);
+            Client.Instance.Labyrinth = resources.Labyrinths
+                .GetLabyrinth(Client.Instance.LabyrinthData)
+                .Create(Client.Instance.LabyrinthData);
+
+            Client.Instance.Algorithm = resources.Algorithms.CreateAlgorithm(algo);/// client.LabyrinthData);
 
             isRoundCompleted.Value = false;
             gameRound.Value = labyrinthId;
 
-            if (algo == Algorithm.Tutorial)
-            {
-                client.Value = ClientGameState.TutorialLabyrinthReady;
-            }
-            else
-            {
-                client.Value = ClientGameState.LabyrinthReady;
-            }
+            Client.Instance.State = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
         }
 
         [TargetRpc]
@@ -423,9 +414,9 @@ namespace UdeS.Promoscience.Network
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
             //recordedSteps.Value = steps;
-            client.ActionValues = stepValues;
-            client.ActionSteps = steps;
-            client.Value = ClientGameState.ViewingLocalReplay;
+            Client.Instance.ActionValues = stepValues;
+            Client.Instance.ActionSteps = steps;
+            Client.Instance.State = ClientGameState.ViewingLocalReplay;
         }
 
         [TargetRpc]
@@ -433,9 +424,9 @@ namespace UdeS.Promoscience.Network
         {
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
-            
+
             // No steps required, player watch server screen
-            client.Value = ClientGameState.ViewingGlobalReplay;
+            Client.Instance.State = ClientGameState.ViewingGlobalReplay;
         }
 
 
@@ -444,8 +435,15 @@ namespace UdeS.Promoscience.Network
         {
             isRoundCompleted.Value = true;
             gameRound.Value = labyrinthId;
-            recordedSteps.Value = steps; 
-            client.Value = ClientGameState.WaitingForNextRound;
+            recordedSteps.Value = steps;
+            Client.Instance.State = ClientGameState.WaitingForNextRound;
+        }
+
+        [TargetRpc]
+        public void TargetSetEndRoundOrTutorial(NetworkConnection target)
+        {
+            Client.Instance.Labyrinth.gameObject.Destroy();
+            Client.Instance.Labyrinth = null;
         }
 
         [TargetRpc]

@@ -15,11 +15,11 @@ namespace UdeS.Promoscience.Algorithms
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-        public override Promoscience.Algorithm Id
+        public override Promoscience.Algorithms.Id Id
         {
             get
             {
-                return Promoscience.Algorithm.RightHand;
+                return Promoscience.Algorithms.Id.RightHand;
             }
         }
 

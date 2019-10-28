@@ -199,6 +199,9 @@ namespace UdeS.Promoscience
         {
             get
             {
+                if (currentActionIndex >= Actions.Length)
+                    return GameAction.Unknown;
+
                 return (GameAction)Actions[CurrentActionIndex];
             }
         }
@@ -210,6 +213,9 @@ namespace UdeS.Promoscience
         {
             get
             {
+                if (currentActionIndex >= ActionValues.Length)
+                    return new ActionValue();
+
                 return UnityEngine.JsonUtility.FromJson<ActionValue>(ActionValues[CurrentActionIndex]);
             }
         }

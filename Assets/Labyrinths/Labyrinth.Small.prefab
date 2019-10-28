@@ -26,7 +26,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1606812944889548
 GameObject:
   m_ObjectHideFlags: 0
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4651009083039308}
   - component: {fileID: 114960978338339494}
   m_Layer: 0
-  m_Name: Labyrinth
+  m_Name: Labyrinth.Small
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,7 +156,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 30
+  orthographic size: 25
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -267,7 +267,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 940ca2b7de768b8438f3b382a6cdd036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   Camera:
     Source: {fileID: 20389824531960314}
     HeightOffset: 30

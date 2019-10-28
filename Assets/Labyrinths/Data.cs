@@ -8,8 +8,44 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Labyrinths
 {
+    public enum Type
+    {
+        Unknown,
+        Small,
+        Medium,
+        Large
+    }
+
+    public static class Utils
+    {
+        public const int SizeSmall = 11;
+
+        public const int SizeMedium = 11;
+
+        public const int SizeLarge = 13;
+
+
+        public static Type GetType(IData data)
+        {
+            if (data.sizeX <= SizeSmall && data.sizeY <= SizeSmall)
+            {
+                return Type.Small;
+            }
+            else if (data.sizeX <= SizeMedium && data.sizeY <= SizeMedium)
+            {
+                return Type.Medium;
+            }
+            else
+            {
+                return Type.Large;
+            }
+        }
+    }
+
     public interface IData
     {
+        //Type Type { get; }
+
         int currentId { get; set; }
 
         int[] data { get; set; }
@@ -38,6 +74,8 @@ namespace UdeS.Promoscience.Labyrinths
 
         void SetLabyrithData(int[,] map, int id);
     }
+
+
 
 
     // TODO from json (combine with ScriptableObect)
@@ -139,14 +177,14 @@ namespace UdeS.Promoscience.Labyrinths
                 for (int y = 0; y < sizeY; y++)
                 {
                     if (
-                        GetLabyrithValueAt(x, y) >= Utils.TILE_START_START_ID &&
-                        GetLabyrithValueAt(x, y) <= Utils.TILE_START_END_ID)
+                        GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_START_END_ID)
                     {
                         startPos = new Vector2Int(x, y);
                     }
                     else if (
-                        GetLabyrithValueAt(x, y) >= Utils.TILE_END_START_ID &&
-                        GetLabyrithValueAt(x, y) <= Utils.TILE_END_END_ID)
+                        GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_END_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_END_END_ID)
                     {
                         endPos = new Vector2Int(x, y);
                     }
@@ -170,14 +208,14 @@ namespace UdeS.Promoscience.Labyrinths
                         data[(x * sizeY) + y] = map[x, y];
 
                         if (
-                            GetLabyrithValueAt(x, y) >= Utils.TILE_START_START_ID &&
-                            GetLabyrithValueAt(x, y) <= Utils.TILE_START_END_ID)
+                            GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID &&
+                            GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_START_END_ID)
                         {
                             startPos = new Vector2Int(x, y);
                         }
                         else if (
-                            GetLabyrithValueAt(x, y) >= Utils.TILE_END_START_ID &&
-                            GetLabyrithValueAt(x, y) <= Utils.TILE_END_END_ID)
+                            GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_END_START_ID &&
+                            GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_END_END_ID)
                         {
                             endPos = new Vector2Int(x, y);
                         }
@@ -192,9 +230,9 @@ namespace UdeS.Promoscience.Labyrinths
 
             if (x >= 0 && x < GetLabyrithXLenght() && y >= 0 && y < GetLabyrithYLenght())
             {
-                if ((GetLabyrithValueAt(x, y) >= Utils.TILE_FLOOR_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_FLOOR_END_ID)
-                    || (GetLabyrithValueAt(x, y) >= Utils.TILE_START_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_START_END_ID)
-                    || (GetLabyrithValueAt(x, y) >= Utils.TILE_END_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_END_END_ID))
+                if ((GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_FLOOR_START_ID && GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_FLOOR_END_ID)
+                    || (GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID && GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_START_END_ID)
+                    || (GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_END_START_ID && GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_END_END_ID))
                 {
                     return true;
                 }

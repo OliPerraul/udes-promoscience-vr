@@ -39,8 +39,8 @@ namespace UdeS.Promoscience.ScriptableObjects
     [CreateAssetMenu(fileName = "Data", menuName = "Data/GameAction", order = 1)]
     public class ScriptableGameAction : ScriptableObject
     {
-        [SerializeField]
-        private ScriptableClientGameState gameState;
+        //[SerializeField]
+        //private ScriptableClientGameState gameState;
         
         // TODO: fix weird globally available variables (put in client game state)
         // playerPaintTile vs paintingColor?
@@ -91,8 +91,8 @@ namespace UdeS.Promoscience.ScriptableObjects
 
             value = JsonUtility.ToJson(new ActionValue
             {
-                respect = gameState.Respect,
-                error = gameState.ErrorCount,
+                respect = Client.Instance.Respect,
+                error = Client.Instance.ErrorCount,
                 previousColor = playerPaintTile.Tile.color//.Value;//.Tile;
             });
 
@@ -120,8 +120,8 @@ namespace UdeS.Promoscience.ScriptableObjects
                 position = position,
                 rotation = rotation,
                 playerSteps = playerSteps,
-                respect = gameState.Respect,
-                error = gameState.ErrorCount,
+                respect = Client.Instance.Respect,
+                error = Client.Instance.ErrorCount,
                 previousColor = playerPaintTile.TilePreviousColor
             });
 

@@ -25,9 +25,6 @@ namespace UdeS.Promoscience.Network
         ScriptableInteger gameRound;
 
         [SerializeField]
-        ScriptableClientGameState clientState;
-
-        [SerializeField]
         ScriptableBoolean isConnectedToPair;
 
         [SerializeField]
@@ -113,7 +110,7 @@ namespace UdeS.Promoscience.Network
         {
             clientConnection = netMsg.conn;
 
-            clientState.OnRespectChangedHandler += SendAlgorithmRespect;
+            Client.Instance.OnRespectChangedHandler += SendAlgorithmRespect;
             playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
             playerPosition.valueChangedEvent += SendPlayerPosition;
             playerReachedTheEnd.action += SendEndReached;
@@ -138,7 +135,7 @@ namespace UdeS.Promoscience.Network
 
             clientConnection = null;
 
-            clientState.OnRespectChangedHandler -= SendAlgorithmRespect;
+            Client.Instance.OnRespectChangedHandler -= SendAlgorithmRespect;
             playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
             playerPosition.valueChangedEvent -= SendPlayerPosition;
             playerReachedTheEnd.action -= SendEndReached;
@@ -164,7 +161,9 @@ namespace UdeS.Promoscience.Network
             RequestForGameInformationMessage msg = netMsg.ReadMessage<RequestForGameInformationMessage>();
             gameRoundRequest = msg.gameRound;
 
-            if (clientState.Value == ClientGameState.Playing || clientState.Value == ClientGameState.PlayingTutorial || clientState.Value == ClientGameState.WaitingForNextRound)
+            if (Client.Instance.State == ClientGameState.Playing || 
+                Client.Instance.State == ClientGameState.PlayingTutorial || 
+                Client.Instance.State == ClientGameState.WaitingForNextRound)
             {
                 if (gameRoundRequest == gameRound.Value)
                 {
@@ -175,7 +174,7 @@ namespace UdeS.Promoscience.Network
                     else
                     {
                         SendAlgorithm();
-                        SendAlgorithmRespect(clientState.Respect);
+                        SendAlgorithmRespect(Client.Instance.Respect);
                         SendPlayerPosition();
                         SendPlayerRotation();
                         SendPlayerTilesToPaint();
@@ -187,14 +186,16 @@ namespace UdeS.Promoscience.Network
 
             if (!isRequestDelayed)
             {
-                clientState.clientStateChangedEvent += DelayedSendGameInformation;
+                Client.Instance.clientStateChangedEvent += DelayedSendGameInformation;
                 isRequestDelayed = true;
             }
         }
 
         void DelayedSendGameInformation()
         {
-            if (clientState.Value == ClientGameState.Playing || clientState.Value == ClientGameState.PlayingTutorial || clientState.Value == ClientGameState.WaitingForNextRound)
+            if (Client.Instance.State == ClientGameState.Playing || 
+                Client.Instance.State == ClientGameState.PlayingTutorial || 
+                Client.Instance.State == ClientGameState.WaitingForNextRound)
             {
                 if (gameRoundRequest == gameRound.Value)
                 {
@@ -205,7 +206,7 @@ namespace UdeS.Promoscience.Network
                     else
                     {
                         SendAlgorithm();
-                        SendAlgorithmRespect(clientState.Respect);
+                        SendAlgorithmRespect(Client.Instance.Respect);
                         SendPlayerPosition();
                         SendPlayerRotation();
                         SendPlayerTilesToPaint();
@@ -276,7 +277,7 @@ namespace UdeS.Promoscience.Network
         void SendPlayerTilesToPaint()
         {
             PlayerTilesToPaintMessage msg = new PlayerTilesToPaintMessage();
-            msg.tiles = clientState.Labyrinth.GetTilesToPaint();
+            msg.tiles = Client.Instance.Labyrinth.GetTilesToPaint();
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }

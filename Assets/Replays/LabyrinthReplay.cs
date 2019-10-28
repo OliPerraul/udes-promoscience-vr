@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.Replays
 
         public Labyrinths.Labyrinth labyrinth;
 
-        public Labyrinths.Labyrinth emptyLabyrinth;
+        public Labyrinths.Labyrinth dirtyLabyrinth;
 
         protected Vector2Int labyrinthPosition;
 
@@ -45,7 +45,7 @@ namespace UdeS.Promoscience.Replays
             algorithmSequences = new List<AlgorithmSequence>();
 
             //replay..gameStateChangedEvent += OnServerGameStateChanged;
-            ServerGame.Instance.OnCourseAddedHandler += OnCourseAdded;
+            Server.Instance.OnCourseAddedHandler += OnCourseAdded;
 
             replay.Controller.OnSequenceToggledHandler += OnSequenceToggled;
             replay.Controller.OnActionHandler += OnReplayAction;
@@ -64,9 +64,17 @@ namespace UdeS.Promoscience.Replays
                 labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
 
             labyrinth.gameObject.SetActive(true);
+
             labyrinth.Camera.Maximize();
 
-            //TrySetMoveCount(algorithmSequences.Max(x => x.LocalMoveCount));
+            dirtyLabyrinth = Labyrinths.ScriptableResources.Instance
+                .GetLabyrinth(labyrinth.Data)
+                .Create(labyrinth.Data);
+
+            dirtyLabyrinth.transform.position = labyrinth.transform.position;
+
+            dirtyLabyrinth.GenerateLabyrinthVisual();
+
 
             foreach (Course course in replay.Controller.Courses)
             {
@@ -187,12 +195,16 @@ namespace UdeS.Promoscience.Replays
         {
             switch (action)
             {
+                case ReplayAction.ExitReplay:
+                    Clear();
+                    break;
+
                 // TODO: Handle play/ stop from replay object and not sequences
                 // to prevent synch issues
                 case ReplayAction.ToggleAlgorithm:
                     isAlgorithmToggled = !isAlgorithmToggled;
-                    emptyLabyrinth.gameObject.SetActive(!isAlgorithmToggled);
-                    labyrinth.gameObject.SetActive(isAlgorithmToggled);
+                    labyrinth.gameObject.SetActive(!isAlgorithmToggled);
+                    dirtyLabyrinth.gameObject.SetActive(isAlgorithmToggled);
                     break;
 
                 case ReplayAction.Play:
@@ -320,7 +332,7 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void Clear()
         {
-            Object.Destroy(emptyLabyrinth);            
+            Object.Destroy(dirtyLabyrinth);            
 
             foreach (Sequence sq in algorithmSequences)
             {
@@ -351,7 +363,7 @@ namespace UdeS.Promoscience.Replays
                     replay.Resources.PlayerSequence.Create(
                         replay,
                         course,
-                        labyrinth,
+                        dirtyLabyrinth,
                         labyrinthPosition);
 
                 playerSequences.Add(course.Id, sequence);
@@ -360,11 +372,10 @@ namespace UdeS.Promoscience.Replays
 
                 TrySetMoveCount(sequence.LocalMoveCount);
 
-
                 var algorithmSeq =
                     replay.Resources.AlgorithmSequence.Create(
                         replay,
-                        labyrinth,
+                        dirtyLabyrinth,
                         course.Algorithm,
                         labyrinthPosition
                         );

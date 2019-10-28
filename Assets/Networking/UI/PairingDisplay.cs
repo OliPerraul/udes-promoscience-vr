@@ -36,8 +36,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private LocalizeString pairingResultFailString;
 
-        [SerializeField]
-        private ScriptableClientGameState gameState;
+        //[SerializeField]
+        //private ScriptableClientGameState gameState;
 
         [SerializeField]
         private Image headsetImage;

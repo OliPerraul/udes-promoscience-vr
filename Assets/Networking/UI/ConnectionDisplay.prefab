@@ -196,7 +196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1357034348037732
 GameObject:
   m_ObjectHideFlags: 1
@@ -906,18 +906,9 @@ MonoBehaviour:
   connectingToPairString:
     localizeString: {fileID: 11400000, guid: a2662e8ec78f19f48894e604d0a640be, type: 2}
     defaultString: '[?]'
-  connectingToPairingServerString:
-    localizeString: {fileID: 11400000, guid: 1afaac59ede1a864ba9588d333124883, type: 2}
-    defaultString: '[?]'
-  pairingRequestSentString:
-    localizeString: {fileID: 11400000, guid: ce26d654048969648a9771b69eea0d00, type: 2}
-    defaultString: '[?]'
-  pairingResultSuccessString:
-    localizeString: {fileID: 11400000, guid: 5bb84640c74cfe542a27aa0665c07818, type: 2}
-    defaultString: '[?]'
-  pairingResultFailString:
-    localizeString: {fileID: 11400000, guid: 5ffdff238c1311040b428dfa06168d9d, type: 2}
-    defaultString: '[?]'
+  pleaseStandbyString:
+    localizeString: {fileID: 0}
+    defaultString: S.V.P retire ton equipement et porte attention.
   readyString:
     localizeString: {fileID: 11400000, guid: df2321abe4b96664696bb2b1eaed8038, type: 2}
     defaultString: '[?]'
@@ -925,7 +916,6 @@ MonoBehaviour:
     localizeString: {fileID: 11400000, guid: c539fd7114cb28f4dbe934def83d7c36, type: 2}
     defaultString: '[?]'
   grabbedMouseFocus: {fileID: 11400000, guid: 1c4b8b3665bc59640956b786c5e870f2, type: 2}
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   headsetImage: {fileID: 114462466151155354}
   tabletImage: {fileID: 114196890325669154}
   serverImage: {fileID: 114195446575727518}
@@ -935,7 +925,6 @@ MonoBehaviour:
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
     type: 2}
-  showConnectionDelay: 2
   readyCloseDelay: 1
 --- !u!114 &114377101334358150
 MonoBehaviour:

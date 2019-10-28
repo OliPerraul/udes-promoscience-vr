@@ -9,8 +9,40 @@ namespace UdeS.Promoscience.Labyrinths
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Ressources", order = 1)]
     public class ScriptableResources : ScriptableObject
     {
+        public static ScriptableResources Instance;
+
+        public void OnEnable()
+        {
+            Instance = this;
+        }
         [SerializeField]
-        public Labyrinth Labyrinth; 
+        public Labyrinth LabyrinthSmall;
+
+        [SerializeField]
+        public Labyrinth LabyrinthMedium;
+
+        [SerializeField]
+        public Labyrinth LabyrinthLarge;
+
+        public Labyrinth GetLabyrinth(IData data)
+        {
+            switch (Utils.GetType(data))
+            {
+                case Type.Large:
+                    return LabyrinthLarge;
+
+                case Type.Medium:
+                    return LabyrinthMedium;
+
+                case Type.Small:
+                    return LabyrinthSmall;
+
+                default:// Type.Unknown:
+                    return LabyrinthMedium;
+                    
+            }
+        }
+
 
         [SerializeField]
         GameObject startTilePrefab;
@@ -106,21 +138,21 @@ namespace UdeS.Promoscience.Labyrinths
         {
             GameObject tile = null;
 
-            if (tileId >= Utils.TILE_START_START_ID && tileId <= Utils.TILE_START_END_ID)
+            if (tileId >= Promoscience.Utils.TILE_START_START_ID && tileId <= Promoscience.Utils.TILE_START_END_ID)
             {
-                if (tileId == Utils.TILE_ROME_START_ID)
+                if (tileId == Promoscience.Utils.TILE_ROME_START_ID)
                 {
                     tile = romeStartTilePrefab;
                 }
-                else if (tileId == Utils.TILE_PTOL_START_ID)
+                else if (tileId == Promoscience.Utils.TILE_PTOL_START_ID)
                 {
                     tile = ptolStartTilePrefab;
                 }
-                else if (tileId == Utils.TILE_BRIT_START_ID)
+                else if (tileId == Promoscience.Utils.TILE_BRIT_START_ID)
                 {
                     tile = britStartTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_START_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_START_ID)
                 {
                     tile = kartStartTilePrefab;
                 }
@@ -129,21 +161,21 @@ namespace UdeS.Promoscience.Labyrinths
                     tile = startTilePrefab;
                 }
             }
-            if (tileId >= Utils.TILE_FLOOR_START_ID && tileId <= Utils.TILE_FLOOR_END_ID)
+            if (tileId >= Promoscience.Utils.TILE_FLOOR_START_ID && tileId <= Promoscience.Utils.TILE_FLOOR_END_ID)
             {
-                if (tileId == Utils.TILE_ROME_FLOOR_ID)
+                if (tileId == Promoscience.Utils.TILE_ROME_FLOOR_ID)
                 {
                     tile = romeFloorTilePrefab;
                 }
-                else if (tileId == Utils.TILE_PTOL_FLOOR_ID)
+                else if (tileId == Promoscience.Utils.TILE_PTOL_FLOOR_ID)
                 {
                     tile = ptolFloorTilePrefab;
                 }
-                else if (tileId == Utils.TILE_BRIT_FLOOR_ID)
+                else if (tileId == Promoscience.Utils.TILE_BRIT_FLOOR_ID)
                 {
                     tile = britFloorTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_FLOOR_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_FLOOR_ID)
                 {
                     tile = kartFloorTilePrefab;
                 }
@@ -152,21 +184,21 @@ namespace UdeS.Promoscience.Labyrinths
                     tile = floorTilePrefab;
                 }
             }
-            if (tileId >= Utils.TILE_END_START_ID && tileId <= Utils.TILE_END_END_ID)
+            if (tileId >= Promoscience.Utils.TILE_END_START_ID && tileId <= Promoscience.Utils.TILE_END_END_ID)
             {
-                if (tileId == Utils.TILE_ROME_END_ID)
+                if (tileId == Promoscience.Utils.TILE_ROME_END_ID)
                 {
                     tile = romeEndTilePrefab;
                 }
-                else if (tileId == Utils.TILE_PTOL_END_ID)
+                else if (tileId == Promoscience.Utils.TILE_PTOL_END_ID)
                 {
                     tile = ptolEndTilePrefab;
                 }
-                else if (tileId == Utils.TILE_BRIT_END_ID)
+                else if (tileId == Promoscience.Utils.TILE_BRIT_END_ID)
                 {
                     tile = britEndTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_END_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_END_ID)
                 {
                     tile = kartEndTilePrefab;
                 }
@@ -175,105 +207,105 @@ namespace UdeS.Promoscience.Labyrinths
                     tile = endTilePrefab;
                 }
             }
-            if (tileId >= Utils.TILE_WALL_START_ID && tileId <= Utils.TILE_WALL_END_ID)
+            if (tileId >= Promoscience.Utils.TILE_WALL_START_ID && tileId <= Promoscience.Utils.TILE_WALL_END_ID)
             {
-                if (tileId == Utils.TILE_ROME_HORIZONTAL_WALL_ID)
+                if (tileId == Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID)
                 {
                     tile = romeHorizontalWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_ROME_HORIZONTAL_WALL_B_ID)
+                else if (tileId == Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID)
                 {
                     tile = romeHorizontalWallBTilePrefab;
                 }
-                else if (tileId == Utils.TILE_ROME_VERTICAL_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID)
                 {
                     tile = romeVerticalWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_ROME_VERTICAL_WALL_B_ID)
+                else if (tileId == Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID)
                 {
                     tile = romeVerticalWallBTilePrefab;
                 }
-                else if (tileId == Utils.TILE_ROME_TOWER_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_ROME_TOWER_WALL_ID)
                 {
                     tile = romeTowerWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_PTOL_HORIZONTAL_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID)
                 {
                     tile = ptolHorizontalWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID)
+                else if (tileId == Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID)
                 {
                     tile = ptolHorizontalWallBTilePrefab;
                 }
-                else if (tileId == Utils.TILE_PTOL_VERTICAL_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID)
                 {
                     tile = ptolVerticalWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_PTOL_VERTICAL_WALL_B_ID)
+                else if (tileId == Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID)
                 {
                     tile = ptolVerticalWallBTilePrefab;
                 }
-                else if (tileId == Utils.TILE_PTOL_TOWER_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID)
                 {
                     tile = ptolTowerWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_BRIT_HORIZONTAL_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID)
                 {
                     tile = britHorizontalWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_BRIT_VERTICAL_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID)
                 {
                     tile = britVerticalWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_BRIT_TOWER_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID)
                 {
                     tile = britTowerWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_BRIT_TOWER_WALL_2_ID)
+                else if (tileId == Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID)
                 {
                     tile = britTowerWall2TilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_HORIZONTAL_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID)
                 {
                     tile = kartHorizontalWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_HORIZONTAL_WALL_B_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID)
                 {
                     tile = kartHorizontalWallBTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_VERTICAL_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID)
                 {
                     tile = kartVerticalWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_VERTICAL_WALL_B_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID)
                 {
                     tile = kartVerticalWallBTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID)
                 {
                     tile = kartHorizontalWallScaffoldingTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_B_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_B_ID)
                 {
                     tile = kartHorizontalWallScaffoldingBTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_ID)
                 {
                     tile = kartVerticalWallScaffoldingTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID)
                 {
                     tile = kartVerticalWallScaffoldingBTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_TOWER_WALL_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_TOWER_WALL_ID)
                 {
                     tile = kartTowerWallTilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_TOWER_WALL_2_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_TOWER_WALL_2_ID)
                 {
                     tile = kartTowerWall2TilePrefab;
                 }
-                else if (tileId == Utils.TILE_KART_TOWER_WALL_SCAFFOLDING_ID)
+                else if (tileId == Promoscience.Utils.TILE_KART_TOWER_WALL_SCAFFOLDING_ID)
                 {
                     tile = kartTowerWallScaffoldingTilePrefab;
                 }

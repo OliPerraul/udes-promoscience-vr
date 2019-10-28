@@ -67,7 +67,7 @@ namespace UdeS.Promoscience.UI.Server
 
             init = true;
 
-            ServerGame.Instance.gameStateChangedEvent += OnValueChanged;
+            Promoscience.Server.Instance.gameStateChangedEvent += OnValueChanged;
 
             OnValueChanged();
         }
@@ -76,7 +76,7 @@ namespace UdeS.Promoscience.UI.Server
         {
             foreach (var stp in serverGameStateSteps)
             {
-                if ((stp.Flags & ServerGame.Instance.GameState) != 0)
+                if ((stp.Flags & Promoscience.Server.Instance.GameState) != 0)
                 {
                     stp.gameObjectsToActivate.ForEach(x => { if (x != null) x.SetActive(true); });
                     stp.gameObjectsToDeactivate.ForEach(x => { if (x != null) x.SetActive(false); });

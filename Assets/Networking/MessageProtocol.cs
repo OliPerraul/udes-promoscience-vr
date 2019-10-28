@@ -42,7 +42,7 @@ namespace UdeS.Promoscience.Network
             return (short)type;
         }
 
-        public Promoscience.Algorithm algorithm;
+        public Promoscience.Algorithms.Id algorithm;
     }
 
     public class AlgorithmRespectMessage : MessageBase

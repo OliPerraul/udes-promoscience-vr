@@ -187,6 +187,9 @@ namespace UdeS.Promoscience.Replays
             //Segment sgm;
             foreach (Segment sgm in segments)
             {
+                if (sgm == null)
+                    continue;
+
                 sgm.AdjustOffset(amount);
             }
         }
@@ -340,7 +343,15 @@ namespace UdeS.Promoscience.Replays
                 }
 
                 // Add error
-                sgm = errorIndicatorTemplate.Create(transform, origin, middle, destination, isInversed, isTurn, labyrinth.Camera.HeightOffset);
+                sgm = errorIndicatorTemplate.Create(
+                    transform, 
+                    origin, 
+                    middle, 
+                    destination, 
+                    isInversed, 
+                    isTurn,
+                    labyrinth.transform.position.y + labyrinth.Camera.HeightOffset - cameraHeightDifference);
+
                 state.Errors.Add(lpos, sgm);
                 segments.Add(sgm);
             }
@@ -370,7 +381,7 @@ namespace UdeS.Promoscience.Replays
                     isBacktrack ? backtrackMaterialAlpha : materialAlpha,
                     time,
                     isBacktrack ? backtrackWidth : normalWidth,
-                    labyrinth.Camera.HeightOffset - cameraHeightDifference) :
+                    labyrinth.transform.position.y + labyrinth.Camera.HeightOffset - cameraHeightDifference) :
                 segmentTemplate.Create(
                     transform,
                     origin,
@@ -381,7 +392,7 @@ namespace UdeS.Promoscience.Replays
                     isBacktrack ? backtrackMaterialAlpha : materialAlpha,
                     time,
                     isBacktrack ? backtrackWidth : normalWidth,
-                    labyrinth.Camera.HeightOffset - cameraHeightDifference);
+                    labyrinth.transform.position.y + labyrinth.Camera.HeightOffset - cameraHeightDifference);
 
             state.Segments.Add(lpos, sgm);
             segments.Add(state.Head); // List<Segment> segments

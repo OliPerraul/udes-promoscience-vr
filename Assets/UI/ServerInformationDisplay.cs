@@ -42,8 +42,8 @@ namespace UdeS.Promoscience.UI
 
         void OnEnable()
         {
-            ServerGame.Instance.gameRoundChangedEvent += OnGameRoundChanged;
-            ServerGame.Instance.gameStateChangedEvent += OnGameStateChanged;
+            Promoscience.Server.Instance.gameRoundChangedEvent += OnGameRoundChanged;
+            Promoscience.Server.Instance.gameStateChangedEvent += OnGameStateChanged;
             OnGameRoundChanged();
             OnGameStateChanged();
 
@@ -51,26 +51,26 @@ namespace UdeS.Promoscience.UI
 
         void OnGameRoundChanged()
         {
-            serverGameRoundText.text = gameRoundString.Value + " : " + ServerGame.Instance.GameRound;
+            serverGameRoundText.text = gameRoundString.Value + " : " + Promoscience.Server.Instance.GameRound;
         }
 
         void OnGameStateChanged()
         {
             string s = gameStateString.Value + " : ";
 
-            if (ServerGame.Instance.GameState == ServerGameState.Lobby)
+            if (Promoscience.Server.Instance.GameState == ServerGameState.Lobby)
             {
                 s += lobbyString.Value;
             }
-            else if (ServerGame.Instance.GameState == ServerGameState.Tutorial)
+            else if (Promoscience.Server.Instance.GameState == ServerGameState.Tutorial)
             {
                 s += tutorialString.Value;
             }
-            else if (ServerGame.Instance.GameState == ServerGameState.GameRound)
+            else if (Promoscience.Server.Instance.GameState == ServerGameState.GameRound)
             {
                 s += playingRoundString.Value;
             }
-            else if (ServerGame.Instance.GameState == ServerGameState.Intermission)
+            else if (Promoscience.Server.Instance.GameState == ServerGameState.Intermission)
             {
                 s += intermissionString.Value;
             }

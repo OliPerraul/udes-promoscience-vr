@@ -36,7 +36,6 @@ namespace UdeS.Promoscience.Replays.UI
             init = true;
 
             replayOptions.OnSequenceSelectedHandler += OnSequenceSelected;
-            //server.gameStateChangedEvent += OnGameStateChanged;
         }
 
         public void OnSequenceSelected(Course newCourse)
@@ -63,7 +62,8 @@ namespace UdeS.Promoscience.Replays.UI
         private void OnCourseActionIndexChanged()//Course course)
         {
             //if (course.CurrentAction == Promoscience.GameAction.Finish ||
-            if (course.CurrentAction == Promoscience.GameAction.EndMovement)// ||
+            if (course.CurrentAction == GameAction.EndMovement ||
+                course.CurrentAction == GameAction.Unknown)
             {
                 return;
             }

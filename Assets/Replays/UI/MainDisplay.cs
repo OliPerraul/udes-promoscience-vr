@@ -26,7 +26,7 @@ namespace UdeS.Promoscience.Replays.UI
 
             init = false;
 
-            ServerGame.Instance.gameStateChangedEvent += OnServerChangedState;
+            Server.Instance.gameStateChangedEvent += OnServerChangedState;
         }
 
         public abstract void OnServerChangedState();

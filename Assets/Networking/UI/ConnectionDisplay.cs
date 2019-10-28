@@ -27,6 +27,10 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private LocalizeString connectingToPairString;
 
+        // "Svp retirer l'equipement et porter attenttion."
+        [SerializeField]
+        private LocalizeString pleaseStandbyString;
+
         //[SerializeField]
         //private LocalizeString connectingToPairingServerString;
 
@@ -48,8 +52,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private ScriptableBoolean grabbedMouseFocus;
 
-        [SerializeField]
-        private ScriptableClientGameState gameState;
+        //[SerializeField]
+        //private ScriptableClientGameState gameState;
 
         [SerializeField]
         private Image headsetImage;
@@ -108,6 +112,9 @@ namespace UdeS.Promoscience.UI
         {
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
             isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
+
+            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
             //pairingStatus.valueChangedEvent += OnPairingStatusChanged;
             //gameState.valueChangedEvent += OmGameStateChanged;
 
@@ -126,6 +133,18 @@ namespace UdeS.Promoscience.UI
                     pairedDeviceImage = headsetImage;
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
                     break;                    
+            }
+        }
+
+        public void OnClientStateChanged()
+        {
+            switch (Client.Instance.State)
+            {
+                case ClientGameState.ViewingGlobalReplay:
+                    Enable();
+                    connectionStatusText.text = pleaseStandbyString.Value;
+
+                    break;
             }
         }
 

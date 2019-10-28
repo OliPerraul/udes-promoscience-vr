@@ -32,11 +32,11 @@ namespace UdeS.Promoscience.Algorithms
         //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
         List<Vector3Int> lastVisitedIntersection;
 
-        public override Promoscience.Algorithm Id
+        public override Promoscience.Algorithms.Id Id
         {
             get
             {
-                return Promoscience.Algorithm.LongestStraight;
+                return Promoscience.Algorithms.Id.LongestStraight;
             }
         }
 

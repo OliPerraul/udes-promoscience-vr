@@ -56,7 +56,7 @@ namespace UdeS.Promoscience.Replays.UI
             overlayButton.onClick.AddListener(OnOverlayClicked);
             algorithmButton.onClick.AddListener(OnAlgorithmClicked);
 
-            ServerGame.Instance.gameStateChangedEvent += OnGameStateChanged;
+            Server.Instance.gameStateChangedEvent += OnGameStateChanged;
         }
 
 

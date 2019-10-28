@@ -16,9 +16,6 @@ namespace UdeS.Promoscience.Algorithms
 
         [SerializeField]
         ScriptableGameAction gameAction;
-        
-        [SerializeField]
-        ScriptableClientGameState client;
 
         [SerializeField]
         ScriptableBoolean isDiverging;
@@ -70,7 +67,7 @@ namespace UdeS.Promoscience.Algorithms
 
         void Start()
         {
-            client.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
             playerPaintTile.valueChangedEvent += OnPlayerPaintTile;
             labyrinthPositionChanged.action += OnLabyrinthPositionChanged;
             returnToDivergencePointAnswer.valueChangedEvent += OnReturnToDivergencePointAnswer;
@@ -81,19 +78,19 @@ namespace UdeS.Promoscience.Algorithms
             if (isAlgorithmRespectActive)
             {
                 EvaluateAlgorithmRespectOnPositionChanged(
-                    client.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z),
-                    client.Labyrinth.GetTileColor(currentLabyrinthPosition), 
+                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z),
+                    Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition), 
                     cameraRig.Transform.rotation);
             }
         }
 
         void OnGameStateChanged()
         {
-            if (client.Value == ClientGameState.PlayingTutorial || client.Value == ClientGameState.Playing)
+            if (Client.Instance.State == ClientGameState.PlayingTutorial || Client.Instance.State == ClientGameState.Playing)
             {
                 ResetAlgorithmRespect();
 
-                if (client.Value == ClientGameState.PlayingTutorial)
+                if (Client.Instance.State == ClientGameState.PlayingTutorial)
                 {
                     SetAlgorithmSteps();
                 }
@@ -101,7 +98,7 @@ namespace UdeS.Promoscience.Algorithms
                 {
                     SetAlgorithmSteps();
 
-                    if (client.ActionSteps.Length > 0)
+                    if (Client.Instance.ActionSteps.Length > 0)
                     {
                         StartWithSteps();
                     }
@@ -109,7 +106,7 @@ namespace UdeS.Promoscience.Algorithms
 
                 isAlgorithmRespectActive = true;
             }
-            else if (client.Value == ClientGameState.WaitingForNextRound)
+            else if (Client.Instance.State == ClientGameState.WaitingForNextRound)
             {
                 isAlgorithmRespectActive = false;
             }
@@ -117,18 +114,18 @@ namespace UdeS.Promoscience.Algorithms
 
         void OnPlayerPaintTile()
         {
-            EvaluateAlgorithmRespectOnPaintTile(client.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z), playerPaintTile.TilePosition.x, playerPaintTile.TilePosition.y, playerPaintTile.TileColor, playerPaintTile.TilePreviousColor);
+            EvaluateAlgorithmRespectOnPaintTile(Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z), playerPaintTile.TilePosition.x, playerPaintTile.TilePosition.y, playerPaintTile.TileColor, playerPaintTile.TilePreviousColor);
         }
 
         void EvaluateAlgorithmRespectOnPositionChanged(Vector2Int labyrinthPosition, TileColor previousTileColor, Quaternion rotation)
         {
             if (labyrinthPosition != currentLabyrinthPosition)
             {
-                if (labyrinthPosition == client.Labyrinth.GetLabyrithEndPosition() && !(client.Respect < 1.0f))
+                if (labyrinthPosition == Client.Instance.Labyrinth.GetLabyrithEndPosition() && !(Client.Instance.Respect < 1.0f))
                 {
                     gameAction.SetAction(GameAction.CompletedRound);
 
-                    if (client.Value == ClientGameState.Playing)
+                    if (Client.Instance.State == ClientGameState.Playing)
                     {
                         isRoundCompleted.Value = true;
                     }
@@ -144,7 +141,7 @@ namespace UdeS.Promoscience.Algorithms
                         || (previousTileColor != algorithmSteps[playerSteps.Count - 1].color))
                     {
                         isDiverging.Value = true;
-                        client.Respect = RespectValueComputation((new Vector2Int(
+                        Client.Instance.Respect = RespectValueComputation((new Vector2Int(
                             playerSteps[playerSteps.Count - 1].x, 
                             playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
 
@@ -170,11 +167,11 @@ namespace UdeS.Promoscience.Algorithms
                         if (wrongColorTilesWhenDiverging.Count == 0)
                         {
                             isDiverging.Value = false;
-                            client.Respect = 1.0f;
+                            Client.Instance.Respect = 1.0f;
                         }
                         else
                         {
-                            client.Respect = RespectValueComputation((
+                            Client.Instance.Respect = RespectValueComputation((
                                 new Vector2Int(
                                     playerSteps[playerSteps.Count - 1].x, 
                                     playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
@@ -182,7 +179,7 @@ namespace UdeS.Promoscience.Algorithms
                     }
                     else
                     {
-                        client.Respect = RespectValueComputation((
+                        Client.Instance.Respect = RespectValueComputation((
                             new Vector2Int(
                                 playerSteps[playerSteps.Count - 1].x, 
                                 playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + wrongColorTilesWhenDiverging.Count);
@@ -209,7 +206,7 @@ namespace UdeS.Promoscience.Algorithms
                             {
                                 wrongColorTilesWhenDiverging.RemoveAt(i);
 
-                                client.Respect = 
+                                Client.Instance.Respect = 
                                     RespectValueComputation(
                                         (new Vector2Int(
                                             playerSteps[playerSteps.Count - 1].x, 
@@ -222,7 +219,7 @@ namespace UdeS.Promoscience.Algorithms
 
                     wrongColorTilesWhenDiverging.Add(new Tile(x, y, previousColor));
 
-                    client.Respect = 
+                    Client.Instance.Respect = 
                         RespectValueComputation(
                             (new Vector2Int(
                                 playerSteps[playerSteps.Count - 1].x,
@@ -233,30 +230,32 @@ namespace UdeS.Promoscience.Algorithms
 
         void SetAlgorithmSteps()
         {
-            algorithmSteps = client.Algorithm.GetAlgorithmSteps(client.LabyrinthData);
+            algorithmSteps = 
+                Client.Instance.Algorithm.GetAlgorithmSteps(
+                    Client.Instance.LabyrinthData);
         }
 
         float RespectValueComputation(float x)
         {
-            return Mathf.Pow(E, -x / Utils.TILE_SIZE);
+            return Mathf.Pow(E, -x / Promoscience.Utils.TILE_SIZE);
         }
 
         void ResetAlgorithmRespect()
         {
             playerSteps.Clear();
             wrongColorTilesWhenDiverging.Clear();
-            client.ErrorCount = 0;
+            Client.Instance.ErrorCount = 0;
             isDiverging.Value = false;
-            client.Respect = 1.0f;
-            currentLabyrinthPosition = client.Labyrinth.GetLabyrithStartPosition();
-            playerSteps.Add(new Tile(currentLabyrinthPosition.x, currentLabyrinthPosition.y, client.Labyrinth.GetTileColor(currentLabyrinthPosition)));
+            Client.Instance.Respect = 1.0f;
+            currentLabyrinthPosition = Client.Instance.Labyrinth.GetLabyrithStartPosition();
+            playerSteps.Add(new Tile(currentLabyrinthPosition.x, currentLabyrinthPosition.y, Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition)));
         }
 
         public void OnReturnToDivergencePointAnswer()
         {
             if (returnToDivergencePointAnswer.Value)
             {
-                client.ErrorCount += 1;
+                Client.Instance.ErrorCount += 1;
 
                 Tile[] tiles = wrongColorTilesWhenDiverging.ToArray(); 
 
@@ -265,7 +264,7 @@ namespace UdeS.Promoscience.Algorithms
                         playerSteps[playerSteps.Count - 1].x, 
                         playerSteps[playerSteps.Count - 1].y);
 
-                Vector3 position = client.Labyrinth.GetLabyrinthPositionInWorldPosition(
+                Vector3 position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(
                     lpos.x,
                     lpos.y) + 
                     new Vector3(0, cameraRig.Transform.position.y, 0);                
@@ -275,7 +274,7 @@ namespace UdeS.Promoscience.Algorithms
                     rotationAtDivergence, 
                     tiles);
 
-                client.Respect =
+                Client.Instance.Respect =
                     RespectValueComputation(
                         (new Vector2Int(
                             playerSteps[playerSteps.Count - 1].x,
@@ -292,10 +291,10 @@ namespace UdeS.Promoscience.Algorithms
 
         void StartWithSteps()
         {
-            int[] steps = client.ActionSteps;
-            int forwardDirection = client.Labyrinth.GetStartDirection();
-            TileColor[,] tiles = new TileColor[client.Labyrinth.GetLabyrithXLenght(), client.Labyrinth.GetLabyrithYLenght()];
-            Vector2Int position = client.Labyrinth.GetLabyrithStartPosition();
+            int[] steps = Client.Instance.ActionSteps;
+            int forwardDirection = Client.Instance.Labyrinth.GetStartDirection();
+            TileColor[,] tiles = new TileColor[Client.Instance.Labyrinth.GetLabyrithXLenght(), Client.Instance.Labyrinth.GetLabyrithYLenght()];
+            Vector2Int position = Client.Instance.Labyrinth.GetLabyrithStartPosition();
 
             tiles[position.x, position.y] = TileColor.Yellow;
 
@@ -354,7 +353,7 @@ namespace UdeS.Promoscience.Algorithms
                 }
                 else if (gameAction == GameAction.ReturnToDivergencePoint)
                 {
-                    client.ErrorCount += 1;
+                    Client.Instance.ErrorCount += 1;
 
                     position = new Vector2Int(playerSteps[playerSteps.Count - 1].x, playerSteps[playerSteps.Count - 1].y);
                     forwardDirection = GetForwardDirectionWithRotation(rotationAtDivergence);
@@ -409,7 +408,7 @@ namespace UdeS.Promoscience.Algorithms
             }
 
             playerPositionRotationAndTiles.SetPositionRotationAndTiles(
-                client.Labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, cameraRig.Transform.position.y, 0), 
+                Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, cameraRig.Transform.position.y, 0), 
                 rotation, 
                 tilesToPaint);
         }
