@@ -7,13 +7,24 @@ namespace UdeS.Promoscience.Algorithms
     public class Resource : ScriptableObject
     {
         [SerializeField]
-        public LocalizeString name;
+        public LocalizeInlineString name;
 
         public string Name
         {
             get
             {
-                return name == null ? "[?]" : name.Value;                
+                return name.Value;                
+            }
+        }
+
+        [SerializeField]
+        public LocalizeString description;
+
+        public string Description
+        {
+            get
+            {
+                return description.Value;
             }
         }
     }

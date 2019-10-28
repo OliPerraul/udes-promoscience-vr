@@ -14,3 +14,11 @@ MonoBehaviour:
   name:
     localizeString: {fileID: 0}
     defaultString: Longest Straight
+  description:
+    localizeString: {fileID: 0}
+    defaultString: "\tPriorise les d\xE9placements pour lesquels on peut traverser
+      la plus grande distance en ligne droite en marquant son chemin comme visit\xE9.\n
+      \n\tEn cas d\u2019\xE9galit\xE9, il priorise le nord, suivit de l\u2019est,
+      du sud et enfin de l\u2019ouest. \n\n\tLorsqu\u2019un cul de sac est atteint,
+      il rebrousse chemin jusqu\u2019\xE0 la derni\xE8re intersection en marquant
+      son passage comme visit\xE9 et non concluant."

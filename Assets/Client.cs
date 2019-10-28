@@ -33,7 +33,21 @@ namespace UdeS.Promoscience
         [SerializeField]
         private ScriptableIntegerArray recordedSteps;
 
+        // This is ridiculous..
+        // TODO: remove all scriptableVariables put them in client or somewhere else..
+        // Global vars are bad.. At least put them in one place!
+        [SerializeField]
+        private ScriptableDeviceType deviceType;
+
         public OnEvent OnAlgorithmChangedHandler;
+
+        public DeviceType DeviceType
+        {
+            get
+            {
+                return deviceType.Value;
+            }
+        }
 
         [SerializeField]
         private Algorithms.Algorithm algorithm;

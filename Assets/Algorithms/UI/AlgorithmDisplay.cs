@@ -11,9 +11,6 @@ namespace UdeS.Promoscience.UI
 {
     public class AlgorithmDisplay : MonoBehaviour
     {
-        //[SerializeField]
-        //ScriptableClientGameState client;
-
         [SerializeField]
         ScriptableControler controls;
 
@@ -23,31 +20,92 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         Text text;
 
+        [SerializeField]
+        Text descriptionText;
+
+        [SerializeField]
+        Text descriptionName;
+
+        [SerializeField]
+        private Button algorithmButton;
+
+        [SerializeField]
+        private Button closeButton;
+
+
+        [SerializeField]
+        private GameObject descriptionDisplay;
+
+        private bool init = false;
+
         void OnEnable()
         {
+            if (init) return;
+
+            init = true;
+
             Client.Instance.OnAlgorithmChangedHandler += OnAlgorithmValueChanged;
-            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-            controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
+            if (Client.Instance.DeviceType == DeviceType.Tablet)
+            {
+                algorithmButton.onClick.AddListener(OnButtonClicked);
+                closeButton.onClick.AddListener(OnCloseButtonClicked);
+            }
+
+            OnClientStateChanged();
         }
+
+
+        void OnClientStateChanged()
+        {
+            switch (Client.Instance.State)
+            {
+                case ClientGameState.Playing:
+                case ClientGameState.PlayingTutorial:
+                    display.gameObject.SetActive(true);
+
+                    if(Client.Instance.DeviceType == DeviceType.Tablet)
+                        descriptionDisplay.SetActive(true);
+
+                    OnAlgorithmValueChanged();
+                    break;
+
+                default:
+                    display.gameObject.SetActive(false);
+                    descriptionDisplay.SetActive(false);
+                    break;
+
+            }
+        }
+
+
+        public void OnButtonClicked()
+        {
+            if (Client.Instance.DeviceType == DeviceType.Tablet)
+                descriptionDisplay.gameObject.SetActive(!descriptionDisplay.gameObject.activeSelf);
+        }
+
+        public void OnCloseButtonClicked()
+        {
+            if (Client.Instance.DeviceType == DeviceType.Tablet)
+            {
+                descriptionDisplay.gameObject.SetActive(false);//.gameObject.activeSelf);
+            }
+        }
+
 
         void OnAlgorithmValueChanged()
         {
-            string s = "";
-            s += Client.Instance.Algorithm.Name;
-            text.text = s;
+            text.text = Client.Instance.Algorithm.Name;
+
+            if (Client.Instance.DeviceType == DeviceType.Tablet)
+            {
+                descriptionText.text = Client.Instance.Algorithm.Description;
+                descriptionName.text = Client.Instance.Algorithm.Name;
+            }
         }
 
-        void OnControlsEnableValueChanged()
-        {
-            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
-            {
-                display.gameObject.SetActive(true);
-                OnAlgorithmValueChanged();
-            }
-            else
-            {
-                display.gameObject.SetActive(false);
-            }
-        }
+
     }
 }

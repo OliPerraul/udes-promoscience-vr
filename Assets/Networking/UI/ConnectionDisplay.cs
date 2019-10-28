@@ -22,14 +22,14 @@ namespace UdeS.Promoscience.UI
         private Text connectionStatusText;
 
         [SerializeField]
-        private LocalizeString connectingToServerString;
+        private LocalizeInlineString connectingToServerString;
 
         [SerializeField]
-        private LocalizeString connectingToPairString;
+        private LocalizeInlineString connectingToPairString;
 
         // "Svp retirer l'equipement et porter attenttion."
         [SerializeField]
-        private LocalizeString pleaseStandbyString;
+        private LocalizeInlineString pleaseStandbyString;
 
         //[SerializeField]
         //private LocalizeString connectingToPairingServerString;
@@ -44,10 +44,10 @@ namespace UdeS.Promoscience.UI
         //private LocalizeString pairingResultFailString;
 
         [SerializeField]
-        private LocalizeString readyString;
+        private LocalizeInlineString readyString;
 
         [SerializeField]
-        private LocalizeString waitingForServer;
+        private LocalizeInlineString waitingForServer;
 
         [SerializeField]
         private ScriptableBoolean grabbedMouseFocus;

@@ -22,19 +22,19 @@ namespace UdeS.Promoscience.UI
         private Text connectionStatusText;
 
         [SerializeField]
-        private LocalizeString connectingToPairString;
+        private LocalizeInlineString connectingToPairString;
 
         [SerializeField]
-        private LocalizeString connectingToPairingServerString;
+        private LocalizeInlineString connectingToPairingServerString;
 
         [SerializeField]
-        private LocalizeString pairingRequestSentString;
+        private LocalizeInlineString pairingRequestSentString;
 
         [SerializeField]
-        private LocalizeString pairingResultSuccessString;
+        private LocalizeInlineString pairingResultSuccessString;
 
         [SerializeField]
-        private LocalizeString pairingResultFailString;
+        private LocalizeInlineString pairingResultFailString;
 
         //[SerializeField]
         //private ScriptableClientGameState gameState;

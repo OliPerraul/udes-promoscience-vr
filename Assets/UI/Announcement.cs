@@ -29,10 +29,10 @@ namespace UdeS.Promoscience.UI
         private float announcementTime = 5f;
 
         [SerializeField]
-        private LocalizeString tutorialString;
+        private LocalizeInlineString tutorialString;
 
         [SerializeField]
-        private LocalizeString roundString;
+        private LocalizeInlineString roundString;
 
 
         public void Awake()

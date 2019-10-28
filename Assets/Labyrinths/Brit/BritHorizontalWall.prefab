@@ -226,7 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 23748295476491160}
-  greyMaterial: {fileID: 2100000, guid: be4ad14977614494195cfbfb9d74b92c, type: 2}
-  yellowMaterial: {fileID: 2100000, guid: 72631cb4686d49b4b88523136dab87d6, type: 2}
-  redMaterial: {fileID: 2100000, guid: 76897f593ab483b42a6f9b6bc6aacc9e, type: 2}
+  greyMaterial: {fileID: 2100000, guid: 2e3a9657262ec594ca4e2530d3e70ca8, type: 2}
+  yellowMaterial: {fileID: 2100000, guid: 1c1b875e457b0f0469eaa659878411ac, type: 2}
+  redMaterial: {fileID: 2100000, guid: ca9a41825d7309d4faf51577fdf8474e, type: 2}
   floorColor: 0

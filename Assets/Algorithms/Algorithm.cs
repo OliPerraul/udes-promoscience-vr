@@ -33,6 +33,14 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
+        public string Description
+        {
+            get
+            {
+                return resource.Description;
+            }
+        }
+
         public abstract List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth);
 
         public abstract Promoscience.Algorithms.Id Id { get; }

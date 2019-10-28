@@ -51,7 +51,6 @@ namespace UdeS.Promoscience.UI
                 default:
                     transform.GetChild(0).gameObject.SetActive(false);
                     break;
-
             }
         }
 

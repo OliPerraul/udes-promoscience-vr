@@ -14,3 +14,9 @@ MonoBehaviour:
   name:
     localizeString: {fileID: 0}
     defaultString: Standard
+  description:
+    localizeString: {fileID: 0}
+    defaultString: "\tPriorise (N.E.S.O.) le nord, suivit de l\u2019est, du sud et
+      enfin de l\u2019ouest en marquant son chemin comme visit\xE9. \n\n\tLorsqu\u2019un
+      cul de sac est atteint, il rebrousse chemin jusqu\u2019\xE0 la derni\xE8re intersection
+      en marquant son passage comme visit\xE9 et non concluant."

@@ -11,7 +11,7 @@ namespace UdeS.Promoscience.Algorithms
     public class DistanceScanner : MonoBehaviour
     {
         [SerializeField]
-        private LocalizeString distanceText;
+        private LocalizeInlineString distanceText;
 
         [SerializeField]
         ScriptableControler controls;

@@ -14,3 +14,8 @@ MonoBehaviour:
   name:
     localizeString: {fileID: 0}
     defaultString: Right Hand
+  description:
+    localizeString: {fileID: 0}
+    defaultString: "\tPriorise toujours les d\xE9placements vers la droite du joueur
+      en marquant son chemin comme visit\xE9. \n\n\tIl rebrousse chemin en cas de
+      cul de sac en marquant son passage comme visit\xE9 et non concluant."
