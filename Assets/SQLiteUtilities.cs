@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+﻿//#if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
 using System;
 using System.Collections;
@@ -1933,4 +1933,4 @@ namespace UdeS.Promoscience
     }
 }
 
-#endif
+//#endif

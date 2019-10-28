@@ -332,8 +332,8 @@ namespace UdeS.Promoscience.Replays
         }
 
         public virtual void Clear()
-        {
-            Object.Destroy(dirtyLabyrinth.gameObject);
+        {            
+            dirtyLabyrinth.gameObject.Destroy();
 
             foreach (Sequence sq in algorithmSequences)
             {

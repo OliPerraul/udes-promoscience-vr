@@ -155,7 +155,8 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public virtual void OnServerGameStateChanged()
         {
-            if (Server.Instance.GameState ==
+            if (
+                Server.Instance.GameState ==
                 ServerGameState.LabyrinthSelect)
             {
                 Enabled = true;
@@ -205,7 +206,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
                         horizontal.gameObject.SetActive(true);
                     }
 
-                    var courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(data.currentId);
+                    List<Course> courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(data.currentId);
 
                     var button = labyrinthButtonTemplate.Create(horizontal.transform, l, courses.Count == 0);
                     button.name = "btn " + i;
