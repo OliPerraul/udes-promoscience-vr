@@ -35,6 +35,12 @@ namespace UdeS.Promoscience.Labyrinths.UI
         [SerializeField]
         private GameObject buttonsHorizontalTemplate;
 
+        [SerializeField]
+        private UnityEngine.UI.Button buttonRandom;
+
+        [SerializeField]
+        private UnityEngine.UI.Button buttonExit;
+
 
         private bool init = false;
 
@@ -47,7 +53,21 @@ namespace UdeS.Promoscience.Labyrinths.UI
             labyrinthButtons = new List<LabyrinthButton>();
 
             replayController.OnActionHandler += OnReplayAction;
+
             Server.Instance.gameStateChangedEvent += OnServerGameStateChanged;
+
+            buttonExit.onClick.AddListener(OnExitClicked);
+            buttonRandom.onClick.AddListener(OnRandomClicked);
+        }
+
+        public void OnRandomClicked()
+        {
+            Server.Instance.StartGameWithLabyrinth(Random.Range(1, Utils.NumLabyrinth+1));// labyrinth.Id);
+        }
+
+        public void OnExitClicked()
+        {
+            Server.Instance.EndRoundOrTutorial();
         }
 
 
@@ -77,25 +97,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
                     }
 
                     break;
-
-                case Replays.ReplayAction.SelectLabyrinth:
-
-                    Labyrinth lab = (Labyrinth)args[0];
-
-                    foreach (Labyrinth l in Server.Instance.Labyrinths)
-                    {
-                        l.gameObject.SetActive(false);
-                    }
-
-                    lab.gameObject.SetActive(true);
-
-                    replayController.Courses = SQLiteUtilities.GetSessionCourses();// ForLabyrinth(lab.Id);
-
-                    Server.Instance.CurrentReplay = new Replays.LabyrinthReplay(replayController, lab);
-
-                    Server.Instance.CurrentReplay.Start();
-
-                    break;
             }
         }
 
@@ -105,17 +106,23 @@ namespace UdeS.Promoscience.Labyrinths.UI
             Enabled = true;
             Enabled = false;
 
-            replayController.SendAction(Replays.ReplayAction.SelectLabyrinth, labyrinth);
+            Server.Instance.BeginAdvancedReplay(labyrinth);
         }
 
         public void OnPlayClicked(Labyrinth labyrinth)
         {
             Enabled = true;
             Enabled = false;
+            Server.Instance.StartGameWithLabyrinth(labyrinth.Id);
         }
 
         public virtual void Clear()
         {
+            if (Server.Instance.CurrentReplay != null)
+            {
+                Server.Instance.CurrentReplay.Clear();
+            }
+
             foreach (Transform children in buttonsParent)
             {
                 if (children.gameObject.activeSelf) Destroy(children.gameObject);
@@ -132,6 +139,8 @@ namespace UdeS.Promoscience.Labyrinths.UI
                     Destroy(l.gameObject);
                 }
             }
+
+            Server.Instance.ClearLabyrinths();
         }
 
 
@@ -149,7 +158,10 @@ namespace UdeS.Promoscience.Labyrinths.UI
             if (Server.Instance.GameState ==
                 ServerGameState.LabyrinthSelect)
             {
+                Enabled = true;
+
                 Clear();
+                                
 
                 int i = 0;
                 foreach (var data in Server.Instance.LabyrinthsData)
@@ -171,17 +183,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             }
             else
             {
-                if (Server.Instance.CurrentReplay != null)
-                {
-                    Server.Instance.CurrentReplay.Clear();
-                }
-
-                foreach (var l in Server.Instance.Labyrinths)
-                {
-                    l.gameObject.Destroy();
-                }
-
-                Clear();
+                //Clear();
             }
         }
 

@@ -39,11 +39,6 @@ namespace UdeS.Promoscience.Replays.UI
 
         protected bool init = false;
 
-        public virtual void Awake()
-        {
-            gameObject.SetActive(false);
-        }
-
         public virtual void OnEnable()
         {
             if (init)
@@ -57,22 +52,24 @@ namespace UdeS.Promoscience.Replays.UI
             algorithmButton.onClick.AddListener(OnAlgorithmClicked);
 
             Server.Instance.gameStateChangedEvent += OnGameStateChanged;
+
+            Enabled = false;
         }
 
 
         public void OnGameStateChanged()
         {
-            //switch (server.GameState)
-            //{
-            //    case Promoscience.Utils.ServerGameState.IntermissionReplay:
-            //    case Promoscience.Utils.ServerGameState.FinalReplay:
-            //        Enabled = true;
-            //        break;
+            switch (Server.Instance.GameState)
+            {
+                case ServerGameState.SimpleReplay:
+                case ServerGameState.AdvancedReplay:
+                    Enabled = true;
+                    break;
 
-            //    default:
-            //        Enabled = false;
-            //        break;
-            //}
+                default:
+                    Enabled = false;
+                    break;
+            }
         }
 
 

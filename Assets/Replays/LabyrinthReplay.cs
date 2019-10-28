@@ -32,7 +32,7 @@ namespace UdeS.Promoscience.Replays
         private bool isPlaying = false;
 
         public LabyrinthReplay(
-            Replays.ScriptableController controller,
+            ScriptableController controller,
             Labyrinths.Labyrinth labyrinth)            
         {
             this.controller = controller;// replay;
@@ -76,11 +76,11 @@ namespace UdeS.Promoscience.Replays
 
             dirtyLabyrinth.GenerateLabyrinthVisual();
 
-
             foreach (Course course in Server.Instance.Courses)
             {
                 OnCourseAdded(course);
             }
+
         }
 
 
@@ -333,7 +333,7 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void Clear()
         {
-            Object.Destroy(dirtyLabyrinth);            
+            Object.Destroy(dirtyLabyrinth.gameObject);
 
             foreach (Sequence sq in algorithmSequences)
             {

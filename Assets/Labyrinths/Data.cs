@@ -18,6 +18,8 @@ namespace UdeS.Promoscience.Labyrinths
 
     public static class Utils
     {
+        public const int NumLabyrinth = 4;
+
         public const int SizeSmall = 9;
 
         public const int SizeMedium = 11;

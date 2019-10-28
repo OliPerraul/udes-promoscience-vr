@@ -39,8 +39,10 @@ namespace UdeS.Promoscience.Replays.UI
 
         public IEnumerator DelayedSelectCoroutine(SequenceToggleItem item)
         {
-            yield return new WaitForEndOfFrame();            
-            item.OnClicked();
+            yield return new WaitForEndOfFrame();     
+
+            if(first != null)
+                first.OnClicked();
         }
 
         public void OnReplayAction(ReplayAction action, params object[] args)

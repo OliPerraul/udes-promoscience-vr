@@ -6,6 +6,7 @@ using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
 using System;
 using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Labyrinths;
 
 namespace UdeS.Promoscience
 {
@@ -21,6 +22,8 @@ namespace UdeS.Promoscience
 
         private Replays.Replay replay;
 
+        public Replays.ScriptableController replayController;
+
         public OnCourseEvent OnCourseAddedHandler;
 
         public Action gameRoundChangedEvent;
@@ -34,15 +37,17 @@ namespace UdeS.Promoscience
         private ServerGameState gameState;
 
         // Ideally, player should reference a course instead of refering to a course id 
-        private Dictionary<int, Course> courses;
+        public List<Course> Courses;
 
-        public ICollection<Course> Courses
-        {
-            get
-            {
-                return courses.Values;
-            }
-        }
+        private Dictionary<int, Course> idCoursePairs;
+
+        //public ICollection<Course> IdCoursePairs
+        //{
+        //    get
+        //    {
+        //        return idCoursePairs.Values;
+        //    }
+        //}
 
         //[SerializeField]
         //private Labyrinths.ScriptableLabyrinth labyrinthData;
@@ -100,7 +105,7 @@ namespace UdeS.Promoscience
 
             GameState = ServerGameState.Lobby;
 
-            courses = new Dictionary<int, Course>();
+            idCoursePairs = new Dictionary<int, Course>();
             labyrinthsData = new List<Labyrinths.IData>();
             labyrinths = new Dictionary<int, Labyrinths.Labyrinth>();
         }
@@ -203,6 +208,24 @@ namespace UdeS.Promoscience
             }
         }
 
+        public void BeginAdvancedReplay(Labyrinth labyrinth)
+        {
+            foreach (Labyrinth l in Instance.Labyrinths)
+            {
+                l.gameObject.SetActive(false);
+            }
+
+            labyrinth.gameObject.SetActive(true);
+
+            GameState = ServerGameState.AdvancedReplay;
+
+            Courses = SQLiteUtilities.GetSessionCourses();// ForLabyrinth(lab.Id);
+
+            CurrentReplay = new Replays.LabyrinthReplay(replayController, labyrinth);
+                       
+            CurrentReplay.Start();
+        }
+
         // Try find course ID initiated by a team member
         // Otherwise assign new course
         //
@@ -221,7 +244,7 @@ namespace UdeS.Promoscience
             }
             else
             {
-                var labyrinth = new Labyrinths.Data();
+                var labyrinth = new Data();
 
                 course = new Course
                 {
@@ -231,9 +254,9 @@ namespace UdeS.Promoscience
                     Algorithm = Algorithms.Resources.Instance.CreateAlgorithm(player.serverAlgorithm)// labyrinth)                                     
                 };
 
-                SQLiteUtilities.ReadLabyrinthDataFromId(GameRound, course.Labyrinth);
+                SQLiteUtilities.ReadLabyrinthDataFromId(CurrentLabyrinth.currentId, course.Labyrinth);
 
-                courses.Add(course.Id, course);
+                idCoursePairs.Add(course.Id, course);
 
                 if (OnCourseAddedHandler != null)
                 {
@@ -241,13 +264,12 @@ namespace UdeS.Promoscience
                 }
 
                 player.ServerCourseId = course.Id;
+
                 SQLiteUtilities.InsertPlayerCourse(
                     player.ServerTeamId,
                     player.serverLabyrinthId,
                     (int)player.serverAlgorithm,
                     player.ServerCourseId);
-
-                //return true;
             }
         }
 
@@ -306,13 +328,13 @@ namespace UdeS.Promoscience
                 isTutorial: true);
         }
 
-        public void StartNextGameRound()
+        public void StartGameWithLabyrinth(int labyrinthId)
         {
             GameRound = (GameRound % 3) + 1;
             GameState = ServerGameState.GameRound;
 
             currentLabyrinth = new Labyrinths.Data();
-            SQLiteUtilities.ReadLabyrinthDataFromId(GameRound, CurrentLabyrinth);
+            SQLiteUtilities.ReadLabyrinthDataFromId(labyrinthId, CurrentLabyrinth);
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
@@ -325,7 +347,7 @@ namespace UdeS.Promoscience
                 {
                     Algorithms.Id algorithm = (Algorithms.Id)((player.ServerTeamId + GameRound) % 3) + 1;
                     player.serverAlgorithm = algorithm;
-                    player.serverLabyrinthId = GameRound;
+                    player.serverLabyrinthId = CurrentLabyrinth.currentId;
 
                     AssignCourse(player);
 
@@ -334,18 +356,25 @@ namespace UdeS.Promoscience
                         CurrentLabyrinth.data,
                         CurrentLabyrinth.sizeX,
                         CurrentLabyrinth.sizeY,
-                        GameRound,
+                        labyrinthId,
                         algorithm,
                         false);
                 }
             }
         }
 
+        public void StartNextGameRound()
+        {
+            GameRound = (GameRound % 3) + 1;
+
+            StartGameWithLabyrinth(GameRound);
+        }
+
         public void StartGameRound(Player player)
         {
             Algorithms.Id algorithm = (Algorithms.Id)((player.ServerTeamId + GameRound) % 3) + 1;
             player.serverAlgorithm = algorithm;
-            player.serverLabyrinthId = GameRound;
+            player.serverLabyrinthId = CurrentLabyrinth.currentId;
 
             AssignCourse(player);
 
@@ -354,17 +383,16 @@ namespace UdeS.Promoscience
                 CurrentLabyrinth.data,
                 CurrentLabyrinth.sizeX,
                 CurrentLabyrinth.sizeY,
-                GameRound,
+                CurrentLabyrinth.currentId,
                 algorithm,
                 false);
         }
 
         public void StartGameRoundWithSteps(Player player, int[] steps)
         {
-
             Algorithms.Id algorithm = (Algorithms.Id)((player.ServerTeamId + GameRound) % 3) + 1;
             player.serverAlgorithm = algorithm;
-            player.serverLabyrinthId = GameRound;
+            player.serverLabyrinthId = CurrentLabyrinth.currentId; ;
 
             AssignCourse(player);
 
@@ -373,7 +401,7 @@ namespace UdeS.Promoscience
                 steps, CurrentLabyrinth.data,
                 CurrentLabyrinth.sizeX,
                 CurrentLabyrinth.sizeY,
-                GameRound,
+                CurrentLabyrinth.currentId,
                 algorithm,
                 false); // TODO start with steps tutorial??
         }

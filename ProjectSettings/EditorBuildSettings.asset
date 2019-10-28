@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/PairingScenes/TabletPairing.unity
     guid: 1d35d427bd3ce3748a15ed990d8aec01
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Tablet.unity
     guid: 9e12a4f89d918cb42b9f07b41c927c8e
   m_configObjects: {}

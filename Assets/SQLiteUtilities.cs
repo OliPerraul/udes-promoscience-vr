@@ -591,6 +591,8 @@ namespace UdeS.Promoscience
         {
             CreateDatabaseIfItDoesntExist();
 
+            labyrinth.currentId = id;
+
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
             using (SqliteConnection conn = new SqliteConnection(dbPath))
             {

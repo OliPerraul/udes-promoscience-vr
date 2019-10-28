@@ -53,8 +53,9 @@ namespace UdeS.Promoscience
         Tutorial = 1 << 1,
         GameRound = 1 << 2,
         Intermission = 1 << 3,
-        SimpleReplay = 1 << 4,
+        SimpleReplay = 1 << 4,        
         LabyrinthSelect = 1 << 5,
+        AdvancedReplay = 1 << 6,
     }
 
     [Serializable]

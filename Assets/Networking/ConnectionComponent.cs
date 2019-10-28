@@ -76,8 +76,11 @@ namespace UdeS.Promoscience.Network
                 SQLiteUtilities.GetPlayerStepsForCourse(player.ServerCourseId, out steps, out stepValues);
 
                 // Use the steps for playback
-                player.TargetSetViewingLocalPlayback(player.connectionToClient, Server.Instance.GameRound, steps.ToArray(), stepValues.ToArray());                
-
+                player.TargetSetViewingLocalPlayback(
+                    player.connectionToClient, 
+                    Server.Instance.CurrentLabyrinth.currentId, 
+                    steps.ToArray(), 
+                    stepValues.ToArray());
             }
             else if (player.serverDeviceType == Promoscience.DeviceType.Headset && player.ServerPlayerGameState == ClientGameState.Reconnecting)
             {
@@ -105,8 +108,14 @@ namespace UdeS.Promoscience.Network
                             if (SQLiteUtilities.HasPlayerAlreadyCompletedTheRound(player.ServerCourseId))
                             {
                                 // Use the steps for playback
-                                player.TargetSetPairedIpAdress(player.connectionToClient, "");
-                                player.TargetSetRoundCompleted(player.connectionToClient, Server.Instance.GameRound, steps.ToArray());
+                                player.TargetSetPairedIpAdress(
+                                    player.connectionToClient, 
+                                    "");
+
+                                player.TargetSetRoundCompleted(
+                                    player.connectionToClient,
+                                    Server.Instance.CurrentLabyrinth.currentId,
+                                    steps.ToArray());
                             }
                             else
                             {

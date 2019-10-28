@@ -25,6 +25,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void Maximize()
         {
+            Source.gameObject.SetActive(true);
             Source.rect = new Rect(0, 0, 1, 1);
         }
 

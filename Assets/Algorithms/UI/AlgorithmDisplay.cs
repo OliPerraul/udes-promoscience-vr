@@ -66,7 +66,7 @@ namespace UdeS.Promoscience.UI
                     display.gameObject.SetActive(true);
 
                     if(Client.Instance.DeviceType == DeviceType.Tablet)
-                        descriptionDisplay.SetActive(true);
+                        descriptionDisplay.SetActive(false);
 
                     OnAlgorithmValueChanged();
                     break;
@@ -97,12 +97,16 @@ namespace UdeS.Promoscience.UI
 
         void OnAlgorithmValueChanged()
         {
-            text.text = Client.Instance.Algorithm.Name;
 
             if (Client.Instance.DeviceType == DeviceType.Tablet)
             {
+                text.text = Client.Instance.Algorithm.Name + " (?)";
                 descriptionText.text = Client.Instance.Algorithm.Description;
                 descriptionName.text = Client.Instance.Algorithm.Name;
+            }
+            else
+            {
+                text.text = Client.Instance.Algorithm.Name;
             }
         }
 

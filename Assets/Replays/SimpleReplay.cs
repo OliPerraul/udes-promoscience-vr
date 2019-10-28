@@ -26,12 +26,10 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-
         public override void Awake()
         {
             base.Awake();
         }
-
 
         public override void OnServerGameStateChanged()
         {
@@ -41,12 +39,12 @@ namespace UdeS.Promoscience.Replays
                 Labyrinths.Labyrinth labyrinth = LabyrinthResources
                     .GetLabyrinth(Server.Instance.CurrentLabyrinth)
                     .Create(Server.Instance.CurrentLabyrinth);
-                
-                Controller.Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(Server.Instance.CurrentLabyrinth.currentId);
-                
-                labyrinthReplay = new LabyrinthReplay(Controller, labyrinth);
 
-                labyrinthReplay.Start();
+                Server.Instance.Courses = SQLiteUtilities.GetSessionCourses();
+
+                Server.Instance.CurrentReplay = new LabyrinthReplay(replayController, labyrinth);
+
+                Server.Instance.CurrentReplay.Start();
             }
         }
     }

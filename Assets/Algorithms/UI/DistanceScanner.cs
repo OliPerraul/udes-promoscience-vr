@@ -39,9 +39,18 @@ namespace UdeS.Promoscience.Algorithms
 
         float raycastRange = 100 * Promoscience.Utils.TILE_SIZE;
 
-        void Start()
+        private bool init = false;
+
+        void OnEnable()
         {
+            if (init) return;
+
+            init = true;
+
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            OnClientStateChanged();
+
+
             //controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
 
