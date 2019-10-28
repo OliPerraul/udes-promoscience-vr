@@ -18,7 +18,7 @@ namespace UdeS.Promoscience.Labyrinths
 
     public static class Utils
     {
-        public const int SizeSmall = 11;
+        public const int SizeSmall = 9;
 
         public const int SizeMedium = 11;
 
@@ -87,9 +87,7 @@ namespace UdeS.Promoscience.Labyrinths
         public int sizeX { get; set; }
         public int sizeY { get; set; }
 
-        public Data()
-        {
-        }
+        public Data() { }    
 
         public Data(int id, int[] data, int sizex, int sizey)
         {

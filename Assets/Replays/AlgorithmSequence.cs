@@ -58,7 +58,7 @@ namespace UdeS.Promoscience.Replays
 
 
         public AlgorithmSequence Create(
-            Replay replay,
+            ScriptableController replay,
             Labyrinths.Labyrinth labyrinth,
             Algorithms.Algorithm algorithm,
             Vector2Int startPosition)

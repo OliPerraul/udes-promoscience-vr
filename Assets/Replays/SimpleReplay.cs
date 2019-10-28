@@ -44,7 +44,7 @@ namespace UdeS.Promoscience.Replays
                 
                 Controller.Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(Server.Instance.CurrentLabyrinth.currentId);
                 
-                labyrinthReplay = new LabyrinthReplay(this, labyrinth);
+                labyrinthReplay = new LabyrinthReplay(Controller, labyrinth);
 
                 labyrinthReplay.Start();
             }

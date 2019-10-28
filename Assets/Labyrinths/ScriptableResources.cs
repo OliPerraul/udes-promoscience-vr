@@ -28,14 +28,14 @@ namespace UdeS.Promoscience.Labyrinths
         {
             switch (Utils.GetType(data))
             {
-                case Type.Large:
-                    return LabyrinthLarge;
+                case Type.Small:
+                    return LabyrinthSmall;
 
                 case Type.Medium:
                     return LabyrinthMedium;
 
-                case Type.Small:
-                    return LabyrinthSmall;
+                case Type.Large:
+                    return LabyrinthLarge;
 
                 default:// Type.Unknown:
                     return LabyrinthMedium;

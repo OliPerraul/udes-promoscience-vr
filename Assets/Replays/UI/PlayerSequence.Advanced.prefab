@@ -139,13 +139,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fe04ed6e47a13c4aa3652eb1895586d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  replayController: {fileID: 0}
   speed: 0.6
   errorIndicatorTemplate: {fileID: 114973429251363308, guid: 1de607a1e6e990a4bbf60810b48cbff2,
     type: 2}
   drawTime: 0.6
   normalWidth: 0.5
   backtrackWidth: 2
+  cameraHeightDifference: 10
   arrowHead: {fileID: 1692986964761308}
   segmentTemplate: {fileID: 114929429646536852, guid: 86507623fe7a1ba4b90c8c68268a1e3f,
     type: 2}

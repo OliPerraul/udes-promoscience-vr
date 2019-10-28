@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace UdeS.Promoscience.Replays.Advanced
+namespace UdeS.Promoscience.Labyrinths.UI
 {
     public class Resource : ScriptableObject
     {

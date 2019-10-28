@@ -13,5 +13,12 @@ namespace UdeS.Promoscience.Replays
 
         [SerializeField]
         public AlgorithmSequence AlgorithmSequence;
+
+        public static Resources Instance;
+
+        public void OnEnable()
+        {
+            Instance = this;
+        }
     }
 }

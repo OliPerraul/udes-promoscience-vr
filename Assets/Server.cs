@@ -87,8 +87,6 @@ namespace UdeS.Promoscience
                 SQLiteUtilities.SetCourseFinished(c.Id);
             }
 
-            sessionCourses = SQLiteUtilities.GetSessionCourses();
-
             // Store all the teams in the DB
             // TODO remove, replace with 'Resources' asset
             foreach (Teams.ScriptableTeam team in Teams.Resources.Instance.Teams)
@@ -99,12 +97,58 @@ namespace UdeS.Promoscience
                     team.TeamColor.ToString(),
                     DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             }
-        }
-        
-        public void OnEnable()
-        {
-            gameState = ServerGameState.Lobby;
+
+            GameState = ServerGameState.Lobby;
+
             courses = new Dictionary<int, Course>();
+            labyrinthsData = new List<Labyrinths.IData>();
+            labyrinths = new Dictionary<int, Labyrinths.Labyrinth>();
+        }
+
+        public Replays.LabyrinthReplay CurrentReplay;
+
+        public ICollection<Labyrinths.IData> labyrinthsData;
+
+        public ICollection<Labyrinths.IData> LabyrinthsData
+        {
+            get
+            {
+                if (labyrinthsData == null || labyrinthsData.Count == 0)
+                {
+                    labyrinthsData = SQLiteUtilities.GetLabyrinths();
+                }
+
+                return labyrinthsData;
+            }
+        }
+
+        public ICollection<Labyrinths.Labyrinth> Labyrinths
+        {
+            get
+            {
+                return IdLabyrinthPairs.Values;
+            }
+        }
+
+        private Dictionary<int, Labyrinths.Labyrinth> labyrinths;
+
+        public IDictionary<int, Labyrinths.Labyrinth> IdLabyrinthPairs
+        {
+            get
+            {
+                if (labyrinths == null)
+                    labyrinths = new Dictionary<int, Labyrinths.Labyrinth>();
+                return labyrinths;
+            }
+        }
+
+        public void ClearLabyrinths()
+        {
+            if (labyrinthsData != null)
+                labyrinthsData.Clear();
+
+            if (labyrinths != null)
+                labyrinths.Clear();
         }
 
         public int GameRound
@@ -352,7 +396,7 @@ namespace UdeS.Promoscience
             }
         }
 
-        public void BeginAdvancedReplay()
+        public void LevelSelect()
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -368,7 +412,7 @@ namespace UdeS.Promoscience
                 }
             }
 
-            GameState = ServerGameState.AdvancedReplay;
+            GameState = ServerGameState.LabyrinthSelect;
         }
 
 

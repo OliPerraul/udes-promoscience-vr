@@ -8,8 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c43c2b9f606f64a8b52b97d60ea027, type: 3}
-  m_Name: Controller
+  m_Script: {fileID: 11500000, guid: 0ea807bfaf525f748b28ab28fd518c77, type: 3}
+  m_Name: Controller.Simple
   m_EditorClassIdentifier: 
   moveCount: -2147483648
   moveIndex: 0
