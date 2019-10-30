@@ -38,8 +38,10 @@ namespace UdeS.Promoscience.UI
             init = true;
 
             Client.Instance.OnRespectChangedHandler += OnAlgorithmRespectChanged;
+
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
-            //controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+
+            OnClientStateChanged();
         }
 
         public void OnClientStateChanged()

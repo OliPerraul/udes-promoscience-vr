@@ -100,23 +100,17 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public void LoadPlayerInformationFromDatabase()
         {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             SQLiteUtilities.SetServerPlayerInformation(this);
-#endif
         }
 
         public void SavePlayerInformationToDatabase()
         {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             SQLiteUtilities.InsertServerPlayerInformation(this);
-#endif
         }
 
         public void ClearPlayerInformation()
         {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             SQLiteUtilities.ResetServerPlayerInformation();
-#endif
         }
     }
 }

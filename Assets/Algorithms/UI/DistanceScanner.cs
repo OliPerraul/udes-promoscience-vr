@@ -48,10 +48,8 @@ namespace UdeS.Promoscience.Algorithms
             init = true;
 
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
             OnClientStateChanged();
-
-
-            //controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
 
         void OnClientStateChanged()

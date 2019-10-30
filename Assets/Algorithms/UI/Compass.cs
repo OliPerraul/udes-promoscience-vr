@@ -36,6 +36,8 @@ namespace UdeS.Promoscience.UI
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
             startRotation = indicator.transform.rotation;
+
+            OnClientStateChanged();
         }
 
 

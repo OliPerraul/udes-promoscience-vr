@@ -29,6 +29,11 @@ namespace UdeS.Promoscience.ScriptableObjects
             }
         }
 
+        public void OnEnable()
+        {
+            Value = Directive.Unknown;
+        }
+
         public void OnValueChanged()
         {
             if (valueChangedEvent != null)

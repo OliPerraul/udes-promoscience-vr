@@ -134,12 +134,11 @@ namespace UdeS.Promoscience.Labyrinths
         {
             if (id != currentId)
             {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
                 currentId = id;
+
                 SQLiteUtilities.ReadLabyrinthDataFromId(id, this);
 
                 OnValueChanged();
-#endif
             }
 
             return data;

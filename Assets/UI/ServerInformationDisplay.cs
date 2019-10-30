@@ -42,11 +42,14 @@ namespace UdeS.Promoscience.UI
 
         void OnEnable()
         {
-            Promoscience.Server.Instance.gameRoundChangedEvent += OnGameRoundChanged;
-            Promoscience.Server.Instance.gameStateChangedEvent += OnGameStateChanged;
+            if (Promoscience.Server.Instance != null)
+            {
+                Promoscience.Server.Instance.gameRoundChangedEvent += OnGameRoundChanged;
+                Promoscience.Server.Instance.gameStateChangedEvent += OnGameStateChanged;
+            }
+
             OnGameRoundChanged();
             OnGameStateChanged();
-
         }
 
         void OnGameRoundChanged()

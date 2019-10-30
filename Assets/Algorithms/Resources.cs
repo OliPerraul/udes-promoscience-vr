@@ -7,6 +7,11 @@ namespace UdeS.Promoscience.Algorithms
     {
         public static Resources Instance;
 
+        public void Awake()
+        {
+            Instance = this;
+        }
+
         public void OnEnable()
         {
             Instance = this;

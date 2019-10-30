@@ -36,6 +36,8 @@ namespace UdeS.Promoscience.UI
             playerReachedTheEnd.action += OnPlayerReachedTheEnd;
             returnToDivergencePointAnswer.valueChangedEvent += OnReturnToDivergencePointAnswer;
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
+            OnClientStateChanged();
         }
 
 

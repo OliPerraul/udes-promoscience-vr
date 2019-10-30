@@ -172,7 +172,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
                         .Create(data);
 
                     labyrinth.GenerateLabyrinthVisual();
+
                     labyrinth.transform.position = Vector3.down * SelectionOffset * i;
+
                     Server.Instance.IdLabyrinthPairs.Add(data.currentId, labyrinth);
 
                     SetLabyrinthCamera(labyrinth, i);

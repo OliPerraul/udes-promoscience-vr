@@ -40,7 +40,6 @@ namespace UdeS.Promoscience.Network
 
             headsets = new List<string>();
             tablets = new List<string>();
-            //connections = new Dictionary<int, NetworkConnection>();
             connections = new Dictionary<string, NetworkConnection>();
         }
 
@@ -56,7 +55,6 @@ namespace UdeS.Promoscience.Network
         {
             server = new NetworkServerSimple();
             server.RegisterHandler(MsgType.Connect, OnConnect);
-            //server.RegisterHandler(MsgType.Disconnect, OnDisconnect);
             server.RegisterHandler((short)CustomMsgType.PairingRequest, OnPairingRequest);
             server.RegisterHandler((short)CustomMsgType.UnpairingRequest, OnUnpairingRequest);
             server.Listen(serverPort);
@@ -84,12 +82,9 @@ namespace UdeS.Promoscience.Network
 
             mutex.WaitOne();
 
-            if (connections.TryGetValue(deviceId, out conn))
-            {
-                headsets.Remove(deviceId);
-                tablets.Remove(deviceId);
-                connections.Remove(deviceId);
-            }
+            headsets.Remove(deviceId);
+            tablets.Remove(deviceId);
+            connections.Remove(deviceId);
 
             mutex.ReleaseMutex();
         }
@@ -113,7 +108,7 @@ namespace UdeS.Promoscience.Network
             {
                 connections.Add(headsetId, headsetCon);
 
-                if (msg.deviceType == Promoscience.DeviceType.Tablet)
+                if (msg.deviceType == DeviceType.Tablet)
                 {
                     if (headsets.Count != 0)
                     {
@@ -130,7 +125,7 @@ namespace UdeS.Promoscience.Network
                         tablets.Add(tabletId);
                     }
                 }
-                else if (msg.deviceType == Promoscience.DeviceType.Headset)
+                else if (msg.deviceType == DeviceType.Headset)
                 {
                     if (tablets.Count != 0)
                     {

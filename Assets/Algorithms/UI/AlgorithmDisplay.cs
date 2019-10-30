@@ -32,7 +32,6 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private Button closeButton;
 
-
         [SerializeField]
         private GameObject descriptionDisplay;
 
@@ -73,7 +72,9 @@ namespace UdeS.Promoscience.UI
 
                 default:
                     display.gameObject.SetActive(false);
-                    descriptionDisplay.SetActive(false);
+
+                    if (Client.Instance.DeviceType == DeviceType.Tablet)
+                        descriptionDisplay.SetActive(false);
                     break;
 
             }

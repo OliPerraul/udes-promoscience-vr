@@ -31,17 +31,6 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private LocalizeInlineString pleaseStandbyString;
 
-        //[SerializeField]
-        //private LocalizeString connectingToPairingServerString;
-
-        //[SerializeField]
-        //private LocalizeString pairingRequestSentString;
-
-        //[SerializeField]
-        //private LocalizeString pairingResultSuccessString;
-
-        //[SerializeField]
-        //private LocalizeString pairingResultFailString;
 
         [SerializeField]
         private LocalizeInlineString readyString;

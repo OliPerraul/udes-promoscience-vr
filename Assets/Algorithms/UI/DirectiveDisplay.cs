@@ -39,9 +39,34 @@ namespace UdeS.Promoscience.UI
 
         float hideTimer;
 
+        private bool init = false;
+
         void OnEnable()
         {
+            if (init) return;
+
+            init = true;
+
             directive.valueChangedEvent += OnNewDirective;
+            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
+            OnClientStateChanged();
+        }
+
+        void OnClientStateChanged()
+        {
+            switch (Client.Instance.State)
+            {
+                case ClientGameState.Playing:
+                case ClientGameState.PlayingTutorial:
+                    directiveDisplayer.SetActive(true);
+                    break;
+
+                default:
+                    directiveDisplayer.SetActive(false);
+                    break;
+
+            }
         }
 
         void Update()

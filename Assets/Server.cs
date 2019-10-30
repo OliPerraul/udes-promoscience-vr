@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,17 +43,6 @@ namespace UdeS.Promoscience
 
         private Dictionary<int, Course> idCoursePairs;
 
-        //public ICollection<Course> IdCoursePairs
-        //{
-        //    get
-        //    {
-        //        return idCoursePairs.Values;
-        //    }
-        //}
-
-        //[SerializeField]
-        //private Labyrinths.ScriptableLabyrinth labyrinthData;
-
         public Labyrinths.IData currentLabyrinth;
 
 
@@ -61,6 +52,8 @@ namespace UdeS.Promoscience
         {
             get
             {
+                if (instance == null)
+                    instance = FindObjectOfType<Server>();
 
                 return instance;
             }
@@ -76,12 +69,6 @@ namespace UdeS.Promoscience
 
         public void Awake()
         {
-            if (instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
             instance = this;
             DontDestroyOnLoad(gameObject);
 
@@ -112,9 +99,9 @@ namespace UdeS.Promoscience
 
         public Replays.LabyrinthReplay CurrentReplay;
 
-        public ICollection<Labyrinths.IData> labyrinthsData;
+        public ICollection<IData> labyrinthsData;
 
-        public ICollection<Labyrinths.IData> LabyrinthsData
+        public ICollection<IData> LabyrinthsData
         {
             get
             {
@@ -208,6 +195,41 @@ namespace UdeS.Promoscience
             }
         }
 
+        public void BeginSimpleReplay()
+        {
+            // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
+            foreach (Player player in PlayerList.instance.list)
+            {
+                // Tell clients to pay attention
+                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
+                    player.ServerPlayerGameState == ClientGameState.Playing)
+                {
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalReplay);
+                }
+            }
+
+            GameState = ServerGameState.SimpleReplay;
+
+            GameState = ServerGameState.AdvancedReplay;
+
+            Courses = SQLiteUtilities.GetSessionCourses();
+
+            Labyrinth labyrinth = ScriptableResources.Instance
+                .GetLabyrinth(CurrentLabyrinth)
+                .Create(CurrentLabyrinth);
+
+            labyrinth.GenerateLabyrinthVisual();
+
+            CurrentReplay = new Replays.LabyrinthReplay(replayController, labyrinth);
+
+            CurrentReplay.Start();
+
+
+        }
+
         public void BeginAdvancedReplay(Labyrinth labyrinth)
         {
             foreach (Labyrinth l in Instance.Labyrinths)
@@ -231,7 +253,7 @@ namespace UdeS.Promoscience
         //
         // Returns true if created a course
         public void AssignCourse(Player player)//, out Course course)
-        {
+        {                 
             Course course = null;
             int courseId = -1;
             SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
@@ -265,6 +287,7 @@ namespace UdeS.Promoscience
 
                 player.ServerCourseId = course.Id;
 
+
                 SQLiteUtilities.InsertPlayerCourse(
                     player.ServerTeamId,
                     player.serverLabyrinthId,
@@ -278,7 +301,7 @@ namespace UdeS.Promoscience
             GameRound = tutorialLabyrinthId;
             GameState = ServerGameState.Tutorial;
 
-            currentLabyrinth = new Labyrinths.Data();
+            currentLabyrinth = new Data();
             SQLiteUtilities.ReadLabyrinthDataFromId(GameRound, CurrentLabyrinth);
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
@@ -305,7 +328,7 @@ namespace UdeS.Promoscience
                         currentLabyrinth.sizeY,
                         tutorialLabyrinthId,
                         algorithm,
-                        true);
+                        true);                   
                 }
             }
         }
@@ -443,66 +466,25 @@ namespace UdeS.Promoscience
             GameState = ServerGameState.LabyrinthSelect;
         }
 
-
-        public void BeginSimpleReplay()
-        {
-            // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
-            foreach (Player player in PlayerList.instance.list)
-            {
-                // Tell clients to pay attention
-                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
-                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
-                    player.ServerPlayerGameState == ClientGameState.Playing)
-                {
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalReplay);
-                }
-            }
-
-            ////CourseData courseData;
-            //Queue<int> steps;
-            //Queue<string> stepValues; //jsons
-            //foreach (Course course in Courses)
-            //{
-            //    SQLiteUtilities.SetCourseInactive(course.Id);
-            //    SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
-
-            //    // Add sentinel values
-            //    // TODO put somewhere else? Maybe from the headset?
-            //    steps.Enqueue((int)GameAction.EndMovement);
-            //    stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
-
-            //    course.Actions = steps.ToArray();
-            //    course.ActionValues = stepValues.ToArray();
-            //}
-
-            // Begin playback server
-            GameState = ServerGameState.SimpleReplay;
-        }
-
         public void LoadGameInformationFromDatabase()
         {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             //SQLiteUtilities.SetServerGameInformation(this);
-#endif
-            gameStateChangedEvent += SaveGameInformationToDatabase;//Work only because gameRound is always updated right before gameState
+            //gameStateChangedEvent += SaveGameInformationToDatabase;//Work only because gameRound is always updated right before gameState
         }
 
         public void SaveGameInformationToDatabase()
         {
-#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             //SQLiteUtilities.InsertServerGameInformation(this);
-#endif
         }
 
         public void ClearGameInformation()
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
-            SQLiteUtilities.ResetServerGameInformation();
+            //SQLiteUtilities.ResetServerGameInformation();
 #endif
         }
 
     
     }
 }
+

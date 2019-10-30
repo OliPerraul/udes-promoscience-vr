@@ -47,14 +47,12 @@ namespace UdeS.Promoscience.Network
         void OnConnect(NetworkMessage netMsg)
         {
             SendPairingRequest();
-
             pairingStatus.Value = ScriptablePairingStatus.ConnectionStatus.Pairing;
         }
                        
         void OnDisconnect(NetworkMessage netMsg)
         {
             SendPairingRequest(false);
-
             StopClient();
         }
 

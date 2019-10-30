@@ -123,6 +123,7 @@ namespace UdeS.Promoscience
 
     public enum Directive
     {
+        Unknown,
         MoveForward,
         Stop,
         TurnLeft,

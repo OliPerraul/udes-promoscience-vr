@@ -37,7 +37,10 @@ namespace UdeS.Promoscience.UI
             init = true;
 
             paintingColor.valueChangedEvent += OnPaintingColorValueChanged;
+
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
+            OnClientStateChanged();
         }
 
         void OnClientStateChanged()

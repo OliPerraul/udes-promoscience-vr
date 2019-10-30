@@ -36,8 +36,6 @@ namespace UdeS.Promoscience.Controls
             }
         }
 
-
-
         void Awake()
         {
 #if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
@@ -48,7 +46,7 @@ namespace UdeS.Promoscience.Controls
             ovrCameraRigEnabled = false;
             Cursor.lockState = CursorLockMode.Locked;
 #elif UNITY_ANDROID
-            desktopCameraRig.gameObject.SetActive(true);
+            desktopCameraRig.gameObject.SetActive(false);
             ovrCameraRig.gameObject.SetActive(true);
             ovrInputModule.enabled = true;
             standaloneInputs.enabled = false;

@@ -12,7 +12,18 @@ namespace UdeS.Promoscience
 {
     public class Client : MonoBehaviour
     {
-        public static Client Instance;
+        private static Client instance;
+
+        public static Client Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = FindObjectOfType<Client>();
+
+                return instance;
+            }
+        }
 
         [SerializeField]
         private ScriptableControler controls;
@@ -56,6 +67,9 @@ namespace UdeS.Promoscience
         {
             get
             {
+                if (algorithm == null)
+                    algorithm = Algorithms.Resources.Instance.CreateAlgorithm(Algorithms.Id.Standard);
+
                 return algorithm;
             }
 
@@ -154,7 +168,7 @@ namespace UdeS.Promoscience
 
         public void Awake()
         {
-            Instance = this;
+            instance = this;
 
             value = ClientGameState.Connecting;
 

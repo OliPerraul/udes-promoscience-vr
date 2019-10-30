@@ -3,8 +3,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN  
+
 using System.Data;
 using Mono.Data.Sqlite;
+
+#endif
+
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
@@ -75,6 +81,9 @@ namespace UdeS.Promoscience
 
         static void CreateDatabase()
         {
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
             using (SqliteConnection conn = new SqliteConnection(dbPath))
@@ -128,10 +137,14 @@ namespace UdeS.Promoscience
 
             ResetServerGameInformation();
             ResetServerPlayerInformation();
+#endif
+
         }
 
         public static void CreateDatabaseIfItDoesntExist()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             string dbPath = Application.persistentDataPath + "/" + fileName;
 
             if (!System.IO.File.Exists(dbPath))
@@ -139,10 +152,14 @@ namespace UdeS.Promoscience
                 CreateDatabase();
                 InsertBasicLabyrinths();
             }
+
+#endif
         }
 
         public static void ResetServerGameInformation()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
             using (SqliteConnection conn = new SqliteConnection(dbPath))
@@ -163,10 +180,14 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+
+#endif
         }
 
         public static void ResetServerPlayerInformation()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
             using (SqliteConnection conn = new SqliteConnection(dbPath))
@@ -189,11 +210,15 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+
+#endif
         }
 
 
         public static void FillTableWithTestData()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -242,10 +267,14 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+
+#endif
         }
 
         public static void ReadDatabase()
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -371,10 +400,14 @@ namespace UdeS.Promoscience
                     }
                 }
             }
+
+#endif
         }
 
         public static void InsertOrReplaceLabyrinth(int id, int sizeX, int sizeY, int[] data)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string specs = sizeX + " " + sizeY;
@@ -396,11 +429,14 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+#endif
         }
 
         public static List<Course> GetSessionCourses()//int labyrinthId)
         {
             List<Course> courses = new List<Course>();
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
 #if UNITY_EDITOR
             if (!Application.isPlaying)
@@ -465,7 +501,7 @@ namespace UdeS.Promoscience
                     }
                 }
             }
-
+#endif
             return courses;
         }
 
@@ -474,6 +510,7 @@ namespace UdeS.Promoscience
         {
             List<Course> courses = new List<Course>();
 
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -530,12 +567,16 @@ namespace UdeS.Promoscience
                 }                
             }
 
+#endif
+
             return courses;
         }
 
         public static List<Labyrinths.IData> GetLabyrinths()
         {
             List<Labyrinths.IData> labyrinths = new List<Labyrinths.IData>();
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
             CreateDatabaseIfItDoesntExist();                     
 
@@ -584,11 +625,15 @@ namespace UdeS.Promoscience
                 }
             }
 
+#endif
+
             return labyrinths;
         }
 
         public static void ReadLabyrinthDataFromId(int id, Labyrinths.IData labyrinth)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             labyrinth.currentId = id;
@@ -631,14 +676,19 @@ namespace UdeS.Promoscience
                     }
                 }
             }
+
+#endif
         }
 
         public static string GetPairing(string id, DeviceType deviceType)
         {
+            string pairedId = null;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
-            string pairedId = null;
             using (SqliteConnection conn = new SqliteConnection(dbPath))
             {
                 conn.Open();
@@ -676,11 +726,15 @@ namespace UdeS.Promoscience
                 }
             }
 
+#endif
+
             return pairedId;
         }
 
         static void RemovePairing(string id, DeviceType deviceType)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -704,11 +758,15 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+
+#endif
         }
 
 
         public static void InsertPairing(string tabletId, string headsetId)
         {
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             CreateDatabaseIfItDoesntExist();
 
             RemovePairing(tabletId, DeviceType.Tablet);
@@ -727,10 +785,14 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+
+#endif
         }
 
         public static void SetCourseInactive(int courseId)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -786,10 +848,14 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+
+#endif
         }
 
         public static void SetCourseFinished(int courseId)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -812,11 +878,15 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+
+#endif
         }
 
         public static bool TryGetActiveCourseId(int teamId, out int courseId)
         {
             courseId = -1;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
             bool res = false;
 
@@ -857,6 +927,10 @@ namespace UdeS.Promoscience
 
                 return res;
             }
+#else
+            return false;
+
+#endif
         }
 
 
@@ -867,6 +941,8 @@ namespace UdeS.Promoscience
             int algorithmId,
             int courseId)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             //Debug.Log("insert course " + courseId);
 
             CreateDatabaseIfItDoesntExist();
@@ -887,6 +963,8 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();                                             
                 }
             }
+
+#endif
         }
 
         public static void InsertPlayerTeam(
@@ -895,6 +973,8 @@ namespace UdeS.Promoscience
             string teamColor,
             string dateTime)
         {
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -923,6 +1003,8 @@ namespace UdeS.Promoscience
                     }
                 }
             }
+
+#endif
         }
 
 
@@ -937,6 +1019,8 @@ namespace UdeS.Promoscience
             string dateTime, 
             string eventValue)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -955,10 +1039,14 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+
+#endif
         }
 
         public static void InsertServerGameInformation(Server serverGameInformation)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -974,10 +1062,14 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
                 }
             }
+
+#endif
         }
 
         public static void SetServerGameInformation(Server serverGameInformation)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -1004,10 +1096,14 @@ namespace UdeS.Promoscience
                     }
                 }
             }
+
+#endif
         }
 
         public static void InsertServerPlayerInformation(ScriptableServerPlayerInformation serverPlayerInformation)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -1039,10 +1135,13 @@ namespace UdeS.Promoscience
                     }
                 }
             }
+#endif
         }
 
         public static void SetServerPlayerInformation(ScriptableServerPlayerInformation serverPlayerInformation)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -1075,10 +1174,13 @@ namespace UdeS.Promoscience
                     }
                 }
             }
+#endif
         }
 
         public static int GetPlayerCourseLabyrinthId(int courseId)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             int labyrinthId = -1;
@@ -1108,10 +1210,16 @@ namespace UdeS.Promoscience
             }
 
             return labyrinthId;
+#else
+            return -1;
+
+#endif
         }
 
         public static bool HasPlayerAlreadyCompletedTheRound(int courseId)
         {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -1146,10 +1254,16 @@ namespace UdeS.Promoscience
             }
 
             return hasPlayerAlreadyCompletedTheRound;
+
+#else
+            return false;
+
+#endif
         }
 
         public static Queue<int> GetPlayerStepsForCourse(int courseId)
-        {
+        {            
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -1181,10 +1295,20 @@ namespace UdeS.Promoscience
             }
 
             return playerSteps;
+
+#else
+            return null;
+
+#endif
         }
 
         public static void GetPlayerStepsForCourse(int courseId, out Queue<int> steps, out Queue<string> stepValues)
         {
+            steps = null;
+            stepValues = null;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
             CreateDatabaseIfItDoesntExist();
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
@@ -1224,11 +1348,17 @@ namespace UdeS.Promoscience
                 steps.Enqueue((int)GameAction.EndMovement);
                 stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
             }
+
+#endif
         }
 
         public static int GetNextCourseID()
         {
             int courseId = 0;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
+
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
             using (SqliteConnection conn = new SqliteConnection(dbPath))
@@ -1275,13 +1405,15 @@ namespace UdeS.Promoscience
                     }
                 }
             }
-
+#endif
             return courseId;
         }
 
         // TODO load from json?
         static void InsertBasicLabyrinths()
         {
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
             //Labyrinth Tutorial
 
             int id = 4;
@@ -1291,147 +1423,147 @@ namespace UdeS.Promoscience
             int[] data = new int[sizeX * sizeY];
 
             //Colum 0
-            data[(0 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(0 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(0 * sizeY) + 0] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(0 * sizeY) + 1] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 2] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 3] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 4] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 5] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 6] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 7] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 8] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 9] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 10] = Utils.TILE_ROME_TOWER_WALL_ID;
 
             //Colum 1
-            data[(1 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(1 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_START_ID;
-            data[(1 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(1 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(1 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(1 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(1 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(1 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(1 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(1 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(1 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 0] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 1] = Utils.TILE_ROME_START_ID;
+            data[(1 * sizeY) + 2] = Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 3] = Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 4] = Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 5] = Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 6] = Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 7] = Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 8] = Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 9] = Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 10] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
 
             //Colum 2
-            data[(2 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(2 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(2 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(2 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(2 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(2 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(2 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(2 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(2 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+            data[(2 * sizeY) + 0] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 1] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 2] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 3] = Utils.TILE_ROME_FLOOR_ID;
+            data[(2 * sizeY) + 4] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 5] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 6] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 7] = Utils.TILE_ROME_FLOOR_ID;
+            data[(2 * sizeY) + 8] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 9] = Utils.TILE_ROME_FLOOR_ID;
+            data[(2 * sizeY) + 10] = Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
 
             //Colum 3
-            data[(3 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(3 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(3 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(3 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(3 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(3 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(3 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(3 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(3 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(3 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(3 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 0] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 1] = Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 2] = Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 3] = Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 4] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 5] = Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 6] = Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 7] = Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 8] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 9] = Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 10] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
 
             //Colum 4
-            data[(4 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
-            data[(4 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(4 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(4 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(4 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(4 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(4 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(4 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(4 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(4 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(4 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+            data[(4 * sizeY) + 0] = Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+            data[(4 * sizeY) + 1] = Utils.TILE_ROME_FLOOR_ID;
+            data[(4 * sizeY) + 2] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(4 * sizeY) + 3] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 4] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(4 * sizeY) + 5] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 6] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(4 * sizeY) + 7] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 8] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(4 * sizeY) + 9] = Utils.TILE_ROME_FLOOR_ID;
+            data[(4 * sizeY) + 10] = Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
 
             //Colum 5
-            data[(5 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(5 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(5 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(5 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_END_ID;
-            data[(5 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(5 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(5 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(5 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 0] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 1] = Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 2] = Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 3] = Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 4] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 5] = Utils.TILE_ROME_END_ID;
+            data[(5 * sizeY) + 6] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 7] = Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 8] = Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 9] = Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 10] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
 
             //Colum 6
-            data[(6 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(6 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(6 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(6 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(6 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(6 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(6 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(6 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(6 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(6 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(6 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+            data[(6 * sizeY) + 0] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 1] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(6 * sizeY) + 2] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 3] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(6 * sizeY) + 4] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 5] = Utils.TILE_ROME_FLOOR_ID;
+            data[(6 * sizeY) + 6] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 7] = Utils.TILE_ROME_FLOOR_ID;
+            data[(6 * sizeY) + 8] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 9] = Utils.TILE_ROME_FLOOR_ID;
+            data[(6 * sizeY) + 10] = Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
 
             //Colum 7
-            data[(7 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(7 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(7 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(7 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(7 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(7 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(7 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 0] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 1] = Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 2] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 3] = Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 4] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 5] = Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 6] = Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 7] = Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 8] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 9] = Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 10] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
 
             //Colum 8
-            data[(8 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
-            data[(8 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(8 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(8 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(8 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(8 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(8 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
-            data[(8 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(8 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(8 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(8 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+            data[(8 * sizeY) + 0] = Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+            data[(8 * sizeY) + 1] = Utils.TILE_ROME_FLOOR_ID;
+            data[(8 * sizeY) + 2] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(8 * sizeY) + 3] = Utils.TILE_ROME_FLOOR_ID;
+            data[(8 * sizeY) + 4] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(8 * sizeY) + 5] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(8 * sizeY) + 6] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(8 * sizeY) + 7] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(8 * sizeY) + 8] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(8 * sizeY) + 9] = Utils.TILE_ROME_FLOOR_ID;
+            data[(8 * sizeY) + 10] = Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
 
             //Colum 9
-            data[(9 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
-            data[(9 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(9 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(9 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(9 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(9 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(9 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(9 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(9 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(9 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_FLOOR_ID;
-            data[(9 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 0] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 1] = Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 2] = Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 3] = Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 4] = Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 5] = Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 6] = Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 7] = Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 8] = Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 9] = Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 10] = Utils.TILE_ROME_HORIZONTAL_WALL_ID;
 
             //Colum 10
-            data[(10 * sizeY) + 0] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(10 * sizeY) + 1] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 2] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
-            data[(10 * sizeY) + 3] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 4] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
-            data[(10 * sizeY) + 5] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 6] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
-            data[(10 * sizeY) + 7] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 8] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
-            data[(10 * sizeY) + 9] = Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 10] = Promoscience.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(10 * sizeY) + 0] = Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(10 * sizeY) + 1] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 2] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(10 * sizeY) + 3] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 4] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(10 * sizeY) + 5] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 6] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(10 * sizeY) + 7] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 8] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(10 * sizeY) + 9] = Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 10] = Utils.TILE_ROME_TOWER_WALL_ID;
 
             SQLiteUtilities.InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
 
@@ -1443,134 +1575,134 @@ namespace UdeS.Promoscience
             data = new int[sizeX * sizeY];
 
             //Colum 0
-            data[(0 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(0 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(0 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(0 * sizeY) + 0] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(0 * sizeY) + 1] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 2] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(0 * sizeY) + 3] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 4] = Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 5] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 6] = Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 7] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 8] = Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 9] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 10] = Utils.TILE_PTOL_TOWER_WALL_ID;
 
             //Colum 1
-            data[(1 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(1 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_START_ID;
-            data[(1 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(1 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_END_ID;
-            data[(1 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(1 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(1 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(1 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(1 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(1 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(1 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 0] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 1] = Utils.TILE_PTOL_START_ID;
+            data[(1 * sizeY) + 2] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 3] = Utils.TILE_PTOL_END_ID;
+            data[(1 * sizeY) + 4] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(1 * sizeY) + 5] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(1 * sizeY) + 6] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(1 * sizeY) + 7] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(1 * sizeY) + 8] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(1 * sizeY) + 9] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(1 * sizeY) + 10] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
 
             //Colum 2
-            data[(2 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
-            data[(2 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(2 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(2 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(2 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(2 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(2 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
-            data[(2 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(2 * sizeY) + 0] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(2 * sizeY) + 1] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(2 * sizeY) + 2] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(2 * sizeY) + 3] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 4] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(2 * sizeY) + 5] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(2 * sizeY) + 6] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(2 * sizeY) + 7] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 8] = Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
+            data[(2 * sizeY) + 9] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 10] = Utils.TILE_PTOL_TOWER_WALL_ID;
 
             //Colum 3
-            data[(3 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(3 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(3 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(3 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(3 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(3 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(3 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(3 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(3 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(3 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(3 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 0] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 1] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(3 * sizeY) + 2] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(3 * sizeY) + 3] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(3 * sizeY) + 4] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 5] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(3 * sizeY) + 6] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(3 * sizeY) + 7] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(3 * sizeY) + 8] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(3 * sizeY) + 9] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(3 * sizeY) + 10] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
 
             //Colum 4
-            data[(4 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
-            data[(4 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(4 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(4 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(4 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(4 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(4 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(4 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(4 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(4 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(4 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(4 * sizeY) + 0] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(4 * sizeY) + 1] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(4 * sizeY) + 2] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(4 * sizeY) + 3] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 4] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(4 * sizeY) + 5] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(4 * sizeY) + 6] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(4 * sizeY) + 7] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 8] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(4 * sizeY) + 9] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(4 * sizeY) + 10] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
 
             //Colum 5
-            data[(5 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(5 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
-            data[(5 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(5 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
-            data[(5 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(5 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(5 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(5 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
-            data[(5 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(5 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(5 * sizeY) + 0] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 1] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(5 * sizeY) + 2] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(5 * sizeY) + 3] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(5 * sizeY) + 4] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(5 * sizeY) + 5] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(5 * sizeY) + 6] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(5 * sizeY) + 7] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(5 * sizeY) + 8] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(5 * sizeY) + 9] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(5 * sizeY) + 10] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
 
             //Colum 6
-            data[(6 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
-            data[(6 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(6 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(6 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(6 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(6 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(6 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(6 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(6 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(6 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(6 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(6 * sizeY) + 0] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(6 * sizeY) + 1] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(6 * sizeY) + 2] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(6 * sizeY) + 3] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(6 * sizeY) + 4] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(6 * sizeY) + 5] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(6 * sizeY) + 6] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(6 * sizeY) + 7] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(6 * sizeY) + 8] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(6 * sizeY) + 9] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(6 * sizeY) + 10] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
 
             //Colum 7
-            data[(7 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(7 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(7 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(7 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(7 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(7 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
-            data[(7 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(7 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(7 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(7 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 0] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 1] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(7 * sizeY) + 2] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(7 * sizeY) + 3] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(7 * sizeY) + 4] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(7 * sizeY) + 5] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(7 * sizeY) + 6] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(7 * sizeY) + 7] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(7 * sizeY) + 8] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(7 * sizeY) + 9] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(7 * sizeY) + 10] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
 
             //Colum 8
-            data[(8 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
-            data[(8 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(8 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(8 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(8 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(8 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(8 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
-            data[(8 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(8 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(8 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_FLOOR_ID;
-            data[(8 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(8 * sizeY) + 0] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
+            data[(8 * sizeY) + 1] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(8 * sizeY) + 2] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(8 * sizeY) + 3] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(8 * sizeY) + 4] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(8 * sizeY) + 5] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(8 * sizeY) + 6] = Utils.TILE_PTOL_HORIZONTAL_WALL_ID;
+            data[(8 * sizeY) + 7] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(8 * sizeY) + 8] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(8 * sizeY) + 9] = Utils.TILE_PTOL_FLOOR_ID;
+            data[(8 * sizeY) + 10] = Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID;
 
             //Colum 9
-            data[(9 * sizeY) + 0] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(9 * sizeY) + 1] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(9 * sizeY) + 2] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
-            data[(9 * sizeY) + 3] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(9 * sizeY) + 4] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
-            data[(9 * sizeY) + 5] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(9 * sizeY) + 6] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
-            data[(9 * sizeY) + 7] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(9 * sizeY) + 8] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
-            data[(9 * sizeY) + 9] = Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(9 * sizeY) + 10] = Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(9 * sizeY) + 0] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(9 * sizeY) + 1] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(9 * sizeY) + 2] = Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
+            data[(9 * sizeY) + 3] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(9 * sizeY) + 4] = Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
+            data[(9 * sizeY) + 5] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(9 * sizeY) + 6] = Utils.TILE_PTOL_TOWER_WALL_ID;
+            data[(9 * sizeY) + 7] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(9 * sizeY) + 8] = Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
+            data[(9 * sizeY) + 9] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
+            data[(9 * sizeY) + 10] = Utils.TILE_PTOL_TOWER_WALL_ID;
 
             SQLiteUtilities.InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
 
@@ -1582,147 +1714,147 @@ namespace UdeS.Promoscience
             data = new int[sizeX * sizeY];
 
             //Colum 0
-            data[(0 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(0 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(0 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(0 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(0 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(0 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(0 * sizeY) + 0] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(0 * sizeY) + 1] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 2] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(0 * sizeY) + 3] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 4] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(0 * sizeY) + 5] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 6] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(0 * sizeY) + 7] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 8] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(0 * sizeY) + 9] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 10] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
 
             //Colum 1
-            data[(1 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(1 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(1 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(1 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(1 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(1 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(1 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(1 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(1 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(1 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(1 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 0] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 1] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(1 * sizeY) + 2] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(1 * sizeY) + 3] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(1 * sizeY) + 4] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(1 * sizeY) + 5] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(1 * sizeY) + 6] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(1 * sizeY) + 7] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(1 * sizeY) + 8] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(1 * sizeY) + 9] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(1 * sizeY) + 10] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
 
             //Colum 2
-            data[(2 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(2 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(2 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(2 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(2 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(2 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(2 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(2 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(2 * sizeY) + 0] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(2 * sizeY) + 1] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 2] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(2 * sizeY) + 3] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 4] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(2 * sizeY) + 5] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(2 * sizeY) + 6] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(2 * sizeY) + 7] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 8] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(2 * sizeY) + 9] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(2 * sizeY) + 10] = Utils.TILE_BRIT_TOWER_WALL_ID;
 
             //Colum 3
-            data[(3 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(3 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(3 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(3 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(3 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(3 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(3 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(3 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(3 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(3 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(3 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 0] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 1] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(3 * sizeY) + 2] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(3 * sizeY) + 3] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(3 * sizeY) + 4] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(3 * sizeY) + 5] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(3 * sizeY) + 6] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(3 * sizeY) + 7] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(3 * sizeY) + 8] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 9] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(3 * sizeY) + 10] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
 
             //Colum 4
-            data[(4 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(4 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(4 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(4 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(4 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(4 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(4 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(4 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(4 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(4 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(4 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(4 * sizeY) + 0] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(4 * sizeY) + 1] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(4 * sizeY) + 2] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(4 * sizeY) + 3] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(4 * sizeY) + 4] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(4 * sizeY) + 5] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 6] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(4 * sizeY) + 7] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 8] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(4 * sizeY) + 9] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(4 * sizeY) + 10] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
 
             //Colum 5
-            data[(5 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(5 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(5 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_START_ID;
-            data[(5 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(5 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(5 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_END_ID;
-            data[(5 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 0] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 1] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(5 * sizeY) + 2] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 3] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(5 * sizeY) + 4] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 5] = Utils.TILE_BRIT_START_ID;
+            data[(5 * sizeY) + 6] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(5 * sizeY) + 7] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(5 * sizeY) + 8] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 9] = Utils.TILE_BRIT_END_ID;
+            data[(5 * sizeY) + 10] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
 
             //Colum 6
-            data[(6 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(6 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(6 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(6 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(6 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(6 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(6 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(6 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(6 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(6 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(6 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(6 * sizeY) + 0] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(6 * sizeY) + 1] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(6 * sizeY) + 2] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(6 * sizeY) + 3] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(6 * sizeY) + 4] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(6 * sizeY) + 5] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(6 * sizeY) + 6] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(6 * sizeY) + 7] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(6 * sizeY) + 8] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(6 * sizeY) + 9] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(6 * sizeY) + 10] = Utils.TILE_BRIT_TOWER_WALL_ID;
 
             //Colum 7
-            data[(7 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(7 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(7 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(7 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(7 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(7 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 0] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 1] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(7 * sizeY) + 2] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 3] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(7 * sizeY) + 4] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 5] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(7 * sizeY) + 6] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 7] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(7 * sizeY) + 8] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 9] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(7 * sizeY) + 10] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
 
             //Colum 8
-            data[(8 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(8 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(8 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(8 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(8 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(8 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(8 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(8 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(8 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(8 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(8 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(8 * sizeY) + 0] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(8 * sizeY) + 1] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(8 * sizeY) + 2] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(8 * sizeY) + 3] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(8 * sizeY) + 4] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(8 * sizeY) + 5] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(8 * sizeY) + 6] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(8 * sizeY) + 7] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(8 * sizeY) + 8] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(8 * sizeY) + 9] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(8 * sizeY) + 10] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
 
             //Colum 9
-            data[(9 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
-            data[(9 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(9 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(9 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(9 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(9 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(9 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(9 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(9 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(9 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_FLOOR_ID;
-            data[(9 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 0] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 1] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(9 * sizeY) + 2] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(9 * sizeY) + 3] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(9 * sizeY) + 4] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(9 * sizeY) + 5] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(9 * sizeY) + 6] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(9 * sizeY) + 7] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(9 * sizeY) + 8] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(9 * sizeY) + 9] = Utils.TILE_BRIT_FLOOR_ID;
+            data[(9 * sizeY) + 10] = Utils.TILE_BRIT_HORIZONTAL_WALL_ID;
 
             //Colum 10
-            data[(10 * sizeY) + 0] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(10 * sizeY) + 1] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 2] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(10 * sizeY) + 3] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 4] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(10 * sizeY) + 5] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 6] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
-            data[(10 * sizeY) + 7] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 8] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID;
-            data[(10 * sizeY) + 9] = Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 10] = Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(10 * sizeY) + 0] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(10 * sizeY) + 1] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 2] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(10 * sizeY) + 3] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 4] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(10 * sizeY) + 5] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 6] = Utils.TILE_BRIT_TOWER_WALL_ID;
+            data[(10 * sizeY) + 7] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 8] = Utils.TILE_BRIT_TOWER_WALL_2_ID;
+            data[(10 * sizeY) + 9] = Utils.TILE_BRIT_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 10] = Utils.TILE_BRIT_TOWER_WALL_ID;
 
             InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
 
@@ -1734,203 +1866,205 @@ namespace UdeS.Promoscience
             data = new int[sizeX * sizeY];
 
             //Colum 0
-            data[(0 * sizeY) + 0] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(0 * sizeY) + 1] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 2] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 3] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 4] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 5] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(0 * sizeY) + 6] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 7] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 8] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 9] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 10] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(0 * sizeY) + 11] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(0 * sizeY) + 12] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
+            data[(0 * sizeY) + 0] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(0 * sizeY) + 1] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 2] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 3] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 4] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 5] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(0 * sizeY) + 6] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 7] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 8] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 9] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 10] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 11] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 12] = Utils.TILE_KART_TOWER_WALL_ID;
 
             //Colum 1
-            data[(1 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(1 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 2] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 3] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 4] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 5] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(1 * sizeY) + 6] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 7] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 8] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 9] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 10] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 11] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(1 * sizeY) + 12] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 2] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 3] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 4] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 5] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 6] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 7] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 8] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 9] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 10] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 11] = Utils.TILE_KART_FLOOR_ID;
+            data[(1 * sizeY) + 12] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
 
             //Colum 2
-            data[(2 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
-            data[(2 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(2 * sizeY) + 2] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(2 * sizeY) + 3] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 4] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(2 * sizeY) + 5] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(2 * sizeY) + 6] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 7] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID;
-            data[(2 * sizeY) + 8] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(2 * sizeY) + 9] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(2 * sizeY) + 10] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(2 * sizeY) + 11] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(2 * sizeY) + 12] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(2 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(2 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(2 * sizeY) + 2] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(2 * sizeY) + 3] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 4] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(2 * sizeY) + 5] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(2 * sizeY) + 6] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 7] = Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID;
+            data[(2 * sizeY) + 8] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 9] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(2 * sizeY) + 10] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(2 * sizeY) + 11] = Utils.TILE_KART_FLOOR_ID;
+            data[(2 * sizeY) + 12] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
 
             //Colum 3
-            data[(3 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(3 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 2] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID;
-            data[(3 * sizeY) + 3] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 4] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 5] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 6] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 7] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 8] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 9] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 10] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 11] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(3 * sizeY) + 12] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 2] = Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID;
+            data[(3 * sizeY) + 3] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 4] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 5] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 6] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 7] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 8] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 9] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 10] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 11] = Utils.TILE_KART_FLOOR_ID;
+            data[(3 * sizeY) + 12] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
 
             //Colum 4
-            data[(4 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
-            data[(4 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(4 * sizeY) + 2] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(4 * sizeY) + 3] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(4 * sizeY) + 4] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(4 * sizeY) + 5] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(4 * sizeY) + 6] = Promoscience.Utils.TILE_KART_TOWER_WALL_2_ID;
-            data[(4 * sizeY) + 7] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(4 * sizeY) + 8] = Promoscience.Utils.TILE_KART_TOWER_WALL_2_ID;
-            data[(4 * sizeY) + 9] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(4 * sizeY) + 10] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(4 * sizeY) + 11] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(4 * sizeY) + 12] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(4 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(4 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(4 * sizeY) + 2] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(4 * sizeY) + 3] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 4] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(4 * sizeY) + 5] = Utils.TILE_KART_FLOOR_ID;
+            data[(4 * sizeY) + 6] = Utils.TILE_KART_TOWER_WALL_2_ID;
+            data[(4 * sizeY) + 7] = Utils.TILE_KART_FLOOR_ID;
+            data[(4 * sizeY) + 8] = Utils.TILE_KART_TOWER_WALL_2_ID;
+            data[(4 * sizeY) + 9] = Utils.TILE_KART_FLOOR_ID;
+            data[(4 * sizeY) + 10] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(4 * sizeY) + 11] = Utils.TILE_KART_FLOOR_ID;
+            data[(4 * sizeY) + 12] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
 
             //Colum 5
-            data[(5 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(5 * sizeY) + 2] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(5 * sizeY) + 3] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(5 * sizeY) + 4] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(5 * sizeY) + 5] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(5 * sizeY) + 6] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 7] = Promoscience.Utils.TILE_KART_END_ID;
-            data[(5 * sizeY) + 8] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 9] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(5 * sizeY) + 10] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(5 * sizeY) + 11] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(5 * sizeY) + 12] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(5 * sizeY) + 2] = Utils.TILE_KART_FLOOR_ID;
+            data[(5 * sizeY) + 3] = Utils.TILE_KART_FLOOR_ID;
+            data[(5 * sizeY) + 4] = Utils.TILE_KART_FLOOR_ID;
+            data[(5 * sizeY) + 5] = Utils.TILE_KART_FLOOR_ID;
+            data[(5 * sizeY) + 6] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 7] = Utils.TILE_KART_END_ID;
+            data[(5 * sizeY) + 8] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 9] = Utils.TILE_KART_FLOOR_ID;
+            data[(5 * sizeY) + 10] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 11] = Utils.TILE_KART_FLOOR_ID;
+            data[(5 * sizeY) + 12] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
 
             //Colum 6
-            data[(6 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
-            data[(6 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(6 * sizeY) + 2] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(6 * sizeY) + 3] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(6 * sizeY) + 4] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(6 * sizeY) + 5] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(6 * sizeY) + 6] = Promoscience.Utils.TILE_KART_TOWER_WALL_2_ID;
-            data[(6 * sizeY) + 7] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(6 * sizeY) + 8] = Promoscience.Utils.TILE_KART_TOWER_WALL_2_ID;
-            data[(6 * sizeY) + 9] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(6 * sizeY) + 10] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(6 * sizeY) + 11] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(6 * sizeY) + 12] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(6 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(6 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(6 * sizeY) + 2] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(6 * sizeY) + 3] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(6 * sizeY) + 4] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(6 * sizeY) + 5] = Utils.TILE_KART_FLOOR_ID;
+            data[(6 * sizeY) + 6] = Utils.TILE_KART_TOWER_WALL_2_ID;
+            data[(6 * sizeY) + 7] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(6 * sizeY) + 8] = Utils.TILE_KART_TOWER_WALL_2_ID;
+            data[(6 * sizeY) + 9] = Utils.TILE_KART_FLOOR_ID;
+            data[(6 * sizeY) + 10] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(6 * sizeY) + 11] = Utils.TILE_KART_FLOOR_ID;
+            data[(6 * sizeY) + 12] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
 
             //Colum 7
-            data[(7 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(7 * sizeY) + 2] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 3] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(7 * sizeY) + 4] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(7 * sizeY) + 5] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(7 * sizeY) + 6] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(7 * sizeY) + 7] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(7 * sizeY) + 8] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(7 * sizeY) + 9] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(7 * sizeY) + 10] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(7 * sizeY) + 11] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(7 * sizeY) + 12] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(7 * sizeY) + 2] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 3] = Utils.TILE_KART_FLOOR_ID;
+            data[(7 * sizeY) + 4] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 5] = Utils.TILE_KART_FLOOR_ID;
+            data[(7 * sizeY) + 6] = Utils.TILE_KART_FLOOR_ID;
+            data[(7 * sizeY) + 7] = Utils.TILE_KART_FLOOR_ID;
+            data[(7 * sizeY) + 8] = Utils.TILE_KART_FLOOR_ID;
+            data[(7 * sizeY) + 9] = Utils.TILE_KART_FLOOR_ID;
+            data[(7 * sizeY) + 10] = Utils.TILE_KART_FLOOR_ID;
+            data[(7 * sizeY) + 11] = Utils.TILE_KART_FLOOR_ID;
+            data[(7 * sizeY) + 12] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
 
             //Colum 8
-            data[(8 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
-            data[(8 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(8 * sizeY) + 2] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
-            data[(8 * sizeY) + 3] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(8 * sizeY) + 4] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
-            data[(8 * sizeY) + 5] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(8 * sizeY) + 6] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(8 * sizeY) + 7] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(8 * sizeY) + 8] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID;
-            data[(8 * sizeY) + 9] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(8 * sizeY) + 10] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(8 * sizeY) + 11] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(8 * sizeY) + 12] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
+            data[(8 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(8 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(8 * sizeY) + 2] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(8 * sizeY) + 3] = Utils.TILE_KART_FLOOR_ID;
+            data[(8 * sizeY) + 4] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(8 * sizeY) + 5] = Utils.TILE_KART_FLOOR_ID;
+            data[(8 * sizeY) + 6] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(8 * sizeY) + 7] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(8 * sizeY) + 8] = Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID;
+            data[(8 * sizeY) + 9] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(8 * sizeY) + 10] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(8 * sizeY) + 11] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(8 * sizeY) + 12] = Utils.TILE_KART_TOWER_WALL_ID;
 
             //Colum 9
-            data[(9 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(9 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(9 * sizeY) + 2] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(9 * sizeY) + 3] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(9 * sizeY) + 4] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(9 * sizeY) + 5] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(9 * sizeY) + 6] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(9 * sizeY) + 7] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(9 * sizeY) + 8] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(9 * sizeY) + 9] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(9 * sizeY) + 10] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(9 * sizeY) + 11] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(9 * sizeY) + 12] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(9 * sizeY) + 2] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 3] = Utils.TILE_KART_FLOOR_ID;
+            data[(9 * sizeY) + 4] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 5] = Utils.TILE_KART_FLOOR_ID;
+            data[(9 * sizeY) + 6] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 7] = Utils.TILE_KART_FLOOR_ID;
+            data[(9 * sizeY) + 8] = Utils.TILE_KART_FLOOR_ID;
+            data[(9 * sizeY) + 9] = Utils.TILE_KART_FLOOR_ID;
+            data[(9 * sizeY) + 10] = Utils.TILE_KART_FLOOR_ID;
+            data[(9 * sizeY) + 11] = Utils.TILE_KART_FLOOR_ID;
+            data[(9 * sizeY) + 12] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
 
             //Colum 10
-            data[(10 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
-            data[(10 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(10 * sizeY) + 2] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(10 * sizeY) + 3] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(10 * sizeY) + 4] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(10 * sizeY) + 5] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(10 * sizeY) + 6] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(10 * sizeY) + 7] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(10 * sizeY) + 8] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(10 * sizeY) + 9] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(10 * sizeY) + 10] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(10 * sizeY) + 11] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(10 * sizeY) + 12] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
+            data[(10 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_B_ID;
+            data[(10 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(10 * sizeY) + 2] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(10 * sizeY) + 3] = Utils.TILE_KART_FLOOR_ID;
+            data[(10 * sizeY) + 4] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(10 * sizeY) + 5] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(10 * sizeY) + 6] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(10 * sizeY) + 7] = Utils.TILE_KART_FLOOR_ID;
+            data[(10 * sizeY) + 8] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(10 * sizeY) + 9] = Utils.TILE_KART_FLOOR_ID;
+            data[(10 * sizeY) + 10] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(10 * sizeY) + 11] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 12] = Utils.TILE_KART_TOWER_WALL_ID;
 
             //Colum 11
-            data[(11 * sizeY) + 0] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
-            data[(11 * sizeY) + 1] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(11 * sizeY) + 2] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(11 * sizeY) + 3] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(11 * sizeY) + 4] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(11 * sizeY) + 5] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(11 * sizeY) + 6] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(11 * sizeY) + 7] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(11 * sizeY) + 8] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID;
-            data[(11 * sizeY) + 9] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(11 * sizeY) + 10] = Promoscience.Utils.TILE_KART_FLOOR_ID;
-            data[(11 * sizeY) + 11] = Promoscience.Utils.TILE_KART_START_ID;
-            data[(11 * sizeY) + 12] = Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(11 * sizeY) + 0] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
+            data[(11 * sizeY) + 1] = Utils.TILE_KART_FLOOR_ID;
+            data[(11 * sizeY) + 2] = Utils.TILE_KART_FLOOR_ID;
+            data[(11 * sizeY) + 3] = Utils.TILE_KART_FLOOR_ID;
+            data[(11 * sizeY) + 4] = Utils.TILE_KART_FLOOR_ID;
+            data[(11 * sizeY) + 5] = Utils.TILE_KART_FLOOR_ID;
+            data[(11 * sizeY) + 6] = Utils.TILE_KART_FLOOR_ID;
+            data[(11 * sizeY) + 7] = Utils.TILE_KART_FLOOR_ID;
+            data[(11 * sizeY) + 8] = Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID;
+            data[(11 * sizeY) + 9] = Utils.TILE_KART_FLOOR_ID;
+            data[(11 * sizeY) + 10] = Utils.TILE_KART_FLOOR_ID;
+            data[(11 * sizeY) + 11] = Utils.TILE_KART_START_ID;
+            data[(11 * sizeY) + 12] = Utils.TILE_KART_HORIZONTAL_WALL_ID;
 
             //Colum 12
-            data[(12 * sizeY) + 0] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(12 * sizeY) + 1] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(12 * sizeY) + 2] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(12 * sizeY) + 3] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(12 * sizeY) + 4] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(12 * sizeY) + 5] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(12 * sizeY) + 6] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(12 * sizeY) + 7] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(12 * sizeY) + 8] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
-            data[(12 * sizeY) + 9] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(12 * sizeY) + 10] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
-            data[(12 * sizeY) + 11] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
-            data[(12 * sizeY) + 12] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
+            data[(12 * sizeY) + 0] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(12 * sizeY) + 1] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(12 * sizeY) + 2] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(12 * sizeY) + 3] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(12 * sizeY) + 4] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(12 * sizeY) + 5] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(12 * sizeY) + 6] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(12 * sizeY) + 7] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(12 * sizeY) + 8] = Utils.TILE_KART_TOWER_WALL_ID;
+            data[(12 * sizeY) + 9] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(12 * sizeY) + 10] = Utils.TILE_KART_VERTICAL_WALL_B_ID;
+            data[(12 * sizeY) + 11] = Utils.TILE_KART_VERTICAL_WALL_ID;
+            data[(12 * sizeY) + 12] = Utils.TILE_KART_TOWER_WALL_ID;
 
             InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
+
+#endif
         }
     }
 }
 
-//#endif
+

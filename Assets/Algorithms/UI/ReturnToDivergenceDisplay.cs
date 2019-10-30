@@ -45,6 +45,8 @@ namespace UdeS.Promoscience.UI
             returnToDivergencePointRequest.action += OnReturnToDivergencePointRequest;
             isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
+            OnClientStateChanged();
         }
 
         void OnClientStateChanged()
@@ -59,7 +61,6 @@ namespace UdeS.Promoscience.UI
                 default:
                     transform.GetChild(0).gameObject.SetActive(false);
                     break;
-
             }
         }
 
