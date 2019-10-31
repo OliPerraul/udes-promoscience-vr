@@ -2,13 +2,13 @@
 using System.Collections;
 using UnityEngine;
 
-namespace UdeS.Promoscience.ScriptableObjects
+namespace UdeS.Promoscience
 {
     [Serializable]
     public class LocalizeInlineString
     {
         [SerializeField]
-        private ScriptableLocalizeString localizeString;
+        private LocalizeStringAsset localizeString;
 
         [SerializeField]
         private string defaultString = "[?]";
@@ -22,6 +22,11 @@ namespace UdeS.Promoscience.ScriptableObjects
                 else return localizeString.Value;
             }
         }
+
+        public LocalizeInlineString(string value)
+        {
+            defaultString = value;
+        }
     }
 
 
@@ -29,7 +34,7 @@ namespace UdeS.Promoscience.ScriptableObjects
     public class LocalizeString
     {
         [SerializeField]
-        private ScriptableLocalizeString localizeString;
+        private LocalizeStringAsset localizeString;
 
         [SerializeField]
         [TextArea]
@@ -70,7 +75,7 @@ namespace UdeS.Promoscience.ScriptableObjects
     //}
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/LocalizeString", order = 1)]
-    public class ScriptableLocalizeString : ScriptableObject
+    public class LocalizeStringAsset : ScriptableObject
     {
         [SerializeField]
         string english;

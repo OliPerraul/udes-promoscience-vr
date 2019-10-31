@@ -75,7 +75,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnAlgorithmClicked()
         {
-            replayOptions.SendAction(ReplayAction.ToggleAlgorithm);
+            replayOptions.SendAction(ReplayAction.ToggleDirtyLabyrinth);
         }
 
         private void OnOverlayClicked()

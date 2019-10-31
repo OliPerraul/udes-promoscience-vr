@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace UdeS.Promoscience
 {
-    public class Resources : ScriptableObject
+    public class Resources : MonoBehaviour
     {
         [SerializeField]
         public Algorithms.Resources Algorithms;

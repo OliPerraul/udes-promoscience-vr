@@ -78,7 +78,7 @@ namespace UdeS.Promoscience.Network
                 // Use the steps for playback
                 player.TargetSetViewingLocalPlayback(
                     player.connectionToClient, 
-                    Server.Instance.Labyrinths.CurrentData.currentId, 
+                    Server.Instance.Labyrinths.CurrentData.Id, 
                     steps.ToArray(), 
                     stepValues.ToArray());
             }
@@ -114,7 +114,7 @@ namespace UdeS.Promoscience.Network
 
                                 player.TargetSetRoundCompleted(
                                     player.connectionToClient,
-                                    Server.Instance.Labyrinths.CurrentData.currentId,
+                                    Server.Instance.Labyrinths.CurrentData.Id,
                                     steps.ToArray());
                             }
                             else

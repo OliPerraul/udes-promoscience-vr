@@ -491,7 +491,7 @@ namespace UdeS.Promoscience
                                 Actions = steps.ToArray(),
                                 ActionValues = stepValues.ToArray(),
                                 Team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId),
-                                Algorithm = Algorithms.Resources.Instance.CreateAlgorithm((Algorithms.Id)algId)// as Algorithm)
+                                Algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId)// as Algorithm)
                             });
 
 
@@ -554,9 +554,8 @@ namespace UdeS.Promoscience
                                 Actions = steps.ToArray(),
                                 ActionValues = stepValues.ToArray(),
                                 Team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId),
-                                Algorithm = Algorithms.Resources.Instance.CreateAlgorithm((Algorithms.Id)algId),// as Algorithm)
+                                Algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId),// as Algorithm)
                                 Status = (CourseStatus)sts
-
                             });
 
 
@@ -615,7 +614,7 @@ namespace UdeS.Promoscience
                                 labyrinth.data,
                                 labyrinth.sizeX,
                                 labyrinth.sizeY,
-                                labyrinth.currentId);
+                                labyrinth.Id);
 
                             labyrinths.Add(labyrinth);
                         }
@@ -636,7 +635,7 @@ namespace UdeS.Promoscience
 
             CreateDatabaseIfItDoesntExist();
 
-            labyrinth.currentId = id;
+            labyrinth.Id = id;
 
             string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
             using (SqliteConnection conn = new SqliteConnection(dbPath))
@@ -669,7 +668,7 @@ namespace UdeS.Promoscience
                                 labyrinth.data,
                                 labyrinth.sizeX,
                                 labyrinth.sizeY,
-                                labyrinth.currentId);
+                                labyrinth.Id);
                         }
 
                         reader.Close();

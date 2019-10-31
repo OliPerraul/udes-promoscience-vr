@@ -16,13 +16,13 @@ namespace UdeS.Promoscience
     {
         private Replays.Replay replay;
 
-        public Replays.ScriptableController replayController;
+        public Replays.ScriptableController advancedReplayController;
+
+        public Replays.ScriptableController instantReplayController;
 
         public class LabyrinthValues
         {
-            public IData CurrentData { get; set; }
-
-            public Labyrinth Currentlabyrinth;
+            public IData CurrentData { get; set; }        
 
             public Labyrinth CurrentLabyrinth { get; set; }
 
@@ -107,6 +107,32 @@ namespace UdeS.Promoscience
         public Action gameStateChangedEvent;
 
         private const int tutorialLabyrinthId = 4;
+
+        public Algorithms.Id algorithmId;
+
+        public Algorithms.Id GetNextAlgorithm(int from)
+        {
+            Algorithms.Id id;
+
+            switch (algorithmId)
+            {
+                case Algorithms.Id.Randomized:
+                    id = Algorithms.Utils.Random;
+                    break;
+
+                case Algorithms.Id.GameRound:
+                    id = (Algorithms.Id)((from + GameRound) % 3) + 1;
+                    break;
+
+                default:
+                    id = algorithmId;
+                    break;
+            }
+
+            return id;
+
+        }
+
 
 
         public static bool IsApplicationServer
@@ -204,7 +230,12 @@ namespace UdeS.Promoscience
             }
         }
 
-        public void BeginInstantReplay()
+        public void SetAlgorithm(Algorithms.Id alg)
+        { 
+            algorithmId = alg;
+        }
+
+        public void StartInstantReplay()
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -216,43 +247,48 @@ namespace UdeS.Promoscience
                     player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
                     player.ServerPlayerGameState == ClientGameState.Playing)
                 {
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalReplay);
+                    player.TargetSetGameState(
+                        player.connectionToClient, 
+                        ClientGameState.ViewingGlobalReplay);                    
                 }
             }
 
             GameState = ServerGameState.InstantReplay;
 
-            GameState = ServerGameState.AdvancedReplay;
+            Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(Labyrinths.CurrentData.Id);
 
-            Courses = SQLiteUtilities.GetSessionCourses();
-
-            Labyrinth labyrinth = ScriptableResources.Instance
-                .GetLabyrinthTemplate(Labyrinths.CurrentData)
-                .Create(Labyrinths.CurrentData);
-
-            labyrinth.GenerateLabyrinthVisual();
-
-            CurrentReplay = new Replays.LabyrinthReplay(replayController, labyrinth);
+            CurrentReplay = new Replays.LabyrinthReplay(instantReplayController, Labyrinths.CurrentData);
 
             CurrentReplay.Start();
-
         }
 
-        public void BeginAdvancedReplay(IData labyrinth)
+        public void StartAdvancedReplay(IData labyrinth)
         {
-            GameState = ServerGameState.AdvancedReplay;
+            // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
+            foreach (Player player in PlayerList.instance.list)
+            {
+                // Tell clients to pay attention
+                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
+                    player.ServerPlayerGameState == ClientGameState.Playing)
+                {
+                    player.TargetSetGameState(
+                        player.connectionToClient,
+                        ClientGameState.ViewingGlobalReplay);
+                }
+            }
 
-            Courses = SQLiteUtilities.GetSessionCourses();// ForLabyrinth(lab.Id);
+            GameState = ServerGameState.AdvancedReplay;
+            
+            Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(labyrinth.Id);
 
             Labyrinths.CurrentData = labyrinth;
 
-            Labyrinths.CurrentLabyrinth = ScriptableResources.Instance
-                .GetLabyrinthTemplate(labyrinth)
-                .Create(labyrinth);
-
-            Labyrinths.CurrentLabyrinth.GenerateLabyrinthVisual();
-
-            CurrentReplay = new Replays.LabyrinthReplay(replayController, Labyrinths.CurrentLabyrinth);
+            CurrentReplay = new Replays.LabyrinthReplay(
+                advancedReplayController, 
+                Labyrinths.CurrentData);
                        
             CurrentReplay.Start();
         }
@@ -282,17 +318,17 @@ namespace UdeS.Promoscience
                     Id = SQLiteUtilities.GetNextCourseID(),
                     Team = Teams.Resources.Instance.GetScriptableTeamWithId(player.ServerTeamId),
                     Labyrinth = labyrinth,
-                    Algorithm = Algorithms.Resources.Instance.CreateAlgorithm(player.serverAlgorithm)// labyrinth)                                     
+                    Algorithm = Algorithms.Resources.Instance.GetAlgorithm(player.serverAlgorithm)// labyrinth)                                     
                 };
 
-                SQLiteUtilities.ReadLabyrinthDataFromId(Labyrinths.CurrentData.currentId, course.Labyrinth);
+                SQLiteUtilities.ReadLabyrinthDataFromId(Labyrinths.CurrentData.Id, course.Labyrinth);
 
                 IdCoursePairs.Add(course.Id, course);
 
-                if (OnCourseAddedHandler != null)
-                {
-                    OnCourseAddedHandler.Invoke(course);
-                }
+                //if (OnCourseAddedHandler != null)
+                //{
+                //    OnCourseAddedHandler.Invoke(course);
+                //}
 
                 player.ServerCourseId = course.Id;
 
@@ -310,33 +346,39 @@ namespace UdeS.Promoscience
             GameState = ServerGameState.Tutorial;
 
             Labyrinths.CurrentData = new Data();
-            SQLiteUtilities.ReadLabyrinthDataFromId(GameRound, Labyrinths.CurrentData);
+            SQLiteUtilities.ReadLabyrinthDataFromId(tutorialLabyrinthId, Labyrinths.CurrentData);
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
 
-                if (player.ServerPlayerGameState == ClientGameState.Ready ||
-                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
-                    player.ServerPlayerGameState == ClientGameState.Playing ||
-                    player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
+                switch (player.ServerPlayerGameState)
                 {
-                    Algorithms.Id algorithm = Algorithms.Id.Tutorial;
-                    player.serverAlgorithm = algorithm;
+                    case ClientGameState.Ready:
+                    case ClientGameState.PlayingTutorial:
+                    case ClientGameState.Playing:
+                    case ClientGameState.ViewingGlobalReplay:
+                    case ClientGameState.ViewingLocalReplay:
+                    case ClientGameState.WaitingForNextRound:
 
-                    player.serverLabyrinthId = tutorialLabyrinthId;
+                        Algorithms.Id algorithm = Algorithms.Id.Tutorial;
+                        player.serverAlgorithm = algorithm;
 
-                    AssignCourse(player);
+                        player.serverLabyrinthId = tutorialLabyrinthId;
 
-                    // TODO send course json over??
-                    player.TargetSetGame(
-                        player.connectionToClient,
-                        Labyrinths.CurrentData.data,
-                        Labyrinths.CurrentData.sizeX,
-                        Labyrinths.CurrentData.sizeY,
-                        tutorialLabyrinthId,
-                        algorithm,
-                        true);                   
+                        AssignCourse(player);
+
+                        // TODO send course json over??
+                        player.TargetSetGame(
+                            player.connectionToClient,
+                            Labyrinths.CurrentData.data,
+                            Labyrinths.CurrentData.sizeX,
+                            Labyrinths.CurrentData.sizeY,
+                            tutorialLabyrinthId,
+                            algorithm,
+                            true);
+
+                        break;
                 }
             }
         }
@@ -371,25 +413,32 @@ namespace UdeS.Promoscience
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
 
-                if (player.ServerPlayerGameState == ClientGameState.Ready ||
-                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
-                    player.ServerPlayerGameState == ClientGameState.Playing ||
-                    player.ServerPlayerGameState == ClientGameState.WaitingForNextRound)
+                switch (player.ServerPlayerGameState)
                 {
-                    Algorithms.Id algorithm = (Algorithms.Id)((player.ServerTeamId + GameRound) % 3) + 1;
-                    player.serverAlgorithm = algorithm;
-                    player.serverLabyrinthId = Labyrinths.CurrentData.currentId;
+                    case ClientGameState.Ready:
+                    case ClientGameState.PlayingTutorial:
+                    case ClientGameState.Playing:
+                    case ClientGameState.ViewingGlobalReplay:
+                    case ClientGameState.ViewingLocalReplay:
+                    case ClientGameState.WaitingForNextRound:
+                                               
 
-                    AssignCourse(player);
+                        player.serverAlgorithm = GetNextAlgorithm(player.ServerTeamId);
 
-                    player.TargetSetGame(
-                        player.connectionToClient,
-                        Labyrinths.CurrentData.data,
-                        Labyrinths.CurrentData.sizeX,
-                        Labyrinths.CurrentData.sizeY,
-                        labyrinthId,
-                        algorithm,
-                        false);
+                        player.serverLabyrinthId = Labyrinths.CurrentData.Id;
+
+                        AssignCourse(player);
+
+                        player.TargetSetGame(
+                            player.connectionToClient,
+                            Labyrinths.CurrentData.data,
+                            Labyrinths.CurrentData.sizeX,
+                            Labyrinths.CurrentData.sizeY,
+                            labyrinthId,
+                            player.serverAlgorithm,
+                            false);
+
+                        break;
                 }
             }
         }
@@ -403,9 +452,10 @@ namespace UdeS.Promoscience
 
         public void StartGameRound(Player player)
         {
-            Algorithms.Id algorithm = (Algorithms.Id)((player.ServerTeamId + GameRound) % 3) + 1;
-            player.serverAlgorithm = algorithm;
-            player.serverLabyrinthId = Labyrinths.CurrentData.currentId;
+
+            player.serverAlgorithm = GetNextAlgorithm(player.ServerTeamId);
+
+            player.serverLabyrinthId = Labyrinths.CurrentData.Id;
 
             AssignCourse(player);
 
@@ -414,16 +464,16 @@ namespace UdeS.Promoscience
                 Labyrinths.CurrentData.data,
                 Labyrinths.CurrentData.sizeX,
                 Labyrinths.CurrentData.sizeY,
-                Labyrinths.CurrentData.currentId,
-                algorithm,
+                Labyrinths.CurrentData.Id,
+                player.serverAlgorithm,
                 false);
         }
 
         public void StartGameRoundWithSteps(Player player, int[] steps)
         {
-            Algorithms.Id algorithm = (Algorithms.Id)((player.ServerTeamId + GameRound) % 3) + 1;
-            player.serverAlgorithm = algorithm;
-            player.serverLabyrinthId = Labyrinths.CurrentData.currentId; ;
+            player.serverAlgorithm = GetNextAlgorithm(player.ServerTeamId);
+
+            player.serverLabyrinthId = Labyrinths.CurrentData.Id; ;
 
             AssignCourse(player);
 
@@ -432,8 +482,8 @@ namespace UdeS.Promoscience
                 steps, Labyrinths.CurrentData.data,
                 Labyrinths.CurrentData.sizeX,
                 Labyrinths.CurrentData.sizeY,
-                Labyrinths.CurrentData.currentId,
-                algorithm,
+                Labyrinths.CurrentData.Id,
+                player.serverAlgorithm,
                 false); // TODO start with steps tutorial??
         }
 
@@ -444,8 +494,8 @@ namespace UdeS.Promoscience
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
-                SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
-
+                SQLiteUtilities.SetCourseInactive(player.ServerCourseId);             
+                
                 if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
                     player.ServerPlayerGameState == ClientGameState.Playing)
                 {
@@ -465,6 +515,7 @@ namespace UdeS.Promoscience
                     player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
                     player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
                     player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
                     player.ServerPlayerGameState == ClientGameState.Playing)
                 {
                     player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalReplay);

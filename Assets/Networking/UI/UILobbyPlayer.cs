@@ -20,61 +20,61 @@ namespace UdeS.Promoscience.UI
         //Teams.Resources teamList;
 
         [SerializeField]
-        ScriptableLocalizeString connectingString;
+        LocalizeStringAsset connectingString;
 
         [SerializeField]
-        ScriptableLocalizeString disconnectedString;
+        LocalizeStringAsset disconnectedString;
 
         [SerializeField]
-        ScriptableLocalizeString longestStraightString;
+        LocalizeStringAsset longestStraightString;
 
         [SerializeField]
-        ScriptableLocalizeString noAssociatedPairString;
+        LocalizeStringAsset noAssociatedPairString;
 
         [SerializeField]
-        ScriptableLocalizeString notReadyString;
+        LocalizeStringAsset notReadyString;
 
         [SerializeField]
-        ScriptableLocalizeString pairedString;
+        LocalizeStringAsset pairedString;
 
         [SerializeField]
-        ScriptableLocalizeString pairingString;
+        LocalizeStringAsset pairingString;
 
         [SerializeField]
-        ScriptableLocalizeString playingString;
+        LocalizeStringAsset playingString;
 
         [SerializeField]
-        ScriptableLocalizeString playingTutorialString;
+        LocalizeStringAsset playingTutorialString;
 
         [SerializeField]
-        ScriptableLocalizeString readyString;
+        LocalizeStringAsset readyString;
 
         [SerializeField]
-        ScriptableLocalizeString reconnectingString;
+        LocalizeStringAsset reconnectingString;
 
         [SerializeField]
-        ScriptableLocalizeString shortestFlightString;
+        LocalizeStringAsset shortestFlightString;
 
         [SerializeField]
-        ScriptableLocalizeString standardAlgorithmString;
+        LocalizeStringAsset standardAlgorithmString;
 
         [SerializeField]
-        ScriptableLocalizeString unknownStatusString;
+        LocalizeStringAsset unknownStatusString;
 
         [SerializeField]
-        ScriptableLocalizeString waitingForNextRoundString;
+        LocalizeStringAsset waitingForNextRoundString;
 
         [SerializeField]
-        ScriptableLocalizeString waitingForPairConnectionString;
+        LocalizeStringAsset waitingForPairConnectionString;
 
         [SerializeField]
-        ScriptableLocalizeString viewingLocalPlayback;
+        LocalizeStringAsset viewingLocalPlayback;
 
         [SerializeField]
-        ScriptableLocalizeString viewingGlobalPlayback;
+        LocalizeStringAsset viewingGlobalPlayback;
 
         [SerializeField]
-        ScriptableLocalizeString waitingPlaybackString;
+        LocalizeStringAsset waitingPlaybackString;
 
         [SerializeField]
         Image image;

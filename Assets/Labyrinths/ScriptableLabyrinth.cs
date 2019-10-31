@@ -13,16 +13,16 @@ namespace UdeS.Promoscience.Labyrinths
     {
         private IData data;
 
-        public int currentId
+        public int Id
         {
             get
             {
-                return data.currentId;
+                return data.Id;
             }
 
             set
             {
-                data.currentId = value;
+                data.Id = value;
             }
         }
 

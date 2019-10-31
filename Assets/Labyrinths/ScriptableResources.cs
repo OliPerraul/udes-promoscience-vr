@@ -15,6 +15,7 @@ namespace UdeS.Promoscience.Labyrinths
         {
             Instance = this;
         }
+
         [SerializeField]
         public Labyrinth LabyrinthSmall;
 

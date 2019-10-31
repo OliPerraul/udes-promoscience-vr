@@ -68,7 +68,7 @@ namespace UdeS.Promoscience
             get
             {
                 if (algorithm == null)
-                    algorithm = Algorithms.Resources.Instance.CreateAlgorithm(Algorithms.Id.Standard);
+                    algorithm = Algorithms.Resources.Instance.GetAlgorithm(Algorithms.Id.Standard);
 
                 return algorithm;
             }
@@ -125,6 +125,9 @@ namespace UdeS.Promoscience
 
             set
             {
+                if (labyrinth != null)
+                    labyrinth.gameObject.Destroy();
+
                 labyrinth = value;
             }
         }

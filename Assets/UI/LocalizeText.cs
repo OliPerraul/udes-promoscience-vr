@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.UI
     public class LocalizeText : MonoBehaviour
     {
         [SerializeField]
-        ScriptableLocalizeString localizeString;
+        LocalizeStringAsset localizeString;
 
         [SerializeField]
         Text text;

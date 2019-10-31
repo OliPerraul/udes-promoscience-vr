@@ -91326,6 +91326,25 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1873330309}
   m_Mesh: {fileID: 4300012, guid: c515c245eef79834ca4097a5367d0a89, type: 3}
+--- !u!1 &1880657380 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1307779207878956, guid: 28f07edcf181f89438fcbae02eeecc82,
+    type: 2}
+  m_PrefabInternal: {fileID: 556844377}
+--- !u!114 &1880657381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1880657380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81baee7e38df2d447be682226303c40a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Algorithms: {fileID: 11400000, guid: 58ee88a6f79924d48a13a8385e6413d2, type: 2}
+  Labyrinths: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
+  Replays: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
 --- !u!1 &1937467960
 GameObject:
   m_ObjectHideFlags: 0

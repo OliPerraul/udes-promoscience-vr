@@ -76,7 +76,7 @@ namespace UdeS.Promoscience.Labyrinths
         {
             get
             {
-                return data.currentId;
+                return data.Id;
             }
         }
 

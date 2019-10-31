@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6baf1ee8b03e4cb408bde7cf427e39b9, type: 3}
   m_Name: Algorithm.ShortestFlightDistance
   m_EditorClassIdentifier: 
+  Id: 1
   name:
     localizeString: {fileID: 0}
     defaultString: Shortest Flight

@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114069852616093710}
   - component: {fileID: 82137802747922868}
   - component: {fileID: 114298733568807416}
+  - component: {fileID: 114329363831689068}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -161,12 +162,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  client: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   playerReachedTheEnd: {fileID: 11400000, guid: 42e4da9113e98014c89b3d8769970592,
     type: 2}
   isDiverging: {fileID: 11400000, guid: 437c656b71d13014682132a1d6ffe622, type: 2}
   waitingForNextRoundRoom: {fileID: 0}
   recordedSteps: {fileID: 11400000, guid: 7b65dc8b546df204dac1922fb707d6e0, type: 2}
+  deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
+  value: 0
+  ActionValues: []
+  ActionSteps: 
+  ErrorCount: 0
 --- !u!114 &114298733568807416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -178,9 +183,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fee905aa0c5e6e49873777c8f614fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameState: {fileID: 11400000, guid: 164dfbdb4dcd6714892e04c514c5eb8f, type: 2}
   musicSource: {fileID: 82137802747922868}
   classicLoopMusic: {fileID: 8300000, guid: 2ab6be3c4285ced439c066ad06c81aa5, type: 3}
   classicLoopWithOutDrumMusic: {fileID: 8300000, guid: 9883757589f2109469d6e99e3459194c,
     type: 3}
   modernLoopMusic: {fileID: 8300000, guid: 1b0bdd8a3f785b741892eb0e9f5f4afe, type: 3}
+--- !u!114 &114329363831689068
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1307779207878956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81baee7e38df2d447be682226303c40a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Algorithms: {fileID: 11400000, guid: 58ee88a6f79924d48a13a8385e6413d2, type: 2}
+  Labyrinths: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
+  Replays: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}

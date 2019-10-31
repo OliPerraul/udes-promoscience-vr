@@ -104,9 +104,6 @@ namespace UdeS.Promoscience.UI
 
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
-            //pairingStatus.valueChangedEvent += OnPairingStatusChanged;
-            //gameState.valueChangedEvent += OmGameStateChanged;
-
             serverImage.color = serverImage.color.SetA(disconnectedAlpha);            
             
             switch (deviceType.Value)
@@ -132,7 +129,10 @@ namespace UdeS.Promoscience.UI
                 case ClientGameState.ViewingGlobalReplay:
                     Enable();
                     connectionStatusText.text = pleaseStandbyString.Value;
+                    break;
 
+                default:
+                    Disable();
                     break;
             }
         }

@@ -11,11 +11,25 @@ namespace UdeS.Promoscience.Algorithms
     [System.Serializable]
     public enum Id : int
     {
+        Randomized = -1,
+        GameRound = -2,
+
         Tutorial = 0,
         RightHand = 0,
         ShortestFlightDistance = 1,
         LongestStraight = 2,
         Standard = 3
+    }
+
+    public class Utils
+    {
+        public static Id Random
+        {
+            get
+            {
+                return (Id) UnityEngine.Random.Range((int)Id.Tutorial, (int)Id.Standard);
+            }
+        }
     }
 
     public abstract class Algorithm

@@ -9,15 +9,17 @@ namespace UdeS.Promoscience.Replays
     public class LabyrinthReplay
     {
         //public Replay replay;
-        private Replays.ScriptableController controller;
+        private ScriptableController controller;
+
+        public Labyrinths.IData labyrinthData;
 
         public Labyrinths.Labyrinth labyrinth;
 
         public Labyrinths.Labyrinth dirtyLabyrinth;
 
-        protected Vector2Int labyrinthPosition;
+        protected Vector2Int lposition;
 
-        protected Vector3 worldPosition;
+        protected Vector3 wposition;
 
         private Dictionary<int, PlayerSequence> playerSequences;
 
@@ -27,62 +29,68 @@ namespace UdeS.Promoscience.Replays
 
         private System.Threading.Mutex mutex;
 
-        private bool isAlgorithmToggled = false;
+        private bool isDirtyToggled = false;
 
         private bool isPlaying = false;
 
         public LabyrinthReplay(
             ScriptableController controller,
-            Labyrinths.Labyrinth labyrinth)            
+            Labyrinths.IData labyrinth)            
         {
             this.controller = controller;// replay;
             //this.courses = courses;
-            this.labyrinth = labyrinth;
+            this.labyrinthData = labyrinth;
 
             mutex = new System.Threading.Mutex();
 
             playerSequences = new Dictionary<int, PlayerSequence>();
+
             activeSequences = new List<PlayerSequence>();
+
             algorithmSequences = new List<AlgorithmSequence>();
 
             //replay..gameStateChangedEvent += OnServerGameStateChanged;
             Server.Instance.OnCourseAddedHandler += OnCourseAdded;
 
             controller.OnSequenceToggledHandler += OnSequenceToggled;
-            controller.OnActionHandler += OnReplayAction;
-                       
+
+            controller.OnActionHandler += OnReplayAction;                       
         }
 
         public virtual void Start()
         {
-            //labyrinth.GenerateLabyrinthVisual();
-            //emptyLabyrinth = labyrinth.Create();
-            //emptyLabyrinth.gameObject.SetActive(false);
-
-            labyrinthPosition = labyrinth.GetLabyrithStartPosition();
-
-            worldPosition =
-                labyrinth.GetLabyrinthPositionInWorldPosition(labyrinthPosition);
-
-            labyrinth.gameObject.SetActive(true);
+            labyrinth = Labyrinths.ScriptableResources.Instance
+                .GetLabyrinthTemplate(labyrinthData)
+                .Create(labyrinthData);
 
             labyrinth.Camera.Maximize();
 
+            labyrinth.GenerateLabyrinthVisual();
+
             dirtyLabyrinth = Labyrinths.ScriptableResources.Instance
-                .GetLabyrinthTemplate(labyrinth.Data)
-                .Create(labyrinth.Data);
+                .GetLabyrinthTemplate(labyrinthData)
+                .Create(labyrinthData);
+
+            dirtyLabyrinth.name += "DIRTY";
+
+            dirtyLabyrinth.Camera.Maximize();
 
             dirtyLabyrinth.transform.position = labyrinth.transform.position;
 
             dirtyLabyrinth.GenerateLabyrinthVisual();
 
+            lposition = labyrinth.GetLabyrithStartPosition();
+
+            wposition =
+                labyrinth.GetLabyrinthPositionInWorldPosition(lposition);
+
+            EnableDirty(true);
+
             foreach (Course course in Server.Instance.Courses)
             {
                 OnCourseAdded(course);
             }
-
         }
-
 
         public virtual void Resume()
         {
@@ -192,6 +200,15 @@ namespace UdeS.Promoscience.Replays
             isPlaying = false;
         }
 
+        public void EnableDirty(bool enable)
+        {
+            isDirtyToggled = enable;
+            labyrinth.gameObject.SetActive(!isDirtyToggled);
+            dirtyLabyrinth.gameObject.SetActive(isDirtyToggled);
+
+        }
+
+
         public virtual void OnReplayAction(ReplayAction action, params object[] args)
         {
             switch (action)
@@ -202,10 +219,8 @@ namespace UdeS.Promoscience.Replays
 
                 // TODO: Handle play/ stop from replay object and not sequences
                 // to prevent synch issues
-                case ReplayAction.ToggleAlgorithm:
-                    isAlgorithmToggled = !isAlgorithmToggled;
-                    labyrinth.gameObject.SetActive(!isAlgorithmToggled);
-                    dirtyLabyrinth.gameObject.SetActive(isAlgorithmToggled);
+                case ReplayAction.ToggleDirtyLabyrinth:
+                    EnableDirty(!isDirtyToggled);
                     break;
 
                 case ReplayAction.Play:
@@ -335,6 +350,8 @@ namespace UdeS.Promoscience.Replays
         {            
             dirtyLabyrinth.gameObject.Destroy();
 
+            labyrinth.gameObject.Destroy();
+
             foreach (Sequence sq in algorithmSequences)
             {
                 if (sq != null)
@@ -354,6 +371,12 @@ namespace UdeS.Promoscience.Replays
             playerSequences.Clear();
 
             activeSequences.Clear();
+
+            algorithmSequences.Clear();
+
+            labyrinth = null;
+
+            dirtyLabyrinth = null;            
         }
 
         public void OnCourseAdded(Course course)
@@ -365,7 +388,7 @@ namespace UdeS.Promoscience.Replays
                         controller,
                         course,
                         dirtyLabyrinth,
-                        labyrinthPosition);
+                        lposition);
 
                 playerSequences.Add(course.Id, sequence);
 
@@ -378,11 +401,11 @@ namespace UdeS.Promoscience.Replays
                         controller,
                         dirtyLabyrinth,
                         course.Algorithm,
-                        labyrinthPosition
+                        lposition
                         );
 
                 algorithmSequences.Add(algorithmSeq);              
-
+                
                 TrySetMoveCount(algorithmSeq.LocalMoveCount);
                                
                 AdjustOffsets();

@@ -157,7 +157,8 @@ namespace UdeS.Promoscience.Replays
             Labyrinths.Labyrinth labyrinth,
             Vector2Int startPosition)
         {
-            PlayerSequence sequence = this.Create(labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
+            PlayerSequence sequence = this.Create(
+                labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
 
             sequence.replay = replay;
             sequence.labyrinth = labyrinth;

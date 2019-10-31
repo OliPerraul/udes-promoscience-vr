@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Replays
         Resume,
         Slide,
 
-        ToggleAlgorithm,
+        ToggleDirtyLabyrinth,
         SelectLabyrinth,
 
         ExitReplay,
@@ -32,8 +32,6 @@ namespace UdeS.Promoscience.Replays
     public abstract class ScriptableController : ScriptableObject
     {
         public OnIntEvent valueChangeEvent;
-
-        public IEnumerable<Course> Courses;
 
         public OnEvent OnLabyrinthReplayHandler;
 

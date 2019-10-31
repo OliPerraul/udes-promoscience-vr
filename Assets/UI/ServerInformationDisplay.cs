@@ -17,22 +17,22 @@ namespace UdeS.Promoscience.UI
         //ScriptableServerGameInformation serverGameInformation;
 
         [SerializeField]
-        ScriptableLocalizeString gameRoundString;
+        LocalizeStringAsset gameRoundString;
 
         [SerializeField]
-        ScriptableLocalizeString gameStateString;
+        LocalizeStringAsset gameStateString;
 
         [SerializeField]
-        ScriptableLocalizeString intermissionString;
+        LocalizeStringAsset intermissionString;
 
         [SerializeField]
-        ScriptableLocalizeString lobbyString;
+        LocalizeStringAsset lobbyString;
 
         [SerializeField]
-        ScriptableLocalizeString playingRoundString;
+        LocalizeStringAsset playingRoundString;
 
         [SerializeField]
-        ScriptableLocalizeString tutorialString;
+        LocalizeStringAsset tutorialString;
 
         [SerializeField]
         Text serverGameRoundText;

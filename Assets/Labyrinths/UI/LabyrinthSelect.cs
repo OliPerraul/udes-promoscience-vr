@@ -8,6 +8,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
     public class LabyrinthSelect : MonoBehaviour//.UI.MainDisplay
     {
         [SerializeField]
+        private int maxHorizontal = 2;
+
+        [SerializeField]
         public float SelectionOffset = 60;
 
         [SerializeField]
@@ -57,6 +60,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             Server.Instance.gameStateChangedEvent += OnServerGameStateChanged;
 
             buttonExit.onClick.AddListener(OnExitClicked);
+
             buttonRandom.onClick.AddListener(OnRandomClicked);
         }
 
@@ -87,14 +91,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
                 case Replays.ReplayAction.ExitReplay:
 
                     Enabled = true;
-
-                    int i = 0;
-                    foreach (Labyrinth l in Server.Instance.Labyrinths.Labyrinths)
-                    {
-                        l.gameObject.SetActive(true);
-                        SetLabyrinthCamera(l, i);
-                        i++;
-                    }
+                    Server.Instance.GameState = ServerGameState.LabyrinthSelect;
 
                     break;
             }
@@ -106,14 +103,14 @@ namespace UdeS.Promoscience.Labyrinths.UI
             Enabled = true;
             Enabled = false;
 
-            Server.Instance.BeginAdvancedReplay(labyrinth);
+            Server.Instance.StartAdvancedReplay(labyrinth);
         }
 
         public void OnPlayClicked(IData labyrinth)
         {
             Enabled = true;
             Enabled = false;
-            Server.Instance.StartGameWithLabyrinth(labyrinth.currentId);
+            Server.Instance.StartGameWithLabyrinth(labyrinth.Id);
         }
 
         public virtual void Clear()
@@ -143,7 +140,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         {
             labyrinth.SetCamera(
                 Server.Instance.Labyrinths.Data.Count,
-                resource.MaxHorizontal,
+                maxHorizontal,
                 i);
         }
 
@@ -156,8 +153,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             {
                 Enabled = true;
 
-                Clear();
-                                
+                Clear();                                
 
                 int i = 0;
                 foreach (var data in Server.Instance.Labyrinths.Data)
@@ -170,7 +166,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
                     labyrinth.transform.position = Vector3.down * SelectionOffset * i;
 
-                    Server.Instance.Labyrinths.IdPairs.Add(data.currentId, labyrinth);
+                    Server.Instance.Labyrinths.IdPairs.Add(data.Id, labyrinth);
 
                     SetLabyrinthCamera(labyrinth, i);
 
@@ -195,13 +191,13 @@ namespace UdeS.Promoscience.Labyrinths.UI
             Labyrinth l;
             foreach (var data in Server.Instance.Labyrinths.Data)
             {
-                if (i % resource.MaxHorizontal == 0)
+                if (i % maxHorizontal == 0)
                 {
                     horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
                     horizontal.gameObject.SetActive(true);
                 }
 
-                List<Course> courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(data.currentId);
+                List<Course> courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(data.Id);
 
                 var button = labyrinthButtonTemplate.Create(horizontal.transform, data, courses.Count == 0);
                 button.name = "btn " + i;

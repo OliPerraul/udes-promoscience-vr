@@ -48,7 +48,7 @@ namespace UdeS.Promoscience.Labyrinths
     {
         //Type Type { get; }
 
-        int currentId { get; set; }
+        int Id { get; set; }
 
         int[] data { get; set; }
 
@@ -82,7 +82,7 @@ namespace UdeS.Promoscience.Labyrinths
     [Serializable]
     public class Data : IData
     {
-        public int currentId { get; set; }
+        public int Id { get; set; }
         public int[] data { get; set; }
         public int sizeX { get; set; }
         public int sizeY { get; set; }
@@ -91,7 +91,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public Data(int id, int[] data, int sizex, int sizey)
         {
-            this.currentId = id;
+            this.Id = id;
             this.data = data;
             this.sizeX = sizex;
             this.sizeY = sizey;
@@ -101,7 +101,7 @@ namespace UdeS.Promoscience.Labyrinths
                 data,
                 sizeX,
                 sizeY,
-                currentId);
+                Id);
         }
 
         private Vector2Int startPos;
@@ -130,9 +130,9 @@ namespace UdeS.Promoscience.Labyrinths
 
         public int[] GetLabyrithDataWithId(int id)
         {
-            if (id != currentId)
+            if (id != Id)
             {
-                currentId = id;
+                Id = id;
 
                 SQLiteUtilities.ReadLabyrinthDataFromId(id, this);
 
@@ -164,7 +164,7 @@ namespace UdeS.Promoscience.Labyrinths
             int labyrinthSizeY, 
             int id)
         {
-            currentId = id;
+            Id = id;
             data = labyrinthData;
             sizeX = labyrinthSizeX;
             sizeY = labyrinthSizeY;
@@ -191,9 +191,9 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void SetLabyrithData(int[,] map, int id)
         {
-            if (id != currentId)
+            if (id != Id)
             {
-                currentId = id;
+                Id = id;
                 sizeX = map.GetLength(0);
                 sizeY = map.GetLength(1);
                 data = new int[sizeX * sizeY];

@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.Teams
         int teamId;
 
         [SerializeField]
-        ScriptableObjects.ScriptableLocalizeString teamName;
+        LocalizeStringAsset teamName;
 
         [SerializeField]
         Color teamColor;

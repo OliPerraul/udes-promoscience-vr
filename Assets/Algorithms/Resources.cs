@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Algorithms
 {
@@ -14,40 +15,55 @@ namespace UdeS.Promoscience.Algorithms
 
         public void OnEnable()
         {
-            Instance = this;
+            Instance = this;            
         }
 
         [SerializeField]
-        public Resource StandardAlgorithm;
+        private List<Resource> algorithms;
 
-        [SerializeField]
-        public Resource ShortestFlightDistanceAlgorithm;
+        private Dictionary<Id, Algorithm> idAlgorithmPairs = new Dictionary<Id, Algorithm>();
 
-        [SerializeField]
-        public Resource RightHandAlgorithm;
 
-        [SerializeField]
-        public Resource LongestStraightAlgorithm;
+        public ICollection<Algorithm> Algorithms {
 
-        //Labyrinths.IData labyrinth)
-        public Algorithm CreateAlgorithm(Promoscience.Algorithms.Id id)
-        {
-            switch (id)
+            get
             {
-                case Promoscience.Algorithms.Id.LongestStraight:
-                    return new LongestStraightAlgorithm(LongestStraightAlgorithm);
+                if (idAlgorithmPairs.Count == 0)
+                {
+                    foreach (Resource res in algorithms)
+                    {
+                        if (!idAlgorithmPairs.ContainsKey(res.Id))
+                        {
+                            idAlgorithmPairs.Add(res.Id, res.Create());
+                        }
+                    }
+                }
 
-                case Promoscience.Algorithms.Id.Standard:
-                    return new StandardAlgorithm(StandardAlgorithm);
-
-                case Promoscience.Algorithms.Id.RightHand:
-                    return new RightHandAlgorithm(RightHandAlgorithm);
-
-                case Promoscience.Algorithms.Id.ShortestFlightDistance:
-                    return new ShortestFlightDistanceAlgorithm(ShortestFlightDistanceAlgorithm);
-                default:
-                    return null;
+                return idAlgorithmPairs.Values;
             }
+        }
+
+        public Algorithm GetAlgorithm(Id id)
+        {
+            Algorithm algorithm;
+
+            if (idAlgorithmPairs.Count == 0)
+            {
+                foreach (Resource res in algorithms)
+                {
+                    if (!idAlgorithmPairs.ContainsKey(res.Id))
+                    {
+                        idAlgorithmPairs.Add(res.Id, res.Create());
+                    }
+                }
+            }
+
+            if (idAlgorithmPairs.TryGetValue(id, out algorithm))
+            {
+                return algorithm;
+            }
+
+            return null;
         }
 
 

@@ -13,9 +13,6 @@ namespace UdeS.Promoscience.Network
 {
     public class Player : NetworkBehaviour
     {
-        [SerializeField]
-        private Resources resources;
-
         public string deviceUniqueIdentifier = "";
         string deviceName = "";
 
@@ -361,19 +358,17 @@ namespace UdeS.Promoscience.Network
                 );
 
             Client.Instance.Labyrinth = 
-                resources.Labyrinths
+                Labyrinths.ScriptableResources.Instance
                 .GetLabyrinthTemplate(Client.Instance.LabyrinthData)
                 .Create(Client.Instance.LabyrinthData);
 
-            Client.Instance.Algorithm = resources.Algorithms.CreateAlgorithm(algo);//, client.LabyrinthData);
+            Client.Instance.Algorithm = Algorithms.Resources.Instance.GetAlgorithm(algo);
 
             isRoundCompleted.Value = false;
 
             gameRound.Value = labyrinthId;
 
             Client.Instance.State = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
-
-
         }
 
         [TargetRpc]
@@ -396,11 +391,11 @@ namespace UdeS.Promoscience.Network
                 sizeY);
 
 
-            Client.Instance.Labyrinth = resources.Labyrinths
+            Client.Instance.Labyrinth = Labyrinths.ScriptableResources.Instance
                 .GetLabyrinthTemplate(Client.Instance.LabyrinthData)
                 .Create(Client.Instance.LabyrinthData);
 
-            Client.Instance.Algorithm = resources.Algorithms.CreateAlgorithm(algo);/// client.LabyrinthData);
+            Client.Instance.Algorithm = Algorithms.Resources.Instance.GetAlgorithm(algo);
 
             isRoundCompleted.Value = false;
             gameRound.Value = labyrinthId;

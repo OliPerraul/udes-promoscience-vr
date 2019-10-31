@@ -12,8 +12,8 @@ namespace UdeS.Promoscience.Network
     {
         //[SerializeField]
         //ScriptableFloat algorithmRespect;
-        [SerializeField]
-        private Resources resources;
+        //[SerializeField]
+        //private Resources resources;
 
 
         [SerializeField]
