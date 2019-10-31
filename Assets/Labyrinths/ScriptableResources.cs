@@ -24,7 +24,7 @@ namespace UdeS.Promoscience.Labyrinths
         [SerializeField]
         public Labyrinth LabyrinthLarge;
 
-        public Labyrinth GetLabyrinth(IData data)
+        public Labyrinth GetLabyrinthTemplate(IData data)
         {
             switch (Utils.GetType(data))
             {

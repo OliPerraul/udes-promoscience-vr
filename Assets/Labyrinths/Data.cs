@@ -78,8 +78,6 @@ namespace UdeS.Promoscience.Labyrinths
     }
 
 
-
-
     // TODO from json (combine with ScriptableObect)
     [Serializable]
     public class Data : IData

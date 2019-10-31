@@ -362,7 +362,7 @@ namespace UdeS.Promoscience.Network
 
             Client.Instance.Labyrinth = 
                 resources.Labyrinths
-                .GetLabyrinth(Client.Instance.LabyrinthData)
+                .GetLabyrinthTemplate(Client.Instance.LabyrinthData)
                 .Create(Client.Instance.LabyrinthData);
 
             Client.Instance.Algorithm = resources.Algorithms.CreateAlgorithm(algo);//, client.LabyrinthData);
@@ -397,7 +397,7 @@ namespace UdeS.Promoscience.Network
 
 
             Client.Instance.Labyrinth = resources.Labyrinths
-                .GetLabyrinth(Client.Instance.LabyrinthData)
+                .GetLabyrinthTemplate(Client.Instance.LabyrinthData)
                 .Create(Client.Instance.LabyrinthData);
 
             Client.Instance.Algorithm = resources.Algorithms.CreateAlgorithm(algo);/// client.LabyrinthData);

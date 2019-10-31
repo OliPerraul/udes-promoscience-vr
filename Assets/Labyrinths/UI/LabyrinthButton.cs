@@ -8,9 +8,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
 {
     public class LabyrinthButton : MonoBehaviour
     {
-        public OnLabyrinthEvent OnReplayClickedHandler;
+        public OnDataEvent OnReplayClickedHandler;
 
-        public OnLabyrinthEvent OnPlayClickedHandler;
+        public OnDataEvent OnPlayClickedHandler;
 
         private bool ReplayLocked
         {
@@ -33,7 +33,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             }
         }
 
-        public Labyrinth Labyrinth;
+        public Labyrinths.IData Labyrinth;
 
         [SerializeField]
         private UnityEngine.UI.Button playButton;
@@ -54,7 +54,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public LabyrinthButton Create(
             Transform parent, 
-            Labyrinth labyrinth,
+            IData labyrinth,
             bool replayLocked=true)
         {
             var l = this.Create(parent);

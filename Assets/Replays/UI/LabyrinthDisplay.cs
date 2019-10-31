@@ -61,7 +61,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             switch (Server.Instance.GameState)
             {
-                case ServerGameState.SimpleReplay:
+                case ServerGameState.InstantReplay:
                 case ServerGameState.AdvancedReplay:
                     Enabled = true;
                     break;

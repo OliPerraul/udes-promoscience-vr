@@ -69,7 +69,7 @@ namespace UdeS.Promoscience.Replays
             labyrinth.Camera.Maximize();
 
             dirtyLabyrinth = Labyrinths.ScriptableResources.Instance
-                .GetLabyrinth(labyrinth.Data)
+                .GetLabyrinthTemplate(labyrinth.Data)
                 .Create(labyrinth.Data);
 
             dirtyLabyrinth.transform.position = labyrinth.transform.position;

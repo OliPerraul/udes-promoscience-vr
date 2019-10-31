@@ -89,7 +89,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
                     Enabled = true;
 
                     int i = 0;
-                    foreach (Labyrinth l in Server.Instance.Labyrinths)
+                    foreach (Labyrinth l in Server.Instance.Labyrinths.Labyrinths)
                     {
                         l.gameObject.SetActive(true);
                         SetLabyrinthCamera(l, i);
@@ -101,7 +101,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         }
 
 
-        public void OnReplayClicked(Labyrinth labyrinth)
+        public void OnReplayClicked(IData labyrinth)
         {
             Enabled = true;
             Enabled = false;
@@ -109,29 +109,24 @@ namespace UdeS.Promoscience.Labyrinths.UI
             Server.Instance.BeginAdvancedReplay(labyrinth);
         }
 
-        public void OnPlayClicked(Labyrinth labyrinth)
+        public void OnPlayClicked(IData labyrinth)
         {
             Enabled = true;
             Enabled = false;
-            Server.Instance.StartGameWithLabyrinth(labyrinth.Id);
+            Server.Instance.StartGameWithLabyrinth(labyrinth.currentId);
         }
 
         public virtual void Clear()
         {
-            if (Server.Instance.CurrentReplay != null)
-            {
-                Server.Instance.CurrentReplay.Clear();
-            }
-
             foreach (Transform children in buttonsParent)
             {
                 if (children.gameObject.activeSelf) Destroy(children.gameObject);
             }
 
-            if (Server.Instance.Labyrinths.Count != 0)
+            if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
             {
                 //int i = 0;
-                foreach (var l in Server.Instance.Labyrinths)
+                foreach (var l in Server.Instance.Labyrinths.Labyrinths)
                 {
                     if (l == null)
                         continue;
@@ -144,10 +139,10 @@ namespace UdeS.Promoscience.Labyrinths.UI
         }
 
 
-        public virtual void SetLabyrinthCamera(Labyrinths.Labyrinth labyrinth, int i)
+        public virtual void SetLabyrinthCamera(Labyrinth labyrinth, int i)
         {
             labyrinth.SetCamera(
-                Server.Instance.LabyrinthsData.Count,
+                Server.Instance.Labyrinths.Data.Count,
                 resource.MaxHorizontal,
                 i);
         }
@@ -165,17 +160,17 @@ namespace UdeS.Promoscience.Labyrinths.UI
                                 
 
                 int i = 0;
-                foreach (var data in Server.Instance.LabyrinthsData)
+                foreach (var data in Server.Instance.Labyrinths.Data)
                 {
                     Labyrinth labyrinth = ScriptableResources.Instance
-                        .GetLabyrinth(data)
+                        .GetLabyrinthTemplate(data)
                         .Create(data);
 
                     labyrinth.GenerateLabyrinthVisual();
 
                     labyrinth.transform.position = Vector3.down * SelectionOffset * i;
 
-                    Server.Instance.IdLabyrinthPairs.Add(data.currentId, labyrinth);
+                    Server.Instance.Labyrinths.IdPairs.Add(data.currentId, labyrinth);
 
                     SetLabyrinthCamera(labyrinth, i);
 
@@ -186,7 +181,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             }
             else
             {
-                //Clear();
+                Clear();
             }
         }
 
@@ -198,27 +193,24 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             int i = 0;
             Labyrinth l;
-            foreach (var data in Server.Instance.LabyrinthsData)
+            foreach (var data in Server.Instance.Labyrinths.Data)
             {
-                if (Server.Instance.IdLabyrinthPairs.TryGetValue(data.currentId, out l))
+                if (i % resource.MaxHorizontal == 0)
                 {
-                    if (i % resource.MaxHorizontal == 0)
-                    {
-                        horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
-                        horizontal.gameObject.SetActive(true);
-                    }
-
-                    List<Course> courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(data.currentId);
-
-                    var button = labyrinthButtonTemplate.Create(horizontal.transform, l, courses.Count == 0);
-                    button.name = "btn " + i;
-                    button.gameObject.SetActive(true);
-                    labyrinthButtons.Add(button);
-                    button.OnReplayClickedHandler += OnReplayClicked;
-                    button.OnPlayClickedHandler += OnPlayClicked;
-
-                    i++;
+                    horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
+                    horizontal.gameObject.SetActive(true);
                 }
+
+                List<Course> courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(data.currentId);
+
+                var button = labyrinthButtonTemplate.Create(horizontal.transform, data, courses.Count == 0);
+                button.name = "btn " + i;
+                button.gameObject.SetActive(true);
+                labyrinthButtons.Add(button);
+                button.OnReplayClickedHandler += OnReplayClicked;
+                button.OnPlayClickedHandler += OnPlayClicked;
+
+                i++;           
             }
 
             yield return null;

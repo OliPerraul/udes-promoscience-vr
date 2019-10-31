@@ -49,6 +49,8 @@ namespace UdeS.Promoscience.Labyrinths
 
     public delegate void OnLabyrinthEvent(Labyrinth labyrinth);
 
+    public delegate void OnDataEvent(IData labyrinth);
+
     public class Labyrinth : MonoBehaviour
     {
         //[SerializeField]
