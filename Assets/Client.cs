@@ -10,21 +10,8 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience
 {
-    public class Client : MonoBehaviour
+    public class Client : BaseSingleton<Client>
     {
-        private static Client instance;
-
-        public static Client Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = FindObjectOfType<Client>();
-
-                return instance;
-            }
-        }
-
         [SerializeField]
         private ScriptableControler controls;
 
@@ -171,8 +158,6 @@ namespace UdeS.Promoscience
 
         public void Awake()
         {
-            instance = this;
-
             value = ClientGameState.Connecting;
 
             ErrorCount = 0;

@@ -358,7 +358,7 @@ namespace UdeS.Promoscience.Network
                 );
 
             Client.Instance.Labyrinth = 
-                Labyrinths.ScriptableResources.Instance
+                Labyrinths.Resources.Instance
                 .GetLabyrinthTemplate(Client.Instance.LabyrinthData)
                 .Create(Client.Instance.LabyrinthData);
 
@@ -391,7 +391,7 @@ namespace UdeS.Promoscience.Network
                 sizeY);
 
 
-            Client.Instance.Labyrinth = Labyrinths.ScriptableResources.Instance
+            Client.Instance.Labyrinth = Labyrinths.Resources.Instance
                 .GetLabyrinthTemplate(Client.Instance.LabyrinthData)
                 .Create(Client.Instance.LabyrinthData);
 

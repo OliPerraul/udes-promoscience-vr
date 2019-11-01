@@ -6,25 +6,9 @@ using UnityEngine;
 
 namespace UdeS.Promoscience
 {
-    public class Clock : MonoBehaviour
+    public class Clock : BaseSingleton<Clock>
     {
         public OnEvent OnTickedHandler;
-
-        private static Clock instance;
-
-        public void Awake()
-        {
-            instance = this;
-        }
-        
-
-        public static Clock Instance
-        {
-            get {
-                return instance;
-            }
-        }
-
 
         public void FixedUpdate()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,18 +9,11 @@ namespace UdeS.Promoscience.Teams
 {
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/TeamList", order = 1)]
-    public class Resources : ScriptableObject
+    public class Resources : BaseResources<Resources>
     {
         [FormerlySerializedAs("teamList")]
         [SerializeField]
         List<ScriptableTeam> teams;// = new List<ScriptableTeam>();
-
-        public static Resources Instance;
-
-        public void OnEnable()
-        {
-            Instance = this;
-        }
 
         public IEnumerable<ScriptableTeam> Teams
         {

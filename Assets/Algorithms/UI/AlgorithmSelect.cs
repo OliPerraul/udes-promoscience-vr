@@ -39,7 +39,10 @@ namespace UdeS.Promoscience.Algorithms.UI
             }
 
             dropDown.onValueChanged.AddListener(OnDropDownSelected);
-            
+
+            OnDropDownSelected(0);
+
+
         }
 
         public void AddOption(string option)

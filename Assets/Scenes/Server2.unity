@@ -1674,7 +1674,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &221652414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2516,7 +2516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb85c6a7055cd5546bf4a3bd639051bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  replayController: {fileID: 0}
+  replayController: {fileID: 11400000, guid: a4820c1a083b33e4195d048c42e86577, type: 2}
   toggle: {fileID: 677653393}
   label: {fileID: 502041102}
   colorImage: {fileID: 176389673}
@@ -7272,9 +7272,9 @@ MonoBehaviour:
   randomString:
     localizeString: {fileID: 0}
     defaultString: Randomized
-  differentString:
+  gameRoundString:
     localizeString: {fileID: 0}
-    defaultString: Different per team
+    defaultString: Game Round
   dropDown: {fileID: 379684694}
 --- !u!1 &944667080
 GameObject:
@@ -8651,7 +8651,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1537123205}
-        m_MethodName: BeginSimpleReplay
+        m_MethodName: StartInstantReplay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9828,7 +9828,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000061035156}
+  m_AnchoredPosition: {x: 0, y: 0.00007140721}
   m_SizeDelta: {x: -50, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1329621017
@@ -10664,7 +10664,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1431010551}
   - component: {fileID: 1431010554}
-  - component: {fileID: 1431010553}
   - component: {fileID: 1431010552}
   m_Layer: 5
   m_Name: Display.Instant
@@ -10672,7 +10671,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1431010551
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10719,20 +10718,7 @@ MonoBehaviour:
   sequenceToggle: {fileID: 1970885525}
   sequencePopup: {fileID: 1013275}
   overlay: {fileID: 0}
---- !u!114 &1431010553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1431010550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d2cab2e6cf84ed488ed4417782a0186, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resources: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
-  labyrinthDisplay: {fileID: 1431010552}
-  replayController: {fileID: 11400000, guid: a4820c1a083b33e4195d048c42e86577, type: 2}
+  isInstantReplay: 1
 --- !u!114 &1431010554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11321,6 +11307,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1537123206}
+  - component: {fileID: 1537123207}
   - component: {fileID: 1537123205}
   m_Layer: 0
   m_Name: Game
@@ -11344,6 +11331,7 @@ MonoBehaviour:
     type: 2}
   instantReplayController: {fileID: 11400000, guid: a4820c1a083b33e4195d048c42e86577,
     type: 2}
+  algorithmId: 0
 --- !u!4 &1537123206
 Transform:
   m_ObjectHideFlags: 0
@@ -11357,6 +11345,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1537123207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1537123204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ecc2b3824dd9c4aa658d3f2bdb4b4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _resources:
+  - {fileID: 11400000, guid: 58ee88a6f79924d48a13a8385e6413d2, type: 2}
+  - {fileID: 11400000, guid: 25414d0b76ef8ac4fb9064fb2d9fa01e, type: 2}
+  - {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
+  - {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682, type: 2}
 --- !u!1 &1553893311
 GameObject:
   m_ObjectHideFlags: 0
@@ -12922,7 +12926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1856815492
 Transform:
   m_ObjectHideFlags: 0
@@ -13119,6 +13123,7 @@ MonoBehaviour:
   sequenceToggle: {fileID: 559521961}
   sequencePopup: {fileID: 877765646}
   overlay: {fileID: 0}
+  isInstantReplay: 0
 --- !u!114 &1867529988
 MonoBehaviour:
   m_ObjectHideFlags: 0

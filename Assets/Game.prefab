@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114069852616093710}
   - component: {fileID: 82137802747922868}
   - component: {fileID: 114298733568807416}
-  - component: {fileID: 114329363831689068}
+  - component: {fileID: 114345426861101078}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -188,7 +188,7 @@ MonoBehaviour:
   classicLoopWithOutDrumMusic: {fileID: 8300000, guid: 9883757589f2109469d6e99e3459194c,
     type: 3}
   modernLoopMusic: {fileID: 8300000, guid: 1b0bdd8a3f785b741892eb0e9f5f4afe, type: 3}
---- !u!114 &114329363831689068
+--- !u!114 &114345426861101078
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,9 +196,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1307779207878956}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81baee7e38df2d447be682226303c40a, type: 3}
+  m_Script: {fileID: 11500000, guid: a9ecc2b3824dd9c4aa658d3f2bdb4b4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Algorithms: {fileID: 11400000, guid: 58ee88a6f79924d48a13a8385e6413d2, type: 2}
-  Labyrinths: {fileID: 11400000, guid: 841d1735cb43a6e44970db60dc75495b, type: 2}
-  Replays: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
+  _resources:
+  - {fileID: 11400000, guid: 58ee88a6f79924d48a13a8385e6413d2, type: 2}
+  - {fileID: 11400000, guid: 25414d0b76ef8ac4fb9064fb2d9fa01e, type: 2}
+  - {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
+  - {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682, type: 2}

@@ -37,7 +37,7 @@ namespace Cirrus.Editor
             T asset = ScriptableObject.CreateInstance<T>();
 
             string path = GetAssetPath();
-            string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(path + "/New " + typeof(T).ToString() + ".asset");
+            string assetPathAndName = UnityEditor.AssetDatabase.GenerateUniqueAssetPath(path + "/New " + typeof(T).ToString() + ".asset");
 
             BuildAsset(asset, assetPathAndName);
 
@@ -52,14 +52,14 @@ namespace Cirrus.Editor
         {
             string path;
 
-            path = AssetDatabase.GetAssetPath(Selection.activeObject);
+            path = UnityEditor.AssetDatabase.GetAssetPath(Selection.activeObject);
             if (path == "")
             {
                 path = "Assets";
             }
             else if (Path.GetExtension(path) != "")
             {
-                path = path.Replace(Path.GetFileName(AssetDatabase.GetAssetPath(Selection.activeObject)), "");
+                path = path.Replace(Path.GetFileName(UnityEditor.AssetDatabase.GetAssetPath(Selection.activeObject)), "");
             }
 
             return path;
@@ -72,9 +72,9 @@ namespace Cirrus.Editor
         /// <param name="path">Path.</param>
         public static void BuildAsset(ScriptableObject asset, string assetPathAndName)
         {
-            AssetDatabase.CreateAsset(asset, assetPathAndName);
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
+            UnityEditor.AssetDatabase.CreateAsset(asset, assetPathAndName);
+            UnityEditor.AssetDatabase.SaveAssets();
+            UnityEditor.AssetDatabase.Refresh();
             EditorUtility.FocusProjectWindow();
             Selection.activeObject = asset;
         }
@@ -99,7 +99,7 @@ namespace Cirrus.Editor
                         var scriptableObject = ScriptableObject.CreateInstance(scr.GetClass());
 
                         string path = GetAssetPath();
-                        string assetPathAndName = AssetDatabase.GenerateUniqueAssetPath(path + "/" + scriptableObject.GetType().Name.ToString() + ".asset");
+                        string assetPathAndName = UnityEditor.AssetDatabase.GenerateUniqueAssetPath(path + "/" + scriptableObject.GetType().Name.ToString() + ".asset");
 
                         BuildAsset(scriptableObject, assetPathAndName);
                     }

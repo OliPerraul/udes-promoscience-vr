@@ -80,9 +80,6 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        [SerializeField]
-        ScriptableResources ressources;
-
         GameObject[,] labyrinthTiles;
 
         int[,] labyrinth;
@@ -193,7 +190,7 @@ namespace UdeS.Promoscience.Labyrinths
 
             Vector3 tilePosition = GetLabyrinthPositionInWorldPosition(x, y);
 
-            tile = Instantiate(ressources.GetTilePrefabWithId(tileId), tilePosition, Quaternion.identity, gameObject.transform);
+            tile = Instantiate(Resources.Instance.GetTilePrefabWithId(tileId), tilePosition, Quaternion.identity, gameObject.transform);
 
             return tile;
         }

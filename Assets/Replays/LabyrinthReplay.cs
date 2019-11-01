@@ -9,7 +9,7 @@ namespace UdeS.Promoscience.Replays
     public class LabyrinthReplay
     {
         //public Replay replay;
-        private ScriptableController controller;
+        protected ScriptableController controller;
 
         public Labyrinths.IData labyrinthData;
 
@@ -59,7 +59,7 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void Start()
         {
-            labyrinth = Labyrinths.ScriptableResources.Instance
+            labyrinth = Labyrinths.Resources.Instance
                 .GetLabyrinthTemplate(labyrinthData)
                 .Create(labyrinthData);
 
@@ -67,7 +67,7 @@ namespace UdeS.Promoscience.Replays
 
             labyrinth.GenerateLabyrinthVisual();
 
-            dirtyLabyrinth = Labyrinths.ScriptableResources.Instance
+            dirtyLabyrinth = Labyrinths.Resources.Instance
                 .GetLabyrinthTemplate(labyrinthData)
                 .Create(labyrinthData);
 
@@ -205,14 +205,20 @@ namespace UdeS.Promoscience.Replays
             isDirtyToggled = enable;
             labyrinth.gameObject.SetActive(!isDirtyToggled);
             dirtyLabyrinth.gameObject.SetActive(isDirtyToggled);
-
         }
 
+        public void EnableOptions(bool enable)
+        {
+            
+        }
 
         public virtual void OnReplayAction(ReplayAction action, params object[] args)
         {
             switch (action)
             {
+                case ReplayAction.ToggleOptions:                    
+                    break;
+
                 case ReplayAction.ExitReplay:
                     Clear();
                     break;

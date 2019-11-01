@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 //using UdeS.Promoscience.Utils;
 using UnityEngine;
 
@@ -7,15 +8,8 @@ namespace UdeS.Promoscience.Labyrinths
 {
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Ressources", order = 1)]
-    public class ScriptableResources : ScriptableObject
+    public class Resources : BaseResources<Resources>
     {
-        public static ScriptableResources Instance;
-
-        public void OnEnable()
-        {
-            Instance = this;
-        }
-
         [SerializeField]
         public Labyrinth LabyrinthSmall;
 

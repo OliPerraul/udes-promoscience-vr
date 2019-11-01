@@ -17,6 +17,7 @@ namespace UdeS.Promoscience.Replays
         Resume,
         Slide,
 
+        ToggleOptions,
         ToggleDirtyLabyrinth,
         SelectLabyrinth,
 

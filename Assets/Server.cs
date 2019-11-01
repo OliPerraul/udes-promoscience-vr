@@ -12,7 +12,7 @@ using UdeS.Promoscience.Labyrinths;
 
 namespace UdeS.Promoscience
 {
-    public class Server : MonoBehaviour
+    public class Server : Cirrus.BaseSingleton<Server>
     {
         private Replays.Replay replay;
 
@@ -86,19 +86,6 @@ namespace UdeS.Promoscience
         private int gameRound = 0;
 
 
-        private static Server instance = null;
-
-        public static Server Instance
-        {
-            get
-            {
-                if (instance == null)
-                    instance = FindObjectOfType<Server>();
-
-                return instance;
-            }
-        }
-
         private ServerGameState gameState;
 
 
@@ -130,10 +117,7 @@ namespace UdeS.Promoscience
             }
 
             return id;
-
         }
-
-
 
         public static bool IsApplicationServer
         {
@@ -144,8 +128,7 @@ namespace UdeS.Promoscience
         }
 
         public void Awake()
-        {
-            instance = this;
+        {          
             DontDestroyOnLoad(gameObject);
 
             // When server starts set all previous course to innactive
@@ -257,7 +240,7 @@ namespace UdeS.Promoscience
 
             Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(Labyrinths.CurrentData.Id);
 
-            CurrentReplay = new Replays.LabyrinthReplay(instantReplayController, Labyrinths.CurrentData);
+            CurrentReplay = new Replays.InstantReplay(instantReplayController, Labyrinths.CurrentData);
 
             CurrentReplay.Start();
         }
@@ -420,8 +403,7 @@ namespace UdeS.Promoscience
                     case ClientGameState.Playing:
                     case ClientGameState.ViewingGlobalReplay:
                     case ClientGameState.ViewingLocalReplay:
-                    case ClientGameState.WaitingForNextRound:
-                                               
+                    case ClientGameState.WaitingForNextRound:                                               
 
                         player.serverAlgorithm = GetNextAlgorithm(player.ServerTeamId);
 

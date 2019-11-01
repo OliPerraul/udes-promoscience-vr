@@ -158,7 +158,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
                 int i = 0;
                 foreach (var data in Server.Instance.Labyrinths.Data)
                 {
-                    Labyrinth labyrinth = ScriptableResources.Instance
+                    Labyrinth labyrinth = Resources.Instance
                         .GetLabyrinthTemplate(data)
                         .Create(data);
 
@@ -176,8 +176,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
                 StartCoroutine(DelayedOnLabyrinthSelect());
             }
             else
-            {
+            {                
                 Clear();
+                Enabled = false;
             }
         }
 

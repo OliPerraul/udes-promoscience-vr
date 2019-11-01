@@ -16,12 +16,6 @@ namespace UdeS.Promoscience.Replays
         //[SerializeField]
         //public ScriptableServerGameInformation Server;
 
-        [SerializeField]
-        public Resources Resources;
-
-        [SerializeField]
-        public Labyrinths.ScriptableResources LabyrinthResources;
-
         public abstract ScriptableController Controller { get; }
 
         public abstract void OnServerGameStateChanged();

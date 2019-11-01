@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2d69920a88c41c46a94f5e65c718a52, type: 3}
-  m_Name: Resources
+  m_Name: Resources.Labyrinths
   m_EditorClassIdentifier: 
   LabyrinthSmall: {fileID: 114960978338339494, guid: ec672ff3d7d1d1047b19df996724e006,
     type: 2}

@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class Resources : ScriptableObject
+    public class Resources : BaseResources<Resources>
     {
         [SerializeField]
         public Segment Segment;
@@ -13,12 +14,5 @@ namespace UdeS.Promoscience.Replays
 
         [SerializeField]
         public AlgorithmSequence AlgorithmSequence;
-
-        public static Resources Instance;
-
-        public void OnEnable()
-        {
-            Instance = this;
-        }
     }
 }

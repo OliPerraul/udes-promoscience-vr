@@ -51,19 +51,38 @@ namespace UdeS.Promoscience.Replays.UI
             overlayButton.onClick.AddListener(OnOverlayClicked);
             algorithmButton.onClick.AddListener(OnAlgorithmClicked);
 
+            replayOptions.OnActionHandler += OnReplayAction;
+
             Server.Instance.gameStateChangedEvent += OnGameStateChanged;
 
             Enabled = false;
         }
 
+        public void OnReplayAction(ReplayAction action, params object[] args)
+        {
+            switch (action)
+            {
+                case ReplayAction.ToggleOptions:
+                    bool enable = (bool)args[0];
+                    EnableOptions(enable);
+                    break;
+            }
+        }
+
+
+        [SerializeField]
+        private bool isInstantReplay = false;
 
         public void OnGameStateChanged()
         {
             switch (Server.Instance.GameState)
             {
+                case ServerGameState.AdvancedReplay:                    
+                    Enabled = !isInstantReplay;
+                    break;
+
                 case ServerGameState.InstantReplay:
-                case ServerGameState.AdvancedReplay:
-                    Enabled = true;
+                    Enabled = isInstantReplay;
                     break;
 
                 default:
@@ -105,12 +124,17 @@ namespace UdeS.Promoscience.Replays.UI
             }
         }
 
+        public void EnableOptions(bool enable)
+        {
+            sequencePopup.gameObject.SetActive(enable);
+            sequenceToggle.SetActive(enable);
+            overlayButton.gameObject.SetActive(enable);
+            algorithmButton.gameObject.SetActive(enable);
+        }
+
         public void OnOpenClicked()
         {
-            sequencePopup.gameObject.SetActive(!sequenceToggle.activeInHierarchy);
-            sequenceToggle.SetActive(!sequenceToggle.activeInHierarchy);
-            overlayButton.gameObject.SetActive(!overlayButton.gameObject.activeInHierarchy);
-            algorithmButton.gameObject.SetActive(!algorithmButton.gameObject.activeInHierarchy);
+            EnableOptions(!sequenceToggle.activeInHierarchy);
         }
 
         public void OnExitClicked()

@@ -1,45 +1,47 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UdeS.Promoscience.Algorithms
 {
-    public class Resources : ScriptableObject
+    public class Resources : BaseResources<Resources>
     {
-        public static Resources Instance;
-
-        public void Awake()
-        {
-            Instance = this;
-        }
-
-        public void OnEnable()
-        {
-            Instance = this;            
-        }
 
         [SerializeField]
         private List<Resource> algorithms;
 
-        private Dictionary<Id, Algorithm> idAlgorithmPairs = new Dictionary<Id, Algorithm>();
+        private Dictionary<Id, Algorithm> idAlgorithmPairs;// = new Dictionary<Id, Algorithm>();
 
-
-        public ICollection<Algorithm> Algorithms {
-
+        public Dictionary<Id, Algorithm> IdAlgorithmPairs
+        {
             get
             {
+                if (idAlgorithmPairs == null)
+                {
+                    idAlgorithmPairs = new Dictionary<Id, Algorithm>();
+                }
+
                 if (idAlgorithmPairs.Count == 0)
                 {
                     foreach (Resource res in algorithms)
                     {
                         if (!idAlgorithmPairs.ContainsKey(res.Id))
-                        {
+                        { 
                             idAlgorithmPairs.Add(res.Id, res.Create());
                         }
                     }
                 }
+                
+                return idAlgorithmPairs;
+            }
+        }
 
-                return idAlgorithmPairs.Values;
+        public ICollection<Algorithm> Algorithms
+        {
+            get
+            {
+                return IdAlgorithmPairs.Values;
             }
         }
 
@@ -47,18 +49,7 @@ namespace UdeS.Promoscience.Algorithms
         {
             Algorithm algorithm;
 
-            if (idAlgorithmPairs.Count == 0)
-            {
-                foreach (Resource res in algorithms)
-                {
-                    if (!idAlgorithmPairs.ContainsKey(res.Id))
-                    {
-                        idAlgorithmPairs.Add(res.Id, res.Create());
-                    }
-                }
-            }
-
-            if (idAlgorithmPairs.TryGetValue(id, out algorithm))
+            if (IdAlgorithmPairs.TryGetValue(id, out algorithm))
             {
                 return algorithm;
             }
