@@ -12,6 +12,94 @@ using UdeS.Promoscience.Algorithms;
 namespace UdeS.Promoscience.Labyrinths
 {
     [System.Serializable]
+    public enum TileType
+    {
+        Start,
+        End,
+        Empty,
+
+        Floor1,
+        Floor2,
+        Floor3,
+        Horizontal1,
+        Horizontal2,
+        Horizontal3,
+        Horizontal4,
+        Vertical1,
+        Vertical2,
+        Vertical3,
+        Vertical4,
+        Corner1,
+        Corner2,
+        Corner3,
+
+
+    }
+
+    public enum Type
+    {
+        Unknown,
+        Small,
+        Medium,
+        Large
+    }
+
+    public static class Utils
+    {
+        public const int NumLabyrinth = 4;
+
+        public const int SizeSmall = 9;
+
+        public const int SizeMedium = 11;
+
+        public const int SizeLarge = 13;
+
+
+        public static Type GetType(IData data)
+        {
+            if (data.SizeX <= SizeSmall && data.SizeY <= SizeSmall)
+            {
+                return Type.Small;
+            }
+            else if (data.SizeX <= SizeMedium && data.SizeY <= SizeMedium)
+            {
+                return Type.Medium;
+            }
+            else
+            {
+                return Type.Large;
+            }
+        }
+
+        public static TileType[] ConvertToTiles(int[] tiles)
+        {
+            TileType[] res = new TileType[tiles.Length];
+
+            for (int i = 0; i < tiles.Length; i++)
+            {
+                if (tiles[i] >= Promoscience.Utils.TILE_START_START_ID && tiles[i] <= Promoscience.Utils.TILE_START_END_ID)
+                {
+                    res[i] = TileType.Start;
+                }
+                if (tiles[i] >= Promoscience.Utils.TILE_FLOOR_START_ID && tiles[i] <= Promoscience.Utils.TILE_FLOOR_END_ID)
+                {
+                    res[i] = TileType.Floor1;
+                }
+                else if (tiles[i] >= Promoscience.Utils.TILE_END_START_ID && tiles[i] <= Promoscience.Utils.TILE_END_END_ID)
+                {
+                    res[i] = TileType.End;
+                }
+                else if (tiles[i] >= Promoscience.Utils.TILE_WALL_START_ID && tiles[i] <= Promoscience.Utils.TILE_WALL_END_ID)
+                {
+                    res[i] = TileType.Horizontal1;
+                }
+            }
+
+            return res;
+        }
+    }
+
+    [System.Serializable]
     public class Camera
     {
         [SerializeField]
@@ -34,8 +122,8 @@ namespace UdeS.Promoscience.Labyrinths
             int vertical,
             int index)
         {
-            var x =  ((float)index.Mod(horizontal));
-            
+            var x = ((float)index.Mod(horizontal));
+
             var y = ((float)(index / horizontal));
             y = (vertical - 1) - y;
 
@@ -53,14 +141,11 @@ namespace UdeS.Promoscience.Labyrinths
 
     public class Labyrinth : MonoBehaviour
     {
-        //[SerializeField]
-        //private ScriptableClientGameState gameState;
-
         [SerializeField]
         public Camera Camera;
 
         [SerializeField]
-        private ScriptableLabyrinth scriptableData;
+        private Resource scriptableData;
 
         private IData data = null;
 
@@ -92,7 +177,6 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-
         Vector2Int EndPosition
         {
             get
@@ -101,14 +185,13 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-
         private void Start()
         {
             //Client.Instance.clientStateChangedEvent += OnGameStateChanged;
         }
 
         public void SetCamera(
-            int numLabyrinths, 
+            int numLabyrinths,
             int maxHorizontal,
             int index)
         {
@@ -117,7 +200,7 @@ namespace UdeS.Promoscience.Labyrinths
             Camera.Split(
                 maxHorizontal,
                 numLabyrinths / maxHorizontal,
-                index);            
+                index);
         }
 
         public void OnGameStateChanged()
@@ -135,7 +218,7 @@ namespace UdeS.Promoscience.Labyrinths
             //else if (Client.Instance.State == ClientGameState.ViewingLocalReplay)
             //{
             //    GenerateLabyrinthVisual();
-                
+
             //}
             //else if (Client.Instance.State == ClientGameState.WaitingForNextRound)
             //{
@@ -166,14 +249,14 @@ namespace UdeS.Promoscience.Labyrinths
             Camera.Source.transform.position += new Vector3(
                 labyrinthTiles.GetLength(0) * Promoscience.Utils.TILE_SIZE,
                 0,
-                -labyrinthTiles.GetLength   (1) * Promoscience.Utils.TILE_SIZE)/ 2;
+                -labyrinthTiles.GetLength(1) * Promoscience.Utils.TILE_SIZE) / 2;
 
             Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
         }
 
         void PopulateLabyrinth()
         {
-            labyrinth = new int[Data.sizeX, Data.sizeY];
+            labyrinth = new int[Data.SizeX, Data.SizeY];
 
             for (int x = 0; x < labyrinth.GetLength(0); x++)
             {
@@ -246,7 +329,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         //Labyrith start should always be in a dead end
         public int GetStartDirection()
-        {            
+        {
             // up
             int direction = 0;
 
@@ -293,7 +376,7 @@ namespace UdeS.Promoscience.Labyrinths
         public void SetTileColor(Vector2Int tile, TileColor color)
         {
             GameObject gobj = labyrinthTiles[tile.x, tile.y];
-            
+
             var floorPainter = gobj.GetComponentInChildren<FloorPainter>();
             if (floorPainter != null)
             {
@@ -333,9 +416,10 @@ namespace UdeS.Promoscience.Labyrinths
         public Labyrinth Create(IData data)
         {
             var labyrinth = this.Create();
-            labyrinth.data = data;            
+            labyrinth.data = data;
             return labyrinth;
         }
-        
+
     }
+
 }

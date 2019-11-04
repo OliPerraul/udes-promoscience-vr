@@ -604,16 +604,16 @@ namespace UdeS.Promoscience
                                 labyrinthSpecs[1]
                                 );
 
-                            for (int i = 0; i < labyrinth.sizeX * labyrinth.sizeY; i++)
+                            for (int i = 0; i < labyrinth.SizeX * labyrinth.SizeY; i++)
                             {
-                                labyrinth.data[i] = labyrinthSpecs[i + 2];
+                                labyrinth.Tiles[i] = labyrinthSpecs[i + 2];
                             }
 
                             // TODO replace
                             labyrinth.SetLabyrithData(
-                                labyrinth.data,
-                                labyrinth.sizeX,
-                                labyrinth.sizeY,
+                                labyrinth.Tiles,
+                                labyrinth.SizeX,
+                                labyrinth.SizeY,
                                 labyrinth.Id);
 
                             labyrinths.Add(labyrinth);
@@ -654,20 +654,20 @@ namespace UdeS.Promoscience
                         {
                             string[] specs = reader[LABYRINTH_SPECS].ToString().Split();
                             int[] labyrinthSpecs = Array.ConvertAll(specs, int.Parse);
-                            labyrinth.sizeX = labyrinthSpecs[0];
-                            labyrinth.sizeY = labyrinthSpecs[1];
-                            labyrinth.data = new int[labyrinth.sizeX * labyrinth.sizeY];
+                            labyrinth.SizeX = labyrinthSpecs[0];
+                            labyrinth.SizeY = labyrinthSpecs[1];
+                            labyrinth.Tiles = new int[labyrinth.SizeX * labyrinth.SizeY];
 
-                            for (int i = 0; i < labyrinth.sizeX * labyrinth.sizeY; i++)
+                            for (int i = 0; i < labyrinth.SizeX * labyrinth.SizeY; i++)
                             {
-                                labyrinth.data[i] = labyrinthSpecs[i + 2];
+                                labyrinth.Tiles[i] = labyrinthSpecs[i + 2];
                             }
 
                             // TODO replace
                             labyrinth.SetLabyrithData(
-                                labyrinth.data,
-                                labyrinth.sizeX,
-                                labyrinth.sizeY,
+                                labyrinth.Tiles,
+                                labyrinth.SizeX,
+                                labyrinth.SizeY,
                                 labyrinth.Id);
                         }
 
@@ -1415,9 +1415,18 @@ namespace UdeS.Promoscience
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             //Labyrinth Tutorial
 
+            Labyrinths.Resource resource = Cirrus.AssetDatabase.CreateAsset<Labyrinths.Resource>("Labyrinths/Labyrinth.Tutorial");
+            UnityEditor.EditorUtility.SetDirty(resource);
+
             int id = 4;
+            resource.Id = id;
+
             int sizeX = 11;
+            resource.SizeX = sizeX;
+
             int sizeY = 11;
+            resource.SizeY = sizeY;
+
 
             int[] data = new int[sizeX * sizeY];
 
@@ -1564,6 +1573,9 @@ namespace UdeS.Promoscience
             data[(10 * sizeY) + 9] = Utils.TILE_ROME_VERTICAL_WALL_ID;
             data[(10 * sizeY) + 10] = Utils.TILE_ROME_TOWER_WALL_ID;
 
+            resource.Tiles2 = Labyrinths.Utils.ConvertToTiles(data);
+
+
             SQLiteUtilities.InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
 
             //Labyrinth 1
@@ -1702,6 +1714,7 @@ namespace UdeS.Promoscience
             data[(9 * sizeY) + 8] = Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
             data[(9 * sizeY) + 9] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
             data[(9 * sizeY) + 10] = Utils.TILE_PTOL_TOWER_WALL_ID;
+                       
 
             SQLiteUtilities.InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
 

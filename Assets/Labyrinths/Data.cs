@@ -8,53 +8,18 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Labyrinths
 {
-    public enum Type
-    {
-        Unknown,
-        Small,
-        Medium,
-        Large
-    }
-
-    public static class Utils
-    {
-        public const int NumLabyrinth = 4;
-
-        public const int SizeSmall = 9;
-
-        public const int SizeMedium = 11;
-
-        public const int SizeLarge = 13;
-
-
-        public static Type GetType(IData data)
-        {
-            if (data.sizeX <= SizeSmall && data.sizeY <= SizeSmall)
-            {
-                return Type.Small;
-            }
-            else if (data.sizeX <= SizeMedium && data.sizeY <= SizeMedium)
-            {
-                return Type.Medium;
-            }
-            else
-            {
-                return Type.Large;
-            }
-        }
-    }
 
     public interface IData
     {
-        //Type Type { get; }
-
         int Id { get; set; }
 
-        int[] data { get; set; }
+        int[] Tiles { get; set; }
+               
+        TileType[] Tiles2 { get; set; }
 
-        int sizeX { get; set; }
+        int SizeX { get; set; }
 
-        int sizeY { get; set; }
+        int SizeY { get; set; }
 
         int GetLabyrithValueAt(int x, int y);
 
@@ -72,9 +37,15 @@ namespace UdeS.Promoscience.Labyrinths
 
         int StartDirection { get; }
 
-        void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id);
+        void SetLabyrithData(
+            int[] labyrinthData, 
+            int labyrinthSizeX, 
+            int labyrinthSizeY, 
+            int id);
 
-        void SetLabyrithData(int[,] map, int id);
+        void SetLabyrithData(
+            int[,] map, 
+            int id);
     }
 
 
@@ -82,28 +53,49 @@ namespace UdeS.Promoscience.Labyrinths
     [Serializable]
     public class Data : IData
     {
-        public int Id { get; set; }
-        public int[] data { get; set; }
-        public int sizeX { get; set; }
-        public int sizeY { get; set; }
+        [SerializeField]
+        private int id;
+        // TODO remove id is a member of the labyrinth
+        public int Id { get { return id; } set { id = value; } }
 
-        public Data() { }    
+        [SerializeField]
+        private int[] tiles;
 
-        public Data(int id, int[] data, int sizex, int sizey)
+        public int[] Tiles { get { return tiles; } set { tiles = value; } }
+
+        [SerializeField]
+        private TileType[] tiles2;
+
+        public TileType[] Tiles2 { get { return tiles2; } set { tiles2 = value; } }
+
+        [SerializeField]
+        private int sizeX;
+
+        public int SizeX { get { return sizeX; } set { sizeX = value; } }
+
+        [SerializeField]
+        private int sizeY;
+
+        public int SizeY { get { return sizeY; } set { sizeY = value; } }
+
+        public Data() { }        
+
+        public Data(int id, int[] tiles, int sizex, int sizey)
         {
             this.Id = id;
-            this.data = data;
-            this.sizeX = sizex;
-            this.sizeY = sizey;
+            this.Tiles = tiles;
+            this.SizeX = sizex;
+            this.SizeY = sizey;
 
             // TODO replace
             SetLabyrithData(
-                data,
-                sizeX,
-                sizeY,
+                tiles,
+                SizeX,
+                SizeY,
                 Id);
         }
 
+        [SerializeField]
         private Vector2Int startPos;
 
         public Vector2Int StartPos
@@ -111,6 +103,7 @@ namespace UdeS.Promoscience.Labyrinths
             get { return startPos; }
         }
 
+        [SerializeField]
         private Vector2Int endPos;
 
         public Vector2Int EndPos
@@ -139,40 +132,40 @@ namespace UdeS.Promoscience.Labyrinths
                 OnValueChanged();
             }
 
-            return data;
+            return Tiles;
         }
 
         public int GetLabyrithValueAt(int x, int y)
         {
             //Could add an out of bound check
-            return data[(x * sizeY) + y];
+            return Tiles[(x * SizeY) + y];
         }
 
         public int GetLabyrithXLenght()
         {
-            return sizeX;
+            return SizeX;
         }
 
         public int GetLabyrithYLenght()
         {
-            return sizeY;
+            return SizeY;
         }
 
         public void SetLabyrithData(
-            int[] labyrinthData, 
+            int[] tiles, 
             int labyrinthSizeX, 
             int labyrinthSizeY, 
             int id)
         {
             Id = id;
-            data = labyrinthData;
-            sizeX = labyrinthSizeX;
-            sizeY = labyrinthSizeY;
+            Tiles = tiles;
+            SizeX = labyrinthSizeX;
+            SizeY = labyrinthSizeY;
 
-            for (int x = 0; x < sizeX; x++)
+            for (int x = 0; x < SizeX; x++)
             {
-                for (int y = 0; y < sizeY; y++)
-                {
+                for (int y = 0; y < SizeY; y++)
+                {                    
                     if (
                         GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID &&
                         GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_START_END_ID)
@@ -189,20 +182,21 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
+
         public void SetLabyrithData(int[,] map, int id)
         {
             if (id != Id)
             {
                 Id = id;
-                sizeX = map.GetLength(0);
-                sizeY = map.GetLength(1);
-                data = new int[sizeX * sizeY];
+                SizeX = map.GetLength(0);
+                SizeY = map.GetLength(1);
+                Tiles = new int[SizeX * SizeY];
 
-                for (int x = 0; x < sizeX; x++)
+                for (int x = 0; x < SizeX; x++)
                 {
-                    for (int y = 0; y < sizeY; y++)
+                    for (int y = 0; y < SizeY; y++)
                     {
-                        data[(x * sizeY) + y] = map[x, y];
+                        Tiles[(x * SizeY) + y] = map[x, y];
 
                         if (
                             GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID &&
@@ -220,7 +214,6 @@ namespace UdeS.Promoscience.Labyrinths
                 }
             }
         }
-
 
         public bool GetIsTileWalkable(int x, int y)
         {
@@ -242,7 +235,6 @@ namespace UdeS.Promoscience.Labyrinths
         {
             return GetIsTileWalkable(tile.x, tile.y);
         }
-
 
         //Labyrith start should always be in a dead end
         public int StartDirection

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f757e0af315acc44e809553688f706f5, type: 3}
+  m_Name: Skin.Brit
+  m_EditorClassIdentifier: 
+  FloorStart: {fileID: 1261533031009890, guid: 89e555c4898664a4dabecb16838814f4, type: 2}
+  FloorEnd: {fileID: 1428779146183882, guid: ebfba41d859b6274bb0e178c95a4ae5a, type: 2}
+  FloorTile1: {fileID: 1236930405315002, guid: d8c4f7b14cfcdea4cabf57d2e6b6ac84, type: 2}
+  FloorTile2: {fileID: 1236930405315002, guid: d8c4f7b14cfcdea4cabf57d2e6b6ac84, type: 2}
+  FloorTile3: {fileID: 1236930405315002, guid: d8c4f7b14cfcdea4cabf57d2e6b6ac84, type: 2}
+  Corner1: {fileID: 1642903092784012, guid: d1b72df03db61ac4cb21c09126d3cca4, type: 2}
+  Corner2: {fileID: 1642903092784012, guid: d1b72df03db61ac4cb21c09126d3cca4, type: 2}
+  Corner3: {fileID: 1609831725101398, guid: e41034f181e148342a7027224635a021, type: 2}
+  Horizontal1: {fileID: 1499433294543186, guid: 1db1e978e37d0fd4a96abe047d38ff11,
+    type: 2}
+  Horizontal2: {fileID: 1499433294543186, guid: 1db1e978e37d0fd4a96abe047d38ff11,
+    type: 2}
+  Horizontal3: {fileID: 1499433294543186, guid: 1db1e978e37d0fd4a96abe047d38ff11,
+    type: 2}
+  Horizontal4: {fileID: 1499433294543186, guid: 1db1e978e37d0fd4a96abe047d38ff11,
+    type: 2}
+  Vertical1: {fileID: 1571153108193166, guid: a3f0e032b45c78a438fbc84af469883f, type: 2}
+  Vertical2: {fileID: 1571153108193166, guid: a3f0e032b45c78a438fbc84af469883f, type: 2}
+  Vertical3: {fileID: 1571153108193166, guid: a3f0e032b45c78a438fbc84af469883f, type: 2}
+  Vertical4: {fileID: 1571153108193166, guid: a3f0e032b45c78a438fbc84af469883f, type: 2}

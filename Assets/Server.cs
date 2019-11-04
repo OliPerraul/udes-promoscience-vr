@@ -354,9 +354,9 @@ namespace UdeS.Promoscience
                         // TODO send course json over??
                         player.TargetSetGame(
                             player.connectionToClient,
-                            Labyrinths.CurrentData.data,
-                            Labyrinths.CurrentData.sizeX,
-                            Labyrinths.CurrentData.sizeY,
+                            Labyrinths.CurrentData.Tiles,
+                            Labyrinths.CurrentData.SizeX,
+                            Labyrinths.CurrentData.SizeY,
                             tutorialLabyrinthId,
                             algorithm,
                             true);
@@ -376,9 +376,9 @@ namespace UdeS.Promoscience
 
             player.TargetSetGame(
                 player.connectionToClient,
-                Labyrinths.CurrentData.data,
-                Labyrinths.CurrentData.sizeX,
-                Labyrinths.CurrentData.sizeY,
+                Labyrinths.CurrentData.Tiles,
+                Labyrinths.CurrentData.SizeX,
+                Labyrinths.CurrentData.SizeY,
                 tutorialLabyrinthId,
                 algorithm,
                 isTutorial: true);
@@ -413,9 +413,9 @@ namespace UdeS.Promoscience
 
                         player.TargetSetGame(
                             player.connectionToClient,
-                            Labyrinths.CurrentData.data,
-                            Labyrinths.CurrentData.sizeX,
-                            Labyrinths.CurrentData.sizeY,
+                            Labyrinths.CurrentData.Tiles,
+                            Labyrinths.CurrentData.SizeX,
+                            Labyrinths.CurrentData.SizeY,
                             labyrinthId,
                             player.serverAlgorithm,
                             false);
@@ -443,9 +443,9 @@ namespace UdeS.Promoscience
 
             player.TargetSetGame(
                 player.connectionToClient,
-                Labyrinths.CurrentData.data,
-                Labyrinths.CurrentData.sizeX,
-                Labyrinths.CurrentData.sizeY,
+                Labyrinths.CurrentData.Tiles,
+                Labyrinths.CurrentData.SizeX,
+                Labyrinths.CurrentData.SizeY,
                 Labyrinths.CurrentData.Id,
                 player.serverAlgorithm,
                 false);
@@ -461,9 +461,9 @@ namespace UdeS.Promoscience
 
             player.TargetSetGameWithSteps(
                 player.connectionToClient,
-                steps, Labyrinths.CurrentData.data,
-                Labyrinths.CurrentData.sizeX,
-                Labyrinths.CurrentData.sizeY,
+                steps, Labyrinths.CurrentData.Tiles,
+                Labyrinths.CurrentData.SizeX,
+                Labyrinths.CurrentData.SizeY,
                 Labyrinths.CurrentData.Id,
                 player.serverAlgorithm,
                 false); // TODO start with steps tutorial??

@@ -206,20 +206,24 @@ namespace UdeS.Promoscience
         //150-199 Walls
         public const int TILE_WALL_START_ID = 150;
         public const int TILE_WALL_ID = 150;
+
         public const int TILE_ROME_HORIZONTAL_WALL_ID = 151;
         public const int TILE_ROME_HORIZONTAL_WALL_B_ID = 152;
         public const int TILE_ROME_VERTICAL_WALL_ID = 153;
         public const int TILE_ROME_VERTICAL_WALL_B_ID = 154;
         public const int TILE_ROME_TOWER_WALL_ID = 155;
+
         public const int TILE_PTOL_HORIZONTAL_WALL_ID = 156;
         public const int TILE_PTOL_HORIZONTAL_WALL_B_ID = 157;
         public const int TILE_PTOL_VERTICAL_WALL_ID = 158;
         public const int TILE_PTOL_VERTICAL_WALL_B_ID = 159;
         public const int TILE_PTOL_TOWER_WALL_ID = 160;
+
         public const int TILE_BRIT_HORIZONTAL_WALL_ID = 161;
         public const int TILE_BRIT_VERTICAL_WALL_ID = 162;
         public const int TILE_BRIT_TOWER_WALL_ID = 163;
         public const int TILE_BRIT_TOWER_WALL_2_ID = 164;
+
         public const int TILE_KART_HORIZONTAL_WALL_ID = 165;
         public const int TILE_KART_HORIZONTAL_WALL_B_ID = 166;
         public const int TILE_KART_VERTICAL_WALL_ID = 167;

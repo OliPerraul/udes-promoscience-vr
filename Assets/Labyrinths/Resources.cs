@@ -19,6 +19,9 @@ namespace UdeS.Promoscience.Labyrinths
         [SerializeField]
         public Labyrinth LabyrinthLarge;
 
+        [SerializeField]
+        public Resource Resource;
+
         public Labyrinth GetLabyrinthTemplate(IData data)
         {
             switch (Utils.GetType(data))
@@ -37,7 +40,6 @@ namespace UdeS.Promoscience.Labyrinths
                     
             }
         }
-
 
         [SerializeField]
         GameObject startTilePrefab;
@@ -82,7 +84,6 @@ namespace UdeS.Promoscience.Labyrinths
         [SerializeField]
         GameObject ptolTowerWallTilePrefab;
 
-
         [SerializeField]
         GameObject britStartTilePrefab;
         [SerializeField]
@@ -97,7 +98,6 @@ namespace UdeS.Promoscience.Labyrinths
         GameObject britTowerWallTilePrefab;
         [SerializeField]
         GameObject britTowerWall2TilePrefab;
-
 
         [SerializeField]
         GameObject kartStartTilePrefab;

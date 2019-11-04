@@ -1,16 +1,64 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using UnityEditor;
 
 namespace Cirrus
 {
-
     public static class AssetDatabase
     {
+        public static string CurrentFolder
+        {
+            get
+            {
+                var path = "";
+                var obj = Selection.activeObject;
+                if (obj == null) path = "Assets";
+                else path = UnityEditor.AssetDatabase.GetAssetPath(obj.GetInstanceID());
+                if (path.Length > 0)
+                {
+                    if (Directory.Exists(path))
+                    {
+                        return path;
+                    }
+                    else
+                    {
+                        return path;
+                    }
+                }
+                else
+                {
+                    return "";
+                }
+            }
+        }
+
         //public static T FindObjectOfType<T>()
         //{
         //    UnityEditor.AssetDatabase.F
         //}
+        /// <summary>
+        //	This makes it easy to create, name and place unique new ScriptableObject asset files.
+        /// </summary>
+        public static T CreateAsset<T>(string path) where T : ScriptableObject
+        {
+            T asset = ScriptableObject.CreateInstance<T>();
+
+            string assetPathAndName = UnityEditor.AssetDatabase.GenerateUniqueAssetPath("Assets/" + path + ".asset");
+
+            UnityEditor.AssetDatabase.CreateAsset(asset, assetPathAndName);
+
+            UnityEditor.AssetDatabase.SaveAssets();
+
+            UnityEditor.AssetDatabase.Refresh();
+
+            UnityEditor.EditorUtility.FocusProjectWindow();
+
+            UnityEditor.Selection.activeObject = asset;
+
+            return asset;
+        }
 
 
 

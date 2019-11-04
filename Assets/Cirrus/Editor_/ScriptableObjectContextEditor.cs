@@ -27,22 +27,6 @@ namespace Cirrus.Editor
     public class ScriptableObjectContextEditor
     {
 
-        /// <summary>
-        /// Creating specific class menu items.
-        /// </summary>
-        /// <returns>The created ScriptableObject.</returns>
-        /// <typeparam name="T">Type of ScriptableObject to create.</typeparam>
-        public static T CreateAsset<T>() where T : ScriptableObject
-        {
-            T asset = ScriptableObject.CreateInstance<T>();
-
-            string path = GetAssetPath();
-            string assetPathAndName = UnityEditor.AssetDatabase.GenerateUniqueAssetPath(path + "/New " + typeof(T).ToString() + ".asset");
-
-            BuildAsset(asset, assetPathAndName);
-
-            return asset;
-        }
 
         /// <summary>
         /// Gets the target path for the asset to create.
