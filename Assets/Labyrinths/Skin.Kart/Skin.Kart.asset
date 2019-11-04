@@ -14,8 +14,8 @@ MonoBehaviour:
   FloorStart: {fileID: 1683817972481924, guid: 2cdd37513a2252846b79535512228653, type: 2}
   FloorEnd: {fileID: 1851923553327990, guid: 99a25470771a661419a177eeb85a4143, type: 2}
   FloorTile1: {fileID: 1335337893892320, guid: b821d5742db2af241b8cd5098a4e4ad0, type: 2}
-  FloorTile2: {fileID: 0}
-  FloorTile3: {fileID: 0}
+  FloorTile2: {fileID: 1335337893892320, guid: b821d5742db2af241b8cd5098a4e4ad0, type: 2}
+  FloorTile3: {fileID: 1335337893892320, guid: b821d5742db2af241b8cd5098a4e4ad0, type: 2}
   Corner1: {fileID: 1019364894973810, guid: b3a35c2889942ea47962959a44ee584c, type: 2}
   Corner2: {fileID: 1525289004682826, guid: e1dda7383f3c695408b14117c544363f, type: 2}
   Corner3: {fileID: 1273844530829122, guid: 8057ba13b45c3e3499b36804bcd295ef, type: 2}

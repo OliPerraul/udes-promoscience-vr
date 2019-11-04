@@ -11,19 +11,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f757e0af315acc44e809553688f706f5, type: 3}
   m_Name: Skin.Ptol
   m_EditorClassIdentifier: 
-  FloorStart: {fileID: 0}
-  FloorEnd: {fileID: 0}
-  FloorTile1: {fileID: 0}
-  FloorTile2: {fileID: 0}
-  FloorTile3: {fileID: 0}
-  Corner1: {fileID: 0}
-  Corner2: {fileID: 0}
-  Corner3: {fileID: 0}
-  Horizontal1: {fileID: 0}
-  Horizontal2: {fileID: 0}
-  Horizontal3: {fileID: 0}
-  Horizontal4: {fileID: 0}
-  Vertical1: {fileID: 0}
-  Vertical2: {fileID: 0}
-  Vertical3: {fileID: 0}
-  Vertical4: {fileID: 0}
+  FloorStart: {fileID: 1666638511150734, guid: af85724882ea3c84e9d40b0c9126b240, type: 2}
+  FloorEnd: {fileID: 1210830675593154, guid: a31f40d264044074280356caeb33f564, type: 2}
+  FloorTile1: {fileID: 1149997027509596, guid: c4a3566108f8a0c46b6612525b8bcb56, type: 2}
+  FloorTile2: {fileID: 1149997027509596, guid: c4a3566108f8a0c46b6612525b8bcb56, type: 2}
+  FloorTile3: {fileID: 1149997027509596, guid: c4a3566108f8a0c46b6612525b8bcb56, type: 2}
+  Corner1: {fileID: 1545337567554842, guid: c727794e3f8146b4f8d1766accf7f67e, type: 2}
+  Corner2: {fileID: 1545337567554842, guid: c727794e3f8146b4f8d1766accf7f67e, type: 2}
+  Corner3: {fileID: 1545337567554842, guid: c727794e3f8146b4f8d1766accf7f67e, type: 2}
+  Horizontal1: {fileID: 1621556760567336, guid: 0560bf2c83886bf4f81ec66b6b33941d,
+    type: 2}
+  Horizontal2: {fileID: 1057042629391854, guid: db7fd3d8d9929e14087c78bb1e4078a0,
+    type: 2}
+  Horizontal3: {fileID: 1621556760567336, guid: 0560bf2c83886bf4f81ec66b6b33941d,
+    type: 2}
+  Horizontal4: {fileID: 1057042629391854, guid: db7fd3d8d9929e14087c78bb1e4078a0,
+    type: 2}
+  Vertical1: {fileID: 1224830678372268, guid: 9811712da7716f04791c1ea08593e9cb, type: 2}
+  Vertical2: {fileID: 1224830678372268, guid: 9811712da7716f04791c1ea08593e9cb, type: 2}
+  Vertical3: {fileID: 1400216639775312, guid: c2bfabcbb37f1ea44b1423a1843e2226, type: 2}
+  Vertical4: {fileID: 1400216639775312, guid: c2bfabcbb37f1ea44b1423a1843e2226, type: 2}

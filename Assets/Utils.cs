@@ -175,14 +175,16 @@ namespace UdeS.Promoscience
         public const float TURNING_ACCELERATION = 2f;
         public const float TURNING_MAX_SPEED = 0.5f;
 
+        public const int TILE_EMPTY_ID = 0;
+
         //Labyrinth tiles
         //0-49 Starts
-        public const int TILE_START_START_ID = 0;
-        public const int TILE_START_ID = 0;
-        public const int TILE_ROME_START_ID = 1;
-        public const int TILE_PTOL_START_ID = 2;
-        public const int TILE_BRIT_START_ID = 3;
-        public const int TILE_KART_START_ID = 4;
+        public const int TILE_START_START_ID = 1;
+        public const int TILE_START_ID = 1;
+        public const int TILE_ROME_START_ID = 2;
+        public const int TILE_PTOL_START_ID = 3;
+        public const int TILE_BRIT_START_ID = 4;
+        public const int TILE_KART_START_ID = 5;
         public const int TILE_START_END_ID = 49;
 
         //50-99 Floors

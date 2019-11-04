@@ -1408,6 +1408,22 @@ namespace UdeS.Promoscience
             return courseId;
         }
 
+
+        public static void CreateAssetLabyrinth(
+            string name, 
+            int id, 
+            int sizeX, 
+            int sizeY, 
+            int[] data)
+        {
+            Labyrinths.Resource resource = Cirrus.AssetDatabase.CreateAsset<Labyrinths.Resource>("Labyrinths/"+name);
+            UnityEditor.EditorUtility.SetDirty(resource);
+            resource.Id = id;
+            resource.SizeX = sizeX;
+            resource.SizeY = sizeY;
+            resource.Tiles2 = Labyrinths.Utils.ConvertToTiles(data);
+        }
+
         // TODO load from json?
         static void InsertBasicLabyrinths()
         {
@@ -1415,19 +1431,9 @@ namespace UdeS.Promoscience
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             //Labyrinth Tutorial
 
-            Labyrinths.Resource resource = Cirrus.AssetDatabase.CreateAsset<Labyrinths.Resource>("Labyrinths/Labyrinth.Tutorial");
-            UnityEditor.EditorUtility.SetDirty(resource);
-
             int id = 4;
-            resource.Id = id;
-
             int sizeX = 11;
-            resource.SizeX = sizeX;
-
             int sizeY = 11;
-            resource.SizeY = sizeY;
-
-
             int[] data = new int[sizeX * sizeY];
 
             //Colum 0
@@ -1572,15 +1578,23 @@ namespace UdeS.Promoscience
             data[(10 * sizeY) + 8] = Utils.TILE_ROME_VERTICAL_WALL_B_ID;
             data[(10 * sizeY) + 9] = Utils.TILE_ROME_VERTICAL_WALL_ID;
             data[(10 * sizeY) + 10] = Utils.TILE_ROME_TOWER_WALL_ID;
+                       
+            SQLiteUtilities.InsertOrReplaceLabyrinth(
+                id, 
+                sizeX, 
+                sizeY, 
+                data);
 
-            resource.Tiles2 = Labyrinths.Utils.ConvertToTiles(data);
-
-
-            SQLiteUtilities.InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
+            CreateAssetLabyrinth(
+                "Labyrinth.Tutorial", 
+                id, 
+                sizeX, 
+                sizeY, 
+                data);
 
             //Labyrinth 1
             id = 1;
-            sizeX = 10;
+            sizeX = 11;
             sizeY = 11;
 
             data = new int[sizeX * sizeY];
@@ -1713,10 +1727,15 @@ namespace UdeS.Promoscience
             data[(9 * sizeY) + 7] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
             data[(9 * sizeY) + 8] = Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
             data[(9 * sizeY) + 9] = Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(9 * sizeY) + 10] = Utils.TILE_PTOL_TOWER_WALL_ID;
-                       
+            data[(9 * sizeY) + 10] = Utils.TILE_PTOL_TOWER_WALL_ID;          
 
             SQLiteUtilities.InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
+            CreateAssetLabyrinth(
+                "Labyrinth.1",
+                id,
+                sizeX,
+                sizeY,
+                data);
 
             //Labyrinth 2
             id = 2;
@@ -1869,6 +1888,12 @@ namespace UdeS.Promoscience
             data[(10 * sizeY) + 10] = Utils.TILE_BRIT_TOWER_WALL_ID;
 
             InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
+            CreateAssetLabyrinth(
+                "Labyrinth.2",
+                id,
+                sizeX,
+                sizeY,
+                data);
 
             //Labyrinth 3
             id = 3;
@@ -2073,6 +2098,12 @@ namespace UdeS.Promoscience
             data[(12 * sizeY) + 12] = Utils.TILE_KART_TOWER_WALL_ID;
 
             InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
+            CreateAssetLabyrinth(
+                "Labyrinth.3",
+                id,
+                sizeX,
+                sizeY,
+                data);
 
 #endif
         }

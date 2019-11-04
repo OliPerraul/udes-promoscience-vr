@@ -11,19 +11,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f757e0af315acc44e809553688f706f5, type: 3}
   m_Name: Skin.Simple
   m_EditorClassIdentifier: 
-  FloorStart: {fileID: 0}
-  FloorEnd: {fileID: 0}
-  FloorTile1: {fileID: 0}
-  FloorTile2: {fileID: 0}
-  FloorTile3: {fileID: 0}
-  Corner1: {fileID: 0}
-  Corner2: {fileID: 0}
-  Corner3: {fileID: 0}
-  Horizontal1: {fileID: 0}
-  Horizontal2: {fileID: 0}
-  Horizontal3: {fileID: 0}
-  Horizontal4: {fileID: 0}
-  Vertical1: {fileID: 0}
-  Vertical2: {fileID: 0}
-  Vertical3: {fileID: 0}
-  Vertical4: {fileID: 0}
+  FloorStart: {fileID: 1213397253378824, guid: dd6b3d5434963ad4a972a7780440af19, type: 2}
+  FloorEnd: {fileID: 1578370847054714, guid: 38299c7c68746054192a25570484bb14, type: 2}
+  FloorTile1: {fileID: 1933259691003538, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+  FloorTile2: {fileID: 1933259691003538, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+  FloorTile3: {fileID: 1933259691003538, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
+  Corner1: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+  Corner2: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+  Corner3: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+  Horizontal1: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1,
+    type: 2}
+  Horizontal2: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1,
+    type: 2}
+  Horizontal3: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1,
+    type: 2}
+  Horizontal4: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1,
+    type: 2}
+  Vertical1: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+  Vertical2: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+  Vertical3: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+  Vertical4: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}

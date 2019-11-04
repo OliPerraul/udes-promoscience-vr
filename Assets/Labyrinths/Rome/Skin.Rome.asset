@@ -9,21 +9,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f757e0af315acc44e809553688f706f5, type: 3}
-  m_Name: Skin
+  m_Name: Skin.Rome
   m_EditorClassIdentifier: 
-  FloorStart: {fileID: 0}
-  FloorEnd: {fileID: 0}
-  FloorTile1: {fileID: 0}
-  FloorTile2: {fileID: 0}
-  FloorTile3: {fileID: 0}
-  Corner1: {fileID: 0}
-  Corner2: {fileID: 0}
-  Corner3: {fileID: 0}
-  Horizontal1: {fileID: 0}
-  Horizontal2: {fileID: 0}
-  Horizontal3: {fileID: 0}
-  Horizontal4: {fileID: 0}
-  Vertical1: {fileID: 0}
-  Vertical2: {fileID: 0}
-  Vertical3: {fileID: 0}
-  Vertical4: {fileID: 0}
+  FloorStart: {fileID: 1648208370768188, guid: 74317b067f1d97a46be1eb660aad3b25, type: 2}
+  FloorEnd: {fileID: 1518225262165898, guid: e53d49d9836806245995144287387aa9, type: 2}
+  FloorTile1: {fileID: 1532465971710696, guid: 02926e972175cb44e9cc3e770214724f, type: 2}
+  FloorTile2: {fileID: 1532465971710696, guid: 02926e972175cb44e9cc3e770214724f, type: 2}
+  FloorTile3: {fileID: 1532465971710696, guid: 02926e972175cb44e9cc3e770214724f, type: 2}
+  Corner1: {fileID: 1395780099758896, guid: cfbf8d5f9046b6b438fcf4b995edbb54, type: 2}
+  Corner2: {fileID: 1395780099758896, guid: cfbf8d5f9046b6b438fcf4b995edbb54, type: 2}
+  Corner3: {fileID: 1395780099758896, guid: cfbf8d5f9046b6b438fcf4b995edbb54, type: 2}
+  Horizontal1: {fileID: 1382494581607658, guid: 65b674b6b3e3f834599c2d7859f4aaff,
+    type: 2}
+  Horizontal2: {fileID: 1478574297214224, guid: ee58c6d491138ec469c3129349466ed4,
+    type: 2}
+  Horizontal3: {fileID: 1478574297214224, guid: ee58c6d491138ec469c3129349466ed4,
+    type: 2}
+  Horizontal4: {fileID: 1478574297214224, guid: ee58c6d491138ec469c3129349466ed4,
+    type: 2}
+  Vertical1: {fileID: 1580331101368578, guid: 4719965afcc09484f9ff3944c83e4bad, type: 2}
+  Vertical2: {fileID: 1580331101368578, guid: 4719965afcc09484f9ff3944c83e4bad, type: 2}
+  Vertical3: {fileID: 1138195022142502, guid: bd3f4dd8f18b0e0489c1725c0658278a, type: 2}
+  Vertical4: {fileID: 1138195022142502, guid: bd3f4dd8f18b0e0489c1725c0658278a, type: 2}

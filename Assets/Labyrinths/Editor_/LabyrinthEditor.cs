@@ -55,6 +55,9 @@ namespace UdeS.Promoscience.Labyrinths.Editor
 
             for (int i = 0; i < resource.Tiles2.Length; i++)
             {
+                if(resource.Tiles2[i] == TileType.Empty)
+                    continue;
+
                 tilemap.SetTile(
                     new Vector3Int(i.Mod(resource.SizeX), i / resource.SizeX, 0),
                     Resources.Instance.GetTile(resource.Tiles2[i])

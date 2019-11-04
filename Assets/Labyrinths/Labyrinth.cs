@@ -77,22 +77,131 @@ namespace UdeS.Promoscience.Labyrinths
 
             for (int i = 0; i < tiles.Length; i++)
             {
+                res[i] = TileType.Empty;
+
+                if (res[i] == 0)
+                    continue;
+
                 if (tiles[i] >= Promoscience.Utils.TILE_START_START_ID && tiles[i] <= Promoscience.Utils.TILE_START_END_ID)
                 {
                     res[i] = TileType.Start;
                 }
+
                 if (tiles[i] >= Promoscience.Utils.TILE_FLOOR_START_ID && tiles[i] <= Promoscience.Utils.TILE_FLOOR_END_ID)
                 {
                     res[i] = TileType.Floor1;
                 }
-                else if (tiles[i] >= Promoscience.Utils.TILE_END_START_ID && tiles[i] <= Promoscience.Utils.TILE_END_END_ID)
+
+                if (tiles[i] >= Promoscience.Utils.TILE_END_START_ID && tiles[i] <= Promoscience.Utils.TILE_END_END_ID)
                 {
                     res[i] = TileType.End;
                 }
-                else if (tiles[i] >= Promoscience.Utils.TILE_WALL_START_ID && tiles[i] <= Promoscience.Utils.TILE_WALL_END_ID)
+
+                if (tiles[i] >= Promoscience.Utils.TILE_WALL_START_ID && tiles[i] <= Promoscience.Utils.TILE_WALL_END_ID)
                 {
-                    res[i] = TileType.Horizontal1;
+                    switch (tiles[i])
+                    {
+                        //public const int TILE_ROME_HORIZONTAL_WALL_ID = 151;
+                        //public const int TILE_ROME_HORIZONTAL_WALL_B_ID = 152;
+                        //public const int TILE_ROME_VERTICAL_WALL_ID = 153;
+                        //public const int TILE_ROME_VERTICAL_WALL_B_ID = 154;
+                        //public const int TILE_ROME_TOWER_WALL_ID = 155;
+
+                        //public const int TILE_PTOL_HORIZONTAL_WALL_ID = 156;
+                        //public const int TILE_PTOL_HORIZONTAL_WALL_B_ID = 157;
+                        //public const int TILE_PTOL_VERTICAL_WALL_ID = 158;
+                        //public const int TILE_PTOL_VERTICAL_WALL_B_ID = 159;
+                        //public const int TILE_PTOL_TOWER_WALL_ID = 160;
+
+                        //public const int TILE_BRIT_HORIZONTAL_WALL_ID = 161;
+                        //public const int TILE_BRIT_VERTICAL_WALL_ID = 162;
+                        //public const int TILE_BRIT_TOWER_WALL_ID = 163;
+                        //public const int TILE_BRIT_TOWER_WALL_2_ID = 164;
+
+                        //public const int TILE_KART_HORIZONTAL_WALL_ID = 165;
+                        //public const int TILE_KART_HORIZONTAL_WALL_B_ID = 166;
+                        //public const int TILE_KART_VERTICAL_WALL_ID = 167;
+                        //public const int TILE_KART_VERTICAL_WALL_B_ID = 168;
+                        //public const int TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID = 169;
+                        //public const int TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_B_ID = 170;
+                        //public const int TILE_KART_VERTICAL_WALL_SCAFFOLDING_ID = 171;
+                        //public const int TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID = 172;
+                        //public const int TILE_KART_TOWER_WALL_ID = 173;
+                        //public const int TILE_KART_TOWER_WALL_2_ID = 174;
+                        //public const int TILE_KART_TOWER_WALL_SCAFFOLDING_ID = 175;
+
+                        // Horizontal
+
+                        case Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID:
+                        case Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID:
+                        case Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID:
+                        case Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID:
+                            res[i] = TileType.Horizontal1;
+                            break;
+
+                        case Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID:
+                        case Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID:
+                        case Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID:
+                            res[i] = TileType.Horizontal2;
+                            break;
+
+                        case Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID:
+                            res[i] = TileType.Horizontal3;
+                            break;
+
+                        case Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_B_ID:
+                            res[i] = TileType.Horizontal4;
+                            break;
+
+                        // Vertical
+                        
+                        case Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID:
+                        case Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID:
+                        case Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID:
+                        case Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID:
+                            res[i] = TileType.Vertical1;
+                            break;
+
+                        case Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID:
+                        case Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID:
+                        case Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID:
+                            res[i] = TileType.Vertical2;
+                            break;
+
+                        case Promoscience.Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_ID:
+                            res[i] = TileType.Vertical3;
+                            break;
+
+                        case Promoscience.Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID:
+                            res[i] = TileType.Vertical4;
+                            break;
+
+                        // Corners
+
+                        case Promoscience.Utils.TILE_ROME_TOWER_WALL_ID:
+                        case Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID:
+                        case Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID:
+                        case Promoscience.Utils.TILE_KART_TOWER_WALL_ID:
+                            res[i] = TileType.Corner1;
+                            break;
+
+                        case Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID:
+                        case Promoscience.Utils.TILE_KART_TOWER_WALL_2_ID:
+                            res[i] = TileType.Corner2;
+                            break;
+
+                        case Promoscience.Utils.TILE_KART_TOWER_WALL_SCAFFOLDING_ID:                        
+                            res[i] = TileType.Corner3;
+                            break;
+
+                        default:
+                            res[i] = TileType.Horizontal1;
+                            break;                       
+
+                    }
+
                 }
+
             }
 
             return res;
