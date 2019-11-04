@@ -12,8 +12,6 @@ namespace UdeS.Promoscience.Labyrinths
     public interface IData
     {
         int Id { get; set; }
-
-        int[] Tiles { get; set; }
                
         TileType[] Tiles2 { get; set; }
 
@@ -27,9 +25,9 @@ namespace UdeS.Promoscience.Labyrinths
 
         int GetLabyrithYLenght();
 
-        Vector2Int StartPos { get; }
+        Vector2Int StartPos { get; set; }
 
-        Vector2Int EndPos { get; }
+        Vector2Int EndPos { get; set; }
 
         bool GetIsTileWalkable(int x, int y);
         
@@ -37,39 +35,44 @@ namespace UdeS.Promoscience.Labyrinths
 
         int StartDirection { get; }
 
-        void SetLabyrithData(
-            int[] labyrinthData, 
-            int labyrinthSizeX, 
-            int labyrinthSizeY, 
-            int id);
+        string Json { get; }
 
-        void SetLabyrithData(
-            int[,] map, 
-            int id);
+        Skin Skin { get; }
     }
-
 
     // TODO from json (combine with ScriptableObect)
     [Serializable]
     public class Data : IData
     {
+        public string Json
+        {
+            get
+            {
+                return JsonUtility.ToJson(this);
+            }
+        }
+
         [SerializeField]
         private int id;
         // TODO remove id is a member of the labyrinth
         public int Id { get { return id; } set { id = value; } }
-
+        
         [SerializeField]
-        private int[] tiles;
+        private int sizeX;
 
-        public int[] Tiles { get { return tiles; } set { tiles = value; } }
+        public int SkinId;
+
+        public Skin Skin
+        {
+            get {
+                return Resources.Instance.Skins[SkinId];
+            }
+        }
 
         [SerializeField]
         private TileType[] tiles2;
 
         public TileType[] Tiles2 { get { return tiles2; } set { tiles2 = value; } }
-
-        [SerializeField]
-        private int sizeX;
 
         public int SizeX { get { return sizeX; } set { sizeX = value; } }
 
@@ -78,21 +81,17 @@ namespace UdeS.Promoscience.Labyrinths
 
         public int SizeY { get { return sizeY; } set { sizeY = value; } }
 
-        public Data() { }        
+        public Data() { }
 
-        public Data(int id, int[] tiles, int sizex, int sizey)
+        public Data(
+            int id, 
+            TileType[] tiles, 
+            int sizex, 
+            int sizey)            
         {
             this.Id = id;
-            this.Tiles = tiles;
             this.SizeX = sizex;
             this.SizeY = sizey;
-
-            // TODO replace
-            SetLabyrithData(
-                tiles,
-                SizeX,
-                SizeY,
-                Id);
         }
 
         [SerializeField]
@@ -101,6 +100,8 @@ namespace UdeS.Promoscience.Labyrinths
         public Vector2Int StartPos
         {
             get { return startPos; }
+
+            set { startPos = value; }
         }
 
         [SerializeField]
@@ -109,36 +110,14 @@ namespace UdeS.Promoscience.Labyrinths
         public Vector2Int EndPos
         {
             get { return endPos; }
-        }
 
-        public Action valueChangedEvent;
-
-        void OnValueChanged()
-        {
-            if (valueChangedEvent != null)
-            {
-                valueChangedEvent();
-            }
-        }
-
-        public int[] GetLabyrithDataWithId(int id)
-        {
-            if (id != Id)
-            {
-                Id = id;
-
-                SQLiteUtilities.ReadLabyrinthDataFromId(id, this);
-
-                OnValueChanged();
-            }
-
-            return Tiles;
+            set { endPos = value; }
         }
 
         public int GetLabyrithValueAt(int x, int y)
         {
             //Could add an out of bound check
-            return Tiles[(x * SizeY) + y];
+            return (int) Tiles2[(x * SizeY) + y];
         }
 
         public int GetLabyrithXLenght()
@@ -151,73 +130,8 @@ namespace UdeS.Promoscience.Labyrinths
             return SizeY;
         }
 
-        public void SetLabyrithData(
-            int[] tiles, 
-            int labyrinthSizeX, 
-            int labyrinthSizeY, 
-            int id)
-        {
-            Id = id;
-            Tiles = tiles;
-            SizeX = labyrinthSizeX;
-            SizeY = labyrinthSizeY;
-
-            for (int x = 0; x < SizeX; x++)
-            {
-                for (int y = 0; y < SizeY; y++)
-                {                    
-                    if (
-                        GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID &&
-                        GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_START_END_ID)
-                    {
-                        startPos = new Vector2Int(x, y);
-                    }
-                    else if (
-                        GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_END_START_ID &&
-                        GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_END_END_ID)
-                    {
-                        endPos = new Vector2Int(x, y);
-                    }
-                }
-            }
-        }
-
-
-        public void SetLabyrithData(int[,] map, int id)
-        {
-            if (id != Id)
-            {
-                Id = id;
-                SizeX = map.GetLength(0);
-                SizeY = map.GetLength(1);
-                Tiles = new int[SizeX * SizeY];
-
-                for (int x = 0; x < SizeX; x++)
-                {
-                    for (int y = 0; y < SizeY; y++)
-                    {
-                        Tiles[(x * SizeY) + y] = map[x, y];
-
-                        if (
-                            GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID &&
-                            GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_START_END_ID)
-                        {
-                            startPos = new Vector2Int(x, y);
-                        }
-                        else if (
-                            GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_END_START_ID &&
-                            GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_END_END_ID)
-                        {
-                            endPos = new Vector2Int(x, y);
-                        }
-                    }
-                }
-            }
-        }
-
         public bool GetIsTileWalkable(int x, int y)
         {
-
             if (x >= 0 && x < GetLabyrithXLenght() && y >= 0 && y < GetLabyrithYLenght())
             {
                 if ((GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_FLOOR_START_ID && GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_FLOOR_END_ID)
@@ -235,6 +149,7 @@ namespace UdeS.Promoscience.Labyrinths
         {
             return GetIsTileWalkable(tile.x, tile.y);
         }
+
 
         //Labyrith start should always be in a dead end
         public int StartDirection
@@ -263,8 +178,6 @@ namespace UdeS.Promoscience.Labyrinths
                 return direction;
             }
         }
-
-
     }
 }
 

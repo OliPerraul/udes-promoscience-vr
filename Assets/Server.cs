@@ -28,16 +28,11 @@ namespace UdeS.Promoscience
 
             public ICollection<IData> data = new List<IData>();
 
-            public ICollection<IData> Data
+            public ICollection<Resource> Data
             {
                 get
                 {
-                    if (data == null || data.Count == 0)
-                    {
-                        data = SQLiteUtilities.GetLabyrinths();
-                    }
-
-                    return data;
+                    return Promoscience.Labyrinths.Resources.Instance.LabyrinthData;
                 }
             }
 
@@ -63,9 +58,6 @@ namespace UdeS.Promoscience
 
             public void Clear()
             {
-                if (data != null)
-                    data.Clear();
-
                 if (labyrinths != null)
                     labyrinths.Clear();
             }
@@ -294,24 +286,15 @@ namespace UdeS.Promoscience
             }
             else
             {
-                var labyrinth = new Data();
-
                 course = new Course
                 {
                     Id = SQLiteUtilities.GetNextCourseID(),
                     Team = Teams.Resources.Instance.GetScriptableTeamWithId(player.ServerTeamId),
-                    Labyrinth = labyrinth,
+                    Labyrinth = Labyrinths.CurrentData,
                     Algorithm = Algorithms.Resources.Instance.GetAlgorithm(player.serverAlgorithm)// labyrinth)                                     
                 };
 
-                SQLiteUtilities.ReadLabyrinthDataFromId(Labyrinths.CurrentData.Id, course.Labyrinth);
-
                 IdCoursePairs.Add(course.Id, course);
-
-                //if (OnCourseAddedHandler != null)
-                //{
-                //    OnCourseAddedHandler.Invoke(course);
-                //}
 
                 player.ServerCourseId = course.Id;
 
@@ -328,8 +311,9 @@ namespace UdeS.Promoscience
             GameRound = tutorialLabyrinthId;
             GameState = ServerGameState.Tutorial;
 
-            Labyrinths.CurrentData = new Data();
-            SQLiteUtilities.ReadLabyrinthDataFromId(tutorialLabyrinthId, Labyrinths.CurrentData);
+            Labyrinths.CurrentData =
+                Promoscience.Labyrinths
+                .Resources.Instance.GetLabyrinthData(tutorialLabyrinthId);
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
@@ -354,10 +338,7 @@ namespace UdeS.Promoscience
                         // TODO send course json over??
                         player.TargetSetGame(
                             player.connectionToClient,
-                            Labyrinths.CurrentData.Tiles,
-                            Labyrinths.CurrentData.SizeX,
-                            Labyrinths.CurrentData.SizeY,
-                            tutorialLabyrinthId,
+                            Labyrinths.CurrentData.Json,
                             algorithm,
                             true);
 
@@ -376,10 +357,7 @@ namespace UdeS.Promoscience
 
             player.TargetSetGame(
                 player.connectionToClient,
-                Labyrinths.CurrentData.Tiles,
-                Labyrinths.CurrentData.SizeX,
-                Labyrinths.CurrentData.SizeY,
-                tutorialLabyrinthId,
+                Labyrinths.CurrentData.Json,
                 algorithm,
                 isTutorial: true);
         }
@@ -389,8 +367,9 @@ namespace UdeS.Promoscience
             GameRound = (GameRound % 3) + 1;
             GameState = ServerGameState.GameRound;
 
-            Labyrinths.CurrentData = new Data();
-            SQLiteUtilities.ReadLabyrinthDataFromId(labyrinthId, Labyrinths.CurrentData);
+            Labyrinths.CurrentData = 
+                Promoscience.Labyrinths
+                .Resources.Instance.GetLabyrinthData(labyrinthId);
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
@@ -413,10 +392,7 @@ namespace UdeS.Promoscience
 
                         player.TargetSetGame(
                             player.connectionToClient,
-                            Labyrinths.CurrentData.Tiles,
-                            Labyrinths.CurrentData.SizeX,
-                            Labyrinths.CurrentData.SizeY,
-                            labyrinthId,
+                            Labyrinths.CurrentData.Json,
                             player.serverAlgorithm,
                             false);
 
@@ -443,10 +419,7 @@ namespace UdeS.Promoscience
 
             player.TargetSetGame(
                 player.connectionToClient,
-                Labyrinths.CurrentData.Tiles,
-                Labyrinths.CurrentData.SizeX,
-                Labyrinths.CurrentData.SizeY,
-                Labyrinths.CurrentData.Id,
+                Labyrinths.CurrentData.Json,
                 player.serverAlgorithm,
                 false);
         }
@@ -461,10 +434,8 @@ namespace UdeS.Promoscience
 
             player.TargetSetGameWithSteps(
                 player.connectionToClient,
-                steps, Labyrinths.CurrentData.Tiles,
-                Labyrinths.CurrentData.SizeX,
-                Labyrinths.CurrentData.SizeY,
-                Labyrinths.CurrentData.Id,
+                steps, 
+                Labyrinths.CurrentData.Json,
                 player.serverAlgorithm,
                 false); // TODO start with steps tutorial??
         }

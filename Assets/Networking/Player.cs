@@ -341,21 +341,15 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetGame(
             NetworkConnection target, 
-            int[] data, 
-            int sizeX, 
-            int sizeY, 
-            int labyrinthId, 
+            string labyrinth,
             Algorithms.Id algo,
             bool isTutorial)
         {
             recordedSteps.Value = new int[0];
 
-            Client.Instance.LabyrinthData = new Labyrinths.Data(
-                labyrinthId,
-                data,
-                sizeX,
-                sizeY
-                );
+            Client.Instance.LabyrinthData = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
+
+            Labyrinths.Data data = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
 
             Client.Instance.Labyrinth = 
                 Labyrinths.Resources.Instance
@@ -366,7 +360,7 @@ namespace UdeS.Promoscience.Network
 
             isRoundCompleted.Value = false;
 
-            gameRound.Value = labyrinthId;
+            gameRound.Value = Client.Instance.LabyrinthData.Id;
 
             Client.Instance.State = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
         }
@@ -375,21 +369,13 @@ namespace UdeS.Promoscience.Network
         public void TargetSetGameWithSteps(
             NetworkConnection target, 
             int[] steps, 
-            int[] data, 
-            int sizeX, 
-            int sizeY, 
-            int labyrinthId, 
+            string labyrinth,
             Algorithms.Id algo,
             bool isTutorial)
         {
             recordedSteps.Value = steps;
 
-            Client.Instance.LabyrinthData = new Labyrinths.Data(
-                labyrinthId,
-                data,
-                sizeX,
-                sizeY);
-
+            Client.Instance.LabyrinthData = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
 
             Client.Instance.Labyrinth = Labyrinths.Resources.Instance
                 .GetLabyrinthTemplate(Client.Instance.LabyrinthData)
@@ -398,7 +384,7 @@ namespace UdeS.Promoscience.Network
             Client.Instance.Algorithm = Algorithms.Resources.Instance.GetAlgorithm(algo);
 
             isRoundCompleted.Value = false;
-            gameRound.Value = labyrinthId;
+            gameRound.Value = Client.Instance.LabyrinthData.Id;
 
             Client.Instance.State = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
         }

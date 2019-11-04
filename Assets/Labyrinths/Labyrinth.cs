@@ -14,13 +14,23 @@ namespace UdeS.Promoscience.Labyrinths
     [System.Serializable]
     public enum TileType
     {
-        Start,
-        End,
-        Empty,
+        Empty = 0,
 
+        StartStart = Promoscience.Utils.TILE_START_START_ID,
+        Start,
+        StartEnd = Promoscience.Utils.TILE_START_END_ID,
+
+        EndStart = Promoscience.Utils.TILE_END_START_ID,
+        End,
+        EndEnd = Promoscience.Utils.TILE_END_END_ID,
+
+        FloorStart = Promoscience.Utils.TILE_FLOOR_START_ID,
         Floor1,
         Floor2,
         Floor3,
+        FloorEnd = Promoscience.Utils.TILE_FLOOR_END_ID,
+
+        WallStart = Promoscience.Utils.TILE_WALL_START_ID,
         Horizontal1,
         Horizontal2,
         Horizontal3,
@@ -32,8 +42,7 @@ namespace UdeS.Promoscience.Labyrinths
         Corner1,
         Corner2,
         Corner3,
-
-
+        WallEnd = Promoscience.Utils.TILE_WALL_END_ID
     }
 
     public enum Type
@@ -79,7 +88,7 @@ namespace UdeS.Promoscience.Labyrinths
             {
                 res[i] = TileType.Empty;
 
-                if (res[i] == 0)
+                if (tiles[i] == 0)
                     continue;
 
                 if (tiles[i] >= Promoscience.Utils.TILE_START_START_ID && tiles[i] <= Promoscience.Utils.TILE_START_END_ID)
@@ -378,11 +387,18 @@ namespace UdeS.Promoscience.Labyrinths
 
         GameObject InstantiateLabyrithTile(int x, int y, int tileId)
         {
+            if (tileId == 0)
+                return null;
+
             GameObject tile = null;
 
             Vector3 tilePosition = GetLabyrinthPositionInWorldPosition(x, y);
 
-            tile = Instantiate(Resources.Instance.GetTilePrefabWithId(tileId), tilePosition, Quaternion.identity, gameObject.transform);
+            tile = Instantiate(
+                data.Skin.GetGameObject((TileType)tileId), 
+                tilePosition, 
+                Quaternion.identity, 
+                gameObject.transform); 
 
             return tile;
         }

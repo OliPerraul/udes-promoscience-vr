@@ -230,12 +230,12 @@ namespace UdeS.Promoscience.Tests
             data[(12 * sizeY) + 11] = Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
             data[(12 * sizeY) + 12] = Promoscience.Utils.TILE_KART_TOWER_WALL_ID;
 
-            Client.Instance.LabyrinthData = new Labyrinths.Data(
-                id,
-                data,
-                sizeX,
-                sizeY
-                );
+            //Client.Instance.LabyrinthData = new Labyrinths.Data(
+            //    id,
+            //    data,
+            //    sizeX,
+            //    sizeY
+            //    );
             
         }
     }

@@ -38,6 +38,8 @@ namespace UdeS.Promoscience.Labyrinths.Editor
                 }
             }
 
+            resource.PopulateStartAndEndPositions();
+
             EditorApplication.ExecuteMenuItem("File/Save Project");
         }
 

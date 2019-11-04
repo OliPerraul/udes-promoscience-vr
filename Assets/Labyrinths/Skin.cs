@@ -5,6 +5,14 @@ namespace UdeS.Promoscience.Labyrinths
 {
     public class Skin : ScriptableObject
     {
+        public int Id
+        {
+            get
+            {
+                return Resources.Instance.Skins.IndexOf(this);
+            }
+        }
+
         [SerializeField]
         public GameObject FloorStart;
 
@@ -62,6 +70,15 @@ namespace UdeS.Promoscience.Labyrinths
 
                 case TileType.Start:
                     return FloorStart;
+
+                case TileType.Floor1:
+                    return FloorTile1;
+
+                case TileType.Floor2:
+                    return FloorTile2;
+
+                case TileType.Floor3:
+                    return FloorTile3;
 
                 case TileType.Corner1:
                     return Corner1;

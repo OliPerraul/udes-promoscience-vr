@@ -5,6 +5,9 @@ using UnityEngine;
 using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
+using UnityEditor;
+
+using System.Linq;
 
 namespace UdeS.Promoscience.Labyrinths
 {
@@ -14,8 +17,35 @@ namespace UdeS.Promoscience.Labyrinths
         [SerializeField]
         private Skin skin;
 
+        public Skin Skin
+        {
+            get
+            {
+                return skin;
+            }
+
+            set
+            {
+                skin = value;
+            }
+        }
+
         [SerializeField]
         private Data data;
+
+        public void OnValidate()
+        {
+            if (skin != null && data.SkinId < 0)
+            {
+                data.SkinId = skin.Id;
+            }
+
+            if (data.Id < 0)
+            {
+                data.Id = Resources.Instance.LabyrinthData.IndexOf(this);
+            }
+        }
+
 
         public IData Data
         {
@@ -44,21 +74,26 @@ namespace UdeS.Promoscience.Labyrinths
 
         public int SizeY { get { return Data.SizeY; } set { Data.SizeY = value; } }
 
-        public Vector2Int StartPos { get { return Data.StartPos; } }
+        public Vector2Int StartPos { get { return Data.StartPos; }  set { Data.StartPos = value; } }
 
-        public Vector2Int EndPos { get { return Data.EndPos; } }
+        public Vector2Int EndPos { get { return Data.EndPos; } set { Data.EndPos = value; } }
 
         public int StartDirection { get { return Data.StartDirection; } }
 
-        public int[] Tiles { get { return Data.Tiles; } set { Data.Tiles = value; } }
-
         public TileType[] Tiles2 { get { return Data.Tiles2; } set { Data.Tiles2 = value; } }
+
+        public string Json
+        {
+            get
+            {
+                return Data.Json;
+            }
+        }
 
         public bool GetIsTileWalkable(int x, int y)
         {
             return Data.GetIsTileWalkable(x, y);
         }
-
         public bool GetIsTileWalkable(Vector2Int tile)
         {
             return Data.GetIsTileWalkable(tile);
@@ -79,15 +114,49 @@ namespace UdeS.Promoscience.Labyrinths
             return Data.GetLabyrithYLenght();
         }
 
-        public void SetLabyrithData(int[] labyrinthData, int labyrinthSizeX, int labyrinthSizeY, int id)
+        public void PopulateStartAndEndPositions()
         {
-            Data.SetLabyrithData(labyrinthData, labyrinthSizeX, labyrinthSizeY, id);
-        }        
+            for (int x = 0; x < SizeX; x++)
+            {
+                for (int y = 0; y < SizeY; y++)
+                {
+                    if (
+                        GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_START_END_ID)
+                    {
+                        StartPos = new Vector2Int(x, y);
+                    }
+                    else if (
+                        GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_END_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_END_END_ID)
+                    {
+                        EndPos = new Vector2Int(x, y);
+                    }
+                }
+            }
+        }
 
-        public void SetLabyrithData(int[,] map, int id)
+    }
+
+
+#if UNITY_EDITOR
+
+    [CustomEditor(typeof(Resource))]
+    public class SomeScriptEditor : UnityEditor.Editor
+    {
+        public override void OnInspectorGUI()
         {
-            Data.SetLabyrithData(map, id);
+            DrawDefaultInspector();
+
+            Resource myScript = (Resource)target;
+            if (GUILayout.Button("Populate Start and End Positions"))
+            {
+                myScript.PopulateStartAndEndPositions();
+            }
         }
     }
+
+#endif
+
 }
 
