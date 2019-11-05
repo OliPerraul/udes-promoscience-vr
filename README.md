@@ -1,5 +1,12 @@
 # Promo-Science
 
+
+# Bernice
+
+* In your console
+    * `git checkout operrault-greybox-level-variant`
+
+
 # Unity version
 2018.2.5f1
 
