@@ -1,4 +1,7 @@
-﻿using Cirrus.Extensions;
+﻿
+#if UNITY_EDITOR
+
+using Cirrus.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -68,8 +71,6 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         }
     }
 
-#if UNITY_EDITOR
-
     [CustomEditor(typeof(LabyrinthEditor))]
     public class SomeScriptEditor : UnityEditor.Editor
     {
@@ -90,6 +91,6 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         }
     }
 
-#endif
-
 }
+
+#endif

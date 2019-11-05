@@ -164,6 +164,8 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
                     labyrinth.GenerateLabyrinthVisual();
 
+                    labyrinth.Init();
+
                     labyrinth.transform.position = Vector3.down * SelectionOffset * i;
 
                     Server.Instance.Labyrinths.IdPairs.Add(data.Id, labyrinth);

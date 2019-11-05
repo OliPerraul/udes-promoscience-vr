@@ -67,6 +67,8 @@ namespace UdeS.Promoscience.Replays
 
             labyrinth.GenerateLabyrinthVisual();
 
+            labyrinth.Init();
+
             dirtyLabyrinth = Labyrinths.Resources.Instance
                 .GetLabyrinthTemplate(labyrinthData)
                 .Create(labyrinthData);
@@ -78,6 +80,8 @@ namespace UdeS.Promoscience.Replays
             dirtyLabyrinth.transform.position = labyrinth.transform.position;
 
             dirtyLabyrinth.GenerateLabyrinthVisual();
+
+            dirtyLabyrinth.Init();
 
             lposition = labyrinth.GetLabyrithStartPosition();
 
@@ -200,6 +204,22 @@ namespace UdeS.Promoscience.Replays
             isPlaying = false;
         }
 
+        bool isGreyboxToggled = false;
+
+        public void EnableGreybox(bool enable)
+        {
+            isGreyboxToggled = enable;
+            labyrinth.GenerateLabyrinthVisual(
+                isGreyboxToggled ? 
+                Labyrinths.Resources.Instance.GreyboxSkin :
+                null);
+
+            dirtyLabyrinth.GenerateLabyrinthVisual(
+                isGreyboxToggled ?
+                Labyrinths.Resources.Instance.GreyboxSkin :
+                null);
+        }
+
         public void EnableDirty(bool enable)
         {
             isDirtyToggled = enable;
@@ -228,6 +248,13 @@ namespace UdeS.Promoscience.Replays
                 case ReplayAction.ToggleDirtyLabyrinth:
                     EnableDirty(!isDirtyToggled);
                     break;
+
+
+                case ReplayAction.ToggleGreyboxLabyrinth:
+                    EnableGreybox(!isGreyboxToggled);
+                    break;
+
+
 
                 case ReplayAction.Play:
 

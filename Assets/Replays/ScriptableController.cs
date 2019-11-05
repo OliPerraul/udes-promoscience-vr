@@ -19,6 +19,7 @@ namespace UdeS.Promoscience.Replays
 
         ToggleOptions,
         ToggleDirtyLabyrinth,
+        ToggleGreyboxLabyrinth,
         SelectLabyrinth,
 
         ExitReplay,

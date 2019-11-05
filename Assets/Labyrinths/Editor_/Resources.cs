@@ -27,6 +27,14 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         public Tile GetTile(TileType type)
         {
             return Tiles.Where(x => x.Type == type).FirstOrDefault();
-        }       
+        }
+
+        public void OnValidate()
+        {
+            if (tiles == null || tiles.Length == 0)
+            {
+                tiles = Cirrus.AssetDatabase.FindObjectsOfType<Tile>();
+            }
+        }
     }
 }

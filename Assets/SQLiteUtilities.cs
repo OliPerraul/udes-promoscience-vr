@@ -1417,7 +1417,6 @@ namespace UdeS.Promoscience
             int[] data)
         {
             Labyrinths.Resource resource = Cirrus.AssetDatabase.CreateAsset<Labyrinths.Resource>("Labyrinths/"+name);
-            UnityEditor.EditorUtility.SetDirty(resource);
             resource.Id = id;
             resource.SizeX = sizeX;
             resource.SizeY = sizeY;

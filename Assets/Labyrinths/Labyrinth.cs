@@ -410,7 +410,7 @@ namespace UdeS.Promoscience.Labyrinths
             //}
         }
 
-        public void GenerateLabyrinthVisual()
+        public void GenerateLabyrinthVisual(Skin skin=null)
         {
             if (labyrinthTiles != null)
             {
@@ -425,18 +425,11 @@ namespace UdeS.Promoscience.Labyrinths
             {
                 for (int y = 0; y < labyrinthTiles.GetLength(1); y++)
                 {
-                    labyrinthTiles[x, y] = InstantiateLabyrithTile(x, y, labyrinth[x, y]);
+                    labyrinthTiles[x, y] = InstantiateLabyrithTile(x, y, labyrinth[x, y], skin);
                 }
             }
-
-            Camera.Source.transform.position += GetLabyrinthPositionInWorldPosition(0, 0);
-            Camera.Source.transform.position += new Vector3(
-                labyrinthTiles.GetLength(0) * Utils.TILE_SIZE,
-                0,
-                -labyrinthTiles.GetLength(1) * Utils.TILE_SIZE) / 2;
-
-            Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
         }
+
 
         void PopulateLabyrinth()
         {
@@ -451,7 +444,7 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        GameObject InstantiateLabyrithTile(int x, int y, int tileId)
+        GameObject InstantiateLabyrithTile(int x, int y, int tileId, Skin skin=null)
         {
             if (tileId == 0)
                 return null;
@@ -461,7 +454,9 @@ namespace UdeS.Promoscience.Labyrinths
             Vector3 tilePosition = GetLabyrinthPositionInWorldPosition(x, y);
 
             tile = Instantiate(
-                data.Skin.GetGameObject((TileType)tileId), 
+                skin == null ? 
+                    data.Skin.GetGameObject((TileType)tileId) :
+                    skin.GetGameObject((TileType)tileId), 
                 tilePosition, 
                 Quaternion.identity, 
                 gameObject.transform); 
@@ -516,6 +511,17 @@ namespace UdeS.Promoscience.Labyrinths
         public GameObject GetTile(int x, int y)
         {
             return labyrinthTiles[x, y];
+        }
+
+        public void Init()
+        {
+            Camera.Source.transform.position += GetLabyrinthPositionInWorldPosition(0, 0);
+            Camera.Source.transform.position += new Vector3(
+                labyrinthTiles.GetLength(0) * Utils.TILE_SIZE,
+                0,
+                -labyrinthTiles.GetLength(1) * Utils.TILE_SIZE) / 2;
+
+            Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
         }
 
         //Labyrith start should always be in a dead end
@@ -596,9 +602,9 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void DestroyLabyrinth()
         {
-            foreach (Transform child in transform)
+            foreach (GameObject tile in labyrinthTiles)
             {
-                Destroy(child.gameObject);
+                Destroy(tile.gameObject);
             }
 
             labyrinthTiles = null;
@@ -608,6 +614,7 @@ namespace UdeS.Promoscience.Labyrinths
         {
             var labyrinth = this.Create();
             labyrinth.data = data;
+
             return labyrinth;
         }
 

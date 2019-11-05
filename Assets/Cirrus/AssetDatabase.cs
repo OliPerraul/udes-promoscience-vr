@@ -12,6 +12,7 @@ namespace Cirrus
         {
             get
             {
+#if UNITY_EDITOR
                 var path = "";
                 var obj = Selection.activeObject;
                 if (obj == null) path = "Assets";
@@ -31,6 +32,9 @@ namespace Cirrus
                 {
                     return "";
                 }
+#endif
+
+                return "";
             }
         }
 
@@ -43,6 +47,7 @@ namespace Cirrus
         /// </summary>
         public static T CreateAsset<T>(string path) where T : ScriptableObject
         {
+#if UNITY_EDITOR
             T asset = ScriptableObject.CreateInstance<T>();
 
             string assetPathAndName = UnityEditor.AssetDatabase.GenerateUniqueAssetPath("Assets/" + path + ".asset");
@@ -57,7 +62,11 @@ namespace Cirrus
 
             UnityEditor.Selection.activeObject = asset;
 
+            UnityEditor.EditorUtility.SetDirty(asset);
+
             return asset;
+#endif
+            return null;
         }
 
 

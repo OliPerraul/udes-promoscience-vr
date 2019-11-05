@@ -183,6 +183,8 @@ namespace UdeS.Promoscience
             {
                 Labyrinth.GenerateLabyrinthVisual();
 
+                Labyrinth.Init();
+
                 if (controls != null)
                 {
                     controls.StopAllMovement();

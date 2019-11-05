@@ -68,6 +68,9 @@ namespace UdeS.Promoscience.Labyrinths
 
         [SerializeField]
         public List<Skin> Skins;
+
+        [SerializeField]
+        public Skin GreyboxSkin;
     }
 }
 

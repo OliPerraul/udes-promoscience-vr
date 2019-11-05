@@ -232,7 +232,7 @@ namespace UdeS.Promoscience
 
             Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(Labyrinths.CurrentData.Id);
 
-            CurrentReplay = new Replays.InstantReplay(instantReplayController, Labyrinths.CurrentData);
+            CurrentReplay = new Replays.InstantReplay(advancedReplayController, Labyrinths.CurrentData);
 
             CurrentReplay.Start();
         }

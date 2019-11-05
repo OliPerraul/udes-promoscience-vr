@@ -32,3 +32,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6b408ac85c4acce4c826dc0270f34286, type: 2}
   - {fileID: 11400000, guid: dbdf35944d578f74aa0149ff8131cef7, type: 2}
   - {fileID: 11400000, guid: bf57e4658919c964c83037d5bae8f15b, type: 2}
+  GreyboxSkin: {fileID: 11400000, guid: bf57e4658919c964c83037d5bae8f15b, type: 2}

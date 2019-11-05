@@ -26,6 +26,9 @@ namespace UdeS.Promoscience.Replays.UI
         protected UnityEngine.UI.Button overlayButton;
 
         [SerializeField]
+        protected UnityEngine.UI.Button greyboxButton;
+
+        [SerializeField]
         protected UnityEngine.UI.Button algorithmButton;
 
         [SerializeField]
@@ -50,6 +53,7 @@ namespace UdeS.Promoscience.Replays.UI
             exitButton.onClick.AddListener(OnExitClicked);
             overlayButton.onClick.AddListener(OnOverlayClicked);
             algorithmButton.onClick.AddListener(OnAlgorithmClicked);
+            greyboxButton.onClick.AddListener(OnGreyboxClicked);
 
             replayOptions.OnActionHandler += OnReplayAction;
 
@@ -57,6 +61,12 @@ namespace UdeS.Promoscience.Replays.UI
 
             Enabled = false;
         }
+
+        public void OnGreyboxClicked()
+        {
+            replayOptions.SendAction(ReplayAction.ToggleGreyboxLabyrinth);
+        }
+
 
         public void OnReplayAction(ReplayAction action, params object[] args)
         {
