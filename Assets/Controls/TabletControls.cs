@@ -42,7 +42,7 @@ namespace UdeS.Promoscience
         bool isTurning = false;
 
         const float fixedTimestep = 0.03f;//Value of TimeManager Fixed Timestep
-        const float maxMovementDistance = Promoscience.Utils.TILE_SIZE;
+        const float maxMovementDistance = Labyrinths.Utils.TILE_SIZE;
         const float maxRotationAngle = 45;
 
         float movementLerpValue = 0;

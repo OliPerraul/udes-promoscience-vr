@@ -134,9 +134,9 @@ namespace UdeS.Promoscience.Labyrinths
         {
             if (x >= 0 && x < GetLabyrithXLenght() && y >= 0 && y < GetLabyrithYLenght())
             {
-                if ((GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_FLOOR_START_ID && GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_FLOOR_END_ID)
-                    || (GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID && GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_START_END_ID)
-                    || (GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_END_START_ID && GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_END_END_ID))
+                if ((GetLabyrithValueAt(x, y) >= Utils.TILE_FLOOR_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_FLOOR_END_ID)
+                    || (GetLabyrithValueAt(x, y) >= Utils.TILE_START_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_START_END_ID)
+                    || (GetLabyrithValueAt(x, y) >= Utils.TILE_END_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_END_END_ID))
                 {
                     return true;
                 }

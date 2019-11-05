@@ -33,25 +33,25 @@ namespace UdeS.Promoscience.Generator
                 switch (st)
                 {
                     case 1:
-                        return Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID;
+                        return Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
                     case 2:
-                        return Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID;
+                        return Labyrinths.Utils.TILE_PTOL_VERTICAL_WALL_ID;
                     case 3:
-                        return Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
+                        return Labyrinths.Utils.TILE_BRIT_VERTICAL_WALL_ID;
                     default:
-                        return Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID;
+                        return Labyrinths.Utils.TILE_KART_VERTICAL_WALL_ID;
                 }
             }
             switch (st)
             {
                 case 1:
-                    return Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+                    return Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
                 case 2:
-                    return Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
+                    return Labyrinths.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
                 case 3:
-                    return Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID;
+                    return Labyrinths.Utils.TILE_BRIT_VERTICAL_WALL_ID;
                 default:
-                    return Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID;
+                    return Labyrinths.Utils.TILE_KART_VERTICAL_WALL_B_ID;
             }
         }
     }

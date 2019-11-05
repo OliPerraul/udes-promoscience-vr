@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80864951e2f25454f940b8ccad52222f, type: 3}
   m_Name: Labyrinth.1
   m_EditorClassIdentifier: 
-  skin: {fileID: 11400000, guid: 0935aea091db8284d994d890b46556d2, type: 2}
+  skin: {fileID: 11400000, guid: da1963385689a074f87e5e7d6486ee60, type: 2}
   data:
     id: 1
     sizeX: 11

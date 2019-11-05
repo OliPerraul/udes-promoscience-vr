@@ -63,9 +63,9 @@ namespace UdeS.Promoscience.Tests
 
             Vector2Int startPosition = Client.Instance.Labyrinth.GetLabyrithStartPosition();
 
-            worldPos.x = (x - startPosition.x) * Promoscience.Utils.TILE_SIZE;
+            worldPos.x = (x - startPosition.x) * Labyrinths.Utils.TILE_SIZE;
             worldPos.y = 0.5f;
-            worldPos.z = (-y + startPosition.y) * Promoscience.Utils.TILE_SIZE;
+            worldPos.z = (-y + startPosition.y) * Labyrinths.Utils.TILE_SIZE;
 
             return worldPos;
         }

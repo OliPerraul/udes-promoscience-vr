@@ -3,6 +3,7 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Labyrinths
 {
+    [CreateAssetMenu(fileName = "Labyrinth", menuName = "Algorinthe/Labyrinths/Skin", order = 1)]
     public class Skin : ScriptableObject
     {
         public int Id

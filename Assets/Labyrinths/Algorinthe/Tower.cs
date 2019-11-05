@@ -26,13 +26,13 @@ namespace UdeS.Promoscience.Generator
             switch (st)
             {
                 case 1:
-                    return Utils.TILE_ROME_TOWER_WALL_ID;
+                    return Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
                 case 2:
-                    return Utils.TILE_PTOL_TOWER_WALL_ID;
+                    return Labyrinths.Utils.TILE_PTOL_TOWER_WALL_ID;
                 case 3:
-                    return Utils.TILE_BRIT_TOWER_WALL_ID;
+                    return Labyrinths.Utils.TILE_BRIT_TOWER_WALL_ID;
                 default:
-                    return Utils.TILE_KART_TOWER_WALL_ID;
+                    return Labyrinths.Utils.TILE_KART_TOWER_WALL_ID;
             }
         }
     }

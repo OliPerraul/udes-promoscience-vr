@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f757e0af315acc44e809553688f706f5, type: 3}
+  m_Name: Skin.Cave.1
+  m_EditorClassIdentifier: 
+  FloorStart: {fileID: 1860037174321772, guid: 4346afcafe4794a42bf39e6120c3e0fd, type: 2}
+  FloorEnd: {fileID: 1860037174321772, guid: 715293093d544914bb4888a81b6343c9, type: 2}
+  FloorTile1: {fileID: 1860037174321772, guid: 0a914259653a35648b92d480bcb10130, type: 2}
+  FloorTile2: {fileID: 1860037174321772, guid: 0a914259653a35648b92d480bcb10130, type: 2}
+  FloorTile3: {fileID: 1860037174321772, guid: 0a914259653a35648b92d480bcb10130, type: 2}
+  Corner1: {fileID: 1245299613329436, guid: de16e552bf4498743b66d89695515dd1, type: 2}
+  Corner2: {fileID: 1245299613329436, guid: de16e552bf4498743b66d89695515dd1, type: 2}
+  Corner3: {fileID: 1245299613329436, guid: de16e552bf4498743b66d89695515dd1, type: 2}
+  Horizontal1: {fileID: 1861996732215786, guid: 5249ed195167aae47aee26e09d639725,
+    type: 2}
+  Horizontal2: {fileID: 1861996732215786, guid: 5249ed195167aae47aee26e09d639725,
+    type: 2}
+  Horizontal3: {fileID: 1861996732215786, guid: 5249ed195167aae47aee26e09d639725,
+    type: 2}
+  Horizontal4: {fileID: 1861996732215786, guid: 5249ed195167aae47aee26e09d639725,
+    type: 2}
+  Vertical1: {fileID: 1184195605095054, guid: 7bfdfe6767521594db9a8cd7f02400bc, type: 2}
+  Vertical2: {fileID: 1184195605095054, guid: 7bfdfe6767521594db9a8cd7f02400bc, type: 2}
+  Vertical3: {fileID: 1184195605095054, guid: 7bfdfe6767521594db9a8cd7f02400bc, type: 2}
+  Vertical4: {fileID: 1184195605095054, guid: 7bfdfe6767521594db9a8cd7f02400bc, type: 2}

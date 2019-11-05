@@ -32,13 +32,13 @@ namespace UdeS.Promoscience.Generator
             switch (st)
             {
                 case 1:
-                    return Promoscience.Utils.TILE_ROME_FLOOR_ID;
+                    return Labyrinths.Utils.TILE_ROME_FLOOR_ID;
                 case 2:
-                    return Promoscience.Utils.TILE_PTOL_FLOOR_ID;
+                    return Labyrinths.Utils.TILE_PTOL_FLOOR_ID;
                 case 3:
-                    return Promoscience.Utils.TILE_BRIT_FLOOR_ID;
+                    return Labyrinths.Utils.TILE_BRIT_FLOOR_ID;
                 default:
-                    return Promoscience.Utils.TILE_KART_FLOOR_ID;
+                    return Labyrinths.Utils.TILE_KART_FLOOR_ID;
             }
         }
     }

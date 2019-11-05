@@ -125,15 +125,15 @@ namespace UdeS.Promoscience.Generator
         {
             for (int i = 0; i < data.Length; i++)
             {
-                if (data[i] >= Promoscience.Utils.TILE_START_START_ID && data[i] <= Promoscience.Utils.TILE_START_END_ID)
+                if (data[i] >= Labyrinths.Utils.TILE_START_START_ID && data[i] <= Labyrinths.Utils.TILE_START_END_ID)
                 {
                     labyrinth.Add(new StartRoad(i / width, i % width));
                     currentCell = labyrinth[labyrinth.Count - 1];
                     labyrinth[labyrinth.Count - 1].setCurrent();
                     labyrinth[labyrinth.Count - 1].isVisited();
                 }
-                else if (data[i] >= Promoscience.Utils.TILE_FLOOR_START_ID && data[i] <= Promoscience.Utils.TILE_FLOOR_END_ID) labyrinth.Add(new Road(i / width, i % width));
-                else if (data[i] >= Promoscience.Utils.TILE_END_START_ID && data[i] <= Promoscience.Utils.TILE_END_END_ID) labyrinth.Add(new EndRoad(i / width, i % width));
+                else if (data[i] >= Labyrinths.Utils.TILE_FLOOR_START_ID && data[i] <= Labyrinths.Utils.TILE_FLOOR_END_ID) labyrinth.Add(new Road(i / width, i % width));
+                else if (data[i] >= Labyrinths.Utils.TILE_END_START_ID && data[i] <= Labyrinths.Utils.TILE_END_END_ID) labyrinth.Add(new EndRoad(i / width, i % width));
                 else labyrinth.Add(new Wall(i / width, i % width));
             }
         }

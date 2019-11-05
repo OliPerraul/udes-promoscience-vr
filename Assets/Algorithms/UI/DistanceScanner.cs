@@ -37,7 +37,7 @@ namespace UdeS.Promoscience.Algorithms
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-        float raycastRange = 100 * Promoscience.Utils.TILE_SIZE;
+        float raycastRange = 100 * Labyrinths.Utils.TILE_SIZE;
 
         private bool init = false;
 

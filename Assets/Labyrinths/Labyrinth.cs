@@ -16,21 +16,21 @@ namespace UdeS.Promoscience.Labyrinths
     {
         Empty = 0,
 
-        StartStart = Promoscience.Utils.TILE_START_START_ID,
+        StartStart = Utils.TILE_START_START_ID,
         Start,
-        StartEnd = Promoscience.Utils.TILE_START_END_ID,
+        StartEnd = Utils.TILE_START_END_ID,
 
-        EndStart = Promoscience.Utils.TILE_END_START_ID,
+        EndStart = Utils.TILE_END_START_ID,
         End,
-        EndEnd = Promoscience.Utils.TILE_END_END_ID,
+        EndEnd = Utils.TILE_END_END_ID,
 
-        FloorStart = Promoscience.Utils.TILE_FLOOR_START_ID,
+        FloorStart = Utils.TILE_FLOOR_START_ID,
         Floor1,
         Floor2,
         Floor3,
-        FloorEnd = Promoscience.Utils.TILE_FLOOR_END_ID,
+        FloorEnd = Utils.TILE_FLOOR_END_ID,
 
-        WallStart = Promoscience.Utils.TILE_WALL_START_ID,
+        WallStart = Utils.TILE_WALL_START_ID,
         Horizontal1,
         Horizontal2,
         Horizontal3,
@@ -42,7 +42,7 @@ namespace UdeS.Promoscience.Labyrinths
         Corner1,
         Corner2,
         Corner3,
-        WallEnd = Promoscience.Utils.TILE_WALL_END_ID
+        WallEnd = Utils.TILE_WALL_END_ID
     }
 
     public enum Type
@@ -62,6 +62,72 @@ namespace UdeS.Promoscience.Labyrinths
         public const int SizeMedium = 11;
 
         public const int SizeLarge = 13;
+
+        public const int TILE_EMPTY_ID = 0;
+
+        public const float TILE_SIZE = 5.0f;
+        //Labyrinth tiles
+        //0-49 Starts
+        public const int TILE_START_START_ID = 1;
+        public const int TILE_START_ID = 1;
+        public const int TILE_ROME_START_ID = 2;
+        public const int TILE_PTOL_START_ID = 3;
+        public const int TILE_BRIT_START_ID = 4;
+        public const int TILE_KART_START_ID = 5;
+        public const int TILE_START_END_ID = 49;
+
+        //50-99 Floors
+        public const int TILE_FLOOR_START_ID = 50;
+        public const int TILE_FLOOR_ID = 50;
+        public const int TILE_ROME_FLOOR_ID = 51;
+        public const int TILE_PTOL_FLOOR_ID = 52;
+        public const int TILE_BRIT_FLOOR_ID = 53;
+        public const int TILE_KART_FLOOR_ID = 54;
+        public const int TILE_FLOOR_END_ID = 99;
+
+        //100-149 Ends
+        public const int TILE_END_START_ID = 100;
+        public const int TILE_END_ID = 100;
+        public const int TILE_ROME_END_ID = 101;
+        public const int TILE_PTOL_END_ID = 102;
+        public const int TILE_BRIT_END_ID = 103;
+        public const int TILE_KART_END_ID = 104;
+        public const int TILE_END_END_ID = 149;
+
+        //150-199 Walls
+        public const int TILE_WALL_START_ID = 150;
+        public const int TILE_WALL_ID = 150;
+
+        public const int TILE_ROME_HORIZONTAL_WALL_ID = 151;
+        public const int TILE_ROME_HORIZONTAL_WALL_B_ID = 152;
+        public const int TILE_ROME_VERTICAL_WALL_ID = 153;
+        public const int TILE_ROME_VERTICAL_WALL_B_ID = 154;
+        public const int TILE_ROME_TOWER_WALL_ID = 155;
+
+        public const int TILE_PTOL_HORIZONTAL_WALL_ID = 156;
+        public const int TILE_PTOL_HORIZONTAL_WALL_B_ID = 157;
+        public const int TILE_PTOL_VERTICAL_WALL_ID = 158;
+        public const int TILE_PTOL_VERTICAL_WALL_B_ID = 159;
+        public const int TILE_PTOL_TOWER_WALL_ID = 160;
+
+        public const int TILE_BRIT_HORIZONTAL_WALL_ID = 161;
+        public const int TILE_BRIT_VERTICAL_WALL_ID = 162;
+        public const int TILE_BRIT_TOWER_WALL_ID = 163;
+        public const int TILE_BRIT_TOWER_WALL_2_ID = 164;
+
+        public const int TILE_KART_HORIZONTAL_WALL_ID = 165;
+        public const int TILE_KART_HORIZONTAL_WALL_B_ID = 166;
+        public const int TILE_KART_VERTICAL_WALL_ID = 167;
+        public const int TILE_KART_VERTICAL_WALL_B_ID = 168;
+        public const int TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID = 169;
+        public const int TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_B_ID = 170;
+        public const int TILE_KART_VERTICAL_WALL_SCAFFOLDING_ID = 171;
+        public const int TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID = 172;
+        public const int TILE_KART_TOWER_WALL_ID = 173;
+        public const int TILE_KART_TOWER_WALL_2_ID = 174;
+        public const int TILE_KART_TOWER_WALL_SCAFFOLDING_ID = 175;
+
+        public const int TILE_WALL_END_ID = 199;
 
 
         public static Type GetType(IData data)
@@ -91,22 +157,22 @@ namespace UdeS.Promoscience.Labyrinths
                 if (tiles[i] == 0)
                     continue;
 
-                if (tiles[i] >= Promoscience.Utils.TILE_START_START_ID && tiles[i] <= Promoscience.Utils.TILE_START_END_ID)
+                if (tiles[i] >= Utils.TILE_START_START_ID && tiles[i] <= Utils.TILE_START_END_ID)
                 {
                     res[i] = TileType.Start;
                 }
 
-                if (tiles[i] >= Promoscience.Utils.TILE_FLOOR_START_ID && tiles[i] <= Promoscience.Utils.TILE_FLOOR_END_ID)
+                if (tiles[i] >= Utils.TILE_FLOOR_START_ID && tiles[i] <= Utils.TILE_FLOOR_END_ID)
                 {
                     res[i] = TileType.Floor1;
                 }
 
-                if (tiles[i] >= Promoscience.Utils.TILE_END_START_ID && tiles[i] <= Promoscience.Utils.TILE_END_END_ID)
+                if (tiles[i] >= Utils.TILE_END_START_ID && tiles[i] <= Utils.TILE_END_END_ID)
                 {
                     res[i] = TileType.End;
                 }
 
-                if (tiles[i] >= Promoscience.Utils.TILE_WALL_START_ID && tiles[i] <= Promoscience.Utils.TILE_WALL_END_ID)
+                if (tiles[i] >= Utils.TILE_WALL_START_ID && tiles[i] <= Utils.TILE_WALL_END_ID)
                 {
                     switch (tiles[i])
                     {
@@ -141,65 +207,65 @@ namespace UdeS.Promoscience.Labyrinths
 
                         // Horizontal
 
-                        case Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_ID:
-                        case Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_ID:
-                        case Promoscience.Utils.TILE_BRIT_HORIZONTAL_WALL_ID:
-                        case Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_ID:
+                        case Utils.TILE_ROME_HORIZONTAL_WALL_ID:
+                        case Utils.TILE_PTOL_HORIZONTAL_WALL_ID:
+                        case Utils.TILE_BRIT_HORIZONTAL_WALL_ID:
+                        case Utils.TILE_KART_HORIZONTAL_WALL_ID:
                             res[i] = TileType.Horizontal1;
                             break;
 
-                        case Promoscience.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID:
-                        case Promoscience.Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID:
-                        case Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_B_ID:
+                        case Utils.TILE_ROME_HORIZONTAL_WALL_B_ID:
+                        case Utils.TILE_PTOL_HORIZONTAL_WALL_B_ID:
+                        case Utils.TILE_KART_HORIZONTAL_WALL_B_ID:
                             res[i] = TileType.Horizontal2;
                             break;
 
-                        case Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID:
+                        case Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_ID:
                             res[i] = TileType.Horizontal3;
                             break;
 
-                        case Promoscience.Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_B_ID:
+                        case Utils.TILE_KART_HORIZONTAL_WALL_SCAFFOLDING_B_ID:
                             res[i] = TileType.Horizontal4;
                             break;
 
                         // Vertical
                         
-                        case Promoscience.Utils.TILE_ROME_VERTICAL_WALL_ID:
-                        case Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_ID:
-                        case Promoscience.Utils.TILE_BRIT_VERTICAL_WALL_ID:
-                        case Promoscience.Utils.TILE_KART_VERTICAL_WALL_ID:
+                        case Utils.TILE_ROME_VERTICAL_WALL_ID:
+                        case Utils.TILE_PTOL_VERTICAL_WALL_ID:
+                        case Utils.TILE_BRIT_VERTICAL_WALL_ID:
+                        case Utils.TILE_KART_VERTICAL_WALL_ID:
                             res[i] = TileType.Vertical1;
                             break;
 
-                        case Promoscience.Utils.TILE_ROME_VERTICAL_WALL_B_ID:
-                        case Promoscience.Utils.TILE_PTOL_VERTICAL_WALL_B_ID:
-                        case Promoscience.Utils.TILE_KART_VERTICAL_WALL_B_ID:
+                        case Utils.TILE_ROME_VERTICAL_WALL_B_ID:
+                        case Utils.TILE_PTOL_VERTICAL_WALL_B_ID:
+                        case Utils.TILE_KART_VERTICAL_WALL_B_ID:
                             res[i] = TileType.Vertical2;
                             break;
 
-                        case Promoscience.Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_ID:
+                        case Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_ID:
                             res[i] = TileType.Vertical3;
                             break;
 
-                        case Promoscience.Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID:
+                        case Utils.TILE_KART_VERTICAL_WALL_SCAFFOLDING_B_ID:
                             res[i] = TileType.Vertical4;
                             break;
 
                         // Corners
 
-                        case Promoscience.Utils.TILE_ROME_TOWER_WALL_ID:
-                        case Promoscience.Utils.TILE_PTOL_TOWER_WALL_ID:
-                        case Promoscience.Utils.TILE_BRIT_TOWER_WALL_ID:
-                        case Promoscience.Utils.TILE_KART_TOWER_WALL_ID:
+                        case Utils.TILE_ROME_TOWER_WALL_ID:
+                        case Utils.TILE_PTOL_TOWER_WALL_ID:
+                        case Utils.TILE_BRIT_TOWER_WALL_ID:
+                        case Utils.TILE_KART_TOWER_WALL_ID:
                             res[i] = TileType.Corner1;
                             break;
 
-                        case Promoscience.Utils.TILE_BRIT_TOWER_WALL_2_ID:
-                        case Promoscience.Utils.TILE_KART_TOWER_WALL_2_ID:
+                        case Utils.TILE_BRIT_TOWER_WALL_2_ID:
+                        case Utils.TILE_KART_TOWER_WALL_2_ID:
                             res[i] = TileType.Corner2;
                             break;
 
-                        case Promoscience.Utils.TILE_KART_TOWER_WALL_SCAFFOLDING_ID:                        
+                        case Utils.TILE_KART_TOWER_WALL_SCAFFOLDING_ID:                        
                             res[i] = TileType.Corner3;
                             break;
 
@@ -365,9 +431,9 @@ namespace UdeS.Promoscience.Labyrinths
 
             Camera.Source.transform.position += GetLabyrinthPositionInWorldPosition(0, 0);
             Camera.Source.transform.position += new Vector3(
-                labyrinthTiles.GetLength(0) * Promoscience.Utils.TILE_SIZE,
+                labyrinthTiles.GetLength(0) * Utils.TILE_SIZE,
                 0,
-                -labyrinthTiles.GetLength(1) * Promoscience.Utils.TILE_SIZE) / 2;
+                -labyrinthTiles.GetLength(1) * Utils.TILE_SIZE) / 2;
 
             Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
         }
@@ -405,7 +471,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public Vector3 GetLabyrinthPositionInWorldPosition(int x, int y)
         {
-            return new Vector3((x - StartPosition.x) * Promoscience.Utils.TILE_SIZE, 0, (-y + StartPosition.y) * Promoscience.Utils.TILE_SIZE);
+            return new Vector3((x - StartPosition.x) * Utils.TILE_SIZE, 0, (-y + StartPosition.y) * Utils.TILE_SIZE);
         }
 
         public Vector3 GetLabyrinthPositionInWorldPosition(Vector2Int position)
@@ -415,7 +481,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public Vector2Int GetWorldPositionInLabyrinthPosition(float x, float y)
         {
-            return new Vector2Int(Mathf.RoundToInt((x / Promoscience.Utils.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-y / Promoscience.Utils.TILE_SIZE)) + StartPosition.y);
+            return new Vector2Int(Mathf.RoundToInt((x / Utils.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-y / Utils.TILE_SIZE)) + StartPosition.y);
         }
 
         public Vector2Int GetLabyrithStartPosition()

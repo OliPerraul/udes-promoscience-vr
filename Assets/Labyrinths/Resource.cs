@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Labyrinths
 {
-    [CreateAssetMenu(fileName = "Data", menuName = "Data/Labyrinth", order = 1)]
+    [CreateAssetMenu(fileName = "Labyrinth", menuName = "Algorinthe/Labyrinths/Labyrinth", order = 1)]
     public class Resource : ScriptableObject, IData
     {
         [SerializeField]
@@ -121,14 +121,14 @@ namespace UdeS.Promoscience.Labyrinths
                 for (int y = 0; y < SizeY; y++)
                 {
                     if (
-                        GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_START_START_ID &&
-                        GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_START_END_ID)
+                        GetLabyrithValueAt(x, y) >= Utils.TILE_START_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Utils.TILE_START_END_ID)
                     {
                         StartPos = new Vector2Int(x, y);
                     }
                     else if (
-                        GetLabyrithValueAt(x, y) >= Promoscience.Utils.TILE_END_START_ID &&
-                        GetLabyrithValueAt(x, y) <= Promoscience.Utils.TILE_END_END_ID)
+                        GetLabyrithValueAt(x, y) >= Utils.TILE_END_START_ID &&
+                        GetLabyrithValueAt(x, y) <= Utils.TILE_END_END_ID)
                     {
                         EndPos = new Vector2Int(x, y);
                     }
