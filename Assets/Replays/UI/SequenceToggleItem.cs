@@ -51,18 +51,12 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnToggle(bool enabled)
         {
-            if (replayController.OnSequenceToggledHandler != null)
-            {
-                replayController.OnSequenceToggledHandler.Invoke(course, enabled);
-            }
+            replayController.SendAction(ReplayAction.SequenceToggled, enabled);
         }
 
         public void OnClicked()
         {
-            if (replayController.OnSequenceSelectedHandler != null)
-            {
-                replayController.OnSequenceSelectedHandler.Invoke(course);
-            }
+            replayController.SendAction(ReplayAction.SequenceSelected, course);   
         }
 
 

@@ -11,8 +11,6 @@ namespace UdeS.Promoscience.Algorithms
 {
     public class LongestStraightAlgorithm : Algorithm
     {
-        public LongestStraightAlgorithm(Resource res) : base(res) { }
-
         bool asReachedTheEnd;
         bool[] isDirectionWalkableAndNotVisited = new bool[4];
         bool[,] alreadyVisitedTile;

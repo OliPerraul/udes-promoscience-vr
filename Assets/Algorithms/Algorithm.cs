@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
+using System.Collections;
 using UdeS.Promoscience.ScriptableObjects;
-////using UdeS.Promoscience.Utils;
-using UdeS.Promoscience.Network;
+using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Algorithms
 {
@@ -27,42 +24,48 @@ namespace UdeS.Promoscience.Algorithms
         {
             get
             {
-                return (Id) UnityEngine.Random.Range((int)Id.Tutorial, (int)Id.Standard);
+                return (Id)UnityEngine.Random.Range((int)Id.Tutorial, (int)Id.Standard);
             }
         }
     }
 
-    public abstract class Algorithm
+    public class Algorithm : ScriptableObject
     {
-        public const int NumAlgorithms = 4;
 
-        protected Resource resource;
+        [SerializeField]
+        public LocalizeInlineString name;
 
-        //protected Labyrinths.IData labyrinth;
-
-        public string Name {
+        public string Name
+        {
             get
             {
-                return resource.Name;
+                return name.Value;                
             }
         }
+
+        [SerializeField]
+        public LocalizeString description;
 
         public string Description
         {
             get
             {
-                return resource.Description;
+                return description.Value;
             }
         }
 
-        public abstract List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth);
+        public const int NumAlgorithms = 4;
 
-        public abstract Promoscience.Algorithms.Id Id { get; }
+        protected Algorithm resource;
 
-        public Algorithm(Resource resource)//, Labyrinths.IData labyrinth)
-        {
-            this.resource = resource;
-            //this.labyrinth = labyrinth;
-        }
+        //protected Labyrinths.IData labyrinth;
+
+
+        public virtual List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth) { return null; }
+
+        public virtual Algorithms.Id Id { get { return (Algorithms.Id) 0; } }
+
+
+
     }
 }

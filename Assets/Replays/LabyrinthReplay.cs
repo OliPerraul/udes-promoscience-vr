@@ -15,19 +15,17 @@ namespace UdeS.Promoscience.Replays
 
         public Labyrinths.Labyrinth labyrinth;
 
-        public Labyrinths.Labyrinth dirtyLabyrinth;
-
         protected Vector2Int lposition;
 
         protected Vector3 wposition;
 
-        private Dictionary<int, PlayerSequence> playerSequences;
+        private Dictionary<int, PlayerSequence> playerSequences = new Dictionary<int, PlayerSequence>();
 
-        private List<PlayerSequence> activeSequences;
+        private Dictionary<Algorithms.Id, AlgorithmSequence> algorithmSequences = new Dictionary<Algorithms.Id, AlgorithmSequence>();
 
-        private List<AlgorithmSequence> algorithmSequences;
+        private List<PlayerSequence> activeSequences = new List<PlayerSequence>();
 
-        private System.Threading.Mutex mutex;
+        private System.Threading.Mutex mutex = new System.Threading.Mutex();
 
         private bool isDirtyToggled = false;
 
@@ -41,18 +39,8 @@ namespace UdeS.Promoscience.Replays
             //this.courses = courses;
             this.labyrinthData = labyrinth;
 
-            mutex = new System.Threading.Mutex();
-
-            playerSequences = new Dictionary<int, PlayerSequence>();
-
-            activeSequences = new List<PlayerSequence>();
-
-            algorithmSequences = new List<AlgorithmSequence>();
-
             //replay..gameStateChangedEvent += OnServerGameStateChanged;
             Server.Instance.OnCourseAddedHandler += OnCourseAdded;
-
-            controller.OnSequenceToggledHandler += OnSequenceToggled;
 
             controller.OnActionHandler += OnReplayAction;                       
         }
@@ -63,25 +51,13 @@ namespace UdeS.Promoscience.Replays
                 .GetLabyrinthTemplate(labyrinthData)
                 .Create(labyrinthData);
 
+            labyrinth.name += "DIRTY";
+
             labyrinth.Camera.Maximize();
 
             labyrinth.GenerateLabyrinthVisual();
 
             labyrinth.Init();
-
-            dirtyLabyrinth = Labyrinths.Resources.Instance
-                .GetLabyrinthTemplate(labyrinthData)
-                .Create(labyrinthData);
-
-            dirtyLabyrinth.name += "DIRTY";
-
-            dirtyLabyrinth.Camera.Maximize();
-
-            dirtyLabyrinth.transform.position = labyrinth.transform.position;
-
-            dirtyLabyrinth.GenerateLabyrinthVisual();
-
-            dirtyLabyrinth.Init();
 
             lposition = labyrinth.GetLabyrithStartPosition();
 
@@ -100,7 +76,7 @@ namespace UdeS.Promoscience.Replays
         {
             isPlaying = true;
 
-            foreach (var sq in algorithmSequences)
+            foreach (var sq in algorithmSequences.Values)
             {
                 sq.Resume();
             }
@@ -118,7 +94,7 @@ namespace UdeS.Promoscience.Replays
                 Pause();
             }
 
-            foreach (var sq in algorithmSequences)
+            foreach (var sq in algorithmSequences.Values)
             {
                 if (sq.WithinBounds) sq.Next();
             }
@@ -140,7 +116,7 @@ namespace UdeS.Promoscience.Replays
 
             controller.GlobalMoveIndex--;
 
-            foreach (var sq in algorithmSequences)
+            foreach (var sq in algorithmSequences.Values)
             {
                 if (sq.WithinBounds) sq.Previous();
             }
@@ -155,7 +131,7 @@ namespace UdeS.Promoscience.Replays
         {
             controller.GlobalMoveIndex = target;
 
-            foreach (var sq in algorithmSequences)
+            foreach (var sq in algorithmSequences.Values)
             {
                 sq.Move(target);
             }
@@ -172,7 +148,7 @@ namespace UdeS.Promoscience.Replays
             if (!isPlaying)
                 return;
 
-            foreach (var sq in algorithmSequences)
+            foreach (var sq in algorithmSequences.Values)
             {
                 sq.Stop();// (target);
             }
@@ -189,7 +165,7 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void Stop()
         {
-            foreach (var sq in algorithmSequences)
+            foreach (var sq in algorithmSequences.Values)
             {
                 sq.Stop();// (target);
             }
@@ -209,12 +185,8 @@ namespace UdeS.Promoscience.Replays
         public void EnableGreybox(bool enable)
         {
             isGreyboxToggled = enable;
-            labyrinth.GenerateLabyrinthVisual(
-                isGreyboxToggled ? 
-                Labyrinths.Resources.Instance.GreyboxSkin :
-                null);
 
-            dirtyLabyrinth.GenerateLabyrinthVisual(
+            labyrinth.GenerateLabyrinthVisual(
                 isGreyboxToggled ?
                 Labyrinths.Resources.Instance.GreyboxSkin :
                 null);
@@ -223,8 +195,11 @@ namespace UdeS.Promoscience.Replays
         public void EnableDirty(bool enable)
         {
             isDirtyToggled = enable;
-            labyrinth.gameObject.SetActive(!isDirtyToggled);
-            dirtyLabyrinth.gameObject.SetActive(isDirtyToggled);
+
+            foreach (var alg in algorithmSequences.Values)
+            {
+                alg.Show(!enable);
+            }
         }
 
         public void EnableOptions(bool enable)
@@ -234,6 +209,8 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void OnReplayAction(ReplayAction action, params object[] args)
         {
+            Course course;
+
             switch (action)
             {
                 case ReplayAction.ToggleOptions:                    
@@ -317,6 +294,51 @@ namespace UdeS.Promoscience.Replays
                     //mutex.ReleaseMutex();
 
                     break;
+
+                case ReplayAction.SequenceToggled:
+                    course = (Course)args[0];
+                    bool enabled = (bool)args[1];
+
+                    playerSequences[course.Id].gameObject.SetActive(enabled);
+
+                    if (!enabled)
+                    {
+                        activeSequences.Remove(playerSequences[course.Id]);
+                    }
+                    else
+                    {
+                        activeSequences.Add(playerSequences[course.Id]);
+                    }
+
+                    if (activeSequences.Count != 0)
+                    {
+                        // Adjust move count to biggest sequence
+                        TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
+
+                        // Let all sqnces catch up     
+                        Move(Mathf.Clamp(controller.GlobalMoveIndex, 0, controller.GlobalMoveCount));
+
+                        AdjustOffsets();
+                    }
+                    break;
+
+                case ReplayAction.SequenceSelected:
+
+                    course = (Course)args[0];
+
+                    foreach (AlgorithmSequence sq in algorithmSequences.Values)
+                    {
+                        sq.Show(false);
+                    }
+
+                    AlgorithmSequence sequence;
+
+                    if (algorithmSequences.TryGetValue(course.Algorithm.Id, out sequence))
+                    {
+                        sequence.Show(true);
+                    }
+
+                    break;
             }
         }
 
@@ -324,31 +346,6 @@ namespace UdeS.Promoscience.Replays
         {
             if (candidateMvcnt > controller.GlobalMoveCount)
                 controller.GlobalMoveCount = candidateMvcnt;
-        }
-
-        public void OnSequenceToggled(Course course, bool enabled)
-        {
-            playerSequences[course.Id].gameObject.SetActive(enabled);
-
-            if (!enabled)
-            {
-                activeSequences.Remove(playerSequences[course.Id]);
-            }
-            else
-            {
-                activeSequences.Add(playerSequences[course.Id]);
-            }
-
-            if (activeSequences.Count != 0)
-            {
-                // Adjust move count to biggest sequence
-                TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
-
-                // Let all sqnces catch up     
-                Move(Mathf.Clamp(controller.GlobalMoveIndex, 0, controller.GlobalMoveCount));
-
-                AdjustOffsets();
-            }
         }
 
         public virtual float GetOffsetAmount(float idx)
@@ -381,11 +378,11 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void Clear()
         {            
-            dirtyLabyrinth.gameObject.Destroy();
+            labyrinth.gameObject.Destroy();
 
             labyrinth.gameObject.Destroy();
 
-            foreach (Sequence sq in algorithmSequences)
+            foreach (Sequence sq in algorithmSequences.Values)
             {
                 if (sq != null)
                 {
@@ -407,9 +404,7 @@ namespace UdeS.Promoscience.Replays
 
             algorithmSequences.Clear();
 
-            labyrinth = null;
-
-            dirtyLabyrinth = null;            
+            labyrinth = null;         
         }
 
         public void OnCourseAdded(Course course)
@@ -420,7 +415,7 @@ namespace UdeS.Promoscience.Replays
                     Resources.Instance.PlayerSequence.Create(
                         controller,
                         course,
-                        dirtyLabyrinth,
+                        labyrinth,
                         lposition);
 
                 playerSequences.Add(course.Id, sequence);
@@ -432,12 +427,12 @@ namespace UdeS.Promoscience.Replays
                 var algorithmSeq =
                     Resources.Instance.AlgorithmSequence.Create(
                         controller,
-                        dirtyLabyrinth,
+                        labyrinth,
                         course.Algorithm,
                         lposition
                         );
 
-                algorithmSequences.Add(algorithmSeq);              
+                algorithmSequences.Add(course.Algorithm.Id, algorithmSeq);              
                 
                 TrySetMoveCount(algorithmSeq.LocalMoveCount);
                                

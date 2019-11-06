@@ -12,6 +12,9 @@ namespace UdeS.Promoscience
     public class HeadsetControls : MonoBehaviour
     {
         [SerializeField]
+        private float angleLookatTurnThreshold = 65;
+
+        [SerializeField]
         ScriptableControler controls;
 
         [SerializeField]
@@ -92,6 +95,111 @@ namespace UdeS.Promoscience
             playerPositionRotationAndTiles.valueChangedEvent += OnPlayerPositionRotationAndTiles;
         }
 
+        private Coroutine requestMovementCoroutine;
+
+        //public IEnumerator RequestMovementCoroutine()
+        //{
+
+
+        //    requestMovementCoroutine = null;
+        //    yield return null;
+        //}
+
+
+        public void RequestTurnLeft()
+        {
+            if (!isMoving)
+            {
+                if (isTurningLeft)
+                {
+                    isChainingMovement = true;
+                }
+                else if (isTurningRight)
+                {
+                    if (isChainingMovement)
+                    {
+                        isChainingMovement = false;
+                    }
+                    else
+                    {
+                        Quaternion trajectory = new Quaternion();
+                        trajectory.eulerAngles += new Vector3(0, -90, 0);
+                        fromRotation = targetRotation;
+                        targetRotation = fromRotation * trajectory;
+                        forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
+                        gameAction.SetAction(GameAction.TurnLeft);
+                        lerpValue = 1 - lerpValue;
+                        isTurningLeft = true;
+                        isTurningRight = false;
+                    }
+                }
+                else
+                {
+                    CameraTurnLeft();
+                }
+            }
+        }
+
+        public void RequestTurnRight()
+        {
+            if (!isMoving)
+            {
+                if (isTurningRight)
+                {
+                    isChainingMovement = true;
+                }
+                else if (isTurningLeft)
+                {
+                    if (isChainingMovement)
+                    {
+                        isChainingMovement = false;
+                    }
+                    else
+                    {
+                        Quaternion trajectory = new Quaternion();
+                        trajectory.eulerAngles += new Vector3(0, 90, 0);
+                        fromRotation = targetRotation;
+                        targetRotation = fromRotation * trajectory;
+                        forwardDirection.Value = (forwardDirection.Value + 1) % 4;
+                        gameAction.SetAction(GameAction.TurnRight);
+                        lerpValue = 1 - lerpValue;
+                        isTurningLeft = false;
+                        isTurningRight = true;
+                    }
+                }
+                else
+                {
+                    CameraTurnRight();
+                }
+            }
+        }
+
+
+        public void RequestMoveForward()
+        {
+            Vector3 currentDirection = Utils.GetDirectionVector((Direction)forwardDirection.Value);
+
+            if (
+                Utils.IsSameDirection(
+                    cameraRig.Direction,
+                    currentDirection,
+                    angleLookatTurnThreshold))
+            {
+                RequestMovementInDirection(forwardDirection.Value);
+            }
+            else
+            {
+                if (Utils.AngleDir(currentDirection, cameraRig.Direction, Vector3.up) < 0)
+                {
+                    RequestTurnLeft();
+                }
+                else
+                {
+                    RequestTurnRight();
+                }
+            }
+        }
+
         // TODO: fix player movment: this is a big mess 
         // Why not just snap position to the grid
         void Update()
@@ -123,75 +231,17 @@ namespace UdeS.Promoscience
                         }
                         else
                         {
-                            RequestMovementInDirection(forwardDirection.Value);
+                            RequestMoveForward();
                         }
                     }
                 }
                 else if (cameraRig.IsLeft)
                 {
-                    if (!isMoving)
-                    {
-                        if (isTurningLeft)
-                        {
-                            isChainingMovement = true;
-                        }
-                        else if (isTurningRight)
-                        {
-                            if (isChainingMovement)
-                            {
-                                isChainingMovement = false;
-                            }
-                            else
-                            {
-                                Quaternion trajectory = new Quaternion();
-                                trajectory.eulerAngles += new Vector3(0, -90, 0);
-                                fromRotation = targetRotation;
-                                targetRotation = fromRotation * trajectory;
-                                forwardDirection.Value = (forwardDirection.Value - 1) < 0 ? 3 : (forwardDirection.Value - 1);
-                                gameAction.SetAction(GameAction.TurnLeft);
-                                lerpValue = 1 - lerpValue;
-                                isTurningLeft = true;
-                                isTurningRight = false;
-                            }
-                        }
-                        else
-                        {
-                            CameraTurnLeft();
-                        }
-                    }
+                    RequestTurnLeft();
                 }
                 else if (cameraRig.IsRight)
                 {
-                    if (!isMoving)
-                    {
-                        if (isTurningRight)
-                        {
-                            isChainingMovement = true;
-                        }
-                        else if (isTurningLeft)
-                        {
-                            if (isChainingMovement)
-                            {
-                                isChainingMovement = false;
-                            }
-                            else
-                            {
-                                Quaternion trajectory = new Quaternion();
-                                trajectory.eulerAngles += new Vector3(0, 90, 0);
-                                fromRotation = targetRotation;
-                                targetRotation = fromRotation * trajectory;
-                                forwardDirection.Value = (forwardDirection.Value + 1) % 4;
-                                gameAction.SetAction(GameAction.TurnRight);
-                                lerpValue = 1 - lerpValue;
-                                isTurningLeft = false;
-                                isTurningRight = true;
-                            }
-                        }
-                        else
-                        {
-                            CameraTurnRight();
-                        }
-                    }
+                    RequestTurnRight();
                 }
 
                 if (cameraRig.IsPrimaryIndexTriggerDown)
@@ -232,7 +282,6 @@ namespace UdeS.Promoscience
         {
             if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
             {
-
                 if (isMoving)
                 {
                     float xi = ((moveSpeed * moveSpeed) / (-2 * Utils.MOVEMENT_ACCELERATION)) + 1;
@@ -373,8 +422,12 @@ namespace UdeS.Promoscience
             {
                 fromPosition = cameraRig.Transform.position;
 
-                Vector2Int lpos = Utils.GetMoveDestination(lastLabyrinthPosition, (Direction) forwardDirection.Value);
+                Vector2Int lpos = Utils.GetMoveDestination(
+                    lastLabyrinthPosition, 
+                    (Direction) forwardDirection.Value);
+
                 Vector3 pos = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(lpos);
+
                 targetPosition = new Vector3(pos.x, fromPosition.y, pos.z);
 
                 isMoving = true;

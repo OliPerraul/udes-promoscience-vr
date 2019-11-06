@@ -10,8 +10,6 @@ namespace UdeS.Promoscience.Algorithms
 {
     public class ShortestFlightDistanceAlgorithm : Algorithm
     {
-        public ShortestFlightDistanceAlgorithm(Resource res) : base(res) { }
-
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
@@ -21,11 +19,11 @@ namespace UdeS.Promoscience.Algorithms
 
         List<Tile> algorithmSteps;
 
-        public override Promoscience.Algorithms.Id Id
+        public override Id Id
         {
             get
             {
-                return Promoscience.Algorithms.Id.ShortestFlightDistance;
+                return Id.ShortestFlightDistance;
             }
         }
 

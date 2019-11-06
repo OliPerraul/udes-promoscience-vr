@@ -24,12 +24,13 @@ namespace UdeS.Promoscience.Replays
 
         ExitReplay,
         AddCourse,
-        Reset
+        Reset,
+
+        SequenceSelected,
+        SequenceToggled
     }
 
     public delegate void OnAction(ReplayAction action, params object[] args);
-
-    public delegate void OnSequenceToggled(Course course, bool enabled);
 
     public abstract class ScriptableController : ScriptableObject
     {
@@ -39,9 +40,9 @@ namespace UdeS.Promoscience.Replays
 
         public OnAction OnActionHandler;
 
-        public OnSequenceToggled OnSequenceToggledHandler;
+        //public OnSequenceToggled OnSequenceToggledHandler;
 
-        public OnCourseEvent OnSequenceSelectedHandler;
+        //public OnCourseEvent OnSequenceSelectedHandler;
 
         public OnEvent OnSequenceFinishedHandler;
 

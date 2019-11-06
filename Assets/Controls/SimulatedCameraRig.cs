@@ -36,7 +36,15 @@ namespace UdeS.Promoscience.Controls
 
 
         [SerializeField]
-        private UnityEngine.Camera camera;
+        private Camera camera;
+
+        public Vector3 Direction
+        {
+            get
+            {
+                return character.transform.forward;
+            }
+        }
 
 
         [SerializeField]

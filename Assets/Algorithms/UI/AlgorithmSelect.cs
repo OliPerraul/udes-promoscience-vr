@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.Algorithms.UI
 
             AddOption("(*) " + gameRoundString.Value);
 
-            algorithms = new Algorithm[Resources.Instance.Algorithms.Count];
+            algorithms = new Algorithm[Resources.Instance.Algorithms.Length];
 
             int i = 0;
 

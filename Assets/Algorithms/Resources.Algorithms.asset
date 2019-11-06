@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Resources.Algorithms
   m_EditorClassIdentifier: 
   algorithms:
-  - {fileID: 11400000, guid: 29bc87a953103ab419c0864f2f9203d2, type: 2}
-  - {fileID: 11400000, guid: 36f8d84de20b16345a67e1febc8e86d3, type: 2}
-  - {fileID: 11400000, guid: 66578de105ec8d1489ccf604dcb425c2, type: 2}
-  - {fileID: 11400000, guid: 5dc9f5c546d72fa4a8e185cd0c84a263, type: 2}
+  - {fileID: 11400000, guid: a5115e33611453f4a82ed580c3d764df, type: 2}
+  - {fileID: 11400000, guid: ae5b664a228eb8b4297dbd42450fc13a, type: 2}
+  - {fileID: 11400000, guid: 2085bb5c34ce2444eb15ed365630adf1, type: 2}
+  - {fileID: 11400000, guid: bd7412c162310da4e83921b7d3b466d4, type: 2}

@@ -8,10 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6baf1ee8b03e4cb408bde7cf427e39b9, type: 3}
+  m_Script: {fileID: 11500000, guid: eee8c225a1910d0428fe59158bb8692f, type: 3}
   m_Name: Algorithm.LongestStraight
   m_EditorClassIdentifier: 
-  Id: 2
   name:
     localizeString: {fileID: 0}
     defaultString: Longest Straight

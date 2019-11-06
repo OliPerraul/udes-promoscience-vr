@@ -10,8 +10,6 @@ namespace UdeS.Promoscience.Algorithms
 {
     public class StandardAlgorithm : Algorithm
     {
-        public StandardAlgorithm(Resource res) : base(res) { }
-
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 

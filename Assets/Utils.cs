@@ -167,6 +167,58 @@ namespace UdeS.Promoscience
             return lpos;
         }
 
+        public static Vector3 GetDirectionVector(Direction action)
+        {
+            // From ReturnToDivergent, EndAction, CompleteRound
+            // Simply walk to the 'nextlpos', we do not increment nextlpos
+
+            switch (action)
+            {
+                case Direction.Down:
+                    return Vector3.back;
+
+                case Direction.Up:
+                    return Vector3.forward;
+
+
+                case Direction.Left:
+                    return Vector3.left;
+
+
+                case Direction.Right:
+                    return Vector3.right;
+
+                default:
+                    return Vector3.zero;
+            }
+        }
+
+        public static bool IsSameDirection(Vector3 dir1, Vector3 dir2, float angleThresholdToCheck=90)
+        {
+            return Vector3.Angle(dir1, dir2) < angleThresholdToCheck;
+        }
+
+        //returns -1 when to the left, 1 to the right, and 0 for forward/backward
+        public static float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up)
+        {
+            Vector3 perp = Vector3.Cross(fwd, targetDir);
+            float dir = Vector3.Dot(perp, up);
+
+            if (dir > 0.0f)
+            {
+                return 1.0f;
+            }
+            else if (dir < 0.0f)
+            {
+                return -1.0f;
+            }
+            else
+            {
+                return 0.0f;
+            }
+        }
+
+
         public const float MOVEMENT_SPEED = 4f;
         public const float MOVEMENT_ACCELERATION = 1f;
         public const float MOVEMENT_MAX_SPEED = 0.5f;

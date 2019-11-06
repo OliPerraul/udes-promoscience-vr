@@ -20,6 +20,22 @@ namespace UdeS.Promoscience.Controls
 
         public bool ovrCameraRigEnabled;
 
+        public Vector3 Direction
+        {
+            get
+            {
+                if (ovrCameraRigEnabled)
+                {
+                    return ovrCameraRig.centerEyeAnchor.transform.forward;
+                }
+                else
+                {
+                    return desktopCameraRig.Direction;
+                }
+            }
+        }
+
+
         public Transform Transform
         {
             get

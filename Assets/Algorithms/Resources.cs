@@ -7,56 +7,27 @@ namespace UdeS.Promoscience.Algorithms
 {
     public class Resources : BaseResources<Resources>
     {
-
+         
         [SerializeField]
-        private List<Resource> algorithms;
+        private Algorithm[] algorithms;
 
-        private Dictionary<Id, Algorithm> idAlgorithmPairs;// = new Dictionary<Id, Algorithm>();
-
-        public Dictionary<Id, Algorithm> IdAlgorithmPairs
+        public Algorithm[] Algorithms
         {
             get
             {
-                if (idAlgorithmPairs == null)
+                if (algorithms == null ||
+                    algorithms.Length == 0)
                 {
-                    idAlgorithmPairs = new Dictionary<Id, Algorithm>();
+                    algorithms = Cirrus.AssetDatabase.FindObjectsOfType<Algorithm>();
                 }
 
-                if (idAlgorithmPairs.Count == 0)
-                {
-                    foreach (Resource res in algorithms)
-                    {
-                        if (!idAlgorithmPairs.ContainsKey(res.Id))
-                        { 
-                            idAlgorithmPairs.Add(res.Id, res.Create());
-                        }
-                    }
-                }
-                
-                return idAlgorithmPairs;
-            }
-        }
-
-        public ICollection<Algorithm> Algorithms
-        {
-            get
-            {
-                return IdAlgorithmPairs.Values;
+                return algorithms;
             }
         }
 
         public Algorithm GetAlgorithm(Id id)
         {
-            Algorithm algorithm;
-
-            if (IdAlgorithmPairs.TryGetValue(id, out algorithm))
-            {
-                return algorithm;
-            }
-
-            return null;
+            return Algorithms.Where(x => x.Id == id).FirstOrDefault();
         }
-
-
     }
 }

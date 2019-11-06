@@ -76,6 +76,10 @@ namespace UdeS.Promoscience.Replays.UI
                     bool enable = (bool)args[0];
                     EnableOptions(enable);
                     break;
+
+                case ReplayAction.SequenceSelected:
+
+                    break;
             }
         }
 

@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.Replays
     {
         private Algorithms.Algorithm algorithm;
 
-        private List<Tile> tiles;
+        private List<Tile> algorithmSteps;
 
         private Dictionary<Vector2Int, Stack<TileColor>> dictionary;
 
@@ -20,7 +20,7 @@ namespace UdeS.Promoscience.Replays
         {
             get
             {
-                return tiles.Count;
+                return algorithmSteps.Count;
             }
         }
 
@@ -70,7 +70,7 @@ namespace UdeS.Promoscience.Replays
             sequence.lposition = startPosition;
             sequence.startlposition = startPosition;
             sequence.algorithm = algorithm;
-            sequence.tiles = algorithm.GetAlgorithmSteps(labyrinth.Data);
+            sequence.algorithmSteps = algorithm.GetAlgorithmSteps(labyrinth.Data);
 
             return sequence;
         }
@@ -105,6 +105,30 @@ namespace UdeS.Promoscience.Replays
             yield return null;
         }
 
+        public void Show(bool show=true)
+        {
+            if (show)
+            {
+                Stack<TileColor> stack;
+
+                foreach (var tile in algorithmSteps)
+                {
+                    if (dictionary.TryGetValue(tile.Position, out stack))
+                    {
+                        PaintTile(tile.Position, stack.Peek());
+                    }
+                }
+            }
+            else
+            {
+                foreach (var tile in algorithmSteps)
+                {
+                    PaintTile(tile.Position, TileColor.Grey);
+                }
+
+            }
+        }
+
         protected override void DoNext()
         {
             // Clamp
@@ -114,7 +138,7 @@ namespace UdeS.Promoscience.Replays
                     LocalMoveCount - 1) :
                 0;
             
-            lposition = tiles[moveIndex].Position;
+            lposition = algorithmSteps[moveIndex].Position;
 
             Stack <TileColor> stack;
 
@@ -125,8 +149,8 @@ namespace UdeS.Promoscience.Replays
                 dictionary.Add(lposition, stack);
             }
 
-            PaintTile(tiles[moveIndex]);
-            stack.Push(tiles[moveIndex].color);
+            PaintTile(algorithmSteps[moveIndex]);
+            stack.Push(algorithmSteps[moveIndex].color);
 
             moveIndex++;
         }
@@ -144,7 +168,7 @@ namespace UdeS.Promoscience.Replays
 
             Stack<TileColor> stack;
 
-            lposition = HasPrevious ? tiles[moveIndex].Position : startlposition;
+            lposition = HasPrevious ? algorithmSteps[moveIndex].Position : startlposition;
 
             if (dictionary.TryGetValue(lposition, out stack))
             {

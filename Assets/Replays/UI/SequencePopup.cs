@@ -35,28 +35,33 @@ namespace UdeS.Promoscience.Replays.UI
 
             init = true;
 
-            replayOptions.OnSequenceSelectedHandler += OnSequenceSelected;
+            replayOptions.OnActionHandler += OnSequenceSelected;
         }
 
-        public void OnSequenceSelected(Course newCourse)
+        public void OnSequenceSelected(ReplayAction action, params object[] args)
         {
-            if (newCourse == null)
-                return;
-
-            if (course == newCourse)
-                return;
-
-            if (course != null)
+            if (action == ReplayAction.SequenceSelected)
             {
-                course.OnPlayerSequenceProgressedHandler -= OnCourseActionIndexChanged;
+                Course newCourse = (Course)args[0];
+
+                if (newCourse == null)
+                    return;
+
+                if (course == newCourse)
+                    return;
+
+                if (course != null)
+                {
+                    course.OnPlayerSequenceProgressedHandler -= OnCourseActionIndexChanged;
+                }
+
+                course = newCourse;
+
+                image.color = newCourse.Team.TeamColor.SetA(image.color.a);
+                newCourse.OnPlayerSequenceProgressedHandler += OnCourseActionIndexChanged;
+
+                OnCourseActionIndexChanged();
             }
-
-            course = newCourse;
-
-            image.color = newCourse.Team.TeamColor.SetA(image.color.a);
-            newCourse.OnPlayerSequenceProgressedHandler += OnCourseActionIndexChanged;
-
-            OnCourseActionIndexChanged();
         }
 
         private void OnCourseActionIndexChanged()//Course course)
