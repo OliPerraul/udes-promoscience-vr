@@ -6,6 +6,10 @@ namespace UdeS.Promoscience.Replays
 {
     public static class Utils
     {
+        public const float MinPlaybackSpeed = 0.5f;
+
+        public const float MaxPlaybackSpeed = 2.5f;
+
         public static Vector2Int GetMoveDestination(Vector2Int lpos, GameAction action)
         {
             // From ReturnToDivergent, EndAction, CompleteRound

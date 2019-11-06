@@ -9,7 +9,7 @@ namespace UdeS.Promoscience.Replays.UI
     public class SequenceToggle : MonoBehaviour
     {
         [SerializeField]
-        private ScriptableController replayOptions;
+        private ControllerAsset replayOptions;
 
         //[SerializeField]
         //private ScriptableObjects.ScriptableServerGameInformation server;
@@ -37,16 +37,8 @@ namespace UdeS.Promoscience.Replays.UI
             replayOptions.OnActionHandler += OnReplayAction;
         }
 
-        public IEnumerator DelayedSelectCoroutine(SequenceToggleItem item)
-        {
-            yield return new WaitForEndOfFrame();     
-
-            if(first != null)
-                first.OnClicked();
-        }
-
         public void OnReplayAction(ReplayAction action, params object[] args)
-        {
+        {            
             if(action == ReplayAction.Reset)
             {
                 first = null;
@@ -65,12 +57,12 @@ namespace UdeS.Promoscience.Replays.UI
             {
                 bool added = (bool)args[0];
                 var course = (Course)args[1];
-
+           
                 if (added)
                 {
                     if (items.ContainsKey(course.Id))
                         return;
-
+                    
                     SequenceToggleItem item = scrollItemTemplate.Create(
                         scrollContentParent,
                         course);
@@ -80,7 +72,7 @@ namespace UdeS.Promoscience.Replays.UI
                     if (first == null)
                     {
                         first = item;
-                        StartCoroutine(DelayedSelectCoroutine(first));
+                        replayOptions.SendAction(ReplayAction.SequenceSelected, course);
                     }
                 }
                 else

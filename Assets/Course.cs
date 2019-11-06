@@ -8,6 +8,7 @@
 
 using Cirrus;
 using Cirrus.Extensions;
+using System.Collections.Generic;
 using System.Linq;
 using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
@@ -42,6 +43,84 @@ namespace UdeS.Promoscience
 
         public Teams.ScriptableTeam Team;
 
+        #region Algorithm
+        
+        public List<Tile> AlgorithmSteps;
+
+        private int algorithmMoveIndex = 0;
+
+
+        public bool AlgorithmHasPrevious
+        {
+            get
+            {
+                if (AlgorithmSteps.Count == 0)
+                    return false;
+
+                return algorithmMoveIndex > 0;
+            }
+        }
+
+        public bool AlgorithmHasNext
+        {
+            get
+            {
+                if (AlgorithmSteps.Count == 0)
+                    return false;
+
+                return algorithmMoveIndex < AlgorithmMoveCount;
+            }
+        }
+
+        public int AlgorithmMoveCount
+        {
+            get
+            {
+                return AlgorithmSteps.Count;
+            }
+        }
+
+        public bool AlgorithmNext()
+        {
+            algorithmMoveIndex = AlgorithmHasPrevious ?
+                (AlgorithmHasNext ?
+                    algorithmMoveIndex :
+                    AlgorithmMoveCount - 1) :
+                0;
+
+            algorithmMoveIndex++;
+            return true;
+        }
+
+        public bool AlgorithmPrevious()
+        {
+            algorithmMoveIndex--;
+
+            // Clamp
+            algorithmMoveIndex = AlgorithmHasPrevious ?
+                (AlgorithmHasNext ?
+                    algorithmMoveIndex :
+                    AlgorithmMoveCount - 1) :
+                0;
+            return true;
+        }
+
+        public int CurrentAlgorithmMoveIndex
+        {
+            get
+            {
+                return UnityEngine.Mathf.Clamp(
+                    algorithmMoveIndex,
+                    0,
+                    AlgorithmSteps.Count);
+            }
+        }
+
+        #endregion
+
+        #region Player
+
+
         public int[] Actions;
 
         public string[] ActionValues;
@@ -53,6 +132,7 @@ namespace UdeS.Promoscience
         private ActionValue previousActionValue;
 
         private int currentActionIndex = 0;
+
 
         private int CurrentActionIndex
         {
@@ -79,13 +159,14 @@ namespace UdeS.Promoscience
 
         private int moveIndex = 0;
 
-        public int MoveIndex
+        public int CurrentMoveIndex
         {
             get
             {
                 return moveIndex;
             }
         }
+
 
         private bool IsMovement(GameAction action)
         {
@@ -142,6 +223,7 @@ namespace UdeS.Promoscience
             return index < 0 ? 0 : index;
         }
 
+
         public bool Next()
         {
             moveIndex = HasNext ?
@@ -154,7 +236,7 @@ namespace UdeS.Promoscience
 
             CurrentActionIndex = GetNextMovementIndex();
             return true;
-        }      
+        }
 
 
         public bool Previous()
@@ -170,7 +252,6 @@ namespace UdeS.Promoscience
             CurrentActionIndex = GetPreviousMovementIndex();
             return true;
         }
-
 
         public bool HasPrevious
         {
@@ -246,5 +327,6 @@ namespace UdeS.Promoscience
             }
         }
 
+        #endregion
     }
 }

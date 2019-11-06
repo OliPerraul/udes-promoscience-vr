@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.Replays.UI
     public class SequenceToggleItem : MonoBehaviour
     {
         [SerializeField]
-        private ScriptableController replayController;
+        private ControllerAsset replayController;
 
         [SerializeField]
         private UnityEngine.UI.Toggle toggle;
@@ -27,7 +27,9 @@ namespace UdeS.Promoscience.Replays.UI
         public UnityEngine.UI.Button button;
 
 
-        public SequenceToggleItem Create(Transform parent, Course course)
+        public SequenceToggleItem Create(
+            Transform parent, 
+            Course course)
         {
             SequenceToggleItem item = this.Create(parent);
 

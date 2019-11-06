@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class SimpleController : ScriptableController
+    public class SimpleController : ControllerAsset
     {
 
     }

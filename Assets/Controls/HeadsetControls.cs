@@ -95,16 +95,6 @@ namespace UdeS.Promoscience
             playerPositionRotationAndTiles.valueChangedEvent += OnPlayerPositionRotationAndTiles;
         }
 
-        private Coroutine requestMovementCoroutine;
-
-        //public IEnumerator RequestMovementCoroutine()
-        //{
-
-
-        //    requestMovementCoroutine = null;
-        //    yield return null;
-        //}
-
 
         public void RequestTurnLeft()
         {
@@ -179,8 +169,7 @@ namespace UdeS.Promoscience
         {
             Vector3 currentDirection = Utils.GetDirectionVector((Direction)forwardDirection.Value);
 
-            if (
-                Utils.IsSameDirection(
+            if (Utils.IsSameDirection(
                     cameraRig.Direction,
                     currentDirection,
                     angleLookatTurnThreshold))

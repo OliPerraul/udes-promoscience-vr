@@ -5,13 +5,19 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class LabyrinthDisplay : MonoBehaviour
+    public class ReplayDisplay : MonoBehaviour
     {
         [SerializeField]
-        protected ScriptableController replayOptions;
+        protected ControllerAsset replayOptions;
 
-        //[SerializeField]
-        //protected ServerGametion server;
+        [SerializeField]
+        private UnityEngine.UI.Text algorithmNameText;
+
+        [SerializeField]
+        private UnityEngine.UI.Text algorithmStepsText;
+
+        [SerializeField]
+        private LocalizeInlineString algorithmStepsString = new LocalizeInlineString("Number of steps: ");
 
         [SerializeField]
         protected Controls controls;
@@ -56,10 +62,17 @@ namespace UdeS.Promoscience.Replays.UI
             greyboxButton.onClick.AddListener(OnGreyboxClicked);
 
             replayOptions.OnActionHandler += OnReplayAction;
+            replayOptions.OnMoveIndexChanged += OnMoveIndexChanged;
 
             Server.Instance.gameStateChangedEvent += OnGameStateChanged;
 
             Enabled = false;
+        }
+
+        public void OnMoveIndexChanged(int idx)
+        {
+            if(course != null)
+            algorithmStepsText.text = algorithmStepsString.Value + course.CurrentAlgorithmMoveIndex;
         }
 
         public void OnGreyboxClicked()
@@ -67,6 +80,8 @@ namespace UdeS.Promoscience.Replays.UI
             replayOptions.SendAction(ReplayAction.ToggleGreyboxLabyrinth);
         }
 
+
+        private Course course = null;
 
         public void OnReplayAction(ReplayAction action, params object[] args)
         {
@@ -77,26 +92,31 @@ namespace UdeS.Promoscience.Replays.UI
                     EnableOptions(enable);
                     break;
 
-                case ReplayAction.SequenceSelected:
+                case ReplayAction.ToggleDirtyLabyrinth:
+                    if (args.Length == 0)
+                        EnableAlgorithm(!isAlgorithmEnabled);
+                    else
+                        EnableAlgorithm((bool)args[0]);
 
+                    break;
+
+                case ReplayAction.SequenceSelected:
+                    course = (Course)args[0];
+
+                    algorithmNameText.text = course.Algorithm.Name;
+                    algorithmStepsText.text = algorithmStepsString.Value + course.CurrentAlgorithmMoveIndex;
                     break;
             }
         }
 
 
-        [SerializeField]
-        private bool isInstantReplay = false;
-
         public void OnGameStateChanged()
         {
             switch (Server.Instance.GameState)
             {
-                case ServerGameState.AdvancedReplay:                    
-                    Enabled = !isInstantReplay;
-                    break;
-
+                case ServerGameState.AdvancedReplay:
                 case ServerGameState.InstantReplay:
-                    Enabled = isInstantReplay;
+                    Enabled = true;
                     break;
 
                 default:
@@ -131,9 +151,12 @@ namespace UdeS.Promoscience.Replays.UI
                 gameObject.SetActive(_enabled);
                 openButton.gameObject.SetActive(_enabled);
                 exitButton.gameObject.SetActive(_enabled);
+                greyboxButton.gameObject.SetActive(_enabled);
                 sequenceToggle.gameObject.SetActive(_enabled);
                 sequencePopup.gameObject.SetActive(_enabled);
                 controls.gameObject.SetActive(_enabled);
+                algorithmNameText.gameObject.SetActive(_enabled);
+                algorithmStepsText.gameObject.SetActive(_enabled);
 
             }
         }
@@ -144,7 +167,18 @@ namespace UdeS.Promoscience.Replays.UI
             sequenceToggle.SetActive(enable);
             overlayButton.gameObject.SetActive(enable);
             algorithmButton.gameObject.SetActive(enable);
+            greyboxButton.gameObject.SetActive(enable);
         }
+
+        bool isAlgorithmEnabled = true;
+
+        public void EnableAlgorithm(bool enable)
+        {
+            isAlgorithmEnabled = enable;
+            algorithmNameText.gameObject.SetActive(enable);
+            algorithmStepsText.gameObject.SetActive(enable);
+        }
+
 
         public void OnOpenClicked()
         {

@@ -145,14 +145,14 @@ namespace UdeS.Promoscience.Replays
         {
             get
             {
-                return course.MoveIndex;
+                return course.CurrentMoveIndex;
             }
         }
 
         private float offsetAmount = 0f;
 
         public PlayerSequence Create(
-            ScriptableController replay,
+            ControllerAsset replay,
             Course course,
             Labyrinths.Labyrinth labyrinth,
             Vector2Int startPosition)
@@ -304,26 +304,24 @@ namespace UdeS.Promoscience.Replays
                 Utils.GetDirection(prevlpos, lpos) !=
                 Utils.GetDirection(lpos, nextlpos);
 
-            float time = drawTime;
-
             // Start
             if (prevlpos == lpos)
             {
-                time /= 2;
+                PlaybackSpeed /= 2;
                 isTurn = false;
                 origin = middle;
             }
             // End
             else if (lpos == nextlpos)
             {
-                time /= 2;
+                PlaybackSpeed /= 2;
                 isTurn = false;
                 destination = middle;
             }
             // Dead-end
             else if (nextlpos == prevlpos)
             {
-                time /= 2;
+                PlaybackSpeed /= 2;
                 isTurn = false;
                 destination = middle;
             }
@@ -380,7 +378,7 @@ namespace UdeS.Promoscience.Replays
                     isInversed,
                     isBacktrack ? backtrackMaterial : material,
                     isBacktrack ? backtrackMaterialAlpha : materialAlpha,
-                    time,
+                    PlaybackSpeed,
                     isBacktrack ? backtrackWidth : normalWidth,
                     labyrinth.transform.position.y + labyrinth.Camera.HeightOffset - cameraHeightDifference) :
                 segmentTemplate.Create(
@@ -391,7 +389,7 @@ namespace UdeS.Promoscience.Replays
                     isInversed,
                     isBacktrack ? backtrackMaterial : material,
                     isBacktrack ? backtrackMaterialAlpha : materialAlpha,
-                    time,
+                    PlaybackSpeed,
                     isBacktrack ? backtrackWidth : normalWidth,
                     labyrinth.transform.position.y + labyrinth.Camera.HeightOffset - cameraHeightDifference);
 
@@ -503,7 +501,6 @@ namespace UdeS.Promoscience.Replays
 
             stateIndex--;
 
-
             course.Previous();
 
             if (course.OnPlayerSequenceProgressedHandler != null)
@@ -538,7 +535,7 @@ namespace UdeS.Promoscience.Replays
 
             if (CurrentState.Head != null)
             {
-                yield return StartCoroutine(CurrentState.Head.DrawCoroutine());
+                yield return StartCoroutine(CurrentState.Head.DrawCoroutine(PlaybackSpeed));
             }
         }
 

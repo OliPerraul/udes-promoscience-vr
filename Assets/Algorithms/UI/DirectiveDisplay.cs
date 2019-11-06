@@ -50,7 +50,6 @@ namespace UdeS.Promoscience.UI
             directive.valueChangedEvent += OnNewDirective;
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
-            OnClientStateChanged();
         }
 
         void OnClientStateChanged()
@@ -59,13 +58,8 @@ namespace UdeS.Promoscience.UI
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
-                    directiveDisplayer.SetActive(true);
-                    break;
-
-                default:
                     directiveDisplayer.SetActive(false);
                     break;
-
             }
         }
 

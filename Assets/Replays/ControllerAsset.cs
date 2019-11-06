@@ -27,12 +27,12 @@ namespace UdeS.Promoscience.Replays
         Reset,
 
         SequenceSelected,
-        SequenceToggled
+        SequenceToggled       
     }
 
     public delegate void OnAction(ReplayAction action, params object[] args);
 
-    public abstract class ScriptableController : ScriptableObject
+    public abstract class ControllerAsset : ScriptableObject
     {
         public OnIntEvent valueChangeEvent;
 
@@ -40,15 +40,35 @@ namespace UdeS.Promoscience.Replays
 
         public OnAction OnActionHandler;
 
-        //public OnSequenceToggled OnSequenceToggledHandler;
+        private float playbackSpeed = 1;
 
-        //public OnCourseEvent OnSequenceSelectedHandler;
+        public float PlaybackSpeed
+        {
+            get
+            {
+                return playbackSpeed;
+            }
+
+            set
+            {
+                playbackSpeed = value;
+                if (playbackSpeed > Utils.MaxPlaybackSpeed) playbackSpeed = Utils.MinPlaybackSpeed;
+                if (playbackSpeed < Utils.MinPlaybackSpeed) playbackSpeed = Utils.MaxPlaybackSpeed;
+                if (OnPlaybackSpeedHandler != null)
+                {
+                    OnPlaybackSpeedHandler.Invoke(playbackSpeed);
+                }
+            }
+        }
+
+        public OnFloatEvent OnPlaybackSpeedHandler;
 
         public OnEvent OnSequenceFinishedHandler;
 
         public OnIntEvent OnMoveCountSetHandler;
 
         public OnIntEvent OnMoveIndexChanged;
+                
 
         private int index = 0;
 

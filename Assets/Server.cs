@@ -16,9 +16,9 @@ namespace UdeS.Promoscience
     {
         private Replays.Replay replay;
 
-        public Replays.ScriptableController advancedReplayController;
+        public Replays.ControllerAsset advancedReplayController;
 
-        public Replays.ScriptableController instantReplayController;
+        public Replays.ControllerAsset instantReplayController;
 
         public class LabyrinthValues
         {
@@ -144,7 +144,7 @@ namespace UdeS.Promoscience
             GameState = ServerGameState.Lobby;                       
         }
 
-        public Replays.LabyrinthReplay CurrentReplay;
+        public Replays.Replay CurrentReplay;
 
 
 
@@ -261,7 +261,7 @@ namespace UdeS.Promoscience
 
             Labyrinths.CurrentData = labyrinth;
 
-            CurrentReplay = new Replays.LabyrinthReplay(
+            CurrentReplay = new Replays.Replay(
                 advancedReplayController, 
                 Labyrinths.CurrentData);
                        
@@ -286,12 +286,16 @@ namespace UdeS.Promoscience
             }
             else
             {
+                var algorithm = Algorithms.Resources.Instance.GetAlgorithm(player.serverAlgorithm);
+
                 course = new Course
                 {
                     Id = SQLiteUtilities.GetNextCourseID(),
                     Team = Teams.Resources.Instance.GetScriptableTeamWithId(player.ServerTeamId),
                     Labyrinth = Labyrinths.CurrentData,
-                    Algorithm = Algorithms.Resources.Instance.GetAlgorithm(player.serverAlgorithm)// labyrinth)                                     
+                    Algorithm = algorithm,
+                    AlgorithmSteps = algorithm.GetAlgorithmSteps(Labyrinths.CurrentData) // labyrinth)  
+
                 };
 
                 IdCoursePairs.Add(course.Id, course);

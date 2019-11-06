@@ -18,7 +18,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         private List<LabyrinthButton> labyrinthButtons;
 
-        protected Replays.ScriptableController ReplayController
+        protected Replays.ControllerAsset ReplayController
         {
             get
             {
@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         }
 
         [SerializeField]
-        private Replays.ScriptableController replayController;
+        private Replays.ControllerAsset replayController;
 
         [SerializeField]
         private Transform buttonsParent;

@@ -16,7 +16,7 @@ namespace UdeS.Promoscience.Replays.UI
         //private ScriptableObjects.ScriptableServerGameInformation server;
 
         [SerializeField]
-        private ScriptableController playbackOptions;
+        private ControllerAsset playbackOptions;
 
         public OnEvent OnExpandHandler;
 
@@ -45,6 +45,12 @@ namespace UdeS.Promoscience.Replays.UI
 
         [SerializeField]
         private Button pauseButton;
+
+        [SerializeField]
+        private Button fastfowardButton;
+
+        [SerializeField]
+        private Text playbackSpeedText;
 
         [SerializeField]
         private Image pauseImage;
@@ -91,13 +97,24 @@ namespace UdeS.Promoscience.Replays.UI
             pauseButton.onClick.AddListener(OnPauseClicked);
             previousButton.onClick.AddListener(OnPreviousClicked);
             nextButton.onClick.AddListener(OnNextClicked);
+            fastfowardButton.onClick.AddListener(OnFastFowardClicked);
 
             slider.onValueChanged.AddListener(OnSliderMoved);           
 
             playbackOptions.OnMoveIndexChanged += OnProgress;
-            playbackOptions.OnSequenceFinishedHandler += OnReplaySequenceFinished;
-            //playbackOptions.OnSequenceChangedHandler += OnSequenceChanged;
+            playbackOptions.OnSequenceFinishedHandler += OnReplaySequenceFinished;            
             playbackOptions.OnMoveCountSetHandler += OnSequenceChanged;
+            playbackOptions.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
+        }
+
+        public void OnPlaybackSpeedChanged(float value)
+        {
+            playbackSpeedText.text = "x" + playbackOptions.PlaybackSpeed;
+        }
+
+        private void OnFastFowardClicked()
+        {
+            playbackOptions.PlaybackSpeed += 0.5f;
         }
 
         private void OnSequenceChanged(int mvcnt)

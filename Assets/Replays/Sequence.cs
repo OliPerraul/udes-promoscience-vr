@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.Replays
     public abstract class Sequence : MonoBehaviour
     {
         //[SerializeField]
-        protected ScriptableController replay;
+        protected ControllerAsset replay;
 
         protected Labyrinths.Labyrinth labyrinth;
 
@@ -30,6 +30,22 @@ namespace UdeS.Promoscience.Replays
 
         [SerializeField]
         protected float speed = 0.6f;
+
+        protected float modifier = 1;
+
+        public float PlaybackSpeed
+        {
+            get
+            {
+                return speed * modifier;
+            }
+
+            set
+            {
+                modifier = Mathf.Clamp(value, Utils.MinPlaybackSpeed, Utils.MaxPlaybackSpeed);
+            }
+        }
+
 
         protected Mutex mutex;
 

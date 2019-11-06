@@ -185,7 +185,7 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        public IEnumerator DrawCoroutine()
+        public IEnumerator DrawCoroutine(float time)
         {
             float t = 0;
 

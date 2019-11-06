@@ -604,6 +604,9 @@ namespace UdeS.Promoscience.Labyrinths
         {
             foreach (GameObject tile in labyrinthTiles)
             {
+                if (tile == null)
+                    continue;
+
                 Destroy(tile.gameObject);
             }
 

@@ -484,14 +484,20 @@ namespace UdeS.Promoscience
                             //steps.Enqueue((int)GameAction.EndMovement);
                             //stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
 
+                            var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
+                            var labyrinth = Labyrinths.Resources.Instance.GetLabyrinthData(lid);
+                            var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
+
                             courses.Add(new Course
                             {
                                 LabyrinthId = lid,
                                 Id = id,
                                 Actions = steps.ToArray(),
                                 ActionValues = stepValues.ToArray(),
-                                Team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId),
-                                Algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId)// as Algorithm)
+                                Team = team,
+                                Labyrinth = labyrinth,
+                                Algorithm = algorithm,
+                                AlgorithmSteps = algorithm.GetAlgorithmSteps(labyrinth)                                    
                             });
 
 
@@ -545,7 +551,9 @@ namespace UdeS.Promoscience
                             Queue<int> steps;
                             Queue<string> stepValues;
                             GetPlayerStepsForCourse(id, out steps, out stepValues);
-                            //int teamId
+                            var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
+                            var labyrinth = Labyrinths.Resources.Instance.GetLabyrinthData(labyrinthId);
+                            var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
 
                             courses.Add(new Course
                             {
@@ -553,8 +561,10 @@ namespace UdeS.Promoscience
                                 Id = id,
                                 Actions = steps.ToArray(),
                                 ActionValues = stepValues.ToArray(),
-                                Team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId),
-                                Algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId),// as Algorithm)
+                                Team = team,
+                                Labyrinth = labyrinth,
+                                Algorithm = algorithm,
+                                AlgorithmSteps = algorithm.GetAlgorithmSteps(labyrinth),// as Algorithm)
                                 Status = (CourseStatus)sts
                             });
 
