@@ -18,7 +18,7 @@ namespace UdeS.Promoscience.Replays
         Slide,
 
         ToggleOptions,
-        ToggleDirtyLabyrinth,
+        ToggleAlgorithm,
         ToggleGreyboxLabyrinth,
         SelectLabyrinth,
 
@@ -26,8 +26,8 @@ namespace UdeS.Promoscience.Replays
         AddCourse,
         Reset,
 
-        SequenceSelected,
-        SequenceToggled       
+        //CourseSelected,
+        CourseToggled       
     }
 
     public delegate void OnAction(ReplayAction action, params object[] args);
@@ -67,7 +67,26 @@ namespace UdeS.Promoscience.Replays
 
         public OnIntEvent OnMoveCountSetHandler;
 
-        public OnIntEvent OnMoveIndexChanged;
+        public OnIntEvent OnMoveIndexChangedHandler;
+
+        private Course course;
+
+        public OnCourseEvent OnCourseSelectedHandler;
+
+        public Course CurrentCourse
+        {
+            set
+            {
+                course = value;
+                if (OnCourseSelectedHandler != null)
+                    OnCourseSelectedHandler.Invoke(course);
+            }
+
+            get
+            {
+                return course;
+            }
+        }
                 
 
         private int index = 0;
@@ -131,7 +150,7 @@ namespace UdeS.Promoscience.Replays
                 if (value >= 0 && value <= GlobalMoveCount)
                 {
                     moveIndex = value;
-                    if (OnMoveIndexChanged != null) OnMoveIndexChanged.Invoke(moveIndex);
+                    if (OnMoveIndexChangedHandler != null) OnMoveIndexChangedHandler.Invoke(moveIndex);
                 }
             }
         }

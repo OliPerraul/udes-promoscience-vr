@@ -23,8 +23,6 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private Dictionary<int, SequenceToggleItem> items;
         
-        private SequenceToggleItem first = null;
-
         private bool init = false;
         
         public void OnEnable()
@@ -41,8 +39,6 @@ namespace UdeS.Promoscience.Replays.UI
         {            
             if(action == ReplayAction.Reset)
             {
-                first = null;
-
                 foreach (Transform child in scrollContentParent)
                 {
                     if (!child.gameObject.activeSelf)
@@ -68,12 +64,6 @@ namespace UdeS.Promoscience.Replays.UI
                         course);
 
                     items.Add(course.Id, item);
-
-                    if (first == null)
-                    {
-                        first = item;
-                        replayOptions.SendAction(ReplayAction.SequenceSelected, course);
-                    }
                 }
                 else
                 {

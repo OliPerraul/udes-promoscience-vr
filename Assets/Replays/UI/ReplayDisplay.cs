@@ -60,9 +60,9 @@ namespace UdeS.Promoscience.Replays.UI
             overlayButton.onClick.AddListener(OnOverlayClicked);
             algorithmButton.onClick.AddListener(OnAlgorithmClicked);
             greyboxButton.onClick.AddListener(OnGreyboxClicked);
-
             replayOptions.OnActionHandler += OnReplayAction;
-            replayOptions.OnMoveIndexChanged += OnMoveIndexChanged;
+            replayOptions.OnMoveIndexChangedHandler += OnMoveIndexChanged;
+            replayOptions.OnCourseSelectedHandler += OnCourseSelected;
 
             Server.Instance.gameStateChangedEvent += OnGameStateChanged;
 
@@ -88,25 +88,30 @@ namespace UdeS.Promoscience.Replays.UI
             switch (action)
             {
                 case ReplayAction.ToggleOptions:
-                    bool enable = (bool)args[0];
-                    EnableOptions(enable);
+                    if (args.Length == 0)
+                        EnableOptions(!isOptionEnabled);
+                    else
+                        EnableOptions((bool)args[0]);
                     break;
 
-                case ReplayAction.ToggleDirtyLabyrinth:
+                case ReplayAction.ToggleAlgorithm:
                     if (args.Length == 0)
                         EnableAlgorithm(!isAlgorithmEnabled);
                     else
                         EnableAlgorithm((bool)args[0]);
-
                     break;
 
-                case ReplayAction.SequenceSelected:
-                    course = (Course)args[0];
-
-                    algorithmNameText.text = course.Algorithm.Name;
-                    algorithmStepsText.text = algorithmStepsString.Value + course.CurrentAlgorithmMoveIndex;
+                case ReplayAction.CourseToggled:
                     break;
             }
+        }
+
+
+        public void OnCourseSelected(Course course)
+        {
+            this.course = course;
+            algorithmNameText.text = course.Algorithm.Name;
+            algorithmStepsText.text = algorithmStepsString.Value + course.CurrentAlgorithmMoveIndex;
         }
 
 
@@ -128,7 +133,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnAlgorithmClicked()
         {
-            replayOptions.SendAction(ReplayAction.ToggleDirtyLabyrinth);
+            replayOptions.SendAction(ReplayAction.ToggleAlgorithm);
         }
 
         private void OnOverlayClicked()
@@ -161,16 +166,19 @@ namespace UdeS.Promoscience.Replays.UI
             }
         }
 
+        private bool isOptionEnabled = false;
+
         public void EnableOptions(bool enable)
         {
-            sequencePopup.gameObject.SetActive(enable);
-            sequenceToggle.SetActive(enable);
-            overlayButton.gameObject.SetActive(enable);
-            algorithmButton.gameObject.SetActive(enable);
-            greyboxButton.gameObject.SetActive(enable);
+            isOptionEnabled = enable;
+            sequencePopup.gameObject.SetActive(isOptionEnabled);
+            sequenceToggle.SetActive(isOptionEnabled);
+            overlayButton.gameObject.SetActive(isOptionEnabled);
+            algorithmButton.gameObject.SetActive(isOptionEnabled);
+            greyboxButton.gameObject.SetActive(isOptionEnabled);
         }
 
-        bool isAlgorithmEnabled = true;
+        private bool isAlgorithmEnabled = false;
 
         public void EnableAlgorithm(bool enable)
         {

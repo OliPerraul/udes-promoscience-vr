@@ -26,7 +26,8 @@ namespace UdeS.Promoscience.Network
 
             if (isClient)
             {
-                Client.Instance.clientStateChangedEvent -= SendCmdPlayerGameState;
+                if(Client.Instance != null)
+                    Client.Instance.clientStateChangedEvent -= SendCmdPlayerGameState;
 
                 if (deviceType.Value == Promoscience.DeviceType.Headset)
                 {
@@ -258,6 +259,9 @@ namespace UdeS.Promoscience.Network
         [Client]
         void SendCmdPlayerAction()
         {
+            if (Client.Instance == null)
+                return;
+
             if (Client.Instance.State == ClientGameState.Playing ||
                 Client.Instance.State == ClientGameState.PlayingTutorial)
             {

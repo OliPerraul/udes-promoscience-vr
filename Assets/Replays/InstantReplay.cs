@@ -12,10 +12,10 @@ namespace UdeS.Promoscience.Replays
         {
             base.Start();          
 
-            Resume();
-
+            Resume();         
+            
             controller.SendAction(ReplayAction.ToggleOptions, false);
-            controller.SendAction(ReplayAction.ToggleDirtyLabyrinth, true);
+            controller.SendAction(ReplayAction.ToggleAlgorithm, true);
             controller.PlaybackSpeed = 2f;
         }
     }

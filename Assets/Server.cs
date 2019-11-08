@@ -1,14 +1,8 @@
-﻿
-
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-using UdeS.Promoscience.ScriptableObjects;
-//using UdeS.Promoscience.Utils;
+﻿//using UdeS.Promoscience.Utils;
 using System;
-using UdeS.Promoscience.Network;
+using System.Collections.Generic;
 using UdeS.Promoscience.Labyrinths;
+using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience
 {
@@ -89,20 +83,17 @@ namespace UdeS.Promoscience
 
         public Algorithms.Id algorithmId;
 
-        public Algorithms.Id GetNextAlgorithm(int from)
+        public Algorithms.Id GetRoundAlgorithm(int teamId)
         {
             Algorithms.Id id;
 
             switch (algorithmId)
             {
-                case Algorithms.Id.Randomized:
-                    id = Algorithms.Utils.Random;
-                    break;
-
                 case Algorithms.Id.GameRound:
-                    id = (Algorithms.Id)((from + GameRound) % 3) + 1;
+                    id = (Algorithms.Id)((teamId + GameRound) % 3) + 1;
                     break;
-
+                
+                    // default to algorithm set by dropdown
                 default:
                     id = algorithmId;
                     break;
@@ -205,6 +196,7 @@ namespace UdeS.Promoscience
             }
         }
 
+        // Set algorithm  using the UI option
         public void SetAlgorithm(Algorithms.Id alg)
         { 
             algorithmId = alg;
@@ -282,7 +274,6 @@ namespace UdeS.Promoscience
             if (SQLiteUtilities.TryGetActiveCourseId(player.ServerTeamId, out courseId))
             {
                 player.ServerCourseId = courseId;
-                //return false;
             }
             else
             {
@@ -374,6 +365,7 @@ namespace UdeS.Promoscience
             Labyrinths.CurrentData = 
                 Promoscience.Labyrinths
                 .Resources.Instance.GetLabyrinthData(labyrinthId);
+                       
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
@@ -388,7 +380,7 @@ namespace UdeS.Promoscience
                     case ClientGameState.ViewingLocalReplay:
                     case ClientGameState.WaitingForNextRound:                                               
 
-                        player.serverAlgorithm = GetNextAlgorithm(player.ServerTeamId);
+                        player.serverAlgorithm = GetRoundAlgorithm(player.ServerTeamId);
 
                         player.serverLabyrinthId = Labyrinths.CurrentData.Id;
 
@@ -408,14 +400,14 @@ namespace UdeS.Promoscience
         public void StartNextGameRound()
         {
             GameRound = (GameRound % 3) + 1;
-
+            algorithmId = Algorithms.Id.GameRound;
             StartGameWithLabyrinth(GameRound);
         }
 
         public void StartGameRound(Player player)
         {
 
-            player.serverAlgorithm = GetNextAlgorithm(player.ServerTeamId);
+            player.serverAlgorithm = GetRoundAlgorithm(player.ServerTeamId);
 
             player.serverLabyrinthId = Labyrinths.CurrentData.Id;
 
@@ -430,7 +422,7 @@ namespace UdeS.Promoscience
 
         public void StartGameRoundWithSteps(Player player, int[] steps)
         {
-            player.serverAlgorithm = GetNextAlgorithm(player.ServerTeamId);
+            player.serverAlgorithm = GetRoundAlgorithm(player.ServerTeamId);
 
             player.serverLabyrinthId = Labyrinths.CurrentData.Id; ;
 

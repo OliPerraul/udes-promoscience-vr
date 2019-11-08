@@ -29,20 +29,23 @@ namespace UdeS.Promoscience.Replays
         }
 
         [SerializeField]
-        protected float speed = 0.6f;
+        protected float stepTime = 0.6f;
 
         protected float modifier = 1;
 
         public float PlaybackSpeed
         {
-            get
-            {
-                return speed * modifier;
-            }
-
             set
             {
                 modifier = Mathf.Clamp(value, Utils.MinPlaybackSpeed, Utils.MaxPlaybackSpeed);
+            }
+        }
+
+        protected float StepTime
+        {
+            get
+            {
+                return stepTime / modifier;
             }
         }
 
@@ -55,7 +58,7 @@ namespace UdeS.Promoscience.Replays
 
         protected Coroutine coroutineResult;
 
-        public Coroutine ResumeCoroutineResult
+        public Coroutine NextCoroutineResult
         {
             get
             {
@@ -108,28 +111,10 @@ namespace UdeS.Promoscience.Replays
 
         protected abstract IEnumerator DoNextCoroutine();
 
-        public virtual void Resume()
+
+        public virtual void StartNextCoroutine()
         {
-            coroutineResult = StartCoroutine(ResumeCoroutine());
-        }
-
-
-        public IEnumerator ResumeCoroutine()
-        {
-            isPlaying = true;
-
-            while (HasNext)
-            {
-                yield return StartCoroutine(DoNextCoroutine());
-                yield return null;
-            }
-
-            isPlaying = false;
-
-            if (replay.OnSequenceFinishedHandler != null)
-            {
-                replay.OnSequenceFinishedHandler.Invoke();
-            }
+            coroutineResult = StartCoroutine(DoNextCoroutine());
         }
 
         public virtual void Next()

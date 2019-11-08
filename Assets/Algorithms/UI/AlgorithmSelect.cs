@@ -62,7 +62,7 @@ namespace UdeS.Promoscience.Algorithms.UI
             switch (i)
             {
                 case 0:
-                    Server.Instance.SetAlgorithm(Id.Randomized);
+                    Server.Instance.SetAlgorithm(Utils.Random);
                     break;
 
                 case 1:

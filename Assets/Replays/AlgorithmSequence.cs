@@ -14,6 +14,8 @@ namespace UdeS.Promoscience.Replays
 
         private Dictionary<Vector2Int, Stack<TileColor>> dictionary;
 
+
+
         public override int LocalMoveCount
         {
             get
@@ -89,7 +91,7 @@ namespace UdeS.Promoscience.Replays
         protected override IEnumerator DoNextCoroutine()
         {
             DoNext();
-            yield return new WaitForSeconds(PlaybackSpeed);
+            yield return new WaitForSeconds(StepTime);          
             yield return null;
         }
 
@@ -123,8 +125,6 @@ namespace UdeS.Promoscience.Replays
 
         protected override void DoNext()
         {
-            // Clamp
-            
             lposition = course.AlgorithmSteps[course.CurrentAlgorithmMoveIndex].Position;
 
             Stack <TileColor> stack;

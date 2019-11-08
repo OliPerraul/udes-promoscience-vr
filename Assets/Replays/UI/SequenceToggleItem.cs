@@ -40,25 +40,25 @@ namespace UdeS.Promoscience.Replays.UI
 
             item.colorImage.color = course.Team.TeamColor;
             item.gameObject.SetActive(true);
-            item.button.onClick.AddListener(item.OnClicked);
-
+            
             return item;
         }
 
         public void Awake()
         {
             toggle.onValueChanged.AddListener(OnToggle);
+            button.onClick.AddListener(OnClicked);
         }
 
 
         public void OnToggle(bool enabled)
         {
-            replayController.SendAction(ReplayAction.SequenceToggled, enabled);
+            replayController.SendAction(ReplayAction.CourseToggled, course, enabled);
         }
 
         public void OnClicked()
         {
-            replayController.SendAction(ReplayAction.SequenceSelected, course);   
+            replayController.CurrentCourse = course;
         }
 
 

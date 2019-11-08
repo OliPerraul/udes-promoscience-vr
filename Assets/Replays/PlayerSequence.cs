@@ -304,24 +304,26 @@ namespace UdeS.Promoscience.Replays
                 Utils.GetDirection(prevlpos, lpos) !=
                 Utils.GetDirection(lpos, nextlpos);
 
+            var time = StepTime;
+
             // Start
             if (prevlpos == lpos)
             {
-                PlaybackSpeed /= 2;
+                time /= 2;
                 isTurn = false;
                 origin = middle;
             }
             // End
             else if (lpos == nextlpos)
             {
-                PlaybackSpeed /= 2;
+                time /= 2;
                 isTurn = false;
                 destination = middle;
             }
             // Dead-end
             else if (nextlpos == prevlpos)
             {
-                PlaybackSpeed /= 2;
+                time /= 2;
                 isTurn = false;
                 destination = middle;
             }
@@ -378,7 +380,7 @@ namespace UdeS.Promoscience.Replays
                     isInversed,
                     isBacktrack ? backtrackMaterial : material,
                     isBacktrack ? backtrackMaterialAlpha : materialAlpha,
-                    PlaybackSpeed,
+                    StepTime,
                     isBacktrack ? backtrackWidth : normalWidth,
                     labyrinth.transform.position.y + labyrinth.Camera.HeightOffset - cameraHeightDifference) :
                 segmentTemplate.Create(
@@ -389,7 +391,7 @@ namespace UdeS.Promoscience.Replays
                     isInversed,
                     isBacktrack ? backtrackMaterial : material,
                     isBacktrack ? backtrackMaterialAlpha : materialAlpha,
-                    PlaybackSpeed,
+                    StepTime,
                     isBacktrack ? backtrackWidth : normalWidth,
                     labyrinth.transform.position.y + labyrinth.Camera.HeightOffset - cameraHeightDifference);
 
@@ -535,7 +537,7 @@ namespace UdeS.Promoscience.Replays
 
             if (CurrentState.Head != null)
             {
-                yield return StartCoroutine(CurrentState.Head.DrawCoroutine(PlaybackSpeed));
+                yield return StartCoroutine(CurrentState.Head.DrawCoroutine(StepTime));
             }
         }
 

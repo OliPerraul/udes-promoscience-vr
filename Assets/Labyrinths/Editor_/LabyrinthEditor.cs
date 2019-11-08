@@ -19,7 +19,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor
 
 
         [SerializeField]
-        private string labyrinthPath;
+        private string labyrinthPath;       
 
         public void Save()
         {

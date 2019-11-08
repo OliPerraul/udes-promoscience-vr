@@ -18,12 +18,12 @@ namespace UdeS.Promoscience
                 {
                     _instance = UnityEngine.Resources.FindObjectsOfTypeAll<T>().FirstOrDefault();
                 }
-
+                               
                 return _instance;
             }
         }
     }
-
+    
     public class ResourcesUser : MonoBehaviour
     {
         [SerializeField]

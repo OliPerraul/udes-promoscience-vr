@@ -44,6 +44,7 @@ namespace UdeS.Promoscience.Replays
 
             controller.OnActionHandler += OnReplayAction;
             controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
+            controller.OnCourseSelectedHandler += OnCourseSelected;
         }
 
         public void OnPlaybackSpeedChanged(float speed)
@@ -84,23 +85,56 @@ namespace UdeS.Promoscience.Replays
             {
                 OnCourseAdded(course);
             }
-            
+                       
             controller.PlaybackSpeed = 2f;
         }
 
         public virtual void Resume()
         {
             isPlaying = true;
+            Server.Instance.StartCoroutine(ResumeCoroutine());
+        }
 
-            foreach (var sq in algorithmSequences.Values)
+        List<Coroutine> started = new List<Coroutine>();
+
+        public IEnumerator ResumeCoroutine()
+        {
+            isPlaying = true;
+
+            while (controller.HasNext)
             {
-                sq.Resume();
+                started.Clear();
+
+                //next in algorithm
+                foreach (var sq in algorithmSequences.Values)
+                {
+                    if (sq.WithinBounds)
+                    {
+                        sq.StartNextCoroutine();
+                        started.Add(sq.NextCoroutineResult);
+                    }
+                }
+
+                // next in player sequence
+                foreach (var sq in activeSequences)
+                {
+                    if (sq.WithinBounds)
+                    {
+                        sq.StartNextCoroutine();
+                        started.Add(sq.NextCoroutineResult);
+                    }
+                }
+
+                foreach (var sq in started)
+                {
+                    yield return sq;
+                }
+
+                controller.GlobalMoveIndex++;
+                yield return null;
             }
 
-            foreach (var sq in activeSequences)
-            {
-                sq.Resume();
-            }
+            isPlaying = false;
         }
 
         public virtual void Next()
@@ -166,7 +200,7 @@ namespace UdeS.Promoscience.Replays
 
             foreach (var sq in algorithmSequences.Values)
             {
-                sq.Stop();// (target);
+                sq.Stop();
             }
 
             foreach (var sq in activeSequences)
@@ -216,8 +250,9 @@ namespace UdeS.Promoscience.Replays
 
             foreach (var alg in algorithmSequences.Values)
             {
-                alg.Show(enable);
+                alg.Show(!enable);
             }
+
         }
 
         public void EnableOptions(bool enable)
@@ -240,18 +275,16 @@ namespace UdeS.Promoscience.Replays
 
                 // TODO: Handle play/ stop from replay object and not sequences
                 // to prevent synch issues
-                case ReplayAction.ToggleDirtyLabyrinth:
+                case ReplayAction.ToggleAlgorithm:
                     if (args.Length == 0)
                         EnableDirty(!isDirtyToggled);
                     else
                         EnableDirty((bool)args[0]);
-
                     break;
 
                 case ReplayAction.ToggleGreyboxLabyrinth:
                     EnableGreybox(!isGreyboxToggled);
                     break;
-
 
                 case ReplayAction.Play:
                     Resume();
@@ -313,7 +346,7 @@ namespace UdeS.Promoscience.Replays
 
                     break;
 
-                case ReplayAction.SequenceToggled:
+                case ReplayAction.CourseToggled:
                     course = (Course)args[0];
                     bool enabled = (bool)args[1];
 
@@ -337,31 +370,30 @@ namespace UdeS.Promoscience.Replays
                         AdjustOffsets();
                     }
                     break;
+            }
+        }
 
-                case ReplayAction.SequenceSelected:
+        public void OnCourseSelected(Course course)
+        {
+            foreach (AlgorithmSequence sq in algorithmSequences.Values)
+            {
+                sq.Show(false);
+            }
 
-                    course = (Course)args[0];
+            AlgorithmSequence sequence;
 
-                    foreach (AlgorithmSequence sq in algorithmSequences.Values)
-                    {
-                        sq.Show(false);
-                    }
-
-                    AlgorithmSequence sequence;
-
-                    if (algorithmSequences.TryGetValue(course.Algorithm.Id, out sequence))
-                    {
-                        sequence.Show(true);
-                    }
-
-                    break;
+            if (algorithmSequences.TryGetValue(course.Algorithm.Id, out sequence))
+            {
+                sequence.Show(true);
             }
         }
 
         public void TrySetMoveCount(int candidateMvcnt)
-        {
+        {            
             if (candidateMvcnt > controller.GlobalMoveCount)
                 controller.GlobalMoveCount = candidateMvcnt;
+
+            Debug.Log(controller.GlobalMoveCount);
         }
 
         public virtual float GetOffsetAmount(float idx)
@@ -393,7 +425,9 @@ namespace UdeS.Promoscience.Replays
         }
 
         public virtual void Clear()
-        {            
+        {
+            first = null;
+
             labyrinth.gameObject.Destroy();
 
             labyrinth.gameObject.Destroy();
@@ -423,6 +457,8 @@ namespace UdeS.Promoscience.Replays
             labyrinth = null;         
         }
 
+        Course first = null;
+
         public void OnCourseAdded(Course course)
         {
             if (!playerSequences.ContainsKey(course.Id))
@@ -440,21 +476,30 @@ namespace UdeS.Promoscience.Replays
 
                 TrySetMoveCount(sequence.LocalMoveCount);
 
-                var algorithmSeq =
-                    Resources.Instance.AlgorithmSequence.Create(
-                        controller,
-                        labyrinth,
-                        course,
-                        lposition
-                        );
+                if (!algorithmSequences.ContainsKey(course.Algorithm.Id))
+                {
+                    var algorithmSeq =
+                        Resources.Instance.AlgorithmSequence.Create(
+                            controller,
+                            labyrinth,
+                            course,
+                            lposition
+                            );
 
-                algorithmSequences.Add(course.Algorithm.Id, algorithmSeq);              
-                
-                TrySetMoveCount(algorithmSeq.LocalMoveCount);
+                    algorithmSequences.Add(course.Algorithm.Id, algorithmSeq);
+
+                    TrySetMoveCount(algorithmSeq.LocalMoveCount);
+                }
                                
                 AdjustOffsets();
 
                 controller.SendAction(ReplayAction.AddCourse, true, course);
+
+                if (first == null)
+                {
+                    first = course;
+                    controller.CurrentCourse = course;
+                }
             }
         }
 
