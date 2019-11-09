@@ -17,29 +17,36 @@ namespace UdeS.Promoscience.Algorithms
 
         private void Start()
         {
-            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-            controls.isPlayerControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+
+            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
         }
 
-        void OnControlsEnableValueChanged()
+
+        public void OnClientStateChanged()
         {
-            if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
+            switch (Client.Instance.State)
             {
-                foreach (Transform child in transform)
-                {
-                    if (child != this.transform)
-                    {
-                        child.gameObject.SetActive(true);
-                    }
-                }
+                case ClientGameState.Playing:
+                case ClientGameState.PlayingTutorial:                
+                    Enabled = true;
+                    break;
+
+                default:
+                    Enabled = false;
+                    break;
+
             }
-            else
+        }
+
+        public bool Enabled
+        {
+            set
             {
                 foreach (Transform child in transform)
                 {
                     if (child != this.transform)
                     {
-                        child.gameObject.SetActive(false);
+                        child.gameObject.SetActive(value);
                     }
                 }
             }
