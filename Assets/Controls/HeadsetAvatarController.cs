@@ -363,10 +363,14 @@ namespace UdeS.Promoscience
                         {
                             // TODO Fix this crap
                             if (isAvatarTurn)
+                            {
                                 cameraRig.AvatarTransform.rotation = targetRotation;
-                            else
                                 cameraRig.DirectionTransform.rotation = targetRotation;
-
+                            }
+                            else
+                            {
+                                cameraRig.DirectionTransform.rotation = targetRotation;
+                            }
 
 
                             turnSpeed = 0;
@@ -418,6 +422,7 @@ namespace UdeS.Promoscience
             if (isAvatarTurn)
             {
                 cameraRig.AvatarTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
+                cameraRig.DirectionTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
             }
             else
             {
