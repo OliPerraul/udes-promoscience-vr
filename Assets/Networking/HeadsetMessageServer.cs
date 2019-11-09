@@ -24,7 +24,6 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
-
         // TODO replace by network manager asset
         [SerializeField]
         ScriptableBoolean isConnectedToPair;
@@ -95,12 +94,13 @@ namespace UdeS.Promoscience.Network
             clientConnection = netMsg.conn;
 
             algorithmRespect.OnRespectChangedHandler += SendAlgorithmRespect;
+            //algorithmRespect.ReturnToDivergencePointAnswer.OnValueChangedHandler += SendReturnToDivergencePointAnswer;
+
             controls.PlayerPaintTile.OnValueChangedHandler += SendPlayerPaintTile;
             controls.PlayerPosition.OnValueChangedHandler += SendPlayerPosition;
             controls.OnPlayerReachedTheEndHandler += SendEndReached;
             controls.PlayerRotation.OnValueChangedHandler += SendPlayerRotation;
-            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler += SendReturnToDivergencePointAnswer;
-
+            
             if (playerInformation.IsInitialize)
             {
                 SendPlayerInformation();
@@ -120,12 +120,13 @@ namespace UdeS.Promoscience.Network
             clientConnection = null;
 
             algorithmRespect.OnRespectChangedHandler -= SendAlgorithmRespect;
+            //algorithmRespect.ReturnToDivergencePointAnswer.OnValueChangedHandler -= SendReturnToDivergencePointAnswer;
+
             controls.PlayerPaintTile.OnValueChangedHandler -= SendPlayerPaintTile;
             controls.PlayerPosition.OnValueChangedHandler -= SendPlayerPosition;
             controls.OnPlayerReachedTheEndHandler -= SendEndReached;
             controls.PlayerRotation.OnValueChangedHandler -= SendPlayerRotation;
-            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler -= SendReturnToDivergencePointAnswer;
-
+            
             playerInformation.playerInformationChangedEvent -= SendPlayerInformation;
         }
 
@@ -137,8 +138,8 @@ namespace UdeS.Promoscience.Network
 
         void OnReturnToDivergencePointRequest(NetworkMessage netMsg)
         {
-            if(controls.OnReturnToDivergencePointRequestHandler != null)
-            controls.OnReturnToDivergencePointRequestHandler.Invoke();
+            if(algorithmRespect.OnReturnToDivergencePointRequestHandler != null)
+                algorithmRespect.OnReturnToDivergencePointRequestHandler.Invoke();
         }
 
         void OnRequestForGameInformation(NetworkMessage netMsg)
@@ -272,12 +273,12 @@ namespace UdeS.Promoscience.Network
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 
-        void SendReturnToDivergencePointAnswer(bool value)
-        {
-            ReturnToDivergencePointAnswerMessage msg = new ReturnToDivergencePointAnswerMessage();
-            msg.answer = controls.ReturnToDivergencePointAnswer.Value;
+        //void SendReturnToDivergencePointAnswer(bool value)
+        //{
+        //    ReturnToDivergencePointAnswerMessage msg = new ReturnToDivergencePointAnswerMessage();
+        //    msg.answer = algorithmRespect.ReturnToDivergencePointAnswer.Value;
 
-            clientConnection.Send(msg.GetMsgType(), msg);
-        }
+        //    clientConnection.Send(msg.GetMsgType(), msg);
+        //}
     }
 }

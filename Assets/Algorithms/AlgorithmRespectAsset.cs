@@ -9,7 +9,17 @@ namespace UdeS.Promoscience.Algorithms
     {
         public FloatEvent OnRespectChangedHandler;
 
-        public NotifyChangeValue<bool> IsDiverging = new Cirrus.NotifyChangeValue<bool>();
+        public MonitoredValue<bool> IsDiverging = new MonitoredValue<bool>();
+
+        //public MonitoredValue<bool> ReturnToDivergencePointAnswer = new MonitoredValue<bool>();
+
+        public Cirrus.Event OnReturnToDivergencePointRequestHandler;
+
+        public void InvokeReturnToDivergent()
+        {
+            if (OnReturnToDivergencePointRequestHandler != null)
+                OnReturnToDivergencePointRequestHandler.Invoke();
+        }
 
         public int ErrorCount = 0;
 
@@ -34,6 +44,7 @@ namespace UdeS.Promoscience.Algorithms
                 }
             }
         }
+
     }
 
 }

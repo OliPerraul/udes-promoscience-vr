@@ -48017,7 +48017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   algorithmRespect: {fileID: 11400000, guid: 6d58c680a021b5e47830ce98afc82c18, type: 2}
-  confirmationPanel: {fileID: 351146638}
+  init: 0
 --- !u!1 &1463888894
 GameObject:
   m_ObjectHideFlags: 0
@@ -72195,7 +72195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   algorithmRespect: {fileID: 11400000, guid: 6d58c680a021b5e47830ce98afc82c18, type: 2}
-  confirmationPanel: {fileID: 2111931362}
+  init: 0
 --- !u!1 &1636750816
 GameObject:
   m_ObjectHideFlags: 0

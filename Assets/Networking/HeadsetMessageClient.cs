@@ -70,7 +70,7 @@ namespace UdeS.Promoscience.Network
                 client.RegisterHandler(PlayerReachedTheEndMessage.GetCustomMsgType(), OnPlayerReachedTheEnd);
                 client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
                 client.RegisterHandler(PlayerTilesToPaintMessage.GetCustomMsgType(), OnPlayerTilesToPaint);
-                client.RegisterHandler(ReturnToDivergencePointAnswerMessage.GetCustomMsgType(), OnReturnToDivergencePointAnswer);
+                //client.RegisterHandler(ReturnToDivergencePointAnswerMessage.GetCustomMsgType(), OnReturnToDivergencePointAnswer);
 
                 client.Connect(pairedIpAdress.Value, serverPort);
             }
@@ -100,7 +100,8 @@ namespace UdeS.Promoscience.Network
         void OnConnect(NetworkMessage netMsg)
         {
             directive.valueChangedEvent += SendDirective;
-            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler += SendReturnToDivergencePointRequest;
+            algorithmRespect.OnReturnToDivergencePointRequestHandler += SendReturnToDivergencePointRequest;
+
             Client.Instance.clientStateChangedEvent += OnGameStateChanged;
 
             isConnectedToPair.Value = true;
@@ -112,7 +113,7 @@ namespace UdeS.Promoscience.Network
 
             Client.Instance.clientStateChangedEvent -= OnGameStateChanged;
             directive.valueChangedEvent -= SendDirective;
-            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler -= SendReturnToDivergencePointRequest;
+            algorithmRespect.OnReturnToDivergencePointRequestHandler -= SendReturnToDivergencePointRequest;
 
             client.Connect(pairedIpAdress.Value, serverPort);
         }
@@ -180,11 +181,11 @@ namespace UdeS.Promoscience.Network
             controls.PlayerTilesToPaint.Value = msg.tiles;
         }
 
-        void OnReturnToDivergencePointAnswer(NetworkMessage netMsg)
-        {
-            ReturnToDivergencePointAnswerMessage msg = netMsg.ReadMessage<ReturnToDivergencePointAnswerMessage>();
-            controls.ReturnToDivergencePointAnswer.Value = msg.answer;
-        }
+        //void OnReturnToDivergencePointAnswer(NetworkMessage netMsg)
+        //{
+        //    ReturnToDivergencePointAnswerMessage msg = netMsg.ReadMessage<ReturnToDivergencePointAnswerMessage>();
+        //    algorithmRespect.ReturnToDivergencePointAnswer.Value = msg.answer;
+        //}
 
         void SendDirective()
         {
@@ -201,7 +202,7 @@ namespace UdeS.Promoscience.Network
             client.Send(msg.GetMsgType(), msg);
         }
 
-        void SendReturnToDivergencePointRequest(bool value)
+        void SendReturnToDivergencePointRequest()
         {
             ReturnToDivergencePointRequestMessage msg = new ReturnToDivergencePointRequestMessage();
             client.Send(msg.GetMsgType(), msg);

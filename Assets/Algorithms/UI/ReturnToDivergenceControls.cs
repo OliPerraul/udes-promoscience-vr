@@ -24,11 +24,13 @@ namespace UdeS.Promoscience.UI
 
 
         void Start()
-        {
-            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+        {            
             algorithmRespect.IsDiverging.OnValueChangedHandler += OnIsDivergingValueChanged;
+            algorithmRespect.OnReturnToDivergencePointRequestHandler += OnReturnToDivergenceRequest;
+
             controls.OnPlayerReachedTheEndHandler += OnPlayerReachedTheEnd;
-            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler += OnReturnToDivergencePointAnswer;
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
+
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
             OnClientStateChanged();
@@ -42,9 +44,13 @@ namespace UdeS.Promoscience.UI
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
                     transform.GetChild(0).gameObject.SetActive(true);
+                    OnIsDivergingValueChanged(algorithmRespect.IsDiverging.Value);
+                    confirmatioPanel.SetActive(false);
                     break;
 
                 default:
+                    OnIsDivergingValueChanged(false);
+                    confirmatioPanel.SetActive(false);
                     transform.GetChild(0).gameObject.SetActive(false);
                     break;
             }
@@ -80,15 +86,12 @@ namespace UdeS.Promoscience.UI
             returnToDivergenceButton.SetActive(false);
         }
 
-        void OnReturnToDivergencePointAnswer(bool answer)
+        void OnReturnToDivergenceRequest()
         {
-            if (!answer)
+            if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
             {
-                if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
-                {
-                    OnIsDivergingValueChanged(answer);
-                }
-            }
+                OnIsDivergingValueChanged(false);
+            }            
         }
     }
 }

@@ -116,7 +116,7 @@ namespace UdeS.Promoscience.Controls
                 }
                 else if (!ovrCameraRigEnabled)
                 {
-                    return Input.GetKeyDown(KeyCode.Mouse0);
+                    return Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space);
                 }
                 else return false;
             }
@@ -133,7 +133,7 @@ namespace UdeS.Promoscience.Controls
                 }
                 else if (!ovrCameraRigEnabled)
                 {
-                    return Input.GetKeyUp(KeyCode.Mouse0);
+                    return Input.GetKeyUp(KeyCode.Mouse0) || Input.GetKeyUp(KeyCode.Space);
                 }
                 else return false;
             }
@@ -143,14 +143,13 @@ namespace UdeS.Promoscience.Controls
         {
             get
             {
-
                 if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger);
                 }
                 else if (!ovrCameraRigEnabled)
                 {
-                    return Input.GetKeyDown(KeyCode.Mouse1);
+                    return Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Return);
                 }
                 else return false;
             }
@@ -166,7 +165,7 @@ namespace UdeS.Promoscience.Controls
                 }
                 else if (!ovrCameraRigEnabled)
                 {
-                    return Input.GetKeyUp(KeyCode.Mouse1);
+                    return Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.Return);
                 }
                 else return false;
             }

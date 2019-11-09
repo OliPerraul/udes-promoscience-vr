@@ -92,8 +92,14 @@ namespace UdeS.Promoscience
             isConnectedToServer.valueChangedEvent += OnConnectOrDisconnect;
 
             controls.PositionRotationAndTiles.OnValueChangedHandler += OnPlayerPositionRotationAndTiles;
+
+            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
         }
 
+        public void OnControlsEnableValueChanged()
+        {
+
+        }
 
         public void RequestTurnLeft(bool turnAvatar)
         {
@@ -365,7 +371,7 @@ namespace UdeS.Promoscience
                             if (isAvatarTurn)
                             {
                                 cameraRig.AvatarTransform.rotation = targetRotation;
-                                cameraRig.DirectionTransform.rotation = targetRotation;
+                                cameraRig.DirectionTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
                             }
                             else
                             {
@@ -422,7 +428,7 @@ namespace UdeS.Promoscience
             if (isAvatarTurn)
             {
                 cameraRig.AvatarTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
-                cameraRig.DirectionTransform.rotation = Quaternion.Lerp(fromRotation, targetRotation, lerpValue);
+                cameraRig.DirectionTransform.rotation = Quaternion.Lerp(fromRotation, Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value)), lerpValue);
             }
             else
             {

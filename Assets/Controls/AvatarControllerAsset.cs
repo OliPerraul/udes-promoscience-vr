@@ -7,7 +7,7 @@ namespace UdeS.Promoscience.ScriptableObjects
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Avatar Controler", order = 1)]
     public class AvatarControllerAsset : ScriptableObject
     {
-        public Cirrus.NotifyChangeValue<bool> IsPlayerControlsEnabled = new Cirrus.NotifyChangeValue<bool>();
+        public Cirrus.MonitoredValue<bool> IsPlayerControlsEnabled = new Cirrus.MonitoredValue<bool>();
 
         public bool IsPlayerControlEnabled {
             get { return IsPlayerControlsEnabled.Value; }
@@ -15,9 +15,9 @@ namespace UdeS.Promoscience.ScriptableObjects
         }
 
 
-        public Cirrus.NotifyChangeValue<bool> IsControlsEnabled = new Cirrus.NotifyChangeValue<bool>();
+        public Cirrus.MonitoredValue<bool> IsControlsEnabled = new Cirrus.MonitoredValue<bool>();
 
-        public Cirrus.NotifyChangeValue<int[]> RecordedSteps = new Cirrus.NotifyChangeValue<int[]>();
+        public Cirrus.MonitoredValue<int[]> RecordedSteps = new Cirrus.MonitoredValue<int[]>();
 
         public Action stopAllMovementEvent;
 
@@ -31,23 +31,19 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public Cirrus.Event OnLabyrinthPositionChangedHandler;
 
-        public Cirrus.Event OnReturnToDivergencePointRequestHandler;
+        public Cirrus.MonitoredValue<Vector3> PlayerPosition = new Cirrus.MonitoredValue<Vector3>();
 
-        public Cirrus.NotifyChangeValue<Vector3> PlayerPosition = new Cirrus.NotifyChangeValue<Vector3>();
+        public Cirrus.MonitoredValue<Quaternion> PlayerRotation = new Cirrus.MonitoredValue<Quaternion>();
 
-        public Cirrus.NotifyChangeValue<Quaternion> PlayerRotation = new Cirrus.NotifyChangeValue<Quaternion>();
+        public Cirrus.MonitoredValue<Tile> PlayerPaintTile = new Cirrus.MonitoredValue<Tile>();
 
-        public Cirrus.NotifyChangeValue<Tile> PlayerPaintTile = new Cirrus.NotifyChangeValue<Tile>();
+        public Cirrus.MonitoredValue<PositionRotationAndTile> PositionRotationAndTiles = new Cirrus.MonitoredValue<PositionRotationAndTile>();
 
-        public Cirrus.NotifyChangeValue<PositionRotationAndTile> PositionRotationAndTiles = new Cirrus.NotifyChangeValue<PositionRotationAndTile>();
+        public Cirrus.MonitoredValue<TileColor> PaintingColor = new Cirrus.MonitoredValue<TileColor>();
 
-        public Cirrus.NotifyChangeValue<TileColor> PaintingColor = new Cirrus.NotifyChangeValue<TileColor>();
+        public Cirrus.MonitoredValue<Tile[]> PlayerTilesToPaint = new Cirrus.MonitoredValue<Tile[]>();
 
-        public Cirrus.NotifyChangeValue<Tile[]> PlayerTilesToPaint = new Cirrus.NotifyChangeValue<Tile[]>();
-
-        public Cirrus.NotifyChangeValue<bool> ReturnToDivergencePointAnswer = new Cirrus.NotifyChangeValue<bool>();
-
-        public Cirrus.NotifyChangeValue<int> ForwardDirection = new Cirrus.NotifyChangeValue<int>();
+        public Cirrus.MonitoredValue<int> ForwardDirection = new Cirrus.MonitoredValue<int>();
 
         public void OnEnable()
         {

@@ -51,8 +51,49 @@ namespace UdeS.Promoscience.Algorithms
             Client.Instance.clientStateChangedEvent += OnGameStateChanged;
             controls.PlayerPaintTile.OnValueChangedHandler += OnPlayerPaintTile;
             controls.OnLabyrinthPositionChangedHandler += OnLabyrinthPositionChanged;
-            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler += OnReturnToDivergencePointAnswer;
+
+            algorithmRespect.OnReturnToDivergencePointRequestHandler += OnReturnToDivergencePointRequest;
         }
+
+
+        public void OnReturnToDivergencePointRequest()
+        {
+            algorithmRespect.ErrorCount += 1;
+
+            Tile[] tiles = wrongColorTilesWhenDiverging.ToArray();
+
+            Vector2Int lpos =
+                new Vector2Int(
+                    playerSteps[playerSteps.Count - 1].x,
+                    playerSteps[playerSteps.Count - 1].y);
+
+            Vector3 position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(
+                lpos.x,
+                lpos.y) +
+                new Vector3(0, cameraRig.Transform.position.y, 0);
+
+            controls.PositionRotationAndTiles.Value =
+                new PositionRotationAndTile
+                {
+                    Position = position,
+                    Rotation = rotationAtDivergence,
+                    Tiles = tiles
+                };
+
+            algorithmRespect.Respect =
+                RespectValueComputation(
+                    (new Vector2Int(
+                        playerSteps[playerSteps.Count - 1].x,
+                        playerSteps[playerSteps.Count - 1].y) - lpos).magnitude + wrongColorTilesWhenDiverging.Count);
+
+            gameAction.SetAction(
+                GameAction.ReturnToDivergencePoint,
+                lpos,
+                rotationAtDivergence,
+                tiles,
+                playerSteps.ToArray());
+        }
+
 
         void OnLabyrinthPositionChanged()
         {
