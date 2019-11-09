@@ -133,7 +133,7 @@ namespace UdeS.Promoscience.Network
         void OnDirective(NetworkMessage netMsg)
         {
             DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
-            directive.Value = msg.directive;
+            directive.Directive.Value = msg.directive;
         }
 
         void OnReturnToDivergencePointRequest(NetworkMessage netMsg)

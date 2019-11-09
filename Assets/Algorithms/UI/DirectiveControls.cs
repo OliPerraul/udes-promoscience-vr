@@ -15,12 +15,27 @@ namespace UdeS.Promoscience.Algorithms
         [SerializeField]
         DirectiveManagerAsset directiveManager;
 
+        [SerializeField]
+        private UnityEngine.UI.Button[] buttons;
+
         private void Start()
         {
-
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
+            for(int i = 0; i < buttons.Length; i++)
+            {
+                int index = i;
+                buttons[i].onClick.AddListener(() => directiveManager.Directive.Set((Directive)index));
+            }
         }
 
+        public void OnValidate()
+        {
+            if (buttons == null || buttons.Length == 0)
+            {
+                buttons = GetComponentsInChildren<UnityEngine.UI.Button>();
+            }
+        }
 
         public void OnClientStateChanged()
         {
@@ -34,7 +49,6 @@ namespace UdeS.Promoscience.Algorithms
                 default:
                     Enabled = false;
                     break;
-
             }
         }
 
@@ -50,31 +64,6 @@ namespace UdeS.Promoscience.Algorithms
                     }
                 }
             }
-        }
-
-        public void SetDirectiveMoveFoward()
-        {
-            directiveManager.Value = Directive.MoveForward;
-        }
-
-        public void SetDirectiveTurnLeft()
-        {
-            directiveManager.Value = Directive.TurnLeft;
-        }
-
-        public void SetDirectiveTurnRight()
-        {
-            directiveManager.Value = Directive.TurnRight;
-        }
-
-        public void SetDirectiveUTurn()
-        {
-            directiveManager.Value = Directive.UTurn;
-        }
-
-        public void SetDirectiveStop()
-        {
-            directiveManager.Value = Directive.Stop;
         }
     }
 }

@@ -153,14 +153,18 @@ namespace UdeS.Promoscience
         SupportDevice,
     }
 
+    [Serializable]
     public enum Directive
     {
-        Unknown,
-        MoveForward,
-        Stop,
+        Unknown = -1,
         TurnLeft,
+        MoveForward,        
+        UTurn,
         TurnRight,
-        UTurn
+        Grey,
+        Yellow,
+        Red,
+        Stop
     }
 
     [Serializable]

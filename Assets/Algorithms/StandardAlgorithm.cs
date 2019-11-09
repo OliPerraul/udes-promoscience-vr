@@ -11,6 +11,7 @@ namespace UdeS.Promoscience.Algorithms
     public class StandardAlgorithm : Algorithm
     {
         readonly int[] xByDirection = { 0, 1, 0, -1 };
+
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
         TileColor tileColor;

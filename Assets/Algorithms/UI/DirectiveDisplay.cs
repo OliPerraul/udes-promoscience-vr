@@ -14,26 +14,10 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         DirectiveManagerAsset directive;
 
-        [SerializeField]
-        GameObject directiveDisplayer;
+        private Image directiveImage;
 
         [SerializeField]
-        Image directiveImage;
-
-        [SerializeField]
-        Sprite forwardImage;
-
-        [SerializeField]
-        Sprite stopImage;
-
-        [SerializeField]
-        Sprite turnLeftImage;
-
-        [SerializeField]
-        Sprite turnRightImage;
-
-        [SerializeField]
-        Sprite uTurnImage;
+        private Image[] images;
 
         const float hideTime = 3.0f;
 
@@ -47,10 +31,27 @@ namespace UdeS.Promoscience.UI
 
             init = true;
 
-            directive.valueChangedEvent += OnNewDirective;
+            directive.Directive.OnValueChangedHandler += OnNewDirective;
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
+            foreach (var img in images)
+            {
+                img.gameObject.SetActive(false);
+            }
+
+            if(images.Length < 0)
+            directiveImage = images[0];
+
         }
+
+        public void OnValidate()
+        {
+            if (images == null || images.Length == 0)
+            {
+                images = GetComponentsInChildren<Image>();
+            }
+        }
+
 
         void OnClientStateChanged()
         {
@@ -58,14 +59,18 @@ namespace UdeS.Promoscience.UI
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
-                    directiveDisplayer.SetActive(false);
+                    if (directiveImage != null)
+                        directiveImage.gameObject.SetActive(false);
                     break;
             }
         }
 
         void Update()
         {
-            if (directiveDisplayer.activeSelf)
+            if (directiveImage == null)
+                return;
+
+            if (directiveImage.gameObject.activeSelf)
             {
                 hideTimer += Time.deltaTime;
 
@@ -74,40 +79,21 @@ namespace UdeS.Promoscience.UI
 
                 if (hideTimer >= hideTime)
                 {
-                    directiveDisplayer.SetActive(false);
+                    directiveImage.gameObject.SetActive(false);
                 }
             }
         }
 
-        void OnNewDirective()
+        void OnNewDirective(Directive directive)
         {
-            SetDirectiveImage(directive.Value);
+            if (directiveImage != null)
+                directiveImage.gameObject.SetActive(false);
+
+            directiveImage = images[(int)directive];
+ 
             hideTimer = 0;
-            directiveDisplayer.SetActive(true);
+            directiveImage.gameObject.SetActive(true);
         }
 
-        void SetDirectiveImage(Directive dir)
-        {
-            if (dir == Directive.MoveForward)
-            {
-                directiveImage.sprite = forwardImage;
-            }
-            else if (dir == Directive.Stop)
-            {
-                directiveImage.sprite = stopImage;
-            }
-            else if (dir == Directive.TurnLeft)
-            {
-                directiveImage.sprite = turnLeftImage;
-            }
-            else if (dir == Directive.TurnRight)
-            {
-                directiveImage.sprite = turnRightImage;
-            }
-            else if (dir == Directive.UTurn)
-            {
-                directiveImage.sprite = uTurnImage;
-            }
-        }
     }
 }

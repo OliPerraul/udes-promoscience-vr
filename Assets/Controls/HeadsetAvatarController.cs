@@ -85,7 +85,7 @@ namespace UdeS.Promoscience
 
             controls.resetPositionAndRotation += OnResetPositionAndRotation;
 
-            directive.valueChangedEvent += OnDirective;
+            directive.Directive.OnValueChangedHandler += OnDirective;
 
             isConnectedToPair.valueChangedEvent += OnConnectOrDisconnect;
 
@@ -583,25 +583,25 @@ namespace UdeS.Promoscience
             }
         }
 
-        void OnDirective()
+        void OnDirective(Directive directive)
         {
-            if (directive.Value == Directive.MoveForward)
+            if (directive == Directive.MoveForward)
             {
                 gameAction.SetAction(GameAction.ReceivedDirectiveMoveForward);
             }
-            else if (directive.Value == Directive.Stop)
+            else if (directive == Directive.Stop)
             {
                 gameAction.SetAction(GameAction.ReceivedDirectiveStop);
             }
-            else if (directive.Value == Directive.TurnLeft)
+            else if (directive == Directive.TurnLeft)
             {
                 gameAction.SetAction(GameAction.ReceivedDirectiveTurnLeft);
             }
-            else if (directive.Value == Directive.TurnRight)
+            else if (directive == Directive.TurnRight)
             {
                 gameAction.SetAction(GameAction.ReceivedDirectiveTurnRight);
             }
-            else if (directive.Value == Directive.UTurn)
+            else if (directive == Directive.UTurn)
             {
                 gameAction.SetAction(GameAction.ReceivedDirectiveUturn);
             }

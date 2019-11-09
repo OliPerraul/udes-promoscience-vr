@@ -12,35 +12,13 @@ namespace UdeS.Promoscience.ScriptableObjects
     public class DirectiveManagerAsset : ScriptableObject
     {
         [SerializeField]
-        Directive value;
+        public Cirrus.MonitoredValue<Directive> Directive = new Cirrus.MonitoredValue<Directive>();
 
-        public Action valueChangedEvent;
-
-        public Directive Value
+        public void Set(Directive directive)
         {
-            get
-            {
-                return value;
-            }
-            set
-            {
-                this.value = value;
-                OnValueChanged();
-            }
+            Directive.Value = directive;
         }
 
-        public void OnEnable()
-        {
-            Value = Directive.Unknown;
-        }
-
-        public void OnValueChanged()
-        {
-            if (valueChangedEvent != null)
-            {
-                valueChangedEvent();
-            }
-        }
     }
 }
 

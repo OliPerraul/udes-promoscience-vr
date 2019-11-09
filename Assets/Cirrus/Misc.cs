@@ -44,6 +44,15 @@ namespace Cirrus
                 }
             }
         }
+
+        public void Set(T value, bool forceNotification=true)
+        {
+            _value = value;
+
+            if(forceNotification)
+                if (OnValueChangedHandler != null)
+                    OnValueChangedHandler.Invoke(value);
+        }
     }
 
     [Serializable]
