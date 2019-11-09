@@ -5,19 +5,51 @@ using System;
 
 namespace UdeS.Promoscience
 {
+    [System.Serializable]
+    public struct PositionRotationAndTile
+    {
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public Tile[] Tiles;
+    }
+
+
     // 
     [Serializable]
     public struct Tile
     {
         public int x;
         public int y;
+
+
+        public TileColor Color
+        {
+            get
+            {
+                return color;
+            }
+
+            set
+            {
+                previousColor = color;
+                color = value;
+            }
+        }            
+
         public TileColor color;
+
+        // TODO private ??
+        public TileColor previousColor;
+
+        public TileColor PreviousColor { get { return previousColor; } }
+
 
         public Tile(int xPosition, int yPosition, TileColor tileColor)
         {
             x = xPosition;
             y = yPosition;
             color = tileColor;
+            previousColor = TileColor.Grey;
         }
 
         public Vector2Int Position

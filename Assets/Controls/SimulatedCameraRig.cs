@@ -20,11 +20,12 @@ namespace UdeS.Promoscience.Controls
         public bool smooth;
         public float smoothTime = 5f;
 
-        [SerializeField]
-        private Transform cameraRigTransform;
 
         [SerializeField]
-        private GameObject character;
+        private Camera camera;
+
+        [SerializeField]
+        private Transform cameraRigTransform;
 
         public Transform Transform
         {
@@ -34,19 +35,29 @@ namespace UdeS.Promoscience.Controls
             }
         }
 
-
         [SerializeField]
-        private Camera camera;
+        private Transform avatarTransform;
 
-        public Vector3 Direction
+        public Transform AvatarTransform
         {
             get
             {
-                return character.transform.forward;
+                return avatarTransform;
             }
         }
 
+        [SerializeField]
+        private Transform directionTransform;
 
+        public Transform DirectionTransform
+        {
+            get
+            {
+                return directionTransform;
+            }
+        }
+
+        
         [SerializeField]
         private ScriptableBoolean grabbedMouseFocus;
 
@@ -80,7 +91,7 @@ namespace UdeS.Promoscience.Controls
             float yRot = Input.GetAxis("Mouse X") * XSensitivity;
             float xRot = Input.GetAxis("Mouse Y") * YSensitivity;
 
-            character.transform.localRotation *= Quaternion.Euler(0f, yRot, 0f);
+            AvatarTransform.localRotation *= Quaternion.Euler(0f, yRot, 0f);
             camera.transform.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
 
             if (clampVerticalRotation)
@@ -88,14 +99,14 @@ namespace UdeS.Promoscience.Controls
 
             if (smooth)
             {
-                character.transform.localRotation = Quaternion.Slerp(character.transform.localRotation, character.transform.localRotation,
+                AvatarTransform.localRotation = Quaternion.Slerp(AvatarTransform.localRotation, AvatarTransform.localRotation,
                     smoothTime * Time.deltaTime);
                 camera.transform.localRotation = Quaternion.Slerp(camera.transform.localRotation, camera.transform.localRotation,
                     smoothTime * Time.deltaTime);
             }
             else
             {
-                character.transform.localRotation = character.transform.localRotation;
+                AvatarTransform.localRotation = AvatarTransform.localRotation;
                 camera.transform.localRotation = camera.transform.localRotation;
             }
         }

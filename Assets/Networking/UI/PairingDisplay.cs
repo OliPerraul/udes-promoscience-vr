@@ -13,7 +13,7 @@ namespace UdeS.Promoscience.UI
     public class PairingDisplay : MonoBehaviour
     {
         [SerializeField]
-        private ScriptableDeviceType deviceType;
+        private DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
         private Network.ScriptablePairingStatus pairingStatus;

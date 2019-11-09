@@ -23,7 +23,7 @@ namespace UdeS.Promoscience
             }
         }
 
-        public OnEvent OnTimeLimitHandler;
+        public Cirrus.Event OnTimeLimitHandler;
 
         public Timer(float limit, bool start = true, bool repeat = false)
         {

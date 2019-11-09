@@ -10,10 +10,10 @@ namespace UdeS.Promoscience.Algorithms
     public class DirectiveControls : MonoBehaviour
     {
         [SerializeField]
-        ScriptableControler controls;
+        AvatarControllerAsset controls;
 
         [SerializeField]
-        ScriptableDirective directive;
+        DirectiveManagerAsset directiveManager;
 
         private void Start()
         {
@@ -23,7 +23,7 @@ namespace UdeS.Promoscience.Algorithms
 
         void OnControlsEnableValueChanged()
         {
-            if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+            if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
             {
                 foreach (Transform child in transform)
                 {
@@ -47,27 +47,27 @@ namespace UdeS.Promoscience.Algorithms
 
         public void SetDirectiveMoveFoward()
         {
-            directive.Value = Directive.MoveForward;
+            directiveManager.Value = Directive.MoveForward;
         }
 
         public void SetDirectiveTurnLeft()
         {
-            directive.Value = Directive.TurnLeft;
+            directiveManager.Value = Directive.TurnLeft;
         }
 
         public void SetDirectiveTurnRight()
         {
-            directive.Value = Directive.TurnRight;
+            directiveManager.Value = Directive.TurnRight;
         }
 
         public void SetDirectiveUTurn()
         {
-            directive.Value = Directive.UTurn;
+            directiveManager.Value = Directive.UTurn;
         }
 
         public void SetDirectiveStop()
         {
-            directive.Value = Directive.Stop;
+            directiveManager.Value = Directive.Stop;
         }
     }
 }

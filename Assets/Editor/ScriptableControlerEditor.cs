@@ -7,7 +7,7 @@ using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Editor
 {
-    [CustomEditor(typeof(ScriptableControler))]
+    [CustomEditor(typeof(AvatarControllerAsset))]
     public class ScriptableControlerEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -16,11 +16,12 @@ namespace UdeS.Promoscience.Editor
 
             GUI.enabled = Application.isPlaying;
 
-            ScriptableControler scriptableControler = target as ScriptableControler;
+            AvatarControllerAsset scriptableControler = target as AvatarControllerAsset;
 
             if (GUILayout.Button("On Controls Enable Value Changed"))
             {
-                scriptableControler.OnPlayerControlsEnableValueChanged();
+                // ??
+                scriptableControler.IsPlayerControlsEnabled.OnValueChangedHandler.Invoke(scriptableControler.IsPlayerControlsEnabled.Value);
             }
 
             if (GUILayout.Button("Stop All Movement"))

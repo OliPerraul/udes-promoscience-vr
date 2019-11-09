@@ -159,7 +159,7 @@ namespace UdeS.Promoscience.UI
         {
             if (playerInformation.PlayerTeamId != -1)
             {
-                Teams.ScriptableTeam team = Teams.Resources.Instance.GetScriptableTeamWithId(playerInformation.PlayerTeamId);
+                Teams.TeamResource team = Teams.Resources.Instance.GetScriptableTeamWithId(playerInformation.PlayerTeamId);
                 teamNameText.text = team.TeamName;
                 color.color = team.TeamColor;
             }

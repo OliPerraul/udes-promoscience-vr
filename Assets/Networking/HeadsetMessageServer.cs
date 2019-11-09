@@ -12,47 +12,31 @@ namespace UdeS.Promoscience.Network
 {
     public class HeadsetMessageServer : MonoBehaviour
     {
-        //[SerializeField]
-        //ScriptableAlgorithm algorithm;
-
-        //[SerializeField]
-        //ScriptableFloat algorithmRespect;
+        [SerializeField]
+        DirectiveManagerAsset directive;
 
         [SerializeField]
-        ScriptableDirective directive;
+        GameRoundManagerAsset gameRound;
 
         [SerializeField]
-        ScriptableInteger gameRound;
+        public AvatarControllerAsset controls;
 
+        [SerializeField]
+        private Algorithms.AlgorithmRespectAsset algorithmRespect;
+
+
+        // TODO replace by network manager asset
         [SerializeField]
         ScriptableBoolean isConnectedToPair;
 
-        [SerializeField]
-        ScriptableBoolean isRoundCompleted;
-
+        // TODO replace by network manager asset
         [SerializeField]
         ScriptableString pairedIpAdress;
 
+        // TODO replace by network manager asset
         [SerializeField]
         ScriptablePlayerInformation playerInformation;
 
-        [SerializeField]
-        Labyrinths.ScriptableTile playerPaintTile;
-
-        [SerializeField]
-        ScriptableVector3 playerPosition;
-
-        [SerializeField]
-        ScriptableAction playerReachedTheEnd;
-
-        [SerializeField]
-        ScriptableQuaternion playerRotation;
-
-        [SerializeField]
-        ScriptableBoolean returnToDivergencePointAnswer;
-
-        [SerializeField]
-        ScriptableAction returnToDivergencePointRequest;
 
         NetworkServerSimple server = null;
 
@@ -110,12 +94,12 @@ namespace UdeS.Promoscience.Network
         {
             clientConnection = netMsg.conn;
 
-            Client.Instance.OnRespectChangedHandler += SendAlgorithmRespect;
-            playerPaintTile.valueChangedEvent += SendPlayerPaintTile;
-            playerPosition.valueChangedEvent += SendPlayerPosition;
-            playerReachedTheEnd.action += SendEndReached;
-            playerRotation.valueChangedEvent += SendPlayerRotation;
-            returnToDivergencePointAnswer.valueChangedEvent += SendReturnToDivergencePointAnswer;
+            algorithmRespect.OnRespectChangedHandler += SendAlgorithmRespect;
+            controls.PlayerPaintTile.OnValueChangedHandler += SendPlayerPaintTile;
+            controls.PlayerPosition.OnValueChangedHandler += SendPlayerPosition;
+            controls.OnPlayerReachedTheEndHandler += SendEndReached;
+            controls.PlayerRotation.OnValueChangedHandler += SendPlayerRotation;
+            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler += SendReturnToDivergencePointAnswer;
 
             if (playerInformation.IsInitialize)
             {
@@ -135,12 +119,12 @@ namespace UdeS.Promoscience.Network
 
             clientConnection = null;
 
-            Client.Instance.OnRespectChangedHandler -= SendAlgorithmRespect;
-            playerPaintTile.valueChangedEvent -= SendPlayerPaintTile;
-            playerPosition.valueChangedEvent -= SendPlayerPosition;
-            playerReachedTheEnd.action -= SendEndReached;
-            playerRotation.valueChangedEvent -= SendPlayerRotation;
-            returnToDivergencePointAnswer.valueChangedEvent -= SendReturnToDivergencePointAnswer;
+            algorithmRespect.OnRespectChangedHandler -= SendAlgorithmRespect;
+            controls.PlayerPaintTile.OnValueChangedHandler -= SendPlayerPaintTile;
+            controls.PlayerPosition.OnValueChangedHandler -= SendPlayerPosition;
+            controls.OnPlayerReachedTheEndHandler -= SendEndReached;
+            controls.PlayerRotation.OnValueChangedHandler -= SendPlayerRotation;
+            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler -= SendReturnToDivergencePointAnswer;
 
             playerInformation.playerInformationChangedEvent -= SendPlayerInformation;
         }
@@ -153,7 +137,8 @@ namespace UdeS.Promoscience.Network
 
         void OnReturnToDivergencePointRequest(NetworkMessage netMsg)
         {
-            returnToDivergencePointRequest.FireAction();
+            if(controls.OnReturnToDivergencePointRequestHandler != null)
+            controls.OnReturnToDivergencePointRequestHandler.Invoke();
         }
 
         void OnRequestForGameInformation(NetworkMessage netMsg)
@@ -165,19 +150,19 @@ namespace UdeS.Promoscience.Network
                 Client.Instance.State == ClientGameState.PlayingTutorial || 
                 Client.Instance.State == ClientGameState.WaitingForNextRound)
             {
-                if (gameRoundRequest == gameRound.Value)
+                if (gameRoundRequest == gameRound.Round.Value)
                 {
-                    if (isRoundCompleted.Value)
+                    if (gameRound.IsRoundCompleted.Value)
                     {
                         SendEndReached();
                     }
                     else
                     {
                         SendAlgorithm();
-                        SendAlgorithmRespect(Client.Instance.Respect);
-                        SendPlayerPosition();
-                        SendPlayerRotation();
-                        SendPlayerTilesToPaint();
+                        SendAlgorithmRespect(algorithmRespect.Respect);
+                        SendPlayerPosition(controls.PlayerPosition.Value);
+                        SendPlayerRotation(controls.PlayerRotation.Value);
+                        SendPlayerTilesToPaint(controls.PlayerTilesToPaint.Value);
                     }
 
                     return;
@@ -191,28 +176,35 @@ namespace UdeS.Promoscience.Network
             }
         }
 
+
+        public void OnGameRoundChanged(int gameroudn)
+        {
+            DelayedSendGameInformation();
+        }
+
+
         void DelayedSendGameInformation()
         {
             if (Client.Instance.State == ClientGameState.Playing || 
                 Client.Instance.State == ClientGameState.PlayingTutorial || 
                 Client.Instance.State == ClientGameState.WaitingForNextRound)
             {
-                if (gameRoundRequest == gameRound.Value)
+                if (gameRoundRequest == gameRound.Round.Value)
                 {
-                    if (isRoundCompleted.Value)
+                    if (gameRound.IsRoundCompleted.Value)
                     {
                         SendEndReached();
                     }
                     else
                     {
                         SendAlgorithm();
-                        SendAlgorithmRespect(Client.Instance.Respect);
-                        SendPlayerPosition();
-                        SendPlayerRotation();
-                        SendPlayerTilesToPaint();
+                        SendAlgorithmRespect(algorithmRespect.Respect);
+                        SendPlayerPosition(controls.PlayerPosition.Value);
+                        SendPlayerRotation(controls.PlayerRotation.Value);
+                        SendPlayerTilesToPaint(controls.PlayerTilesToPaint.Value);
                     }
 
-                    gameRound.valueChangedEvent -= DelayedSendGameInformation;
+                    gameRound.Round.OnValueChangedHandler -= OnGameRoundChanged;
                     isRequestDelayed = false;
                 }
             }
@@ -248,33 +240,31 @@ namespace UdeS.Promoscience.Network
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 
-        void SendPlayerPosition()
+        void SendPlayerPosition(Vector3 position)
         {
             PlayerPositionMessage msg = new PlayerPositionMessage();
-            msg.position = playerPosition.Value;
-
+            msg.position = controls.PlayerPosition.Value;
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 
-        void SendPlayerRotation()
+        void SendPlayerRotation(Quaternion rotation)
         {
             PlayerRotationMessage msg = new PlayerRotationMessage();
-            msg.rotation = playerRotation.Value;
-
+            msg.rotation = controls.PlayerRotation.Value;
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 
-        void SendPlayerPaintTile()
+        void SendPlayerPaintTile(Tile tile)
         {
             PlayerPaintTileMessage msg = new PlayerPaintTileMessage();
-            msg.tilePositionX = playerPaintTile.TilePosition.x;
-            msg.tilePositionY = playerPaintTile.TilePosition.y;
-            msg.tileColor = playerPaintTile.TileColor;
+            msg.tilePositionX = controls.PlayerPaintTile.Value.Position.x;
+            msg.tilePositionY = controls.PlayerPaintTile.Value.Position.y;
+            msg.tileColor = controls.PlayerPaintTile.Value.Color;
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 
-        void SendPlayerTilesToPaint()
+        void SendPlayerTilesToPaint(Tile[] tiles)
         {
             PlayerTilesToPaintMessage msg = new PlayerTilesToPaintMessage();
             msg.tiles = Client.Instance.Labyrinth.GetTilesToPaint();
@@ -282,10 +272,10 @@ namespace UdeS.Promoscience.Network
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 
-        void SendReturnToDivergencePointAnswer()
+        void SendReturnToDivergencePointAnswer(bool value)
         {
             ReturnToDivergencePointAnswerMessage msg = new ReturnToDivergencePointAnswerMessage();
-            msg.answer = returnToDivergencePointAnswer.Value;
+            msg.answer = controls.ReturnToDivergencePointAnswer.Value;
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }

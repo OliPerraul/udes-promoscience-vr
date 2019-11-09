@@ -8,7 +8,7 @@ using UdeS.Promoscience;
 namespace UdeS.Promoscience.Editor
 {
 
-    [CustomEditor(typeof(ScriptableGameAction))]
+    [CustomEditor(typeof(GameActionManagerAsset))]
     public class ScriptableGameActionEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Editor
 
             GUI.enabled = Application.isPlaying;
 
-            ScriptableGameAction scriptableGameState = target as ScriptableGameAction;
+            GameActionManagerAsset scriptableGameState = target as GameActionManagerAsset;
 
             if (GUILayout.Button("On Value Changed"))
             {

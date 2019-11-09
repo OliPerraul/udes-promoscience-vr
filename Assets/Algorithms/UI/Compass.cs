@@ -11,7 +11,7 @@ namespace UdeS.Promoscience.UI
     public class Compass : MonoBehaviour
     {     
         [SerializeField]
-        ScriptableControler controls;
+        AvatarControllerAsset controls;
 
         [SerializeField]
         Transform indicator;

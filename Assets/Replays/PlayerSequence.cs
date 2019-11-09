@@ -261,7 +261,7 @@ namespace UdeS.Promoscience.Replays
                 state.Segments.Remove(fromlpos);
             }
 
-            bool isBacktracking = playerSteps[0].color == TileColor.Red;
+            bool isBacktracking = playerSteps[0].Color == TileColor.Red;
             Vector2Int prevlpos = playerSteps[0].Position;
             Vector2Int lpos = prevlpos;
             Vector2Int nextlpos = prevlpos;
@@ -272,7 +272,7 @@ namespace UdeS.Promoscience.Replays
                 prevlpos = lpos;
                 lpos = nextlpos;
                 nextlpos = playerSteps[i].Position;
-                isBacktracking = playerSteps[i].color == TileColor.Red;
+                isBacktracking = playerSteps[i].Color == TileColor.Red;
 
                 UpdateState(
                     CurrentState,

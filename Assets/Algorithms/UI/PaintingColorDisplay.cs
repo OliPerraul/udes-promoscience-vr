@@ -11,10 +11,7 @@ namespace UdeS.Promoscience.UI
     public class PaintingColorDisplay : MonoBehaviour
     {
         [SerializeField]
-        ScriptableControler controls;
-
-        [SerializeField]
-        Labyrinths.ScriptableTileColor paintingColor;
+        AvatarControllerAsset controls;
 
         [SerializeField]
         GameObject colorRings;
@@ -36,7 +33,7 @@ namespace UdeS.Promoscience.UI
 
             init = true;
 
-            paintingColor.valueChangedEvent += OnPaintingColorValueChanged;
+            controls.PaintingColor.OnValueChangedHandler += OnPaintingColorValueChanged;
 
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
@@ -60,21 +57,21 @@ namespace UdeS.Promoscience.UI
         }
 
 
-        void OnPaintingColorValueChanged()
+        void OnPaintingColorValueChanged(TileColor paintingColor)
         {
-            if (paintingColor.Value == TileColor.Grey)
+            if (paintingColor == TileColor.Grey)
             {
                 greyRing.SetActive(true);
                 yellowRing.SetActive(false);
                 redRing.SetActive(false);
             }
-            else if (paintingColor.Value == TileColor.Yellow)
+            else if (paintingColor == TileColor.Yellow)
             {
                 yellowRing.SetActive(true);
                 greyRing.SetActive(false);
                 redRing.SetActive(false);
             }
-            else if (paintingColor.Value == TileColor.Red)
+            else if (paintingColor == TileColor.Red)
             {
                 redRing.SetActive(true);
                 greyRing.SetActive(false);

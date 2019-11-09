@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.UI
         //ScriptableClientGameState client;
 
         [SerializeField]
-        private ScriptableInteger gameRound;
+        private GameRoundManagerAsset gameRound;
 
         [SerializeField]
         private UnityEngine.UI.Text announcementText;
@@ -39,7 +39,7 @@ namespace UdeS.Promoscience.UI
         {
             timer = new Timer(announcementTime, start: false, repeat: false);
 
-            gameRound.valueChangedEvent += OnGameRoundValueChanged;
+            gameRound.Round.OnValueChangedHandler += OnGameRoundValueChanged;
             timer.OnTimeLimitHandler += OnAnnouncementTimeOut;
             Client.Instance.clientStateChangedEvent += OnGameStateChanged;
 
@@ -60,13 +60,13 @@ namespace UdeS.Promoscience.UI
                 Client.Instance.State == ClientGameState.Playing
                 )
             {
-                Message = roundString.Value + " " + gameRound.Value.ToString() + "\n" +
+                Message = roundString.Value + " " + gameRound.Round.Value.ToString() + "\n" +
                     "(" + Client.Instance.Algorithm.Name + ")";
             }
 
         }
 
-        public void OnGameRoundValueChanged()
+        public void OnGameRoundValueChanged(int round)
         {    
             //Message = roundString.Value + " " + gameRound.Value.ToString() + "\n" +
             //     "(" + algorithm.Name + ")";

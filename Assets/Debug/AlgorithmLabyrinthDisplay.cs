@@ -43,14 +43,14 @@ namespace UdeS.Promoscience.Tests
 
             for (int i = 0; i < algorithmStepsPosition.Count; i++)
             {
-                Debug.Log("algorithmStepsPosition #" + i + " : " + algorithmStepsPosition[i].x + " , " + algorithmStepsPosition[i].y + " , " + algorithmStepsPosition[i].color);
+                Debug.Log("algorithmStepsPosition #" + i + " : " + algorithmStepsPosition[i].x + " , " + algorithmStepsPosition[i].y + " , " + algorithmStepsPosition[i].Color);
 
                 GameObject obj = Instantiate(sphere, GetWorldPosition(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
                 Algorithms.FloorPainter floorPainter = Client.Instance.Labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<Algorithms.FloorPainter>();
 
                 if (floorPainter != null)
                 {
-                    floorPainter.PaintFloorWithColor(algorithmStepsPosition[i].color);
+                    floorPainter.PaintFloorWithColor(algorithmStepsPosition[i].Color);
                 }
 
                 objectList.Add(obj);

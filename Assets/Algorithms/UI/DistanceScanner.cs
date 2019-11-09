@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.Algorithms
         private LocalizeInlineString distanceText;
 
         [SerializeField]
-        ScriptableControler controls;
+        AvatarControllerAsset controls;
 
         [SerializeField]
         GameObject distanceDisplay;

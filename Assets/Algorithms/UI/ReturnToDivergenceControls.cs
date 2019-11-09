@@ -11,30 +11,24 @@ namespace UdeS.Promoscience.UI
     public class ReturnToDivergenceControls : MonoBehaviour
     {
         [SerializeField]
-        ScriptableControler controls;
+        private AvatarControllerAsset controls;
 
         [SerializeField]
-        ScriptableBoolean isDiverging;
+        private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         [SerializeField]
-        ScriptableAction playerReachedTheEnd;
+        private GameObject confirmatioPanel;
 
         [SerializeField]
-        ScriptableBoolean returnToDivergencePointAnswer;
-
-        [SerializeField]
-        GameObject confirmatioPanel;
-
-        [SerializeField]
-        GameObject returnToDivergenceButton;
+        private GameObject returnToDivergenceButton;
 
 
         void Start()
         {
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-            isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
-            playerReachedTheEnd.action += OnPlayerReachedTheEnd;
-            returnToDivergencePointAnswer.valueChangedEvent += OnReturnToDivergencePointAnswer;
+            algorithmRespect.IsDiverging.OnValueChangedHandler += OnIsDivergingValueChanged;
+            controls.OnPlayerReachedTheEndHandler += OnPlayerReachedTheEnd;
+            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler += OnReturnToDivergencePointAnswer;
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
             OnClientStateChanged();
@@ -59,7 +53,7 @@ namespace UdeS.Promoscience.UI
 
         void OnControlsEnableValueChanged()
         {
-            if (!controls.IsControlsEnabled)
+            if (!controls.IsControlsEnabled.Value)
             {
                 confirmatioPanel.SetActive(false);
                 returnToDivergenceButton.SetActive(false);
@@ -67,9 +61,9 @@ namespace UdeS.Promoscience.UI
         }
 
 
-        void OnIsDivergingValueChanged()
+        void OnIsDivergingValueChanged(bool isdiverg)
         {
-            if (isDiverging.Value)
+            if (isdiverg)
             {
                 returnToDivergenceButton.SetActive(true);
             }
@@ -86,13 +80,13 @@ namespace UdeS.Promoscience.UI
             returnToDivergenceButton.SetActive(false);
         }
 
-        void OnReturnToDivergencePointAnswer()
+        void OnReturnToDivergencePointAnswer(bool answer)
         {
-            if (!returnToDivergencePointAnswer.Value)
+            if (!answer)
             {
-                if (controls.IsControlsEnabled && controls.IsPlayerControlsEnabled)
+                if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
                 {
-                    OnIsDivergingValueChanged();
+                    OnIsDivergingValueChanged(answer);
                 }
             }
         }

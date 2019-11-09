@@ -7,7 +7,7 @@ using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Editor
 {
-    [CustomEditor(typeof(ScriptableDirective))]
+    [CustomEditor(typeof(DirectiveManagerAsset))]
     public class ScriptableDirectiveEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -16,7 +16,7 @@ namespace UdeS.Promoscience.Editor
 
             GUI.enabled = Application.isPlaying;
 
-            ScriptableDirective scriptableGameState = target as ScriptableDirective;
+            DirectiveManagerAsset scriptableGameState = target as DirectiveManagerAsset;
 
             if (GUILayout.Button("On Value Changed"))
             {

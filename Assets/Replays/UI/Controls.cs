@@ -18,9 +18,9 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private ControllerAsset playbackOptions;
 
-        public OnEvent OnExpandHandler;
+        public Cirrus.Event OnExpandHandler;
 
-        public OnEvent OnCloseHandler;
+        public Cirrus.Event OnCloseHandler;
 
         [SerializeField]
         private GameObject infoPanel;

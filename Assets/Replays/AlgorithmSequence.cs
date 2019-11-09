@@ -80,7 +80,7 @@ namespace UdeS.Promoscience.Replays
 
         private void PaintTile(Tile tile)
         {
-            labyrinth.SetTileColor(tile.Position, tile.color);
+            labyrinth.SetTileColor(tile.Position, tile.Color);
         }
 
         private void PaintTile(Vector2Int position, TileColor action)
@@ -137,7 +137,7 @@ namespace UdeS.Promoscience.Replays
             }
 
             if(!isHidden) PaintTile(course.AlgorithmSteps[course.CurrentAlgorithmMoveIndex]);
-            stack.Push(course.AlgorithmSteps[course.CurrentAlgorithmMoveIndex].color);
+            stack.Push(course.AlgorithmSteps[course.CurrentAlgorithmMoveIndex].Color);
 
             course.AlgorithmNext();
         }

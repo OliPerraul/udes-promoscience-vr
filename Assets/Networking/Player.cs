@@ -187,20 +187,17 @@ namespace UdeS.Promoscience.Network
         #region Client
 
         [SerializeField]
-        ScriptableGameAction gameAction;
+        GameActionManagerAsset gameAction;
 
 
         [SerializeField]
-        ScriptableDeviceType deviceType;
+        DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
-        ScriptableInteger gameRound;
-
-        //[SerializeField]
-        //ScriptableClientGameState client;
+        private AvatarControllerAsset controls;
 
         [SerializeField]
-        ScriptableBoolean isRoundCompleted;
+        GameRoundManagerAsset gameRound;
 
         //[SerializeField]
         //Labyrinths.ScriptableLabyrinth labyrinthData;
@@ -211,11 +208,6 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         ScriptablePlayerInformation playerInformation;
 
-        [SerializeField]
-        ScriptableIntegerArray recordedSteps;
-
-        //[SerializeField]
-        //private ScriptableClientGameData gameData;
 
         public override void OnStartLocalPlayer()
         {
@@ -349,7 +341,7 @@ namespace UdeS.Promoscience.Network
             Algorithms.Id algo,
             bool isTutorial)
         {
-            recordedSteps.Value = new int[0];
+            controls.RecordedSteps.Value = new int[0];
 
             Client.Instance.LabyrinthData = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
 
@@ -362,9 +354,9 @@ namespace UdeS.Promoscience.Network
 
             Client.Instance.Algorithm = Algorithms.Resources.Instance.GetAlgorithm(algo);
 
-            isRoundCompleted.Value = false;
+            gameRound.IsRoundCompleted.Value = false;
 
-            gameRound.Value = Client.Instance.LabyrinthData.Id;
+            gameRound.Round.Value = Client.Instance.LabyrinthData.Id;
 
             Client.Instance.State = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
         }
@@ -377,7 +369,7 @@ namespace UdeS.Promoscience.Network
             Algorithms.Id algo,
             bool isTutorial)
         {
-            recordedSteps.Value = steps;
+            controls.RecordedSteps.Value = steps;
 
             Client.Instance.LabyrinthData = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
 
@@ -387,8 +379,8 @@ namespace UdeS.Promoscience.Network
 
             Client.Instance.Algorithm = Algorithms.Resources.Instance.GetAlgorithm(algo);
 
-            isRoundCompleted.Value = false;
-            gameRound.Value = Client.Instance.LabyrinthData.Id;
+            gameRound.IsRoundCompleted.Value = false;
+            gameRound.Round.Value = Client.Instance.LabyrinthData.Id;
 
             Client.Instance.State = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
         }
@@ -396,8 +388,8 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetViewingLocalPlayback(NetworkConnection target, int labyrinthId, int[] steps, string[] stepValues)
         {
-            isRoundCompleted.Value = true;
-            gameRound.Value = labyrinthId;
+            gameRound.IsRoundCompleted.Value = true;
+            gameRound.Round.Value = labyrinthId;
             //recordedSteps.Value = steps;
             Client.Instance.ActionValues = stepValues;
             Client.Instance.ActionSteps = steps;
@@ -407,8 +399,8 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetViewingGlobalPlayback(NetworkConnection target, int labyrinthId, int[] steps, string[] stepValues)
         {
-            isRoundCompleted.Value = true;
-            gameRound.Value = labyrinthId;
+            gameRound.IsRoundCompleted.Value = true;
+            gameRound.Round.Value = labyrinthId;
 
             // No steps required, player watch server screen
             Client.Instance.State = ClientGameState.ViewingGlobalReplay;
@@ -418,9 +410,9 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId, int[] steps)
         {
-            isRoundCompleted.Value = true;
-            gameRound.Value = labyrinthId;
-            recordedSteps.Value = steps;
+            gameRound.IsRoundCompleted.Value = true;
+            gameRound.Round.Value = labyrinthId;
+            controls.RecordedSteps.Value = steps;
             Client.Instance.State = ClientGameState.WaitingForNextRound;
         }
 

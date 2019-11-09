@@ -34,9 +34,9 @@ namespace UdeS.Promoscience.Replays
 
     public abstract class ControllerAsset : ScriptableObject
     {
-        public OnIntEvent valueChangeEvent;
+        public IntEvent valueChangeEvent;
 
-        public OnEvent OnLabyrinthReplayHandler;
+        public Cirrus.Event OnLabyrinthReplayHandler;
 
         public OnAction OnActionHandler;
 
@@ -61,13 +61,13 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        public OnFloatEvent OnPlaybackSpeedHandler;
+        public FloatEvent OnPlaybackSpeedHandler;
 
-        public OnEvent OnSequenceFinishedHandler;
+        public Cirrus.Event OnSequenceFinishedHandler;
 
-        public OnIntEvent OnMoveCountSetHandler;
+        public IntEvent OnMoveCountSetHandler;
 
-        public OnIntEvent OnMoveIndexChangedHandler;
+        public IntEvent OnMoveIndexChangedHandler;
 
         private Course course;
 

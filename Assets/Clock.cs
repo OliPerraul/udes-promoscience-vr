@@ -8,7 +8,7 @@ namespace UdeS.Promoscience
 {
     public class Clock : BaseSingleton<Clock>
     {
-        public OnEvent OnTickedHandler;
+        public Cirrus.Event OnTickedHandler;
 
         public void FixedUpdate()
         {

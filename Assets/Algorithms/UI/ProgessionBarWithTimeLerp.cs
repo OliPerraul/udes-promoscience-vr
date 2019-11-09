@@ -13,7 +13,10 @@ namespace UdeS.Promoscience.UI
         //ScriptableClientGameState clientState;
 
         [SerializeField]
-        ScriptableControler controls;
+        AvatarControllerAsset controls;
+
+        [SerializeField]
+        Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         [SerializeField]
         GameObject progress;
@@ -37,7 +40,7 @@ namespace UdeS.Promoscience.UI
 
             init = true;
 
-            Client.Instance.OnRespectChangedHandler += OnAlgorithmRespectChanged;
+            algorithmRespect.OnRespectChangedHandler += OnAlgorithmRespectChanged;
 
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
@@ -63,14 +66,14 @@ namespace UdeS.Promoscience.UI
         {
             if (isLerping)
             {
-                float lerpSpeedValue = currentValue < Client.Instance.Respect ? lerpSpeed : -lerpSpeed;
+                float lerpSpeedValue = currentValue < algorithmRespect.Respect ? lerpSpeed : -lerpSpeed;
                 float lerpValue = currentValue + Time.deltaTime * lerpSpeedValue;
 
-                if ((currentValue <= Client.Instance.Respect && lerpValue > Client.Instance.Respect) || 
-                    (currentValue >= Client.Instance.Respect && lerpValue < Client.Instance.Respect))
+                if ((currentValue <= algorithmRespect.Respect && lerpValue > algorithmRespect.Respect) || 
+                    (currentValue >= algorithmRespect.Respect && lerpValue < algorithmRespect.Respect))
                 {
                     isLerping = false;
-                    currentValue = Client.Instance.Respect;
+                    currentValue = algorithmRespect.Respect;
                     progress.transform.localScale = new Vector3(currentValue, 1, 1);
                 }
                 else

@@ -41,7 +41,7 @@ namespace UdeS.Promoscience
 
         public Algorithms.Algorithm Algorithm;
 
-        public Teams.ScriptableTeam Team;
+        public Teams.TeamResource Team;
 
         #region Algorithm
         
@@ -127,7 +127,7 @@ namespace UdeS.Promoscience
 
         public OnCourseEvent OnActionIndexChangedHandler;
 
-        public OnEvent OnPlayerSequenceProgressedHandler;
+        public Event OnPlayerSequenceProgressedHandler;
 
         private ActionValue previousActionValue;
 

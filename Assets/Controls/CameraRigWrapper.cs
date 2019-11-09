@@ -9,7 +9,7 @@ namespace UdeS.Promoscience.Controls
         public SimulatedCameraRig desktopCameraRig;
 
         [SerializeField]
-        public OVRCameraRig ovrCameraRig;
+        public VRCameraRig vrCameraRig;
 
         [SerializeField]
         public UnityEngine.EventSystems.StandaloneInputModule standaloneInputs;
@@ -20,20 +20,37 @@ namespace UdeS.Promoscience.Controls
 
         public bool ovrCameraRigEnabled;
 
-        public Vector3 Direction
+        public Vector3 AvatarDirection
         {
             get
             {
                 if (ovrCameraRigEnabled)
                 {
-                    return ovrCameraRig.centerEyeAnchor.transform.forward;
+                    return vrCameraRig.OVRCameraRig.centerEyeAnchor.transform.forward;
                 }
                 else
                 {
-                    return desktopCameraRig.Direction;
+                    return desktopCameraRig.AvatarTransform.forward;
                 }
             }
         }
+
+        public Transform AvatarTransform
+        {
+            get
+            {
+                if (ovrCameraRigEnabled)
+                {
+                    return vrCameraRig.AvatarTransform;
+                }
+                else if (!ovrCameraRigEnabled)
+                {
+                    return desktopCameraRig.AvatarTransform;
+                }
+                else return null;
+            }
+        }
+
 
 
         public Transform Transform
@@ -42,7 +59,7 @@ namespace UdeS.Promoscience.Controls
             {
                 if (ovrCameraRigEnabled)
                 {
-                    return ovrCameraRig.transform;
+                    return vrCameraRig.transform;
                 }
                 else if (!ovrCameraRigEnabled)
                 {
@@ -52,11 +69,29 @@ namespace UdeS.Promoscience.Controls
             }
         }
 
+
+        public Transform DirectionTransform
+        {
+            get
+            {
+                if (ovrCameraRigEnabled)
+                {
+                    return vrCameraRig.DirectionTransform;
+                }
+                else if (!ovrCameraRigEnabled)
+                {
+                    return desktopCameraRig.DirectionTransform;
+                }
+                else return null;
+            }
+        }
+
+
         void Awake()
         {
 #if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
             desktopCameraRig.gameObject.SetActive(true);
-            ovrCameraRig.gameObject.SetActive(false);
+            vrCameraRig.gameObject.SetActive(false);
             ovrInputModule.enabled = false;
             standaloneInputs.enabled = true;
             ovrCameraRigEnabled = false;
@@ -125,7 +160,6 @@ namespace UdeS.Promoscience.Controls
         {
             get
             {
-
                 if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger);

@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.Network
     public class ClientNetworkManager : NetworkManager
     {
         [SerializeField]
-        ScriptableControler controls;
+        AvatarControllerAsset controls;
 
         [SerializeField]
         ScriptableBoolean isConnectedToServer;

@@ -15,18 +15,11 @@ namespace UdeS.Promoscience.Network
         //[SerializeField]
         //private Resources resources;
 
-
         [SerializeField]
-        ScriptableDirective directive;
-
-        [SerializeField]
-        ScriptableInteger gameRound;
+        GameRoundManagerAsset gameRound;
 
         [SerializeField]
         ScriptableBoolean isConnectedToPair;
-
-        [SerializeField]
-        ScriptableBoolean isDiverging;
 
         [SerializeField]
         ScriptableString pairedIpAdress;
@@ -34,26 +27,19 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         ScriptablePlayerInformation playerInformation;
 
-        [SerializeField]
-        ScriptableVector3 playerPosition;
 
         [SerializeField]
-        ScriptableQuaternion playerRotation;
+        DirectiveManagerAsset directive;
+
+        //[SerializeField]
+        //ScriptableAction returnToDivergencePointRequest;
+        [SerializeField]
+        AvatarControllerAsset controls;
 
         [SerializeField]
-        Labyrinths.ScriptableTile playerPaintTile;
+        private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
-        [SerializeField]
-        ScriptableAction playerReachedTheEnd;
 
-        [SerializeField]
-        Labyrinths.ScriptableTileArray playerTilesToPaint;
-
-        [SerializeField]
-        ScriptableBoolean returnToDivergencePointAnswer;
-
-        [SerializeField]
-        ScriptableAction returnToDivergencePointRequest;
 
         NetworkClient client = null;
 
@@ -114,7 +100,7 @@ namespace UdeS.Promoscience.Network
         void OnConnect(NetworkMessage netMsg)
         {
             directive.valueChangedEvent += SendDirective;
-            returnToDivergencePointRequest.action += SendReturnToDivergencePointRequest;
+            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler += SendReturnToDivergencePointRequest;
             Client.Instance.clientStateChangedEvent += OnGameStateChanged;
 
             isConnectedToPair.Value = true;
@@ -126,7 +112,7 @@ namespace UdeS.Promoscience.Network
 
             Client.Instance.clientStateChangedEvent -= OnGameStateChanged;
             directive.valueChangedEvent -= SendDirective;
-            returnToDivergencePointRequest.action -= SendReturnToDivergencePointRequest;
+            controls.ReturnToDivergencePointAnswer.OnValueChangedHandler -= SendReturnToDivergencePointRequest;
 
             client.Connect(pairedIpAdress.Value, serverPort);
         }
@@ -140,15 +126,15 @@ namespace UdeS.Promoscience.Network
         void OnAlgorithmRespect(NetworkMessage netMsg)
         {
             AlgorithmRespectMessage msg = netMsg.ReadMessage<AlgorithmRespectMessage>();
-            Client.Instance.Respect = msg.algorithmRespect;
+            algorithmRespect.Respect = msg.algorithmRespect;
 
-            if (Client.Instance.Respect >= 1 && isDiverging.Value)
+            if (algorithmRespect.Respect >= 1 && algorithmRespect.IsDiverging.Value)
             {
-                isDiverging.Value = false;
+                algorithmRespect.IsDiverging.Value = false;
             }
-            else if (Client.Instance.Respect < 1 && !isDiverging.Value)
+            else if (algorithmRespect.Respect < 1 && !algorithmRespect.IsDiverging.Value)
             {
-                isDiverging.Value = true;
+                algorithmRespect.IsDiverging.Value = true;
             }
         }
 
@@ -163,58 +149,61 @@ namespace UdeS.Promoscience.Network
         void OnPlayerPaintTile(NetworkMessage netMsg)
         {
             PlayerPaintTileMessage msg = netMsg.ReadMessage<PlayerPaintTileMessage>();
-            playerPaintTile.SetTile(msg.tilePositionX, msg.tilePositionY, msg.tileColor);
+            var previousTile = controls.PlayerPaintTile.Value;
+            previousTile.Color = msg.tileColor;
+            previousTile.x = msg.tilePositionX;
+            previousTile.y = msg.tilePositionY;
+            controls.PlayerPaintTile.Value = previousTile;
         }
 
         void OnPlayerPosition(NetworkMessage netMsg)
         {
             PlayerPositionMessage msg = netMsg.ReadMessage<PlayerPositionMessage>();
-            playerPosition.Value = msg.position;
+            controls.PlayerPosition.Value = msg.position;
         }
 
         void OnPlayerReachedTheEnd(NetworkMessage netMsg)
         {
-            playerReachedTheEnd.FireAction();
+            if(controls.OnPlayerReachedTheEndHandler != null)
+            controls.OnPlayerReachedTheEndHandler.Invoke();
         }
 
         void OnPlayerRotation(NetworkMessage netMsg)
         {
             PlayerRotationMessage msg = netMsg.ReadMessage<PlayerRotationMessage>();
-            playerRotation.Value = msg.rotation;
+            controls.PlayerRotation.Value = msg.rotation;
         }
 
         void OnPlayerTilesToPaint(NetworkMessage netMsg)
         {
             PlayerTilesToPaintMessage msg = netMsg.ReadMessage<PlayerTilesToPaintMessage>();
-            playerTilesToPaint.Value = msg.tiles;
+            controls.PlayerTilesToPaint.Value = msg.tiles;
         }
 
         void OnReturnToDivergencePointAnswer(NetworkMessage netMsg)
         {
             ReturnToDivergencePointAnswerMessage msg = netMsg.ReadMessage<ReturnToDivergencePointAnswerMessage>();
-            returnToDivergencePointAnswer.Value = msg.answer;
+            controls.ReturnToDivergencePointAnswer.Value = msg.answer;
         }
 
         void SendDirective()
         {
             DirectiveMessage msg = new DirectiveMessage();
             msg.directive = directive.Value;
-
             client.Send(msg.GetMsgType(), msg);
         }
 
         void SendRequestForGameInformation()
         {
             RequestForGameInformationMessage msg = new RequestForGameInformationMessage();
-            msg.gameRound = gameRound.Value;
+            msg.gameRound = gameRound.Round.Value;
 
             client.Send(msg.GetMsgType(), msg);
         }
 
-        void SendReturnToDivergencePointRequest()
+        void SendReturnToDivergencePointRequest(bool value)
         {
             ReturnToDivergencePointRequestMessage msg = new ReturnToDivergencePointRequestMessage();
-
             client.Send(msg.GetMsgType(), msg);
         }
     }

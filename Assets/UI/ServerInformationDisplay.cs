@@ -13,46 +13,45 @@ namespace UdeS.Promoscience.UI
 
     public class ServerInformationDisplay : MonoBehaviour
     {
-        //[SerializeField]
-        //ScriptableServerGameInformation serverGameInformation;
+        [SerializeField]
+        private GameRoundManagerAsset gameRoundManager;
 
         [SerializeField]
-        LocalizeStringAsset gameRoundString;
+        private LocalizeStringAsset gameRoundString;
 
         [SerializeField]
-        LocalizeStringAsset gameStateString;
+        private LocalizeStringAsset gameStateString;
 
         [SerializeField]
-        LocalizeStringAsset intermissionString;
+        private LocalizeStringAsset intermissionString;
 
         [SerializeField]
-        LocalizeStringAsset lobbyString;
+        private LocalizeStringAsset lobbyString;
 
         [SerializeField]
-        LocalizeStringAsset playingRoundString;
+        private LocalizeStringAsset playingRoundString;
 
         [SerializeField]
-        LocalizeStringAsset tutorialString;
+        private LocalizeStringAsset tutorialString;
 
         [SerializeField]
-        Text serverGameRoundText;
+        private Text serverGameRoundText;
 
         [SerializeField]
-        Text serverGameStateText;
+        private Text serverGameStateText;
 
         void OnEnable()
         {
             if (Promoscience.Server.Instance != null)
             {
-                Promoscience.Server.Instance.gameRoundChangedEvent += OnGameRoundChanged;
+                gameRoundManager.Round.OnValueChangedHandler += OnGameRoundChanged;
                 Promoscience.Server.Instance.gameStateChangedEvent += OnGameStateChanged;
             }
 
-            OnGameRoundChanged();
             OnGameStateChanged();
         }
 
-        void OnGameRoundChanged()
+        void OnGameRoundChanged(int round)
         {
             serverGameRoundText.text = gameRoundString.Value + " : " + Promoscience.Server.Instance.GameRound;
         }

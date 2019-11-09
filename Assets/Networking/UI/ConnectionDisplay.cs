@@ -13,7 +13,7 @@ namespace UdeS.Promoscience.UI
     public class ConnectionDisplay : MonoBehaviour
     {
         [SerializeField]
-        private ScriptableDeviceType deviceType;
+        private DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
         private Network.ScriptablePairingStatus pairingStatus;
@@ -79,7 +79,7 @@ namespace UdeS.Promoscience.UI
         }
 
         [SerializeField]
-        private List<Teams.ScriptableTeam> teams;
+        private List<Teams.TeamResource> teams;
 
         //[SerializeField]
         //private Button button;

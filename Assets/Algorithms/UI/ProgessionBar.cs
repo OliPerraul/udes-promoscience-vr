@@ -9,8 +9,8 @@ namespace UdeS.Promoscience.UI
 {
     public class ProgessionBar : MonoBehaviour
     {
-        //[SerializeField]
-        //ScriptableClientGameState clientState;
+        [SerializeField]
+        Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         [SerializeField]
         GameObject progress;
@@ -29,7 +29,7 @@ namespace UdeS.Promoscience.UI
 
             init = true;
 
-            Client.Instance.OnRespectChangedHandler += OnValueChanged;
+            algorithmRespect.OnRespectChangedHandler += OnValueChanged;
         }
 
 

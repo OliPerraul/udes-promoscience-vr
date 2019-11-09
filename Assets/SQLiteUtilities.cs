@@ -1026,7 +1026,7 @@ namespace UdeS.Promoscience
             int algorithmId, 
             int eventType, 
             string dateTime, 
-            string eventValue)
+            string EventValue)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
@@ -1044,7 +1044,7 @@ namespace UdeS.Promoscience
                     cmd.CommandText = "PRAGMA foreign_keys = ON";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  '" + eventValue + "',  '" + dateTime + "', '" + courseId + "');";
+                    cmd.CommandText = "INSERT INTO " + EVENT + " (" + EVENT_TYPE + ", " + EVENT_VALUE + ", " + EVENT_TIME + ", " + EVENT_COURSE_ID + ") VALUES ('" + eventType + "',  '" + EventValue + "',  '" + dateTime + "', '" + courseId + "');";
                     cmd.ExecuteNonQuery();
                 }
             }

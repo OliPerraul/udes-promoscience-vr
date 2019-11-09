@@ -4,61 +4,20 @@ using System.Collections.Generic;
 using UdeS.Promoscience.Labyrinths;
 using UdeS.Promoscience.Network;
 
+using UnityEngine;
+
 namespace UdeS.Promoscience
 {
     public class Server : Cirrus.BaseSingleton<Server>
     {
         private Replays.Replay replay;
 
-        public Replays.ControllerAsset advancedReplayController;
+        public Replays.ControllerAsset replayController;
 
-        public Replays.ControllerAsset instantReplayController;
-
-        public class LabyrinthValues
-        {
-            public IData CurrentData { get; set; }        
-
-            public Labyrinth CurrentLabyrinth { get; set; }
-
-            public ICollection<IData> data = new List<IData>();
-
-            public ICollection<Resource> Data
-            {
-                get
-                {
-                    return Promoscience.Labyrinths.Resources.Instance.LabyrinthData;
-                }
-            }
-
-            public ICollection<Labyrinth> Labyrinths
-            {
-                get
-                {
-                    return IdPairs.Values;
-                }
-            }
-
-            private Dictionary<int, Labyrinth> labyrinths = new Dictionary<int, Labyrinth>();
-
-            public IDictionary<int, Labyrinth> IdPairs
-            {
-                get
-                {
-                    if (labyrinths == null)
-                        labyrinths = new Dictionary<int, Labyrinth>();
-                    return labyrinths;
-                }
-            }
-
-            public void Clear()
-            {
-                if (labyrinths != null)
-                    labyrinths.Clear();
-            }
-        }
-
-        public LabyrinthValues Labyrinths = new LabyrinthValues();
-
+        public LabyrinthManager Labyrinths = new LabyrinthManager();
+        
+        [SerializeField]
+        private GameRoundManagerAsset gameRoundManager;
 
         // Ideally, player should reference a course instead of refering to a course id 
         public List<Course> Courses;
@@ -67,16 +26,8 @@ namespace UdeS.Promoscience
 
         public Dictionary<int, Course> IdCoursePairs { get { return idCoursePairs; } }
 
-        public OnCourseEvent OnCourseAddedHandler;
-
-        private int gameRound = 0;
-
-
         private ServerGameState gameState;
-
-
-        public Action gameRoundChangedEvent;
-
+        
         public Action gameStateChangedEvent;
 
         private const int tutorialLabyrinthId = 4;
@@ -123,7 +74,7 @@ namespace UdeS.Promoscience
 
             // Store all the teams in the DB
             // TODO remove, replace with 'Resources' asset
-            foreach (Teams.ScriptableTeam team in Teams.Resources.Instance.Teams)
+            foreach (Teams.TeamResource team in Teams.Resources.Instance.Teams)
             {
                 SQLiteUtilities.InsertPlayerTeam(
                     team.TeamId,
@@ -148,12 +99,11 @@ namespace UdeS.Promoscience
         {
             get
             {
-                return gameRound;
+                return gameRoundManager.Round.Value;
             }
             set
             {
-                gameRound = value;
-                OnGameRoundValueChanged();
+                gameRoundManager.Round.Value = value;
             }
         }
 
@@ -167,14 +117,6 @@ namespace UdeS.Promoscience
             {
                 gameState = value;
                 OnGameStateValueChanged();
-            }
-        }
-
-        public void OnGameRoundValueChanged()
-        {
-            if (gameRoundChangedEvent != null)
-            {
-                gameRoundChangedEvent();
             }
         }
 
@@ -224,7 +166,7 @@ namespace UdeS.Promoscience
 
             Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(Labyrinths.CurrentData.Id);
 
-            CurrentReplay = new Replays.InstantReplay(advancedReplayController, Labyrinths.CurrentData);
+            CurrentReplay = new Replays.InstantReplay(replayController, Labyrinths.CurrentData);
 
             CurrentReplay.Start();
         }
@@ -254,7 +196,7 @@ namespace UdeS.Promoscience
             Labyrinths.CurrentData = labyrinth;
 
             CurrentReplay = new Replays.Replay(
-                advancedReplayController, 
+                replayController, 
                 Labyrinths.CurrentData);
                        
             CurrentReplay.Start();

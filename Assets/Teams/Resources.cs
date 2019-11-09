@@ -13,9 +13,9 @@ namespace UdeS.Promoscience.Teams
     {
         [FormerlySerializedAs("teamList")]
         [SerializeField]
-        List<ScriptableTeam> teams;// = new List<ScriptableTeam>();
+        List<TeamResource> teams;// = new List<ScriptableTeam>();
 
-        public IEnumerable<ScriptableTeam> Teams
+        public IEnumerable<TeamResource> Teams
         {
             get
             {
@@ -25,15 +25,15 @@ namespace UdeS.Promoscience.Teams
 
         int counter = 0;
 
-        public ScriptableTeam GetUnusedScriptableTeam()
+        public TeamResource GetUnusedScriptableTeam()
         {
             //Add check so that the team id is not used in playerinformation list instead of count
-            ScriptableTeam scriptableTeam = teams[counter % teams.Count];
+            TeamResource scriptableTeam = teams[counter % teams.Count];
             counter++;
             return scriptableTeam;
         }
 
-        public ScriptableTeam GetScriptableTeamWithId(int id)
+        public TeamResource GetScriptableTeamWithId(int id)
         {
             if (id >= 0 && id < teams.Count)//Should add custom editor that sort list by id for safety mesure
             {

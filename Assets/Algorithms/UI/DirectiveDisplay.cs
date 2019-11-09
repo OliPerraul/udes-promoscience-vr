@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.UI
     public class DirectiveDisplay : MonoBehaviour
     {
         [SerializeField]
-        ScriptableDirective directive;
+        DirectiveManagerAsset directive;
 
         [SerializeField]
         GameObject directiveDisplayer;

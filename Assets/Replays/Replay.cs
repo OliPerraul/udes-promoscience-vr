@@ -39,9 +39,6 @@ namespace UdeS.Promoscience.Replays
             //this.courses = courses;
             this.labyrinthData = labyrinth;
 
-            //replay..gameStateChangedEvent += OnServerGameStateChanged;
-            Server.Instance.OnCourseAddedHandler += OnCourseAdded;
-
             controller.OnActionHandler += OnReplayAction;
             controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
             controller.OnCourseSelectedHandler += OnCourseSelected;

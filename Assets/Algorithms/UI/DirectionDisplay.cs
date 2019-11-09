@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.UI
     public class DirectionDisplay : MonoBehaviour
     {
         [SerializeField]
-        ScriptableControler controls;
+        AvatarControllerAsset controls;
 
         [SerializeField]
         GameObject directionDisplayer;

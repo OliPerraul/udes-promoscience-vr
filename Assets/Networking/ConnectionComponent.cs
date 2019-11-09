@@ -165,7 +165,7 @@ namespace UdeS.Promoscience.Network
 
         void InitializeHeadsetInformation()
         {
-            Teams.ScriptableTeam scriptableTeam = Teams.Resources.Instance.GetUnusedScriptableTeam();
+            Teams.TeamResource scriptableTeam = Teams.Resources.Instance.GetUnusedScriptableTeam();
 
             player.serverAlgorithm = (Promoscience.Algorithms.Id)(scriptableTeam.TeamId % 3) + 1;
             player.ServerTeamId = scriptableTeam.TeamId;

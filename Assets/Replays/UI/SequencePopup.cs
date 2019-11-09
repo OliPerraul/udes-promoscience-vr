@@ -62,8 +62,7 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
         private void OnCourseActionIndexChanged()//Course course)
-        {
-            //if (course.CurrentAction == Promoscience.GameAction.Finish ||
+        {            
             if (course.CurrentAction == GameAction.EndMovement ||
                 course.CurrentAction == GameAction.Unknown)
             {

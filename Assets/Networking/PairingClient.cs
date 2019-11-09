@@ -13,7 +13,7 @@ namespace UdeS.Promoscience.Network
         private ScriptablePairingStatus pairingStatus;
 
         [SerializeField]
-        ScriptableDeviceType deviceType;
+        DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
         ScriptableString serverIpAdress;

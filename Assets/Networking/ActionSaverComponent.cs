@@ -39,7 +39,7 @@ namespace UdeS.Promoscience.Network
                 player.ServerPlayerGameState == ClientGameState.PlayingTutorial )
             {
                 int teamId = player.ServerTeamId;
-                Teams.ScriptableTeam team = teamList.GetScriptableTeamWithId(player.ServerTeamId);
+                Teams.TeamResource team = teamList.GetScriptableTeamWithId(player.ServerTeamId);
                 string teamName = team.TeamName;
                 string teamColor = team.TeamColor.ToString();
                 int courseId = player.ServerCourseId;

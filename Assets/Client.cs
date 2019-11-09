@@ -13,31 +13,29 @@ namespace UdeS.Promoscience
     public class Client : BaseSingleton<Client>
     {
         [SerializeField]
-        private ScriptableControler controls;
+        private AvatarControllerAsset controls;
+
+        [SerializeField]
+        private Algorithms.AlgorithmRespectAsset respectController;
+
 
         //// TODO combine with this class
         //[SerializeField]
         //public ScriptableClientGameState client;
 
-        [SerializeField]
-        private ScriptableAction playerReachedTheEnd;
-
-        [SerializeField]
-        private ScriptableBoolean isDiverging;
+        //[SerializeField]
+        //private ScriptableAction playerReachedTheEnd;
         
         [SerializeField]
         private GameObject waitingForNextRoundRoom;
-
-        [SerializeField]
-        private ScriptableIntegerArray recordedSteps;
 
         // This is ridiculous..
         // TODO: remove all scriptableVariables put them in client or somewhere else..
         // Global vars are bad.. At least put them in one place!
         [SerializeField]
-        private ScriptableDeviceType deviceType;
+        private DeviceTypeManagerAsset deviceType;
 
-        public OnEvent OnAlgorithmChangedHandler;
+        public Cirrus.Event OnAlgorithmChangedHandler;
 
         public DeviceType DeviceType
         {
@@ -78,9 +76,8 @@ namespace UdeS.Promoscience
 
         public int[] ActionSteps;
         
-        public OnFloatEvent OnRespectChangedHandler;
 
-        public OnEvent OnLabyrinthChangedHandler;
+        public Cirrus.Event OnLabyrinthChangedHandler;
 
         [SerializeField]
         private Labyrinths.IData labyrinthData;
@@ -119,30 +116,6 @@ namespace UdeS.Promoscience
             }
         }
 
-        public int ErrorCount = 0;
-
-        private float respect;
-
-        public float Respect
-        {
-            get
-            {
-                return respect;
-            }
-
-            set
-            {
-                if (respect.Approximately(value))
-                    return;
-
-                respect = value;
-                if (OnRespectChangedHandler != null)
-                {
-                    OnRespectChangedHandler.Invoke(respect);
-                }
-            }
-        }
-
         public ClientGameState State
         {
             get
@@ -160,16 +133,14 @@ namespace UdeS.Promoscience
         {
             value = ClientGameState.Connecting;
 
-            ErrorCount = 0;
+            respectController.ErrorCount = 0;
 
-            respect = 1;
+            respectController.Respect = 1;
 
             clientStateChangedEvent += OnGameStateChanged;
 
-            if (playerReachedTheEnd != null)
-            {
-                playerReachedTheEnd.action += OnPlayerReachedTheEnd;
-            }
+            controls.OnPlayerReachedTheEndHandler += OnPlayerReachedTheEnd;
+            
         }
 
 
@@ -198,19 +169,19 @@ namespace UdeS.Promoscience
 
                 if (controls != null)
                 {
-                    controls.IsPlayerControlsEnabled = true;
+                    controls.IsPlayerControlsEnabled.Value = true;
                 }
             }
             else if (State == ClientGameState.ViewingLocalReplay)
             {
                 //gameCamera.ChangeState(Camera.State.Topdown);
 
-                controls.IsPlayerControlsEnabled = false;
+                controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
             }
             else if (State == ClientGameState.WaitingForNextRound)
             {
-                controls.IsPlayerControlsEnabled = false;
+                controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
 
@@ -223,15 +194,15 @@ namespace UdeS.Promoscience
 
         void OnPlayerReachedTheEnd()
         {
-            if (isDiverging != null)
+            if (respectController.IsDiverging != null)
             {
-                isDiverging.Value = false;
+                respectController.IsDiverging.Value = false;
             }
 
             if (State == ClientGameState.PlayingTutorial ||
                 State == ClientGameState.Playing)
             {
-                controls.IsPlayerControlsEnabled = false;
+                controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
                 State = ClientGameState.WaitingReplay;

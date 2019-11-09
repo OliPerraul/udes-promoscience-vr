@@ -1,28 +1,28 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿//using UnityEngine;
+//using UnityEditor;
 
-using UdeS.Promoscience.ScriptableObjects;
-using UdeS.Promoscience.Network;
-using UdeS.Promoscience;
+//using UdeS.Promoscience.ScriptableObjects;
+//using UdeS.Promoscience.Network;
+//using UdeS.Promoscience;
 
-namespace UdeS.Promoscience.Editor
-{
+//namespace UdeS.Promoscience.Editor
+//{
 
-    [CustomEditor(typeof(ScriptableInteger))]
-    public class ScriptableIntegerEditor : UnityEditor.Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
+//    [CustomEditor(typeof(GameRoundManagerAsset))]
+//    public class ScriptableIntegerEditor : UnityEditor.Editor
+//    {
+//        public override void OnInspectorGUI()
+//        {
+//            base.OnInspectorGUI();
 
-            GUI.enabled = Application.isPlaying;
+//            GUI.enabled = Application.isPlaying;
 
-            ScriptableInteger scriptableInteger = target as ScriptableInteger;
+//            GameRoundManagerAsset scriptableInteger = target as GameRoundManagerAsset;
 
-            if (GUILayout.Button("On Value Changed"))
-            {
-                scriptableInteger.OnValueChanged();
-            }
-        }
-    }
-}
+//            if (GUILayout.Button("On Value Changed"))
+//            {
+//                scriptableInteger.OnValueChanged();
+//            }
+//        }
+//    }
+//}

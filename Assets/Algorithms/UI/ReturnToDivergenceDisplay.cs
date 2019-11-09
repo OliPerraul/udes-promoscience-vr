@@ -15,22 +15,14 @@ namespace UdeS.Promoscience.UI
     public class ReturnToDivergenceDisplay : MonoBehaviour
     {
         [SerializeField]
-        ScriptableControler controls;
+        AvatarControllerAsset controls;
 
         [SerializeField]
-        ScriptableBoolean isDiverging;
-
-        [SerializeField]
-        ScriptableBoolean returnToDivergencePointAnswer;
-
-        [SerializeField]
-        ScriptableAction returnToDivergencePointRequest;
+        Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         [SerializeField]
         GameObject confirmationPanel;
 
-        [SerializeField]
-        private ScriptableBoolean grabbedMouseFocus;
 
         private bool init = false;
 
@@ -42,8 +34,8 @@ namespace UdeS.Promoscience.UI
             init = true;
 
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-            returnToDivergencePointRequest.action += OnReturnToDivergencePointRequest;
-            isDiverging.valueChangedEvent += OnIsDivergingValueChanged;
+            controls.OnReturnToDivergencePointRequestHandler += OnReturnToDivergencePointRequest;
+            algorithmRespect.IsDiverging.OnValueChangedHandler += OnIsDivergingValueChanged;
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
             OnClientStateChanged();
@@ -67,32 +59,31 @@ namespace UdeS.Promoscience.UI
 
         void OnControlsEnableValueChanged()
         {
-            if (!controls.IsControlsEnabled)
+            if (!controls.IsControlsEnabled.Value)
             {
-                OnIsDivergingValueChanged();
+                OnIsDivergingValueChanged(algorithmRespect.IsDiverging.Value);
             }
         }
 
         void OnReturnToDivergencePointRequest()
         {
-            if (isDiverging.Value)
+            if (algorithmRespect.IsDiverging.Value)
             {
-                returnToDivergencePointAnswer.Value = true;
+                controls.ReturnToDivergencePointAnswer.Value = true;
             }
             else
             {
-                returnToDivergencePointAnswer.Value = false;
+                controls.ReturnToDivergencePointAnswer.Value = false;
             }
         }
 
-        void OnIsDivergingValueChanged()
+        void OnIsDivergingValueChanged(bool isdiv)
         {
             if (confirmationPanel.activeSelf)
             {
-                grabbedMouseFocus.Value = true;
                 confirmationPanel.SetActive(false);
-                controls.IsPlayerControlsEnabled = true;
-                returnToDivergencePointAnswer.Value = false;
+                controls.IsPlayerControlsEnabled.Value = true;
+                controls.ReturnToDivergencePointAnswer.Value = false;
             }
         }
     }
