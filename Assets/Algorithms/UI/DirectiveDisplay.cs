@@ -107,6 +107,5 @@ namespace UdeS.Promoscience.UI
                     directiveManager.GoDirectiveSprite :
                     directiveManager.StopDirectiveSprite;
         }
-
     }
 }

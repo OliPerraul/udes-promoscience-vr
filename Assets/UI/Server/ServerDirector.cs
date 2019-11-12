@@ -63,7 +63,6 @@ namespace UdeS.Promoscience.UI.Server
 
         void Awake()
         {
-
             Promoscience.Server.Instance.gameStateChangedEvent += OnValueChanged;
 
             OnValueChanged();

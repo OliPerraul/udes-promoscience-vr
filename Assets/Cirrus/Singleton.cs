@@ -7,7 +7,14 @@ namespace Cirrus
 
     public class BaseSingleton<T> : Singleton where T : Singleton
     {
-        private static T _instance;
+        protected static T _instance;
+
+        public bool Exists
+        {
+            get {
+                return _instance != null;
+            }
+        }
 
         public static T Instance
         {

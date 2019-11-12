@@ -30,6 +30,31 @@ namespace UdeS.Promoscience.Labyrinths
         public GameObject FloorTile3;
 
         [SerializeField]
+        public GameObject FloorTile4;
+
+        [SerializeField]
+        public GameObject FloorTile5;
+
+        [SerializeField]
+        public GameObject FloorTile6;
+
+        [SerializeField]
+        public GameObject FloorTile7;
+
+        [SerializeField]
+        public GameObject FloorTile8;
+
+        [SerializeField]
+        public GameObject FloorTile9;
+
+        [SerializeField]
+        public GameObject FloorTile10;
+
+        [SerializeField]
+        public GameObject FloorTile11;
+
+
+        [SerializeField]
         public GameObject Corner1;
 
         [SerializeField]

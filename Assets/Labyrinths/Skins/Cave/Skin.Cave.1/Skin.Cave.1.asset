@@ -14,14 +14,24 @@ MonoBehaviour:
   FloorStart: {fileID: 1860037174321772, guid: 4346afcafe4794a42bf39e6120c3e0fd, type: 2}
   FloorEnd: {fileID: 1860037174321772, guid: 715293093d544914bb4888a81b6343c9, type: 2}
   FloorTile1: {fileID: 1860037174321772, guid: 0a914259653a35648b92d480bcb10130, type: 2}
-  FloorTile2: {fileID: 1860037174321772, guid: 0a914259653a35648b92d480bcb10130, type: 2}
-  FloorTile3: {fileID: 1860037174321772, guid: 0a914259653a35648b92d480bcb10130, type: 2}
-  Corner1: {fileID: 1245299613329436, guid: de16e552bf4498743b66d89695515dd1, type: 2}
-  Corner2: {fileID: 1245299613329436, guid: de16e552bf4498743b66d89695515dd1, type: 2}
-  Corner3: {fileID: 1245299613329436, guid: de16e552bf4498743b66d89695515dd1, type: 2}
+  FloorTile2: {fileID: 1860037174321772, guid: 3f6f8fdc6e12d4450a7afab7157298a4, type: 2}
+  FloorTile3: {fileID: 1860037174321772, guid: d63e2cedd9650994f9f0ce7e61e8dfeb, type: 2}
+  FloorTile4: {fileID: 1860037174321772, guid: ca42ac1ea3edea34cac7decea73da798, type: 2}
+  FloorTile5: {fileID: 1860037174321772, guid: 7148dbf4cb92b6b4bba5cbd43032bb5f, type: 2}
+  FloorTile6: {fileID: 1860037174321772, guid: 9baae71e590dbd84ab0fa29244c813f8, type: 2}
+  FloorTile7: {fileID: 1860037174321772, guid: 952e2b21f3046b74b9b06cab1fe49976, type: 2}
+  FloorTile8: {fileID: 1860037174321772, guid: 2df3327b15ee86d489c202487eb00137, type: 2}
+  FloorTile9: {fileID: 1860037174321772, guid: 7fa0d74f7949ac74f9f970d77465aa94, type: 2}
+  FloorTile10: {fileID: 1860037174321772, guid: c31a6e047bedb564d8bf35bce840df3f,
+    type: 2}
+  FloorTile11: {fileID: 1860037174321772, guid: 4a941f9b7d3178d48bd0345235ca984a,
+    type: 2}
+  Corner1: {fileID: 1367354284668338, guid: a6489cadbd20447489f6d55fa44a4011, type: 2}
+  Corner2: {fileID: 1367354284668338, guid: a6489cadbd20447489f6d55fa44a4011, type: 2}
+  Corner3: {fileID: 1367354284668338, guid: a6489cadbd20447489f6d55fa44a4011, type: 2}
   Horizontal1: {fileID: 1861996732215786, guid: 5249ed195167aae47aee26e09d639725,
     type: 2}
-  Horizontal2: {fileID: 1861996732215786, guid: 5249ed195167aae47aee26e09d639725,
+  Horizontal2: {fileID: 1861996732215786, guid: 0e4f07acccc75624b948b2a4a16a7e6a,
     type: 2}
   Horizontal3: {fileID: 1861996732215786, guid: 5249ed195167aae47aee26e09d639725,
     type: 2}

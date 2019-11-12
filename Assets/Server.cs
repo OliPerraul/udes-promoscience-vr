@@ -3,8 +3,10 @@ using System;
 using System.Collections.Generic;
 using UdeS.Promoscience.Labyrinths;
 using UdeS.Promoscience.Network;
+using UnityEngine.SceneManagement;
 
 using UnityEngine;
+using Cirrus;
 
 namespace UdeS.Promoscience
 {
@@ -62,8 +64,14 @@ namespace UdeS.Promoscience
         }
 
         public void Awake()
-        {          
-            DontDestroyOnLoad(gameObject);
+        {
+            //if (Exists)
+            //{
+            //    DestroyImmediate(gameObject);
+            //    return;
+            //}
+
+            //DontDestroyOnLoad(gameObject);
 
             // When server starts set all previous course to innactive
             var sessionCourses = SQLiteUtilities.GetSessionCourses();
