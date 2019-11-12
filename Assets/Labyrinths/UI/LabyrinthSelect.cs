@@ -45,13 +45,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
         private UnityEngine.UI.Button buttonExit;
 
 
-        private bool init = false;
-
-        public virtual void OnEnable()
+        
+        public virtual void Awake()
         {
-            if (init) return;
-
-            init = true;
 
             labyrinthButtons = new List<LabyrinthButton>();
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using Cirrus.Extensions;
 using Cirrus;
+using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Algorithms
 {
@@ -9,9 +10,13 @@ namespace UdeS.Promoscience.Algorithms
     {
         public FloatEvent OnRespectChangedHandler;
 
-        public MonitoredValue<bool> IsDiverging = new MonitoredValue<bool>();
+        public ObservableValue<bool> IsCorrectingEnabled = new Cirrus.ObservableValue<bool>();
 
-        //public MonitoredValue<bool> ReturnToDivergencePointAnswer = new MonitoredValue<bool>();
+        public ObservableValue<Tile> WrongTile = new ObservableValue<Tile>();
+
+        public List<Tile> WrongColorTilesWhenDiverging = new List<Tile>();
+
+        public ObservableValue<bool> IsDiverging = new ObservableValue<bool>();
 
         public Cirrus.Event OnReturnToDivergencePointRequestHandler;
 

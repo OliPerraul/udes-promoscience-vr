@@ -10,9 +10,12 @@ using UdeS.Promoscience;
 namespace UdeS.Promoscience.UI
 {
     public class DirectiveDisplay : MonoBehaviour
-    {
+    { 
         [SerializeField]
-        DirectiveManagerAsset directive;
+        private Algorithms.AlgorithmRespectAsset algorithmRespect;
+
+        [SerializeField]
+        private DirectiveManagerAsset directiveManager;
 
         private Image directiveImage;
 
@@ -23,15 +26,12 @@ namespace UdeS.Promoscience.UI
 
         float hideTimer;
 
-        private bool init = false;
-
-        void OnEnable()
+        void Awake()
         {
-            if (init) return;
 
-            init = true;
+            directiveManager.CurrentDirective.OnValueChangedHandler += OnNewDirective;
+            algorithmRespect.IsCorrectingEnabled.OnValueChangedHandler += OnCorrectingEnabled;
 
-            directive.Directive.OnValueChangedHandler += OnNewDirective;
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
             foreach (var img in images)
@@ -41,7 +41,6 @@ namespace UdeS.Promoscience.UI
 
             if(images.Length < 0)
             directiveImage = images[0];
-
         }
 
         public void OnValidate()
@@ -90,9 +89,23 @@ namespace UdeS.Promoscience.UI
                 directiveImage.gameObject.SetActive(false);
 
             directiveImage = images[(int)directive];
- 
+
+            if (directive == Directive.Stop)
+                directiveImage.sprite =
+                    directiveImage.sprite == directiveManager.StopDirectiveSprite ?
+                        directiveManager.GoDirectiveSprite :
+                        directiveManager.StopDirectiveSprite;
+
             hideTimer = 0;
             directiveImage.gameObject.SetActive(true);
+        }
+
+        public void OnCorrectingEnabled(bool enabled)
+        {
+            images[(int)Directive.Stop].sprite =
+                enabled ?
+                    directiveManager.GoDirectiveSprite :
+                    directiveManager.StopDirectiveSprite;
         }
 
     }

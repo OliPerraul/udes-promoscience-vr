@@ -16,17 +16,35 @@ namespace UdeS.Promoscience.Algorithms
         DirectiveManagerAsset directiveManager;
 
         [SerializeField]
+        AlgorithmRespectAsset algorithmRespect;
+
+
+        [SerializeField]
         private UnityEngine.UI.Button[] buttons;
 
-        private void Start()
+        private void Awake()
         {
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
+            algorithmRespect.IsCorrectingEnabled.OnValueChangedHandler += OnCorrectingEnabled;
 
             for(int i = 0; i < buttons.Length; i++)
             {
                 int index = i;
-                buttons[i].onClick.AddListener(() => directiveManager.Directive.Set((Directive)index));
+
+                buttons[i].onClick.AddListener(() => {
+                    directiveManager.Set((Directive)index);
+                }               
+                );
             }
+        }
+
+        public void OnCorrectingEnabled(bool enabled)
+        {
+            buttons[(int)Directive.Stop].image.sprite =
+                enabled ?
+                    directiveManager.GoDirectiveSprite :
+                    directiveManager.StopDirectiveSprite;
         }
 
         public void OnValidate()

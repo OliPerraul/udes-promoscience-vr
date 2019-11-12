@@ -25,18 +25,10 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject redRing;
 
-        private bool init = false;
-
-        void OnEnable()
+        void Awake()
         {
-            if (init) return;
-
-            init = true;
-
             controls.PaintingColor.OnValueChangedHandler += OnPaintingColorValueChanged;
-
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
-
             OnClientStateChanged();
         }
 

@@ -54,18 +54,15 @@ namespace UdeS.Promoscience.UI.Server
         //[SerializeField]
         //private ScriptableServerGameInformation serverGameInformation;
 
-        private bool init = false;
+        
 
         private void OnValidate()
         {
             serverGameStateSteps.ForEach(x => x.OnValidate());
         }
 
-        void OnEnable()
+        void Awake()
         {
-            if (init) return;
-
-            init = true;
 
             Promoscience.Server.Instance.gameStateChangedEvent += OnValueChanged;
 

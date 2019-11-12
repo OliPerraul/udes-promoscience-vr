@@ -11,4 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad97094cc477f346a429fcde9aad16d, type: 3}
   m_Name: DirectiveManager
   m_EditorClassIdentifier: 
-  value: 0
+  StopDirectiveSprite: {fileID: 21300000, guid: defe3d207698b8f48b0052bacf25c984,
+    type: 3}
+  GoDirectiveSprite: {fileID: 21300000, guid: dcc4f16f7ea2a2a43baa486853cbb525, type: 3}
+  algorithmRespect: {fileID: 11400000, guid: 6d58c680a021b5e47830ce98afc82c18, type: 2}
+  gameActionManager: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}

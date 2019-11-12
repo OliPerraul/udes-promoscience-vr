@@ -26,19 +26,12 @@ namespace UdeS.Promoscience.UI
         float lerpSpeed = 1.0f;
         float currentValue = 1.0f;
 
-        private bool init = false;
 
         public void Awake()
         {
             if (transform.childCount != 0)
                 transform.GetChild(0).gameObject.SetActive(false);
-        }
 
-        void OnEnable()
-        {
-            if (init) return;
-
-            init = true;
 
             algorithmRespect.OnRespectChangedHandler += OnAlgorithmRespectChanged;
 
@@ -46,6 +39,7 @@ namespace UdeS.Promoscience.UI
 
             OnClientStateChanged();
         }
+
 
         public void OnClientStateChanged()
         {

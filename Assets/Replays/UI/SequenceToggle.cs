@@ -23,13 +23,10 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private Dictionary<int, SequenceToggleItem> items;
         
-        private bool init = false;
         
-        public void OnEnable()
+        
+        public void Awake()
         {
-            if (init) return;
-
-            init = true;
                         
             items = new Dictionary<int, SequenceToggleItem>();
             replayOptions.OnActionHandler += OnReplayAction;

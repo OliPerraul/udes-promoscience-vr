@@ -26,15 +26,9 @@ namespace UdeS.Promoscience.Replays.UI
 
         private Course course;
 
-        private bool init = false;
-
+        
         public void OnEnable()
         {
-            if (init)
-                return;
-
-            init = true;
-
             replayOptions.OnCourseSelectedHandler += OnCourseSelected;
         }
 

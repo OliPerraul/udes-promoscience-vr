@@ -179,6 +179,8 @@ namespace UdeS.Promoscience
 
     public static class Utils
     {
+        public const int NumColors = 3;
+
         public static Vector2Int GetMoveDestination(Vector2Int lpos, GameAction action)
         {
             // From ReturnToDivergent, EndAction, CompleteRound
@@ -189,6 +191,11 @@ namespace UdeS.Promoscience
             lpos.x += action == GameAction.MoveLeft ? -1 : 0;
             lpos.x += action == GameAction.MoveRight ? 1 : 0;
             return lpos;
+        }
+
+        public static Vector2Int GetMoveDestination(Vector2Int lpos, int action)
+        {
+            return GetMoveDestination(lpos, (Direction)action);
         }
 
         public static Vector2Int GetMoveDestination(Vector2Int lpos, Direction action)

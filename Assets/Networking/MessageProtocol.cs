@@ -45,6 +45,25 @@ namespace UdeS.Promoscience.Network
         public Promoscience.Algorithms.Id algorithm;
     }
 
+
+    public class CorrectingEnabledMessage : MessageBase
+    {
+        static CustomMsgType type = CustomMsgType.AlgorithmRespect;
+
+        public static short GetCustomMsgType()
+        {
+            return (short)type;
+        }
+
+        public short GetMsgType()
+        {
+            return (short)type;
+        }
+
+
+        public bool enabled;
+    }
+
     public class AlgorithmRespectMessage : MessageBase
     {
         static CustomMsgType type = CustomMsgType.AlgorithmRespect;

@@ -46,15 +46,8 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private GameObject overlay;
 
-        protected bool init = false;
-
         public virtual void OnEnable()
         {
-            if (init)
-                return;
-
-            init = true;
-
             openButton.onClick.AddListener(OnOpenClicked);
             exitButton.onClick.AddListener(OnExitClicked);
             overlayButton.onClick.AddListener(OnOverlayClicked);

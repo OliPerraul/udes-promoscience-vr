@@ -39,13 +39,9 @@ namespace UdeS.Promoscience.Algorithms
 
         float raycastRange = 100 * Labyrinths.Utils.TILE_SIZE;
 
-        private bool init = false;
 
-        void OnEnable()
+        void Awake()
         {
-            if (init) return;
-
-            init = true;
 
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 

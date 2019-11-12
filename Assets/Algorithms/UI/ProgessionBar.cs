@@ -15,19 +15,11 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject progress;
 
-        private bool init = false;
 
         public void Awake()
         {
             if (transform.childCount != 0)
                 transform.GetChild(0).gameObject.SetActive(false);
-        }
-
-        void OnEnable()
-        {
-            if (init) return;
-
-            init = true;
 
             algorithmRespect.OnRespectChangedHandler += OnValueChanged;
         }

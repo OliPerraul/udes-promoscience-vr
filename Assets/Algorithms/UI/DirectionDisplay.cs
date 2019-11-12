@@ -17,14 +17,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         GameObject directionDisplayer;
 
-        private bool init = false;
-
-        void OnEnable()
+        void Awake()
         {
-            if (init) return;
-
-            init = true;
-
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
             OnClientStateChanged();

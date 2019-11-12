@@ -21,7 +21,7 @@ namespace Cirrus
 
 
     [Serializable]
-    public class MonitoredValue<T>
+    public class ObservableValue<T>
     {
         public Event<T> OnValueChangedHandler;
 
@@ -54,13 +54,4 @@ namespace Cirrus
                     OnValueChangedHandler.Invoke(value);
         }
     }
-
-    [Serializable]
-    public class NotifyChangeInt : MonitoredValue<int> { }
-
-    [Serializable]
-    public class NotifyChangeBool : MonitoredValue<bool> { }
-
-    [Serializable]
-    public class NotifyChangeString : MonitoredValue<string> { }
 }

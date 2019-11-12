@@ -7,8 +7,8 @@ namespace UdeS.Promoscience
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Int", order = 1)]
     public class GameRoundManagerAsset : ScriptableObject
     {
-        public Cirrus.MonitoredValue<int> Round = new Cirrus.MonitoredValue<int>();
+        public Cirrus.ObservableValue<int> Round = new Cirrus.ObservableValue<int>();
 
-        public Cirrus.MonitoredValue<bool> IsRoundCompleted = new Cirrus.MonitoredValue<bool>();
+        public Cirrus.ObservableValue<bool> IsRoundCompleted = new Cirrus.ObservableValue<bool>();
     }
 }

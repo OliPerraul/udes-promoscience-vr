@@ -14,7 +14,6 @@ namespace UdeS.Promoscience
         public Transform AvatarTransform;
 
         [SerializeField]
-        public Transform DirectionTransform;
-   
+        public Transform DirectionTransform;   
     }
 }

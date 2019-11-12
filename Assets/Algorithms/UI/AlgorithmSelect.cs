@@ -13,14 +13,8 @@ namespace UdeS.Promoscience.Algorithms.UI
 
         private Algorithm[] algorithms;
 
-        private bool init = false;
-
-        public void OnEnable()
+        public void Awake()
         {
-            if (init) return;
-
-            init = true;
-
             dropDown.ClearOptions();
 
             AddOption("(*) " + randomString.Value);

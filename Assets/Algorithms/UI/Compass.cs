@@ -24,15 +24,8 @@ namespace UdeS.Promoscience.UI
         readonly int[] xByDirection = { 0, 1, 0, -1 };
         readonly int[] yByDirection = { -1, 0, 1, 0 };
 
-        private bool init = false;
-
-        void OnEnable()
+        void Awake()
         {
-            if (init)
-                return;
-
-            init = true;
-
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
             startRotation = indicator.transform.rotation;

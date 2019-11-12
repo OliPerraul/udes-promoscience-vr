@@ -63,7 +63,7 @@ namespace UdeS.Promoscience.Algorithms
 
         public virtual List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth) { return null; }
 
-        public virtual Algorithms.Id Id { get { return (Algorithms.Id) 0; } }
+        public virtual Id Id { get { return 0; } }
 
 
 

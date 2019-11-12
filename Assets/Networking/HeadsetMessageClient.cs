@@ -99,7 +99,7 @@ namespace UdeS.Promoscience.Network
 
         void OnConnect(NetworkMessage netMsg)
         {
-            directive.Directive.OnValueChangedHandler += SendDirective;
+            directive.CurrentDirective.OnValueChangedHandler += SendDirective;
             algorithmRespect.OnReturnToDivergencePointRequestHandler += SendReturnToDivergencePointRequest;
 
             Client.Instance.clientStateChangedEvent += OnGameStateChanged;
@@ -112,7 +112,7 @@ namespace UdeS.Promoscience.Network
             isConnectedToPair.Value = false;
 
             Client.Instance.clientStateChangedEvent -= OnGameStateChanged;
-            directive.Directive.OnValueChangedHandler -= SendDirective;
+            directive.CurrentDirective.OnValueChangedHandler -= SendDirective;
             algorithmRespect.OnReturnToDivergencePointRequestHandler -= SendReturnToDivergencePointRequest;
 
             client.Connect(pairedIpAdress.Value, serverPort);

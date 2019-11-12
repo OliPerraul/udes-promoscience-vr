@@ -11,9 +11,6 @@ namespace UdeS.Promoscience
 
     public class TabletAvatarController : MonoBehaviour
     {
-        //[SerializeField]
-        //private ScriptableClientGameState client;
-
         [SerializeField]
         AvatarControllerAsset controls;
 
@@ -22,18 +19,6 @@ namespace UdeS.Promoscience
 
         [SerializeField]
         ScriptableBoolean isConnectedToServer;
-
-        //[SerializeField]
-        //ScriptableVector3 playerPosition;
-
-        //[SerializeField]
-        //ScriptableQuaternion playerRotation;
-
-        //[SerializeField]
-        //Labyrinths.ScriptableTile playerPaintTile;
-
-        //[SerializeField]
-        //Labyrinths.ScriptableTileArray playerTilesToPaint;
 
         [SerializeField]
         Transform cameraTransform;
@@ -55,7 +40,6 @@ namespace UdeS.Promoscience
         Quaternion lastRotation;
         Quaternion targetRotation;
         Queue<Quaternion> rotationQueue = new Queue<Quaternion>();
-
 
         void Start()
         {

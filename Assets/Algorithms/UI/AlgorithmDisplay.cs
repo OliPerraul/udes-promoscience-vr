@@ -35,14 +35,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private GameObject descriptionDisplay;
 
-        private bool init = false;
-
-        void OnEnable()
+        void Awake()
         {
-            if (init) return;
-
-            init = true;
-
             Client.Instance.OnAlgorithmChangedHandler += OnAlgorithmValueChanged;
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 

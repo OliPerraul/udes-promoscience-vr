@@ -7,6 +7,8 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 
+using Cirrus.Extensions;
+
 namespace UdeS.Promoscience
 {
     // FOR REAL WHY IS THIS CHARACTER CONTROLLER SO GODDAM COMPLICATED
@@ -18,7 +20,7 @@ namespace UdeS.Promoscience
         private float angleLookatTurnThreshold = 65;
 
         [SerializeField]
-        private DirectiveManagerAsset directive;
+        private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         [SerializeField]
         private GameActionManagerAsset gameAction;
@@ -65,6 +67,8 @@ namespace UdeS.Promoscience
 
         private Vector2Int lastLabyrinthPosition;
 
+        private Vector2Int labyrinthPosition;
+
         private Vector3 fromPosition;
 
         private Vector3 targetPosition;
@@ -85,20 +89,11 @@ namespace UdeS.Promoscience
 
             controls.resetPositionAndRotation += OnResetPositionAndRotation;
 
-            directive.Directive.OnValueChangedHandler += OnDirective;
-
             isConnectedToPair.valueChangedEvent += OnConnectOrDisconnect;
 
             isConnectedToServer.valueChangedEvent += OnConnectOrDisconnect;
 
             controls.PositionRotationAndTiles.OnValueChangedHandler += OnPlayerPositionRotationAndTiles;
-
-            controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
-        }
-
-        public void OnControlsEnableValueChanged()
-        {
-
         }
 
         public void RequestTurnLeft(bool turnAvatar)
@@ -169,6 +164,47 @@ namespace UdeS.Promoscience
             }
         }
 
+        // Is movement allowed when correcting our errors
+        //public bool IsMovementAllowed
+        //{
+        //    get
+        //    {                
+        //        // If correcting is enabled, only allow to move to correct mystakes
+        //        if (algorithmRespect.IsCorrectingEnabled.Value)
+        //        {
+        //            if (algorithmRespect.IsDiverging.Value)
+        //            {
+        //                if (algorithmRespect.WrongColorTilesWhenDiverging.Count == 0)
+        //                {
+        //                    if (algorithmRespect.WrongTile.Value.Position == Utils.GetMoveDestination(labyrinthPosition, controls.ForwardDirection.Value) &&
+        //                        algorithmRespect.WrongTile.Value.Color == controls.PaintingColor.Value)
+        //                    {
+        //                        return true;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    var position = algorithmRespect.WrongColorTilesWhenDiverging.Count < 2 ?
+        //                        lastLabyrinthPosition :
+        //                        algorithmRespect.WrongColorTilesWhenDiverging[algorithmRespect.WrongColorTilesWhenDiverging.Count - 2].Position;
+
+        //                    if (position == Utils.GetMoveDestination(labyrinthPosition, controls.ForwardDirection.Value) &&
+        //                        algorithmRespect.WrongColorTilesWhenDiverging[algorithmRespect.WrongColorTilesWhenDiverging.Count - 1].Color ==
+        //                        controls.PaintingColor.Value)
+        //                    {
+        //                        return true;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return true;
+        //        }
+
+        //        return false;
+        //    }
+        //}
 
         public void RequestMoveForward()
         {
@@ -179,7 +215,7 @@ namespace UdeS.Promoscience
                     currentDirection,
                     angleLookatTurnThreshold))
             {
-                RequestMovementInDirection(controls.ForwardDirection.Value);
+                 RequestMovementInDirection(controls.ForwardDirection.Value);    
             }
             else
             {
@@ -244,16 +280,8 @@ namespace UdeS.Promoscience
 
                 if (cameraRig.PrimaryIndexTriggerUp)
                 {
-                    if (controls.PaintingColor.Value == TileColor.Yellow)
-                    {
-                        controls.PaintingColor.Value = TileColor.Red;
-                    }
-                    else if (primaryIndexTriggerHoldTime <= 1)
-                    {
-                        controls.PaintingColor.Value = TileColor.Yellow;
-                        PaintCurrentPositionTile(true);
-                    }
-
+                    controls.PaintingColor.Value = (TileColor)((int)controls.PaintingColor.Value + 1).Mod(Utils.NumColors);
+                    PaintCurrentPositionTile(true);
                     isPrimaryIndexTriggerHold = false;
                 }
 
@@ -299,7 +327,7 @@ namespace UdeS.Promoscience
                             isChainingMovement = false;
                             lerpValue = lerpValue - 1;
 
-                            RequestMovementInDirection(controls.ForwardDirection.Value);
+                            RequestMoveForward();
 
                             cameraRig.Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                         }
@@ -392,20 +420,24 @@ namespace UdeS.Promoscience
                     }
                 }
 
-                Vector2Int labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+                Vector2Int labyrinthPosition = 
+                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
+                        cameraRig.Transform.position.x, 
+                        cameraRig.Transform.position.z);
 
-                if (labyrinthPosition != lastLabyrinthPosition)
+                if (labyrinthPosition != this.labyrinthPosition)
                 {
                     if (controls.PaintingColor.Value == TileColor.Red)
                     {
-                        PaintTile(lastLabyrinthPosition, TileColor.Red, true);
+                        PaintTile(this.labyrinthPosition, TileColor.Red, true);
                     }
 
-                    lastLabyrinthPosition = labyrinthPosition;
+                    this.lastLabyrinthPosition = this.labyrinthPosition;
+                    this.labyrinthPosition = labyrinthPosition;
 
                     // TODO: encapsulate
                     if(controls.OnLabyrinthPositionChangedHandler != null)
-                    controls.OnLabyrinthPositionChangedHandler.Invoke();
+                        controls.OnLabyrinthPositionChangedHandler.Invoke();
                 }
 
                 if (cameraRig.AvatarTransform.position != lastPosition)
@@ -444,7 +476,7 @@ namespace UdeS.Promoscience
                 fromPosition = cameraRig.Transform.position;
 
                 Vector2Int lpos = Utils.GetMoveDestination(
-                    lastLabyrinthPosition, 
+                    labyrinthPosition, 
                     (Direction)controls.ForwardDirection.Value);
 
                 Vector3 pos = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(lpos);
@@ -485,14 +517,56 @@ namespace UdeS.Promoscience
             gameAction.SetAction(GameAction.TurnRight);
         }
 
+        bool CheckIfMovementIsValidWhileCorrecting(int direction, Vector2Int position)
+        {
+            // If correcting is enabled, only allow to move to correct mystakes
+            if (algorithmRespect.IsCorrectingEnabled.Value)
+            {
+                if (algorithmRespect.IsDiverging.Value)
+                {
+                    if (algorithmRespect.WrongColorTilesWhenDiverging.Count == 0)
+                    {
+                        if (algorithmRespect.WrongTile.Value.Position == Utils.GetMoveDestination(position, direction) &&
+                            algorithmRespect.WrongTile.Value.Color == controls.PaintingColor.Value)
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        var returnPosition = algorithmRespect.WrongColorTilesWhenDiverging.Count < 2 ?
+                            lastLabyrinthPosition :
+                            algorithmRespect.WrongColorTilesWhenDiverging[algorithmRespect.WrongColorTilesWhenDiverging.Count - 2].Position;
+
+                        if (returnPosition == Utils.GetMoveDestination(position, direction) &&
+                            algorithmRespect.WrongColorTilesWhenDiverging[algorithmRespect.WrongColorTilesWhenDiverging.Count - 1].Color ==
+                            controls.PaintingColor.Value)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+
         bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
         {
             Vector2Int labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(position.x, position.z);
 
-            labyrinthPosition.x += xByDirection[direction];
-            labyrinthPosition.y += yByDirection[direction];
+            if (CheckIfMovementIsValidWhileCorrecting(direction, labyrinthPosition))
+            {
+                labyrinthPosition = Utils.GetMoveDestination(labyrinthPosition, direction);
+                return Client.Instance.Labyrinth.GetIsTileWalkable(labyrinthPosition);
+            }
 
-            return Client.Instance.Labyrinth.GetIsTileWalkable(labyrinthPosition);
+            return false;
         }
 
         void PaintTile(Vector2Int position, TileColor color, bool saveAction)
@@ -540,15 +614,20 @@ namespace UdeS.Promoscience
         void PaintTile(int positionX, int positionY, TileColor color, bool saveAction)
         {
             Vector2Int position = new Vector2Int(positionX, positionY);
-
             PaintTile(position, color, saveAction);
         }
 
         void PaintCurrentPositionTile(bool saveAction)
         {
-            Vector2Int position = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+            Vector2Int position = Client.Instance.Labyrinth
+                .GetWorldPositionInLabyrinthPosition(
+                cameraRig.Transform.position.x, 
+                cameraRig.Transform.position.z);
 
-            PaintTile(position, controls.PaintingColor.Value, saveAction);
+            PaintTile(
+                position, 
+                controls.PaintingColor.Value, 
+                saveAction);
         }
 
         void MovementInDirectionAction(int direction)
@@ -573,38 +652,7 @@ namespace UdeS.Promoscience
 
         void OnConnectOrDisconnect()
         {
-            if (isConnectedToPair.Value && isConnectedToServer.Value)
-            {
-                controls.IsControlsEnabled.Value = true;
-            }
-            else
-            {
-                controls.IsControlsEnabled.Value = false;
-            }
-        }
-
-        void OnDirective(Directive directive)
-        {
-            if (directive == Directive.MoveForward)
-            {
-                gameAction.SetAction(GameAction.ReceivedDirectiveMoveForward);
-            }
-            else if (directive == Directive.Stop)
-            {
-                gameAction.SetAction(GameAction.ReceivedDirectiveStop);
-            }
-            else if (directive == Directive.TurnLeft)
-            {
-                gameAction.SetAction(GameAction.ReceivedDirectiveTurnLeft);
-            }
-            else if (directive == Directive.TurnRight)
-            {
-                gameAction.SetAction(GameAction.ReceivedDirectiveTurnRight);
-            }
-            else if (directive == Directive.UTurn)
-            {
-                gameAction.SetAction(GameAction.ReceivedDirectiveUturn);
-            }
+            controls.IsControlsEnabled.Value = isConnectedToPair.Value && isConnectedToServer.Value;
         }
 
         void OnStopAllMovement()
@@ -633,7 +681,7 @@ namespace UdeS.Promoscience
             }
 
             if(Client.Instance.Labyrinth != null)
-            lastLabyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(0, 0);
+            labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(0, 0);
 
             Quaternion rotation = new Quaternion(0, 0, 0, 0);
 
@@ -653,7 +701,6 @@ namespace UdeS.Promoscience
             // TODO put somewhere else
             cameraRig.AvatarTransform.rotation = rotation;
             cameraRig.DirectionTransform.rotation = rotation;
-
             controls.PaintingColor.Value = TileColor.Yellow;
         }
 
@@ -674,9 +721,10 @@ namespace UdeS.Promoscience
                 PaintTile(tiles[i].x, tiles[i].y, tiles[i].Color, false);
             }
 
-            lastLabyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
-            if(controls.OnLabyrinthPositionChangedHandler != null)
-            controls.OnLabyrinthPositionChangedHandler.Invoke();
+            labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+
+            if (controls.OnLabyrinthPositionChangedHandler != null)
+                controls.OnLabyrinthPositionChangedHandler.Invoke();
 
             controls.PaintingColor.Value = TileColor.Yellow;
 

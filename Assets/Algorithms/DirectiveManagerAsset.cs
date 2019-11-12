@@ -12,13 +12,61 @@ namespace UdeS.Promoscience.ScriptableObjects
     public class DirectiveManagerAsset : ScriptableObject
     {
         [SerializeField]
-        public Cirrus.MonitoredValue<Directive> Directive = new Cirrus.MonitoredValue<Directive>();
+        public Sprite StopDirectiveSprite;
+
+        [SerializeField]
+        public Sprite GoDirectiveSprite;
+
+        [SerializeField]
+        private Algorithms.AlgorithmRespectAsset algorithmRespect;
+
+        [SerializeField]
+        private GameActionManagerAsset gameActionManager;
+
+        [SerializeField]
+        public Cirrus.ObservableValue<Directive> CurrentDirective = new Cirrus.ObservableValue<Directive>();
+
+        public void OnEnable()
+        {
+            CurrentDirective.OnValueChangedHandler += OnDirective;
+        }
+
+        public void OnDisable()
+        {
+            CurrentDirective.OnValueChangedHandler -= OnDirective;
+        }
 
         public void Set(Directive directive)
         {
-            Directive.Value = directive;
+            CurrentDirective.Set(directive, forceNotification: true);
         }
 
+        void OnDirective(Directive directive)
+        {
+            switch (directive)
+            {
+                case Directive.MoveForward:
+                    gameActionManager.SetAction(GameAction.ReceivedDirectiveMoveForward);
+                    break;
+
+                case Directive.Stop:
+                    gameActionManager.SetAction(GameAction.ReceivedDirectiveStop);
+                    algorithmRespect.IsCorrectingEnabled.Value = !algorithmRespect.IsCorrectingEnabled.Value;
+                    break;
+
+                case Directive.TurnLeft:
+                    gameActionManager.SetAction(GameAction.ReceivedDirectiveTurnLeft);
+                    break;
+
+                case Directive.TurnRight:
+                    gameActionManager.SetAction(GameAction.ReceivedDirectiveTurnRight);
+                    break;
+
+                case Directive.UTurn:
+                    gameActionManager.SetAction(GameAction.ReceivedDirectiveUturn);
+                    break;
+            }
+        }
     }
 }
 
