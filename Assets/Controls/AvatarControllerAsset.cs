@@ -7,20 +7,13 @@ namespace UdeS.Promoscience.ScriptableObjects
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Avatar Controler", order = 1)]
     public class AvatarControllerAsset : ScriptableObject
     {
-        public Cirrus.ObservableValue<bool> IsPlayerControlsEnabled = new Cirrus.ObservableValue<bool>();
+        public Cirrus.ObservableValue<bool> IsPlayerControlsEnabled = new Cirrus.ObservableValue<bool>(true);
 
-        public bool IsPlayerControlEnabled
-        {
-            get {
-                return IsPlayerControlsEnabled.Value;
-            }
+        public Cirrus.ObservableValue<bool> IsThirdPersonEnabled = new Cirrus.ObservableValue<bool>(false);
 
-            set {
-                IsPlayerControlsEnabled.Value = value;
-            }
-        }
+        public Cirrus.ObservableValue<bool> IsControlsEnabled = new Cirrus.ObservableValue<bool>(true);
 
-        public Cirrus.ObservableValue<bool> IsControlsEnabled = new Cirrus.ObservableValue<bool>();
+        public Cirrus.ObservableValue<bool> IsMouseFocusGrabbed = new Cirrus.ObservableValue<bool>(false);
 
         public Cirrus.ObservableValue<int[]> RecordedSteps = new Cirrus.ObservableValue<int[]>();
 

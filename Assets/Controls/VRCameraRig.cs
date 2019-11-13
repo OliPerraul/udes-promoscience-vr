@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,11 @@ namespace UdeS.Promoscience
         public Transform AvatarTransform;
 
         [SerializeField]
-        public Transform DirectionTransform;   
+        public Transform DirectionTransform;
+
+        public void EnableThirdPerson(bool enable)
+        {
+           
+        }
     }
 }

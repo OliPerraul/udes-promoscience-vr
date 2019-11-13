@@ -360,7 +360,8 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        GameObject[,] labyrinthTiles;
+        [SerializeField]
+        private GameObject[,] labyrinthTiles;
 
         int[,] labyrinth;
 
@@ -573,22 +574,30 @@ namespace UdeS.Promoscience.Labyrinths
         public TileColor GetTileColor(Vector2Int tile)
         {
             TileColor color = TileColor.NoColor;
-            FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();
-            if (floorPainter != null)
+
+            if (labyrinthTiles[tile.x, tile.y] != null)
             {
-                color = floorPainter.GetFloorColor();
+                FloorPainter floorPainter = labyrinthTiles[tile.x, tile.y].GetComponentInChildren<FloorPainter>();
+                if (floorPainter != null)
+                {
+                    color = floorPainter.GetFloorColor();
+                }
+
             }
             return color;
         }
 
         public void SetTileColor(Vector2Int tile, TileColor color)
         {
-            GameObject gobj = labyrinthTiles[tile.x, tile.y];
-
-            var floorPainter = gobj.GetComponentInChildren<FloorPainter>();
-            if (floorPainter != null)
+            if (labyrinthTiles[tile.x, tile.y] != null)
             {
-                floorPainter.PaintFloorWithColor(color);
+                GameObject gobj = labyrinthTiles[tile.x, tile.y];
+
+                var floorPainter = gobj.GetComponentInChildren<FloorPainter>();
+                if (floorPainter != null)
+                {
+                    floorPainter.PaintFloorWithColor(color);
+                }
             }
         }
 

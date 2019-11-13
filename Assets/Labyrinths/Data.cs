@@ -54,11 +54,15 @@ namespace UdeS.Promoscience.Labyrinths
 
         [SerializeField]
         private int id;
+
         // TODO remove id is a member of the labyrinth
         public int Id { get { return id; } set { id = value; } }
         
         [SerializeField]
         private int sizeX;
+
+        [SerializeField]
+        private int sizeY;
 
         public int SkinId;
 
@@ -75,9 +79,6 @@ namespace UdeS.Promoscience.Labyrinths
         public TileType[] Tiles2 { get { return tiles2; } set { tiles2 = value; } }
 
         public int SizeX { get { return sizeX; } set { sizeX = value; } }
-
-        [SerializeField]
-        private int sizeY;
 
         public int SizeY { get { return sizeY; } set { sizeY = value; } }
 

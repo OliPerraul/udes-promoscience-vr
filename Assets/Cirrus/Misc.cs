@@ -27,6 +27,13 @@ namespace Cirrus
 
         private T _value;
 
+        public ObservableValue() { }
+        
+        public ObservableValue(T value)
+        {
+            _value = value;
+        }
+
         public T Value
         {
             get

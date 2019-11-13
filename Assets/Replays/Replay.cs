@@ -63,8 +63,6 @@ namespace UdeS.Promoscience.Replays
                 .GetLabyrinthTemplate(labyrinthData)
                 .Create(labyrinthData);
 
-            labyrinth.name += "DIRTY";
-
             labyrinth.Camera.Maximize();
 
             labyrinth.GenerateLabyrinthVisual();

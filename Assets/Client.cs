@@ -18,7 +18,6 @@ namespace UdeS.Promoscience
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset respectController;
 
-
         //// TODO combine with this class
         //[SerializeField]
         //public ScriptableClientGameState client;

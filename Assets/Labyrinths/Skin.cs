@@ -15,6 +15,15 @@ namespace UdeS.Promoscience.Labyrinths
         }
 
         [SerializeField]
+        public Material GreyFloorMaterial;
+
+        [SerializeField]
+        public Material YellowFloorMaterial;
+
+        [SerializeField]
+        public Material RedFloorMaterial;
+
+        [SerializeField]
         public GameObject FloorStart;
 
         [SerializeField]
@@ -52,7 +61,6 @@ namespace UdeS.Promoscience.Labyrinths
 
         [SerializeField]
         public GameObject FloorTile11;
-
 
         [SerializeField]
         public GameObject Corner1;

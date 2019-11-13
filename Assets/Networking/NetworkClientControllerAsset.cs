@@ -10,9 +10,9 @@ namespace UdeS.Promoscience.Network
 
     public class NetworkClientControllerAsset : ScriptableObject
     {
-        public Cirrus.ObservableValue<bool> IsConnectedToPair;
+        public Cirrus.ObservableValue<bool> IsConnectedToPair = new Cirrus.ObservableValue<bool>();
 
-        public Cirrus.ObservableValue<bool> IsConnectedToServer;
+        public Cirrus.ObservableValue<bool> IsConnectedToServer = new Cirrus.ObservableValue<bool>();
 
     }
 

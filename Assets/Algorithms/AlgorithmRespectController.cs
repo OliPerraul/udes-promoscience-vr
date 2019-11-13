@@ -102,7 +102,7 @@ namespace UdeS.Promoscience.Algorithms
                     cameraRig.Transform.rotation);
             }
         }
-
+      
         void OnGameStateChanged()
         {
             if (Client.Instance.State == ClientGameState.PlayingTutorial || Client.Instance.State == ClientGameState.Playing)

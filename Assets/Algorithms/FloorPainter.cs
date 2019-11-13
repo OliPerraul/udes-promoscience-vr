@@ -23,6 +23,33 @@ namespace UdeS.Promoscience.Algorithms
         Material redMaterial;
 
         [SerializeField]
+        Labyrinths.Skin skin;
+
+        public Material RedMaterial
+        {
+            get {
+                return skin == null ? skin.RedFloorMaterial : redMaterial; 
+            }
+        }
+
+        public Material YellowMaterial
+        {
+            get
+            {
+                return skin == null ? skin.YellowFloorMaterial : yellowMaterial;
+            }
+        }
+
+        public Material GreyMaterial
+        {
+            get
+            {
+                return skin == null ? skin.GreyFloorMaterial : greyMaterial;
+            }
+        }
+
+
+        [SerializeField]
         TileColor floorColor;
 
         public TileColor GetFloorColor()
@@ -35,17 +62,17 @@ namespace UdeS.Promoscience.Algorithms
             if (floorColor == TileColor.Grey)
             {
                 floorColor = TileColor.Yellow;
-                meshRenderer.material = yellowMaterial;
+                meshRenderer.material = YellowMaterial;
             }
             else if (floorColor == TileColor.Yellow)
             {
                 floorColor = TileColor.Red;
-                meshRenderer.material = redMaterial;
+                meshRenderer.material = RedMaterial;
             }
             else if (floorColor == TileColor.Red)
             {
                 floorColor = TileColor.Grey;
-                meshRenderer.material = greyMaterial;
+                meshRenderer.material = GreyMaterial;
             }
         }
 
@@ -54,17 +81,17 @@ namespace UdeS.Promoscience.Algorithms
             if (color == TileColor.Grey)
             {
                 floorColor = TileColor.Grey;
-                meshRenderer.material = greyMaterial;
+                meshRenderer.material = GreyMaterial;
             }
             else if (color == TileColor.Yellow)
             {
                 floorColor = TileColor.Yellow;
-                meshRenderer.material = yellowMaterial;
+                meshRenderer.material = YellowMaterial;
             }
             else if (color == TileColor.Red)
             {
                 floorColor = TileColor.Red;
-                meshRenderer.material = redMaterial;
+                meshRenderer.material = RedMaterial;
             }
         }
     }

@@ -170,11 +170,15 @@ namespace UdeS.Promoscience
         void PaintTile(Vector2Int position, TileColor color)
         {
             GameObject tile = Client.Instance.Labyrinth.GetTile(position);
-            Algorithms.FloorPainter floorPainter = tile.GetComponentInChildren<Algorithms.FloorPainter>();
 
-            if (floorPainter != null)
+            if (tile != null)
             {
-                floorPainter.PaintFloorWithColor(color);
+                Algorithms.FloorPainter floorPainter = tile.GetComponentInChildren<Algorithms.FloorPainter>();
+
+                if (floorPainter != null)
+                {
+                    floorPainter.PaintFloorWithColor(color);
+                }
             }
         }
 

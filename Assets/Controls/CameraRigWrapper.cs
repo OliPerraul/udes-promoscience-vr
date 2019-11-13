@@ -3,6 +3,8 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Controls
 {
+    // TODO: interface with abstract camera rig
+
     public class CameraRigWrapper : MonoBehaviour
     {
         [SerializeField]
@@ -109,7 +111,6 @@ namespace UdeS.Promoscience.Controls
         {
             get
             {
-
                 if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad);
@@ -126,7 +127,6 @@ namespace UdeS.Promoscience.Controls
         {
             get
             {
-
                 if (ovrCameraRigEnabled)
                 {
                     return OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad);
@@ -155,7 +155,7 @@ namespace UdeS.Promoscience.Controls
             }
         }
 
-        public bool PrimaryIndexTriggerUp
+        public bool IsPrimaryIndexTriggerUp
         {
             get
             {

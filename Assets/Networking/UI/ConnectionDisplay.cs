@@ -13,6 +13,9 @@ namespace UdeS.Promoscience.UI
     public class ConnectionDisplay : MonoBehaviour
     {
         [SerializeField]
+        private AvatarControllerAsset controls;
+
+        [SerializeField]
         private DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
@@ -38,8 +41,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private LocalizeInlineString waitingForServer;
 
-        [SerializeField]
-        private ScriptableBoolean grabbedMouseFocus;
+        //[SerializeField]
+        //private ScriptableBoolean grabbedMouseFocus;
 
         //[SerializeField]
         //private ScriptableClientGameState gameState;
@@ -140,14 +143,14 @@ namespace UdeS.Promoscience.UI
         public void Enable()
         {
             transform.GetChild(0).gameObject.SetActive(true);
-            grabbedMouseFocus.Value = false;
+            controls.IsMouseFocusGrabbed.Value = false;
             
         }
 
         public void Disable()
         {
             transform.GetChild(0).gameObject.SetActive(false);
-            grabbedMouseFocus.Value = false;
+            controls.IsMouseFocusGrabbed.Value = false;
         }
 
         void OnIsConnectedToPairValueChanged()
