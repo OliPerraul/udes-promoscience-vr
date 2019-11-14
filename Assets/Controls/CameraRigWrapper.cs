@@ -93,13 +93,22 @@ namespace UdeS.Promoscience.Controls
         {
 #if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
             desktopCameraRig.gameObject.SetActive(true);
-            vrCameraRig.gameObject.SetActive(false);
+
+            if (vrCameraRig != null)
+            {
+                vrCameraRig.gameObject.SetActive(false);
+            }
             ovrInputModule.enabled = false;
             standaloneInputs.enabled = true;
             ovrCameraRigEnabled = false;
             Cursor.lockState = CursorLockMode.Locked;
 #elif UNITY_ANDROID
-            desktopCameraRig.gameObject.SetActive(false);
+
+            if(desktopCameraRig != null)
+            {
+                desktopCameraRig.gameObject.SetActive(false);
+            }
+
             ovrCameraRig.gameObject.SetActive(true);
             ovrInputModule.enabled = true;
             standaloneInputs.enabled = false;

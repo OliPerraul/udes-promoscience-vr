@@ -28,7 +28,7 @@ namespace UdeS.Promoscience.Algorithms
         public Material RedMaterial
         {
             get {
-                return skin == null ? skin.RedFloorMaterial : redMaterial; 
+                return skin == null ? redMaterial : skin.RedFloorMaterial;
             }
         }
 
@@ -36,7 +36,7 @@ namespace UdeS.Promoscience.Algorithms
         {
             get
             {
-                return skin == null ? skin.YellowFloorMaterial : yellowMaterial;
+                return skin == null ? yellowMaterial : skin.YellowFloorMaterial;
             }
         }
 
@@ -44,7 +44,7 @@ namespace UdeS.Promoscience.Algorithms
         {
             get
             {
-                return skin == null ? skin.GreyFloorMaterial : greyMaterial;
+                return skin == null ? greyMaterial : skin.GreyFloorMaterial;
             }
         }
 

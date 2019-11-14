@@ -11,6 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f757e0af315acc44e809553688f706f5, type: 3}
   m_Name: Skin.Cave.1
   m_EditorClassIdentifier: 
+  GreyFloorMaterial: {fileID: 2100000, guid: 921a6e62f8338824981583803e0db6ca, type: 2}
+  YellowFloorMaterial: {fileID: 2100000, guid: 7f8107813fbbaaa4bb9512aeff5aea5e, type: 2}
+  RedFloorMaterial: {fileID: 2100000, guid: a3daefafa80d8524ab3b3169a32eaa1d, type: 2}
   FloorStart: {fileID: 1860037174321772, guid: 4346afcafe4794a42bf39e6120c3e0fd, type: 2}
   FloorEnd: {fileID: 1860037174321772, guid: 715293093d544914bb4888a81b6343c9, type: 2}
   FloorTile1: {fileID: 1860037174321772, guid: 0a914259653a35648b92d480bcb10130, type: 2}

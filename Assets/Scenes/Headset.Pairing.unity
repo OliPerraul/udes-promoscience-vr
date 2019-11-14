@@ -778,13 +778,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   angleLookatTurnThreshold: 65
-  directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
+  algorithmRespect: {fileID: 0}
   gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
     type: 2}
   cameraRig: {fileID: 265111330}
-  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
 --- !u!114 &265111330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -798,7 +798,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   desktopCameraRig: {fileID: 1277893028}
-  ovrCameraRig: {fileID: 1300027174}
+  vrCameraRig: {fileID: 0}
   standaloneInputs: {fileID: 59015149}
   ovrInputModule: {fileID: 59015148}
   ovrCameraRigEnabled: 0
@@ -3279,17 +3279,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6d7df81f6c91ee459f4743351f1e35a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  XSensitivity: 2
-  YSensitivity: 2
-  clampVerticalRotation: 1
-  MinimumX: -90
-  MaximumX: 90
-  smooth: 0
-  smoothTime: 5
-  cameraRigTransform: {fileID: 1277893027}
-  character: {fileID: 1734729013}
-  camera: {fileID: 578517098}
-  grabbedMouseFocus: {fileID: 11400000, guid: 1c4b8b3665bc59640956b786c5e870f2, type: 2}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  firstPersonCamera: {fileID: 0}
+  thirdPersonCamera: {fileID: 0}
+  avatarTransform: {fileID: 1734729014}
+  mesh: {fileID: 0}
+  directionTransform: {fileID: 0}
 --- !u!224 &1281469345 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224208590938215432, guid: 49e79c1c08d535f479968a740365fe8d,
@@ -3304,6 +3299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1300027172}
+  - component: {fileID: 1300027175}
   - component: {fileID: 1300027174}
   - component: {fileID: 1300027173}
   m_Layer: 0
@@ -3395,6 +3391,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   usePerEyeCameras: 0
   useFixedUpdateForTracking: 0
+--- !u!114 &1300027175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1300027171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b138fb4fbe00c9446b572d3e904cd4a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OVRCameraRig: {fileID: 1300027174}
+  AvatarTransform: {fileID: 1300027172}
+  DirectionTransform: {fileID: 0}
 --- !u!1 &1327503952
 GameObject:
   m_ObjectHideFlags: 0
@@ -4476,7 +4486,7 @@ GameObject:
   - component: {fileID: 1734729016}
   - component: {fileID: 1734729015}
   m_Layer: 0
-  m_Name: Character
+  m_Name: Avatar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
