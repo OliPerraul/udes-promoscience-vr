@@ -109,7 +109,7 @@ namespace UdeS.Promoscience.Controls
                 desktopCameraRig.gameObject.SetActive(false);
             }
 
-            ovrCameraRig.gameObject.SetActive(true);
+            vrCameraRig.gameObject.SetActive(true);
             ovrInputModule.enabled = true;
             standaloneInputs.enabled = false;
             ovrCameraRigEnabled = true;
