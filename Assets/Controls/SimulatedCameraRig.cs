@@ -20,24 +20,12 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private UnityStandardAssets.Cameras.FreeLookCam thirdPersonCamera;
 
-        public Transform Transform
-        {
-            get
-            {
-                return transform;
-            }
-        }
+        public Transform Transform => transform;
 
         [SerializeField]
         private Transform avatarTransform;
 
-        public Transform AvatarTransform
-        {
-            get
-            {
-                return avatarTransform;
-            }
-        }
+        public Transform AvatarTransform => avatarTransform;
 
         [SerializeField]
         private GameObject mesh;
@@ -45,13 +33,7 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private Transform directionTransform;
 
-        public Transform DirectionTransform
-        {
-            get
-            {
-                return directionTransform;
-            }
-        }
+        public Transform DirectionTransform => directionTransform;
 
         public void Awake()
         {
