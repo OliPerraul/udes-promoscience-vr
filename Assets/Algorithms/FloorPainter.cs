@@ -23,75 +23,90 @@ namespace UdeS.Promoscience.Algorithms
         Material redMaterial;
 
         [SerializeField]
-        Labyrinths.Skin skin;
+        private GameObject yellowTrail;
 
-        public Material RedMaterial
-        {
-            get {
-                return skin == null ? redMaterial : skin.RedFloorMaterial;
-            }
-        }
-
-        public Material YellowMaterial
-        {
-            get
-            {
-                return skin == null ? yellowMaterial : skin.YellowFloorMaterial;
-            }
-        }
-
-        public Material GreyMaterial
-        {
-            get
-            {
-                return skin == null ? greyMaterial : skin.GreyFloorMaterial;
-            }
-        }
-
+        [SerializeField]
+        private GameObject redTrail;
 
         [SerializeField]
         TileColor floorColor;
+
+        public void SetFloorColor(TileColor value, bool paintFloor = false)
+        {
+            floorColor = value;
+            switch (floorColor)
+            {
+                case TileColor.Grey:
+                case TileColor.NoColor:
+                    redTrail.SetActive(false);
+                    yellowTrail.SetActive(false);
+                    if (paintFloor)
+                    {
+                        meshRenderer.material = greyMaterial;
+                    }
+                    break;
+
+                case TileColor.Red:
+                    yellowTrail.SetActive(false);
+                    if (paintFloor)
+                    {
+                        meshRenderer.material = redMaterial;
+                    }
+                    else
+                    {
+                        redTrail.SetActive(true);
+                    }
+                    break;
+
+                case TileColor.Yellow:
+                    redTrail.SetActive(false);
+                    if (paintFloor)
+                    {
+                        meshRenderer.material = yellowMaterial;
+                    }
+                    else
+                    {
+                        yellowTrail.SetActive(true);
+                    }
+
+                    break;
+            }
+        }
 
         public TileColor GetFloorColor()
         {
             return floorColor;
         }
 
-        public void PaintFloor()
+        public void PaintFloor(bool paintfloor=false)
         {
             if (floorColor == TileColor.Grey)
             {
-                floorColor = TileColor.Yellow;
-                meshRenderer.material = YellowMaterial;
+                SetFloorColor(TileColor.Yellow, paintfloor);
             }
             else if (floorColor == TileColor.Yellow)
             {
-                floorColor = TileColor.Red;
-                meshRenderer.material = RedMaterial;
+                SetFloorColor(TileColor.Red, paintfloor);
             }
             else if (floorColor == TileColor.Red)
             {
-                floorColor = TileColor.Grey;
-                meshRenderer.material = GreyMaterial;
+                SetFloorColor(TileColor.Grey, paintfloor);
             }
         }
 
-        public void PaintFloorWithColor(TileColor color)
+        public void PaintFloorWithColor(TileColor color, bool paintfloor = false)
         {
             if (color == TileColor.Grey)
             {
-                floorColor = TileColor.Grey;
-                meshRenderer.material = GreyMaterial;
+                SetFloorColor(TileColor.Grey, paintfloor);
             }
             else if (color == TileColor.Yellow)
             {
-                floorColor = TileColor.Yellow;
-                meshRenderer.material = YellowMaterial;
+                SetFloorColor(TileColor.Yellow, paintfloor);
             }
             else if (color == TileColor.Red)
             {
-                floorColor = TileColor.Red;
-                meshRenderer.material = RedMaterial;
+                SetFloorColor(TileColor.Red, paintfloor);
             }
         }
     }
