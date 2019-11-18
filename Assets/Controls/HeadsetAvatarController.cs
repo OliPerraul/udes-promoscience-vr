@@ -430,8 +430,8 @@ namespace UdeS.Promoscience
 
                 if (cameraRig.AvatarTransform.rotation != lastRotation)
                 {
-                    controls.PlayerRotation.Value = cameraRig.AvatarTransform.rotation;
-                    lastRotation = cameraRig.AvatarTransform.rotation;
+                    controls.PlayerRotation.Value = cameraRig.AvatarRotation;
+                    lastRotation = cameraRig.AvatarRotation;
                 }
             }
         }
@@ -486,12 +486,19 @@ namespace UdeS.Promoscience
             isAvatarTurn = turnCamera;
 
             Quaternion trajectory = new Quaternion();
+
             trajectory.eulerAngles += new Vector3(0, -90, 0);
-            fromRotation = isAvatarTurn ? cameraRig.AvatarTransform.rotation : cameraRig.DirectionTransform.rotation;
+
+            fromRotation = isAvatarTurn ? 
+                cameraRig.AvatarRotation : 
+                cameraRig.DirectionTransform.rotation;
+
             targetRotation = fromRotation * trajectory;
 
             isTurningLeft = true;
+
             controls.ForwardDirection.Value = (controls.ForwardDirection.Value - 1) < 0 ? 3 : (controls.ForwardDirection.Value - 1);
+
             gameAction.SetAction(GameAction.TurnLeft);
         }
 
@@ -500,12 +507,19 @@ namespace UdeS.Promoscience
             isAvatarTurn = turnCamera;
 
             Quaternion trajectory = new Quaternion();
+
             trajectory.eulerAngles += new Vector3(0, 90, 0);
-            fromRotation = isAvatarTurn ? cameraRig.AvatarTransform.rotation : cameraRig.DirectionTransform.rotation;
+
+            fromRotation = isAvatarTurn ? 
+                cameraRig.AvatarRotation : 
+                cameraRig.DirectionTransform.rotation;
+
             targetRotation = fromRotation * trajectory;
 
             isTurningRight = true;
+
             controls.ForwardDirection.Value = (controls.ForwardDirection.Value + 1) % 4;
+
             gameAction.SetAction(GameAction.TurnRight);
         }
 
@@ -547,7 +561,6 @@ namespace UdeS.Promoscience
             return false;
         }
 
-
         bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
         {
             Vector2Int labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(position.x, position.z);
@@ -571,7 +584,6 @@ namespace UdeS.Promoscience
 
                 if (tile)
                 {
-
                     Algorithms.FloorPainter floorPainter = tile.GetComponentInChildren<Algorithms.FloorPainter>();
 
                     if (floorPainter != null)

@@ -28,6 +28,8 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private Camera camera;
 
+        public Camera Camera => camera;
+
         [SerializeField]
         private AvatarControllerAsset controls;
 
