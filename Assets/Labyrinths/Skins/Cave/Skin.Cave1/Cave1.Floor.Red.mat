@@ -5,7 +5,8 @@ Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Cave1.Floor.Red
   m_Shader: {fileID: 4800000, guid: 92817aadd952c3847835d3e0405c3d6b, type: 3}
   m_ShaderKeywords: 
@@ -18,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _SampleTexture2D_5F1D648D_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 579d496b974734ffea398705640c4e18, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_8714886D_Texture:
         m_Texture: {fileID: 2800000, guid: 579d496b974734ffea398705640c4e18, type: 3}
         m_Scale: {x: 1, y: 1}

@@ -5,7 +5,8 @@ Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Set4.Wall
   m_Shader: {fileID: 4800000, guid: aec21b4fa666a4cfc84302029600570e, type: 3}
   m_ShaderKeywords: 
@@ -76,6 +77,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _NormalMapOS:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_5F1D648D_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 650a1a18d91f84920a8d927deb2e12d2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_8714886D_Texture:
