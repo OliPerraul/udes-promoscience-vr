@@ -1,49 +1,19 @@
-﻿using System;
+﻿#if ENABLE_UNET
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
-namespace UdeS.Promoscience.Network.Fix
+namespace UnityEngine.Networking
 {
-    /// <summary>
-    /// A structure that contains data from a NetworkDiscovery server broadcast.
-    /// </summary>
-    [Obsolete("The high level API classes are deprecated and will be removed in the future.")]
     public struct NetworkBroadcastResult
     {
-        /// <summary>
-        /// The IP address of the server that broadcasts this data.
-        /// </summary>
         public string serverAddress;
-        /// <summary>
-        /// The data broadcast by the server.
-        /// </summary>
         public byte[] broadcastData;
     }
 
-    /// <summary>
-    /// The NetworkDiscovery component allows Unity games to find each other on a local network. It can broadcast presence and listen for broadcasts, and optionally join matching games using the NetworkManager.
-    /// <para>This component can run in server mode (by calling StartAsServer) where it broadcasts to other computers on the local network, or in client mode (by calling StartAsClient) where it listens for broadcasts from a server. This class should be override to receive calls from OnReceivedBroadcast.</para>
-    /// <para><b>Note :</b> Do not use void Update() in a class that inherits from NetworkDiscovery. If needed, you must override it and call base.Update() instead.</para>
-    /// <code>
-    /// using UnityEngine;
-    /// using UnityEngine.Networking;
-    /// using System.Collections;
-    ///
-    /// public class OverriddenNetworkDiscovery : NetworkDiscovery
-    /// {
-    ///    public override void OnReceivedBroadcast(string fromAddress, string data)
-    ///    {
-    ///        NetworkManager.singleton.networkAddress = fromAddress;
-    ///        NetworkManager.singleton.StartClient();
-    ///    }
-    /// }
-    /// </code>
-    /// </summary>
     [DisallowMultipleComponent]
     [AddComponentMenu("Network/NetworkDiscovery")]
-    [Obsolete("The high level API classes are deprecated and will be removed in the future.")]
-    public class NetworkDiscovery : MonoBehaviour
+    public class NetworkDiscoveryFix : MonoBehaviour
     {
         const int k_MaxBroadcastMsgSize = 1024;
 
@@ -90,65 +60,42 @@ namespace UdeS.Promoscience.Network.Fix
         HostTopology m_DefaultTopology;
         Dictionary<string, NetworkBroadcastResult> m_BroadcastsReceived;
 
-        /// <summary>
-        /// The network port to broadcast on and listen to.
-        /// </summary>
         public int broadcastPort
         {
             get { return m_BroadcastPort; }
             set { m_BroadcastPort = value; }
         }
 
-        /// <summary>
-        /// A key to identify this application in broadcasts.
-        /// </summary>
         public int broadcastKey
         {
             get { return m_BroadcastKey; }
             set { m_BroadcastKey = value; }
         }
 
-        /// <summary>
-        /// The version of the application to broadcast. This is used to match versions of the same application.
-        /// </summary>
         public int broadcastVersion
         {
             get { return m_BroadcastVersion; }
             set { m_BroadcastVersion = value; }
         }
 
-        /// <summary>
-        /// The sub-version of the application to broadcast. This is used to match versions of the same application.
-        /// </summary>
         public int broadcastSubVersion
         {
             get { return m_BroadcastSubVersion; }
             set { m_BroadcastSubVersion = value; }
         }
 
-        /// <summary>
-        /// How often in milliseconds to broadcast when running as a server.
-        /// </summary>
         public int broadcastInterval
         {
             get { return m_BroadcastInterval; }
             set { m_BroadcastInterval = value; }
         }
 
-        /// <summary>
-        /// True to integrate with the NetworkManager.
-        /// <para>When running as a server, this will include the NetworkManager's address in broadcast messages. When running as a client, this will be able to join matching games found by using the NetworkManager.</para>
-        /// </summary>
         public bool useNetworkManager
         {
             get { return m_UseNetworkManager; }
             set { m_UseNetworkManager = value; }
         }
 
-        /// <summary>
-        /// The data to include in the broadcast message when running as a server.
-        /// <para>If using NetworkManager integration, this will be overriden with the NetworkManager's address.</para>
-        /// </summary>
         public string broadcastData
         {
             get { return m_BroadcastData; }
@@ -163,73 +110,48 @@ namespace UdeS.Promoscience.Network.Fix
             }
         }
 
-        /// <summary>
-        /// True to draw the default Broacast control UI.
-        /// </summary>
         public bool showGUI
         {
             get { return m_ShowGUI; }
             set { m_ShowGUI = value; }
         }
 
-        /// <summary>
-        /// The horizontal offset of the GUI if active.
-        /// </summary>
         public int offsetX
         {
             get { return m_OffsetX; }
             set { m_OffsetX = value; }
         }
 
-        /// <summary>
-        /// The vertical offset of the GUI if active.
-        /// </summary>
         public int offsetY
         {
             get { return m_OffsetY; }
             set { m_OffsetY = value; }
         }
 
-        /// <summary>
-        /// The TransportLayer hostId being used (read-only).
-        /// </summary>
         public int hostId
         {
             get { return m_HostId; }
             set { m_HostId = value; }
         }
 
-        /// <summary>
-        /// True is broadcasting or listening (read-only).
-        /// </summary>
         public bool running
         {
             get { return m_Running; }
             set { m_Running = value; }
         }
 
-        /// <summary>
-        /// True if running in server mode (read-only).
-        /// </summary>
         public bool isServer
         {
             get { return m_IsServer; }
             set { m_IsServer = value; }
         }
 
-        /// <summary>
-        /// True if running in client mode (read-only).
-        /// </summary>
         public bool isClient
         {
             get { return m_IsClient; }
             set { m_IsClient = value; }
         }
 
-        /// <summary>
-        /// A dictionary of broadcasts received from servers.
-        /// <para>The key is the server address, and the value is a NetworkBroadcastResult object that contains the data sent by the server.</para>
-        /// </summary>
         public Dictionary<string, NetworkBroadcastResult> broadcastsReceived
         {
             get { return m_BroadcastsReceived; }
@@ -249,10 +171,6 @@ namespace UdeS.Promoscience.Network.Fix
             return new string(chars);
         }
 
-        /// <summary>
-        /// Initializes the NetworkDiscovery component.
-        /// </summary>
-        /// <returns>Return true if the network port was available.</returns>
         public bool Initialize()
         {
             if (m_BroadcastData.Length >= k_MaxBroadcastMsgSize)
@@ -261,9 +179,9 @@ namespace UdeS.Promoscience.Network.Fix
                 return false;
             }
 
-            if (!NetworkManager.activeTransport.IsStarted)
+            if (!NetworkTransport.IsStarted)
             {
-                NetworkManager.activeTransport.Init();
+                NetworkTransport.Init();
             }
 
             if (m_UseNetworkManager && NetworkManager.singleton != null)
@@ -289,10 +207,6 @@ namespace UdeS.Promoscience.Network.Fix
             return true;
         }
 
-        /// <summary>
-        /// Starts listening for broadcasts messages.
-        /// </summary>
-        /// <returns>True is able to listen.</returns>
         // listen for broadcasts
         public bool StartAsClient()
         {
@@ -308,17 +222,15 @@ namespace UdeS.Promoscience.Network.Fix
                 return false;
             }
 
-            m_HostId = NetworkManager.activeTransport.AddHost(m_DefaultTopology, m_BroadcastPort, null);
+            m_HostId = NetworkTransport.AddHost(m_DefaultTopology, m_BroadcastPort);
             if (m_HostId == -1)
             {
                 if (LogFilter.logError) { Debug.LogError("NetworkDiscovery StartAsClient - addHost failed"); }
                 return false;
             }
 
-            //NetworkTransport.SetMulticastLock(true);
-
             byte error;
-            NetworkManager.activeTransport.SetBroadcastCredentials(m_HostId, m_BroadcastKey, m_BroadcastVersion, m_BroadcastSubVersion, out error);
+            NetworkTransport.SetBroadcastCredentials(m_HostId, m_BroadcastKey, m_BroadcastVersion, m_BroadcastSubVersion, out error);
 
             m_Running = true;
             m_IsClient = true;
@@ -326,10 +238,6 @@ namespace UdeS.Promoscience.Network.Fix
             return true;
         }
 
-        /// <summary>
-        /// Starts sending broadcast messages.
-        /// </summary>
-        /// <returns>True is able to broadcast.</returns>
         // perform actual broadcasts
         public bool StartAsServer()
         {
@@ -339,20 +247,16 @@ namespace UdeS.Promoscience.Network.Fix
                 return false;
             }
 
-            m_HostId = NetworkManager.activeTransport.AddHost(m_DefaultTopology, 0, null);
+            m_HostId = NetworkTransport.AddHost(m_DefaultTopology, 0);
             if (m_HostId == -1)
             {
                 if (LogFilter.logError) { Debug.LogError("NetworkDiscovery StartAsServer - addHost failed"); }
                 return false;
             }
 
-            //NetworkTransport.SetMulticastLock(true);
-
             byte err;
-            if (!NetworkManager.activeTransport.StartBroadcastDiscovery(m_HostId, m_BroadcastPort, m_BroadcastKey, m_BroadcastVersion, m_BroadcastSubVersion, m_MsgOutBuffer, m_MsgOutBuffer.Length, m_BroadcastInterval, out err))
+            if (!NetworkTransport.StartBroadcastDiscovery(m_HostId, m_BroadcastPort, m_BroadcastKey, m_BroadcastVersion, m_BroadcastSubVersion, m_MsgOutBuffer, m_MsgOutBuffer.Length, m_BroadcastInterval, out err))
             {
-                NetworkTransport.RemoveHost(m_HostId);
-                m_HostId = -1;
                 if (LogFilter.logError) { Debug.LogError("NetworkDiscovery StartBroadcast failed err: " + err); }
                 return false;
             }
@@ -364,9 +268,6 @@ namespace UdeS.Promoscience.Network.Fix
             return true;
         }
 
-        /// <summary>
-        /// Stops listening and broadcasting.
-        /// </summary>
         public void StopBroadcast()
         {
             if (m_HostId == -1)
@@ -382,11 +283,10 @@ namespace UdeS.Promoscience.Network.Fix
             }
             if (m_IsServer)
             {
-                NetworkManager.activeTransport.StopBroadcastDiscovery();
+                NetworkTransport.StopBroadcastDiscovery();
             }
 
-            NetworkManager.activeTransport.RemoveHost(m_HostId);
-            //NetworkTransport.SetMulticastLock(false);
+            NetworkTransport.RemoveHost(m_HostId);
             m_HostId = -1;
             m_Running = false;
             m_IsServer = false;
@@ -411,15 +311,15 @@ namespace UdeS.Promoscience.Network.Fix
                 int channelId;
                 int receivedSize;
                 byte error;
-                networkEvent = NetworkManager.activeTransport.ReceiveFromHost(m_HostId, out connectionId, out channelId, m_MsgInBuffer, k_MaxBroadcastMsgSize, out receivedSize, out error);
+                networkEvent = NetworkTransport.ReceiveFromHost(m_HostId, out connectionId, out channelId, m_MsgInBuffer, k_MaxBroadcastMsgSize, out receivedSize, out error);
 
                 if (networkEvent == NetworkEventType.BroadcastEvent)
                 {
-                    NetworkManager.activeTransport.GetBroadcastConnectionMessage(m_HostId, m_MsgInBuffer, k_MaxBroadcastMsgSize, out receivedSize, out error);
+                    NetworkTransport.GetBroadcastConnectionMessage(m_HostId, m_MsgInBuffer, k_MaxBroadcastMsgSize, out receivedSize, out error);
 
                     string senderAddr;
                     int senderPort;
-                    NetworkManager.activeTransport.GetBroadcastConnectionInfo(m_HostId, out senderAddr, out senderPort, out error);
+                    NetworkTransport.GetBroadcastConnectionInfo(m_HostId, out senderAddr, out senderPort, out error);
 
                     var recv = new NetworkBroadcastResult();
                     recv.serverAddress = senderAddr;
@@ -437,24 +337,16 @@ namespace UdeS.Promoscience.Network.Fix
         {
             if (m_IsServer && m_Running && m_HostId != -1)
             {
-                NetworkManager.activeTransport.StopBroadcastDiscovery();
-                NetworkManager.activeTransport.RemoveHost(m_HostId);
+                NetworkTransport.StopBroadcastDiscovery();
+                NetworkTransport.RemoveHost(m_HostId);
             }
 
             if (m_IsClient && m_Running && m_HostId != -1)
             {
-                NetworkManager.activeTransport.RemoveHost(m_HostId);
+                NetworkTransport.RemoveHost(m_HostId);
             }
-
-            //if (m_Running)
-                //NetworkTransport.SetMulticastLock(false);
         }
 
-        /// <summary>
-        /// This is a virtual function that can be implemented to handle broadcast messages when running as a client.
-        /// </summary>
-        /// <param name="fromAddress">The IP address of the server.</param>
-        /// <param name="data">The data broadcast by the server.</param>
         public virtual void OnReceivedBroadcast(string fromAddress, string data)
         {
             //Debug.Log("Got broadcast from [" + fromAddress + "] " + data);
@@ -540,3 +432,4 @@ namespace UdeS.Promoscience.Network.Fix
         }
     }
 }
+#endif
