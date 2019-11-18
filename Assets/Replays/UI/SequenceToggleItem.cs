@@ -26,7 +26,6 @@ namespace UdeS.Promoscience.Replays.UI
 
         public UnityEngine.UI.Button button;
 
-
         public SequenceToggleItem Create(
             Transform parent, 
             Course course)

@@ -596,7 +596,7 @@ namespace UdeS.Promoscience.Labyrinths
                 var floorPainter = gobj.GetComponentInChildren<FloorPainter>();
                 if (floorPainter != null)
                 {
-                    floorPainter.PaintFloorWithColor(color);
+                    floorPainter.PaintFloorWithColor(color, paintfloor:true);
                 }
             }
         }

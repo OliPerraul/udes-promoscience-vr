@@ -26,16 +26,15 @@ namespace UdeS.Promoscience.Tests
             Client.Instance.clientStateChangedEvent += OnGameStateChanged;
         }
 
-
         void OnGameStateChanged()
         {
             if (Client.Instance.State == ClientGameState.PlayingTutorial || Client.Instance.State == ClientGameState.Playing)
             {
-                GenerateVisualForAlgorithm(Promoscience.Algorithms.Id.ShortestFlightDistance);
+                GenerateVisualForAlgorithm(Algorithms.Id.ShortestFlightDistance);
             }
         }
 
-        void GenerateVisualForAlgorithm(Promoscience.Algorithms.Id algorithm)
+        void GenerateVisualForAlgorithm(Algorithms.Id algorithm)
         {
             algorithmStepsPosition = Client.Instance.Algorithm.GetAlgorithmSteps(Client.Instance.LabyrinthData);
 

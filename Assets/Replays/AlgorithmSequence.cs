@@ -14,40 +14,14 @@ namespace UdeS.Promoscience.Replays
 
         private Dictionary<Vector2Int, Stack<TileColor>> dictionary;
 
+        public override int LocalMoveCount => course.AlgorithmMoveCount;
+
+        public override int LocalMoveIndex => course.CurrentAlgorithmMoveIndex;
 
 
-        public override int LocalMoveCount
-        {
-            get
-            {
-                return course.AlgorithmMoveCount;
-            }
-        }
+        protected override bool HasPrevious => course.AlgorithmHasPrevious;
 
-        public override int LocalMoveIndex
-        {
-            get
-            {
-                return course.CurrentAlgorithmMoveIndex;
-            }
-        }
-
-        protected override bool HasPrevious
-        {
-            get
-            {
-                return course.AlgorithmHasPrevious;
-            }
-        }
-
-        protected override bool HasNext
-        {
-            get
-            {
-                return course.AlgorithmHasNext;
-            }
-        }
-
+        protected override bool HasNext => course.AlgorithmHasNext;
 
         public AlgorithmSequence Create(
             ControllerAsset replay,
