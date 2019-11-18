@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 8719929494083403756, guid: 093bc6df42cb2e740b6d6f232011eb4d,
         type: 3}
       propertyPath: m_Name
-      value: Piece.Cave
+      value: Piece.Cave1
       objectReference: {fileID: 0}
     - target: {fileID: 8725665384742757310, guid: 093bc6df42cb2e740b6d6f232011eb4d,
         type: 3}
@@ -67,5 +67,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8691817690598921478, guid: 093bc6df42cb2e740b6d6f232011eb4d,
+        type: 3}
+      propertyPath: greyMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 921a6e62f8338824981583803e0db6ca, type: 2}
+    - target: {fileID: 8691817690598921478, guid: 093bc6df42cb2e740b6d6f232011eb4d,
+        type: 3}
+      propertyPath: redMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: a3daefafa80d8524ab3b3169a32eaa1d, type: 2}
+    - target: {fileID: 8691817690598921478, guid: 093bc6df42cb2e740b6d6f232011eb4d,
+        type: 3}
+      propertyPath: yellowMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 7f8107813fbbaaa4bb9512aeff5aea5e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 093bc6df42cb2e740b6d6f232011eb4d, type: 3}
