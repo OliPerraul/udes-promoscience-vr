@@ -25,7 +25,28 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private Transform avatarTransform;
 
-        public Transform AvatarTransform => avatarTransform;
+        public Transform AvatarTransform =>
+            controls.IsThirdPersonEnabled.Value ?
+            avatarTransform : 
+            firstPersonCamera.Camera.transform;
+
+        public Quaternion AvatarRotation
+        {
+            get
+            {
+                if (controls.IsThirdPersonEnabled.Value)
+                {
+                    return Quaternion.Euler(
+                        AvatarTransform.rotation.eulerAngles.x, 
+                        0, 
+                        AvatarTransform.rotation.eulerAngles.z);
+                }
+                else
+                {
+                    return avatarTransform.rotation;
+                }
+            }
+        }
 
         [SerializeField]
         private GameObject mesh;

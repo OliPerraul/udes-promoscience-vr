@@ -53,6 +53,22 @@ namespace UdeS.Promoscience.Controls
             }
         }
 
+        public Quaternion AvatarRotation
+        {
+            get
+            {
+                if (ovrCameraRigEnabled)
+                {
+                    return vrCameraRig.AvatarTransform.rotation;
+                }
+                else if (!ovrCameraRigEnabled)
+                {
+                    return desktopCameraRig.AvatarRotation;
+                }
+                else return Quaternion.identity;
+            }
+        }
+
 
 
         public Transform Transform
