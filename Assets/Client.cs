@@ -17,20 +17,10 @@ namespace UdeS.Promoscience
 
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset respectController;
-
-        //// TODO combine with this class
-        //[SerializeField]
-        //public ScriptableClientGameState client;
-
-        //[SerializeField]
-        //private ScriptableAction playerReachedTheEnd;
         
         [SerializeField]
         private GameObject waitingForNextRoundRoom;
 
-        // This is ridiculous..
-        // TODO: remove all scriptableVariables put them in client or somewhere else..
-        // Global vars are bad.. At least put them in one place!
         [SerializeField]
         private DeviceTypeManagerAsset deviceType;
 
