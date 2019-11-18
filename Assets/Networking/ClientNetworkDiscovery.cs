@@ -10,9 +10,6 @@ namespace UdeS.Promoscience.Network
     public class ClientNetworkDiscovery : ConnectionDiscovery
     {
         [SerializeField]
-        private UnityEngine.UI.Text text;
-
-        [SerializeField]
         ScriptableString serverIpAdress;
 
         void Start()
@@ -23,8 +20,6 @@ namespace UdeS.Promoscience.Network
         public override void OnReceivedBroadcast(string fromAddress, string data)
         {
             base.OnReceivedBroadcast(fromAddress, data);
-
-            text.text = fromAddress;
             //Restarting network transport is a workaround to avoid an error cause by StopBroadcast() on pc, the update function of the network discovery still run for nothing and deleting it cause errors
             //NetworkTransport.Shutdown();
             //NetworkTransport.Init();
