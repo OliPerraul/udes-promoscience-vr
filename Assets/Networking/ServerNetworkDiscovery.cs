@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 namespace UdeS.Promoscience.Network
 {
 
-    public class ServerNetworkDiscovery : NetworkDiscoveryFix
+    public class ServerNetworkDiscovery : Fix.NetworkDiscovery
     {
         void Start()
         {
