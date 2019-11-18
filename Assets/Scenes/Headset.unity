@@ -918,6 +918,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: DistanceScanner
       objectReference: {fileID: 0}
+    - target: {fileID: 2769672073196153395, guid: 810541629f38df848b7ee6b904a14af2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769672073280344266, guid: 810541629f38df848b7ee6b904a14af2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 810541629f38df848b7ee6b904a14af2, type: 3}
 --- !u!1 &1554867355
