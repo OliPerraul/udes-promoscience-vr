@@ -7,19 +7,19 @@ using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience.Network
 {
-    public class ClientNetworkDiscovery : NetworkDiscovery
+    public class ClientNetworkDiscovery : ConnectionDiscovery
     {
         [SerializeField]
         ScriptableString serverIpAdress;
 
         void Start()
         {
-            Initialize();
-            StartAsClient();
+            StartListening();
         }
 
         public override void OnReceivedBroadcast(string fromAddress, string data)
         {
+            base.OnReceivedBroadcast(fromAddress, data);
             //Restarting network transport is a workaround to avoid an error cause by StopBroadcast() on pc, the update function of the network discovery still run for nothing and deleting it cause errors
             //NetworkTransport.Shutdown();
             //NetworkTransport.Init();
