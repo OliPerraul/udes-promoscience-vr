@@ -96,6 +96,8 @@ namespace UdeS.Promoscience
             controls.PositionRotationAndTiles.OnValueChangedHandler += OnPlayerPositionRotationAndTiles;
 
             controls.IsMouseFocusGrabbed.OnValueChangedHandler += OnMouseFocusChanged;
+
+            controls.IsThirdPersonEnabled.Value = false;
         }
 
 
