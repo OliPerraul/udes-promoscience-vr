@@ -38,8 +38,6 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private GameObject buttonsHorizontalTemplate;
 
-        [SerializeField]
-        private UnityEngine.UI.Button buttonRandom;
 
         [SerializeField]
         private UnityEngine.UI.Button buttonExit;
@@ -55,7 +53,6 @@ namespace UdeS.Promoscience.Replays.UI
 
             buttonExit.onClick.AddListener(OnExitClicked);
 
-            buttonRandom.onClick.AddListener(OnRandomClicked);
         }
 
         public void OnRandomClicked()
