@@ -25,11 +25,11 @@ namespace UdeS.Promoscience.Controls
         public Transform AvatarTransform => avatarTransform;
 
 
-        public Quaternion AvatarRotation => avatarTransform.rotation;
+        public Quaternion LookRotation => avatarTransform.rotation;
     
         public Transform Transform => transform;
 
-        public Transform DirectionTransform => directionTransform;
+        public Transform DirectionArrowTransform => directionTransform;
 
 
         public void EnableThirdPerson(bool enable)

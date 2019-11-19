@@ -25,12 +25,11 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private Transform avatarTransform;
 
-        public Transform AvatarTransform =>
-            controls.IsThirdPersonEnabled.Value ?
-            avatarTransform :
-            firstPersonCamera.PivotTransform;
+        public Transform AvatarTransform => avatarTransform;
 
-        public Vector3 AvatarDirection => AvatarTransform.forward;
+        public Vector3 AvatarDirection => controls.IsThirdPersonEnabled.Value ? 
+            AvatarTransform.forward : 
+            firstPersonCamera.PivotTransform.forward;
 
         [SerializeField]
         private GameObject mesh;
@@ -38,18 +37,18 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private Transform directionTransform;
 
-        public Transform DirectionTransform => directionTransform;
+        public Transform DirectionArrowTransform => directionTransform;
 
-        public Quaternion AvatarRotation
+        public Quaternion LookRotation
         {
             get
             {
                 if (controls.IsThirdPersonEnabled.Value)
                 {
                     return Quaternion.Euler(
-                        AvatarTransform.rotation.eulerAngles.x, 
-                        0, 
-                        AvatarTransform.rotation.eulerAngles.z);
+                        firstPersonCamera.PivotTransform.rotation.eulerAngles.x, 
+                        0,
+                        firstPersonCamera.PivotTransform.rotation.eulerAngles.z);
                 }
                 else
                 {

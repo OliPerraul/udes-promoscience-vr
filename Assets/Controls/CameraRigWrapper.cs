@@ -11,11 +11,11 @@ namespace UdeS.Promoscience.Controls
 
         Transform AvatarTransform { get; }
 
-        Quaternion AvatarRotation { get; }
+        Quaternion LookRotation { get; }
 
         Transform Transform { get; }
 
-        Transform DirectionTransform { get; }
+        Transform DirectionArrowTransform { get; }
     }
 
     public class CameraRigWrapper : MonoBehaviour, IInputScheme, ICameraRig
@@ -52,11 +52,11 @@ namespace UdeS.Promoscience.Controls
 
         public Transform AvatarTransform => cameraRig.AvatarTransform;
 
-        public Quaternion AvatarRotation => cameraRig.AvatarRotation;
+        public Quaternion LookRotation => cameraRig.LookRotation;
 
         public Transform Transform => cameraRig.Transform;
 
-        public Transform DirectionTransform => cameraRig.DirectionTransform;
+        public Transform DirectionArrowTransform => cameraRig.DirectionArrowTransform;
 
         void Awake()
         {

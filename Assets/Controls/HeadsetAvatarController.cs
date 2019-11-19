@@ -381,11 +381,11 @@ namespace UdeS.Promoscience
                             if (isAvatarTurn)
                             {
                                 cameraRig.AvatarTransform.rotation = targetRotation;
-                                cameraRig.DirectionTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
+                                cameraRig.DirectionArrowTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
                             }
                             else
                             {
-                                cameraRig.DirectionTransform.rotation = targetRotation;
+                                cameraRig.DirectionArrowTransform.rotation = targetRotation;
                             }
 
 
@@ -430,8 +430,8 @@ namespace UdeS.Promoscience
 
                 if (cameraRig.AvatarTransform.rotation != lastRotation)
                 {
-                    controls.PlayerRotation.Value = cameraRig.AvatarRotation;
-                    lastRotation = cameraRig.AvatarRotation;
+                    controls.PlayerRotation.Value = cameraRig.LookRotation;
+                    lastRotation = cameraRig.LookRotation;
                 }
             }
         }
@@ -445,7 +445,7 @@ namespace UdeS.Promoscience
                     targetRotation,
                     lerpValue);
 
-                cameraRig.DirectionTransform.rotation = Quaternion.Lerp(
+                cameraRig.DirectionArrowTransform.rotation = Quaternion.Lerp(
                     fromRotation,
                     Quaternion.LookRotation(
                         Utils.GetDirectionVector(
@@ -454,7 +454,7 @@ namespace UdeS.Promoscience
             }
             else
             {
-                cameraRig.DirectionTransform.rotation = Quaternion.Lerp(
+                cameraRig.DirectionArrowTransform.rotation = Quaternion.Lerp(
                     fromRotation,
                     targetRotation,
                     lerpValue);
@@ -489,9 +489,9 @@ namespace UdeS.Promoscience
 
             trajectory.eulerAngles += new Vector3(0, -90, 0);
 
-            fromRotation = isAvatarTurn ? 
-                cameraRig.AvatarRotation : 
-                cameraRig.DirectionTransform.rotation;
+            fromRotation = cameraRig.DirectionArrowTransform.rotation; 
+                //cameraRig.LookRotation : 
+                //cameraRig.DirectionArrowTransform.rotation;
 
             targetRotation = fromRotation * trajectory;
 
@@ -510,9 +510,9 @@ namespace UdeS.Promoscience
 
             trajectory.eulerAngles += new Vector3(0, 90, 0);
 
-            fromRotation = isAvatarTurn ? 
-                cameraRig.AvatarRotation : 
-                cameraRig.DirectionTransform.rotation;
+            fromRotation = cameraRig.DirectionArrowTransform.rotation;// ? 
+                //cameraRig.LookRotation : 
+                //cameraRig.DirectionArrowTransform.rotation;
 
             targetRotation = fromRotation * trajectory;
 
@@ -710,7 +710,7 @@ namespace UdeS.Promoscience
             // TODO put somewhere else
             cameraRig.AvatarTransform.rotation = rotation;
 
-            cameraRig.DirectionTransform.rotation = rotation;
+            cameraRig.DirectionArrowTransform.rotation = rotation;
 
             controls.PaintingColor.Value = TileColor.Yellow;
         }
@@ -724,7 +724,7 @@ namespace UdeS.Promoscience
 
             cameraRig.AvatarTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 
-            cameraRig.DirectionTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
+            cameraRig.DirectionArrowTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 
             SetForwardDirectionWithRotation(
                 controls.PositionRotationAndTiles.Value.Rotation);
