@@ -424,6 +424,28 @@ namespace UdeS.Promoscience
             GameState = ServerGameState.LabyrinthSelect;
         }
 
+
+        public void WatchReplay()
+        {
+            // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
+            foreach (Player player in PlayerList.instance.list)
+            {
+                // Tell clients to pay attention
+                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.Playing)
+                {
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.ViewingGlobalReplay);
+                }
+            }
+
+            GameState = ServerGameState.Replay;
+        }
+
+
         public void LoadGameInformationFromDatabase()
         {
             //SQLiteUtilities.SetServerGameInformation(this);

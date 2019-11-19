@@ -87,7 +87,8 @@ namespace UdeS.Promoscience
         Intermission = 1 << 3,
         InstantReplay = 1 << 4,        
         LabyrinthSelect = 1 << 5,
-        AdvancedReplay = 1 << 6,
+        AdvancedReplay = 1 << 6,// TODO remove
+        Replay = 1 << 7,
     }
 
     [Serializable]
