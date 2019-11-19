@@ -9,7 +9,7 @@ using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience.Controls
 {
-    public class SimulatedCameraRig : MonoBehaviour
+    public class SimulatedCameraRig : MonoBehaviour, ICameraRig
     {
         [SerializeField]
         private AvatarControllerAsset controls;
@@ -30,6 +30,16 @@ namespace UdeS.Promoscience.Controls
             avatarTransform : 
             firstPersonCamera.Camera.transform;
 
+        public Vector3 AvatarDirection => AvatarTransform.forward;
+
+        [SerializeField]
+        private GameObject mesh;
+
+        [SerializeField]
+        private Transform directionTransform;
+
+        public Transform DirectionTransform => directionTransform;
+
         public Quaternion AvatarRotation
         {
             get
@@ -48,14 +58,6 @@ namespace UdeS.Promoscience.Controls
             }
         }
 
-        [SerializeField]
-        private GameObject mesh;
-
-        [SerializeField]
-        private Transform directionTransform;
-
-        public Transform DirectionTransform => directionTransform;
-
         public void Awake()
         {
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
@@ -63,7 +65,7 @@ namespace UdeS.Promoscience.Controls
         }
 
         public void OnThirdPersonEnabled(bool enable)
-        {    
+        {
             firstPersonCamera.gameObject.SetActive(!enable);
             thirdPersonCamera.gameObject.SetActive(enable);
             mesh.SetActive(enable);

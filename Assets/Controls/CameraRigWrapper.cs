@@ -5,13 +5,24 @@ namespace UdeS.Promoscience.Controls
 {
     // TODO: interface with abstract camera rig
 
-    public class CameraRigWrapper : MonoBehaviour
+    public interface ICameraRig
     {
-        [SerializeField]
-        public SimulatedCameraRig desktopCameraRig;
+        Vector3 AvatarDirection { get; }
 
-        [SerializeField]
-        public VRCameraRig vrCameraRig;
+        Transform AvatarTransform { get; }
+
+        Quaternion AvatarRotation { get; }
+
+        Transform Transform { get; }
+
+        Transform DirectionTransform { get; }
+    }
+
+    public class CameraRigWrapper : MonoBehaviour, IInputScheme, ICameraRig
+    {
+        private IInputScheme inputScheme;
+
+        private ICameraRig cameraRig;
 
         [SerializeField]
         public UnityEngine.EventSystems.StandaloneInputModule standaloneInputs;
@@ -19,218 +30,49 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         public ControllerSelection.OVRInputModule ovrInputModule;
 
+        [SerializeField]
+        public SimulatedCameraRig desktopCameraRig;
 
-        public bool ovrCameraRigEnabled;
+        [SerializeField]
+        public VRCameraRig vrCameraRig;   
 
-        public Vector3 AvatarDirection
-        {
-            get
-            {
-                if (ovrCameraRigEnabled)
-                {
-                    return vrCameraRig.OVRCameraRig.centerEyeAnchor.transform.forward;
-                }
-                else
-                {
-                    return desktopCameraRig.AvatarTransform.forward;
-                }
-            }
-        }
+        public bool IsPrimaryTouchPadDown => inputScheme.IsPrimaryTouchPadDown;
 
-        public Transform AvatarTransform
-        {
-            get
-            {
-                if (ovrCameraRigEnabled)
-                {
-                    return vrCameraRig.AvatarTransform;
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return desktopCameraRig.AvatarTransform;
-                }
-                else return null;
-            }
-        }
+        public bool IsPrimaryTouchPadUp => inputScheme.IsPrimaryTouchPadUp;
 
-        public Quaternion AvatarRotation
-        {
-            get
-            {
-                if (ovrCameraRigEnabled)
-                {
-                    return vrCameraRig.AvatarTransform.rotation;
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return desktopCameraRig.AvatarRotation;
-                }
-                else return Quaternion.identity;
-            }
-        }
+        public bool IsPrimaryIndexTriggerDown => inputScheme.IsPrimaryIndexTriggerDown;
 
+        public bool IsPrimaryIndexTriggerUp => inputScheme.IsPrimaryIndexTriggerUp;
 
+        public bool IsLeftPressed => inputScheme.IsLeftPressed;
 
-        public Transform Transform
-        {
-            get
-            {
-                if (ovrCameraRigEnabled)
-                {
-                    return vrCameraRig.transform;
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return desktopCameraRig.Transform;
-                }
-                else return null;
-            }
-        }
+        public bool IsRightPressed => inputScheme.IsRightPressed;
 
+        public Vector3 AvatarDirection => cameraRig.AvatarDirection;
 
-        public Transform DirectionTransform
-        {
-            get
-            {
-                if (ovrCameraRigEnabled)
-                {
-                    return vrCameraRig.DirectionTransform;
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return desktopCameraRig.DirectionTransform;
-                }
-                else return null;
-            }
-        }
+        public Transform AvatarTransform => cameraRig.AvatarTransform;
 
+        public Quaternion AvatarRotation => cameraRig.AvatarRotation;
+
+        public Transform Transform => cameraRig.Transform;
+
+        public Transform DirectionTransform => cameraRig.DirectionTransform;
 
         void Awake()
         {
 #if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
             desktopCameraRig.gameObject.SetActive(true);
-
-            if (vrCameraRig != null)
-            {
-                vrCameraRig.gameObject.SetActive(false);
-            }
-            ovrInputModule.enabled = false;
-            standaloneInputs.enabled = true;
-            ovrCameraRigEnabled = false;
+            vrCameraRig.gameObject.SetActive(false);
+            cameraRig = desktopCameraRig;
+            inputScheme = new SimulatedInputScheme();
             Cursor.lockState = CursorLockMode.Locked;
 #elif UNITY_ANDROID
-
-            if(desktopCameraRig != null)
-            {
-                desktopCameraRig.gameObject.SetActive(false);
-            }
-
+            desktopCameraRig.gameObject.SetActive(false);
             vrCameraRig.gameObject.SetActive(true);
-            ovrInputModule.enabled = true;
-            standaloneInputs.enabled = false;
-            ovrCameraRigEnabled = true;
+            cameraRig = vrCameraRig;
+            inputScheme = new VRInputScheme();
 #endif
         }
-
-        public bool IsPrimaryTouchPadDown
-        {
-            get
-            {
-                if (ovrCameraRigEnabled)
-                {
-                    return OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad);
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space);
-                }
-                else return false;
-            }
-        }
-
-        public bool IsPrimaryTouchPadUp
-        {
-            get
-            {
-                if (ovrCameraRigEnabled)
-                {
-                    return OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad);
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return Input.GetKeyUp(KeyCode.Mouse0) || Input.GetKeyUp(KeyCode.Space);
-                }
-                else return false;
-            }
-        }
-
-        public bool IsPrimaryIndexTriggerDown
-        {
-            get
-            {
-                if (ovrCameraRigEnabled)
-                {
-                    return OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger);
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Return);
-                }
-                else return false;
-            }
-        }
-
-        public bool IsPrimaryIndexTriggerUp
-        {
-            get
-            {
-                if (ovrCameraRigEnabled)
-                {
-                    return OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger);
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.Return);
-                }
-                else return false;
-            }
-        }
-
-
-        public bool IsLeft
-        {
-            get
-            {
-
-                if (ovrCameraRigEnabled)
-                {
-                    return OVRInput.GetUp(OVRInput.Button.Left);
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A);
-                }
-                else return false;
-            }
-        }
-
-        public bool IsRight
-        {
-            get
-            {
-
-                if (ovrCameraRigEnabled)
-                {
-                    return OVRInput.GetUp(OVRInput.Button.Right);
-                }
-                else if (!ovrCameraRigEnabled)
-                {
-                    return Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D);
-                }
-                else return false;
-            }
-        }
-
 
     }
 }
