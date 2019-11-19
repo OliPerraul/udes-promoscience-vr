@@ -154,7 +154,7 @@ namespace UdeS.Promoscience
             }
         }
 
-        public void RequestTurnRight(bool turnCamera)
+        public void RequestTurnRight(bool turnAvatar)
         {
             if (!isMoving)
             {
@@ -183,7 +183,7 @@ namespace UdeS.Promoscience
                 }
                 else
                 {
-                    TurnRight(turnCamera);
+                    TurnRight(turnAvatar);
                 }
             }
         }
@@ -207,7 +207,7 @@ namespace UdeS.Promoscience
                 }
                 else
                 {
-                    RequestTurnRight(turnCamera: false);
+                    RequestTurnRight(turnAvatar: false);
                 }
             }
         }
@@ -245,13 +245,13 @@ namespace UdeS.Promoscience
                         }
                     }
                 }
-                else if (cameraRig.IsLeft)
+                else if (cameraRig.IsLeftPressed)
                 {
                     RequestTurnLeft(turnAvatar: true);
                 }
-                else if (cameraRig.IsRight)
+                else if (cameraRig.IsRightPressed)
                 {
-                    RequestTurnRight(turnCamera: true);
+                    RequestTurnRight(turnAvatar: true);
                 }
 
                 if (cameraRig.IsPrimaryIndexTriggerDown)

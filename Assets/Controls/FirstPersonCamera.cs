@@ -44,9 +44,6 @@ namespace UdeS.Promoscience.Controls
             }
         }
 
-        //[SerializeField]
-        //private ScriptableBoolean grabbedMouseFocus;
-
         public void Awake()
         {
             
