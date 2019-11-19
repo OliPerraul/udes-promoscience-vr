@@ -13,11 +13,11 @@ namespace UdeS.Promoscience.Labyrinths
 
         public ICollection<IData> data = new List<IData>();
 
-        public ICollection<Resource> Data
+        public List<Resource> Data
         {
             get
             {
-                return Promoscience.Labyrinths.Resources.Instance.LabyrinthData;
+                return Resources.Instance.LabyrinthData;
             }
         }
 

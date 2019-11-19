@@ -24,10 +24,8 @@ namespace UdeS.Promoscience.Replays.UI
         private Dictionary<int, SequenceToggleItem> items;
         
         
-        
         public void Awake()
-        {
-                        
+        {       
             items = new Dictionary<int, SequenceToggleItem>();
             replayOptions.OnActionHandler += OnReplayAction;
         }
