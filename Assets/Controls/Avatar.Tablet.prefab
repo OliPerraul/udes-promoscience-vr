@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 7292907933909670192, guid: ae4058418e4fa1d47924923585a60d70,
         type: 3}
       propertyPath: m_Name
-      value: HeadsetAvatar
+      value: Avatar.Tablet
       objectReference: {fileID: 0}
     - target: {fileID: 7292907933909670156, guid: ae4058418e4fa1d47924923585a60d70,
         type: 3}
@@ -66,6 +66,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292907933249618713, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292907933249618713, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292907933249618713, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292907933249618713, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292907934052275220, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292907934052275220, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292907934052275220, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292907934052275220, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae4058418e4fa1d47924923585a60d70, type: 3}
