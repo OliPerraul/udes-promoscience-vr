@@ -13,12 +13,15 @@ namespace UdeS.Promoscience.UI
         LocalizeStringAsset localizeString;
 
         [SerializeField]
+        LocalizeInlineString inlineLocalizeString = new LocalizeInlineString("[?]");
+
+        [SerializeField]
         Text text;
 
         void OnEnable()
         {
-            if(text != null  && localizeString != null)
-                text.text = localizeString.Value;
+            if (text != null)
+                text.text = localizeString == null ? inlineLocalizeString.Value : localizeString.Value;
 
         }
 
