@@ -27,8 +27,8 @@ namespace UdeS.Promoscience.Controls
 
         public Transform AvatarTransform =>
             controls.IsThirdPersonEnabled.Value ?
-            avatarTransform : 
-            firstPersonCamera.Camera.transform;
+            avatarTransform :
+            firstPersonCamera.PivotTransform;
 
         public Vector3 AvatarDirection => AvatarTransform.forward;
 
