@@ -16,12 +16,10 @@ namespace UdeS.Promoscience.Controls
         bool IsLeftPressed { get; }
 
         bool IsRightPressed { get; }
-
     }
 
     public class SimulatedInputScheme : IInputScheme
     {
-
         public bool IsPrimaryTouchPadDown => Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space);
 
         public bool IsPrimaryTouchPadUp => Input.GetKeyUp(KeyCode.Mouse0) || Input.GetKeyUp(KeyCode.Space);
@@ -33,7 +31,6 @@ namespace UdeS.Promoscience.Controls
         public bool IsLeftPressed => Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A);
 
         public bool IsRightPressed => Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D);
-
     }
 
     public class VRInputScheme : IInputScheme
