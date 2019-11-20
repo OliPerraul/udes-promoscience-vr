@@ -8,15 +8,9 @@ namespace UdeS.Promoscience.Replays.UI
     public class ReplaySelect : MonoBehaviour//.UI.MainDisplay
     {
         [SerializeField]
-        private int maxHorizontal = 2;
-
-        [SerializeField]
         public float SelectionOffset = 60;
 
-        [SerializeField]
-        public Labyrinths.UI.Resource resource;
-
-        private List<LabyrinthPanel> labyrinthPanel;
+        private List<ReplayButton> labyrinthPanel;
 
         protected ControllerAsset ReplayController
         {
@@ -33,7 +27,7 @@ namespace UdeS.Promoscience.Replays.UI
         private Transform buttonsParent;
 
         [SerializeField]
-        private LabyrinthPanel labyrinthButtonTemplate;
+        private ReplayButton labyrinthButtonTemplate;
 
         [SerializeField]
         private GameObject buttonsHorizontalTemplate;
@@ -45,7 +39,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public virtual void Awake()
         {
-            labyrinthPanel = new List<LabyrinthPanel>();
+            labyrinthPanel = new List<ReplayButton>();
 
             replayController.OnActionHandler += OnReplayAction;
 
@@ -131,7 +125,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             labyrinth.SetCamera(
                 Server.Instance.Labyrinths.Data.Count,
-                maxHorizontal,
+                Labyrinths.Utils.SelectMaxHorizontal,
                 i);
         }
 
@@ -162,9 +156,11 @@ namespace UdeS.Promoscience.Replays.UI
                     Server.Instance.Labyrinths.IdPairs.Add(data.Id, labyrinth);
 
                     SetLabyrinthCamera(labyrinth, i);
+                    AddLabyrinth(i);
 
                     i++;
                 }
+
             }
             else
             {
@@ -178,11 +174,18 @@ namespace UdeS.Promoscience.Replays.UI
 
         GameObject horizontal = null;
 
-        public void AddLabyrinth()
-        {
-            var data = Server.Instance.Labyrinths.Data[labyrinthIndex];
 
-            if (labyrinthIndex % maxHorizontal == 0)
+        public void AddNextLabyrinth()
+        {
+            AddLabyrinth(labyrinthIndex);
+            labyrinthIndex++;
+        }
+
+        public void AddLabyrinth(int i)
+        {
+            var data = Server.Instance.Labyrinths.Data[i];
+
+            if (i % Labyrinths.Utils.SelectMaxHorizontal == 0)
             {
                 horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
                 horizontal.gameObject.SetActive(true);
@@ -191,11 +194,11 @@ namespace UdeS.Promoscience.Replays.UI
             List<Course> courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(data.Id);
 
             var button = labyrinthButtonTemplate.Create(horizontal.transform, data, courses.Count == 0);
-            button.name = "btn " + labyrinthIndex;
+            button.name = "btn " + i;
             button.gameObject.SetActive(true);
             labyrinthPanel.Add(button);
 
-            labyrinthIndex++;
+            i++;
         }
     }
 }

@@ -15,13 +15,8 @@ namespace UdeS.Promoscience
         float _time = 0f;
 
         bool active = false;
-        public bool IsActive
-        {
-            get
-            {
-                return active;
-            }
-        }
+        public bool IsActive => active;
+
 
         public Cirrus.Event OnTimeLimitHandler;
 
@@ -37,13 +32,8 @@ namespace UdeS.Promoscience
             }
         }
 
-        public float Time
-        {
-            get
-            {
-                return _time;
-            }
-        }
+        public float Time => _time;
+
 
         public void Reset(float limit=-1)
         {

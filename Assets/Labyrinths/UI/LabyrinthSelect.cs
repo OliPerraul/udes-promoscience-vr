@@ -8,13 +8,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
     public class LabyrinthSelect : MonoBehaviour//.UI.MainDisplay
     {
         [SerializeField]
-        private int maxHorizontal = 2;
-
-        [SerializeField]
         public float SelectionOffset = 60;
-
-        [SerializeField]
-        public Resource resource;
 
         private List<LabyrinthButton> labyrinthButtons;
 
@@ -136,7 +130,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         {
             labyrinth.SetCamera(
                 Server.Instance.Labyrinths.Data.Count,
-                maxHorizontal,
+                Utils.SelectMaxHorizontal,
                 i);
         }
 
@@ -190,7 +184,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             Labyrinth l;
             foreach (var data in Server.Instance.Labyrinths.Data)
             {
-                if (i % maxHorizontal == 0)
+                if (i % Utils.SelectMaxHorizontal == 0)
                 {
                     horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
                     horizontal.gameObject.SetActive(true);

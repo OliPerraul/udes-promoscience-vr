@@ -68,6 +68,8 @@ namespace UdeS.Promoscience.Labyrinths
     {
         public const int NumLabyrinth = 4;
 
+        public const int SelectMaxHorizontal = 2;
+
         public const int SizeSmall = 9;
 
         public const int SizeMedium = 11;
