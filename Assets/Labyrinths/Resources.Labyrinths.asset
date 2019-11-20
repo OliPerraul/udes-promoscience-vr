@@ -4,19 +4,21 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2d69920a88c41c46a94f5e65c718a52, type: 3}
   m_Name: Resources.Labyrinths
   m_EditorClassIdentifier: 
-  LabyrinthSmall: {fileID: 114960978338339494, guid: ec672ff3d7d1d1047b19df996724e006,
-    type: 2}
-  LabyrinthMedium: {fileID: 114960978338339494, guid: f697c43a84beec044840ffc7981c5b14,
-    type: 2}
-  LabyrinthLarge: {fileID: 114960978338339494, guid: c17c76a5f8f58f149a4e08af8c7e26d5,
-    type: 2}
+  RenderTexture: {fileID: 8400000, guid: 81abd82c563d3154f9deb41e09c5163c, type: 2}
+  LabyrinthSmall: {fileID: 1870247976304202809, guid: e4cd753bcbd167343a060b757b93204c,
+    type: 3}
+  LabyrinthMedium: {fileID: 1870247976304202809, guid: ff895873200c1384782383801c1de3a0,
+    type: 3}
+  LabyrinthLarge: {fileID: 1870247976304202809, guid: e5968c39a10e36e41a1ed7a981f515ec,
+    type: 3}
   LabyrinthData:
   - {fileID: 11400000, guid: 55d542535bc1ed24eb63cbdc744552d8, type: 2}
   - {fileID: 11400000, guid: 008587f14c0cf2d46a1c8a2781ef19cf, type: 2}

@@ -15,9 +15,9 @@ namespace UdeS.Promoscience.Labyrinths
     public class Resource : ScriptableObject, IData
     {
         [SerializeField]
-        private Skin skin;
+        private SkinResource skin;
 
-        public Skin Skin
+        public SkinResource Skin
         {
             get
             {

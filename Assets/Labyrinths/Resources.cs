@@ -12,6 +12,9 @@ namespace UdeS.Promoscience.Labyrinths
     public class Resources : BaseResources<Resources>
     {
         [SerializeField]
+        public RenderTexture RenderTexture;
+
+        [SerializeField]
         public Labyrinth LabyrinthSmall;
 
         [SerializeField]
@@ -24,7 +27,7 @@ namespace UdeS.Promoscience.Labyrinths
         {
             if (Skins == null || Skins.Count == 0)
             {
-                var skins = Cirrus.AssetDatabase.FindObjectsOfType<Skin>();
+                var skins = Cirrus.AssetDatabase.FindObjectsOfType<SkinResource>();
                 Skins = skins == null ? null : skins.ToList();
             }
 
@@ -53,6 +56,8 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
+        public static int NumLabyrinths => Instance.LabyrinthData.Count;
+
         [SerializeField]
         public List<Resource> LabyrinthData;
 
@@ -67,10 +72,10 @@ namespace UdeS.Promoscience.Labyrinths
         }
 
         [SerializeField]
-        public List<Skin> Skins;
+        public List<SkinResource> Skins;
 
         [SerializeField]
-        public Skin GreyboxSkin;
+        public SkinResource GreyboxSkin;
     }
 }
 

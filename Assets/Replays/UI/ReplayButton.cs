@@ -4,7 +4,17 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class ReplayButton : MonoBehaviour
+    public enum ReplayButtonMode
+    {
+        Add,
+        Remove,
+        Both,
+        None
+
+    }
+
+
+    public class ReplayButton : Labyrinths.UI.BaseLabyrinthButton
     {
         [SerializeField]
         private UnityEngine.UI.Button removeButton;
@@ -12,18 +22,45 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private UnityEngine.UI.Button addButton;
 
-        [SerializeField]
-        private UnityEngine.UI.Button button;
-
-        private Labyrinths.IData labyrinth;
-
         public Cirrus.Event<Labyrinths.IData> OnRemovedHandler;
 
-        public void Awake()
+        public ReplayButtonMode Mode
         {
+            set
+            {
+                switch (value)
+                {
+                    case ReplayButtonMode.Add:
+                        removeButton.gameObject.SetActive(false);
+                        addButton.gameObject.SetActive(true);
+                        break;
+
+                    case ReplayButtonMode.Remove:
+                        removeButton.gameObject.SetActive(true);
+                        addButton.gameObject.SetActive(false);
+                        break;
+
+                    case ReplayButtonMode.Both:
+                        removeButton.gameObject.SetActive(true);
+                        addButton.gameObject.SetActive(true);
+                        break;
+
+                    case ReplayButtonMode.None:
+                        removeButton.gameObject.SetActive(false);
+                        addButton.gameObject.SetActive(false);
+                        break;
+
+                }
+            }
+        }
+
+
+        public override void Awake()
+        {
+            base.Awake();
+
             addButton.onClick.AddListener(OnAddedClicked);
             removeButton.onClick.AddListener(OnRemovedClicked);
-            button.onClick.AddListener(OnLabyrinthClicked);
         }
 
         public void OnRemovedClicked()
@@ -36,18 +73,16 @@ namespace UdeS.Promoscience.Replays.UI
 
         }
 
-        public void OnLabyrinthClicked()
-        {
-
-        }
-
         public ReplayButton Create(
             Transform parent,
-            Labyrinths.IData labyrinth,
-            bool replayLocked = true)
+            Labyrinths.Labyrinth labyrinth,
+            ReplayButtonMode mode=ReplayButtonMode.Remove)
         {
             var l = this.Create(parent);
             l.labyrinth = labyrinth;
+            l.rawImage.texture = labyrinth.Camera.RenderTexture;
+            l.Mode = mode;
+
             return l;
         }
     }

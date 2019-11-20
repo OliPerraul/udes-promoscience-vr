@@ -64,8 +64,11 @@ namespace UdeS.Promoscience.Labyrinths
         Large
     }
 
-    public static class Utils
+    public static partial class Utils
     {
+        /// <summary>
+        /// TODO replace with Resources.NumLabyrinth
+        /// </summary>
         public const int NumLabyrinth = 4;
 
         public const int SelectMaxHorizontal = 2;
@@ -299,6 +302,10 @@ namespace UdeS.Promoscience.Labyrinths
     [System.Serializable]
     public class Camera
     {
+        private RenderTexture renderTexture;
+
+        public RenderTexture RenderTexture => renderTexture;
+
         [SerializeField]
         public UnityEngine.Camera Source;
 
@@ -307,6 +314,13 @@ namespace UdeS.Promoscience.Labyrinths
 
         [SerializeField]
         public GameObject Overlay;
+
+        public void Init()
+        {
+            Source.gameObject.SetActive(true);
+            renderTexture = Object.Instantiate(Resources.Instance.RenderTexture);
+            Source.targetTexture = RenderTexture;
+        }
 
         public void Maximize()
         {
@@ -319,16 +333,16 @@ namespace UdeS.Promoscience.Labyrinths
             int vertical,
             int index)
         {
-            var x = ((float)index.Mod(horizontal));
+            //var x = ((float)index.Mod(horizontal));
 
-            var y = ((float)(index / horizontal));
-            y = (vertical - 1) - y;
+            //var y = ((float)(index / horizontal));
+            //y = (vertical - 1) - y;
 
-            Source.rect = new Rect(
-                (x / horizontal),
-                y / vertical,
-                1f / horizontal,
-                1f / vertical);
+            //Source.rect = new Rect(
+            //    (x / horizontal),
+            //    y / vertical,
+            //    1f / horizontal,
+            //    1f / vertical);
         }
     }
 
@@ -336,8 +350,13 @@ namespace UdeS.Promoscience.Labyrinths
 
     public delegate void OnDataEvent(IData labyrinth);
 
-    public class Labyrinth : MonoBehaviour
+    public class Labyrinth : MonoBehaviour, ISkin
     {
+        [SerializeField]
+        private Piece[] pieces;
+
+        public IEnumerable<Piece> Pieces => data.Skin == null ? pieces : data.Skin.Pieces;
+
         [SerializeField]
         public Camera Camera;
 
@@ -346,60 +365,42 @@ namespace UdeS.Promoscience.Labyrinths
 
         private IData data = null;
 
-        public IData Data
-        {
-            get
-            {
-                return data == null ? scriptableData : data;
-            }
-        }
-
-        public int Id
-        {
-            get
-            {
-                return data.Id;
-            }
-        }
-
         [SerializeField]
         private GameObject[,] labyrinthTiles;
 
         int[,] labyrinth;
 
-        Vector2Int StartPosition
+        public IData Data => data == null ? scriptableData : data;
+
+        public int Id => data.Id;
+
+        Vector2Int StartPosition => data.StartPos;
+
+        Vector2Int EndPosition => data.EndPos;
+
+        public void Awake()
         {
-            get
-            {
-                return data.StartPos;
-            }
+            Camera.Init();
         }
 
-        Vector2Int EndPosition
-        {
-            get
-            {
-                return data.EndPos;
-            }
-        }
 
         private void Start()
         {
             //Client.Instance.clientStateChangedEvent += OnGameStateChanged;
         }
 
-        public void SetCamera(
-            int numLabyrinths,
-            int maxHorizontal,
-            int index)
-        {
-            Camera.Source.gameObject.SetActive(true);
+        //public void SetCamera(
+        //    int numLabyrinths,
+        //    int maxHorizontal,
+        //    int index)
+        //{
+        //    Camera.Source.gameObject.SetActive(true);
 
-            Camera.Split(
-                maxHorizontal,
-                numLabyrinths / maxHorizontal,
-                index);
-        }
+        //    //Camera.Split(
+        //    //    maxHorizontal,
+        //    //    numLabyrinths / maxHorizontal,
+        //    //    index);
+        //}
 
         public void OnGameStateChanged()
         {
@@ -424,7 +425,7 @@ namespace UdeS.Promoscience.Labyrinths
             //}
         }
 
-        public void GenerateLabyrinthVisual(Skin skin=null)
+        public void GenerateLabyrinthVisual(SkinResource skin=null)
         {
             if (labyrinthTiles != null)
             {
@@ -458,7 +459,7 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        GameObject InstantiateLabyrithTile(int x, int y, int tileId, Skin skin=null)
+        GameObject InstantiateLabyrithTile(int x, int y, int tileId, SkinResource skin=null)
         {
             if (tileId == 0)
                 return null;
@@ -468,10 +469,8 @@ namespace UdeS.Promoscience.Labyrinths
             Vector3 tilePosition = GetLabyrinthPositionInWorldPosition(x, y);
 
             tile = Instantiate(
-                skin == null ? 
-                    data.Skin.GetGameObject((TileType)tileId) :
-                    skin.GetGameObject((TileType)tileId), 
-                tilePosition, 
+                this.GetPiece((TileType)tileId).gameObject, 
+                tilePosition,
                 Quaternion.identity, 
                 gameObject.transform); 
 
@@ -529,6 +528,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void Init()
         {
+            Camera.Source.gameObject.SetActive(true);
             Camera.Source.transform.position += GetLabyrinthPositionInWorldPosition(0, 0);
             Camera.Source.transform.position += new Vector3(
                 labyrinthTiles.GetLength(0) * Utils.TILE_SIZE,

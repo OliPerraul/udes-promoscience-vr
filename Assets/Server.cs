@@ -442,7 +442,7 @@ namespace UdeS.Promoscience
                 }
             }
 
-            GameState = ServerGameState.Replay;
+            GameState = ServerGameState.ReplaySelect;
         }
 
 

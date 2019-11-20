@@ -119,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 1821762834476535566, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
         type: 3}
       propertyPath: m_Name
-      value: Piece.Cave1.Wall1
+      value: Piece.Cave1.Horizontal1
       objectReference: {fileID: 0}
     - target: {fileID: 1827494317543052124, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
         type: 3}
@@ -180,6 +180,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
+        type: 3}
+      propertyPath: tileType
+      value: 151
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fabdadf1646b1ca4da94e6b4c368e5bf, type: 3}

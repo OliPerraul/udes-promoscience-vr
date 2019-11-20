@@ -37,7 +37,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         string Json { get; }
 
-        Skin Skin { get; }
+        SkinResource Skin { get; }
     }
 
     // TODO from json (combine with ScriptableObect)
@@ -66,7 +66,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public int SkinId;
 
-        public Skin Skin
+        public SkinResource Skin
         {
             get {
                 return Resources.Instance.Skins[SkinId];

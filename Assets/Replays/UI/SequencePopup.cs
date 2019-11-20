@@ -28,7 +28,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         
         public void OnEnable()
-        {
+        { 
             replayOptions.OnCourseSelectedHandler += OnCourseSelected;
         }
 
