@@ -2,6 +2,7 @@
 using System.Collections;
 using Cirrus.Extensions;
 using System;
+using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Replays.UI
 {
@@ -25,7 +26,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public Cirrus.Event<Transform,ReplayButton> OnRemovedHandler;
 
-        public Cirrus.Event<Transform> OnAddedHandler;
+        public Cirrus.Event OnAddedHandler;
 
         private ReplayButtonMode mode;
 
@@ -66,14 +67,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             base.Awake();
 
-            addButton.onClick.AddListener(() =>
-            {
-                if (transform.parent.childCount == 1)
-                    OnAddedHandler?.Invoke(null);
-                else
-                    OnAddedHandler?.Invoke(transform.parent);
-            }
-            );
+            addButton.onClick.AddListener(() => OnAddedHandler?.Invoke());
 
             removeButton.onClick.AddListener(OnRemoved);
 

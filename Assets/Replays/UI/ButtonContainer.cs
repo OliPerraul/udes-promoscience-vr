@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Cirrus.Editor;
-
+using Cirrus;
+using UdeS.Promoscience.Labyrinths;
 
 namespace UdeS.Promoscience.Replays.UI
 {
@@ -11,36 +12,53 @@ namespace UdeS.Promoscience.Replays.UI
     public class ButtonContainer : MonoBehaviour
     {
         [SerializeField]
-        [GetComponent(typeof(Canvas), GetComponentAttributeMode.Parent)]
-        private Canvas _canvas;
+        [GetComponent(typeof(ReplaySelect))]
+        private ReplaySelect select;
 
-        private RectTransform _canvasTransform;
+
+        [SerializeField]
+        [GetComponent(typeof(Canvas), GetComponentAttributeMode.Parent)]
+        private Canvas canvas;
+
+        private RectTransform canvasTransform;
 
         [SerializeField]
         [GetComponent(typeof(LayoutElement))]
-        private LayoutElement _layoutElement;
+        private LayoutElement layoutElement;
 
         [SerializeField]
         [GetComponent(typeof(RectTransform))]
-        private RectTransform _rectTransform;
+        private RectTransform rectTransform;
 
+        [SerializeField]
+        [GetComponent(typeof(ReplayButton))]
+        private ReplayButton buttonTemplate;
+
+        public Event<ReplayButton> OnButtonRemovedHandler;
+
+        public Event<ButtonContainer> OnContainerRemovedHandler;
+
+
+        public int Count => buttons.Count;
+
+        private List<ReplayButton> buttons = new List<ReplayButton>();
 
         public void Awake()
         {
-            _canvasTransform = _canvas.GetComponent<RectTransform>();
+            canvasTransform = canvas.GetComponent<RectTransform>();
             RespectLayout();
         }
 
         public void Fit()
         {
-            _layoutElement.ignoreLayout = true;
-            _rectTransform.sizeDelta = new Vector2(
-                _canvasTransform.rect.width,
-                _canvasTransform.rect.height);
+            layoutElement.ignoreLayout = true;
+            rectTransform.sizeDelta = new Vector2(
+                canvasTransform.rect.width,
+                canvasTransform.rect.height);
 
-            _rectTransform.localPosition = new Vector2(
-                Mathf.Abs(_rectTransform.rect.x),
-                -_canvasTransform.rect.height / 2);
+            rectTransform.localPosition = new Vector2(
+                Mathf.Abs(rectTransform.rect.x),
+                -canvasTransform.rect.height / 2);
 
             //Debug.Log(_rectTransform.rect);
             //Debug.Log(_canvasTransform.rect.height);
@@ -49,12 +67,62 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void RespectLayout()
         {
-            _layoutElement.ignoreLayout = false;
-            _layoutElement.preferredHeight = _canvasTransform.rect.height / 2;
+            layoutElement.ignoreLayout = false;
+            layoutElement.preferredHeight = canvasTransform.rect.height / 2;
         }
 
 
+        //public void Add(Labyrinth labyrinth, int index)
+        //{
+        //    var button = buttonTemplate.Create(
+        //        transform,
+        //        labyrinth,
+        //        index == Labyrinths.Utils.NumLabyrinth - 1 ?
+        //            ReplayButtonMode.Both :
+        //            ReplayButtonMode.Remove);
+
+        //    buttons.Add(button);
+
+        //    button.name = "btn " + index;
+
+        //    button.gameObject.SetActive(true);
+
+        //    button.OnAddedHandler += OnLabyrinthAdded;
+
+        //    button.OnRemovedHandler += OnLabyrinthRemoved;
+        //}
+
+        public void OnLabyrinthRemoved(Transform parent, ReplayButton button)
+        {
+            //labyrinths.Remove(button.Labyrinth);
+
+            //for (int labyrinthIndex = 0; labyrinthIndex < labyrinths.Count; labyrinthIndex++)
+            //{
+            //    labyrinths[labyrinthIndex].transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * labyrinthIndex;
+            //}
+
+            //buttons.Remove(button);
+
+            //RemoveHorizontal(parent.gameObject);
+
+            //if (buttons.Count == 1)
+            //{
+            //    buttons[0].Mode = ReplayButtonMode.Add;
+            //}
+        }
 
 
+        public void AddLabyrinth(Labyrinth labyrinth)
+        {
+            var button = buttonTemplate.Create(
+                transform,
+                labyrinth);
+
+            buttons.Add(button);
+            button.gameObject.SetActive(true);
+            button.OnAddedHandler += () => AddLabyrinth(select.CreateNextLabyrinth());
+            button.OnRemovedHandler += OnLabyrinthRemoved;
+           
+        }
     }
 }
