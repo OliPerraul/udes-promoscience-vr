@@ -8,8 +8,6 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class ReplaySelect : Labyrinths.UI.BaseLabyrinthSelect//.UI.MainDisplay
     {
-        private List<ReplayButton> labyrinthPanel;
-
         protected ControllerAsset ReplayController
         {
             get
@@ -27,6 +25,8 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private ReplayButton labyrinthButtonTemplate;
 
+        private List<ReplayButton> buttons = new List<ReplayButton>();
+
         [SerializeField]
         private GameObject buttonsHorizontalTemplate;
 
@@ -35,16 +35,26 @@ namespace UdeS.Promoscience.Replays.UI
         private UnityEngine.UI.Button buttonExit;
 
 
+        [SerializeField]
+        private UnityEngine.UI.Button buttonAdd;
+
+
+        private int labyrinthIndex = 0;
+
+        private int LabyrinthIndexWrap => labyrinthIndex.Mod(Labyrinths.Resources.NumLabyrinths);
+
+        private GameObject horizontal = null;
+
+        public List<GameObject> horizontals = new List<GameObject>();
+
+
         public virtual void Awake()
         {
-            labyrinthPanel = new List<ReplayButton>();
+            Server.Instance.gameStateChangedEvent += OnServerGameStateChanged;
 
             replayController.OnActionHandler += OnReplayAction;
 
-            Server.Instance.gameStateChangedEvent += OnServerGameStateChanged;
-
-            buttonExit.onClick.AddListener(OnExitClicked);
-
+            buttonAdd.onClick.AddListener(AddBottom);
         }
 
 
@@ -58,9 +68,9 @@ namespace UdeS.Promoscience.Replays.UI
 
                 Clear();
 
-                for(int i = 0; i < Labyrinths.Utils.NumLabyrinth; i++)
+                for(labyrinthIndex = 0; labyrinthIndex < Labyrinths.Utils.NumLabyrinth; labyrinthIndex++)
                 {
-                    AddLabyrinth(i);
+                    AddLabyrinth(labyrinthIndex);
                 }
 
             }
@@ -71,13 +81,6 @@ namespace UdeS.Promoscience.Replays.UI
             }
         }
 
-        public void OnRandomClicked()
-        {
-            Server.Instance.StartGameWithLabyrinth(
-                Random.Range(
-                    1, 
-                    Labyrinths.Utils.NumLabyrinth + 1));
-        }
 
         public void OnExitClicked()
         {
@@ -104,22 +107,6 @@ namespace UdeS.Promoscience.Replays.UI
             }
         }
 
-
-        public void OnReplayClicked(IData labyrinth)
-        {
-            Enabled = true;
-            Enabled = false;
-
-            Server.Instance.StartAdvancedReplay(labyrinth);
-        }
-
-        public void OnPlayClicked(IData labyrinth)
-        {
-            Enabled = true;
-            Enabled = false;
-            Server.Instance.StartGameWithLabyrinth(labyrinth.Id);
-        }
-
         public virtual void Clear()
         {
             foreach (Transform children in buttonsParent)
@@ -139,24 +126,40 @@ namespace UdeS.Promoscience.Replays.UI
                 }
             }
 
+            buttons.Clear();
+
             Server.Instance.ClearLabyrinths();
         }
 
-
-        private int labyrinthIndex = 0;
-
-        GameObject horizontal = null;
-
-
-        public void AddNextLabyrinth()
+        public void AddBottom()
         {
-            AddLabyrinth(labyrinthIndex);
-            labyrinthIndex++;
+            AddHorizontal();
+            AddNextLabyrinth(horizontal.transform);
         }
 
-        public void OnLabyrinthAdded()
+        public void AddNextLabyrinth(Transform parent)
         {
-            AddNextLabyrinth();
+            if (parent == null)
+            {
+                AddBottom();
+                return;
+            }
+
+            var data = Server.Instance.Labyrinths.Data[LabyrinthIndexWrap];
+
+            Labyrinth labyrinth = Labyrinths.Resources.Instance
+              .GetLabyrinthTemplate(data)
+              .Create(data);
+
+            labyrinths.Add(labyrinth);
+
+            labyrinth.GenerateLabyrinthVisual();
+
+            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * labyrinths.Count;
+
+            AddLabyrinthButton(parent, LabyrinthIndexWrap, labyrinth);
+
+            labyrinthIndex++;
         }
 
 
@@ -168,33 +171,89 @@ namespace UdeS.Promoscience.Replays.UI
                   .GetLabyrinthTemplate(data)
                   .Create(data);
 
+            labyrinths.Add(labyrinth);
+
             labyrinth.GenerateLabyrinthVisual();
 
             labyrinth.Init();
 
-            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * i;
-
-            Server.Instance.Labyrinths.IdPairs.Add(data.Id, labyrinth);
+            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * labyrinths.Count;
 
             if (i % Labyrinths.Utils.SelectMaxHorizontal == 0)
             {
-                horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
-
-                horizontal.gameObject.SetActive(true);
+                AddHorizontal();
             }
 
-            var button = labyrinthButtonTemplate.Create(
-                horizontal.transform,
-                labyrinth,
-                i == Labyrinths.Utils.NumLabyrinth - 1 ?  ReplayButtonMode.Both : ReplayButtonMode.Remove);
+            AddLabyrinthButton(horizontal.transform, i, labyrinth);
+        }
 
-            button.name = "btn " + i;
+        public void AddHorizontal()
+        {
+            if (horizontals.Count == 1)
+            {
+                horizontals[0].GetComponent<ButtonContainer>()?.RespectLayout();
+            }
+
+            horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
+
+            horizontals.Add(horizontal);
+
+            horizontal.gameObject.SetActive(true);
+        }
+
+        public void RemoveHorizontal(GameObject horizontal)
+        {
+            if (horizontal.GetComponentsInChildren<ReplayButton>(false).Length == 1)
+            {
+                horizontal?.gameObject?.Destroy();
+                horizontals.Remove(horizontal.gameObject);
+            }
+
+            if (horizontals.Count == 1)
+            {
+                horizontals[0].GetComponent<ButtonContainer>()?.Fit();
+            }
+        }
+
+        public void AddLabyrinthButton(Transform parent, int index, Labyrinth labyrinth)
+        {
+            var button = labyrinthButtonTemplate.Create(
+                parent,
+                labyrinth,
+                index == Labyrinths.Utils.NumLabyrinth - 1 ? 
+                    ReplayButtonMode.Both : 
+                    ReplayButtonMode.Remove);
+
+            buttons.Add(button);
+
+            button.name = "btn " + index;
 
             button.gameObject.SetActive(true);
-            button.OnAddedHandler += OnLabyrinthAdded;
-            //button.OnRemovedHandler += OnLabyrinthRemoved;
 
-            labyrinthPanel.Add(button);
+            button.OnAddedHandler += AddNextLabyrinth;
+
+            button.OnRemovedHandler += OnLabyrinthRemoved;
         }
+
+
+        public void OnLabyrinthRemoved(Transform parent, ReplayButton button)
+        {
+            labyrinths.Remove(button.Labyrinth);
+
+            for (int labyrinthIndex = 0; labyrinthIndex < labyrinths.Count; labyrinthIndex++)
+            {
+                labyrinths[labyrinthIndex].transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * labyrinthIndex;
+            }
+
+            buttons.Remove(button);
+
+            RemoveHorizontal(parent.gameObject);
+
+            if (buttons.Count == 1)
+            {
+                buttons[0].Mode = ReplayButtonMode.Add;
+            }
+        }
+
     }
 }

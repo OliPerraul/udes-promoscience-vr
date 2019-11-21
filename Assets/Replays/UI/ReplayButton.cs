@@ -23,9 +23,9 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private UnityEngine.UI.Button addButton;
 
-        public Cirrus.Event<ReplayButton> OnRemovedHandler;
+        public Cirrus.Event<Transform,ReplayButton> OnRemovedHandler;
 
-        public Cirrus.Event OnAddedHandler;
+        public Cirrus.Event<Transform> OnAddedHandler;
 
         private ReplayButtonMode mode;
 
@@ -66,16 +66,32 @@ namespace UdeS.Promoscience.Replays.UI
         {
             base.Awake();
 
-            addButton.onClick.AddListener(()=> OnAddedHandler?.Invoke());
-            removeButton.onClick.AddListener(()=> OnRemovedHandler?.Invoke(this));
-            removeButton.onClick.AddListener(() => gameObject.Destroy());
+            addButton.onClick.AddListener(() =>
+            {
+                if (transform.parent.childCount == 1)
+                    OnAddedHandler?.Invoke(null);
+                else
+                    OnAddedHandler?.Invoke(transform.parent);
+            }
+            );
+
+            removeButton.onClick.AddListener(OnRemoved);
+
             Mode = mode;
         }
+
+        public void OnRemoved()
+        {
+            Labyrinth.gameObject?.Destroy();
+            gameObject?.Destroy();
+            OnRemovedHandler?.Invoke(transform.parent, this);
+        }
+
 
         public ReplayButton Create(
             Transform parent,
             Labyrinths.Labyrinth labyrinth,
-            ReplayButtonMode mode=ReplayButtonMode.Remove)
+            ReplayButtonMode mode = ReplayButtonMode.Remove)
         {
             var l = this.Create(parent);
             l.labyrinth = labyrinth;
