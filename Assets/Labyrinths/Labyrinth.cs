@@ -73,6 +73,8 @@ namespace UdeS.Promoscience.Labyrinths
 
         public const int SelectMaxHorizontal = 2;
 
+        public const float SelectionOffset = 280;
+
         public const int SizeSmall = 9;
 
         public const int SizeMedium = 11;
@@ -356,6 +358,8 @@ namespace UdeS.Promoscience.Labyrinths
         private Piece[] pieces;
 
         public IEnumerable<Piece> Pieces => data.Skin == null ? pieces : data.Skin.Pieces;
+
+        public string Name => data.Skin == null ? name : data.Skin.Name;
 
         [SerializeField]
         public Camera Camera;

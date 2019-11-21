@@ -7,8 +7,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
 {
     public class LevelSelect : BaseLabyrinthSelect//.UI.MainDisplay
     {
-        [SerializeField]
-        public float SelectionOffset = 60;
 
         private List<LabyrinthButton> labyrinthButtons;
 
@@ -160,7 +158,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
                     labyrinth.Init();
 
-                    labyrinth.transform.position = Vector3.down * SelectionOffset * i;
+                    labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * i;
 
                     Server.Instance.Labyrinths.IdPairs.Add(data.Id, labyrinth);
 
@@ -180,11 +178,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
                     button.gameObject.SetActive(true);
 
                     labyrinthButtons.Add(button);
-
-                    button.OnReplayClickedHandler += OnReplayClicked;
-
-                    button.OnPlayClickedHandler += OnPlayClicked;
-
                 }
 
             }

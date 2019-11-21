@@ -8,9 +8,6 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class ReplaySelect : Labyrinths.UI.BaseLabyrinthSelect//.UI.MainDisplay
     {
-        [SerializeField]
-        public float SelectionOffset = 60;
-
         private List<ReplayButton> labyrinthPanel;
 
         protected ControllerAsset ReplayController
@@ -157,6 +154,12 @@ namespace UdeS.Promoscience.Replays.UI
             labyrinthIndex++;
         }
 
+        public void OnLabyrinthAdded()
+        {
+            AddNextLabyrinth();
+        }
+
+
         public void AddLabyrinth(int i)
         {
             var data = Server.Instance.Labyrinths.Data[i];
@@ -169,13 +172,14 @@ namespace UdeS.Promoscience.Replays.UI
 
             labyrinth.Init();
 
-            labyrinth.transform.position = Vector3.down * SelectionOffset * i;
+            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * i;
 
             Server.Instance.Labyrinths.IdPairs.Add(data.Id, labyrinth);
 
             if (i % Labyrinths.Utils.SelectMaxHorizontal == 0)
             {
                 horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
+
                 horizontal.gameObject.SetActive(true);
             }
 
@@ -187,6 +191,8 @@ namespace UdeS.Promoscience.Replays.UI
             button.name = "btn " + i;
 
             button.gameObject.SetActive(true);
+            button.OnAddedHandler += OnLabyrinthAdded;
+            //button.OnRemovedHandler += OnLabyrinthRemoved;
 
             labyrinthPanel.Add(button);
         }

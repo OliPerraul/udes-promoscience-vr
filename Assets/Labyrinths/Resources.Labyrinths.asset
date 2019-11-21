@@ -25,14 +25,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 540bdb25eaa438c4d9267f31042f78d3, type: 2}
   - {fileID: 11400000, guid: f585df0e9df9b9d47bcd05ea1b479585, type: 2}
   Skins:
-  - {fileID: 11400000, guid: f2cb7027cacf0004cb19a76cb82afe46, type: 2}
   - {fileID: 11400000, guid: da1963385689a074f87e5e7d6486ee60, type: 2}
-  - {fileID: 11400000, guid: bc7737b45a928cd498bbeb1b161639b4, type: 2}
-  - {fileID: 11400000, guid: 0935aea091db8284d994d890b46556d2, type: 2}
-  - {fileID: 11400000, guid: 6d871f479423c7e4498ab06c33a4a17a, type: 2}
   - {fileID: 11400000, guid: 13706b901ba7e5d408691a92466f35d4, type: 2}
   - {fileID: 11400000, guid: fe0ff2477e9448a4295b3fc353c6e980, type: 2}
   - {fileID: 11400000, guid: 6b408ac85c4acce4c826dc0270f34286, type: 2}
-  - {fileID: 11400000, guid: dbdf35944d578f74aa0149ff8131cef7, type: 2}
   - {fileID: 11400000, guid: bf57e4658919c964c83037d5bae8f15b, type: 2}
   GreyboxSkin: {fileID: 11400000, guid: bf57e4658919c964c83037d5bae8f15b, type: 2}

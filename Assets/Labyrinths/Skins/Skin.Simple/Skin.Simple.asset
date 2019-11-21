@@ -4,30 +4,17 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f757e0af315acc44e809553688f706f5, type: 3}
   m_Name: Skin.Simple
   m_EditorClassIdentifier: 
-  FloorStart: {fileID: 1213397253378824, guid: dd6b3d5434963ad4a972a7780440af19, type: 2}
-  FloorEnd: {fileID: 1578370847054714, guid: 38299c7c68746054192a25570484bb14, type: 2}
-  FloorTile1: {fileID: 1933259691003538, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
-  FloorTile2: {fileID: 1933259691003538, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
-  FloorTile3: {fileID: 1933259691003538, guid: fdebb61143ef46e4c95996d62f99aff4, type: 2}
-  Corner1: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
-  Corner2: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
-  Corner3: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
-  Horizontal1: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1,
-    type: 2}
-  Horizontal2: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1,
-    type: 2}
-  Horizontal3: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1,
-    type: 2}
-  Horizontal4: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1,
-    type: 2}
-  Vertical1: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
-  Vertical2: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
-  Vertical3: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
-  Vertical4: {fileID: 1346479971706896, guid: d1f2c29958b34a84bb304e5ad54b82e1, type: 2}
+  pieces:
+  - {fileID: 3923659041606879233, guid: 4cef1cbfc50355643a51f8be6c2a93cc, type: 3}
+  - {fileID: 3923659041606879233, guid: 4cef1cbfc50355643a51f8be6c2a93cc, type: 3}
+  - {fileID: 3923659041606879233, guid: 27ffb1855510b3c4996607f67637698a, type: 3}
+  - {fileID: 3923659041606879233, guid: 1a60d8307a9c6b14aabee23deca5b543, type: 3}
+  - {fileID: 3923659041606879233, guid: 3ca9d78de9d0f45419ebf47528b061b1, type: 3}

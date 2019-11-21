@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Labyrinths
 {
     public class Piece : MonoBehaviour
     {
         [SerializeField]
-        private TileType tileType;
+        private TileType[] tileTypes;
 
-        public TileType TileType => tileType;
+        public IEnumerable<TileType> TileTypes => tileTypes;
 
     }
 }

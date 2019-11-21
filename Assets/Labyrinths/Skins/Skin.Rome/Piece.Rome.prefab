@@ -9,7 +9,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1367354284668338, guid: f9b4630a3a95201419133e30cf8ec6b4, type: 3}
       propertyPath: m_Name
-      value: Piece
+      value: Piece.Rome
+      objectReference: {fileID: 0}
+    - target: {fileID: 1367354284668338, guid: f9b4630a3a95201419133e30cf8ec6b4, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4635930080192992, guid: f9b4630a3a95201419133e30cf8ec6b4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55,5 +59,31 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1532691256114981899, guid: f9b4630a3a95201419133e30cf8ec6b4,
+        type: 3}
+      propertyPath: tileTypes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1719672574749672, guid: f9b4630a3a95201419133e30cf8ec6b4, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1396539860700844, guid: f9b4630a3a95201419133e30cf8ec6b4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1396539860700844, guid: f9b4630a3a95201419133e30cf8ec6b4, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1243838997468546, guid: f9b4630a3a95201419133e30cf8ec6b4, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 23152947326464816, guid: f9b4630a3a95201419133e30cf8ec6b4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f0013a559a5e13d42a79dd1568a746ea, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f9b4630a3a95201419133e30cf8ec6b4, type: 3}

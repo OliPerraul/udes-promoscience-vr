@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Cirrus.Extensions;
+using System;
 
 namespace UdeS.Promoscience.Replays.UI
 {
@@ -22,12 +23,18 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private UnityEngine.UI.Button addButton;
 
-        public Cirrus.Event<Labyrinths.IData> OnRemovedHandler;
+        public Cirrus.Event<ReplayButton> OnRemovedHandler;
+
+        public Cirrus.Event OnAddedHandler;
+
+        private ReplayButtonMode mode;
 
         public ReplayButtonMode Mode
         {
             set
             {
+                mode = value;
+
                 switch (value)
                 {
                     case ReplayButtonMode.Add:
@@ -59,18 +66,10 @@ namespace UdeS.Promoscience.Replays.UI
         {
             base.Awake();
 
-            addButton.onClick.AddListener(OnAddedClicked);
-            removeButton.onClick.AddListener(OnRemovedClicked);
-        }
-
-        public void OnRemovedClicked()
-        {
-
-        }
-
-        public void OnAddedClicked()
-        {
-
+            addButton.onClick.AddListener(()=> OnAddedHandler?.Invoke());
+            removeButton.onClick.AddListener(()=> OnRemovedHandler?.Invoke(this));
+            removeButton.onClick.AddListener(() => gameObject.Destroy());
+            Mode = mode;
         }
 
         public ReplayButton Create(
@@ -82,6 +81,8 @@ namespace UdeS.Promoscience.Replays.UI
             l.labyrinth = labyrinth;
             l.rawImage.texture = labyrinth.Camera.RenderTexture;
             l.Mode = mode;
+
+            Debug.Log(Enum.GetName(typeof(ReplayButtonMode), mode));
 
             return l;
         }

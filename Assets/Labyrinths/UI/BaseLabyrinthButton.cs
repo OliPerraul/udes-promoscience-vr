@@ -8,9 +8,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 {
     public abstract class BaseLabyrinthButton : MonoBehaviour
     {
-        public OnDataEvent OnReplayClickedHandler;
-
-        public OnDataEvent OnPlayClickedHandler;
+        public Event<BaseLabyrinthButton> OnClickedHandler;
 
         [SerializeField]
         protected Labyrinth labyrinth;
@@ -23,20 +21,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
         [SerializeField]
         protected UnityEngine.UI.RawImage rawImage;
 
-        private bool init = false;
-
         public virtual void Awake()
         {
-            button.onClick.AddListener(OnClicked);
+            button.onClick.AddListener(() => OnClickedHandler?.Invoke(this));
         }
-
-
-
-        public virtual void OnClicked()
-        {
-            if (OnPlayClickedHandler != null) OnPlayClickedHandler.Invoke(Labyrinth.Data);
-        }
-
-
     }
 }

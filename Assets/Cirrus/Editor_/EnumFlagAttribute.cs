@@ -4,16 +4,12 @@ using UnityEngine;
 namespace Cirrus.Editor
 {
 
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    /// <summary>
+    /// Display multi-select popup for Flags enum correctly.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Field)]
     public class EnumFlagAttribute : PropertyAttribute
     {
-        public bool alwaysFoldOut;
-        public EnumMaskLayout layout = EnumMaskLayout.Vertical;
     }
 
-    public enum EnumMaskLayout
-    {
-        Vertical,
-        Horizontal
-    }
 }

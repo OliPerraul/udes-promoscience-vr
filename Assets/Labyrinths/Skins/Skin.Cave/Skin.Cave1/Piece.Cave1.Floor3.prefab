@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 510047432102017074}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Set1.Mushroom01 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 507647329899384072}
   - component: {fileID: 535573152937315980}
   - component: {fileID: 524778846966434644}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 507485412835728164}
   - component: {fileID: 535031544583985044}
   - component: {fileID: 524859832066244818}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 510277988792439734}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CaveFloor.3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -233,7 +233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 510180161636661184}
   - component: {fileID: 475241029672345804}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Point Light (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 507747523231517714}
   - component: {fileID: 535088769095713016}
   - component: {fileID: 526844046447067974}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 507716359306912166}
   - component: {fileID: 475920227051867336}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -493,7 +493,7 @@ GameObject:
   m_Component:
   - component: {fileID: 510584846730345066}
   - component: {fileID: 476169688438259366}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Point Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 510193247529283564}
   - component: {fileID: 535167353617247020}
   - component: {fileID: 525167405061760026}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,7 +662,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 507710803608650578}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Set1.Mushroom01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -697,7 +697,7 @@ GameObject:
   - component: {fileID: 510175343029580404}
   - component: {fileID: 535330657751012094}
   - component: {fileID: 524944713755414914}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -776,7 +776,7 @@ GameObject:
   - component: {fileID: 510495668939841804}
   - component: {fileID: 532383113038762232}
   - component: {fileID: 526759558124090058}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -852,7 +852,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 507259873201671570}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Set1.Mushroom01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -943,15 +943,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1821739145918100496, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
+    - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      propertyPath: tileTypes.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
         type: 3}
       propertyPath: tileType
       value: 53
+      objectReference: {fileID: 0}
+    - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
+        type: 3}
+      propertyPath: tileTypes.Array.data[0]
+      value: 53
+      objectReference: {fileID: 0}
+    - target: {fileID: 1821739145918100496, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fabdadf1646b1ca4da94e6b4c368e5bf, type: 3}
