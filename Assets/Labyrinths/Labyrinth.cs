@@ -321,30 +321,14 @@ namespace UdeS.Promoscience.Labyrinths
         {
             Source.gameObject.SetActive(true);
             renderTexture = Object.Instantiate(Resources.Instance.RenderTexture);
-            Source.targetTexture = RenderTexture;
         }
 
-        public void Maximize()
+        public bool OutputToTexture
         {
-            Source.gameObject.SetActive(true);
-            Source.rect = new Rect(0, 0, 1, 1);
-        }
-
-        public void Split(
-            int horizontal,
-            int vertical,
-            int index)
-        {
-            //var x = ((float)index.Mod(horizontal));
-
-            //var y = ((float)(index / horizontal));
-            //y = (vertical - 1) - y;
-
-            //Source.rect = new Rect(
-            //    (x / horizontal),
-            //    y / vertical,
-            //    1f / horizontal,
-            //    1f / vertical);
+            set
+            {
+                Source.targetTexture = value ? RenderTexture : null;
+            }
         }
     }
 
@@ -382,14 +366,16 @@ namespace UdeS.Promoscience.Labyrinths
 
         Vector2Int EndPosition => data.EndPos;
 
+        private Vector3 offset;
+
         public void Awake()
         {
             Camera.Init();
         }
 
-
         private void Start()
         {
+            offset = transform.position;
             //Client.Instance.clientStateChangedEvent += OnGameStateChanged;
         }
 
@@ -481,19 +467,37 @@ namespace UdeS.Promoscience.Labyrinths
             return tile;
         }
 
+        private Vector3 DoGetLabyrinthPositionInWorldPosition(int x, int y)
+        {
+            return new Vector3((x - StartPosition.x) * Utils.TILE_SIZE, 0, (-y + StartPosition.y) * Utils.TILE_SIZE) + offset;
+        }
+
         public Vector3 GetLabyrinthPositionInWorldPosition(int x, int y)
         {
-            return new Vector3((x - StartPosition.x) * Utils.TILE_SIZE, 0, (-y + StartPosition.y) * Utils.TILE_SIZE);
+            return DoGetLabyrinthPositionInWorldPosition(x, y);
         }
 
         public Vector3 GetLabyrinthPositionInWorldPosition(Vector2Int position)
         {
-            return GetLabyrinthPositionInWorldPosition(position.x, position.y);
+            return DoGetLabyrinthPositionInWorldPosition(position.x, position.y);
         }
+
+        private Vector2Int DoGetWorldPositionInLabyrinthPosition(float x, float y)
+        {
+            float xx = x - offset.x;
+            float yy = y - offset.y;
+            return new Vector2Int(Mathf.RoundToInt((xx / Utils.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-yy / Utils.TILE_SIZE)) + StartPosition.y);
+        }
+
 
         public Vector2Int GetWorldPositionInLabyrinthPosition(float x, float y)
         {
-            return new Vector2Int(Mathf.RoundToInt((x / Utils.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-y / Utils.TILE_SIZE)) + StartPosition.y);
+            return DoGetWorldPositionInLabyrinthPosition(x, y);
+        }
+
+        public Vector2Int GetWorldPositionInLabyrinthPosition(Vector2 position)
+        {
+            return DoGetWorldPositionInLabyrinthPosition(position.x, position.y);
         }
 
         public Vector2Int GetLabyrithStartPosition()
@@ -505,6 +509,7 @@ namespace UdeS.Promoscience.Labyrinths
         {
             return EndPosition;
         }
+
         public Vector3 GetLabyrithEndPositionInWorldPosition()
         {
             return GetLabyrinthPositionInWorldPosition(EndPosition.x, EndPosition.y);

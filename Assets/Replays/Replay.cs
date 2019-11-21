@@ -11,6 +11,8 @@ namespace UdeS.Promoscience.Replays
         //public Replay replay;
         protected ControllerAsset controller;
 
+        public Labyrinths.IData LabyrinthData => labyrinth.Data;
+
         public Labyrinths.IData labyrinthData;
 
         public Labyrinths.Labyrinth labyrinth;
@@ -31,17 +33,65 @@ namespace UdeS.Promoscience.Replays
 
         private bool isPlaying = false;
 
+        // TODO remove
         public Replay(
             ControllerAsset controller,
             Labyrinths.IData labyrinth)            
         {
             this.controller = controller;// replay;
-            //this.courses = courses;
             this.labyrinthData = labyrinth;
 
             controller.OnActionHandler += OnReplayAction;
             controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
             controller.OnCourseSelectedHandler += OnCourseSelected;
+        }
+
+        public Replay(
+            ControllerAsset controller,
+            Labyrinths.Labyrinth labyrinth)
+        {
+            this.controller = controller;
+            this.labyrinth = labyrinth;
+
+            controller.OnActionHandler += OnReplayAction;
+            controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
+            controller.OnCourseSelectedHandler += OnCourseSelected;
+        }
+
+        public virtual void Start()
+        {
+            // TODO remove
+            if (labyrinth == null)
+            {
+                labyrinth = Labyrinths.Resources.Instance
+                    .GetLabyrinthTemplate(labyrinthData)
+                    .Create(labyrinthData);
+
+                labyrinthData = null;
+
+                labyrinth.GenerateLabyrinthVisual();
+
+                labyrinth.Init();
+            }
+            else
+            {
+                labyrinth.gameObject.SetActive(true);
+            }
+                       
+            labyrinth.Camera.OutputToTexture = false;
+
+            lposition = labyrinth.GetLabyrithStartPosition();
+
+            wposition = labyrinth.GetLabyrinthPositionInWorldPosition(lposition);
+
+            EnableDirty(true);
+
+            foreach (Course course in Server.Instance.Courses)
+            {
+                OnCourseAdded(course);
+            }
+                       
+            controller.PlaybackSpeed = 2f;
         }
 
         public void OnPlaybackSpeedChanged(float speed)
@@ -55,33 +105,6 @@ namespace UdeS.Promoscience.Replays
             {
                 sq.PlaybackSpeed = speed;
             }
-        }
-
-        public virtual void Start()
-        {
-            labyrinth = Labyrinths.Resources.Instance
-                .GetLabyrinthTemplate(labyrinthData)
-                .Create(labyrinthData);
-
-            labyrinth.Camera.Maximize();
-
-            labyrinth.GenerateLabyrinthVisual();
-
-            labyrinth.Init();
-
-            lposition = labyrinth.GetLabyrithStartPosition();
-
-            wposition =
-                labyrinth.GetLabyrinthPositionInWorldPosition(lposition);
-
-            EnableDirty(true);
-
-            foreach (Course course in Server.Instance.Courses)
-            {
-                OnCourseAdded(course);
-            }
-                       
-            controller.PlaybackSpeed = 2f;
         }
 
         public virtual void Resume()

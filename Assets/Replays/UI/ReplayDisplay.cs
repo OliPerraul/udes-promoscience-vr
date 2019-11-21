@@ -146,7 +146,7 @@ namespace UdeS.Promoscience.Replays.UI
             set
             {
                 _enabled = value;
-                gameObject.SetActive(_enabled);
+                transform.GetChild(0).gameObject.SetActive(_enabled);
                 openButton.gameObject.SetActive(_enabled);
                 exitButton.gameObject.SetActive(_enabled);
                 greyboxButton.gameObject.SetActive(_enabled);

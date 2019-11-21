@@ -16,6 +16,8 @@ namespace UdeS.Promoscience.Replays.UI
             }
         }
 
+        public Cirrus.Event OnContentChangedHandler;
+
         [SerializeField]
         private ControllerAsset replayController;
 
@@ -44,9 +46,11 @@ namespace UdeS.Promoscience.Replays.UI
         public int LabyrinthIndexWrap => labyrinthIndex.Mod(Labyrinths.Resources.NumLabyrinths);
 
 
-        private ButtonContainer horizontal = null;
+        private ButtonContainer container = null;
 
-        public List<ButtonContainer> horizontals = new List<ButtonContainer>();
+        public List<ButtonContainer> containers = new List<ButtonContainer>();
+
+        public int NumContainers => containers.Count;
 
 
         public virtual void Awake()
@@ -55,30 +59,43 @@ namespace UdeS.Promoscience.Replays.UI
 
             replayController.OnActionHandler += OnReplayAction;
 
-            buttonAdd.onClick.AddListener(AddBottom);
+            buttonAdd.onClick.AddListener(OnAddedBottomClicked);
         }
 
 
         public virtual void OnServerGameStateChanged()
         {
-            if (
-                Server.Instance.GameState ==
-                ServerGameState.ReplaySelect)
+            switch (Server.Instance.GameState)
             {
-                Enabled = true;
+                case ServerGameState.ReplaySelect:
 
-                Clear();
+                    Enabled = true;
 
-                for(labyrinthIndex = 0; labyrinthIndex < Labyrinths.Utils.NumLabyrinth; labyrinthIndex++)
-                {
-                    AddLabyrinth(labyrinthIndex);
-                }
+                    if (labyrinths.Count != 0)
+                    {
+                        foreach (var lab in labyrinths)
+                        {
+                            lab.gameObject.SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        for (labyrinthIndex = 0; labyrinthIndex < Labyrinths.Utils.NumLabyrinth; labyrinthIndex++)
+                        {
+                            AddLabyrinth(labyrinthIndex);
+                        }
+                    }
 
-            }
-            else
-            {
-                Clear();
-                Enabled = false;
+                    break;
+
+                case ServerGameState.AdvancedReplay:
+                    Enabled = false;
+                    foreach (var lab in labyrinths)
+                    {
+                        lab.gameObject.SetActive(false);
+                    }
+                    break;
+
             }
         }
 
@@ -96,7 +113,11 @@ namespace UdeS.Promoscience.Replays.UI
 
             labyrinth.GenerateLabyrinthVisual();
 
-            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * labyrinths.Count;
+            labyrinth.Init();
+
+            labyrinth.Camera.OutputToTexture = true;
+
+            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
 
             return labyrinth;
         }
@@ -146,40 +167,17 @@ namespace UdeS.Promoscience.Replays.UI
                 }
             }
 
-            buttons.Clear();
+            //buttons.Clear();
 
             Server.Instance.ClearLabyrinths();
         }
 
-        public void AddBottom()
+
+        public void OnAddedBottomClicked()//Transform parent)
         {
-            AddHorizontal();
-            AddNextLabyrinth();// horizontal.transform);
-        }
+            AddContainer().AddButton(CreateNextLabyrinth());
 
-        public void AddNextLabyrinth()//Transform parent)
-        {
-            //if (parent == null)
-            //{
-            //    AddBottom();
-            //    return;
-            //}
-
-            //var data = Server.Instance.Labyrinths.Data[LabyrinthIndexWrap];
-
-            //Labyrinth labyrinth = Labyrinths.Resources.Instance
-            //  .GetLabyrinthTemplate(data)
-            //  .Create(data);
-
-            //labyrinths.Add(labyrinth);
-
-            //labyrinth.GenerateLabyrinthVisual();
-
-            //labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * labyrinths.Count;
-
-            //AddLabyrinthButton(parent, LabyrinthIndexWrap, labyrinth);
-
-            //labyrinthIndex++;
+            OnContentChangedHandler?.Invoke();
         }
 
 
@@ -197,68 +195,72 @@ namespace UdeS.Promoscience.Replays.UI
 
             labyrinth.Init();
 
-            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * labyrinths.Count;
+            labyrinth.Camera.OutputToTexture = true;
+
+            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
 
             if (i % Labyrinths.Utils.SelectMaxHorizontal == 0)
             {
-                AddHorizontal();
+                AddContainer();
             }
 
-            horizontals[horizontals.Count-1].AddLabyrinth(labyrinth);
+            containers[containers.Count - 1].AddButton(labyrinth);
+
+            OnContentChangedHandler?.Invoke();
         }
 
-        public void AddHorizontal()
+        public ButtonContainer AddContainer()
         {
-            if (horizontals.Count == 1)
+            if (containers.Count == 1)
             {
-                horizontals[0].GetComponent<ButtonContainer>()?.RespectLayout();
+                containers[0].GetComponent<ButtonContainer>()?.RespectLayout();
             }
 
-            horizontal = containerTemplate.Create(buttonsParent);
+            container = containerTemplate.Create(buttonsParent);
 
-            horizontals.Add(horizontal);
+            containers.Add(container);
 
-            horizontal.gameObject.SetActive(true);
+            container.gameObject.SetActive(true);
+
+            container.OnButtonRemovedHandler += OnButtonRemoved;
+
+            container.OnRemovedHandler += OnContainerRemoved;
+
+            AdjustContent();
+
+            OnContentChangedHandler?.Invoke();
+
+            return container;
         }
 
-        public void RemoveHorizontal(GameObject horizontal)
+        public void AdjustContent()
         {
-            if (horizontal.GetComponentsInChildren<ReplayButton>(false).Length == 1)
-            {
-                horizontal?.gameObject?.Destroy();
-                horizontals.Remove(horizontal.gameObject);
-            }
+            if (containers.Count == 1) containers[0].Fit();
 
-            if (horizontals.Count == 1)
-            {
-                horizontals[0].GetComponent<ButtonContainer>()?.Fit();
-            }
+            else containers[0].RespectLayout();
         }
 
-        public void AddLabyrinthButton(ButtonContainer parent, Labyrinth labyrinth)
-        {
-            parent.AddLabyrinth(labyrinth);
-        }
-
-
-        public void OnLabyrinthRemoved(Transform parent, ReplayButton button)
+        public void OnButtonRemoved(ReplayButton button)
         {
             labyrinths.Remove(button.Labyrinth);
 
-            for (int labyrinthIndex = 0; labyrinthIndex < labyrinths.Count; labyrinthIndex++)
+            for (int i = 0; i < labyrinths.Count; i++)
             {
-                labyrinths[labyrinthIndex].transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * labyrinthIndex;
+                labyrinths[i].transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * i;
             }
 
-            buttons.Remove(button);
+            labyrinthIndex = labyrinths.Count;
 
-            RemoveHorizontal(parent.gameObject);
-
-            if (buttons.Count == 1)
-            {
-                buttons[0].Mode = ReplayButtonMode.Add;
-            }
+            OnContentChangedHandler?.Invoke();
         }
 
+        public void OnContainerRemoved(ButtonContainer container)
+        {
+            containers.Remove(container);
+
+            AdjustContent();
+
+            OnContentChangedHandler?.Invoke();
+        }
     }
 }

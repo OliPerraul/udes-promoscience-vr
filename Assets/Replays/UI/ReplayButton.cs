@@ -28,6 +28,8 @@ namespace UdeS.Promoscience.Replays.UI
 
         public Cirrus.Event OnAddedHandler;
 
+        public Cirrus.Event<ReplayButton> OnReplayClickedHandler;
+
         private ReplayButtonMode mode;
 
         public ReplayButtonMode Mode
@@ -67,11 +69,21 @@ namespace UdeS.Promoscience.Replays.UI
         {
             base.Awake();
 
+            button.onClick.AddListener(() => OnReplayClickedHandler?.Invoke(this));
+
+ 
+            OnReplayClickedHandler += OnClicked;
+
             addButton.onClick.AddListener(() => OnAddedHandler?.Invoke());
 
             removeButton.onClick.AddListener(OnRemoved);
 
             Mode = mode;
+        }
+
+        public void OnClicked(ReplayButton repl)
+        {
+            Server.Instance.StartAdvancedReplay(labyrinth);
         }
 
         public void OnRemoved()
@@ -91,8 +103,6 @@ namespace UdeS.Promoscience.Replays.UI
             l.labyrinth = labyrinth;
             l.rawImage.texture = labyrinth.Camera.RenderTexture;
             l.Mode = mode;
-
-            Debug.Log(Enum.GetName(typeof(ReplayButtonMode), mode));
 
             return l;
         }
