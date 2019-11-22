@@ -73,7 +73,7 @@ namespace UdeS.Promoscience.Replays
 
                 labyrinth.GenerateLabyrinthVisual();
 
-                labyrinth.Init();
+                labyrinth.Init(enableCamera: true);
             }
             else
             {

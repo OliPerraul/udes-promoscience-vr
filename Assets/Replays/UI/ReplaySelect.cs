@@ -159,7 +159,7 @@ namespace UdeS.Promoscience.Replays.UI
 
             labyrinth.GenerateLabyrinthVisual();
 
-            labyrinth.Init();
+            labyrinth.Init(enableCamera: true);
 
             labyrinth.Camera.OutputToTexture = true;
 
