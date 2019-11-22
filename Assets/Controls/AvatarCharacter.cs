@@ -7,15 +7,19 @@ namespace UdeS.Promoscience.Controls
     public class AvatarCharacter : MonoBehaviour
     {
         [SerializeField]
-        [Cirrus.Editor.FindAssetOfType(typeof(AvatarControllerAsset))]
         private AvatarControllerAsset controller;
 
         [SerializeField]
         private Transform character;
 
-        public void FixedUpdate()
+        public void Awake()
         {
-            character.transform.rotation = controller.AvatarRotation.Value;
+            controller.AvatarRotation.OnValueChangedHandler += OnAvatarRotationChanged;
+        }
+
+        public void OnAvatarRotationChanged(Quaternion rotation)
+        {
+            character.transform.rotation = rotation;
         }
 
     }

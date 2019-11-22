@@ -98,7 +98,7 @@ namespace UdeS.Promoscience.Algorithms
             if (isAlgorithmRespectActive)
             {
                 EvaluateAlgorithmRespectOnPositionChanged(
-                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.AvatarTransform.position.x, cameraRig.Transform.position.z),
+                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.CharacterTransform.position.x, cameraRig.Transform.position.z),
                     Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition),
                     cameraRig.Transform.rotation);
             }

@@ -20,12 +20,12 @@ namespace UdeS.Promoscience.Controls
         public Transform directionTransform;
 
 
-        public Vector3 AvatarDirection => ovrCameraRig.centerEyeAnchor.transform.forward;
+        public Vector3 CameraDirection => ovrCameraRig.centerEyeAnchor.transform.forward;
 
-        public Transform AvatarTransform => avatarTransform;
+        public Transform CharacterTransform => avatarTransform;
 
 
-        public Quaternion LookRotation => avatarTransform.rotation;
+        public Quaternion CameraRotation => avatarTransform.rotation;
     
         public Transform Transform => transform;
 

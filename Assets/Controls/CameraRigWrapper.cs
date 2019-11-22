@@ -7,11 +7,11 @@ namespace UdeS.Promoscience.Controls
 
     public interface ICameraRig
     {
-        Vector3 AvatarDirection { get; }
+        Transform CharacterTransform { get; }
 
-        Transform AvatarTransform { get; }
+        Vector3 CameraDirection { get; }
 
-        Quaternion LookRotation { get; }
+        Quaternion CameraRotation { get; }
 
         Transform Transform { get; }
 
@@ -48,11 +48,11 @@ namespace UdeS.Promoscience.Controls
 
         public bool IsRightPressed => inputScheme.IsRightPressed;
 
-        public Vector3 AvatarDirection => cameraRig.AvatarDirection;
+        public Vector3 CameraDirection => cameraRig.CameraDirection;
 
-        public Transform AvatarTransform => cameraRig.AvatarTransform;
+        public Transform CharacterTransform => cameraRig.CharacterTransform;
 
-        public Quaternion LookRotation => cameraRig.LookRotation;
+        public Quaternion CameraRotation => cameraRig.CameraRotation;
 
         public Transform Transform => cameraRig.Transform;
 

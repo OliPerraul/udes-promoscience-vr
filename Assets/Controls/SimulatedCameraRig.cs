@@ -23,13 +23,10 @@ namespace UdeS.Promoscience.Controls
         public Transform Transform => transform;
 
         [SerializeField]
-        private Transform avatarTransform;
+        [UnityEngine.Serialization.FormerlySerializedAs("avatarTransform")]
+        private Transform characterTransform;
 
-        public Transform AvatarTransform => avatarTransform;
-
-        public Vector3 AvatarDirection => controls.IsThirdPersonEnabled.Value ? 
-            AvatarTransform.forward : 
-            firstPersonCamera.PivotTransform.forward;
+        public Transform CharacterTransform => characterTransform;
 
         [SerializeField]
         private GameObject mesh;
@@ -39,24 +36,24 @@ namespace UdeS.Promoscience.Controls
 
         public Transform DirectionArrowTransform => directionTransform;
 
-        public Quaternion LookRotation
+        public Vector3 CameraDirection => controls.IsThirdPersonEnabled.Value ?
+            thirdPersonCamera.transform.forward :
+            firstPersonCamera.PivotTransform.forward;
+
+        public Quaternion CameraRotation
         {
             get
             {
-                if (controls.IsThirdPersonEnabled.Value)
-                {
-                    return Quaternion.Euler(
-                        firstPersonCamera.PivotTransform.rotation.eulerAngles.x, 
-                        0,
-                        firstPersonCamera.PivotTransform.rotation.eulerAngles.z);
-                }
-                else
-                {
-                    return Quaternion.Euler(
-                         thirdPersonCamera.transform.rotation.eulerAngles.x,
+                return controls.IsThirdPersonEnabled.Value ?
+                     Quaternion.Euler(
                          0,
-                         thirdPersonCamera.transform.rotation.eulerAngles.z);
-                }
+                         thirdPersonCamera.transform.rotation.eulerAngles.y,
+                         0) :
+                     Quaternion.Euler(
+                         0,
+                         firstPersonCamera.PivotTransform.rotation.eulerAngles.y,
+                         0);
+
             }
         }
 

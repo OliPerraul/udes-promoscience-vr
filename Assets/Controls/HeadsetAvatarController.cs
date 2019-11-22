@@ -25,9 +25,6 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private GameActionManagerAsset gameAction;
 
-        [SerializeField]
-        private AvatarControllerAsset controls;
-
         // TODO replace by network manager asset
         [SerializeField]
         private ScriptableBoolean isConnectedToPair;
@@ -38,6 +35,14 @@ namespace UdeS.Promoscience.Controls
 
         [SerializeField]
         private CameraRigWrapper cameraRig;
+
+        [SerializeField]
+        private AvatarControllerAsset controls;
+
+        [SerializeField]
+        private Transform avatarTransform;
+
+        public Transform AvatarTransform => avatarTransform;
 
         private bool isChainingMovement = false;
 
@@ -185,7 +190,7 @@ namespace UdeS.Promoscience.Controls
             Vector3 currentDirection = Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value);
 
             if (Utils.IsSameDirection(
-                    cameraRig.AvatarDirection,
+                    cameraRig.CameraDirection,
                     currentDirection,
                     angleLookatTurnThreshold))
             {
@@ -193,7 +198,7 @@ namespace UdeS.Promoscience.Controls
             }
             else
             {
-                if (Utils.AngleDir(currentDirection, cameraRig.AvatarDirection, Vector3.up) < 0)
+                if (Utils.AngleDir(currentDirection, cameraRig.CameraDirection, Vector3.up) < 0)
                 {
                     RequestTurnLeft(turnAvatar: false);
                 }
@@ -274,7 +279,7 @@ namespace UdeS.Promoscience.Controls
 
         private void FixedUpdate()
         {
-            controls.AvatarRotation.Value = cameraRig.LookRotation;
+            controls.AvatarRotation.Value = cameraRig.CameraRotation;
 
             if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
             {
@@ -374,7 +379,7 @@ namespace UdeS.Promoscience.Controls
                             // TODO Fix this crap
                             if (isAvatarTurn)
                             {
-                                cameraRig.AvatarTransform.rotation = targetRotation;
+                                cameraRig.CharacterTransform.rotation = targetRotation;
                                 cameraRig.DirectionArrowTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
                             }
                             else
@@ -415,16 +420,16 @@ namespace UdeS.Promoscience.Controls
                         controls.OnLabyrinthPositionChangedHandler.Invoke();
                 }
 
-                if (cameraRig.AvatarTransform.position != lastPosition)
+                if (cameraRig.CharacterTransform.position != lastPosition)
                 {
                     controls.PlayerPosition.Value = cameraRig.Transform.position;
-                    lastPosition = cameraRig.AvatarTransform.position;
+                    lastPosition = cameraRig.CharacterTransform.position;
                 }
 
-                if (cameraRig.AvatarTransform.rotation != lastRotation)
+                if (cameraRig.CharacterTransform.rotation != lastRotation)
                 {
-                    controls.PlayerRotation.Value = cameraRig.LookRotation;
-                    lastRotation = cameraRig.LookRotation;
+                    controls.PlayerRotation.Value = cameraRig.CameraRotation;
+                    lastRotation = cameraRig.CameraRotation;
                 }
             }
         }
@@ -433,7 +438,7 @@ namespace UdeS.Promoscience.Controls
         {
             if (isAvatarTurn)
             {
-                cameraRig.AvatarTransform.rotation = Quaternion.Lerp(
+                cameraRig.CharacterTransform.rotation = Quaternion.Lerp(
                     fromRotation,
                     targetRotation,
                     lerpValue);
@@ -697,7 +702,7 @@ namespace UdeS.Promoscience.Controls
             }
 
             // TODO put somewhere else
-            cameraRig.AvatarTransform.rotation = rotation;
+            cameraRig.CharacterTransform.rotation = rotation;
 
             cameraRig.DirectionArrowTransform.rotation = rotation;
 
@@ -711,7 +716,7 @@ namespace UdeS.Promoscience.Controls
 
             cameraRig.Transform.position = controls.PositionRotationAndTiles.Value.Position;
 
-            cameraRig.AvatarTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
+            cameraRig.CharacterTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 
             cameraRig.DirectionArrowTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 
