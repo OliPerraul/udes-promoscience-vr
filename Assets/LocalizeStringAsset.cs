@@ -13,15 +13,7 @@ namespace UdeS.Promoscience
         [SerializeField]
         private string defaultString = "[?]";
 
-        public string Value
-        {
-            get {
-                if (localizeString == null)
-                    return defaultString;
-
-                else return localizeString.Value;
-            }
-        }
+        public string Value => localizeString == null ? defaultString : localizeString.Value;
 
         public LocalizeInlineString(string value)
         {

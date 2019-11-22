@@ -16,10 +16,11 @@ namespace UdeS.Promoscience.Replays.UI
         [GetComponent(typeof(ReplaySelect))]
         private ReplaySelect select;
 
-
         [SerializeField]
         [GetComponent(typeof(ReplayButton))]
         private ReplayButton buttonTemplate;
+
+        public override Labyrinths.UI.BaseButton ButtonTemplate => buttonTemplate;
 
         public Event<ReplayButton> OnButtonRemovedHandler;
 

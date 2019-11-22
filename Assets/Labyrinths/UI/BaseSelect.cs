@@ -15,11 +15,11 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public Cirrus.Event OnContentChangedHandler;
 
-        protected BaseSection currentSection;
-
         public abstract BaseSection SectionTemplate { get; }
 
-        public abstract BaseButton ButtonTemplate { get; }
+        public abstract BaseSection CurrentSection { get; }
+
+        //public abstract BaseButton ButtonTemplate { get; }
 
 
         public int labyrinthIndex = 0;
@@ -28,6 +28,10 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         //public abstract List<BaseSection> Sections { get; }
 
+        public virtual void Awake()
+        {
+
+        }
 
         public Labyrinth CreateNextLabyrinth()
         {
@@ -105,7 +109,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public virtual void OnAddedBottomClicked()//Transform parent)
         {
-            AddContainer().AddButton(CreateNextLabyrinth());
+            AddSection().AddButton(CreateNextLabyrinth());
 
             OnContentChangedHandler?.Invoke();
         }
@@ -113,54 +117,54 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public virtual void AddLabyrinth(int i)
         {
-            var data = Server.Instance.Labyrinths.Data[i];
+            //var data = Server.Instance.Labyrinths.Data[i];
 
-            Labyrinth labyrinth = Labyrinths.Resources.Instance
-                  .GetLabyrinthTemplate(data)
-                  .Create(data);
+            //Labyrinth labyrinth = Resources.Instance
+            //      .GetLabyrinthTemplate(data)
+            //      .Create(data);
 
-            labyrinths.Add(labyrinth);
+            //labyrinths.Add(labyrinth);
 
-            labyrinth.GenerateLabyrinthVisual();
+            //labyrinth.GenerateLabyrinthVisual();
 
-            labyrinth.Init();
+            //labyrinth.Init();
 
-            labyrinth.Camera.OutputToTexture = true;
+            //labyrinth.Camera.OutputToTexture = true;
 
-            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
+            //labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
 
-            if (i % Utils.SelectMaxHorizontal == 0)
-            {
-                AddContainer();
-            }
+            //if (i % Utils.SelectMaxHorizontal == 0)
+            //{
+            //    AddContainer();
+            //}
 
-            //Sections[Sections.Count - 1].AddButton(labyrinth);
+            //sections[sections.Count - 1].AddButton(labyrinth);
 
-            OnContentChangedHandler?.Invoke();
+            //OnContentChangedHandler?.Invoke();
         }
 
-        public virtual BaseSection AddContainer()
+        public virtual BaseSection AddSection()
         {
-            if (NumSections == 1)
-            {
-                CurrentSection.RespectLayout();
-            }
+            //if (NumSections == 1)
+            //{
+            //    CurrentSection.RespectLayout();
+            //}
 
-            currentSection = SectionTemplate.Create(buttonsParent);
+            //CurrentSection = SectionTemplate.Create(buttonsParent);
 
-            //Sections.Add(currentSection);
+            ////Sections.Add(currentSection);
 
-            currentSection.gameObject.SetActive(true);
+            //CurrentSection.gameObject.SetActive(true);
 
-            //currentSection.OnButtonRemovedHandler += OnButtonRemoved;
+            ////currentSection.OnButtonRemovedHandler += OnButtonRemoved;
 
-            //currentSection.OnRemovedHandler += OnContainerRemoved;
+            ////currentSection.OnRemovedHandler += OnContainerRemoved;
 
             AdjustContent();
 
             OnContentChangedHandler?.Invoke();
 
-            return currentSection;
+            return null;
         }
 
         public abstract int NumSections { get; }
@@ -178,7 +182,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             for (int i = 0; i < labyrinths.Count; i++)
             {
-                labyrinths[i].transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * i;
+                labyrinths[i].transform.position = Vector3.right * Utils.SelectionOffset * i;
             }
 
             labyrinthIndex = labyrinths.Count;
@@ -186,18 +190,16 @@ namespace UdeS.Promoscience.Labyrinths.UI
             OnContentChangedHandler?.Invoke();
         }
 
-        public void OnContainerRemoved(BaseSection container)
+        public void OnSectionRemoved(BaseSection container)
         {
-            RemoveSection(container);
+            //RemoveSection(container);
 
             AdjustContent();
 
             OnContentChangedHandler?.Invoke();
         }
 
-        public abstract BaseSection CurrentSection { get; }
-
-        public abstract void RemoveSection(BaseSection section);
+        //public abstract void RemoveSection(BaseSection section);
 
     }
 }

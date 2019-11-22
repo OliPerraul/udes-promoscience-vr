@@ -483,7 +483,7 @@ namespace UdeS.Promoscience
                 }
             }
 
-            GameState = ServerGameState.LabyrinthSelect;
+            GameState = ServerGameState.LevelSelect;
         }
 
 

@@ -23,6 +23,8 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public abstract BaseSelect Select { get; }
 
+        public abstract BaseButton ButtonTemplate { get; }
+
         public void Fit()
         {
             layoutElement.ignoreLayout = true;
@@ -50,7 +52,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public virtual void AddButton(Labyrinth labyrinth)
         {
-            var button = Select.ButtonTemplate.Create(
+            var button = ButtonTemplate.Create(
                 transform,
                 labyrinth);
 

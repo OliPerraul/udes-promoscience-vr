@@ -25,7 +25,7 @@ namespace UdeS.Promoscience
         Active = 0,
         // current: whether the course is used in the current play session (used for the final replay)
         Session = 1,
-        // finished: whether the course is kept merely for historical reason
+        // finished: whether the course is kept as log
         Finished = 2
     }
 

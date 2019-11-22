@@ -7,7 +7,7 @@ using UdeS.Promoscience.Labyrinths.UI;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class ReplaySelect : Labyrinths.UI.BaseSelect//.UI.MainDisplay
+    public class ReplaySelect : BaseSelect
     {
         [SerializeField]
         private ControllerAsset replayController;
@@ -15,16 +15,9 @@ namespace UdeS.Promoscience.Replays.UI
         protected ControllerAsset ReplayController => replayController;
 
         [SerializeField]
-        private ReplayButton buttonTemplate;
+        private ReplaySection sectionTemplate;
 
-        public override BaseButton ButtonTemplate => buttonTemplate;
-
-        [SerializeField]
-        private ReplaySection containerTemplate;
-
-        public override BaseSection SectionTemplate => containerTemplate;
-
-
+        public override BaseSection SectionTemplate => sectionTemplate;
 
         [SerializeField]
         private UnityEngine.UI.Button buttonExit;
@@ -43,8 +36,10 @@ namespace UdeS.Promoscience.Replays.UI
         public override int NumSections => sections.Count;
 
 
-        public virtual void Awake()
+        public override void Awake()
         {
+            base.Awake();
+
             Server.Instance.gameStateChangedEvent += OnServerGameStateChanged;
 
             replayController.OnActionHandler += OnReplayAction;
@@ -79,6 +74,8 @@ namespace UdeS.Promoscience.Replays.UI
                     break;
 
                 case ServerGameState.AdvancedReplay:
+                case ServerGameState.InstantReplay:
+
                     Enabled = false;
                     foreach (var lab in labyrinths)
                     {
@@ -86,32 +83,11 @@ namespace UdeS.Promoscience.Replays.UI
                     }
                     break;
 
+                default:
+                    Enabled = false;
+                    break;
             }
         }
-
-        public Labyrinth CreateNextLabyrinth()
-        {
-            var data = Server.Instance.Labyrinths.Data[LabyrinthIndexWrap];
-
-            labyrinthIndex++;
-
-            Labyrinth labyrinth = Labyrinths.Resources.Instance
-              .GetLabyrinthTemplate(data)
-              .Create(data);
-
-            labyrinths.Add(labyrinth);
-
-            labyrinth.GenerateLabyrinthVisual();
-
-            labyrinth.Init();
-
-            labyrinth.Camera.OutputToTexture = true;
-
-            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
-
-            return labyrinth;
-        }
-
 
         public void OnExitClicked()
         {
@@ -119,7 +95,7 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-        public virtual bool Enabled
+        public override bool Enabled
         {
             set => gameObject.SetActive(value);
         }
@@ -132,13 +108,13 @@ namespace UdeS.Promoscience.Replays.UI
                 case ReplayAction.ExitReplay:
 
                     Enabled = true;
-                    Server.Instance.GameState = ServerGameState.LabyrinthSelect;
+                    Server.Instance.GameState = ServerGameState.LevelSelect;
 
                     break;
             }
         }
 
-        public virtual void Clear()
+        public override void Clear()
         {
             foreach (Transform children in buttonsParent)
             {
@@ -165,7 +141,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override void OnAddedBottomClicked()//Transform parent)
         {
-            AddContainer().AddButton(CreateNextLabyrinth());
+            AddSection().AddButton(CreateNextLabyrinth());
 
             OnContentChangedHandler?.Invoke();
         }
@@ -191,7 +167,7 @@ namespace UdeS.Promoscience.Replays.UI
 
             if (i % Labyrinths.Utils.SelectMaxHorizontal == 0)
             {
-                AddContainer();
+                AddSection();
             }
 
             sections[sections.Count - 1].AddButton(labyrinth);
@@ -199,14 +175,14 @@ namespace UdeS.Promoscience.Replays.UI
             OnContentChangedHandler?.Invoke();
         }
 
-        public override Labyrinths.UI.BaseSection AddContainer()
+        public override BaseSection AddSection()
         {
             if (sections.Count == 1)
             {
                 sections[0].RespectLayout();
             }
 
-            currentSection = containerTemplate.Create(buttonsParent);
+            currentSection = sectionTemplate.Create(buttonsParent);
 
             sections.Add(currentSection);
 
@@ -214,7 +190,7 @@ namespace UdeS.Promoscience.Replays.UI
 
             currentSection.OnButtonRemovedHandler += OnButtonRemoved;
 
-            currentSection.OnRemovedHandler += OnContainerRemoved;
+            currentSection.OnRemovedHandler += OnSectionRemoved;
 
             return currentSection;
         }
@@ -242,18 +218,13 @@ namespace UdeS.Promoscience.Replays.UI
             OnContentChangedHandler?.Invoke();
         }
 
-        public void OnContainerRemoved(ReplaySection container)
+        public void OnSectionRemoved(ReplaySection container)
         {
             sections.Remove(container);
 
             AdjustContent();
 
             OnContentChangedHandler?.Invoke();
-        }
-
-        public override void RemoveSection(BaseSection section)
-        {
-            //sections.Remove(section);
         }
     }
 }

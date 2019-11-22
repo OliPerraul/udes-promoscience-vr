@@ -86,7 +86,7 @@ namespace UdeS.Promoscience
         GameRound = 1 << 2,
         Intermission = 1 << 3,
         InstantReplay = 1 << 4,        
-        LabyrinthSelect = 1 << 5,
+        LevelSelect = 1 << 5,
         AdvancedReplay = 1 << 6,// TODO remove
         ReplaySelect = 1 << 7,
     }

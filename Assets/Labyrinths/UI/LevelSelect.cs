@@ -7,7 +7,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
 {
     public class LevelSelect : BaseSelect//.UI.MainDisplay
     {
-
         private List<LevelButton> labyrinthButtons;
 
         [SerializeField]
@@ -15,13 +14,10 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         protected Replays.ControllerAsset ReplayController => replayController;
 
-        [SerializeField]
-        private LevelButton labyrinthButtonTemplate;
+        //[SerializeField]
+        //private LevelButton buttonTemplate;
 
-        public override BaseButton ButtonTemplate => labyrinthButtonTemplate;
-
-        [SerializeField]
-        private GameObject buttonsHorizontalTemplate;
+        //public override BaseButton ButtonTemplate => buttonTemplate;
 
         [SerializeField]
         private LevelSection sectionTemplate;
@@ -34,10 +30,13 @@ namespace UdeS.Promoscience.Labyrinths.UI
         [SerializeField]
         private UnityEngine.UI.Button buttonExit;
 
+        private List<LevelSection> sections = new List<LevelSection>();
 
-        
-        public virtual void Awake()
+        private LevelSection currentSection;
+
+        public override void Awake()
         {
+            base.Awake();
 
             labyrinthButtons = new List<LevelButton>();
 
@@ -61,7 +60,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         }
 
 
-        public virtual bool Enabled
+        public override bool Enabled
         {
             set
             {
@@ -69,7 +68,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             }
         }
 
-        public override int NumSections => throw new System.NotImplementedException();
+        public override int NumSections => sections.Count;
 
         public override BaseSection CurrentSection => throw new System.NotImplementedException();
 
@@ -80,11 +79,55 @@ namespace UdeS.Promoscience.Labyrinths.UI
                 case Replays.ReplayAction.ExitReplay:
 
                     Enabled = true;
-                    Server.Instance.GameState = ServerGameState.LabyrinthSelect;
+                    Server.Instance.GameState = ServerGameState.LevelSelect;
 
                     break;
             }
         }
+
+        public override void AddLabyrinth(int i)
+        {
+            var data = Server.Instance.Labyrinths.Data[i];
+
+            Labyrinth labyrinth = Resources.Instance
+                  .GetLabyrinthTemplate(data)
+                  .Create(data);
+
+            labyrinths.Add(labyrinth);
+
+            labyrinth.GenerateLabyrinthVisual();
+
+            labyrinth.Init();
+
+            labyrinth.Camera.OutputToTexture = true;
+
+            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
+
+            AddSection().AddButton(labyrinth);
+
+            OnContentChangedHandler?.Invoke();
+        }
+
+        public override BaseSection AddSection()
+        {
+            if (sections.Count == 1)
+            {
+                sections[0].RespectLayout();
+            }
+
+            currentSection = sectionTemplate.Create(buttonsParent);
+
+            sections.Add(currentSection);
+
+            currentSection.gameObject.SetActive(true);
+
+            //currentSection.OnButtonRemovedHandler += OnButtonRemoved;
+
+            //currentSection.OnRemovedHandler += OnContainerRemoved;
+
+            return currentSection;
+        }
+
 
 
         public void OnReplayClicked(IData labyrinth)
@@ -102,7 +145,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             Server.Instance.StartGameWithLabyrinth(labyrinth.Id);
         }
 
-        public virtual void Clear()
+        public override void Clear()
         {
             foreach (Transform children in buttonsParent)
             {
@@ -125,73 +168,47 @@ namespace UdeS.Promoscience.Labyrinths.UI
         }
 
 
-        //public virtual void SetLabyrinthCamera(Labyrinth labyrinth, int i)
-        //{
-        //    labyrinth.SetCamera(
-        //        Server.Instance.Labyrinths.Data.Count,
-        //        Utils.SelectMaxHorizontal,
-        //        i);
-        //}
-
-
         public virtual void OnServerGameStateChanged()
         {
-            if (
-                Server.Instance.GameState ==
-                ServerGameState.LabyrinthSelect)
+            switch (Server.Instance.GameState)
             {
-                Enabled = true;
+                case ServerGameState.LevelSelect:
 
-                Clear();
+                    Enabled = true;
 
-                GameObject horizontal = null;
-
-                for (int i = 0; i < Utils.NumLabyrinth; i++)
-                {
-
-                    var data = Server.Instance.Labyrinths.Data[i];
-
-                    Labyrinth labyrinth = Resources.Instance
-                          .GetLabyrinthTemplate(data)
-                          .Create(data);
-
-                    labyrinth.GenerateLabyrinthVisual();
-
-                    labyrinth.Init();
-
-                    labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * i;
-
-                    Server.Instance.Labyrinths.IdPairs.Add(data.Id, labyrinth);
-
-                    if (i % Utils.SelectMaxHorizontal == 0)
+                    if (labyrinths.Count != 0)
                     {
-                        horizontal = buttonsHorizontalTemplate.Create(buttonsParent);
-                        horizontal.gameObject.SetActive(true);
+                        foreach (var lab in labyrinths)
+                        {
+                            lab.gameObject.SetActive(true);
+                        }
+                    }
+                    else
+                    {
+                        for (labyrinthIndex = 0; labyrinthIndex < Utils.NumLabyrinth; labyrinthIndex++)
+                        {
+                            AddLabyrinth(labyrinthIndex);
+                        }
                     }
 
-                    var button = labyrinthButtonTemplate.Create(
-                        horizontal.transform,
-                        labyrinth);
+                    break;
 
+                case ServerGameState.GameRound:
+                case ServerGameState.Tutorial:
 
-                    button.name = "btn " + i;
+                    Enabled = false;
+                    foreach (var lab in labyrinths)
+                    {
+                        lab.gameObject.SetActive(false);
+                    }
+                    break;
 
-                    button.gameObject.SetActive(true);
-
-                    //labyrinthButtons.Add(button);
-                }
-
-            }
-            else
-            {                
-                Clear();
-                Enabled = false;
+                default:
+                    Enabled = false;
+                    break;
             }
         }
 
-        public override void RemoveSection(BaseSection section)
-        {
-            throw new System.NotImplementedException();
-        }
+
     }
 }

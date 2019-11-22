@@ -10,5 +10,10 @@ namespace UdeS.Promoscience.Labyrinths.UI
         private LevelSelect levelSelect;
 
         public override BaseSelect Select => levelSelect;
+
+        [SerializeField]
+        private LevelButton buttonTemplate;
+
+        public override BaseButton ButtonTemplate => buttonTemplate;
     }
 }
