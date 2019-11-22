@@ -323,6 +323,14 @@ namespace UdeS.Promoscience.Labyrinths
             renderTexture = Object.Instantiate(Resources.Instance.RenderTexture);
         }
 
+        public bool Enabled
+        {
+            set
+            {
+                Source.gameObject.SetActive(value);
+            }
+        }
+
         public bool OutputToTexture
         {
             set
@@ -535,7 +543,7 @@ namespace UdeS.Promoscience.Labyrinths
             return labyrinthTiles[x, y];
         }
 
-        public void Init()
+        public void Init(bool enableCamera)
         {
             Camera.Source.gameObject.SetActive(true);
             Camera.Source.transform.position += GetLabyrinthPositionInWorldPosition(0, 0);
@@ -545,6 +553,7 @@ namespace UdeS.Promoscience.Labyrinths
                 -labyrinthTiles.GetLength(1) * Utils.TILE_SIZE) / 2;
 
             Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
+            Camera.Source.enabled = enableCamera;
         }
 
         //Labyrith start should always be in a dead end

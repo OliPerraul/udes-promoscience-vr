@@ -65,7 +65,6 @@ namespace UdeS.Promoscience
         public string[] ActionValues;
 
         public int[] ActionSteps;
-        
 
         public Cirrus.Event OnLabyrinthChangedHandler;
 
@@ -144,7 +143,7 @@ namespace UdeS.Promoscience
             {
                 Labyrinth.GenerateLabyrinthVisual();
 
-                Labyrinth.Init();
+                Labyrinth.Init(enableCamera:false);
 
                 if (controls != null)
                 {

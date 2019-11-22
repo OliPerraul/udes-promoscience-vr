@@ -47,7 +47,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             labyrinth.GenerateLabyrinthVisual();
 
-            labyrinth.Init();
+            labyrinth.Init(enableCamera: true);
 
             labyrinth.Camera.OutputToTexture = true;
 

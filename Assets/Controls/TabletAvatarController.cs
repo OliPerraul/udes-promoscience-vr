@@ -53,6 +53,8 @@ namespace UdeS.Promoscience.Controls
             // TODO replace by network controller asset
             isConnectedToPair.valueChangedEvent += OnConnectOrDisconnect;
             isConnectedToServer.valueChangedEvent += OnConnectOrDisconnect;
+
+            controls.IsThirdPersonEnabled.Value = true;
         }
 
         private void Update()
