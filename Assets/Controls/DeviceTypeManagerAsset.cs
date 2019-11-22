@@ -6,7 +6,7 @@ using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
-namespace UdeS.Promoscience.ScriptableObjects
+namespace UdeS.Promoscience.Controls
 {
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/DeviceType", order = 1)]

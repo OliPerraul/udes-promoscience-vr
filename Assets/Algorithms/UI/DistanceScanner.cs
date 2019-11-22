@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Controls;
 //using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.Algorithms

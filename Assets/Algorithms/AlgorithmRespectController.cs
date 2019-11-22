@@ -6,6 +6,7 @@ using UdeS.Promoscience.ScriptableObjects;
 ////using UdeS.Promoscience.Utils;
 //using UdeS.Promoscience.Game;
 using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Controls;
 
 namespace UdeS.Promoscience.Algorithms
 {

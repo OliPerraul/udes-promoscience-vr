@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Controls;
 using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.UI

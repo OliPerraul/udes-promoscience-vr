@@ -6,9 +6,8 @@ using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Controls
 {
-
     public class TabletAvatarController : MonoBehaviour
     {
         [SerializeField]

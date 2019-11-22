@@ -4,6 +4,7 @@ using UnityEditor;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Network;
 using UdeS.Promoscience;
+using UdeS.Promoscience.Controls;
 
 namespace UdeS.Promoscience.Editor
 {

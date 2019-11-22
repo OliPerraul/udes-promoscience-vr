@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace UdeS.Promoscience.ScriptableObjects
+namespace UdeS.Promoscience.Controls
 {
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Avatar Controler", order = 1)]
     public class AvatarControllerAsset : ScriptableObject
@@ -28,6 +28,8 @@ namespace UdeS.Promoscience.ScriptableObjects
         public Cirrus.Event OnPlayerReachedTheEndHandler;
 
         public Cirrus.Event OnLabyrinthPositionChangedHandler;
+
+        public Cirrus.ObservableValue<Quaternion> AvatarRotation = new Cirrus.ObservableValue<Quaternion>();
 
         public Cirrus.ObservableValue<Vector3> PlayerPosition = new Cirrus.ObservableValue<Vector3>();
 

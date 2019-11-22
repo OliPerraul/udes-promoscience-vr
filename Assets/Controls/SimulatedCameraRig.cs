@@ -52,7 +52,10 @@ namespace UdeS.Promoscience.Controls
                 }
                 else
                 {
-                    return avatarTransform.rotation;
+                    return Quaternion.Euler(
+                         thirdPersonCamera.transform.rotation.eulerAngles.x,
+                         0,
+                         thirdPersonCamera.transform.rotation.eulerAngles.z);
                 }
             }
         }

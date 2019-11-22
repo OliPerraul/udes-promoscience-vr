@@ -9,7 +9,7 @@ using UdeS.Promoscience.Network;
 
 using Cirrus.Extensions;
 
-namespace UdeS.Promoscience
+namespace UdeS.Promoscience.Controls
 {
     // FOR REAL WHY IS THIS CHARACTER CONTROLLER SO GODDAM COMPLICATED
     // Our guy is just moving on a grid...
@@ -37,7 +37,7 @@ namespace UdeS.Promoscience
         private ScriptableBoolean isConnectedToServer;
 
         [SerializeField]
-        private Controls.CameraRigWrapper cameraRig;
+        private CameraRigWrapper cameraRig;
 
         private bool isChainingMovement = false;
 
@@ -103,16 +103,8 @@ namespace UdeS.Promoscience
 
         public void OnMouseFocusChanged(bool enabled)
         {
-            if (enabled)
-            {
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Confined;
-            }
-            else
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
-            }
+            Cursor.visible = enabled;
+            Cursor.lockState = enabled ? CursorLockMode.Confined : CursorLockMode.None;
         }
 
         public void RequestTurnLeft(bool turnAvatar)
@@ -136,9 +128,9 @@ namespace UdeS.Promoscience
                         fromRotation = targetRotation;
                         targetRotation = fromRotation * trajectory;
 
-                        controls.ForwardDirection.Value = 
-                            (controls.ForwardDirection.Value - 1) < 0 ? 
-                                3 : 
+                        controls.ForwardDirection.Value =
+                            (controls.ForwardDirection.Value - 1) < 0 ?
+                                3 :
                                 (controls.ForwardDirection.Value - 1);
 
                         gameAction.SetAction(GameAction.TurnLeft);
@@ -282,6 +274,8 @@ namespace UdeS.Promoscience
 
         private void FixedUpdate()
         {
+            controls.AvatarRotation.Value = cameraRig.LookRotation;
+
             if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
             {
                 if (isMoving)
@@ -388,7 +382,6 @@ namespace UdeS.Promoscience
                                 cameraRig.DirectionArrowTransform.rotation = targetRotation;
                             }
 
-
                             turnSpeed = 0;
                             lerpValue = 0;
                             isTurningLeft = false;
@@ -489,9 +482,7 @@ namespace UdeS.Promoscience
 
             trajectory.eulerAngles += new Vector3(0, -90, 0);
 
-            fromRotation = cameraRig.DirectionArrowTransform.rotation; 
-                //cameraRig.LookRotation : 
-                //cameraRig.DirectionArrowTransform.rotation;
+            fromRotation = cameraRig.DirectionArrowTransform.rotation;
 
             targetRotation = fromRotation * trajectory;
 
@@ -510,9 +501,7 @@ namespace UdeS.Promoscience
 
             trajectory.eulerAngles += new Vector3(0, 90, 0);
 
-            fromRotation = cameraRig.DirectionArrowTransform.rotation;// ? 
-                //cameraRig.LookRotation : 
-                //cameraRig.DirectionArrowTransform.rotation;
+            fromRotation = cameraRig.DirectionArrowTransform.rotation;
 
             targetRotation = fromRotation * trajectory;
 

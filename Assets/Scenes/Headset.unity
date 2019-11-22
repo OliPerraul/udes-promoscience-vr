@@ -950,7 +950,7 @@ PrefabInstance:
     - target: {fileID: 2769672074992380168, guid: 810541629f38df848b7ee6b904a14af2,
         type: 3}
       propertyPath: m_Name
-      value: Avatar.Headset
+      value: HeadsetAvatar
       objectReference: {fileID: 0}
     - target: {fileID: 2769672074992380212, guid: 810541629f38df848b7ee6b904a14af2,
         type: 3}

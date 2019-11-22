@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Controls;
 using System;
 using Cirrus;
 using Cirrus.Extensions;
