@@ -27,8 +27,6 @@ namespace UdeS.Promoscience.Replays
 
         protected bool isTurn = false;
 
-        //public Vector2Int LPosition;
-
         protected float time = 0.6f;
 
         [SerializeField]
