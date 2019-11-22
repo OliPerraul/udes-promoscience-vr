@@ -307,6 +307,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localizeString: {fileID: 11400000, guid: af8566158ae6a1849ada2d20b5c37291, type: 2}
+  inlineLocalizeString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
   text: {fileID: 33292529}
 --- !u!114 &33292529
 MonoBehaviour:
@@ -1136,6 +1139,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localizeString: {fileID: 11400000, guid: 1afaac59ede1a864ba9588d333124883, type: 2}
+  inlineLocalizeString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
   text: {fileID: 245752731}
 --- !u!114 &245752731
 MonoBehaviour:
@@ -2353,6 +2359,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localizeString: {fileID: 11400000, guid: dc837bba1cd464841a62565ae9969f14, type: 2}
+  inlineLocalizeString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
   text: {fileID: 499981706}
 --- !u!114 &499981706
 MonoBehaviour:
@@ -6941,6 +6950,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localizeString: {fileID: 11400000, guid: 9b7b6c8297daeb043a36104b1ba8b00f, type: 2}
+  inlineLocalizeString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
   text: {fileID: 1945378177}
 --- !u!114 &1945378177
 MonoBehaviour:
@@ -7014,7 +7026,7 @@ PrefabInstance:
     - target: {fileID: 2769672074992380168, guid: 9da6b81bdde8b514f8e71db2b3f449d5,
         type: 3}
       propertyPath: m_Name
-      value: Avatar.Tablet
+      value: TabletAvatar
       objectReference: {fileID: 0}
     - target: {fileID: 2769672074992380212, guid: 9da6b81bdde8b514f8e71db2b3f449d5,
         type: 3}
@@ -7093,6 +7105,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2769672074992380213, guid: 9da6b81bdde8b514f8e71db2b3f449d5, type: 3}
+    - {fileID: 2769672074992380214, guid: 9da6b81bdde8b514f8e71db2b3f449d5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9da6b81bdde8b514f8e71db2b3f449d5, type: 3}
 --- !u!1 &1959292797 stripped
 GameObject:
@@ -7177,6 +7190,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localizeString: {fileID: 11400000, guid: 558f9188502b3344aad00ebddaf75f4a, type: 2}
+  inlineLocalizeString:
+    localizeString: {fileID: 0}
+    defaultString: '[?]'
   text: {fileID: 1978456955}
 --- !u!114 &1978456955
 MonoBehaviour:
