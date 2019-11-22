@@ -241,6 +241,37 @@ namespace UdeS.Promoscience
             CurrentReplay.Start();
         }
 
+
+        public void StartAdvancedReplay(Replays.Replay replay)
+        {
+            // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
+            foreach (Player player in PlayerList.instance.list)
+            {
+                // Tell clients to pay attention
+                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
+                    player.ServerPlayerGameState == ClientGameState.Playing)
+                {
+                    player.TargetSetGameState(
+                        player.connectionToClient,
+                        ClientGameState.ViewingGlobalReplay);
+                }
+            }
+
+            GameState = ServerGameState.AdvancedReplay;
+
+            Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(replay.LabyrinthData.Id);
+
+            Labyrinths.CurrentData = replay.LabyrinthData;
+
+            CurrentReplay = replay;
+
+            CurrentReplay.Start();
+        }
+
+
         // Try find course ID initiated by a team member
         // Otherwise assign new course
         //

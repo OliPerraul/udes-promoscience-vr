@@ -17,6 +17,8 @@ namespace UdeS.Promoscience.Replays
 
         public Labyrinths.Labyrinth labyrinth;
 
+        public Labyrinths.Labyrinth Labyrinth => labyrinth;
+
         protected Vector2Int lposition;
 
         protected Vector3 wposition;

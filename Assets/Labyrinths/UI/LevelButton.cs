@@ -6,9 +6,14 @@ using UnityEngine.EventSystems;
 
 namespace UdeS.Promoscience.Labyrinths.UI
 {
-    public class LabyrinthButton : BaseLabyrinthButton
+    public class LevelButton : BaseButton
     {
-        public virtual LabyrinthButton Create(
+        public override void Awake()
+        {
+            base.Awake();
+        }
+
+        public override BaseButton Create(
             Transform parent,
             Labyrinth labyrinth)
         {
@@ -16,6 +21,11 @@ namespace UdeS.Promoscience.Labyrinths.UI
             l.labyrinth = labyrinth;
             l.rawImage.texture = labyrinth.Camera.RenderTexture;
             return l;
+        }
+
+        public override void OnClick()
+        {
+            Server.Instance.StartGameWithLabyrinth(labyrinth.Id);
         }
     }
 }

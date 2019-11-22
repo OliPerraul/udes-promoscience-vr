@@ -46,7 +46,7 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private GameObject overlay;
 
-        public virtual void OnEnable()
+        public virtual void Awake()
         {
             openButton.onClick.AddListener(OnOpenClicked);
             exitButton.onClick.AddListener(OnExitClicked);

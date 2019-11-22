@@ -5,30 +5,28 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths.UI
 {
-    public class LevelSelect : BaseLabyrinthSelect//.UI.MainDisplay
+    public class LevelSelect : BaseSelect//.UI.MainDisplay
     {
 
-        private List<LabyrinthButton> labyrinthButtons;
-
-        protected Replays.ControllerAsset ReplayController
-        {
-            get
-            {
-                return replayController;
-            }
-        }
+        private List<LevelButton> labyrinthButtons;
 
         [SerializeField]
         private Replays.ControllerAsset replayController;
 
-        [SerializeField]
-        private Transform buttonsParent;
+        protected Replays.ControllerAsset ReplayController => replayController;
 
         [SerializeField]
-        private LabyrinthButton labyrinthButtonTemplate;
+        private LevelButton labyrinthButtonTemplate;
+
+        public override BaseButton ButtonTemplate => labyrinthButtonTemplate;
 
         [SerializeField]
         private GameObject buttonsHorizontalTemplate;
+
+        [SerializeField]
+        private LevelSection sectionTemplate;
+
+        public override BaseSection SectionTemplate => sectionTemplate;
 
         [SerializeField]
         private UnityEngine.UI.Button buttonRandom;
@@ -41,7 +39,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         public virtual void Awake()
         {
 
-            labyrinthButtons = new List<LabyrinthButton>();
+            labyrinthButtons = new List<LevelButton>();
 
             replayController.OnActionHandler += OnReplayAction;
 
@@ -71,6 +69,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
             }
         }
 
+        public override int NumSections => throw new System.NotImplementedException();
+
+        public override BaseSection CurrentSection => throw new System.NotImplementedException();
 
         public virtual void OnReplayAction(Replays.ReplayAction action, params object[] args)
         {
@@ -177,7 +178,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
                     button.gameObject.SetActive(true);
 
-                    labyrinthButtons.Add(button);
+                    //labyrinthButtons.Add(button);
                 }
 
             }
@@ -186,6 +187,11 @@ namespace UdeS.Promoscience.Labyrinths.UI
                 Clear();
                 Enabled = false;
             }
+        }
+
+        public override void RemoveSection(BaseSection section)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

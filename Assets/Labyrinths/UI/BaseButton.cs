@@ -6,9 +6,9 @@ using UnityEngine.EventSystems;
 
 namespace UdeS.Promoscience.Labyrinths.UI
 {
-    public abstract class BaseLabyrinthButton : MonoBehaviour
+    public abstract class BaseButton : MonoBehaviour
     {
-        public Event<BaseLabyrinthButton> OnClickedHandler;
+        public Event<BaseButton> OnClickedHandler;
 
         [SerializeField]
         protected Labyrinth labyrinth;
@@ -23,7 +23,12 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public virtual void Awake()
         {
+            button.onClick.AddListener(OnClick);
             button.onClick.AddListener(() => OnClickedHandler?.Invoke(this));
         }
+
+        public abstract void OnClick();
+
+        public abstract BaseButton Create(Transform parent, Labyrinth labyrinth);
     }
 }

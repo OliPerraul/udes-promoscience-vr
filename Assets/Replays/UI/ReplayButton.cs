@@ -6,18 +6,19 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public enum ReplayButtonMode
+    public enum ButtonMode
     {
         Add,
         Remove,
         Both,
         None
-
     }
 
-
-    public class ReplayButton : Labyrinths.UI.BaseLabyrinthButton
+    public class ReplayButton : Labyrinths.UI.BaseButton
     {
+        [SerializeField]
+        private ControllerAsset replayController;
+
         [SerializeField]
         private UnityEngine.UI.Button removeButton;
 
@@ -30,9 +31,11 @@ namespace UdeS.Promoscience.Replays.UI
 
         public Cirrus.Event<ReplayButton> OnReplayClickedHandler;
 
-        private ReplayButtonMode mode;
+        private Replay replay;
 
-        public ReplayButtonMode Mode
+        private ButtonMode mode;
+
+        public ButtonMode Mode
         {
             set
             {
@@ -40,22 +43,22 @@ namespace UdeS.Promoscience.Replays.UI
 
                 switch (value)
                 {
-                    case ReplayButtonMode.Add:
+                    case ButtonMode.Add:
                         removeButton.gameObject.SetActive(false);
                         addButton.gameObject.SetActive(true);
                         break;
 
-                    case ReplayButtonMode.Remove:
+                    case ButtonMode.Remove:
                         removeButton.gameObject.SetActive(true);
                         addButton.gameObject.SetActive(false);
                         break;
 
-                    case ReplayButtonMode.Both:
+                    case ButtonMode.Both:
                         removeButton.gameObject.SetActive(true);
                         addButton.gameObject.SetActive(true);
                         break;
 
-                    case ReplayButtonMode.None:
+                    case ButtonMode.None:
                         removeButton.gameObject.SetActive(false);
                         addButton.gameObject.SetActive(false);
                         break;
@@ -69,11 +72,6 @@ namespace UdeS.Promoscience.Replays.UI
         {
             base.Awake();
 
-            button.onClick.AddListener(() => OnReplayClickedHandler?.Invoke(this));
-
- 
-            OnReplayClickedHandler += OnClicked;
-
             addButton.onClick.AddListener(() => OnAddedHandler?.Invoke());
 
             removeButton.onClick.AddListener(OnRemoved);
@@ -81,9 +79,16 @@ namespace UdeS.Promoscience.Replays.UI
             Mode = mode;
         }
 
-        public void OnClicked(ReplayButton repl)
+        public override void OnClick()
         {
-            Server.Instance.StartAdvancedReplay(labyrinth);
+            if (replay == null)
+            { 
+                replay = new Replay(
+                    replayController,
+                    labyrinth);
+            }            
+            
+            Server.Instance.StartAdvancedReplay(replay);
         }
 
         public void OnRemoved()
@@ -94,15 +99,21 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-        public ReplayButton Create(
+        public override Labyrinths.UI.BaseButton Create(
             Transform parent,
-            Labyrinths.Labyrinth labyrinth,
-            ReplayButtonMode mode = ReplayButtonMode.Remove)
+            Labyrinths.Labyrinth labyrinth)
+        {
+            return CreateReplayButton(parent, labyrinth);
+        }
+
+
+        public ReplayButton CreateReplayButton(
+            Transform parent,
+            Labyrinths.Labyrinth labyrinth)
         {
             var l = this.Create(parent);
             l.labyrinth = labyrinth;
             l.rawImage.texture = labyrinth.Camera.RenderTexture;
-            l.Mode = mode;
 
             return l;
         }

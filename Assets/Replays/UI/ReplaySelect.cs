@@ -3,34 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using Cirrus.Extensions;
 using UdeS.Promoscience.Labyrinths;
+using UdeS.Promoscience.Labyrinths.UI;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class ReplaySelect : Labyrinths.UI.BaseLabyrinthSelect//.UI.MainDisplay
+    public class ReplaySelect : Labyrinths.UI.BaseSelect//.UI.MainDisplay
     {
-        protected ControllerAsset ReplayController
-        {
-            get
-            {
-                return replayController;
-            }
-        }
-
-        public Cirrus.Event OnContentChangedHandler;
-
         [SerializeField]
         private ControllerAsset replayController;
 
-        [SerializeField]
-        private Transform buttonsParent;
+        protected ControllerAsset ReplayController => replayController;
 
         [SerializeField]
-        private ReplayButton labyrinthButtonTemplate;
+        private ReplayButton buttonTemplate;
 
-        //private List<ReplayButton> buttons = new List<ReplayButton>();
+        public override BaseButton ButtonTemplate => buttonTemplate;
 
         [SerializeField]
-        private ButtonContainer containerTemplate;
+        private ReplaySection containerTemplate;
+
+        public override BaseSection SectionTemplate => containerTemplate;
+
 
 
         [SerializeField]
@@ -41,16 +34,13 @@ namespace UdeS.Promoscience.Replays.UI
         private UnityEngine.UI.Button buttonAdd;
 
 
-        private int labyrinthIndex = 0;
+        private ReplaySection currentSection = null;
 
-        public int LabyrinthIndexWrap => labyrinthIndex.Mod(Labyrinths.Resources.NumLabyrinths);
+        public override BaseSection CurrentSection => currentSection;
 
+        public List<ReplaySection> sections = new List<ReplaySection>();
 
-        private ButtonContainer container = null;
-
-        public List<ButtonContainer> containers = new List<ButtonContainer>();
-
-        public int NumContainers => containers.Count;
+        public override int NumSections => sections.Count;
 
 
         public virtual void Awake()
@@ -173,7 +163,7 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-        public void OnAddedBottomClicked()//Transform parent)
+        public override void OnAddedBottomClicked()//Transform parent)
         {
             AddContainer().AddButton(CreateNextLabyrinth());
 
@@ -181,7 +171,7 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-        public void AddLabyrinth(int i)
+        public override void AddLabyrinth(int i)
         {
             var data = Server.Instance.Labyrinths.Data[i];
 
@@ -204,40 +194,38 @@ namespace UdeS.Promoscience.Replays.UI
                 AddContainer();
             }
 
-            containers[containers.Count - 1].AddButton(labyrinth);
+            sections[sections.Count - 1].AddButton(labyrinth);
 
             OnContentChangedHandler?.Invoke();
         }
 
-        public ButtonContainer AddContainer()
+        public override Labyrinths.UI.BaseSection AddContainer()
         {
-            if (containers.Count == 1)
+            if (sections.Count == 1)
             {
-                containers[0].GetComponent<ButtonContainer>()?.RespectLayout();
+                sections[0].RespectLayout();
             }
 
-            container = containerTemplate.Create(buttonsParent);
+            currentSection = containerTemplate.Create(buttonsParent);
 
-            containers.Add(container);
+            sections.Add(currentSection);
 
-            container.gameObject.SetActive(true);
+            currentSection.gameObject.SetActive(true);
 
-            container.OnButtonRemovedHandler += OnButtonRemoved;
+            currentSection.OnButtonRemovedHandler += OnButtonRemoved;
 
-            container.OnRemovedHandler += OnContainerRemoved;
+            currentSection.OnRemovedHandler += OnContainerRemoved;
 
-            AdjustContent();
-
-            OnContentChangedHandler?.Invoke();
-
-            return container;
+            return currentSection;
         }
 
-        public void AdjustContent()
+        public override void AdjustContent()
         {
-            if (containers.Count == 1) containers[0].Fit();
+            base.AdjustContent();
 
-            else containers[0].RespectLayout();
+            if (sections.Count == 1) sections[0].Fit();
+
+            else sections[0].RespectLayout();
         }
 
         public void OnButtonRemoved(ReplayButton button)
@@ -254,13 +242,18 @@ namespace UdeS.Promoscience.Replays.UI
             OnContentChangedHandler?.Invoke();
         }
 
-        public void OnContainerRemoved(ButtonContainer container)
+        public void OnContainerRemoved(ReplaySection container)
         {
-            containers.Remove(container);
+            sections.Remove(container);
 
             AdjustContent();
 
             OnContentChangedHandler?.Invoke();
+        }
+
+        public override void RemoveSection(BaseSection section)
+        {
+            //sections.Remove(section);
         }
     }
 }
