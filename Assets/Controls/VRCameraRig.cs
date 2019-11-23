@@ -15,15 +15,13 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         public Transform avatarTransform;
 
+        public Transform CharacterTransform => avatarTransform;
+
         [UnityEngine.Serialization.FormerlySerializedAs("DirectionTransform")]
         [SerializeField]
         public Transform directionTransform;
 
-
         public Vector3 CameraDirection => ovrCameraRig.centerEyeAnchor.transform.forward;
-
-        public Transform CharacterTransform => avatarTransform;
-
 
         public Quaternion CameraRotation => avatarTransform.rotation;
     
@@ -31,10 +29,29 @@ namespace UdeS.Promoscience.Controls
 
         public Transform DirectionArrowTransform => directionTransform;
 
+        [SerializeField]
+        private OVRCameraRig firstPersonCamera;
 
-        public void EnableThirdPerson(bool enable)
+        [SerializeField]
+        private OVRCameraRig thirdPersonCamera;
+
+        [SerializeField]
+        private GameObject mesh;
+
+        [SerializeField]
+        private AvatarControllerAsset controls;
+
+        public void Awake()
         {
-           
+            controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
+            controls.IsThirdPersonEnabled.Value = false;
+        }
+
+        public void OnThirdPersonEnabled(bool enabled)
+        {
+            firstPersonCamera.gameObject.SetActive(!enabled);
+            thirdPersonCamera.gameObject.SetActive(enabled);
+            mesh.SetActive(enabled);
         }
     }
 }
