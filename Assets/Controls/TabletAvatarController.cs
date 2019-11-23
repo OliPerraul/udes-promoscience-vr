@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Controls
         Quaternion targetRotation;
         Queue<Quaternion> rotationQueue = new Queue<Quaternion>();
 
-        void Start()
+        public void Awake()
         {
             controls.PlayerPosition.OnValueChangedHandler += OnNewPlayerPosition;
             controls.PlayerRotation.OnValueChangedHandler += OnNewPlayerRotation;
@@ -53,8 +53,11 @@ namespace UdeS.Promoscience.Controls
             // TODO replace by network controller asset
             isConnectedToPair.valueChangedEvent += OnConnectOrDisconnect;
             isConnectedToServer.valueChangedEvent += OnConnectOrDisconnect;
+        }
 
-            controls.IsThirdPersonEnabled.Value = true;
+        void Start()
+        {
+            controls.IsThirdPersonEnabled.Set(true);
         }
 
         private void Update()

@@ -39,6 +39,9 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private AvatarControllerAsset controls;
 
+        [SerializeField]
+        private Characters.AvatarCharacter character;
+
         //[SerializeField]
         //private Transform avatarTransform;
 
@@ -90,6 +93,8 @@ namespace UdeS.Promoscience.Controls
 
         private void Awake()
         {
+            Client.Instance.clientStateChangedEvent += OnClientChangedState;
+
             controls.stopAllMovementEvent += OnStopAllMovement;
 
             controls.resetPositionAndRotation += OnResetPositionAndRotation;
@@ -101,8 +106,47 @@ namespace UdeS.Promoscience.Controls
             controls.PositionRotationAndTiles.OnValueChangedHandler += OnPlayerPositionRotationAndTiles;
 
             controls.IsMouseFocusGrabbed.OnValueChangedHandler += OnMouseFocusChanged;
+        }
 
-            controls.IsThirdPersonEnabled.Value = false;
+        private Timer transitionTimer;
+
+        [SerializeField]
+        private float transitionTime = 2f;
+
+        public void Start()
+        {
+            //controls.IsThirdPersonEnabled.Set(false);
+            controls.IsControlsEnabled.Set(true);
+            controls.IsPlayerControlsEnabled.Set(true);
+
+            // TODO put in client State event
+            transitionTimer = new Timer(transitionTime, start: false);
+            transitionTimer.OnTimeLimitHandler += OnTransitionTimeout;
+        }
+
+        public void OnClientChangedState()
+        {
+            switch(Client.Instance.State)
+            {
+                case ClientGameState.Playing:
+                case ClientGameState.PlayingTutorial:
+                    cameraRig.TransitionCameraAnimator.Play(TransitionCameraAnimation.Transition_In);
+                    transitionTimer.Start();
+
+                    break;
+
+                case ClientGameState.Finished:
+                    cameraRig.TransitionCameraAnimator.Play(TransitionCameraAnimation.Transition_Out);
+
+                    break;
+
+            }
+        }
+
+        public void OnTransitionTimeout()
+        {
+            controls.IsTransitionCameraEnabled.Set(false);
+            controls.IsThirdPersonEnabled.Set(false);
         }
 
 
@@ -379,7 +423,7 @@ namespace UdeS.Promoscience.Controls
                             // TODO Fix this crap
                             if (isAvatarTurn)
                             {
-                                cameraRig.CharacterTransform.rotation = targetRotation;
+                                character.Transform.rotation = targetRotation;
                                 cameraRig.DirectionArrowTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
                             }
                             else
@@ -400,10 +444,14 @@ namespace UdeS.Promoscience.Controls
                     }
                 }
 
+
+
                 Vector2Int labyrinthPosition =
-                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
-                        cameraRig.Transform.position.x,
-                        cameraRig.Transform.position.z);
+                    Client.Instance.Labyrinth == null ?
+                        Vector2Int.zero:
+                        Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
+                            cameraRig.Transform.position.x,
+                            cameraRig.Transform.position.z);
 
                 if (labyrinthPosition != this.labyrinthPosition)
                 {
@@ -420,13 +468,13 @@ namespace UdeS.Promoscience.Controls
                         controls.OnLabyrinthPositionChangedHandler.Invoke();
                 }
 
-                if (cameraRig.CharacterTransform.position != lastPosition)
+                if (character.Transform.position != lastPosition)
                 {
                     controls.PlayerPosition.Value = cameraRig.Transform.position;
-                    lastPosition = cameraRig.CharacterTransform.position;
+                    lastPosition = character.Transform.position;
                 }
 
-                if (cameraRig.CharacterTransform.rotation != lastRotation)
+                if (character.Transform.rotation != lastRotation)
                 {
                     controls.PlayerRotation.Value = cameraRig.CameraRotation;
                     lastRotation = cameraRig.CameraRotation;
@@ -438,7 +486,7 @@ namespace UdeS.Promoscience.Controls
         {
             if (isAvatarTurn)
             {
-                cameraRig.CharacterTransform.rotation = Quaternion.Lerp(
+                character.Transform.rotation = Quaternion.Lerp(
                     fromRotation,
                     targetRotation,
                     lerpValue);
@@ -557,6 +605,9 @@ namespace UdeS.Promoscience.Controls
 
         bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
         {
+            if (Client.Instance.Labyrinth == null)
+                return false;
+
             Vector2Int labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(position.x, position.z);
 
             if (CheckIfMovementIsValidWhileCorrecting(direction, labyrinthPosition))
@@ -622,6 +673,9 @@ namespace UdeS.Promoscience.Controls
 
         void PaintCurrentPositionTile(bool saveAction)
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             Vector2Int position = Client.Instance.Labyrinth
                 .GetWorldPositionInLabyrinthPosition(
                 cameraRig.Transform.position.x,
@@ -702,7 +756,7 @@ namespace UdeS.Promoscience.Controls
             }
 
             // TODO put somewhere else
-            cameraRig.CharacterTransform.rotation = rotation;
+            character.Transform.rotation = rotation;
 
             cameraRig.DirectionArrowTransform.rotation = rotation;
 
@@ -716,7 +770,7 @@ namespace UdeS.Promoscience.Controls
 
             cameraRig.Transform.position = controls.PositionRotationAndTiles.Value.Position;
 
-            cameraRig.CharacterTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
+            character.Transform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 
             cameraRig.DirectionArrowTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 

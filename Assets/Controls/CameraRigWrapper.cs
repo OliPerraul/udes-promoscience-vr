@@ -7,7 +7,7 @@ namespace UdeS.Promoscience.Controls
 
     public interface ICameraRig
     {
-        Transform CharacterTransform { get; }
+        //Transform CharacterTransform { get; }
 
         Vector3 CameraDirection { get; }
 
@@ -16,6 +16,8 @@ namespace UdeS.Promoscience.Controls
         Transform Transform { get; }
 
         Transform DirectionArrowTransform { get; }
+
+        TransitionCameraAnimatorWrapper TransitionCameraAnimator { get; }
     }
 
     public class CameraRigWrapper : MonoBehaviour, IInputScheme, ICameraRig
@@ -31,7 +33,7 @@ namespace UdeS.Promoscience.Controls
         public ControllerSelection.OVRInputModule ovrInputModule;
 
         [SerializeField]
-        public SimulatedCameraRig desktopCameraRig;
+        public PCCameraRig desktopCameraRig;
 
         [SerializeField]
         public VRCameraRig vrCameraRig;   
@@ -50,13 +52,13 @@ namespace UdeS.Promoscience.Controls
 
         public Vector3 CameraDirection => cameraRig.CameraDirection;
 
-        public Transform CharacterTransform => cameraRig.CharacterTransform;
-
         public Quaternion CameraRotation => cameraRig.CameraRotation;
 
         public Transform Transform => cameraRig.Transform;
 
         public Transform DirectionArrowTransform => cameraRig.DirectionArrowTransform;
+
+        public TransitionCameraAnimatorWrapper TransitionCameraAnimator => cameraRig.TransitionCameraAnimator;
 
         void Awake()
         {

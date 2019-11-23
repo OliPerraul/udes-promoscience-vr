@@ -11,6 +11,8 @@ namespace UdeS.Promoscience.Controls
 
         public Cirrus.ObservableValue<bool> IsThirdPersonEnabled = new Cirrus.ObservableValue<bool>(false);
 
+        public Cirrus.ObservableValue<bool> IsTransitionCameraEnabled = new Cirrus.ObservableValue<bool>(false);
+
         public Cirrus.ObservableValue<bool> IsControlsEnabled = new Cirrus.ObservableValue<bool>(true);
 
         public Cirrus.ObservableValue<bool> IsMouseFocusGrabbed = new Cirrus.ObservableValue<bool>(false);
@@ -45,12 +47,11 @@ namespace UdeS.Promoscience.Controls
 
         public Cirrus.ObservableValue<int> ForwardDirection = new Cirrus.ObservableValue<int>();
 
-        public void OnEnable()
-        {
-            IsControlsEnabled.Value = false;
-
-            IsPlayerControlsEnabled.Value = false;
-        } 
+        //public void OnEnable()
+        //{
+        //    IsControlsEnabled.Value = false;
+        //    IsPlayerControlsEnabled.Value = false;
+        //} 
 
         public void StopAllMovement()
         {

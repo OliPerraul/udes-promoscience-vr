@@ -7,9 +7,9 @@ namespace UdeS.Promoscience.Controls
 {
     public class VRCameraRig : MonoBehaviour, ICameraRig
     {
-        [UnityEngine.Serialization.FormerlySerializedAs("OVRCameraRig")]
-        [SerializeField]
-        public OVRCameraRig ovrCameraRig;
+        //[UnityEngine.Serialization.FormerlySerializedAs("OVRCameraRig")]
+        //[SerializeField]
+        //public OVRCameraRig ovrCameraRig;
 
         [UnityEngine.Serialization.FormerlySerializedAs("AvatarTransform")]
         [SerializeField]
@@ -20,6 +20,13 @@ namespace UdeS.Promoscience.Controls
         [UnityEngine.Serialization.FormerlySerializedAs("DirectionTransform")]
         [SerializeField]
         public Transform directionTransform;
+
+        [SerializeField]
+        private Animator transitionCameraAnimator;
+
+        private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
+
+        public TransitionCameraAnimatorWrapper TransitionCameraAnimator => transitionCameraAnimatorWrapper;
 
 
         public Vector3 CameraDirection => controls.IsThirdPersonEnabled.Value ?
@@ -55,22 +62,27 @@ namespace UdeS.Promoscience.Controls
         private OVRCameraRig thirdPersonCamera;
 
         [SerializeField]
-        private GameObject mesh;
-
-        [SerializeField]
         private AvatarControllerAsset controls;
 
         public void Awake()
         {
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
-            controls.IsThirdPersonEnabled.Value = false;
+            controls.IsTransitionCameraEnabled.OnValueChangedHandler += OnTransitionCameraEnabled;
+
+            transitionCameraAnimatorWrapper = new TransitionCameraAnimatorWrapper(transitionCameraAnimator);
+
         }
 
         public void OnThirdPersonEnabled(bool enabled)
         {
             firstPersonCamera.gameObject.SetActive(!enabled);
             thirdPersonCamera.gameObject.SetActive(enabled);
-            mesh.SetActive(enabled);
+        }
+
+
+        public void OnTransitionCameraEnabled(bool enabled)
+        {
+            transitionCameraAnimator.gameObject.SetActive(enabled);
         }
     }
 }

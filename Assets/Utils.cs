@@ -114,6 +114,8 @@ namespace UdeS.Promoscience
         ViewingGlobalReplay = 16,
         WaitingReplay = 17,
 
+        Finished = 18
+
     }
 
     [Serializable]
