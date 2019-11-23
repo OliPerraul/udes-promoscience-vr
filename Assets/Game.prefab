@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 82137802747922868}
   - component: {fileID: 114298733568807416}
   - component: {fileID: 114345426861101078}
-  - component: {fileID: 4800835423032950806}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -198,20 +197,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 25414d0b76ef8ac4fb9064fb2d9fa01e, type: 2}
   - {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
   - {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682, type: 2}
---- !u!114 &4800835423032950806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1307779207878956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba4fdb716754c8f4a926fbf408ca00d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  algorithmRespect: {fileID: 11400000, guid: 6d58c680a021b5e47830ce98afc82c18, type: 2}
-  gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
-  gameRoundManager: {fileID: 11400000, guid: eaa0ab69523e289469a32b6d7fdf0ae2, type: 2}
-  cameraRig: {fileID: 0}
