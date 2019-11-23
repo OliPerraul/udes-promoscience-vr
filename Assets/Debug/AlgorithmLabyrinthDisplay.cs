@@ -58,6 +58,9 @@ namespace UdeS.Promoscience.Tests
 
         Vector3 GetWorldPosition(int x, int y)
         {
+            if (Client.Instance.Labyrinth == null)
+                return Vector3.zero;
+
             Vector3 worldPos = new Vector3();
 
             Vector2Int startPosition = Client.Instance.Labyrinth.GetLabyrithStartPosition();

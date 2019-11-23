@@ -42,11 +42,6 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private Characters.AvatarCharacter character;
 
-        //[SerializeField]
-        //private Transform avatarTransform;
-
-        //public Transform AvatarTransform => avatarTransform;
-
         private bool isChainingMovement = false;
 
         private bool isMoving = false;
@@ -130,13 +125,13 @@ namespace UdeS.Promoscience.Controls
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
-                    cameraRig.TransitionCameraAnimator.Play(TransitionCameraAnimation.Transition_In);
-                    transitionTimer.Start();
+                    cameraRig.TransitionCameraAnimator?.Play(TransitionCameraAnimation.Transition_In);
+                    transitionTimer?.Start();
 
                     break;
 
                 case ClientGameState.Finished:
-                    cameraRig.TransitionCameraAnimator.Play(TransitionCameraAnimation.Transition_Out);
+                    cameraRig?.TransitionCameraAnimator?.Play(TransitionCameraAnimation.Transition_Out);
 
                     break;
 
@@ -444,8 +439,6 @@ namespace UdeS.Promoscience.Controls
                     }
                 }
 
-
-
                 Vector2Int labyrinthPosition =
                     Client.Instance.Labyrinth == null ?
                         Vector2Int.zero:
@@ -509,6 +502,9 @@ namespace UdeS.Promoscience.Controls
 
         void RequestMovementInDirection(int direction)
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             if (CheckIfMovementIsValidInDirectionFromPosition(direction, cameraRig.Transform.position))
             {
                 fromPosition = cameraRig.Transform.position;

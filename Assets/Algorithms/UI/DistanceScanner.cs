@@ -87,6 +87,9 @@ namespace UdeS.Promoscience.Algorithms
 
         void ExecuteDistanceScan()
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             float distance = 0;
             string text = "<color=red>" + "?" + "</color>";
             Ray ray = new Ray(raycastStartPoint.position, raycastStartPoint.forward);

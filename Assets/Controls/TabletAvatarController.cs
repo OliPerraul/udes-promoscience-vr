@@ -173,6 +173,9 @@ namespace UdeS.Promoscience.Controls
 
         void PaintTile(Vector2Int position, TileColor color)
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             GameObject tile = Client.Instance.Labyrinth.GetTile(position);
 
             if (tile != null)

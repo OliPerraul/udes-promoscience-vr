@@ -95,6 +95,9 @@ namespace UdeS.Promoscience.Algorithms
 
         void OnLabyrinthPositionChanged()
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             if (isAlgorithmRespectActive)
             {
                 EvaluateAlgorithmRespectOnPositionChanged(
@@ -134,6 +137,9 @@ namespace UdeS.Promoscience.Algorithms
 
         void OnPlayerPaintTile(Tile tile)
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             EvaluateAlgorithmRespectOnPaintTile(
                 Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
                     cameraRig.Transform.position.x,
@@ -146,6 +152,9 @@ namespace UdeS.Promoscience.Algorithms
 
         void EvaluateAlgorithmRespectOnPositionChanged(Vector2Int labyrinthPosition, TileColor previousTileColor, Quaternion rotation)
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             if (labyrinthPosition != currentLabyrinthPosition)
             {
                 if (labyrinthPosition == Client.Instance.Labyrinth.GetLabyrithEndPosition() && !(algorithmRespect.Respect < 1.0f))
@@ -278,6 +287,9 @@ namespace UdeS.Promoscience.Algorithms
 
         void ResetAlgorithmRespect()
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             playerSteps.Clear();
             algorithmRespect.WrongColorTilesWhenDiverging.Clear();
             algorithmRespect.ErrorCount = 0;
@@ -289,6 +301,9 @@ namespace UdeS.Promoscience.Algorithms
 
         public void OnReturnToDivergencePointAnswer(bool doreturn)
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             if (doreturn)
             {
                 algorithmRespect.ErrorCount += 1;
@@ -333,6 +348,9 @@ namespace UdeS.Promoscience.Algorithms
 
         void StartWithSteps()
         {
+            if (Client.Instance.Labyrinth == null)
+                return;
+
             int[] steps = Client.Instance.ActionSteps;
             int forwardDirection = Client.Instance.Labyrinth.GetStartDirection();
             TileColor[,] tiles = new TileColor[Client.Instance.Labyrinth.GetLabyrithXLenght(), Client.Instance.Labyrinth.GetLabyrithYLenght()];

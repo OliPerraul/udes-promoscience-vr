@@ -62,8 +62,10 @@ namespace UdeS.Promoscience.Controls
         {
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
             controls.IsTransitionCameraEnabled.OnValueChangedHandler += OnTransitionCameraEnabled;
-
-            transitionCameraAnimatorWrapper = new TransitionCameraAnimatorWrapper(transitionCameraAnimator);
+                        
+            transitionCameraAnimatorWrapper = transitionCameraAnimator == null ?
+                null :
+                new TransitionCameraAnimatorWrapper(transitionCameraAnimator);
         }
 
         public void OnThirdPersonEnabled(bool enabled)
