@@ -54,7 +54,7 @@ namespace UdeS.Promoscience.Controls
 
         public Quaternion CameraRotation => cameraRig.CameraRotation;
 
-        public Transform Transform => cameraRig.Transform;
+        public Transform Transform => transform;
 
         public Transform DirectionArrowTransform => cameraRig.DirectionArrowTransform;
 
