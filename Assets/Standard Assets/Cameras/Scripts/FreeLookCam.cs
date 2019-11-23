@@ -44,11 +44,11 @@ namespace UnityStandardAssets.Cameras
         protected void Update()
         {
             HandleRotationMovement();
-            if (m_LockCursor && Input.GetMouseButtonUp(0))
-            {
-                Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
-                Cursor.visible = !m_LockCursor;
-            }
+            //if (m_LockCursor && Input.GetMouseButtonUp(0))
+            //{
+            //    Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
+            //    Cursor.visible = !m_LockCursor;
+            //}
         }
 
 
@@ -73,8 +73,10 @@ namespace UnityStandardAssets.Cameras
 			return;
 
             // Read the user input
-            var x = CrossPlatformInputManager.GetAxis("Mouse X");
-            var y = CrossPlatformInputManager.GetAxis("Mouse Y");
+            var x = Input.GetAxis("Mouse X");
+            var y = Input.GetAxis("Mouse Y");
+
+            //Debug.Log(x);
 
             // Adjust the look angle by an amount proportional to the turn speed and horizontal input.
             m_LookAngle += x*m_TurnSpeed;
