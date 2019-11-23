@@ -63,11 +63,11 @@ namespace UdeS.Promoscience.Controls
             controls.IsThirdPersonEnabled.Value = false;
         }
 
-        public void OnThirdPersonEnabled(bool enable)
+        public void OnThirdPersonEnabled(bool enabled)
         {
-            firstPersonCamera.gameObject.SetActive(!enable);
-            thirdPersonCamera.gameObject.SetActive(enable);
-            mesh.SetActive(enable);
+            firstPersonCamera.gameObject.SetActive(!enabled);
+            thirdPersonCamera.gameObject.SetActive(enabled);
+            mesh.SetActive(enabled);
         }
     }
 }

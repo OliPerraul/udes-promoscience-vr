@@ -39,10 +39,10 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private AvatarControllerAsset controls;
 
-        [SerializeField]
-        private Transform avatarTransform;
+        //[SerializeField]
+        //private Transform avatarTransform;
 
-        public Transform AvatarTransform => avatarTransform;
+        //public Transform AvatarTransform => avatarTransform;
 
         private bool isChainingMovement = false;
 
