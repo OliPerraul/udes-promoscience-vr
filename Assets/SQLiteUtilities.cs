@@ -101,6 +101,7 @@ namespace UdeS.Promoscience
                                       "PRIMARY KEY(" + TEAM_ID + ") );";
                     cmd.ExecuteNonQuery();
 
+                    // STORE LABYRINTH AS FILES NOT IN THE DB
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + LABYRINTH + " ( " +
                                       LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
                                       LABYRINTH_SPECS + " varchar(255), " +
@@ -114,8 +115,8 @@ namespace UdeS.Promoscience
                                       COURSE_NO_ALGO + " INTEGER(10) NOT NULL, " +
                                       COURSE_STATUS + " INTEGER(10) NOT NULL, " +
                                       "PRIMARY KEY(" + COURSE_ID + "), " +
-                                      "FOREIGN KEY(" + COURSE_TEAM_ID + ") REFERENCES " + TEAM + "(" + TEAM_ID + "), " +
-                                      "FOREIGN KEY(" + COURSE_LABYRINTH_ID + ") REFERENCES " + LABYRINTH + "(" + LABYRINTH_ID + ")); ";
+                                      "FOREIGN KEY(" + COURSE_TEAM_ID + ") REFERENCES " + TEAM + "(" + TEAM_ID + ")); ";
+                                      //"FOREIGN KEY(" + COURSE_LABYRINTH_ID + ") REFERENCES " + LABYRINTH + "(" + LABYRINTH_ID + ")); ";
                     cmd.ExecuteNonQuery();
 
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + EVENT + " ( " +
@@ -942,7 +943,6 @@ namespace UdeS.Promoscience
 #endif
         }
 
-
         // Insert new course if no active course exist for the given team
         public static void InsertPlayerCourse(
             int teamId,
@@ -968,7 +968,20 @@ namespace UdeS.Promoscience
                     cmd.CommandText = "PRAGMA foreign_keys = ON";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "INSERT INTO " + COURSE + " (" + COURSE_ID + ", " + COURSE_TEAM_ID + ", " + COURSE_LABYRINTH_ID + ", " + COURSE_NO_ALGO + ", " + COURSE_STATUS + ") VALUES ('" + courseId + "', '" + teamId + "', '" + labyrinthId + "', '" + algorithmId + "', '" + COURSE_STATUS_ACTIVE + "');";
+                    cmd.CommandText = 
+                        "INSERT INTO " + COURSE + " (" + 
+                        COURSE_ID + ", " + 
+                        COURSE_TEAM_ID + ", " + 
+                        COURSE_LABYRINTH_ID + ", " + 
+                        COURSE_NO_ALGO + ", " + 
+                        COURSE_STATUS + ") " +
+                        "VALUES ('" + 
+                        courseId + "', '" + 
+                        teamId + "', '" + 
+                        labyrinthId + "', '" + 
+                        algorithmId + "', '" + 
+                        COURSE_STATUS_ACTIVE + "');";
+
                     cmd.ExecuteNonQuery();                                             
                 }
             }
