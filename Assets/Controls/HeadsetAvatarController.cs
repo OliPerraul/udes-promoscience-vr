@@ -113,6 +113,7 @@ namespace UdeS.Promoscience.Controls
             //controls.IsThirdPersonEnabled.Set(false);
             controls.IsControlsEnabled.Set(true);
             controls.IsPlayerControlsEnabled.Set(true);
+            controls.IsMouseFocusGrabbed.Set(true);
 
             // TODO put in client State event
             transitionTimer = new Timer(transitionTime, start: false);
@@ -125,6 +126,7 @@ namespace UdeS.Promoscience.Controls
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
+                    controls.IsTransitionCameraEnabled.Set(true);
                     cameraRig.TransitionCameraAnimator?.Play(TransitionCameraAnimation.Transition_In);
                     transitionTimer?.Start();
 
@@ -133,6 +135,10 @@ namespace UdeS.Promoscience.Controls
                 case ClientGameState.Finished:
                     cameraRig?.TransitionCameraAnimator?.Play(TransitionCameraAnimation.Transition_Out);
 
+                    break;
+
+                default:
+                    controls.IsTransitionCameraEnabled.Set(false);
                     break;
 
             }
