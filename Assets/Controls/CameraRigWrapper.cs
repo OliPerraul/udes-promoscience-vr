@@ -67,7 +67,6 @@ namespace UdeS.Promoscience.Controls
             vrCameraRig.gameObject.SetActive(false);
             cameraRig = desktopCameraRig;
             inputScheme = new SimulatedInputScheme();
-            Cursor.lockState = CursorLockMode.Locked;
 #elif UNITY_ANDROID
             desktopCameraRig.gameObject.SetActive(false);
             vrCameraRig.gameObject.SetActive(true);
