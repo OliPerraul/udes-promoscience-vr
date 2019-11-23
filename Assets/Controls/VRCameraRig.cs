@@ -21,10 +21,29 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         public Transform directionTransform;
 
-        public Vector3 CameraDirection => ovrCameraRig.centerEyeAnchor.transform.forward;
 
-        public Quaternion CameraRotation => avatarTransform.rotation;
-    
+        public Vector3 CameraDirection => controls.IsThirdPersonEnabled.Value ?
+            thirdPersonCamera.centerEyeAnchor.forward :
+            firstPersonCamera.centerEyeAnchor.forward;
+
+        public Quaternion CameraRotation
+        {
+            get
+            {
+                return controls.IsThirdPersonEnabled.Value ?
+                     Quaternion.Euler(
+                         0,
+                         thirdPersonCamera.centerEyeAnchor.rotation.eulerAngles.y,
+                         0) :
+                     Quaternion.Euler(
+                         0,
+                         firstPersonCamera.centerEyeAnchor.rotation.eulerAngles.y,
+                         0);
+
+            }
+        }
+
+
         public Transform Transform => transform;
 
         public Transform DirectionArrowTransform => directionTransform;

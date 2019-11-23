@@ -1,69 +1,191 @@
 fileFormatVersion: 2
 guid: 14c228e4105e147cd8517cab3beba0f1
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Arm.L
-    100002: Armature
-    100004: Bone
-    100006: Bone.001
-    100008: Bone.002
-    100010: Bone.003
-    100012: Bone.004
-    100014: Bone.005
-    100016: Bone.006
-    100018: Bone.007
-    100020: Bone.008
-    100022: Bone.008_end
-    100024: Bone.009
-    100026: Bone.010
-    100028: Bone.011
-    100030: Bone.012
-    100032: Bone.015
-    100034: Bone.015_end
-    100036: Bone.016
-    100038: Bone.016_end
-    100040: Bone.017
-    100042: Bone.018
-    100044: //RootNode
-    400000: Arm.L
-    400002: Armature
-    400004: Bone
-    400006: Bone.001
-    400008: Bone.002
-    400010: Bone.003
-    400012: Bone.004
-    400014: Bone.005
-    400016: Bone.006
-    400018: Bone.007
-    400020: Bone.008
-    400022: Bone.008_end
-    400024: Bone.009
-    400026: Bone.010
-    400028: Bone.011
-    400030: Bone.012
-    400032: Bone.015
-    400034: Bone.015_end
-    400036: Bone.016
-    400038: Bone.016_end
-    400040: Bone.017
-    400042: Bone.018
-    400044: //RootNode
-    2100000: Material.005
-    2100002: FrontRim
-    2100004: MainBody
-    2100006: BackRim
-    2100008: Arms
-    2100010: HeadLight
-    2100012: Tummy
-    2100014: SmallRims
-    2100016: Inside
-    4300000: Arm.L
-    7400000: Armature|Helping
-    7400002: Armature|Jumping
-    7400004: Armature|Victory
-    9500000: //RootNode
-    13700000: Arm.L
+  serializedVersion: 26
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Arm.L
+  - first:
+      1: 100002
+    second: Armature
+  - first:
+      1: 100004
+    second: Bone
+  - first:
+      1: 100006
+    second: Bone.001
+  - first:
+      1: 100008
+    second: Bone.002
+  - first:
+      1: 100010
+    second: Bone.003
+  - first:
+      1: 100012
+    second: Bone.004
+  - first:
+      1: 100014
+    second: Bone.005
+  - first:
+      1: 100016
+    second: Bone.006
+  - first:
+      1: 100018
+    second: Bone.007
+  - first:
+      1: 100020
+    second: Bone.008
+  - first:
+      1: 100022
+    second: Bone.008_end
+  - first:
+      1: 100024
+    second: Bone.009
+  - first:
+      1: 100026
+    second: Bone.010
+  - first:
+      1: 100028
+    second: Bone.011
+  - first:
+      1: 100030
+    second: Bone.012
+  - first:
+      1: 100032
+    second: Bone.015
+  - first:
+      1: 100034
+    second: Bone.015_end
+  - first:
+      1: 100036
+    second: Bone.016
+  - first:
+      1: 100038
+    second: Bone.016_end
+  - first:
+      1: 100040
+    second: Bone.017
+  - first:
+      1: 100042
+    second: Bone.018
+  - first:
+      1: 100044
+    second: //RootNode
+  - first:
+      4: 400000
+    second: Arm.L
+  - first:
+      4: 400002
+    second: Armature
+  - first:
+      4: 400004
+    second: Bone
+  - first:
+      4: 400006
+    second: Bone.001
+  - first:
+      4: 400008
+    second: Bone.002
+  - first:
+      4: 400010
+    second: Bone.003
+  - first:
+      4: 400012
+    second: Bone.004
+  - first:
+      4: 400014
+    second: Bone.005
+  - first:
+      4: 400016
+    second: Bone.006
+  - first:
+      4: 400018
+    second: Bone.007
+  - first:
+      4: 400020
+    second: Bone.008
+  - first:
+      4: 400022
+    second: Bone.008_end
+  - first:
+      4: 400024
+    second: Bone.009
+  - first:
+      4: 400026
+    second: Bone.010
+  - first:
+      4: 400028
+    second: Bone.011
+  - first:
+      4: 400030
+    second: Bone.012
+  - first:
+      4: 400032
+    second: Bone.015
+  - first:
+      4: 400034
+    second: Bone.015_end
+  - first:
+      4: 400036
+    second: Bone.016
+  - first:
+      4: 400038
+    second: Bone.016_end
+  - first:
+      4: 400040
+    second: Bone.017
+  - first:
+      4: 400042
+    second: Bone.018
+  - first:
+      4: 400044
+    second: //RootNode
+  - first:
+      21: 2100000
+    second: Material.005
+  - first:
+      21: 2100002
+    second: FrontRim
+  - first:
+      21: 2100004
+    second: MainBody
+  - first:
+      21: 2100006
+    second: BackRim
+  - first:
+      21: 2100008
+    second: Arms
+  - first:
+      21: 2100010
+    second: HeadLight
+  - first:
+      21: 2100012
+    second: Tummy
+  - first:
+      21: 2100014
+    second: SmallRims
+  - first:
+      21: 2100016
+    second: Inside
+  - first:
+      43: 4300000
+    second: Arm.L
+  - first:
+      74: 7400000
+    second: Armature|Helping
+  - first:
+      74: 7400002
+    second: Armature|Jumping
+  - first:
+      74: 7400004
+    second: Armature|Victory
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Arm.L
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -99,7 +221,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material.005
-    second: {fileID: 2100000, guid: 9884db9ba7d004ad8bd59f2963f5485f, type: 2}
+    second: {fileID: 2100000, guid: 57cfb1c7100bb4c3ca48879632aaa980, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -114,7 +236,7 @@ ModelImporter:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -140,6 +262,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Helping
       takeName: Armature|Helping
+      internalID: 0
       firstFrame: 0
       lastFrame: 41
       wrapMode: 0
@@ -168,6 +291,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Jumping
       takeName: Armature|Jumping
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -196,6 +320,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Victory
       takeName: Armature|Victory
+      internalID: 0
       firstFrame: 0
       lastFrame: 40
       wrapMode: 0
@@ -227,6 +352,8 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -234,27 +361,32 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -264,8 +396,8 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

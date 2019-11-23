@@ -11,6 +11,8 @@ namespace UdeS.Promoscience.Controls
 {
     public class SimulatedCameraRig : MonoBehaviour, ICameraRig
     {
+        public Transform Transform => transform;
+
         [SerializeField]
         private AvatarControllerAsset controls;
 
@@ -19,8 +21,6 @@ namespace UdeS.Promoscience.Controls
 
         [SerializeField]
         private UnityStandardAssets.Cameras.FreeLookCam thirdPersonCamera;
-
-        public Transform Transform => transform;
 
         [SerializeField]
         [UnityEngine.Serialization.FormerlySerializedAs("avatarTransform")]
