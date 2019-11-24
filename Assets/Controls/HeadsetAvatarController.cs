@@ -86,6 +86,9 @@ namespace UdeS.Promoscience.Controls
 
         private bool isTurningDirection = false;
 
+        [SerializeField]
+        private bool isThirdPersonEnabled = false;
+
         private void Awake()
         {
             Client.Instance.clientStateChangedEvent += OnClientChangedState;
@@ -116,6 +119,7 @@ namespace UdeS.Promoscience.Controls
             controls.IsMouseFocusGrabbed.Set(true);
 
             // TODO put in client State event
+            controls.IsTransitionCameraEnabled.Set(false);
             transitionTimer = new Timer(transitionTime, start: false);
             transitionTimer.OnTimeLimitHandler += OnTransitionTimeout;
         }
