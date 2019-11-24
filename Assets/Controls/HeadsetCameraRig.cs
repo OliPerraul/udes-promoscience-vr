@@ -14,11 +14,9 @@ namespace UdeS.Promoscience.Controls
         Transform CameraTransform { get; }
 
         TransitionCameraAnimatorWrapper TransitionCameraAnimator { get; }
-
-        IHeadsetInputScheme InputScheme { get; }
     }
 
-    public class HeadsetCameraRig : MonoBehaviour, IHeadsetCameraRig, IHeadsetInputScheme
+    public class HeadsetCameraRig : MonoBehaviour, IHeadsetCameraRig
     {
         //[UnityEngine.Serialization.FormerlySerializedAs("OVRCameraRig")]
         //[SerializeField]
@@ -38,15 +36,6 @@ namespace UdeS.Promoscience.Controls
 
         [SerializeField]
         private OVRCameraRig transitionCamera;
-
-
-#if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
-        private IHeadsetInputScheme inputScheme = new SimulatedHeadsetInputScheme();
-#elif UNITY_ANDROID
-        private IHeadsetInputScheme inputScheme = new OVRInputScheme();
-#endif
-
-        public IHeadsetInputScheme InputScheme => inputScheme;
 
         private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
 
@@ -78,19 +67,6 @@ namespace UdeS.Promoscience.Controls
                     thirdPersonCamera.transform :
                     firstPersonCamera.transform;
 
-        public bool IsPrimaryTouchPadDown => InputScheme.IsPrimaryTouchPadDown;
-
-        public bool IsPrimaryTouchPadUp => InputScheme.IsPrimaryTouchPadUp;
-
-        public bool IsPrimaryIndexTriggerDown => InputScheme.IsPrimaryIndexTriggerDown;
-
-        public bool IsPrimaryIndexTriggerUp => InputScheme.IsPrimaryIndexTriggerUp;
-
-        public bool IsLeftPressed => InputScheme.IsLeftPressed;
-
-        public bool IsRightPressed => InputScheme.IsRightPressed;
-
-        public bool IsAnyPressed => InputScheme.IsAnyPressed;
 
         public void Awake()
         {

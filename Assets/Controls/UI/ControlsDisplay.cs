@@ -12,8 +12,7 @@ namespace UdeS.Promoscience.Controls
         private DirectiveManagerAsset directiveManager;
 
         [SerializeField]
-        [Cirrus.Editor.GetComponent(typeof(HeadsetCameraRig), Cirrus.Editor.GetComponentAttributeMode.Parent)]
-        private HeadsetCameraRig cameraRig;
+        private HeadsetInputSchemeAsset inputScheme;
 
 
         public void Awake()
@@ -34,7 +33,7 @@ namespace UdeS.Promoscience.Controls
 
         public void Update()
         {
-            if (cameraRig.IsAnyPressed)
+            if (inputScheme.IsAnyPressed)
             {
                 gameObject.SetActive(false);
             }

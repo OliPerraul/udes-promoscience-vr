@@ -40,6 +40,9 @@ namespace UdeS.Promoscience.Controls
         private HeadsetCameraRig cameraRig;
 
         [SerializeField]
+        private HeadsetInputSchemeAsset inputScheme;
+
+        [SerializeField]
         private AvatarControllerAsset controls;
 
         [SerializeField]
@@ -276,12 +279,12 @@ namespace UdeS.Promoscience.Controls
 
         public void Update()
         {
-            if (cameraRig.IsPrimaryTouchPadDown)
+            if (inputScheme.IsPrimaryTouchPadDown)
             {
                 isPrimaryTouchpadHold = true;
             }
 
-            if (cameraRig.IsPrimaryTouchPadUp)
+            if (inputScheme.IsPrimaryTouchPadUp)
             {
                 isPrimaryTouchpadHold = false;
             }
@@ -307,16 +310,16 @@ namespace UdeS.Promoscience.Controls
                         }
                     }
                 }
-                else if (cameraRig.IsLeftPressed)
+                else if (inputScheme.IsLeftPressed)
                 {
                     RequestTurnLeft(turnAvatar: true);
                 }
-                else if (cameraRig.IsRightPressed)
+                else if (inputScheme.IsRightPressed)
                 {
                     RequestTurnRight(turnAvatar: true);
                 }
 
-                if (cameraRig.IsPrimaryIndexTriggerDown)
+                if (inputScheme.IsPrimaryIndexTriggerDown)
                 {
                     isPrimaryIndexTriggerHold = true;
                     primaryIndexTriggerHoldTime = 0;
@@ -333,7 +336,7 @@ namespace UdeS.Promoscience.Controls
                     }
                 }
 
-                if (cameraRig.IsPrimaryIndexTriggerUp)
+                if (inputScheme.IsPrimaryIndexTriggerUp)
                 {
                     controls.PaintingColor.Value = (TileColor)((int)controls.PaintingColor.Value + 1).Mod(Utils.NumColors);
                     PaintCurrentPositionTile(true);

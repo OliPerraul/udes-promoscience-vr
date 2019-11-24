@@ -55,4 +55,35 @@ namespace UdeS.Promoscience.Controls
 
     }
 
+    public class HeadsetInputSchemeAsset : ScriptableObject, IHeadsetInputScheme
+    {
+        private IHeadsetInputScheme inputScheme;
+
+        public bool IsPrimaryTouchPadDown => inputScheme.IsPrimaryTouchPadDown;
+
+        public bool IsPrimaryTouchPadUp => inputScheme.IsPrimaryTouchPadUp;
+
+        public bool IsPrimaryIndexTriggerDown => inputScheme.IsPrimaryIndexTriggerDown;
+
+        public bool IsPrimaryIndexTriggerUp => inputScheme.IsPrimaryIndexTriggerUp;
+
+        public bool IsLeftPressed => inputScheme.IsLeftPressed;
+
+        public bool IsRightPressed => inputScheme.IsRightPressed;
+
+        public bool IsAnyPressed => inputScheme.IsAnyPressed;
+
+        public void OnEnable()
+        {
+#if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
+            if(inputScheme == null)
+                inputScheme = new SimulatedHeadsetInputScheme();
+#elif UNITY_ANDROID
+        if(inputScheme == null)
+            inputScheme = new OVRInputScheme();
+#endif
+        }
+    }
+
+
 }
