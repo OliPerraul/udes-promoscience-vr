@@ -15,7 +15,7 @@ namespace UdeS.Promoscience.Controls
 
         public Cirrus.ObservableValue<bool> IsControlsEnabled = new Cirrus.ObservableValue<bool>(true);
 
-        public Cirrus.ObservableValue<bool> IsMouseFocusGrabbed = new Cirrus.ObservableValue<bool>(false);
+        public Cirrus.ObservableValue<bool> IsCursorLocked = new Cirrus.ObservableValue<bool>(false);
 
         public Cirrus.ObservableValue<int[]> RecordedSteps = new Cirrus.ObservableValue<int[]>();
 
@@ -31,7 +31,7 @@ namespace UdeS.Promoscience.Controls
 
         public Cirrus.Event OnLabyrinthPositionChangedHandler;
 
-        public Cirrus.ObservableValue<Quaternion> AvatarRotation = new Cirrus.ObservableValue<Quaternion>();
+        public Cirrus.ObservableValue<Quaternion> CameraRotation = new Cirrus.ObservableValue<Quaternion>();
 
         public Cirrus.ObservableValue<Vector3> PlayerPosition = new Cirrus.ObservableValue<Vector3>();
 

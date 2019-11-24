@@ -82,9 +82,6 @@ namespace UdeS.Promoscience.Controls
             character.transform.localRotation *= Quaternion.Euler(0f, yRot, 0f);
             camera.transform.localRotation *= Quaternion.Euler(-xRot, 0f, 0f);
 
-            //			if(clampVerticalRotation)
-            //				camera.transform.localRotation = ClampRotationAroundXAxis (camera.transform.localRotation);
-
             if (smooth)
             {
                 character.transform.localRotation = Quaternion.Slerp(character.transform.localRotation, character.transform.localRotation,

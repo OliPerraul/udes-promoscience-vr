@@ -103,7 +103,7 @@ namespace UdeS.Promoscience.Controls
 
             controls.PositionRotationAndTiles.OnValueChangedHandler += OnPlayerPositionRotationAndTiles;
 
-            controls.IsMouseFocusGrabbed.OnValueChangedHandler += OnMouseFocusChanged;
+            controls.IsCursorLocked.OnValueChangedHandler += OnCursorLocked;
         }
 
         private Timer transitionTimer;
@@ -116,7 +116,7 @@ namespace UdeS.Promoscience.Controls
             //controls.IsThirdPersonEnabled.Set(false);
             controls.IsControlsEnabled.Set(true);
             controls.IsPlayerControlsEnabled.Set(true);
-            controls.IsMouseFocusGrabbed.Set(true);
+            controls.IsCursorLocked.Set(true);
 
             // TODO put in client State event
             controls.IsTransitionCameraEnabled.Set(false);
@@ -130,6 +130,7 @@ namespace UdeS.Promoscience.Controls
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
+                    controls.IsCursorLocked.Set(true);
                     controls.IsTransitionCameraEnabled.Set(true);
                     cameraRig.TransitionCameraAnimator?.Play(TransitionCameraAnimation.Transition_In);
                     transitionTimer?.Start();
@@ -155,10 +156,10 @@ namespace UdeS.Promoscience.Controls
         }
 
 
-        public void OnMouseFocusChanged(bool enabled)
+        public void OnCursorLocked(bool cursorLocked)
         {
-            Cursor.visible = enabled;
-            Cursor.lockState = enabled ? CursorLockMode.Confined : CursorLockMode.None;
+            Cursor.visible = !cursorLocked;
+            Cursor.lockState = cursorLocked ? CursorLockMode.Locked : CursorLockMode.None;
         }
 
         public void RequestTurnLeft(bool turnAvatar)
@@ -239,7 +240,7 @@ namespace UdeS.Promoscience.Controls
             Vector3 currentDirection = Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value);
 
             if (Utils.IsSameDirection(
-                    cameraRig.CameraDirection,
+                    cameraRig.CameraForward,
                     currentDirection,
                     angleLookatTurnThreshold))
             {
@@ -247,7 +248,7 @@ namespace UdeS.Promoscience.Controls
             }
             else
             {
-                if (Utils.AngleDir(currentDirection, cameraRig.CameraDirection, Vector3.up) < 0)
+                if (Utils.AngleDir(currentDirection, cameraRig.CameraForward, Vector3.up) < 0)
                 {
                     RequestTurnLeft(turnAvatar: false);
                 }
@@ -328,7 +329,7 @@ namespace UdeS.Promoscience.Controls
 
         private void FixedUpdate()
         {
-            controls.AvatarRotation.Value = cameraRig.CameraRotation;
+            controls.CameraRotation.Value = cameraRig.CameraRotation;
 
             if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
             {

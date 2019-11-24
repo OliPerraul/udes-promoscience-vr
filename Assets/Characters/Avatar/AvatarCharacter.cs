@@ -26,7 +26,7 @@ namespace UdeS.Promoscience.Characters
         {
             animatorWrapper = new AvatarAnimatorWrapper(animator);
 
-            controller.AvatarRotation.OnValueChangedHandler += OnAvatarRotationChanged;
+            controller.CameraRotation.OnValueChangedHandler += OnAvatarRotationChanged;
             controller.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
         }
 

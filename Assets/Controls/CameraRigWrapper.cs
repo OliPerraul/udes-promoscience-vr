@@ -9,9 +9,11 @@ namespace UdeS.Promoscience.Controls
     {
         //Transform CharacterTransform { get; }
 
-        Vector3 CameraDirection { get; }
+        Vector3 CameraForward { get; }
 
         Quaternion CameraRotation { get; }
+
+        Transform CameraTransform { get; }
 
         Transform Transform { get; }
 
@@ -33,7 +35,7 @@ namespace UdeS.Promoscience.Controls
         public ControllerSelection.OVRInputModule ovrInputModule;
 
         [SerializeField]
-        public PCCameraRig desktopCameraRig;
+        public StandardCameraRig desktopCameraRig;
 
         [SerializeField]
         public VRCameraRig vrCameraRig;   
@@ -50,15 +52,18 @@ namespace UdeS.Promoscience.Controls
 
         public bool IsRightPressed => inputScheme.IsRightPressed;
 
-        public Vector3 CameraDirection => cameraRig.CameraDirection;
+        public Vector3 CameraForward => cameraRig.CameraForward;
 
         public Quaternion CameraRotation => cameraRig.CameraRotation;
+
+        public Transform CameraTransform => cameraRig.CameraTransform;
 
         public Transform Transform => transform;
 
         public Transform DirectionArrowTransform => cameraRig.DirectionArrowTransform;
 
         public TransitionCameraAnimatorWrapper TransitionCameraAnimator => cameraRig.TransitionCameraAnimator;
+
 
         void Awake()
         {

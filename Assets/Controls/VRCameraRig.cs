@@ -29,7 +29,7 @@ namespace UdeS.Promoscience.Controls
         public TransitionCameraAnimatorWrapper TransitionCameraAnimator => transitionCameraAnimatorWrapper;
 
 
-        public Vector3 CameraDirection => controls.IsThirdPersonEnabled.Value ?
+        public Vector3 CameraForward => controls.IsThirdPersonEnabled.Value ?
             thirdPersonCamera.centerEyeAnchor.forward :
             firstPersonCamera.centerEyeAnchor.forward;
 
@@ -50,6 +50,9 @@ namespace UdeS.Promoscience.Controls
             }
         }
 
+        public Transform CameraTransform => controls.IsThirdPersonEnabled.Value ?
+                    thirdPersonCamera.transform :
+                    firstPersonCamera.transform;
 
         public Transform Transform => transform;
 
@@ -64,11 +67,12 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private AvatarControllerAsset controls;
 
+
+
         public void Awake()
         {
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
             controls.IsTransitionCameraEnabled.OnValueChangedHandler += OnTransitionCameraEnabled;
-
             transitionCameraAnimatorWrapper = new TransitionCameraAnimatorWrapper(transitionCameraAnimator);
 
         }
@@ -77,6 +81,24 @@ namespace UdeS.Promoscience.Controls
         {
             firstPersonCamera.gameObject.SetActive(!enabled);
             thirdPersonCamera.gameObject.SetActive(enabled);
+
+            if (enabled)
+            {
+                thirdPersonCamera.transform.rotation = Quaternion.Euler(
+                    thirdPersonCamera.transform.rotation.eulerAngles.x,
+                    firstPersonCamera.transform.rotation.eulerAngles.y,
+                    thirdPersonCamera.transform.rotation.eulerAngles.z
+                    );
+            }
+            else
+            {
+                firstPersonCamera.transform.rotation = Quaternion.Euler(
+                    firstPersonCamera.transform.rotation.eulerAngles.x,
+                    thirdPersonCamera.transform.rotation.eulerAngles.y,
+                    firstPersonCamera.transform.rotation.eulerAngles.z
+                    );
+            }
+            
         }
 
 
