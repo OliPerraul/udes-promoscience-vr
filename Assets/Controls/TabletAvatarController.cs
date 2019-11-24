@@ -6,6 +6,8 @@ using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
 
+using UdeS.Promoscience.Characters;
+
 namespace UdeS.Promoscience.Controls
 {
     public class TabletAvatarController : MonoBehaviour
@@ -20,7 +22,7 @@ namespace UdeS.Promoscience.Controls
         ScriptableBoolean isConnectedToServer;
 
         [SerializeField]
-        Transform cameraTransform;
+        AvatarCharacter avatar;
 
         bool isMoving = false;
         bool isTurning = false;
@@ -72,11 +74,11 @@ namespace UdeS.Promoscience.Controls
                     {
                         movementLerpValue -= 1;
                         isMoving = false;
-                        cameraTransform.position = targetPosition;
+                        avatar.RootTransform.position = targetPosition;
                     }
                     else
                     {
-                        cameraTransform.position = Vector3.Lerp(lastPosition, targetPosition, movementLerpValue);
+                        avatar.RootTransform.position = Vector3.Lerp(lastPosition, targetPosition, movementLerpValue);
                     }
                 }
 
@@ -88,23 +90,23 @@ namespace UdeS.Promoscience.Controls
                     {
                         rotationLerpValue -= 1;
                         isTurning = false;
-                        cameraTransform.rotation = targetRotation;
+                        avatar.RootTransform.rotation = targetRotation;
                     }
                     else
                     {
-                        cameraTransform.rotation = Quaternion.Lerp(lastRotation, targetRotation, rotationLerpValue);
+                        avatar.RootTransform.rotation = Quaternion.Lerp(lastRotation, targetRotation, rotationLerpValue);
                     }
                 }
 
                 if (!isMoving && positionQueue.Count > 0)
                 {
-                    if ((cameraTransform.position - positionQueue.Peek()).magnitude > maxMovementDistance)
+                    if ((avatar.RootTransform.position - positionQueue.Peek()).magnitude > maxMovementDistance)
                     {
-                        cameraTransform.position = positionQueue.Dequeue();
+                        avatar.RootTransform.position = positionQueue.Dequeue();
                     }
                     else
                     {
-                        lastPosition = cameraTransform.position;
+                        lastPosition = avatar.RootTransform.position;
                         targetPosition = positionQueue.Dequeue();
                         isMoving = true;
                     }
@@ -116,13 +118,13 @@ namespace UdeS.Promoscience.Controls
 
                 if (!isTurning && rotationQueue.Count > 0)
                 {
-                    if (Quaternion.Angle(cameraTransform.rotation, rotationQueue.Peek()) > maxRotationAngle)
+                    if (Quaternion.Angle(avatar.RootTransform.rotation, rotationQueue.Peek()) > maxRotationAngle)
                     {
-                        cameraTransform.rotation = rotationQueue.Dequeue();
+                        avatar.RootTransform.rotation = rotationQueue.Dequeue();
                     }
                     else
                     {
-                        lastRotation = cameraTransform.rotation;
+                        lastRotation = avatar.RootTransform.rotation;
                         targetRotation = rotationQueue.Dequeue();
                         isTurning = true;
                     }
@@ -204,7 +206,7 @@ namespace UdeS.Promoscience.Controls
 
             int direction = 0;
 
-            cameraTransform.position = new Vector3(0, cameraTransform.position.y, 0);
+            avatar.RootTransform.position = new Vector3(0, avatar.RootTransform.position.y, 0);
 
             if (Client.Instance.Labyrinth != null)
             {
@@ -226,7 +228,7 @@ namespace UdeS.Promoscience.Controls
                 rotation.eulerAngles = new Vector3(0, 270, 0);
             }
 
-            cameraTransform.rotation = rotation;
+            avatar.RootTransform.rotation = rotation;
         }
     }
 }
