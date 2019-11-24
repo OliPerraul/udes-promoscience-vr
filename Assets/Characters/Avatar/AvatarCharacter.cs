@@ -13,11 +13,12 @@ namespace UdeS.Promoscience.Characters
         [SerializeField]
         private Animator animator;
 
-        //[SerializeField]
-        //private Transform rootTransform;
+        public Transform RootTransform => transform;
 
-        public Transform Transform => transform;
+        [SerializeField]
+        private Transform characterTransform;
 
+        public Transform CharacterTransform => characterTransform;
 
         private AvatarAnimatorWrapper animatorWrapper;
 
@@ -26,7 +27,7 @@ namespace UdeS.Promoscience.Characters
         {
             animatorWrapper = new AvatarAnimatorWrapper(animator);
 
-            controller.CameraRotation.OnValueChangedHandler += OnAvatarRotationChanged;
+            controller.CameraRotation.OnValueChangedHandler += OnCameraRotationChanged;
             controller.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
         }
 
@@ -37,12 +38,12 @@ namespace UdeS.Promoscience.Characters
 
         public void OnThirdPersonEnabled(bool enabled)
         {
-            gameObject.SetActive(enabled);
+            CharacterTransform.gameObject.SetActive(enabled);
         }
 
-        public void OnAvatarRotationChanged(Quaternion rotation)
+        public void OnCameraRotationChanged(Quaternion rotation)
         {
-            Transform.rotation = rotation;
+            CharacterTransform.rotation = rotation;
         }
 
     }

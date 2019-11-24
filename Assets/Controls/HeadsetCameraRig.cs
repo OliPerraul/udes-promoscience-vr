@@ -5,7 +5,20 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Controls
 {
-    public class VRCameraRig : MonoBehaviour, ICameraRig
+    public interface IHeadsetCameraRig
+    {
+        Vector3 CameraForward { get; }
+
+        Quaternion CameraRotation { get; }
+
+        Transform CameraTransform { get; }
+
+        TransitionCameraAnimatorWrapper TransitionCameraAnimator { get; }
+
+        IHeadsetInputScheme InputScheme { get; }
+    }
+
+    public class HeadsetCameraRig : MonoBehaviour, IHeadsetCameraRig, IHeadsetInputScheme
     {
         //[UnityEngine.Serialization.FormerlySerializedAs("OVRCameraRig")]
         //[SerializeField]
@@ -26,9 +39,14 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private OVRCameraRig transitionCamera;
 
-        private IInputScheme inputScheme = new VRInputScheme();
 
-        public IInputScheme InputScheme => inputScheme;
+#if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
+        private IHeadsetInputScheme inputScheme = new SimulatedHeadsetInputScheme();
+#elif UNITY_ANDROID
+        private IInputScheme inputScheme = new VRInputScheme();
+#endif
+
+        public IHeadsetInputScheme InputScheme => inputScheme;
 
         private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
 
@@ -60,6 +78,17 @@ namespace UdeS.Promoscience.Controls
                     thirdPersonCamera.transform :
                     firstPersonCamera.transform;
 
+        public bool IsPrimaryTouchPadDown => InputScheme.IsPrimaryTouchPadDown;
+
+        public bool IsPrimaryTouchPadUp => InputScheme.IsPrimaryTouchPadUp;
+
+        public bool IsPrimaryIndexTriggerDown => InputScheme.IsPrimaryIndexTriggerDown;
+
+        public bool IsPrimaryIndexTriggerUp => InputScheme.IsPrimaryIndexTriggerUp;
+
+        public bool IsLeftPressed => InputScheme.IsLeftPressed;
+
+        public bool IsRightPressed => InputScheme.IsRightPressed;
 
         public void Awake()
         {
@@ -93,9 +122,6 @@ namespace UdeS.Promoscience.Controls
                     firstPersonCamera.transform.rotation.eulerAngles.y,
                     thirdPersonCamera.transform.rotation.eulerAngles.z
                     );
-
-                // This is probably a bad idea
-                //thirdPersonCamera.m_LookAngle = firstPersonCamera.transform.rotation.eulerAngles.y;
             }
         }
 

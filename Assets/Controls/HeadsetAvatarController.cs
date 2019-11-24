@@ -34,13 +34,20 @@ namespace UdeS.Promoscience.Controls
         private ScriptableBoolean isConnectedToServer;
 
         [SerializeField]
-        private CameraRigWrapper cameraRig;
+        private Characters.AvatarCharacter avatar;
+
+        [SerializeField]
+        private HeadsetCameraRig cameraRig;
 
         [SerializeField]
         private AvatarControllerAsset controls;
 
         [SerializeField]
         private Characters.AvatarCharacter character;
+
+        [SerializeField]
+        private Transform AvatarTransform => transform;
+
 
         private bool isChainingMovement = false;
 
@@ -437,7 +444,7 @@ namespace UdeS.Promoscience.Controls
                             // TODO Fix this crap
                             if (isAvatarTurn)
                             {
-                                character.Transform.rotation = targetRotation;
+                                character.RootTransform.rotation = targetRotation;
                                 DirectionArrowTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
                             }
                             else
@@ -480,13 +487,13 @@ namespace UdeS.Promoscience.Controls
                         controls.OnLabyrinthPositionChangedHandler.Invoke();
                 }
 
-                if (character.Transform.position != lastPosition)
+                if (character.RootTransform.position != lastPosition)
                 {
                     controls.PlayerPosition.Value = Transform.position;
-                    lastPosition = character.Transform.position;
+                    lastPosition = character.RootTransform.position;
                 }
 
-                if (character.Transform.rotation != lastRotation)
+                if (character.RootTransform.rotation != lastRotation)
                 {
                     controls.PlayerRotation.Value = cameraRig.CameraRotation;
                     lastRotation = cameraRig.CameraRotation;
@@ -498,7 +505,7 @@ namespace UdeS.Promoscience.Controls
         {
             if (isAvatarTurn)
             {
-                character.Transform.rotation = Quaternion.Lerp(
+                character.RootTransform.rotation = Quaternion.Lerp(
                     fromRotation,
                     targetRotation,
                     lerpValue);
@@ -771,7 +778,7 @@ namespace UdeS.Promoscience.Controls
             }
 
             // TODO put somewhere else
-            character.Transform.rotation = rotation;
+            character.RootTransform.rotation = rotation;
 
             DirectionArrowTransform.rotation = rotation;
 
@@ -785,7 +792,7 @@ namespace UdeS.Promoscience.Controls
 
             Transform.position = controls.PositionRotationAndTiles.Value.Position;
 
-            character.Transform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
+            character.RootTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 
             DirectionArrowTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 

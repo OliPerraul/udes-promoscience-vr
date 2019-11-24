@@ -1,81 +1,60 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿//using UnityEngine;
+//using System.Collections;
 
-namespace UdeS.Promoscience.Controls
-{
-    // TODO: interface with abstract camera rig
+//namespace UdeS.Promoscience.Controls
+//{
+//    // TODO: interface with abstract camera rig
 
-    public interface ICameraRig
-    {
-        //Transform CharacterTransform { get; }
+//    public interface ICameraRig
+//    {
+//        //Transform CharacterTransform { get; }
 
-        Vector3 CameraForward { get; }
+//        Vector3 CameraForward { get; }
 
-        Quaternion CameraRotation { get; }
+//        Quaternion CameraRotation { get; }
 
-        Transform CameraTransform { get; }
+//        Transform CameraTransform { get; }
 
-        TransitionCameraAnimatorWrapper TransitionCameraAnimator { get; }
+//        TransitionCameraAnimatorWrapper TransitionCameraAnimator { get; }
 
-        IInputScheme InputScheme { get; }
-    }
+//        IInputScheme InputScheme { get; }
+//    }
 
-    public class CameraRigWrapper : MonoBehaviour, IInputScheme, ICameraRig
-    {
-        private ICameraRig cameraRig;
+//    public class CameraRigWrapper : MonoBehaviour, IInputScheme, ICameraRig
+//    {
+//        private ICameraRig cameraRig;
 
-        //[SerializeField]
-        //public UnityEngine.EventSystems.StandaloneInputModule standaloneInputs;
+//        [SerializeField]
+//        public TabletCameraRig desktopCameraRig;
 
-        //[SerializeField]
-        //public ControllerSelection.OVRInputModule ovrInputModule;
+//        [SerializeField]
+//        public HeadsetCameraRig vrCameraRig;   
 
-        [SerializeField]
-        public StandardCameraRig desktopCameraRig;
+//        public bool IsPrimaryTouchPadDown => InputScheme.IsPrimaryTouchPadDown;
 
-        [SerializeField]
-        public VRCameraRig vrCameraRig;   
+//        public bool IsPrimaryTouchPadUp => InputScheme.IsPrimaryTouchPadUp;
 
-        public bool IsPrimaryTouchPadDown => InputScheme.IsPrimaryTouchPadDown;
+//        public bool IsPrimaryIndexTriggerDown => InputScheme.IsPrimaryIndexTriggerDown;
 
-        public bool IsPrimaryTouchPadUp => InputScheme.IsPrimaryTouchPadUp;
+//        public bool IsPrimaryIndexTriggerUp => InputScheme.IsPrimaryIndexTriggerUp;
 
-        public bool IsPrimaryIndexTriggerDown => InputScheme.IsPrimaryIndexTriggerDown;
+//        public bool IsLeftPressed => InputScheme.IsLeftPressed;
 
-        public bool IsPrimaryIndexTriggerUp => InputScheme.IsPrimaryIndexTriggerUp;
+//        public bool IsRightPressed => InputScheme.IsRightPressed;
 
-        public bool IsLeftPressed => InputScheme.IsLeftPressed;
+//        private IInputScheme inputScheme = null;
 
-        public bool IsRightPressed => InputScheme.IsRightPressed;
+//        public IInputScheme InputScheme => inputScheme == null ? cameraRig.InputScheme : inputScheme;
 
-        public IInputScheme InputScheme => cameraRig.InputScheme;
+//        public Vector3 CameraForward => cameraRig.CameraForward;
 
-        public Vector3 CameraForward => cameraRig.CameraForward;
+//        public Quaternion CameraRotation => cameraRig.CameraRotation;
 
-        public Quaternion CameraRotation => cameraRig.CameraRotation;
+//        public Transform CameraTransform => cameraRig.CameraTransform;
 
-        public Transform CameraTransform => cameraRig.CameraTransform;
-
-        public TransitionCameraAnimatorWrapper TransitionCameraAnimator => cameraRig.TransitionCameraAnimator;
+//        public TransitionCameraAnimatorWrapper TransitionCameraAnimator => cameraRig.TransitionCameraAnimator;
 
 
-        void Awake()
-        {
-#if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
-            desktopCameraRig.gameObject.SetActive(true);
-            vrCameraRig.gameObject.SetActive(false);
-            cameraRig = desktopCameraRig;
-            //desktopCameraRig.gameObject.SetActive(false);
-            //vrCameraRig.gameObject.SetActive(true);
-            //cameraRig = vrCameraRig;
-            //inputScheme = new SimulatedInputScheme();
-#elif UNITY_ANDROID
-            desktopCameraRig.gameObject.SetActive(false);
-            vrCameraRig.gameObject.SetActive(true);
-            cameraRig = vrCameraRig;
-#endif
-        }
-
-    }
-}
+//    }
+//}
 

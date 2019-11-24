@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.Algorithms
         GameRoundManagerAsset gameRoundManager;
 
         [SerializeField]
-        Controls.CameraRigWrapper cameraRig;
+        Characters.AvatarCharacter avatar;
 
         bool isAlgorithmRespectActive = false;
 
@@ -68,7 +68,7 @@ namespace UdeS.Promoscience.Algorithms
             Vector3 position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(
                 lpos.x,
                 lpos.y) +
-                new Vector3(0, cameraRig.transform.position.y, 0);
+                new Vector3(0, avatar.RootTransform.position.y, 0);
 
             controls.PositionRotationAndTiles.Value =
                 new PositionRotationAndTile
@@ -101,9 +101,9 @@ namespace UdeS.Promoscience.Algorithms
             if (isAlgorithmRespectActive)
             {
                 EvaluateAlgorithmRespectOnPositionChanged(
-                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.transform.position.x, cameraRig.transform.position.z),
+                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(avatar.RootTransform.position.x, avatar.RootTransform.position.z),
                     Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition),
-                    cameraRig.transform.rotation);
+                    avatar.RootTransform.rotation);
             }
         }
       
@@ -142,8 +142,8 @@ namespace UdeS.Promoscience.Algorithms
 
             EvaluateAlgorithmRespectOnPaintTile(
                 Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
-                    cameraRig.transform.position.x,
-                    cameraRig.transform.position.z),
+                    avatar.RootTransform.position.x,
+                    avatar.RootTransform.position.z),
                 tile.Position.x,
                 tile.Position.y,
                 tile.Color,
@@ -320,7 +320,7 @@ namespace UdeS.Promoscience.Algorithms
                     lpos.y) +
                     new Vector3(
                         0,
-                        cameraRig.transform.position.y,
+                        avatar.RootTransform.position.y,
                         0);
 
                 controls.PositionRotationAndTiles.Value =
@@ -470,7 +470,7 @@ namespace UdeS.Promoscience.Algorithms
             controls.PositionRotationAndTiles.Value =
                 new PositionRotationAndTile
                 {
-                    Position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, cameraRig.transform.position.y, 0),
+                    Position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, avatar.RootTransform.position.y, 0),
                     Rotation = rotation,
                     Tiles = tilesToPaint
                 };

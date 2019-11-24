@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Controls
 {
-    public interface IInputScheme
+    public interface IHeadsetInputScheme
     {
         bool IsPrimaryTouchPadDown { get; }
 
@@ -18,7 +18,7 @@ namespace UdeS.Promoscience.Controls
         bool IsRightPressed { get; }
     }
 
-    public class SimulatedInputScheme : IInputScheme
+    public class SimulatedHeadsetInputScheme : IHeadsetInputScheme
     {
         public bool IsPrimaryTouchPadDown => Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space);
 
@@ -33,7 +33,7 @@ namespace UdeS.Promoscience.Controls
         public bool IsRightPressed => Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D);
     }
 
-    public class VRInputScheme : IInputScheme
+    public class OVRInputScheme : IHeadsetInputScheme
     {
         public bool IsPrimaryTouchPadDown => OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad);
 
