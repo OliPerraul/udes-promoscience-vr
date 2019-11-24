@@ -205,7 +205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &74537559052338358
 Transform:
   m_ObjectHideFlags: 0
@@ -853,7 +853,6 @@ GameObject:
   - component: {fileID: 3176905895860814975}
   - component: {fileID: 1742937942321172113}
   - component: {fileID: 7822080980474609639}
-  - component: {fileID: 8964693500434516519}
   m_Layer: 0
   m_Name: Canvas (1)
   m_TagString: Overlay
@@ -943,47 +942,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 0
---- !u!114 &8964693500434516519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3998077047337228046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e87f87c177ffe249b49cbe7cb45b04b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
-  pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
-  connectionStatusText: {fileID: 0}
-  connectingToServerString:
-    localizeString: {fileID: 11400000, guid: 503125f55708eaa4eaa5f34b78a836d3, type: 2}
-    defaultString: '[?]'
-  connectingToPairString:
-    localizeString: {fileID: 11400000, guid: a2662e8ec78f19f48894e604d0a640be, type: 2}
-    defaultString: '[?]'
-  pleaseStandbyString:
-    localizeString: {fileID: 0}
-    defaultString: S.V.P retire ton equipement et porte attention.
-  readyString:
-    localizeString: {fileID: 11400000, guid: df2321abe4b96664696bb2b1eaed8038, type: 2}
-    defaultString: '[?]'
-  waitingForServer:
-    localizeString: {fileID: 11400000, guid: c539fd7114cb28f4dbe934def83d7c36, type: 2}
-    defaultString: '[?]'
-  headsetImage: {fileID: 0}
-  tabletImage: {fileID: 0}
-  serverImage: {fileID: 0}
-  disconnectedAlpha: 0.4
-  backgroundImage: {fileID: 0}
-  teams: []
-  isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
-  isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
-    type: 2}
-  readyCloseDelay: 1
 --- !u!1 &4521120700467366802
 GameObject:
   m_ObjectHideFlags: 0

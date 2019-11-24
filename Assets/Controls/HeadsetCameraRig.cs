@@ -43,7 +43,7 @@ namespace UdeS.Promoscience.Controls
 #if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
         private IHeadsetInputScheme inputScheme = new SimulatedHeadsetInputScheme();
 #elif UNITY_ANDROID
-        private IInputScheme inputScheme = new VRInputScheme();
+        private IHeadsetInputScheme inputScheme = new OVRInputScheme();
 #endif
 
         public IHeadsetInputScheme InputScheme => inputScheme;
