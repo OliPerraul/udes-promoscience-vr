@@ -589,6 +589,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3386643012153434934, guid: 824c471ad11fddb44bf08a9bc7677b45,
+        type: 3}
+      propertyPath: avatar
+      value: 
+      objectReference: {fileID: 7478443213828330145}
+    - target: {fileID: 3386643012153434934, guid: 824c471ad11fddb44bf08a9bc7677b45,
+        type: 3}
+      propertyPath: raycastStartPoint
+      value: 
+      objectReference: {fileID: 2769672074992380212}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 824c471ad11fddb44bf08a9bc7677b45, type: 3}
 --- !u!1001 &4853269835807535160
