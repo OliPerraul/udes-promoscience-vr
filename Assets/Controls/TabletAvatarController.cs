@@ -90,11 +90,11 @@ namespace UdeS.Promoscience.Controls
                     {
                         rotationLerpValue -= 1;
                         isTurning = false;
-                        avatar.RootTransform.rotation = targetRotation;
+                        avatar.CharacterTransform.rotation = targetRotation;
                     }
                     else
                     {
-                        avatar.RootTransform.rotation = Quaternion.Lerp(lastRotation, targetRotation, rotationLerpValue);
+                        avatar.CharacterTransform.rotation = Quaternion.Lerp(lastRotation, targetRotation, rotationLerpValue);
                     }
                 }
 
@@ -118,13 +118,13 @@ namespace UdeS.Promoscience.Controls
 
                 if (!isTurning && rotationQueue.Count > 0)
                 {
-                    if (Quaternion.Angle(avatar.RootTransform.rotation, rotationQueue.Peek()) > maxRotationAngle)
+                    if (Quaternion.Angle(avatar.CharacterTransform.rotation, rotationQueue.Peek()) > maxRotationAngle)
                     {
-                        avatar.RootTransform.rotation = rotationQueue.Dequeue();
+                        avatar.CharacterTransform.rotation = rotationQueue.Dequeue();
                     }
                     else
                     {
-                        lastRotation = avatar.RootTransform.rotation;
+                        lastRotation = avatar.CharacterTransform.rotation;
                         targetRotation = rotationQueue.Dequeue();
                         isTurning = true;
                     }
@@ -228,7 +228,7 @@ namespace UdeS.Promoscience.Controls
                 rotation.eulerAngles = new Vector3(0, 270, 0);
             }
 
-            avatar.RootTransform.rotation = rotation;
+            avatar.CharacterTransform.rotation = rotation;
         }
     }
 }
