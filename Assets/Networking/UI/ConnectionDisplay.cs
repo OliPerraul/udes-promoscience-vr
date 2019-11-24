@@ -129,7 +129,14 @@ namespace UdeS.Promoscience.UI
 
         public void OnThirdPersonEnabled(bool enabled)
         {
-            OnClientStateChanged();
+            if (isConnectedToPair.Value && isConnectedToServer.Value)
+            {
+                Disable();
+            }
+            else
+            {
+                OnIsConnectedToServerValueChanged();
+            }
         }
 
         public void OnClientStateChanged()
