@@ -85,6 +85,11 @@ namespace UdeS.Promoscience.UI
 
         void OnNewDirective(Directive directive)
         {
+            // TODO handle somewhere else?
+            // QUestion directive brings up the help
+            if (directive == Directive.Question)
+                return;
+
             if (directiveImage != null)
                 directiveImage.gameObject.SetActive(false);
 

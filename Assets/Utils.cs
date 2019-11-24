@@ -167,7 +167,8 @@ namespace UdeS.Promoscience
         Grey,
         Yellow,
         Red,
-        Stop
+        Stop,
+        Question
     }
 
     [Serializable]

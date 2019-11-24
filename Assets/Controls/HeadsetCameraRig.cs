@@ -90,6 +90,8 @@ namespace UdeS.Promoscience.Controls
 
         public bool IsRightPressed => InputScheme.IsRightPressed;
 
+        public bool IsAnyPressed => InputScheme.IsAnyPressed;
+
         public void Awake()
         {
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;

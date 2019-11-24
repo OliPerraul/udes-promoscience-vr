@@ -16,6 +16,8 @@ namespace UdeS.Promoscience.Controls
         bool IsLeftPressed { get; }
 
         bool IsRightPressed { get; }
+
+        bool IsAnyPressed { get; }
     }
 
     public class SimulatedHeadsetInputScheme : IHeadsetInputScheme
@@ -31,6 +33,8 @@ namespace UdeS.Promoscience.Controls
         public bool IsLeftPressed => Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A);
 
         public bool IsRightPressed => Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D);
+
+        public bool IsAnyPressed => Input.anyKeyDown;
     }
 
     public class OVRInputScheme : IHeadsetInputScheme
@@ -46,6 +50,9 @@ namespace UdeS.Promoscience.Controls
         public bool IsLeftPressed => OVRInput.GetUp(OVRInput.Button.Left);
 
         public bool IsRightPressed => OVRInput.GetUp(OVRInput.Button.Right);
+
+        public bool IsAnyPressed => OVRInput.GetUp(OVRInput.Button.Any);
+
     }
 
 }
