@@ -16,19 +16,19 @@ namespace UdeS.Promoscience.Controls
         Transform CameraTransform { get; }
 
         TransitionCameraAnimatorWrapper TransitionCameraAnimator { get; }
+
+        IInputScheme InputScheme { get; }
     }
 
     public class CameraRigWrapper : MonoBehaviour, IInputScheme, ICameraRig
     {
-        private IInputScheme inputScheme;
-
         private ICameraRig cameraRig;
 
-        [SerializeField]
-        public UnityEngine.EventSystems.StandaloneInputModule standaloneInputs;
+        //[SerializeField]
+        //public UnityEngine.EventSystems.StandaloneInputModule standaloneInputs;
 
-        [SerializeField]
-        public ControllerSelection.OVRInputModule ovrInputModule;
+        //[SerializeField]
+        //public ControllerSelection.OVRInputModule ovrInputModule;
 
         [SerializeField]
         public StandardCameraRig desktopCameraRig;
@@ -36,17 +36,19 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         public VRCameraRig vrCameraRig;   
 
-        public bool IsPrimaryTouchPadDown => inputScheme.IsPrimaryTouchPadDown;
+        public bool IsPrimaryTouchPadDown => InputScheme.IsPrimaryTouchPadDown;
 
-        public bool IsPrimaryTouchPadUp => inputScheme.IsPrimaryTouchPadUp;
+        public bool IsPrimaryTouchPadUp => InputScheme.IsPrimaryTouchPadUp;
 
-        public bool IsPrimaryIndexTriggerDown => inputScheme.IsPrimaryIndexTriggerDown;
+        public bool IsPrimaryIndexTriggerDown => InputScheme.IsPrimaryIndexTriggerDown;
 
-        public bool IsPrimaryIndexTriggerUp => inputScheme.IsPrimaryIndexTriggerUp;
+        public bool IsPrimaryIndexTriggerUp => InputScheme.IsPrimaryIndexTriggerUp;
 
-        public bool IsLeftPressed => inputScheme.IsLeftPressed;
+        public bool IsLeftPressed => InputScheme.IsLeftPressed;
 
-        public bool IsRightPressed => inputScheme.IsRightPressed;
+        public bool IsRightPressed => InputScheme.IsRightPressed;
+
+        public IInputScheme InputScheme => cameraRig.InputScheme;
 
         public Vector3 CameraForward => cameraRig.CameraForward;
 
@@ -63,12 +65,14 @@ namespace UdeS.Promoscience.Controls
             desktopCameraRig.gameObject.SetActive(true);
             vrCameraRig.gameObject.SetActive(false);
             cameraRig = desktopCameraRig;
-            inputScheme = new SimulatedInputScheme();
+            //desktopCameraRig.gameObject.SetActive(false);
+            //vrCameraRig.gameObject.SetActive(true);
+            //cameraRig = vrCameraRig;
+            //inputScheme = new SimulatedInputScheme();
 #elif UNITY_ANDROID
             desktopCameraRig.gameObject.SetActive(false);
             vrCameraRig.gameObject.SetActive(true);
             cameraRig = vrCameraRig;
-            inputScheme = new VRInputScheme();
 #endif
         }
 

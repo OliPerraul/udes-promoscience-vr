@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -310,7 +310,6 @@ MonoBehaviour:
   m_ShowGUI: 1
   m_OffsetX: 0
   m_OffsetY: 0
-  text: {fileID: 2064186984}
   serverIpAdress: {fileID: 11400000, guid: 07aac683d064d3440ab716d251d9585b, type: 2}
 --- !u!4 &290324895
 Transform:
@@ -1002,7 +1001,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114969647784832532, guid: 49e79c1c08d535f479968a740365fe8d, type: 3}
+    - {fileID: 114869300952150730, guid: 49e79c1c08d535f479968a740365fe8d, type: 3}
+    - {fileID: 114159456959996780, guid: 49e79c1c08d535f479968a740365fe8d, type: 3}
+    - {fileID: 114363488490392516, guid: 49e79c1c08d535f479968a740365fe8d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 49e79c1c08d535f479968a740365fe8d, type: 3}
 --- !u!224 &972017348 stripped
 RectTransform:
@@ -1554,18 +1557,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532481285}
   m_CullTransparentMesh: 0
---- !u!114 &2064186984 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114753471845641588, guid: 49e79c1c08d535f479968a740365fe8d,
-    type: 3}
-  m_PrefabInstance: {fileID: 972017347}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2076264202
 PrefabInstance:
   m_ObjectHideFlags: 0

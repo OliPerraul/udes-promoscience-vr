@@ -23,6 +23,10 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private Animator transitionCameraAnimator;
 
+        private IInputScheme inputScheme = new SimulatedInputScheme();
+
+        public IInputScheme InputScheme => inputScheme;
+
 
         private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
 
@@ -59,7 +63,7 @@ namespace UdeS.Promoscience.Controls
         {
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
             controls.IsTransitionCameraEnabled.OnValueChangedHandler += OnTransitionCameraEnabled;
-                        
+
             transitionCameraAnimatorWrapper = transitionCameraAnimator == null ?
                 null :
                 new TransitionCameraAnimatorWrapper(transitionCameraAnimator);
@@ -102,7 +106,7 @@ namespace UdeS.Promoscience.Controls
 
         public void OnTransitionCameraEnabled(bool enabled)
         {
-            transitionCameraAnimator.gameObject.SetActive(enabled);
+            transitionCameraAnimator?.gameObject?.SetActive(enabled);
         }
         
     }

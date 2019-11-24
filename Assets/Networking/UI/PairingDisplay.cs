@@ -102,14 +102,14 @@ namespace UdeS.Promoscience.UI
 
         public void Enable()
         {
-            transform.GetChild(0).gameObject.SetActive(true);
+            transform.gameObject.SetActive(true);
             //grabbedMouseFocus.Value = false;
             
         }
 
         public void Disable()
         {
-            transform.GetChild(0).gameObject.SetActive(false);
+            transform.gameObject.SetActive(false);
             //grabbedMouseFocus.Value = false;
         }
 

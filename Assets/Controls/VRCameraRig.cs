@@ -11,9 +11,24 @@ namespace UdeS.Promoscience.Controls
         //[SerializeField]
         //public OVRCameraRig ovrCameraRig;
 
+        [SerializeField]
+        private OVRCameraRig firstPersonCamera;
+
+        [SerializeField]
+        private OVRCameraRig thirdPersonCamera;
+
+        [SerializeField]
+        private AvatarControllerAsset controls;
 
         [SerializeField]
         private Animator transitionCameraAnimator;
+
+        [SerializeField]
+        private OVRCameraRig transitionCamera;
+
+        private IInputScheme inputScheme = new VRInputScheme();
+
+        public IInputScheme InputScheme => inputScheme;
 
         private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
 
@@ -45,53 +60,56 @@ namespace UdeS.Promoscience.Controls
                     thirdPersonCamera.transform :
                     firstPersonCamera.transform;
 
-        [SerializeField]
-        private OVRCameraRig firstPersonCamera;
-
-        [SerializeField]
-        private OVRCameraRig thirdPersonCamera;
-
-        [SerializeField]
-        private AvatarControllerAsset controls;
-
-
 
         public void Awake()
         {
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
             controls.IsTransitionCameraEnabled.OnValueChangedHandler += OnTransitionCameraEnabled;
-            transitionCameraAnimatorWrapper = new TransitionCameraAnimatorWrapper(transitionCameraAnimator);
+
+            transitionCameraAnimatorWrapper = transitionCameraAnimator == null ?
+                null :
+                new TransitionCameraAnimatorWrapper(transitionCameraAnimator);
 
         }
 
-        public void OnThirdPersonEnabled(bool enabled)
-        {
-            firstPersonCamera.gameObject.SetActive(!enabled);
-            thirdPersonCamera.gameObject.SetActive(enabled);
 
-            if (enabled)
-            {
-                thirdPersonCamera.transform.rotation = Quaternion.Euler(
-                    thirdPersonCamera.transform.rotation.eulerAngles.x,
-                    firstPersonCamera.transform.rotation.eulerAngles.y,
-                    thirdPersonCamera.transform.rotation.eulerAngles.z
-                    );
-            }
-            else
+        public void FixedUpdate()
+        {
+            // Assign active camera rotation to innactive one
+            if (controls.IsThirdPersonEnabled.Value)
             {
                 firstPersonCamera.transform.rotation = Quaternion.Euler(
                     firstPersonCamera.transform.rotation.eulerAngles.x,
                     thirdPersonCamera.transform.rotation.eulerAngles.y,
                     firstPersonCamera.transform.rotation.eulerAngles.z
                     );
+
+                // TODO fix
             }
-            
+            else
+            {
+                thirdPersonCamera.transform.rotation = Quaternion.Euler(
+                    thirdPersonCamera.transform.rotation.eulerAngles.x,
+                    firstPersonCamera.transform.rotation.eulerAngles.y,
+                    thirdPersonCamera.transform.rotation.eulerAngles.z
+                    );
+
+                // This is probably a bad idea
+                //thirdPersonCamera.m_LookAngle = firstPersonCamera.transform.rotation.eulerAngles.y;
+            }
+        }
+
+
+        public void OnThirdPersonEnabled(bool enabled)
+        {
+            firstPersonCamera.gameObject.SetActive(!enabled);
+            thirdPersonCamera.gameObject.SetActive(enabled);
         }
 
 
         public void OnTransitionCameraEnabled(bool enabled)
         {
-            transitionCameraAnimator.gameObject.SetActive(enabled);
+            transitionCamera.gameObject.SetActive(enabled);
         }
     }
 }
