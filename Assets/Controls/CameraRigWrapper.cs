@@ -15,10 +15,6 @@ namespace UdeS.Promoscience.Controls
 
         Transform CameraTransform { get; }
 
-        Transform Transform { get; }
-
-        Transform DirectionArrowTransform { get; }
-
         TransitionCameraAnimatorWrapper TransitionCameraAnimator { get; }
     }
 
@@ -57,10 +53,6 @@ namespace UdeS.Promoscience.Controls
         public Quaternion CameraRotation => cameraRig.CameraRotation;
 
         public Transform CameraTransform => cameraRig.CameraTransform;
-
-        public Transform Transform => transform;
-
-        public Transform DirectionArrowTransform => cameraRig.DirectionArrowTransform;
 
         public TransitionCameraAnimatorWrapper TransitionCameraAnimator => cameraRig.TransitionCameraAnimator;
 

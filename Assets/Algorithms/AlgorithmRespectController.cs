@@ -68,7 +68,7 @@ namespace UdeS.Promoscience.Algorithms
             Vector3 position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(
                 lpos.x,
                 lpos.y) +
-                new Vector3(0, cameraRig.Transform.position.y, 0);
+                new Vector3(0, cameraRig.transform.position.y, 0);
 
             controls.PositionRotationAndTiles.Value =
                 new PositionRotationAndTile
@@ -101,9 +101,9 @@ namespace UdeS.Promoscience.Algorithms
             if (isAlgorithmRespectActive)
             {
                 EvaluateAlgorithmRespectOnPositionChanged(
-                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z),
+                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.transform.position.x, cameraRig.transform.position.z),
                     Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition),
-                    cameraRig.Transform.rotation);
+                    cameraRig.transform.rotation);
             }
         }
       
@@ -142,8 +142,8 @@ namespace UdeS.Promoscience.Algorithms
 
             EvaluateAlgorithmRespectOnPaintTile(
                 Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
-                    cameraRig.Transform.position.x,
-                    cameraRig.Transform.position.z),
+                    cameraRig.transform.position.x,
+                    cameraRig.transform.position.z),
                 tile.Position.x,
                 tile.Position.y,
                 tile.Color,
@@ -320,7 +320,7 @@ namespace UdeS.Promoscience.Algorithms
                     lpos.y) +
                     new Vector3(
                         0,
-                        cameraRig.Transform.position.y,
+                        cameraRig.transform.position.y,
                         0);
 
                 controls.PositionRotationAndTiles.Value =
@@ -470,7 +470,7 @@ namespace UdeS.Promoscience.Algorithms
             controls.PositionRotationAndTiles.Value =
                 new PositionRotationAndTile
                 {
-                    Position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, cameraRig.Transform.position.y, 0),
+                    Position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, cameraRig.transform.position.y, 0),
                     Rotation = rotation,
                     Tiles = tilesToPaint
                 };

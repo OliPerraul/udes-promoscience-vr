@@ -11,15 +11,6 @@ namespace UdeS.Promoscience.Controls
         //[SerializeField]
         //public OVRCameraRig ovrCameraRig;
 
-        [UnityEngine.Serialization.FormerlySerializedAs("AvatarTransform")]
-        [SerializeField]
-        public Transform avatarTransform;
-
-        public Transform CharacterTransform => avatarTransform;
-
-        [UnityEngine.Serialization.FormerlySerializedAs("DirectionTransform")]
-        [SerializeField]
-        public Transform directionTransform;
 
         [SerializeField]
         private Animator transitionCameraAnimator;
@@ -53,10 +44,6 @@ namespace UdeS.Promoscience.Controls
         public Transform CameraTransform => controls.IsThirdPersonEnabled.Value ?
                     thirdPersonCamera.transform :
                     firstPersonCamera.transform;
-
-        public Transform Transform => transform;
-
-        public Transform DirectionArrowTransform => directionTransform;
 
         [SerializeField]
         private OVRCameraRig firstPersonCamera;

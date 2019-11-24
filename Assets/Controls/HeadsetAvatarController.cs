@@ -89,6 +89,13 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private bool isThirdPersonEnabled = false;
 
+        public Transform Transform => transform;
+
+        [SerializeField]
+        private Transform directionTransform;
+
+        public Transform DirectionArrowTransform => directionTransform;
+
         private void Awake()
         {
             Client.Instance.clientStateChangedEvent += OnClientChangedState;
@@ -117,6 +124,7 @@ namespace UdeS.Promoscience.Controls
             controls.IsControlsEnabled.Set(true);
             controls.IsPlayerControlsEnabled.Set(true);
             controls.IsCursorLocked.Set(true);
+            controls.IsThirdPersonEnabled.Set(isThirdPersonEnabled);
 
             // TODO put in client State event
             controls.IsTransitionCameraEnabled.Set(false);
@@ -360,13 +368,13 @@ namespace UdeS.Promoscience.Controls
 
                             RequestMoveForward();
 
-                            cameraRig.Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
+                            Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                         }
                         else
                         {
                             MovementInDirectionAction(controls.ForwardDirection.Value);
 
-                            cameraRig.Transform.position = targetPosition;
+                            Transform.position = targetPosition;
                             moveSpeed = 0;
                             lerpValue = 0;
                             isMoving = false;
@@ -379,7 +387,7 @@ namespace UdeS.Promoscience.Controls
                     }
                     else
                     {
-                        cameraRig.Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
+                        Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
                     }
                 }
                 else if (isTurningLeft || isTurningRight)
@@ -430,11 +438,11 @@ namespace UdeS.Promoscience.Controls
                             if (isAvatarTurn)
                             {
                                 character.Transform.rotation = targetRotation;
-                                cameraRig.DirectionArrowTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
+                                DirectionArrowTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
                             }
                             else
                             {
-                                cameraRig.DirectionArrowTransform.rotation = targetRotation;
+                                DirectionArrowTransform.rotation = targetRotation;
                             }
 
                             turnSpeed = 0;
@@ -454,8 +462,8 @@ namespace UdeS.Promoscience.Controls
                     Client.Instance.Labyrinth == null ?
                         Vector2Int.zero:
                         Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
-                            cameraRig.Transform.position.x,
-                            cameraRig.Transform.position.z);
+                            Transform.position.x,
+                            Transform.position.z);
 
                 if (labyrinthPosition != this.labyrinthPosition)
                 {
@@ -474,7 +482,7 @@ namespace UdeS.Promoscience.Controls
 
                 if (character.Transform.position != lastPosition)
                 {
-                    controls.PlayerPosition.Value = cameraRig.Transform.position;
+                    controls.PlayerPosition.Value = Transform.position;
                     lastPosition = character.Transform.position;
                 }
 
@@ -495,7 +503,7 @@ namespace UdeS.Promoscience.Controls
                     targetRotation,
                     lerpValue);
 
-                cameraRig.DirectionArrowTransform.rotation = Quaternion.Lerp(
+                DirectionArrowTransform.rotation = Quaternion.Lerp(
                     fromRotation,
                     Quaternion.LookRotation(
                         Utils.GetDirectionVector(
@@ -504,7 +512,7 @@ namespace UdeS.Promoscience.Controls
             }
             else
             {
-                cameraRig.DirectionArrowTransform.rotation = Quaternion.Lerp(
+                DirectionArrowTransform.rotation = Quaternion.Lerp(
                     fromRotation,
                     targetRotation,
                     lerpValue);
@@ -516,9 +524,9 @@ namespace UdeS.Promoscience.Controls
             if (Client.Instance.Labyrinth == null)
                 return;
 
-            if (CheckIfMovementIsValidInDirectionFromPosition(direction, cameraRig.Transform.position))
+            if (CheckIfMovementIsValidInDirectionFromPosition(direction, Transform.position))
             {
-                fromPosition = cameraRig.Transform.position;
+                fromPosition = Transform.position;
 
                 Vector2Int lpos = Utils.GetMoveDestination(
                     labyrinthPosition,
@@ -542,7 +550,7 @@ namespace UdeS.Promoscience.Controls
 
             trajectory.eulerAngles += new Vector3(0, -90, 0);
 
-            fromRotation = cameraRig.DirectionArrowTransform.rotation;
+            fromRotation = DirectionArrowTransform.rotation;
 
             targetRotation = fromRotation * trajectory;
 
@@ -561,7 +569,7 @@ namespace UdeS.Promoscience.Controls
 
             trajectory.eulerAngles += new Vector3(0, 90, 0);
 
-            fromRotation = cameraRig.DirectionArrowTransform.rotation;
+            fromRotation = DirectionArrowTransform.rotation;
 
             targetRotation = fromRotation * trajectory;
 
@@ -685,8 +693,8 @@ namespace UdeS.Promoscience.Controls
 
             Vector2Int position = Client.Instance.Labyrinth
                 .GetWorldPositionInLabyrinthPosition(
-                cameraRig.Transform.position.x,
-                cameraRig.Transform.position.z);
+                Transform.position.x,
+                Transform.position.z);
 
             PaintTile(
                 position,
@@ -733,7 +741,7 @@ namespace UdeS.Promoscience.Controls
 
         void OnResetPositionAndRotation()
         {
-            cameraRig.Transform.position = new Vector3(0, cameraRig.Transform.position.y, 0);
+            Transform.position = new Vector3(0, Transform.position.y, 0);
 
             if (Client.Instance.State == ClientGameState.WaitingForNextRound)
             {
@@ -765,7 +773,7 @@ namespace UdeS.Promoscience.Controls
             // TODO put somewhere else
             character.Transform.rotation = rotation;
 
-            cameraRig.DirectionArrowTransform.rotation = rotation;
+            DirectionArrowTransform.rotation = rotation;
 
             controls.PaintingColor.Value = TileColor.Yellow;
         }
@@ -775,11 +783,11 @@ namespace UdeS.Promoscience.Controls
         {
             OnStopAllMovement();
 
-            cameraRig.Transform.position = controls.PositionRotationAndTiles.Value.Position;
+            Transform.position = controls.PositionRotationAndTiles.Value.Position;
 
             character.Transform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 
-            cameraRig.DirectionArrowTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
+            DirectionArrowTransform.rotation = controls.PositionRotationAndTiles.Value.Rotation;
 
             SetForwardDirectionWithRotation(
                 controls.PositionRotationAndTiles.Value.Rotation);
@@ -791,7 +799,7 @@ namespace UdeS.Promoscience.Controls
                 PaintTile(tiles[i].x, tiles[i].y, tiles[i].Color, false);
             }
 
-            labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+            labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(Transform.position.x, Transform.position.z);
 
             if (controls.OnLabyrinthPositionChangedHandler != null)
                 controls.OnLabyrinthPositionChangedHandler.Invoke();

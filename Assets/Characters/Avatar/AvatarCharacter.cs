@@ -13,10 +13,10 @@ namespace UdeS.Promoscience.Characters
         [SerializeField]
         private Animator animator;
 
-        [SerializeField]
-        private Transform rootTransform;
+        //[SerializeField]
+        //private Transform rootTransform;
 
-        public Transform Transform => rootTransform;
+        public Transform Transform => transform;
 
 
         private AvatarAnimatorWrapper animatorWrapper;
@@ -42,7 +42,7 @@ namespace UdeS.Promoscience.Characters
 
         public void OnAvatarRotationChanged(Quaternion rotation)
         {
-            transform.rotation = rotation;
+            Transform.rotation = rotation;
         }
 
     }

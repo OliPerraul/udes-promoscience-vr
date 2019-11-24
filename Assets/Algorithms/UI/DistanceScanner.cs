@@ -99,7 +99,7 @@ namespace UdeS.Promoscience.Algorithms
             {
                 if (raycastHit.transform.tag == TAG_WALL)
                 {
-                    Vector2Int currentPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+                    Vector2Int currentPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.transform.position.x, cameraRig.transform.position.z);
                     Vector2Int hitWallPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.transform.position.x, raycastHit.transform.position.z);
 
                     if (hitWallPosition.x == currentPosition.x || hitWallPosition.y == currentPosition.y)
@@ -148,7 +148,7 @@ namespace UdeS.Promoscience.Algorithms
                 }
                 else if (raycastHit.transform.tag == TAG_FLOOR)
                 {
-                    Vector2Int currentPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.Transform.position.x, cameraRig.Transform.position.z);
+                    Vector2Int currentPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(cameraRig.transform.position.x, cameraRig.transform.position.z);
                     Vector2Int hitPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(raycastHit.point.x, raycastHit.point.z);
 
                     if (hitPosition == currentPosition

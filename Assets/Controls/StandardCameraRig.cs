@@ -11,8 +11,6 @@ namespace UdeS.Promoscience.Controls
 {
     public class StandardCameraRig : MonoBehaviour, ICameraRig
     {
-        public Transform Transform => transform;
-
         [SerializeField]
         private AvatarControllerAsset controls;
 
@@ -20,16 +18,10 @@ namespace UdeS.Promoscience.Controls
         private FirstPersonCamera firstPersonCamera;
 
         [SerializeField]
-        private UnityStandardAssets.Cameras.FreeLookCam thirdPersonCamera;
+        private ThirdPersonCamera thirdPersonCamera;
 
         [SerializeField]
         private Animator transitionCameraAnimator;
-
-
-        [SerializeField]
-        private Transform directionTransform;
-
-        public Transform DirectionArrowTransform => directionTransform;
 
 
         private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
@@ -58,7 +50,7 @@ namespace UdeS.Promoscience.Controls
             {
                 return controls.IsThirdPersonEnabled.Value ?     
                          thirdPersonCamera.transform :
-                         firstPersonCamera.PivotTransform;
+                         firstPersonCamera.transform;
             }
         }
 
@@ -82,6 +74,7 @@ namespace UdeS.Promoscience.Controls
 
         public void FixedUpdate()
         {
+            // Assign active camera rotation to innactive one
             if (controls.IsThirdPersonEnabled.Value)
             {
                 firstPersonCamera.transform.rotation = Quaternion.Euler(
@@ -89,6 +82,8 @@ namespace UdeS.Promoscience.Controls
                     thirdPersonCamera.transform.rotation.eulerAngles.y,
                     firstPersonCamera.transform.rotation.eulerAngles.z
                     );
+
+                // TODO fix
             }
             else
             {
@@ -97,6 +92,9 @@ namespace UdeS.Promoscience.Controls
                     firstPersonCamera.transform.rotation.eulerAngles.y,
                     thirdPersonCamera.transform.rotation.eulerAngles.z
                     );
+
+                // This is probably a bad idea
+                thirdPersonCamera.m_LookAngle = firstPersonCamera.transform.rotation.eulerAngles.y;
             }
         }
 

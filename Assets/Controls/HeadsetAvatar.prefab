@@ -5489,6 +5489,8 @@ MonoBehaviour:
   cameraRig: {fileID: 7958131666507693568}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   character: {fileID: 5720093830375021006}
+  isThirdPersonEnabled: 0
+  directionTransform: {fileID: 2769672074598114348}
   transitionTime: 0.75
 --- !u!114 &6365711060193816707
 MonoBehaviour:
@@ -11522,8 +11524,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b138fb4fbe00c9446b572d3e904cd4a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avatarTransform: {fileID: 8231666864545141216}
-  directionTransform: {fileID: 2769672074598114348}
   transitionCameraAnimator: {fileID: 0}
   firstPersonCamera: {fileID: 7659734351736826492}
   thirdPersonCamera: {fileID: 1988269635624488245}
@@ -12446,6 +12446,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7291627246465623879, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7292907932666390810, guid: ae4058418e4fa1d47924923585a60d70,
         type: 3}
