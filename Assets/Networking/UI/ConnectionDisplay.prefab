@@ -433,7 +433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e87f87c177ffe249b49cbe7cb45b04b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controls: {fileID: 0}
+  controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
   pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
   connectionStatusText: {fileID: 114525602407605726}
