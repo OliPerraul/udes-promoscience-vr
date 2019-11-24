@@ -100,8 +100,10 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private float readyCloseDelay = 2f;
 
-        void Start()
+        void Awake()
         {
+            controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
+            // TODO replace by networkcontrollerasset
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
             isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
 
@@ -125,6 +127,11 @@ namespace UdeS.Promoscience.UI
             }
         }
 
+        public void OnThirdPersonEnabled(bool enabled)
+        {
+            OnClientStateChanged();
+        }
+
         public void OnClientStateChanged()
         {
             switch (Client.Instance.State)
@@ -139,6 +146,9 @@ namespace UdeS.Promoscience.UI
                     break;
             }
         }
+
+
+
 
         public void Enable()
         {
@@ -164,6 +174,7 @@ namespace UdeS.Promoscience.UI
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
                     serverImage.color = serverImage.color.SetA(1);
                     connectionStatusText.text = readyString.Value;
+                    if(gameObject.activeSelf)
                     StartCoroutine(ReadyClose());                        
                 }
                 else
@@ -191,7 +202,8 @@ namespace UdeS.Promoscience.UI
                     serverImage.color = serverImage.color.SetA(1);
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
                     connectionStatusText.text = readyString.Value;
-                    StartCoroutine(ReadyClose());                        
+                    if (gameObject.activeSelf)
+                        StartCoroutine(ReadyClose());                        
                 }
                 else
                 {    

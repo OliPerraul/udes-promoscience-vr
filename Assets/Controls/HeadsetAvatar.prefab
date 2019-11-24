@@ -18,7 +18,7 @@ MonoBehaviour:
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   isConnectedToServer: {fileID: 11400000, guid: afc89416b827d524083cc96c5bfd0490,
     type: 2}
-  avatar: {fileID: 0}
+  avatar: {fileID: 7478443213828330145}
   cameraRig: {fileID: 8126059987218634814}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   character: {fileID: 7478443213828330145}
