@@ -9,6 +9,9 @@ namespace UdeS.Promoscience.Controls
     public class ControlsDisplay : MonoBehaviour
     {
         [SerializeField]
+        private AvatarControllerAsset controller;
+
+        [SerializeField]
         private DirectiveManagerAsset directiveManager;
 
         [SerializeField]
@@ -18,8 +21,13 @@ namespace UdeS.Promoscience.Controls
         public void Awake()
         {
             directiveManager.CurrentDirective.OnValueChangedHandler += OnNewDirective;
+            controller.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
         }
 
+        public void OnThirdPersonEnabled(bool enabled)
+        {
+            gameObject.SetActive(false);
+        }
 
         void OnNewDirective(Directive directive)
         {
