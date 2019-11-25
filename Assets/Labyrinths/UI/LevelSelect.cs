@@ -7,7 +7,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 {
     public class LevelSelect : BaseSelect//.UI.MainDisplay
     {
-        private List<LevelButton> labyrinthButtons;
+        private List<LevelButton> labyrinthButtons = new List<LevelButton>();
 
         [SerializeField]
         private Replays.ControllerAsset replayController;
@@ -37,8 +37,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
         public override void Awake()
         {
             base.Awake();
-
-            labyrinthButtons = new List<LevelButton>();
 
             replayController.OnActionHandler += OnReplayAction;
 

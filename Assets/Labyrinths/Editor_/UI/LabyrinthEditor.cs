@@ -13,13 +13,59 @@ namespace UdeS.Promoscience.Labyrinths.Editor
 {
     public class LabyrinthEditor : MonoBehaviour
     {
+
         [SerializeField]
-        [Cirrus.Editor.FindObjectOfType(typeof(Tilemap))]
         private Tilemap tilemap;
 
+        [SerializeField]
+        private string labyrinthPath;
 
         [SerializeField]
-        private string labyrinthPath;       
+        private ControllerAsset controller;
+
+        [SerializeField]
+        private UnityEngine.UI.Button exitButton;
+
+
+        public virtual void Awake()
+        {
+            controller.State.OnValueChangedHandler += OnStateChanged;
+            exitButton.onClick.AddListener(OnExitClicked);
+        }
+
+        public virtual void OnDestroy()
+        {
+            controller.State.OnValueChangedHandler -= OnStateChanged;
+        }
+
+
+        public virtual void OnStateChanged(State state)
+        {
+            switch (state)
+            {
+                case State.Select:
+
+                    gameObject.SetActive(false);
+
+                    break;
+
+                case State.Editor:
+
+                    gameObject.SetActive(true);
+                    break;
+
+                default:
+                    gameObject.SetActive(false);
+                    break;
+            }
+        }
+
+
+        public void OnExitClicked()
+        {
+            controller.State.Set(State.Select);
+        }
+
 
         public void Save()
         {
