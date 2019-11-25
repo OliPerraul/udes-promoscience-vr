@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2440506172111276616}
   - component: {fileID: 1687339938554416949}
   - component: {fileID: 2741020760655107160}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: 01_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4822,8 +4822,8 @@ GameObject:
   - component: {fileID: 4490699907482141610}
   - component: {fileID: 6613059420557084671}
   - component: {fileID: 5185900616643729764}
-  m_Layer: 0
-  m_Name: magic_ring_yellow (1)
+  m_Layer: 9
+  m_Name: YellowTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9577,7 +9577,7 @@ GameObject:
   - component: {fileID: 6076109658183274508}
   - component: {fileID: 9084615951604218343}
   - component: {fileID: 2110131133765228355}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: 03
   m_TagString: Untagged
   m_Icon: {fileID: 0}

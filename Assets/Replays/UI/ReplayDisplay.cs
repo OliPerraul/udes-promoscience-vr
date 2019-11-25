@@ -134,6 +134,18 @@ namespace UdeS.Promoscience.Replays.UI
             overlay.SetActive(!overlay.activeSelf);
         }
 
+
+        public void OnOpenClicked()
+        {
+            EnableOptions(!sequenceToggle.activeInHierarchy);
+        }
+
+        public void OnExitClicked()
+        {
+            Enabled = false;
+            Server.Instance.StartReplaySelect();
+        }
+
         private bool _enabled = false;
 
         public virtual bool Enabled
@@ -178,19 +190,6 @@ namespace UdeS.Promoscience.Replays.UI
             isAlgorithmEnabled = enable;
             algorithmNameText.gameObject.SetActive(enable);
             algorithmStepsText.gameObject.SetActive(enable);
-        }
-
-
-        public void OnOpenClicked()
-        {
-            EnableOptions(!sequenceToggle.activeInHierarchy);
-        }
-
-        public void OnExitClicked()
-        {
-            //server.EndRoundOrTutorial();
-            Enabled = false;
-            replayOptions.SendAction(ReplayAction.ExitReplay);
         }
 
     }
