@@ -169,7 +169,8 @@ namespace UdeS.Promoscience
         Red,
         Stop,
         Question,
-        Compass
+        Compass,
+        ReturnToDivergence
     }
 
     [Serializable]
