@@ -23,6 +23,9 @@ namespace UdeS.Promoscience.Controls.UI
         [SerializeField]
         private AvatarControllerAsset controls;
 
+        [SerializeField]
+        private DistanceScanner distanceScanner;
+
         void Awake()
         {
             controls.IsCompassEnabled.OnValueChangedHandler += OnCompassEnabled;
@@ -33,10 +36,14 @@ namespace UdeS.Promoscience.Controls.UI
             gameObject.SetActive(value);
         }
 
-        //// Update is called once per frame
-        //void Update()
-        //{
-
-        //}
+        // TODO only on movement
+        public void Update()
+        {
+            int dist = -1;
+            north.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Up)) < 0 ? "?": dist.ToString();
+            south.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Down)) < 0 ? "?" : dist.ToString();
+            west.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Left)) < 0 ? "?" : dist.ToString();
+            east.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Right)) < 0 ? "?" : dist.ToString();
+        }
     }
 }

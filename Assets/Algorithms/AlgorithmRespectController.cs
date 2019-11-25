@@ -282,7 +282,7 @@ namespace UdeS.Promoscience.Algorithms
 
         float RespectValueComputation(float x)
         {
-            return Mathf.Pow(E, -x / Labyrinths.Utils.TILE_SIZE);
+            return Mathf.Pow(E, -x / Labyrinths.Utils.TileSize);
         }
 
         void ResetAlgorithmRespect()

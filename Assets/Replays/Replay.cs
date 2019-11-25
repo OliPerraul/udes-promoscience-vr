@@ -420,12 +420,12 @@ namespace UdeS.Promoscience.Replays
         {
             return
                 // origin of segment at the center, move it to the left
-                (-Labyrinths.Utils.TILE_SIZE / 2) +
+                (-Labyrinths.Utils.TileSize / 2) +
                 // number of offsets (minimum 1 to align back at the center if no other sgms)
                 (idx + 1) *
                 // width of the level divided by the amount of sequences we are trying to fit
                 // Number of player sequences + 1 (active sequences contains algorithm)
-                (Labyrinths.Utils.TILE_SIZE / (activeSequences.Count + 1));
+                (Labyrinths.Utils.TileSize / (activeSequences.Count + 1));
         }
 
         public virtual void AdjustOffsets()

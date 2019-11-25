@@ -83,7 +83,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public const int TILE_EMPTY_ID = 0;
 
-        public const float TILE_SIZE = 5.0f;
+        public const float TileSize = 5.0f;
         //Labyrinth tiles
         //0-49 Starts
         public const int TILE_START_START_ID = 1;
@@ -482,7 +482,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         private Vector3 DoGetLabyrinthPositionInWorldPosition(int x, int y)
         {
-            return new Vector3((x - StartPosition.x) * Utils.TILE_SIZE, 0, (-y + StartPosition.y) * Utils.TILE_SIZE) + offset;
+            return new Vector3((x - StartPosition.x) * Utils.TileSize, 0, (-y + StartPosition.y) * Utils.TileSize) + offset;
         }
 
         public Vector3 GetLabyrinthPositionInWorldPosition(int x, int y)
@@ -499,7 +499,7 @@ namespace UdeS.Promoscience.Labyrinths
         {
             float xx = x - offset.x;
             float yy = y - offset.y;
-            return new Vector2Int(Mathf.RoundToInt((xx / Utils.TILE_SIZE)) + StartPosition.x, Mathf.RoundToInt((-yy / Utils.TILE_SIZE)) + StartPosition.y);
+            return new Vector2Int(Mathf.RoundToInt((xx / Utils.TileSize)) + StartPosition.x, Mathf.RoundToInt((-yy / Utils.TileSize)) + StartPosition.y);
         }
 
 
@@ -553,9 +553,9 @@ namespace UdeS.Promoscience.Labyrinths
             Camera.Source.gameObject.SetActive(true);
             Camera.Source.transform.position += GetLabyrinthPositionInWorldPosition(0, 0);
             Camera.Source.transform.position += new Vector3(
-                labyrinthTiles.GetLength(0) * Utils.TILE_SIZE,
+                labyrinthTiles.GetLength(0) * Utils.TileSize,
                 0,
-                -labyrinthTiles.GetLength(1) * Utils.TILE_SIZE) / 2;
+                -labyrinthTiles.GetLength(1) * Utils.TileSize) / 2;
 
             Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
             Camera.Source.enabled = enableCamera;

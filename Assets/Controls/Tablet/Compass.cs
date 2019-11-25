@@ -71,7 +71,7 @@ namespace UdeS.Promoscience.UI
 
             if (indicator.gameObject.activeSelf)
             {
-                var rotation = Quaternion.LookRotation(indicator.position + new Vector3(100 * Labyrinths.Utils.TILE_SIZE * xByDirection[direction], 0, 100 * Labyrinths.Utils.TILE_SIZE * -yByDirection[direction]));
+                var rotation = Quaternion.LookRotation(indicator.position + new Vector3(100 * Labyrinths.Utils.TileSize * xByDirection[direction], 0, 100 * Labyrinths.Utils.TileSize * -yByDirection[direction]));
                 indicator.rotation = rotation;
 
             }

@@ -26,13 +26,18 @@ namespace UdeS.Promoscience.Controls
         ScriptableBoolean isConnectedToServer;
 
         [SerializeField]
+        private Transform directionArrowTransform;
+
+        private Transform DirectionArrowTransform => directionArrowTransform;
+
+        [SerializeField]
         AvatarCharacter avatar;
 
         bool isMoving = false;
         bool isTurning = false;
 
         const float fixedTimestep = 0.03f;//Value of TimeManager Fixed Timestep
-        const float maxMovementDistance = Labyrinths.Utils.TILE_SIZE;
+        const float maxMovementDistance = Labyrinths.Utils.TileSize;
         const float maxRotationAngle = 45;
 
         float movementLerpValue = 0;
@@ -105,10 +110,14 @@ namespace UdeS.Promoscience.Controls
                         rotationLerpValue -= 1;
                         isTurning = false;
                         avatar.CharacterTransform.rotation = targetRotation;
+                        DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
                     }
                     else
                     {
                         avatar.CharacterTransform.rotation = Quaternion.Lerp(lastRotation, targetRotation, rotationLerpValue);
+                        DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
+
+
                     }
                 }
 
@@ -135,10 +144,12 @@ namespace UdeS.Promoscience.Controls
                     if (Quaternion.Angle(avatar.CharacterTransform.rotation, rotationQueue.Peek()) > maxRotationAngle)
                     {
                         avatar.CharacterTransform.rotation = rotationQueue.Dequeue();
+                        DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
                     }
                     else
                     {
                         lastRotation = avatar.CharacterTransform.rotation;
+                        DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
                         targetRotation = rotationQueue.Dequeue();
                         isTurning = true;
                     }
@@ -243,6 +254,7 @@ namespace UdeS.Promoscience.Controls
             }
 
             avatar.CharacterTransform.rotation = rotation;
+            DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
         }
     }
 }
