@@ -282,6 +282,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trail.Yellow
       objectReference: {fileID: 0}
+    - target: {fileID: 3099415380444654842, guid: 4d58b7fd741b4ed47b042a76ae2984e0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4490699907482141610, guid: 4d58b7fd741b4ed47b042a76ae2984e0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -366,7 +371,7 @@ PrefabInstance:
     - target: {fileID: 1226833017277139838, guid: c0835d4b11d76a4429cdacb788f74c8a,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1226833017277139837, guid: c0835d4b11d76a4429cdacb788f74c8a,
         type: 3}
