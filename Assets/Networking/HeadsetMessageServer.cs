@@ -139,8 +139,7 @@ namespace UdeS.Promoscience.Network
 
         void OnReturnToDivergencePointRequest(NetworkMessage netMsg)
         {
-            if(algorithmRespect.OnReturnToDivergencePointRequestHandler != null)
-                algorithmRespect.OnReturnToDivergencePointRequestHandler.Invoke();
+            algorithmRespect.OnReturnToDivergencePointRequestHandler?.Invoke();
         }
 
         void OnRequestForGameInformation(NetworkMessage netMsg)

@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UdeS.Promoscience.Controls;
 
 using UdeS.Promoscience.ScriptableObjects;
+using System;
 //using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.Network
@@ -67,6 +68,7 @@ namespace UdeS.Promoscience.Network
                 client.RegisterHandler(AlgorithmRespectMessage.GetCustomMsgType(), OnAlgorithmRespect);
                 client.RegisterHandler(PlayerInformationMessage.GetCustomMsgType(), OnPlayerInformation);
                 client.RegisterHandler(PlayerPaintTileMessage.GetCustomMsgType(), OnPlayerPaintTile);
+                client.RegisterHandler(PaintingColorMessage.GetCustomMsgType(), OnPaintingColor);
                 client.RegisterHandler(PlayerPositionMessage.GetCustomMsgType(), OnPlayerPosition);
                 client.RegisterHandler(PlayerReachedTheEndMessage.GetCustomMsgType(), OnPlayerReachedTheEnd);
                 client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
@@ -79,6 +81,12 @@ namespace UdeS.Promoscience.Network
             {
                 Client.Instance.State = ClientGameState.Ready;
             }
+        }
+
+        private void OnPaintingColor(NetworkMessage netMsg)
+        {
+            PaintingColorMessage msg = netMsg.ReadMessage<PaintingColorMessage>();
+            controls.PaintingColor.Value = msg.tileColor;
         }
 
         void StopClient()

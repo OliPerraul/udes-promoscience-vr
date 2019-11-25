@@ -34,6 +34,7 @@ namespace UdeS.Promoscience.Algorithms
                 int index = i;
 
                 buttons[i].onClick.AddListener(() => {
+                    Debug.Log((Directive)index);
                     directiveManager.Set((Directive)index);
                 }               
                 );

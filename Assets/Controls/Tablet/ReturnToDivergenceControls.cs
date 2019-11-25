@@ -21,20 +21,48 @@ namespace UdeS.Promoscience.UI
         private GameObject confirmatioPanel;
 
         [SerializeField]
-        private GameObject returnToDivergenceButton;
+        private UnityEngine.UI.Button returnToDivergenceButton;
+
+        [SerializeField]
+        private UnityEngine.UI.Button confirmButton;
+
+        [SerializeField]
+        private UnityEngine.UI.Button cancelButton;
 
 
-        void Start()
-        {            
+        void Awake()
+        {
+            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+
             algorithmRespect.IsDiverging.OnValueChangedHandler += OnIsDivergingValueChanged;
             algorithmRespect.OnReturnToDivergencePointRequestHandler += OnReturnToDivergenceRequest;
 
             controls.OnPlayerReachedTheEndHandler += OnPlayerReachedTheEnd;
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
 
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            returnToDivergenceButton.onClick.AddListener(OnReturnToDivergenceClicked);
+            cancelButton.onClick.AddListener(OnCancelClicked);
+            confirmButton.onClick.AddListener(OnConfirmClicked);
+
+
 
             OnClientStateChanged();
+        }
+
+        public void OnReturnToDivergenceClicked()
+        {
+            gameObject.SetActive(!gameObject.activeSelf);
+        }
+
+        public void OnCancelClicked()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void OnConfirmClicked()
+        {
+            gameObject.SetActive(false);
+            algorithmRespect.InvokeReturnToDivergent();
         }
 
 
@@ -44,7 +72,6 @@ namespace UdeS.Promoscience.UI
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
-                    transform.GetChild(0).gameObject.SetActive(true);
                     OnIsDivergingValueChanged(algorithmRespect.IsDiverging.Value);
                     confirmatioPanel.SetActive(false);
                     break;
@@ -52,7 +79,6 @@ namespace UdeS.Promoscience.UI
                 default:
                     OnIsDivergingValueChanged(false);
                     confirmatioPanel.SetActive(false);
-                    transform.GetChild(0).gameObject.SetActive(false);
                     break;
             }
         }
@@ -63,7 +89,7 @@ namespace UdeS.Promoscience.UI
             if (!controls.IsControlsEnabled.Value)
             {
                 confirmatioPanel.SetActive(false);
-                returnToDivergenceButton.SetActive(false);
+                returnToDivergenceButton.gameObject.SetActive(false);
             }
         }
 
@@ -72,19 +98,19 @@ namespace UdeS.Promoscience.UI
         {
             if (isdiverg)
             {
-                returnToDivergenceButton.SetActive(true);
+                returnToDivergenceButton.gameObject.SetActive(true);
             }
             else
             {
                 confirmatioPanel.SetActive(false);
-                returnToDivergenceButton.SetActive(false);
+                returnToDivergenceButton.gameObject.SetActive(false);
             }
         }
 
         void OnPlayerReachedTheEnd()
         {
             confirmatioPanel.SetActive(false);
-            returnToDivergenceButton.SetActive(false);
+            returnToDivergenceButton.gameObject.SetActive(false);
         }
 
         void OnReturnToDivergenceRequest()

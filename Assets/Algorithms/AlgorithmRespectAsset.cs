@@ -22,8 +22,7 @@ namespace UdeS.Promoscience.Algorithms
 
         public void InvokeReturnToDivergent()
         {
-            if (OnReturnToDivergencePointRequestHandler != null)
-                OnReturnToDivergencePointRequestHandler.Invoke();
+            OnReturnToDivergencePointRequestHandler?.Invoke();
         }
 
         public int ErrorCount = 0;

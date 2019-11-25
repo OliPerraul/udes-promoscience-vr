@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Algorithms
 {
-    public class HeadsetCorrectingDisplay : MonoBehaviour
+    public class CorrectingDisplay : MonoBehaviour
     {
         [SerializeField]
         private AlgorithmRespectAsset algorithmRespect;

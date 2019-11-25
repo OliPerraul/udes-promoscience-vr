@@ -156,20 +156,22 @@ namespace UdeS.Promoscience
         SupportDevice,
     }
 
+    // THE ORDER IS IMPORTANT AND MUST MATCH THE UI LOL
+    // TODO: Do not mix up UI and backend functionalities
     [Serializable]
     public enum Directive
     {
         Unknown = -1,
-        TurnLeft,
+        TurnLeft = 0,
         MoveForward,        
         UTurn,
         TurnRight,
         Grey,
         Yellow,
         Red,
-        Stop,
         Question,
         Compass,
+        Stop,
         ReturnToDivergence
     }
 

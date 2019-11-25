@@ -24,7 +24,9 @@ namespace UdeS.Promoscience.Network
         PlayerTilesToPaint = 110,
         RequestForGameInformation = 111,
         ReturnToDivergencePointAnswer = 112,
-        ReturnToDivergencePointRequest = 113
+        ReturnToDivergencePointRequest = 113,
+
+        PaintingColor = 114
 
     }
 
@@ -189,6 +191,27 @@ namespace UdeS.Promoscience.Network
         public int tilePositionY;
         public TileColor tileColor;
     }
+
+
+    public class PaintingColorMessage : MessageBase
+    {
+        static CustomMsgType type = CustomMsgType.PaintingColor;
+
+        public static short GetCustomMsgType()
+        {
+            return (short)type;
+        }
+
+        public short GetMsgType()
+        {
+            return (short)type;
+        }
+
+        public int tilePositionX;
+        public int tilePositionY;
+        public TileColor tileColor;
+    }
+
 
     public class PlayerPositionMessage : MessageBase
     {

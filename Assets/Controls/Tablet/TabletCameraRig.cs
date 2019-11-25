@@ -29,6 +29,8 @@ namespace UdeS.Promoscience.Controls
 
         public void OnCompassEnabled(bool enabled)
         {
+            Debug.Log(enabled);
+
             ThirdPersonCamera.SetActive(!enabled);
             TopdownCamera.SetActive(enabled);
 
