@@ -90,6 +90,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Piece.Cave1.Floor.End
       objectReference: {fileID: 0}
+    - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
+        type: 3}
+      propertyPath: tileTypes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
+        type: 3}
+      propertyPath: tileType
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
+        type: 3}
+      propertyPath: tileTypes.Array.data[0]
+      value: 101
+      objectReference: {fileID: 0}
     - target: {fileID: 1827494317543052124, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -145,27 +160,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
-        type: 3}
-      propertyPath: tileTypes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
-        type: 3}
-      propertyPath: tileType
-      value: 99
-      objectReference: {fileID: 0}
-    - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
-        type: 3}
-      propertyPath: tileTypes.Array.data[0]
-      value: 101
-      objectReference: {fileID: 0}
     - target: {fileID: 1821739145918100496, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8557312719341652843, guid: fabdadf1646b1ca4da94e6b4c368e5bf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: fabdadf1646b1ca4da94e6b4c368e5bf, type: 3}
 --- !u!4 &7123480129332376997 stripped
 Transform:

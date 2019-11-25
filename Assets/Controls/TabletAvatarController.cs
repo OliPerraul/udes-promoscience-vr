@@ -7,11 +7,15 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Network;
 
 using UdeS.Promoscience.Characters;
+using System;
 
 namespace UdeS.Promoscience.Controls
 {
     public class TabletAvatarController : MonoBehaviour
     {
+        [SerializeField]
+        private DirectiveManagerAsset directiveManager;
+
         [SerializeField]
         AvatarControllerAsset controls;
 
@@ -60,6 +64,16 @@ namespace UdeS.Promoscience.Controls
         void Start()
         {
             controls.IsThirdPersonEnabled.Set(true);
+            controls.IsCompassEnabled.Set(false);
+            directiveManager.CurrentDirective.OnValueChangedHandler += OnNewDirective;
+        }
+
+        private void OnNewDirective(Directive value)
+        {
+            if (value == Directive.Compass)
+            {
+                controls.IsCompassEnabled.Value = !controls.IsCompassEnabled.Value;
+            }
         }
 
         private void Update()

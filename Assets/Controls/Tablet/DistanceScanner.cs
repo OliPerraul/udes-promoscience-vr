@@ -7,6 +7,8 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Controls;
 //using UdeS.Promoscience.Utils;
 
+using System.Linq;
+
 namespace UdeS.Promoscience.Algorithms
 {
     public class DistanceScanner : MonoBehaviour
@@ -92,11 +94,16 @@ namespace UdeS.Promoscience.Algorithms
 
             float distance = 0;
             string text = "<color=red>" + "?" + "</color>";
+      
             Ray ray = new Ray(raycastStartPoint.position, raycastStartPoint.forward);
-            RaycastHit raycastHit;
+            var res = Physics.RaycastAll(ray, raycastRange);
+            var any = res.Where(x => x.collider.gameObject.GetComponentInChildren<Labyrinths.Piece>() != null);
 
-            if (Physics.Raycast(ray, out raycastHit, raycastRange))
+            if (any.Count() != 0)
             {
+                RaycastHit raycastHit;
+                raycastHit = any.FirstOrDefault();
+
                 if (raycastHit.transform.tag == TAG_WALL)
                 {
                     Vector2Int currentPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(avatar.transform.position.x, avatar.transform.position.z);

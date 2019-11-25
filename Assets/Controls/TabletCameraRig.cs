@@ -16,9 +16,22 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private AvatarControllerAsset controls;
 
+        [SerializeField]
+        private GameObject ThirdPersonCamera;
+
+        [SerializeField]
+        private GameObject TopdownCamera;
+
         public void Awake()
         {
+            controls.IsCompassEnabled.OnValueChangedHandler += OnCompassEnabled;
+        }
 
-        }        
+        public void OnCompassEnabled(bool enabled)
+        {
+            ThirdPersonCamera.SetActive(!enabled);
+            TopdownCamera.SetActive(enabled);
+
+        }
     }
 }

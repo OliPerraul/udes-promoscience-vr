@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Piece.Brit.Floor
       objectReference: {fileID: 0}
+    - target: {fileID: 3288735348583072347, guid: bef5d611790799744b4a8dc32542a973,
+        type: 3}
+      propertyPath: tileType
+      value: 51
+      objectReference: {fileID: 0}
     - target: {fileID: 4104645858659010480, guid: bef5d611790799744b4a8dc32542a973,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,15 +72,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3288735348583072347, guid: bef5d611790799744b4a8dc32542a973,
-        type: 3}
-      propertyPath: tileType
-      value: 51
-      objectReference: {fileID: 0}
     - target: {fileID: 4098891211019641084, guid: bef5d611790799744b4a8dc32542a973,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6299303718615408519, guid: bef5d611790799744b4a8dc32542a973,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6299303718615408519, guid: bef5d611790799744b4a8dc32542a973, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: bef5d611790799744b4a8dc32542a973, type: 3}

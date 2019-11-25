@@ -87,8 +87,12 @@ namespace UdeS.Promoscience.UI
         {
             // TODO handle somewhere else?
             // QUestion directive brings up the help
-            if (directive == Directive.Question)
-                return;
+            switch (directive)
+            {
+                case Directive.Question:
+                case Directive.Compass:
+                    return;
+            }
 
             if (directiveImage != null)
                 directiveImage.gameObject.SetActive(false);

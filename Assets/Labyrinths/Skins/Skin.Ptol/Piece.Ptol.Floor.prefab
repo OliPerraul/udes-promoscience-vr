@@ -12,6 +12,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Piece.Ptol.Floor
       objectReference: {fileID: 0}
+    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
+        type: 3}
+      propertyPath: tileTypes.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
+        type: 3}
+      propertyPath: tileTypes.Array.data[0]
+      value: 51
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
+        type: 3}
+      propertyPath: tileTypes.Array.data[1]
+      value: 52
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
+        type: 3}
+      propertyPath: tileTypes.Array.data[2]
+      value: 53
+      objectReference: {fileID: 0}
+    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
+        type: 3}
+      propertyPath: tileTypes.Array.data[3]
+      value: 54
+      objectReference: {fileID: 0}
     - target: {fileID: 6634956352760553813, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,30 +92,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
-        type: 3}
-      propertyPath: tileTypes.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
-        type: 3}
-      propertyPath: tileTypes.Array.data[0]
-      value: 51
-      objectReference: {fileID: 0}
-    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
-        type: 3}
-      propertyPath: tileTypes.Array.data[1]
-      value: 52
-      objectReference: {fileID: 0}
-    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
-        type: 3}
-      propertyPath: tileTypes.Array.data[2]
-      value: 53
-      objectReference: {fileID: 0}
-    - target: {fileID: 5278596372511401150, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8,
-        type: 3}
-      propertyPath: tileTypes.Array.data[3]
-      value: 54
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3713542611168655714, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9bab3bb1f6393cd4cbf4c2b5ec2be1c8, type: 3}
