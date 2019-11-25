@@ -1991,6 +1991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb8f2ce22155ceb419a3032fb3d4da69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   directiveManager: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   inputScheme: {fileID: 11400000, guid: 14591eebfc277a44e8aa1d7dcd6f1266, type: 2}
 --- !u!1 &7596825395568087402

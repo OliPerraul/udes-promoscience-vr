@@ -24,6 +24,11 @@ namespace UdeS.Promoscience.Controls
             controller.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
         }
 
+        public void Start()
+        {
+            gameObject.SetActive(false);
+        }
+
         public void OnThirdPersonEnabled(bool enabled)
         {
             gameObject.SetActive(false);
