@@ -35,7 +35,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void OnValidate()
         {
-            if (skin != null && data.SkinId < 0)
+            if (skin != null)
             {
                 data.SkinId = skin.Id;
             }
