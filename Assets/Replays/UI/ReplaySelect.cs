@@ -61,6 +61,7 @@ namespace UdeS.Promoscience.Replays.UI
                         foreach (var lab in labyrinths)
                         {
                             lab.gameObject.SetActive(true);
+                            lab.Camera.OutputToTexture = true;
                         }
                     }
                     else
@@ -80,6 +81,7 @@ namespace UdeS.Promoscience.Replays.UI
                     foreach (var lab in labyrinths)
                     {
                         lab.gameObject.SetActive(false);
+                        lab.Camera.OutputToTexture = false;
                     }
                     break;
 
