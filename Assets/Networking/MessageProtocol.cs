@@ -207,8 +207,6 @@ namespace UdeS.Promoscience.Network
             return (short)type;
         }
 
-        public int tilePositionX;
-        public int tilePositionY;
         public TileColor tileColor;
     }
 

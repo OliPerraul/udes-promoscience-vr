@@ -95,13 +95,16 @@ namespace UdeS.Promoscience.Network
             clientConnection = netMsg.conn;
 
             algorithmRespect.OnRespectChangedHandler += SendAlgorithmRespect;
+            
             //algorithmRespect.ReturnToDivergencePointAnswer.OnValueChangedHandler += SendReturnToDivergencePointAnswer;
 
             controls.PlayerPaintTile.OnValueChangedHandler += SendPlayerPaintTile;
             controls.PlayerPosition.OnValueChangedHandler += SendPlayerPosition;
             controls.OnPlayerReachedTheEndHandler += SendEndReached;
             controls.PlayerRotation.OnValueChangedHandler += SendPlayerRotation;
-            
+            controls.PaintingColor.OnValueChangedHandler += SendPaintingColor;
+
+
             if (playerInformation.IsInitialize)
             {
                 SendPlayerInformation();
@@ -218,6 +221,15 @@ namespace UdeS.Promoscience.Network
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }
+
+
+        void SendPaintingColor(TileColor paintingColor)
+        {
+            PaintingColorMessage msg = new PaintingColorMessage();
+            msg.tileColor = paintingColor;
+            clientConnection.Send(msg.GetMsgType(), msg);
+        }
+
 
         void SendAlgorithmRespect(float respect)
         {
