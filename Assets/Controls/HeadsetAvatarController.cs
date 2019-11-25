@@ -56,9 +56,9 @@ namespace UdeS.Promoscience.Controls
 
         private bool isMoving = false;
 
-        private bool isPrimaryTouchpadHold = false;
+        private bool isPrimaryTouchpadHeld = false;
 
-        private bool isPrimaryIndexTriggerHold = false;
+        private bool isPrimaryIndexTriggerHeld = false;
 
         private bool isTurningLeft = false;
 
@@ -70,7 +70,7 @@ namespace UdeS.Promoscience.Controls
 
         private readonly float[] rotationByDirection = { 0f, 90f, 180f, 270f };
 
-        private float primaryIndexTriggerHoldTime = 0;
+        private float primaryIndexTriggerHeldTime = 0;
 
         private float lerpValue = 0;
 
@@ -141,6 +141,253 @@ namespace UdeS.Promoscience.Controls
             transitionTimer = new Timer(transitionTime, start: false);
             transitionTimer.OnTimeLimitHandler += OnTransitionTimeout;
         }
+
+
+        public void Update()
+        {
+            if (inputScheme.IsPrimaryTouchPadDown)
+            {
+                isPrimaryTouchpadHeld = true;
+            }
+
+            if (inputScheme.IsPrimaryTouchPadUp)
+            {
+                isPrimaryTouchpadHeld = false;
+            }
+
+            if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
+            {
+                if (isPrimaryTouchpadHeld)
+                {
+                    isPrimaryTouchpadHeld = true;
+
+                    if (!isTurningLeft && !isTurningRight)
+                    {
+                        if (isMoving)
+                        {
+                            if (lerpValue >= 0.5f && CheckIfMovementIsValidInDirectionFromPosition(controls.ForwardDirection.Value, targetPosition))
+                            {
+                                isChainingMovement = true;
+                            }
+                        }
+                        else
+                        {
+                            RequestMoveForward();
+                        }
+                    }
+                }
+                else if (inputScheme.IsLeftPressed)
+                {
+                    RequestTurnLeft(turnAvatar: true);
+                }
+                else if (inputScheme.IsRightPressed)
+                {
+                    RequestTurnRight(turnAvatar: true);
+                }
+
+                if (inputScheme.IsPrimaryIndexTriggerDown)
+                {
+                    primaryIndexTriggerHeldTime = 0;
+                    isPrimaryIndexTriggerHeld = false;
+                }
+
+                if (inputScheme.IsPrimaryIndexTriggerHeld)
+                {
+                    primaryIndexTriggerHeldTime += Time.deltaTime;
+
+                    if (primaryIndexTriggerHeldTime >= 1)
+                    {
+                        controls.IsThirdPersonEnabled.Value = !controls.IsThirdPersonEnabled.Value;
+                        primaryIndexTriggerHeldTime = 0;
+                        isPrimaryIndexTriggerHeld = true;
+                    }
+                }
+
+                if (inputScheme.IsPrimaryIndexTriggerUp && !isPrimaryIndexTriggerHeld)
+                {
+                    controls.PaintingColor.Value = (TileColor)((int)controls.PaintingColor.Value + 1).Mod(Utils.NumColors);
+                    PaintCurrentPositionTile(true);
+                    isPrimaryIndexTriggerHeld = false;
+                }
+                else if (inputScheme.IsPrimaryIndexTriggerUp)
+                {
+                    isPrimaryIndexTriggerHeld = false;
+                }
+            }
+        }
+
+
+        private void FixedUpdate()
+        {
+            controls.CameraRotation.Value = cameraRig.CameraRotation;
+
+            if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
+            {
+                // MOVING
+                if (isMoving)
+                {
+                    controls.Animation.Value = Characters.AvatarAnimation.Jumping;
+
+                    float xi = ((moveSpeed * moveSpeed) / (-2 * Utils.MOVEMENT_ACCELERATION)) + 1;
+
+                    if (isChainingMovement)
+                    {
+                        xi += 1;
+                    }
+
+                    moveSpeed =
+                        xi < lerpValue ?
+                            moveSpeed - (Time.deltaTime * Utils.MOVEMENT_ACCELERATION) :
+                            moveSpeed + (Time.deltaTime * Utils.MOVEMENT_ACCELERATION);
+
+                    lerpValue += Time.deltaTime * moveSpeed * Utils.MOVEMENT_SPEED;
+
+                    if (lerpValue >= 1)
+                    {
+                        if (isChainingMovement)
+                        {
+                            MovementInDirectionAction(controls.ForwardDirection.Value);
+
+                            isChainingMovement = false;
+                            lerpValue = lerpValue - 1;
+
+                            RequestMoveForward();
+
+                            Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
+                        }
+                        else
+                        {
+                            MovementInDirectionAction(controls.ForwardDirection.Value);
+
+                            Transform.position = targetPosition;
+                            moveSpeed = 0;
+                            lerpValue = 0;
+                            isMoving = false;
+                        }
+
+                        if (controls.PaintingColor.Value != TileColor.Red)
+                        {
+                            PaintCurrentPositionTile(true);
+                        }
+                    }
+                    else
+                    {
+                        Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
+                    }
+                }
+                // TURNING
+                else if (isTurningLeft || isTurningRight)
+                {
+                    controls.Animation.Value = Characters.AvatarAnimation.Jumping;
+
+                    float xi = ((turnSpeed * turnSpeed) / (-2 * Utils.TURNING_ACCELERATION)) + 1;
+
+                    if (isChainingMovement)
+                    {
+                        xi++;
+                    }
+
+                    turnSpeed = xi < lerpValue ? turnSpeed - (Time.deltaTime * Utils.TURNING_ACCELERATION) : turnSpeed + (Time.deltaTime * Utils.TURNING_ACCELERATION);
+                    lerpValue += Time.deltaTime * turnSpeed;
+
+                    if (lerpValue >= 1)
+                    {
+                        if (isChainingMovement)
+                        {
+                            isChainingMovement = false;
+                            lerpValue = lerpValue - 1;
+
+                            if (isTurningLeft)
+                            {
+                                Quaternion trajectory = new Quaternion();
+                                trajectory.eulerAngles += new Vector3(0, -90, 0);
+                                fromRotation = targetRotation;
+                                targetRotation = targetRotation * trajectory;
+
+                                controls.ForwardDirection.Value = (controls.ForwardDirection.Value - 1) < 0 ? 3 : (controls.ForwardDirection.Value - 1);
+                                gameAction.SetAction(GameAction.TurnLeft);
+                            }
+                            else if (isTurningRight)
+                            {
+                                Quaternion trajectory = new Quaternion();
+                                trajectory.eulerAngles += new Vector3(0, 90, 0);
+                                fromRotation = targetRotation;
+                                targetRotation = targetRotation * trajectory;
+
+                                controls.ForwardDirection.Value = (controls.ForwardDirection.Value + 1) % 4;
+                                gameAction.SetAction(GameAction.TurnRight);
+                            }
+
+                            DoTurn();
+                        }
+                        else
+                        {
+                            // TODO Fix this crap
+                            if (isAvatarTurn)
+                            {
+                                character.RootTransform.rotation = targetRotation;
+                                DirectionArrowTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
+                            }
+                            else
+                            {
+                                DirectionArrowTransform.rotation = targetRotation;
+                            }
+
+                            turnSpeed = 0;
+                            lerpValue = 0;
+                            isTurningLeft = false;
+                            isTurningRight = false;
+                        }
+
+                    }
+                    else
+                    {
+                        DoTurn();
+                    }
+                }
+                // IDLE
+                else
+                {
+                    controls.Animation.Value = Characters.AvatarAnimation.Idle;
+                }
+
+                Vector2Int labyrinthPosition =
+                    Client.Instance.Labyrinth == null ?
+                        Vector2Int.zero :
+                        Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
+                            Transform.position.x,
+                            Transform.position.z);
+
+                if (labyrinthPosition != this.labyrinthPosition)
+                {
+                    if (controls.PaintingColor.Value == TileColor.Red)
+                    {
+                        PaintTile(this.labyrinthPosition, TileColor.Red, true);
+                    }
+
+                    this.lastLabyrinthPosition = this.labyrinthPosition;
+                    this.labyrinthPosition = labyrinthPosition;
+
+                    // TODO: encapsulate
+                    if (controls.OnLabyrinthPositionChangedHandler != null)
+                        controls.OnLabyrinthPositionChangedHandler.Invoke();
+                }
+
+                if (character.RootTransform.position != lastPosition)
+                {
+                    controls.PlayerPosition.Value = Transform.position;
+                    lastPosition = character.RootTransform.position;
+                }
+
+                if (character.RootTransform.rotation != lastRotation)
+                {
+                    controls.PlayerRotation.Value = cameraRig.CameraRotation;
+                    lastRotation = cameraRig.CameraRotation;
+                }
+            }
+        }
+
+
 
         public void OnClientChangedState()
         {
@@ -277,232 +524,6 @@ namespace UdeS.Promoscience.Controls
             }
         }
 
-        public void Update()
-        {
-            if (inputScheme.IsPrimaryTouchPadDown)
-            {
-                isPrimaryTouchpadHold = true;
-            }
-
-            if (inputScheme.IsPrimaryTouchPadUp)
-            {
-                isPrimaryTouchpadHold = false;
-            }
-
-            if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
-            {
-                if (isPrimaryTouchpadHold)
-                {
-                    isPrimaryTouchpadHold = true;
-
-                    if (!isTurningLeft && !isTurningRight)
-                    {
-                        if (isMoving)
-                        {
-                            if (lerpValue >= 0.5f && CheckIfMovementIsValidInDirectionFromPosition(controls.ForwardDirection.Value, targetPosition))
-                            {
-                                isChainingMovement = true;
-                            }
-                        }
-                        else
-                        {
-                            RequestMoveForward();
-                        }
-                    }
-                }
-                else if (inputScheme.IsLeftPressed)
-                {
-                    RequestTurnLeft(turnAvatar: true);
-                }
-                else if (inputScheme.IsRightPressed)
-                {
-                    RequestTurnRight(turnAvatar: true);
-                }
-
-                if (inputScheme.IsPrimaryIndexTriggerDown)
-                {
-                    isPrimaryIndexTriggerHold = true;
-                    primaryIndexTriggerHoldTime = 0;
-                }
-
-                if (isPrimaryIndexTriggerHold)
-                {
-                    primaryIndexTriggerHoldTime += Time.deltaTime;
-
-                    if (primaryIndexTriggerHoldTime >= 1)
-                    {
-                        controls.IsThirdPersonEnabled.Value = !controls.IsThirdPersonEnabled.Value;
-                        isPrimaryIndexTriggerHold = false;
-                    }
-                }
-
-                if (inputScheme.IsPrimaryIndexTriggerUp)
-                {
-                    controls.PaintingColor.Value = (TileColor)((int)controls.PaintingColor.Value + 1).Mod(Utils.NumColors);
-                    PaintCurrentPositionTile(true);
-                    isPrimaryIndexTriggerHold = false;
-                }
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            controls.CameraRotation.Value = cameraRig.CameraRotation;
-
-            if (controls.IsControlsEnabled.Value && controls.IsPlayerControlsEnabled.Value)
-            {
-                if (isMoving)
-                {
-                    float xi = ((moveSpeed * moveSpeed) / (-2 * Utils.MOVEMENT_ACCELERATION)) + 1;
-
-                    if (isChainingMovement)
-                    {
-                        xi += 1;
-                    }
-
-                    moveSpeed =
-                        xi < lerpValue ?
-                            moveSpeed - (Time.deltaTime * Utils.MOVEMENT_ACCELERATION) :
-                            moveSpeed + (Time.deltaTime * Utils.MOVEMENT_ACCELERATION);
-
-                    lerpValue += Time.deltaTime * moveSpeed * Utils.MOVEMENT_SPEED;
-
-                    if (lerpValue >= 1)
-                    {
-                        if (isChainingMovement)
-                        {
-                            MovementInDirectionAction(controls.ForwardDirection.Value);
-
-                            isChainingMovement = false;
-                            lerpValue = lerpValue - 1;
-
-                            RequestMoveForward();
-
-                            Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
-                        }
-                        else
-                        {
-                            MovementInDirectionAction(controls.ForwardDirection.Value);
-
-                            Transform.position = targetPosition;
-                            moveSpeed = 0;
-                            lerpValue = 0;
-                            isMoving = false;
-                        }
-
-                        if (controls.PaintingColor.Value != TileColor.Red)
-                        {
-                            PaintCurrentPositionTile(true);
-                        }
-                    }
-                    else
-                    {
-                        Transform.position = Vector3.Lerp(fromPosition, targetPosition, lerpValue);
-                    }
-                }
-                else if (isTurningLeft || isTurningRight)
-                {
-                    float xi = ((turnSpeed * turnSpeed) / (-2 * Utils.TURNING_ACCELERATION)) + 1;
-
-                    if (isChainingMovement)
-                    {
-                        xi++;
-                    }
-
-                    turnSpeed = xi < lerpValue ? turnSpeed - (Time.deltaTime * Utils.TURNING_ACCELERATION) : turnSpeed + (Time.deltaTime * Utils.TURNING_ACCELERATION);
-                    lerpValue += Time.deltaTime * turnSpeed;
-
-                    if (lerpValue >= 1)
-                    {
-                        if (isChainingMovement)
-                        {
-                            isChainingMovement = false;
-                            lerpValue = lerpValue - 1;
-
-                            if (isTurningLeft)
-                            {
-                                Quaternion trajectory = new Quaternion();
-                                trajectory.eulerAngles += new Vector3(0, -90, 0);
-                                fromRotation = targetRotation;
-                                targetRotation = targetRotation * trajectory;
-
-                                controls.ForwardDirection.Value = (controls.ForwardDirection.Value - 1) < 0 ? 3 : (controls.ForwardDirection.Value - 1);
-                                gameAction.SetAction(GameAction.TurnLeft);
-                            }
-                            else if (isTurningRight)
-                            {
-                                Quaternion trajectory = new Quaternion();
-                                trajectory.eulerAngles += new Vector3(0, 90, 0);
-                                fromRotation = targetRotation;
-                                targetRotation = targetRotation * trajectory;
-
-                                controls.ForwardDirection.Value = (controls.ForwardDirection.Value + 1) % 4;
-                                gameAction.SetAction(GameAction.TurnRight);
-                            }
-
-                            DoTurn();
-                        }
-                        else
-                        {
-                            // TODO Fix this crap
-                            if (isAvatarTurn)
-                            {
-                                character.RootTransform.rotation = targetRotation;
-                                DirectionArrowTransform.rotation = Quaternion.LookRotation(Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value));
-                            }
-                            else
-                            {
-                                DirectionArrowTransform.rotation = targetRotation;
-                            }
-
-                            turnSpeed = 0;
-                            lerpValue = 0;
-                            isTurningLeft = false;
-                            isTurningRight = false;
-                        }
-
-                    }
-                    else
-                    {
-                        DoTurn();
-                    }
-                }
-
-                Vector2Int labyrinthPosition =
-                    Client.Instance.Labyrinth == null ?
-                        Vector2Int.zero:
-                        Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
-                            Transform.position.x,
-                            Transform.position.z);
-
-                if (labyrinthPosition != this.labyrinthPosition)
-                {
-                    if (controls.PaintingColor.Value == TileColor.Red)
-                    {
-                        PaintTile(this.labyrinthPosition, TileColor.Red, true);
-                    }
-
-                    this.lastLabyrinthPosition = this.labyrinthPosition;
-                    this.labyrinthPosition = labyrinthPosition;
-
-                    // TODO: encapsulate
-                    if (controls.OnLabyrinthPositionChangedHandler != null)
-                        controls.OnLabyrinthPositionChangedHandler.Invoke();
-                }
-
-                if (character.RootTransform.position != lastPosition)
-                {
-                    controls.PlayerPosition.Value = Transform.position;
-                    lastPosition = character.RootTransform.position;
-                }
-
-                if (character.RootTransform.rotation != lastRotation)
-                {
-                    controls.PlayerRotation.Value = cameraRig.CameraRotation;
-                    lastRotation = cameraRig.CameraRotation;
-                }
-            }
-        }
 
         public void DoTurn()
         {
@@ -743,7 +764,7 @@ namespace UdeS.Promoscience.Controls
             isTurningLeft = false;
             isTurningRight = false;
             isChainingMovement = false;
-            isPrimaryTouchpadHold = false;
+            isPrimaryTouchpadHeld = false;
             lerpValue = 0;
             moveSpeed = 0;
             turnSpeed = 0;

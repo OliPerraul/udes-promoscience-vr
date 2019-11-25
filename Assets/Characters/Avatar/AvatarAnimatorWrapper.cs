@@ -18,6 +18,7 @@ namespace UdeS.Promoscience.Characters
         float GetClipLength(AvatarAnimation state);
         void Play(AvatarAnimation animation, float normalizedTime);
         void Play(AvatarAnimation animation);
+        float Speed { set; }
         float BaseLayerLayerWeight{set;}
     }
     public class AvatarAnimatorWrapper : IAvatarAnimatorWrapper
@@ -33,6 +34,7 @@ namespace UdeS.Promoscience.Characters
         {
             _animator.Play((int)animation);
         }
+        public float Speed{ set => _animator.SetFloat(-823668238, value); }
         public float BaseLayerLayerWeight{set => _animator.SetLayerWeight(0,value);}
         public AvatarAnimatorWrapper(Animator animator)
         {

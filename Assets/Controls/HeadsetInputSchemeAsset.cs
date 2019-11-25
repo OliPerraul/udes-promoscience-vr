@@ -9,6 +9,8 @@ namespace UdeS.Promoscience.Controls
 
         bool IsPrimaryTouchPadUp { get; }
 
+        bool IsPrimaryIndexTriggerHeld { get; }
+
         bool IsPrimaryIndexTriggerDown { get; }
 
         bool IsPrimaryIndexTriggerUp { get; }
@@ -26,6 +28,8 @@ namespace UdeS.Promoscience.Controls
 
         public bool IsPrimaryTouchPadUp => Input.GetKeyUp(KeyCode.Mouse0) || Input.GetKeyUp(KeyCode.Space);
 
+        public bool IsPrimaryIndexTriggerHeld => Input.GetKey(KeyCode.Mouse1) || Input.GetKey(KeyCode.Return);
+
         public bool IsPrimaryIndexTriggerDown => Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.Return);
 
         public bool IsPrimaryIndexTriggerUp => Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.Return);
@@ -42,6 +46,8 @@ namespace UdeS.Promoscience.Controls
         public bool IsPrimaryTouchPadDown => OVRInput.GetDown(OVRInput.Button.PrimaryTouchpad);
 
         public bool IsPrimaryTouchPadUp => OVRInput.GetUp(OVRInput.Button.PrimaryTouchpad);
+
+        public bool IsPrimaryIndexTriggerHeld => OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger);
 
         public bool IsPrimaryIndexTriggerDown => OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger);
 
@@ -62,6 +68,8 @@ namespace UdeS.Promoscience.Controls
         public bool IsPrimaryTouchPadDown => inputScheme.IsPrimaryTouchPadDown;
 
         public bool IsPrimaryTouchPadUp => inputScheme.IsPrimaryTouchPadUp;
+
+        public bool IsPrimaryIndexTriggerHeld => inputScheme.IsPrimaryIndexTriggerHeld;
 
         public bool IsPrimaryIndexTriggerDown => inputScheme.IsPrimaryIndexTriggerDown;
 

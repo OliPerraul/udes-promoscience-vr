@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine;
 
+using UdeS.Promoscience.Characters;
+
 namespace UdeS.Promoscience.Controls
 {
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Avatar Controler", order = 1)]
@@ -46,6 +48,8 @@ namespace UdeS.Promoscience.Controls
         public Cirrus.ObservableValue<Tile[]> PlayerTilesToPaint = new Cirrus.ObservableValue<Tile[]>();
 
         public Cirrus.ObservableValue<int> ForwardDirection = new Cirrus.ObservableValue<int>();
+
+        public Cirrus.ObservableValue<AvatarAnimation> Animation = new Cirrus.ObservableValue<AvatarAnimation>();
 
         //public void OnEnable()
         //{
