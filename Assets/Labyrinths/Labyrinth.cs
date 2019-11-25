@@ -304,6 +304,7 @@ namespace UdeS.Promoscience.Labyrinths
     [System.Serializable]
     public class Camera
     {
+        [SerializeField]
         private RenderTexture renderTexture;
 
         public RenderTexture RenderTexture => renderTexture;
@@ -331,10 +332,14 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
+        [SerializeField]
+        private bool outputToTexture = false;
+
         public bool OutputToTexture
         {
             set
             {
+                outputToTexture = value;
                 Source.targetTexture = value ? RenderTexture : null;
             }
         }

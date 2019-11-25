@@ -20,14 +20,15 @@ namespace UdeS.Promoscience.Replays
         ToggleOptions,
         ToggleAlgorithm,
         ToggleGreyboxLabyrinth,
+
         SelectLabyrinth,
+        SelectReplay,
+        ExitReplay,       
 
-        ExitReplay,
         AddCourse,
-        Reset,
+        CourseToggled,
 
-        //CourseSelected,
-        CourseToggled       
+        Reset,
     }
 
     public delegate void OnAction(ReplayAction action, params object[] args);

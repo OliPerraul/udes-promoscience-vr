@@ -487,7 +487,7 @@ namespace UdeS.Promoscience
         }
 
 
-        public void WatchReplay()
+        public void StartReplaySelect()
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
