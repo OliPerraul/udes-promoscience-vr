@@ -15,7 +15,9 @@ namespace UdeS.Promoscience.Replays
             Resume();         
             
             controller.SendAction(ReplayAction.ToggleOptions, false);
+
             controller.SendAction(ReplayAction.ToggleAlgorithm, true);
+
             controller.PlaybackSpeed = 2f;
         }
     }

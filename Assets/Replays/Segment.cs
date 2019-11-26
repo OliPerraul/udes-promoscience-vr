@@ -34,7 +34,6 @@ namespace UdeS.Promoscience.Replays
 
         protected bool isInversed = false;
 
-
         public virtual void OnValidate()
         {
             if (lineRenderer == null)

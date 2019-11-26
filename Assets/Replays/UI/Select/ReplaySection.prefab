@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4670512016739512439}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95758a5f5f2bbac4ca95aef0a56e81ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 6d86268facd18cb4da180340d77bcc28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 0}
@@ -343,6 +343,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 472b1c81921adf04b9ba1fbd98ecab4f, type: 3}
+  m_Script: {fileID: 11500000, guid: c0e52c37d1246d244a859a7c678c2a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

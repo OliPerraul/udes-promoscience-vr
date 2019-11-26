@@ -24,9 +24,13 @@ namespace Cirrus.UI
         [SerializeField]
         private float _hiddenAlpha = 0.5f;
 
+        [SerializeField]
+        private bool isOverriden = false;
+
         public void Awake()
         {
-            Hide();
+            if (!isOverriden)
+                Hide();
         }
 
         public void OnPointerEnter(PointerEventData eventData)

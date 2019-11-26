@@ -35,9 +35,6 @@ namespace UdeS.Promoscience.Replays.UI
         protected UnityEngine.UI.Button greyboxButton;
 
         [SerializeField]
-        protected UnityEngine.UI.Button algorithmButton;
-
-        [SerializeField]
         protected GameObject sequenceToggle;
 
         [SerializeField]
@@ -51,7 +48,7 @@ namespace UdeS.Promoscience.Replays.UI
             openButton.onClick.AddListener(OnOpenClicked);
             exitButton.onClick.AddListener(OnExitClicked);
             overlayButton.onClick.AddListener(OnOverlayClicked);
-            algorithmButton.onClick.AddListener(OnAlgorithmClicked);
+            //algorithmButton.onClick.AddListener(OnAlgorithmClicked);
             greyboxButton.onClick.AddListener(OnGreyboxClicked);
             replayOptions.OnActionHandler += OnReplayAction;
             replayOptions.OnMoveIndexChangedHandler += OnMoveIndexChanged;
@@ -165,8 +162,8 @@ namespace UdeS.Promoscience.Replays.UI
                 sequenceToggle.gameObject.SetActive(_enabled);
                 sequencePopup.gameObject.SetActive(_enabled);
                 controls.gameObject.SetActive(_enabled);
-                algorithmNameText.gameObject.SetActive(_enabled);
-                algorithmStepsText.gameObject.SetActive(_enabled);
+                //algorithmNameText.gameObject.SetActive(_enabled);
+                //algorithmStepsText.gameObject.SetActive(_enabled);
 
             }
         }
@@ -179,7 +176,7 @@ namespace UdeS.Promoscience.Replays.UI
             sequencePopup.gameObject.SetActive(isOptionEnabled);
             sequenceToggle.SetActive(isOptionEnabled);
             overlayButton.gameObject.SetActive(isOptionEnabled);
-            algorithmButton.gameObject.SetActive(isOptionEnabled);
+            //algorithmButton.gameObject.SetActive(isOptionEnabled);
             greyboxButton.gameObject.SetActive(isOptionEnabled);
         }
 
@@ -188,8 +185,8 @@ namespace UdeS.Promoscience.Replays.UI
         public void EnableAlgorithm(bool enable)
         {
             isAlgorithmEnabled = enable;
-            algorithmNameText.gameObject.SetActive(enable);
-            algorithmStepsText.gameObject.SetActive(enable);
+            //algorithmNameText.gameObject.SetActive(enable);
+            //algorithmStepsText.gameObject.SetActive(enable);
         }
 
     }
