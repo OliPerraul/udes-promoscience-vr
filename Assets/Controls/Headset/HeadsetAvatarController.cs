@@ -398,6 +398,12 @@ namespace UdeS.Promoscience.Controls
                     cameraRig.TransitionCameraAnimator?.Play(TransitionCameraAnimation.Transition_In);
                     transitionTimer?.Start();
 
+                    // Paint the first tile
+                    PaintTile(
+                        Client.Instance.Labyrinth.GetLabyrithStartPosition(),
+                        TileColor.Yellow,
+                        saveAction:true);
+
                     break;
 
                 case ClientGameState.Finished:
