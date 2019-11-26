@@ -15,7 +15,8 @@ namespace UdeS.Promoscience.Algorithms
         RightHand = 0,
         ShortestFlightDistance = 1,
         LongestStraight = 2,
-        Standard = 3
+        Standard = 3,
+        None = 4
     }
 
     public class Utils

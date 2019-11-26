@@ -39,18 +39,21 @@ namespace UdeS.Promoscience.Algorithms
 
         List<Tile> playerSteps = new List<Tile>();
 
-        //List<Tile> algorithmRespect.WrongColorTilesWhenDiverging = new List<Tile>();
-
         Stack<GameAction> stack = new Stack<GameAction>();
 
         Quaternion rotationAtDivergence;
 
-        void Start()
+        void Awake()
         {
             Client.Instance.clientStateChangedEvent += OnGameStateChanged;
             controls.PlayerPaintTile.OnValueChangedHandler += OnPlayerPaintTile;
             controls.OnLabyrinthPositionChangedHandler += OnLabyrinthPositionChanged;
             algorithmRespect.OnReturnToDivergencePointRequestHandler += OnReturnToDivergencePointRequest;
+        }
+
+        public void Start()
+        {
+            algorithmRespect.WrongColorTilesWhenDiverging.Clear();
         }
 
 
@@ -101,7 +104,9 @@ namespace UdeS.Promoscience.Algorithms
             if (isAlgorithmRespectActive)
             {
                 EvaluateAlgorithmRespectOnPositionChanged(
-                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(avatar.RootTransform.position.x, avatar.RootTransform.position.z),
+                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
+                        avatar.RootTransform.position.x, 
+                        avatar.RootTransform.position.z),
                     Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition),
                     avatar.RootTransform.rotation);
             }
@@ -150,7 +155,10 @@ namespace UdeS.Promoscience.Algorithms
                 tile.PreviousColor);
         }
 
-        void EvaluateAlgorithmRespectOnPositionChanged(Vector2Int labyrinthPosition, TileColor previousTileColor, Quaternion rotation)
+        void EvaluateAlgorithmRespectOnPositionChanged(
+            Vector2Int labyrinthPosition, 
+            TileColor previousTileColor, 
+            Quaternion rotation)
         {
             if (Client.Instance.Labyrinth == null)
                 return;
@@ -166,8 +174,7 @@ namespace UdeS.Promoscience.Algorithms
                         gameRoundManager.IsRoundCompleted.Value = true;
                     }
 
-                    if (controls.OnPlayerReachedTheEndHandler != null)
-                        controls.OnPlayerReachedTheEndHandler.Invoke();
+                    controls.OnPlayerReachedTheEndHandler?.Invoke();
 
                     return;
                 }
@@ -178,9 +185,10 @@ namespace UdeS.Promoscience.Algorithms
                         || (previousTileColor != algorithmSteps[playerSteps.Count - 1].Color))
                     {
                         algorithmRespect.IsDiverging.Value = true;
-                        algorithmRespect.Respect = RespectValueComputation((new Vector2Int(
-                            playerSteps[playerSteps.Count - 1].x,
-                            playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + algorithmRespect.WrongColorTilesWhenDiverging.Count);
+                        algorithmRespect.Respect = RespectValueComputation((
+                            new Vector2Int(
+                                playerSteps[playerSteps.Count - 1].x,
+                                playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + algorithmRespect.WrongColorTilesWhenDiverging.Count);
 
                         // TODO: this is strange, why do we not add a tile here
                         // since we are diverging..??
@@ -365,22 +373,42 @@ namespace UdeS.Promoscience.Algorithms
                 if (gameAction == GameAction.MoveUp)
                 {
                     position.y -= 1;
-                    EvaluateAlgorithmRespectOnPositionChanged(position, tiles[currentLabyrinthPosition.x, currentLabyrinthPosition.y], GetRotationWithForwardDirection(forwardDirection));
+                    EvaluateAlgorithmRespectOnPositionChanged(
+                        position, 
+                        tiles[
+                            currentLabyrinthPosition.x, 
+                            currentLabyrinthPosition.y], 
+                        GetRotationWithForwardDirection(forwardDirection));
                 }
                 else if (gameAction == GameAction.MoveRight)
                 {
                     position.x += 1;
-                    EvaluateAlgorithmRespectOnPositionChanged(position, tiles[currentLabyrinthPosition.x, currentLabyrinthPosition.y], GetRotationWithForwardDirection(forwardDirection));
+                    EvaluateAlgorithmRespectOnPositionChanged(
+                        position, 
+                        tiles[
+                            currentLabyrinthPosition.x, 
+                            currentLabyrinthPosition.y], 
+                        GetRotationWithForwardDirection(forwardDirection));
                 }
                 else if (gameAction == GameAction.MoveDown)
                 {
                     position.y += 1;
-                    EvaluateAlgorithmRespectOnPositionChanged(position, tiles[currentLabyrinthPosition.x, currentLabyrinthPosition.y], GetRotationWithForwardDirection(forwardDirection));
+                    EvaluateAlgorithmRespectOnPositionChanged(
+                        position, 
+                        tiles[
+                            currentLabyrinthPosition.x, 
+                            currentLabyrinthPosition.y], 
+                        GetRotationWithForwardDirection(forwardDirection));
                 }
                 else if (gameAction == GameAction.MoveLeft)
                 {
                     position.x -= 1;
-                    EvaluateAlgorithmRespectOnPositionChanged(position, tiles[currentLabyrinthPosition.x, currentLabyrinthPosition.y], GetRotationWithForwardDirection(forwardDirection));
+                    EvaluateAlgorithmRespectOnPositionChanged(
+                        position, 
+                        tiles[
+                            currentLabyrinthPosition.x, 
+                            currentLabyrinthPosition.y], 
+                        GetRotationWithForwardDirection(forwardDirection));
                 }
                 else if (gameAction == GameAction.TurnRight)
                 {
@@ -395,21 +423,36 @@ namespace UdeS.Promoscience.Algorithms
                     TileColor previousColor = tiles[position.x, position.y];
                     tiles[position.x, position.y] = TileColor.Yellow;
 
-                    EvaluateAlgorithmRespectOnPaintTile(position, position.x, position.y, TileColor.Yellow, previousColor);
+                    EvaluateAlgorithmRespectOnPaintTile(
+                        position, 
+                        position.x, 
+                        position.y, 
+                        TileColor.Yellow, 
+                        previousColor);
                 }
                 else if (gameAction == GameAction.PaintFloorRed)
                 {
                     TileColor previousColor = tiles[position.x, position.y];
                     tiles[position.x, position.y] = TileColor.Red;
 
-                    EvaluateAlgorithmRespectOnPaintTile(position, position.x, position.y, TileColor.Red, previousColor);
+                    EvaluateAlgorithmRespectOnPaintTile(
+                        position, 
+                        position.x, 
+                        position.y, 
+                        TileColor.Red, 
+                        previousColor);
                 }
                 else if (gameAction == GameAction.UnpaintFloor)
                 {
                     TileColor previousColor = tiles[position.x, position.y];
                     tiles[position.x, position.y] = TileColor.Grey;
 
-                    EvaluateAlgorithmRespectOnPaintTile(position, position.x, position.y, TileColor.Grey, previousColor);
+                    EvaluateAlgorithmRespectOnPaintTile(
+                        position, 
+                        position.x, 
+                        position.y, 
+                        TileColor.Grey, 
+                        previousColor);
                 }
                 else if (gameAction == GameAction.ReturnToDivergencePoint)
                 {
@@ -470,7 +513,8 @@ namespace UdeS.Promoscience.Algorithms
             controls.PositionRotationAndTiles.Value =
                 new PositionRotationAndTile
                 {
-                    Position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, avatar.RootTransform.position.y, 0),
+                    Position = 
+                    Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, avatar.RootTransform.position.y, 0),
                     Rotation = rotation,
                     Tiles = tilesToPaint
                 };

@@ -368,9 +368,7 @@ namespace UdeS.Promoscience.Controls
                     this.lastLabyrinthPosition = this.labyrinthPosition;
                     this.labyrinthPosition = labyrinthPosition;
 
-                    // TODO: encapsulate
-                    if (controls.OnLabyrinthPositionChangedHandler != null)
-                        controls.OnLabyrinthPositionChangedHandler.Invoke();
+                    controls.OnLabyrinthPositionChangedHandler?.Invoke();
                 }
 
                 if (character.RootTransform.position != lastPosition)
@@ -832,8 +830,7 @@ namespace UdeS.Promoscience.Controls
 
             labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(Transform.position.x, Transform.position.z);
 
-            if (controls.OnLabyrinthPositionChangedHandler != null)
-                controls.OnLabyrinthPositionChangedHandler.Invoke();
+            controls.OnLabyrinthPositionChangedHandler?.Invoke();
 
             controls.PaintingColor.Value = TileColor.Yellow;
 
