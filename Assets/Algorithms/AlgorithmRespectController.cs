@@ -57,6 +57,33 @@ namespace UdeS.Promoscience.Algorithms
         }
 
 
+        void OnGameStateChanged()
+        {
+            switch (Client.Instance.State)
+            {
+                case ClientGameState.PlayingTutorial:
+                case ClientGameState.Playing:
+
+                    ResetAlgorithmRespect();
+                    SetAlgorithmSteps();
+                    isAlgorithmRespectActive = true;
+
+                    if (Client.Instance.State != ClientGameState.PlayingTutorial)
+                    {
+                        if (Client.Instance.ActionSteps.Length > 0)
+                        {
+                            StartWithSteps();
+                        }
+                    }
+
+                    break;
+
+                case ClientGameState.WaitingForNextRound:
+                    isAlgorithmRespectActive = false; isAlgorithmRespectActive = false;
+                    break;
+            }
+        }
+
         public void OnReturnToDivergencePointRequest()
         {
             algorithmRespect.ErrorCount += 1;
@@ -111,35 +138,7 @@ namespace UdeS.Promoscience.Algorithms
                     avatar.RootTransform.rotation);
             }
         }
-      
-        void OnGameStateChanged()
-        {
-            if (Client.Instance.State == ClientGameState.PlayingTutorial || Client.Instance.State == ClientGameState.Playing)
-            {
-                ResetAlgorithmRespect();
-
-                if (Client.Instance.State == ClientGameState.PlayingTutorial)
-                {
-                    SetAlgorithmSteps();
-                }
-                else
-                {
-                    SetAlgorithmSteps();
-
-                    if (Client.Instance.ActionSteps.Length > 0)
-                    {
-                        StartWithSteps();
-                    }
-                }
-
-                isAlgorithmRespectActive = true;
-            }
-            else if (Client.Instance.State == ClientGameState.WaitingForNextRound)
-            {
-                isAlgorithmRespectActive = false;
-            }
-        }
-
+     
         void OnPlayerPaintTile(Tile tile)
         {
             if (Client.Instance.Labyrinth == null)
