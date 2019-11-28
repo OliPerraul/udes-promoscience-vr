@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Tablet.unity
     guid: 9e12a4f89d918cb42b9f07b41c927c8e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Headset.unity
     guid: 7c7e0db851197af47923a8764540efff
   - enabled: 0
@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/HeadsetPairing.unity
     guid: d8e7fe7a056e47445a1311706bc0e3f4
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Server2.unity
     guid: 7c837a5e97f3faa4e803d2940fd9030a
   - enabled: 0
