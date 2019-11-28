@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class ReplayDisplay : MonoBehaviour
+    public class ReplaySidebar : MonoBehaviour
     {
         [SerializeField]
         protected ControllerAsset replayOptions;
