@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.Replays
     public abstract class Sequence : MonoBehaviour
     {
         //[SerializeField]
-        protected ControllerAsset replay;
+        protected ReplayControllerAsset replay;
 
         protected Labyrinths.Labyrinth labyrinth;
 

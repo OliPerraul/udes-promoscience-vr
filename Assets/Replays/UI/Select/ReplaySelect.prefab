@@ -163,6 +163,7 @@ MonoBehaviour:
   Hidden: {fileID: 2285082610918529624}
   _isHiddenAlpha: 0
   _hiddenAlpha: 0.5
+  isOverriden: 0
 --- !u!114 &9177342427627065502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonsParent: {fileID: 8612070917104560876}
   labyrinthIndex: 0
-  replayController: {fileID: 11400000, guid: a486ffa3d6b8a7846adaddf27c3cf4a9, type: 2}
+  replayController: {fileID: 11400000, guid: de57bbb0d7d2fd14ca87e941b30b2cf6, type: 2}
   sectionTemplate: {fileID: 7372041843034450105}
   buttonExit: {fileID: 8510688056386636831}
   buttonAdd: {fileID: 4372888333471674680}

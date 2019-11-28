@@ -7,22 +7,42 @@ namespace UdeS.Promoscience.Replays
 {
     public class Controller : MonoBehaviour
     {
-        //[SerializeField]
-        //private ScriptableServerGameInformation serverGameState;
-
-        //[SerializeField]
-        //private Camera camera;
+        [SerializeField]
+        private GameObject sidebar;
 
         [SerializeField]
-        private float scaleSpeed = 0.5f;
+        private GameObject display;
 
         [SerializeField]
-        public float dragSpeed = 2;
+        private UnityEngine.UI.Button infoButton;
 
-        private Vector3 dragOrigin;
+        [SerializeField]
+        private UnityEngine.UI.Button exitButton;
 
-        public void OnValidate()
+        [SerializeField]
+        private UnityEngine.UI.RawImage viewRawImage;
+
+        public void Awake()
         {
+            exitButton.onClick.AddListener(() => Server.Instance.EndRoundOrTutorial());
+            infoButton.onClick.AddListener(() => sidebar.gameObject.SetActive(!sidebar.gameObject.activeSelf));
+            Server.Instance.gameStateChangedEvent += OnGameStateValueChanged;
+        }
+
+        public void OnGameStateValueChanged()
+        {
+            switch (Server.Instance.GameState)
+            {
+                case ServerGameState.AdvancedReplay:
+                case ServerGameState.InstantReplay:
+                    display.SetActive(true);
+                    viewRawImage.texture = Server.Instance.Labyrinths.CurrentLabyrinth.Camera.RenderTexture;
+                    break;
+
+                default:
+                    display.SetActive(false);
+                    break;
+            }
 
         }
 

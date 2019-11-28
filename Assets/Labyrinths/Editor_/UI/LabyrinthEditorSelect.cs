@@ -6,7 +6,7 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths.Editor.UI
 {
-    public class LabyrinthEditorSelect : BaseSelect
+    public class LabyrinthEditorSelect : BaseSelectionInterface
     {
         [SerializeField]
         private ControllerAsset controller;

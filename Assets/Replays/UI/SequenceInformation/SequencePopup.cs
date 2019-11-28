@@ -9,7 +9,7 @@ namespace UdeS.Promoscience.Replays.UI
     public class SequencePopup : MonoBehaviour
     {
         [SerializeField]
-        private ControllerAsset replayOptions;
+        private ReplayControllerAsset replayOptions;
 
         //[SerializeField]
         //private ScriptableServerGameInformation server;

@@ -4,9 +4,9 @@ using UdeS.Promoscience.Labyrinths;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class InstantReplay : Replay
+    public class InstantReplay : SingleReplay
     {
-        public InstantReplay(ControllerAsset controller, IData labyrinth) : base(controller, labyrinth) { }
+        public InstantReplay(ReplayControllerAsset controller, IData labyrinth) : base(controller, labyrinth) { }
 
         public override void Start()
         {

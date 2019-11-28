@@ -5,14 +5,14 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths.UI
 {
-    public class LevelSelect : BaseSelect//.UI.MainDisplay
+    public class LevelSelectionInterface : BaseSelectionInterface//.UI.MainDisplay
     {
         private List<LevelButton> labyrinthButtons = new List<LevelButton>();
 
         [SerializeField]
-        private Replays.ControllerAsset replayController;
+        private Replays.ReplayControllerAsset replayController;
 
-        protected Replays.ControllerAsset ReplayController => replayController;
+        protected Replays.ReplayControllerAsset ReplayController => replayController;
 
         //[SerializeField]
         //private LevelButton buttonTemplate;

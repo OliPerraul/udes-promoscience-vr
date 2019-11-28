@@ -7,9 +7,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
     public class LevelSection : BaseSection
     {
         [SerializeField]
-        private LevelSelect levelSelect;
+        private LevelSelectionInterface levelSelect;
 
-        public override BaseSelect Select => levelSelect;
+        public override BaseSelectionInterface Select => levelSelect;
 
         [SerializeField]
         private LevelButton buttonTemplate;

@@ -8,7 +8,7 @@ namespace UdeS.Promoscience.Replays.UI
     public class ReplaySidebar : MonoBehaviour
     {
         [SerializeField]
-        protected ControllerAsset replayOptions;
+        protected ReplayControllerAsset replayOptions;
 
         [SerializeField]
         private UnityEngine.UI.Text algorithmNameText;
@@ -23,7 +23,8 @@ namespace UdeS.Promoscience.Replays.UI
         protected Controls controls;
 
         [SerializeField]
-        protected UnityEngine.UI.Button openButton;
+        [UnityEngine.Serialization.FormerlySerializedAs("openButton")]
+        protected UnityEngine.UI.Button infoButton;
 
         [SerializeField]
         protected UnityEngine.UI.Button exitButton;
@@ -33,6 +34,9 @@ namespace UdeS.Promoscience.Replays.UI
 
         [SerializeField]
         protected UnityEngine.UI.Button greyboxButton;
+
+        [SerializeField]
+        protected UnityEngine.UI.Button algorithmButton;
 
         [SerializeField]
         protected GameObject sequenceToggle;
@@ -45,11 +49,12 @@ namespace UdeS.Promoscience.Replays.UI
 
         public virtual void Awake()
         {
-            openButton.onClick.AddListener(OnOpenClicked);
-            exitButton.onClick.AddListener(OnExitClicked);
-            overlayButton.onClick.AddListener(OnOverlayClicked);
-            //algorithmButton.onClick.AddListener(OnAlgorithmClicked);
-            greyboxButton.onClick.AddListener(OnGreyboxClicked);
+            infoButton.onClick.AddListener(() => gameObject.SetActive(!gameObject.activeSelf));
+            exitButton.onClick.AddListener(() => Server.Instance.StartReplaySelect());
+            overlayButton.onClick.AddListener(() => overlay.SetActive(!overlay.activeSelf));
+            greyboxButton.onClick.AddListener(() => replayOptions.SendAction(ReplayAction.ToggleGreyboxLabyrinth));
+            algorithmButton.onClick.AddListener(() => replayOptions.SendAction(ReplayAction.ToggleAlgorithm));
+
             replayOptions.OnActionHandler += OnReplayAction;
             replayOptions.OnMoveIndexChangedHandler += OnMoveIndexChanged;
             replayOptions.OnCourseSelectedHandler += OnCourseSelected;
@@ -65,11 +70,12 @@ namespace UdeS.Promoscience.Replays.UI
             algorithmStepsText.text = algorithmStepsString.Value + course.CurrentAlgorithmMoveIndex;
         }
 
-        public void OnGreyboxClicked()
+        public void EnableAlgorithm(bool enable)
         {
-            replayOptions.SendAction(ReplayAction.ToggleGreyboxLabyrinth);
+            isAlgorithmEnabled = enable;
+            //algorithmNameText.gameObject.SetActive(enable);
+            //algorithmStepsText.gameObject.SetActive(enable);
         }
-
 
         private Course course = null;
 
@@ -126,23 +132,6 @@ namespace UdeS.Promoscience.Replays.UI
             replayOptions.SendAction(ReplayAction.ToggleAlgorithm);
         }
 
-        private void OnOverlayClicked()
-        {
-            overlay.SetActive(!overlay.activeSelf);
-        }
-
-
-        public void OnOpenClicked()
-        {
-            EnableOptions(!sequenceToggle.activeInHierarchy);
-        }
-
-        public void OnExitClicked()
-        {
-            Enabled = false;
-            Server.Instance.StartReplaySelect();
-        }
-
         private bool _enabled = false;
 
         public virtual bool Enabled
@@ -156,7 +145,7 @@ namespace UdeS.Promoscience.Replays.UI
             {
                 _enabled = value;
                 transform.GetChild(0).gameObject.SetActive(_enabled);
-                openButton.gameObject.SetActive(_enabled);
+                infoButton.gameObject.SetActive(_enabled);
                 exitButton.gameObject.SetActive(_enabled);
                 greyboxButton.gameObject.SetActive(_enabled);
                 sequenceToggle.gameObject.SetActive(_enabled);
@@ -181,13 +170,6 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
         private bool isAlgorithmEnabled = false;
-
-        public void EnableAlgorithm(bool enable)
-        {
-            isAlgorithmEnabled = enable;
-            //algorithmNameText.gameObject.SetActive(enable);
-            //algorithmStepsText.gameObject.SetActive(enable);
-        }
 
     }
 }

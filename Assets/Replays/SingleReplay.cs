@@ -6,11 +6,8 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class Replay
+    public class SingleReplay : BaseReplay
     {
-        //public Replay replay;
-        protected ControllerAsset controller;
-
         public Labyrinths.IData LabyrinthData => labyrinth.Data;
 
         public Labyrinths.IData labyrinthData;
@@ -36,9 +33,9 @@ namespace UdeS.Promoscience.Replays
         private bool isPlaying = false;
 
         // TODO remove
-        public Replay(
-            ControllerAsset controller,
-            Labyrinths.IData labyrinth)            
+        public SingleReplay(
+            ReplayControllerAsset controller,
+            Labyrinths.IData labyrinth) :base(controller)
         {
             this.controller = controller;// replay;
             this.labyrinthData = labyrinth;
@@ -48,9 +45,9 @@ namespace UdeS.Promoscience.Replays
             controller.OnCourseSelectedHandler += OnCourseSelected;
         }
 
-        public Replay(
-            ControllerAsset controller,
-            Labyrinths.Labyrinth labyrinth)
+        public SingleReplay(
+            ReplayControllerAsset controller,
+            Labyrinths.Labyrinth labyrinth) : base(controller)
         {
             this.controller = controller;
             this.labyrinth = labyrinth;
@@ -79,7 +76,7 @@ namespace UdeS.Promoscience.Replays
             {
                 labyrinth.gameObject.SetActive(true);
             }
-                       
+
             labyrinth.Camera.OutputToTexture = false;
 
             lposition = labyrinth.GetLabyrithStartPosition();
@@ -92,7 +89,7 @@ namespace UdeS.Promoscience.Replays
             {
                 OnCourseAdded(course);
             }
-                       
+
             controller.PlaybackSpeed = 2f;
         }
 
@@ -277,7 +274,7 @@ namespace UdeS.Promoscience.Replays
 
         public void EnableOptions(bool enable)
         {
-            
+
         }
 
         public virtual void OnReplayAction(ReplayAction action, params object[] args)
@@ -286,7 +283,7 @@ namespace UdeS.Promoscience.Replays
 
             switch (action)
             {
-                case ReplayAction.ToggleOptions:                    
+                case ReplayAction.ToggleOptions:
                     break;
 
                 case ReplayAction.ExitReplay:
@@ -339,7 +336,7 @@ namespace UdeS.Promoscience.Replays
                 case ReplayAction.Next:
 
                     mutex.WaitOne();
-                                       
+
                     Next();
 
                     mutex.ReleaseMutex();
@@ -409,7 +406,7 @@ namespace UdeS.Promoscience.Replays
         }
 
         public void TrySetMoveCount(int candidateMvcnt)
-        {            
+        {
             if (candidateMvcnt > controller.GlobalMoveCount)
                 controller.GlobalMoveCount = candidateMvcnt;
 
@@ -474,7 +471,7 @@ namespace UdeS.Promoscience.Replays
 
             algorithmSequences.Clear();
 
-            labyrinth = null;         
+            labyrinth = null;
         }
 
         Course first = null;
@@ -510,7 +507,7 @@ namespace UdeS.Promoscience.Replays
 
                     TrySetMoveCount(algorithmSeq.LocalMoveCount);
                 }
-                               
+
                 AdjustOffsets();
 
                 controller.SendAction(ReplayAction.AddCourse, true, course);

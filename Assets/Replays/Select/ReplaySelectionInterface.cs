@@ -7,12 +7,12 @@ using UdeS.Promoscience.Labyrinths.UI;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class ReplaySelect : BaseSelect
+    public class ReplaySelectionInterface : BaseSelectionInterface
     {
         [SerializeField]
-        private ControllerAsset replayController;
+        private ReplayControllerAsset replayController;
 
-        protected ControllerAsset ReplayController => replayController;
+        protected ReplayControllerAsset ReplayController => replayController;
 
         [SerializeField]
         private ReplaySection sectionTemplate;
@@ -46,7 +46,6 @@ namespace UdeS.Promoscience.Replays.UI
 
             buttonAdd.onClick.AddListener(OnAddedBottomClicked);
         }
-
 
         public virtual void OnServerGameStateChanged()
         {

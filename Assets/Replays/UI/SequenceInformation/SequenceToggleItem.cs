@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.Replays.UI
     public class SequenceToggleItem : MonoBehaviour
     {
         [SerializeField]
-        private ControllerAsset replayController;
+        private ReplayControllerAsset replayController;
 
         [SerializeField]
         private UnityEngine.UI.Toggle toggle;

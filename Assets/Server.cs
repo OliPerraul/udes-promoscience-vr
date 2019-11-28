@@ -12,9 +12,9 @@ namespace UdeS.Promoscience
 {
     public class Server : Cirrus.BaseSingleton<Server>
     {
-        private Replays.Replay replay;
+        private Replays.BaseReplay replay;
 
-        public Replays.ControllerAsset replayController;
+        public Replays.ReplayControllerAsset replayController;
 
         public LabyrinthManager Labyrinths = new LabyrinthManager();
         
@@ -94,7 +94,7 @@ namespace UdeS.Promoscience
             GameState = ServerGameState.Lobby;                       
         }
 
-        public Replays.Replay CurrentReplay;
+        public Replays.BaseReplay CurrentReplay;
 
 
 
@@ -203,7 +203,7 @@ namespace UdeS.Promoscience
 
             Labyrinths.CurrentData = labyrinth;
 
-            CurrentReplay = new Replays.Replay(
+            CurrentReplay = new Replays.SingleReplay(
                 replayController, 
                 Labyrinths.CurrentData);
                        
@@ -234,15 +234,14 @@ namespace UdeS.Promoscience
 
             Labyrinths.CurrentData = labyrinth.Data;
 
-            CurrentReplay = new Replays.Replay(
+            CurrentReplay = new Replays.SingleReplay(
                 replayController,
                 labyrinth);
 
             CurrentReplay.Start();
         }
 
-
-        public void StartAdvancedReplay(Replays.Replay replay)
+        public void StartAdvancedReplay(Replays.BaseReplay replay)
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -262,14 +261,16 @@ namespace UdeS.Promoscience
 
             GameState = ServerGameState.AdvancedReplay;
 
-            Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(replay.LabyrinthData.Id);
+            //Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(replay.LabyrinthData.Id);
 
-            Labyrinths.CurrentData = replay.LabyrinthData;
+            //Labyrinths.CurrentData = replay.LabyrinthData;
 
             CurrentReplay = replay;
 
             CurrentReplay.Start();
         }
+
+
 
 
         // Try find course ID initiated by a team member

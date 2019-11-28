@@ -152,7 +152,7 @@ namespace UdeS.Promoscience.Replays
         private float offsetAmount = 0f;
 
         public PlayerSequence Create(
-            ControllerAsset replay,
+            ReplayControllerAsset replay,
             Course course,
             Labyrinths.Labyrinth labyrinth,
             Vector2Int startPosition)

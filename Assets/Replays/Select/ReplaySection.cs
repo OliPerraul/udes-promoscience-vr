@@ -13,8 +13,8 @@ namespace UdeS.Promoscience.Replays.UI
     public class ReplaySection : Labyrinths.UI.BaseSection
     {
         [SerializeField]
-        [GetComponent(typeof(ReplaySelect))]
-        private ReplaySelect select;
+        [GetComponent(typeof(ReplaySelectionInterface))]
+        private ReplaySelectionInterface select;
 
         [SerializeField]
         [GetComponent(typeof(ReplayButton))]
@@ -26,7 +26,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public Event<ReplaySection> OnRemovedHandler;
 
-        public override Labyrinths.UI.BaseSelect Select => select;
+        public override Labyrinths.UI.BaseSelectionInterface Select => select;
 
         public int NumButtons => buttons.Count;
 

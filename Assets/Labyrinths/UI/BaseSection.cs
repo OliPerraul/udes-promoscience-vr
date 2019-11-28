@@ -21,7 +21,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         [GetComponent(typeof(RectTransform))]
         protected RectTransform rectTransform;
 
-        public abstract BaseSelect Select { get; }
+        public abstract BaseSelectionInterface Select { get; }
 
         public abstract BaseButton ButtonTemplate { get; }
 

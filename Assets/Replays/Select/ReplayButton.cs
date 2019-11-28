@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Replays.UI
     public class ReplayButton : Labyrinths.UI.BaseButton
     {
         [SerializeField]
-        private ControllerAsset replayController;
+        private ReplayControllerAsset replayController;
 
         [SerializeField]
         private UnityEngine.UI.Button removeButton;
@@ -31,7 +31,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public Cirrus.Event<ReplayButton> OnReplayClickedHandler;
 
-        private Replay replay;
+        private BaseReplay replay;
 
         private ButtonMode mode;
 
@@ -83,7 +83,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             if (replay == null)
             { 
-                replay = new Replay(
+                replay = new SingleReplay(
                     replayController,
                     labyrinth);
             }            
@@ -98,14 +98,12 @@ namespace UdeS.Promoscience.Replays.UI
             OnRemovedHandler?.Invoke(transform.parent, this);
         }
 
-
         public override Labyrinths.UI.BaseButton Create(
             Transform parent,
             Labyrinths.Labyrinth labyrinth)
         {
             return CreateReplayButton(parent, labyrinth);
         }
-
 
         public ReplayButton CreateReplayButton(
             Transform parent,

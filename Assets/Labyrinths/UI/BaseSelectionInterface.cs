@@ -6,7 +6,7 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths.UI
 {
-    public abstract class BaseSelect : MonoBehaviour
+    public abstract class BaseSelectionInterface : MonoBehaviour
     {
         protected List<Labyrinth> labyrinths = new List<Labyrinth>();
 

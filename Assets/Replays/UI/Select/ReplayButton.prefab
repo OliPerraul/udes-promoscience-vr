@@ -105,7 +105,7 @@ MonoBehaviour:
   labyrinth: {fileID: 0}
   button: {fileID: 1466660122758156162}
   rawImage: {fileID: 6938892827325038499}
-  replayController: {fileID: 11400000, guid: a486ffa3d6b8a7846adaddf27c3cf4a9, type: 2}
+  replayController: {fileID: 11400000, guid: de57bbb0d7d2fd14ca87e941b30b2cf6, type: 2}
   removeButton: {fileID: 2060485017784780214}
   addButton: {fileID: 3440537924636745774}
 --- !u!1 &1490569412384158871
