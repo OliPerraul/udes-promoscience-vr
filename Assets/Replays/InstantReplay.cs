@@ -1,18 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UdeS.Promoscience.Labyrinths;
+using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class InstantReplay : Replay
+    public class InstantReplay : LabyrinthReplay
     {
-        public InstantReplay(ControllerAsset controller, IData labyrinth) : base(controller, labyrinth) { }
+        public InstantReplay(
+            ReplayManagerAsset controller, 
+            List<Course> courses,
+            IData labyrinth) : 
+                base(
+                    controller, 
+                    courses, 
+                    labyrinth) { }
 
         public override void Start()
         {
             base.Start();          
 
-            Resume();         
+            Resume();
+
+            Server.Instance.State.Set(ServerState.InstantReplay);
             
             controller.SendAction(ReplayAction.ToggleOptions, false);
 

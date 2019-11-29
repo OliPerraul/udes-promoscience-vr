@@ -11,8 +11,8 @@ namespace UdeS.Promoscience.Labyrinths
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Ressources", order = 1)]
     public class Resources : BaseResources<Resources>
     {
-        [SerializeField]
-        public RenderTexture RenderTexture;
+        //[SerializeField]
+        //public RenderTexture RenderTexture;
 
         [SerializeField]
         public Labyrinth LabyrinthSmall;
@@ -31,10 +31,10 @@ namespace UdeS.Promoscience.Labyrinths
                 Skins = skins == null ? null : skins.ToList();
             }
 
-            if (LabyrinthData == null || LabyrinthData.Count == 0)
+            if (Labyrinths == null || Labyrinths.Count == 0)
             {
                 var labs = Cirrus.AssetDatabase.FindObjectsOfType<Resource>();
-                LabyrinthData = labs == null ? null : labs.ToList();
+                Labyrinths = labs == null ? null : labs.ToList();
             }
         }
 
@@ -56,19 +56,20 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        public static int NumLabyrinths => Instance.LabyrinthData.Count;
-
+        public static int NumLabyrinths => Instance.Labyrinths.Count;
+        
+        [UnityEngine.Serialization.FormerlySerializedAs("LabyrinthData")]
         [SerializeField]
-        public List<Resource> LabyrinthData;
+        public List<Resource> Labyrinths;
 
         //[SerializeField]
         //public Resource TutorialLabyrinthData;
 
         // TODO: remove offset with Id and index
         // right now needed cuz round determine labyrinth
-        public IData GetLabyrinthData(int id)
+        public IData GetLabyrinth(int id)
         {
-            return LabyrinthData[id-1];
+            return Labyrinths[id-1];
         }
 
         [SerializeField]

@@ -8,16 +8,25 @@ namespace UdeS.Promoscience
     public class LocalizeInlineString
     {
         [SerializeField]
-        private LocalizeStringAsset localizeString;
+        private string french = "[?]";
 
         [SerializeField]
-        private string defaultString = "[?]";
+        private string english = "[?]";
 
-        public string Value => localizeString == null ? defaultString : localizeString.Value;
+        public string Value => 
+            Application.systemLanguage == SystemLanguage.French  ? 
+                french == "[?]" || french == "" ? 
+                    english : french : english;
 
-        public LocalizeInlineString(string value)
+        public LocalizeInlineString(string english)
         {
-            defaultString = value;
+            this.english = english;
+        }
+
+        public LocalizeInlineString(string english, string french)
+        {
+            this.english = english;
+            this.french = french;
         }
     }
 
@@ -26,69 +35,30 @@ namespace UdeS.Promoscience
     public class LocalizeString
     {
         [SerializeField]
-        private LocalizeStringAsset localizeString;
+        [TextArea]
+        [UnityEngine.Serialization.FormerlySerializedAs("defaultString")]
+        private string english = "adasdasdasdasdasdasdasdasdasdasd\nadasdasdasdasdasdasdasdasdasdasd\nadasdasdasdasdasdasdasdasdasdasd\n";
 
         [SerializeField]
         [TextArea]
-        private string defaultString = "adasdasdasdasdasdasdasdasdasdasd\nadasdasdasdasdasdasdasdasdasdasd\nadasdasdasdasdasdasdasdasdasdasd\n";
+        private string french = "[?]";
 
-        public string Value
+        public string Value =>
+            Application.systemLanguage == SystemLanguage.French ?
+                french == "[?]" || french == "" ?
+                    english : french : english;
+
+        public LocalizeString(string english)
         {
-            get
-            {
-                if (localizeString == null)
-                    return defaultString;
-
-                else return localizeString.Value;
-            }
+            this.english = english;
         }
-    }
 
-
-    //[Sysm.Serializable]
-    //public class LocalizeText
-    //{
-    //    [SerializeField]
-    //    private ScriptableLocalizeString localizeString;
-
-    //    [SerializeField]
-    //    private string defaultString = "[?]";
-
-    //    public string Value
-    //    {
-    //        get
-    //        {
-    //            if (localizeString == null)
-    //                return defaultString;
-
-    //            else return localizeString.Value;
-    //        }
-    //    }
-    //}
-
-    [CreateAssetMenu(fileName = "Data", menuName = "Data/LocalizeString", order = 1)]
-    public class LocalizeStringAsset : ScriptableObject
-    {
-        [SerializeField]
-        string english;
-
-        [SerializeField]
-        string french;
-
-        public string Value
+        public LocalizeString(string english, string french)
         {
-            get
-            {
-                if (Application.systemLanguage == SystemLanguage.French)
-                {
-                    return french;
-                }
-                else
-                {
-                    return english;
-                }
-            }
+            this.english = english;
+            this.french = french;
         }
+
     }
 }
 

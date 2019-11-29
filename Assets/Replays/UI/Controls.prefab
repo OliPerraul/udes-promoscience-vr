@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc3b860b1c2fbe41be202f3f3c65747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playbackOptions: {fileID: 11400000, guid: a486ffa3d6b8a7846adaddf27c3cf4a9, type: 2}
+  playbackOptions: {fileID: 11400000, guid: 5244deb39a979454683277ed9dc7f48f, type: 2}
   infoPanel: {fileID: 0}
   navigPanel: {fileID: 5854816962068098907}
   playSprite: {fileID: 21300000, guid: 47993edb47d87e34f9684ccb02c2f2c9, type: 3}

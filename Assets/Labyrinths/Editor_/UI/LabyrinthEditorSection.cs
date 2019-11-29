@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
         [SerializeField]
         private LabyrinthEditorSelect levelSelect;
 
-        public override BaseSelect Select => levelSelect;
+        public override BaseSelectionInterface Select => levelSelect;
 
         [SerializeField]
         private LabyrinthEditorButton buttonTemplate;

@@ -42,7 +42,7 @@ namespace UdeS.Promoscience.Labyrinths
 
             if (data.Id < 0)
             {
-                data.Id = Resources.Instance.LabyrinthData.IndexOf(this);
+                data.Id = Resources.Instance.Labyrinths.IndexOf(this);
             }
         }
 

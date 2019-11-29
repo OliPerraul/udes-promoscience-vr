@@ -7,6 +7,8 @@ namespace UdeS.Promoscience.Labyrinths.UI
 {
     public abstract class BaseSection : MonoBehaviour
     {
+        public Cirrus.Event<BaseButton> OnButtonClickHandler;
+
         [SerializeField]
         [GetComponent(typeof(Canvas), GetComponentAttributeMode.Parent)]
         protected Canvas canvas;
@@ -21,7 +23,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         [GetComponent(typeof(RectTransform))]
         protected RectTransform rectTransform;
 
-        public abstract BaseSelect Select { get; }
+        public abstract BaseSelectionInterface Select { get; }
 
         public abstract BaseButton ButtonTemplate { get; }
 
@@ -56,7 +58,10 @@ namespace UdeS.Promoscience.Labyrinths.UI
                 transform,
                 labyrinth);
 
-            button.gameObject.SetActive(true);           
+            button.gameObject.SetActive(true);
+            button.OnClickedHandler += (x) => OnButtonClickHandler?.Invoke(x);
         }
+
+        
     }
 }

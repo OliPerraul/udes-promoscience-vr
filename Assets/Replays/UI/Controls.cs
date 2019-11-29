@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.Replays.UI
     public class Controls : MonoBehaviour
     {
         [SerializeField]
-        private ControllerAsset playbackOptions;
+        private ReplayManagerAsset playbackOptions;
 
         public Cirrus.Event OnExpandHandler;
 
