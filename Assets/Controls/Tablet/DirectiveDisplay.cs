@@ -6,17 +6,22 @@ using UnityEngine.UI;
 using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
+using System;
 
 namespace UdeS.Promoscience.UI
 {
     public class DirectiveDisplay : MonoBehaviour
-    { 
+    {
+        [SerializeField]
+        private Controls.AvatarControllerAsset controls;
+
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         [SerializeField]
         private DirectiveManagerAsset directiveManager;
 
+        
         private Image directiveImage;
 
         [SerializeField]
@@ -28,10 +33,9 @@ namespace UdeS.Promoscience.UI
 
         void Awake()
         {
-
             directiveManager.CurrentDirective.OnValueChangedHandler += OnNewDirective;
             algorithmRespect.IsCorrectingEnabled.OnValueChangedHandler += OnCorrectingEnabled;
-
+            controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdpersonENabled;
             Client.Instance.clientStateChangedEvent += OnClientStateChanged;
 
             foreach (var img in images)
@@ -39,8 +43,19 @@ namespace UdeS.Promoscience.UI
                 img.gameObject.SetActive(false);
             }
 
-            if(images.Length < 0)
-            directiveImage = images[0];
+            if (directiveImage == null)
+                directiveImage = images[0];
+
+            if (directiveImage != null)
+                directiveImage.gameObject.SetActive(false);
+
+
+        }
+
+        private void OnThirdpersonENabled(bool value)
+        {
+            if (directiveImage != null)
+                directiveImage.gameObject.SetActive(false);
         }
 
         public void OnValidate()
@@ -56,6 +71,8 @@ namespace UdeS.Promoscience.UI
         {
             switch (Client.Instance.State)
             {
+                case ClientGameState.Connecting:
+                case ClientGameState.WaitingForNextRound:
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
                     if (directiveImage != null)
@@ -85,25 +102,28 @@ namespace UdeS.Promoscience.UI
 
         void OnNewDirective(Directive directive)
         {
-            // TODO handle somewhere else?
-            // QUestion directive brings up the help
+            if (directiveImage != null)
+                directiveImage.gameObject.SetActive(false);
+
             switch (directive)
             {
                 case Directive.Question:
                 case Directive.Compass:
                     return;
+
+                case Directive.Stop:
+                    directiveImage = images[(int)directive-2];
+
+                    directiveImage.sprite =
+                        directiveImage.sprite == directiveManager.StopDirectiveSprite ?
+                            directiveManager.GoDirectiveSprite :
+                            directiveManager.StopDirectiveSprite;
+                    break;
+
+                default:
+                    directiveImage = images[(int)directive];
+                    break;
             }
-
-            if (directiveImage != null)
-                directiveImage.gameObject.SetActive(false);
-
-            directiveImage = images[(int)directive];
-
-            if (directive == Directive.Stop)
-                directiveImage.sprite =
-                    directiveImage.sprite == directiveManager.StopDirectiveSprite ?
-                        directiveManager.GoDirectiveSprite :
-                        directiveManager.StopDirectiveSprite;
 
             hideTimer = 0;
             directiveImage.gameObject.SetActive(true);
@@ -111,10 +131,10 @@ namespace UdeS.Promoscience.UI
 
         public void OnCorrectingEnabled(bool enabled)
         {
-            images[(int)Directive.Stop].sprite =
-                enabled ?
-                    directiveManager.GoDirectiveSprite :
-                    directiveManager.StopDirectiveSprite;
+            //images[(int)Directive.Stop].sprite =
+            //    enabled ?
+            //        directiveManager.GoDirectiveSprite :
+            //        directiveManager.StopDirectiveSprite;
         }
     }
 }

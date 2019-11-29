@@ -228,7 +228,7 @@ namespace UdeS.Promoscience.Controls
                 {
                     controls.Animation.Value = Characters.AvatarAnimation.Jumping;
 
-                    float xi = ((moveSpeed * moveSpeed) / (-2 * Utils.MOVEMENT_ACCELERATION)) + 1;
+                    float xi = ((moveSpeed * moveSpeed) / (-2 * Utils.MovementAcceleration)) + 1;
 
                     if (isChainingMovement)
                     {
@@ -237,10 +237,10 @@ namespace UdeS.Promoscience.Controls
 
                     moveSpeed =
                         xi < lerpValue ?
-                            moveSpeed - (Time.deltaTime * Utils.MOVEMENT_ACCELERATION) :
-                            moveSpeed + (Time.deltaTime * Utils.MOVEMENT_ACCELERATION);
+                            moveSpeed - (Time.deltaTime * Utils.MovementAcceleration) :
+                            moveSpeed + (Time.deltaTime * Utils.MovementAcceleration);
 
-                    lerpValue += Time.deltaTime * moveSpeed * Utils.MOVEMENT_SPEED;
+                    lerpValue += Time.deltaTime * moveSpeed * Utils.MovementSpeed;
 
                     if (lerpValue >= 1)
                     {
@@ -280,14 +280,14 @@ namespace UdeS.Promoscience.Controls
                 {
                     controls.Animation.Value = Characters.AvatarAnimation.Jumping;
 
-                    float xi = ((turnSpeed * turnSpeed) / (-2 * Utils.TURNING_ACCELERATION)) + 1;
+                    float xi = ((turnSpeed * turnSpeed) / (-2 * Utils.TurningAcceleration)) + 1;
 
                     if (isChainingMovement)
                     {
                         xi++;
                     }
 
-                    turnSpeed = xi < lerpValue ? turnSpeed - (Time.deltaTime * Utils.TURNING_ACCELERATION) : turnSpeed + (Time.deltaTime * Utils.TURNING_ACCELERATION);
+                    turnSpeed = xi < lerpValue ? turnSpeed - (Time.deltaTime * Utils.TurningAcceleration) : turnSpeed + (Time.deltaTime * Utils.TurningAcceleration);
                     lerpValue += Time.deltaTime * turnSpeed;
 
                     if (lerpValue >= 1)
