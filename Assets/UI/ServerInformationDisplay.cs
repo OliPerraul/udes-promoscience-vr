@@ -64,7 +64,7 @@ namespace UdeS.Promoscience.UI
             {
                 s += lobbyString.Value;
             }
-            else if (Server.Instance.State.Value == ServerState.Tutorial)
+            else if (Server.Instance.State.Value == ServerState.Quickplay)
             {
                 s += tutorialString.Value;
             }

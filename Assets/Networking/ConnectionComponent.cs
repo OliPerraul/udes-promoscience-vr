@@ -148,7 +148,7 @@ namespace UdeS.Promoscience.Network
             }
             else if (player.ServerPlayerGameState == ClientGameState.Ready)
             {
-                if (Server.Instance.State.Value == ServerState.Tutorial)
+                if (Server.Instance.State.Value == ServerState.Quickplay)
                 {
                     //GameManager.Instance.CurrentGame.StartTutorial(player);
                 }

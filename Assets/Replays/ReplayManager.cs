@@ -4,6 +4,7 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Labyrinths;
 using UdeS.Promoscience.Network;
+using UdeS.Promoscience.UI;
 
 namespace UdeS.Promoscience.Replays
 {
@@ -14,13 +15,6 @@ namespace UdeS.Promoscience.Replays
 
         [SerializeField]
         private GameObject display;
-
-        [SerializeField]
-        private UnityEngine.UI.Button infoButton;
-
-        [SerializeField]
-        private UnityEngine.UI.Button exitButton;
-
 
         [SerializeField]
         private UnityEngine.UI.RawImage viewRawImage;
@@ -34,8 +28,6 @@ namespace UdeS.Promoscience.Replays
 
         public void Awake()
         {
-            //exitButton.onClick.AddListener(() => Server.Instance.EndRoundOrTutorial());
-            infoButton.onClick.AddListener(() => sidebar.gameObject.SetActive(!sidebar.gameObject.activeSelf));
             Server.Instance.State.OnValueChangedHandler += OnGameStateValueChanged;
         }
 
@@ -64,8 +56,7 @@ namespace UdeS.Promoscience.Replays
         {
             switch (state)
             {
-                case ServerState.AdvancedReplay:
-                case ServerState.InstantReplay:
+                case ServerState.LabyrinthReplay:
                     display.SetActive(true);
                     //viewRawImage.texture = Server.Instance.CurrentLabyrinth.Camera.RenderTexture;
                     break;

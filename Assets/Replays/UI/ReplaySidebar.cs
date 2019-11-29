@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UdeS.Promoscience.UI;
 
 namespace UdeS.Promoscience.Replays.UI
 {
@@ -53,8 +54,8 @@ namespace UdeS.Promoscience.Replays.UI
 
         public virtual void Awake()
         {
-            infoButton.onClick.AddListener(() => gameObject.SetActive(!gameObject.activeSelf));
-            closeButton.onClick.AddListener(() => gameObject.SetActive(false));
+            ButtonManager.Instance.InfoButton.onClick.AddListener(() => Enabled = !Enabled);
+            closeButton.onClick.AddListener(() => Enabled = false);
 
             //exitButton.onClick.AddListener(() => Server.Instance.StartReplaySelect());
             overlayButton.onClick.AddListener(() => overlay.SetActive(!overlay.activeSelf));
@@ -89,13 +90,6 @@ namespace UdeS.Promoscience.Replays.UI
         {
             switch (action)
             {
-                case ReplayAction.ToggleOptions:
-                    if (args.Length == 0)
-                        EnableOptions(!isOptionEnabled);
-                    else
-                        EnableOptions((bool)args[0]);
-                    break;
-
                 case ReplayAction.ToggleAlgorithm:
                     if (args.Length == 0)
                         EnableAlgorithm(!isAlgorithmEnabled);
@@ -121,8 +115,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             switch (state)
             {
-                case ServerState.AdvancedReplay:
-                case ServerState.InstantReplay:
+                case ServerState.LabyrinthReplay:
                     Enabled = true;
                     break;
 
@@ -131,7 +124,6 @@ namespace UdeS.Promoscience.Replays.UI
                     break;
             }
         }
-
 
         public void OnAlgorithmClicked()
         {
@@ -149,11 +141,16 @@ namespace UdeS.Promoscience.Replays.UI
 
             set
             {
-                _enabled = value;
-                gameObject.SetActive(_enabled);
-                //algorithmNameText.gameObject.SetActive(_enabled);
-                //algorithmStepsText.gameObject.SetActive(_enabled);
+                if (Server.Instance.State.Value != ServerState.LabyrinthReplay)
+                    return;
 
+                _enabled = value;
+                ButtonManager.Instance.Flags.Value =
+                    _enabled ?
+                    ButtonCanvasFlag.None :
+                    ButtonCanvasFlag.Info | ButtonCanvasFlag.Exit;                        
+
+                gameObject.SetActive(_enabled);
             }
         }
 

@@ -23,9 +23,9 @@ namespace UdeS.Promoscience.Algorithms.UI
         {
             dropDown.ClearOptions();
 
-            AddOption("(*) " + randomString.Value);
+            AddOption(randomString.Value);
 
-            AddOption("(*) " + gameRoundString.Value);
+            AddOption(gameRoundString.Value);
 
             algorithms = new Algorithm[Resources.Instance.Algorithms.Length];
 

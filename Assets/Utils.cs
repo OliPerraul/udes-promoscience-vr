@@ -82,12 +82,12 @@ namespace UdeS.Promoscience
     {
         None = 0,//1 << 0,
         Lobby = 1 << 0,
-        Tutorial = 1 << 1,
+        //Tutorial = 1 << 1,
         Round = 1 << 2,
         Intermission = 1 << 3,
-        InstantReplay = 1 << 4,        
+        LabyrinthReplay = 1 << 4,        
         LevelSelect = 1 << 5,
-        AdvancedReplay = 1 << 6,// TODO remove
+        //SplitReplay = 1 << 6, // Replay select
         ReplaySelect = 1 << 7,
         Quickplay = 1 << 8,
     }

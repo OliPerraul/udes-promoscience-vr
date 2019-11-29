@@ -50,7 +50,7 @@ namespace UdeS.Promoscience
 
             switch (state)
             {
-                case ServerState.InstantReplay:
+                case ServerState.LabyrinthReplay:
                     break;
 
                 default:

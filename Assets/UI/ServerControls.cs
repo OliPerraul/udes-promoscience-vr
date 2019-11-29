@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UdeS.Promoscience.UI;
 
 namespace UdeS.Promoscience.Network.UI
 {
@@ -36,12 +37,32 @@ namespace UdeS.Promoscience.Network.UI
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
+            ButtonManager.Instance.ExitButton.onClick.AddListener(OnExitClicked);
+            
             Flags.OnValueChangedHandler += OnFlagsChanged;
-
             quickPlayButton.onClick.AddListener(() => Server.Instance.StartQuickplay());
             newGameButton.onClick.AddListener(() => Server.Instance.StartGame());
             instantReplayButton.onClick.AddListener(() => Server.Instance.StartInstantReplay());
         }
+
+        public void OnExitClicked()
+        {
+            switch (Server.Instance.State.Value)
+            {
+                case ServerState.Lobby:
+                case ServerState.Quickplay:
+                case ServerState.Round:
+
+                    break;
+
+
+                case ServerState.LevelSelect:
+                case ServerState.ReplaySelect:
+
+                    break;
+            }
+        }
+
 
         public bool Enabled { set => target?.gameObject?.SetActive(value); }
 
@@ -52,7 +73,6 @@ namespace UdeS.Promoscience.Network.UI
                 case ServerState.Quickplay:
                     Flags.Value =
                         ServerControlsFlag.InstantReplay |
-                        //ServerControlsFlag.NewGame |
                         ServerControlsFlag.RestartRound |
                         ServerControlsFlag.EndGame;
                     break;
@@ -74,7 +94,6 @@ namespace UdeS.Promoscience.Network.UI
             {
                 case ServerState.Round:
                 case ServerState.Quickplay:
-                    header.SetActive(false);
                     body.SetActive(false);
                     bottom.SetActive(true);
 
@@ -82,16 +101,13 @@ namespace UdeS.Promoscience.Network.UI
 
                 case ServerState.LevelSelect:
                 case ServerState.ReplaySelect:
-                case ServerState.AdvancedReplay:
-                case ServerState.InstantReplay:
-                    header.SetActive(false);
+                case ServerState.LabyrinthReplay:
                     body.SetActive(false);
                     bottom.SetActive(false);
                     break;
 
 
                 default:
-                    header.SetActive(true);
                     body.SetActive(true);
                     bottom.SetActive(true);
                     break;

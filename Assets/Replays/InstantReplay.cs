@@ -22,7 +22,7 @@ namespace UdeS.Promoscience.Replays
 
             Resume();
 
-            Server.Instance.State.Set(ServerState.InstantReplay);
+            Server.Instance.State.Set(ServerState.LabyrinthReplay);
             
             controller.SendAction(ReplayAction.ToggleOptions, false);
 

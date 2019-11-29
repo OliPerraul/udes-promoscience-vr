@@ -73,8 +73,7 @@ namespace UdeS.Promoscience.Replays.UI
 
                     break;
 
-                case ServerState.AdvancedReplay:
-                case ServerState.InstantReplay:
+                case ServerState.LabyrinthReplay:
 
                     Enabled = false;
                     foreach (var lab in labyrinths)

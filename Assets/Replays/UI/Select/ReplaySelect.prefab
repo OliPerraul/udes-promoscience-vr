@@ -109,25 +109,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &9177342427627065502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8612070916410491898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d706a417300ea343b5589f3c5faa8c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonsParent: {fileID: 8612070917104560876}
-  labyrinthIndex: 0
-  replayController: {fileID: 11400000, guid: 5244deb39a979454683277ed9dc7f48f, type: 2}
-  sectionTemplate: {fileID: 7372041843034450105}
-  buttonExit: {fileID: 8510688056386636831}
-  buttonAdd: {fileID: 4372888333471674680}
-  sections: []
 --- !u!1 &5621241584715249886
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,6 +164,25 @@ MonoBehaviour:
   _isHiddenAlpha: 0
   _hiddenAlpha: 0.5
   isOverriden: 0
+--- !u!114 &9177342427627065502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8612070916410491898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d706a417300ea343b5589f3c5faa8c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonsParent: {fileID: 8612070917104560876}
+  labyrinthIndex: 0
+  replayController: {fileID: 11400000, guid: 5244deb39a979454683277ed9dc7f48f, type: 2}
+  sectionTemplate: {fileID: 7372041843034450105}
+  buttonExit: {fileID: 626087744397751439}
+  buttonAdd: {fileID: 4372888333471674680}
+  sections: []
 --- !u!1001 &4408018746241206001
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -190,6 +190,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3535660632565747317, guid: 38e6ef90003ee8046b0c20ad9181e2f6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5379643691296523531, guid: 38e6ef90003ee8046b0c20ad9181e2f6,
         type: 3}
       propertyPath: m_Name
@@ -546,9 +551,9 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4408018746241206001}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8510688056386636831 stripped
+--- !u!114 &626087744397751439 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5417940319933926126, guid: 38e6ef90003ee8046b0c20ad9181e2f6,
+  m_CorrespondingSourceObject: {fileID: 3863000846119072382, guid: 38e6ef90003ee8046b0c20ad9181e2f6,
     type: 3}
   m_PrefabInstance: {fileID: 4408018746241206001}
   m_PrefabAsset: {fileID: 0}

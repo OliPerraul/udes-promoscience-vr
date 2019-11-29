@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cirrus.Extensions;
+using UdeS.Promoscience.UI;
 
 namespace UdeS.Promoscience.Labyrinths.UI
 {
@@ -22,12 +23,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override BaseSection SectionTemplate => sectionTemplate;
 
-        [SerializeField]
-        private UnityEngine.UI.Button buttonRandom;
-
-        [SerializeField]
-        private UnityEngine.UI.Button buttonExit;
-
         private List<LevelSection> sections = new List<LevelSection>();
 
         private LevelSection currentSection;
@@ -40,13 +35,14 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
 
-            buttonRandom.onClick.AddListener(OnRandomClicked);
-
-            //button
+            ButtonManager.Instance.RandomButton.onClick.AddListener(OnRandomClicked);
         }
 
         public void OnRandomClicked()
         {
+            if (Server.Instance.State.Value != ServerState.LevelSelect)
+                return;
+
             GameManager.Instance.CurrentGame.StartRound(
                 Random.Range(1, Utils.NumLabyrinth + 1), 
                 (int)algorithmSelect.AlgorithmId);
@@ -152,20 +148,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
             {
                 if (children.gameObject.activeSelf) Destroy(children.gameObject);
             }
-
-            //if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
-            //{
-            //    //int i = 0;
-            //    foreach (var l in Server.Instance.Labyrinths.Labyrinths)
-            //    {
-            //        if (l == null)
-            //            continue;
-
-            //        Destroy(l.gameObject);
-            //    }
-            //}
-
-            //Server.Instance.ClearLabyrinths();
         }
 
 
@@ -196,7 +178,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
                 case ServerState.Round:
                 case ServerState.Quickplay:
-                case ServerState.Tutorial:
 
                     Enabled = false;
                     foreach (var lab in labyrinths)
