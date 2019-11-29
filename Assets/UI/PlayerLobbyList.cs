@@ -9,7 +9,7 @@ using UdeS.Promoscience.Network;
 namespace UdeS.Promoscience.UI
 {
 
-    public class UILobbyPlayerList : MonoBehaviour
+    public class PlayerLobbyList : MonoBehaviour
     {
         [SerializeField]
         ScriptableServerPlayerInformation playerInfomation;
@@ -36,7 +36,7 @@ namespace UdeS.Promoscience.UI
         void AddLobbyPlayer()
         {
             GameObject playerLobby = Instantiate(lobbyPlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity, gameObject.transform);
-            playerLobby.GetComponent<UILobbyPlayer>().SetId(lobbyPlayers.Count);
+            playerLobby.GetComponent<PlayerLobbyEntry>().SetId(lobbyPlayers.Count);
             lobbyPlayers.Push(playerLobby);
         }
 

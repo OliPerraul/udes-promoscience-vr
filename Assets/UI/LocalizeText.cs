@@ -10,19 +10,15 @@ namespace UdeS.Promoscience.UI
     public class LocalizeText : MonoBehaviour
     {
         [SerializeField]
-        LocalizeStringAsset localizeString;
-
-        [SerializeField]
-        LocalizeInlineString inlineLocalizeString = new LocalizeInlineString("[?]");
+        LocalizeInlineString localizeString = new LocalizeInlineString("[?]", "[?]");
 
         [SerializeField]
         Text text;
 
-        void OnEnable()
+        public void Awake()
         {
             if (text != null)
-                text.text = localizeString == null ? inlineLocalizeString.Value : localizeString.Value;
-
+                text.text = localizeString.Value;
         }
 
     }

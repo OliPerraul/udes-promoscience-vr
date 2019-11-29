@@ -40,18 +40,18 @@ namespace UdeS.Promoscience.Replays.UI
         {
             base.Awake();
 
-            Server.Instance.gameStateChangedEvent += OnServerGameStateChanged;
+            Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
 
             replayController.OnActionHandler += OnReplayAction;
 
             buttonAdd.onClick.AddListener(OnAddedBottomClicked);
         }
 
-        public virtual void OnServerGameStateChanged()
+        public virtual void OnServerGameStateChanged(ServerState state)
         {
-            switch (Server.Instance.GameState)
+            switch (state)
             {
-                case ServerGameState.ReplaySelect:
+                case ServerState.ReplaySelect:
 
                     Enabled = true;
 
@@ -73,8 +73,8 @@ namespace UdeS.Promoscience.Replays.UI
 
                     break;
 
-                case ServerGameState.AdvancedReplay:
-                case ServerGameState.InstantReplay:
+                case ServerState.AdvancedReplay:
+                case ServerState.InstantReplay:
 
                     Enabled = false;
                     foreach (var lab in labyrinths)
@@ -92,7 +92,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnExitClicked()
         {
-            Server.Instance.EndRoundOrTutorial();
+            //Server.Instance.EndRoundOrTutorial();
         }
 
 
@@ -109,7 +109,7 @@ namespace UdeS.Promoscience.Replays.UI
                 case ReplayAction.ExitReplay:
 
                     Enabled = true;
-                    Server.Instance.GameState = ServerGameState.LevelSelect;
+                    Server.Instance.State.Value = ServerState.LevelSelect;
 
                     break;
             }
@@ -122,21 +122,21 @@ namespace UdeS.Promoscience.Replays.UI
                 if (children.gameObject.activeSelf) Destroy(children.gameObject);
             }
 
-            if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
-            {
-                //int i = 0;
-                foreach (var l in Server.Instance.Labyrinths.Labyrinths)
-                {
-                    if (l == null)
-                        continue;
+            //if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
+            //{
+            //    //int i = 0;
+            //    foreach (var l in Server.Instance.Labyrinths.Labyrinths)
+            //    {
+            //        if (l == null)
+            //            continue;
 
-                    Destroy(l.gameObject);
-                }
-            }
+            //        Destroy(l.gameObject);
+            //    }
+            //}
 
             //buttons.Clear();
 
-            Server.Instance.ClearLabyrinths();
+            //Server.Instance.ClearLabyrinths();
         }
 
 
@@ -150,7 +150,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override void AddLabyrinth(int i)
         {
-            var data = Server.Instance.Labyrinths.Data[i];
+            var data = GameManager.Instance.CurrentGame.Labyrinths[i];
 
             Labyrinth labyrinth = Labyrinths.Resources.Instance
                   .GetLabyrinthTemplate(data)

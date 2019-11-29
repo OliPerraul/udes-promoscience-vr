@@ -486,7 +486,7 @@ namespace UdeS.Promoscience
                             //stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
 
                             var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
-                            var labyrinth = Labyrinths.Resources.Instance.GetLabyrinthData(lid);
+                            var labyrinth = Labyrinths.Resources.Instance.GetLabyrinth(lid);
                             var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
 
                             courses.Add(new Course
@@ -553,7 +553,7 @@ namespace UdeS.Promoscience
                             Queue<string> stepValues;
                             GetPlayerStepsForCourse(id, out steps, out stepValues);
                             var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
-                            var labyrinth = Labyrinths.Resources.Instance.GetLabyrinthData(labyrinthId);
+                            var labyrinth = Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId);
                             var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
 
                             courses.Add(new Course
@@ -989,7 +989,7 @@ namespace UdeS.Promoscience
 #endif
         }
 
-        public static void InsertPlayerTeam(
+        public static void InsertTeam(
             int teamId,
             string teamName,
             string teamColor,
@@ -1069,21 +1069,21 @@ namespace UdeS.Promoscience
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
-            CreateDatabaseIfItDoesntExist();
+            //CreateDatabaseIfItDoesntExist();
 
-            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+            //string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
 
-            using (SqliteConnection conn = new SqliteConnection(dbPath))
-            {
-                conn.Open();
-                using (SqliteCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandType = CommandType.Text;
+            //using (SqliteConnection conn = new SqliteConnection(dbPath))
+            //{
+            //    conn.Open();
+            //    using (SqliteCommand cmd = conn.CreateCommand())
+            //    {
+            //        cmd.CommandType = CommandType.Text;
 
-                    cmd.CommandText = "INSERT OR REPLACE INTO " + SERVER_GAME_INFORMATION + " (" + SERVER_GAME_INFORMATION_SAVE_SLOT_ID + ", " + SERVER_GAME_STATE_ID + ", " + SERVER_GAME_ROUND + ") VALUES ( '" + 1 + "', '" + (int)serverGameInformation.GameState + "', '" + serverGameInformation.GameRound + "');";
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            //        cmd.CommandText = "INSERT OR REPLACE INTO " + SERVER_GAME_INFORMATION + " (" + SERVER_GAME_INFORMATION_SAVE_SLOT_ID + ", " + SERVER_GAME_STATE_ID + ", " + SERVER_GAME_ROUND + ") VALUES ( '" + 1 + "', '" + (int)serverGameInformation.State + "', '" + serverGameInformation.GameRound + "');";
+            //        cmd.ExecuteNonQuery();
+            //    }
+            //}
 
 #endif
         }
@@ -1110,8 +1110,8 @@ namespace UdeS.Promoscience
                     {
                         if (reader.Read())
                         {
-                            serverGameInformation.GameState = (ServerGameState)int.Parse(reader[SERVER_GAME_STATE_ID].ToString());
-                            serverGameInformation.GameRound = int.Parse(reader[SERVER_GAME_ROUND].ToString());
+                            serverGameInformation.State.Value = (ServerState)int.Parse(reader[SERVER_GAME_STATE_ID].ToString());
+                            //serverGameInformation.GameRound = int.Parse(reader[SERVER_GAME_ROUND].ToString());
                         }
 
                         reader.Close();

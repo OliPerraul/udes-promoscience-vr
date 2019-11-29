@@ -56,15 +56,15 @@ namespace UdeS.Promoscience.Algorithms.UI
             switch (i)
             {
                 case 0:
-                    Server.Instance.SetAlgorithm(Utils.Random);
+                    GameManager.Instance.CurrentGame.SetAlgorithm(Utils.Random);
                     break;
 
                 case 1:
-                    Server.Instance.SetAlgorithm(Id.GameRound);
+                    GameManager.Instance.CurrentGame.SetAlgorithm(Id.GameRound);
                     break;
 
                 default:
-                    Server.Instance.SetAlgorithm(algorithms[i - 2].Id);
+                    GameManager.Instance.CurrentGame.SetAlgorithm(algorithms[i - 2].Id);
                     break;
             }
         }

@@ -17,22 +17,22 @@ namespace UdeS.Promoscience.UI
         private GameRoundManagerAsset gameRoundManager;
 
         [SerializeField]
-        private LocalizeStringAsset gameRoundString;
+        private LocalizeString gameRoundString = new LocalizeString("Round");
 
         [SerializeField]
-        private LocalizeStringAsset gameStateString;
+        private LocalizeString gameStateString = new LocalizeString("Game State");
 
         [SerializeField]
-        private LocalizeStringAsset intermissionString;
+        private LocalizeString intermissionString = new LocalizeString("Intermission");
 
         [SerializeField]
-        private LocalizeStringAsset lobbyString;
+        private LocalizeString lobbyString = new LocalizeString("Lobby");
 
         [SerializeField]
-        private LocalizeStringAsset playingRoundString;
+        private LocalizeString playingString = new LocalizeString("Playing");
 
         [SerializeField]
-        private LocalizeStringAsset tutorialString;
+        private LocalizeString tutorialString = new LocalizeString("Tutorial");
 
         [SerializeField]
         private Text serverGameRoundText;
@@ -42,37 +42,37 @@ namespace UdeS.Promoscience.UI
 
         void OnEnable()
         {
-            if (Promoscience.Server.Instance != null)
+            if (Server.Instance != null)
             {
                 gameRoundManager.Round.OnValueChangedHandler += OnGameRoundChanged;
-                Promoscience.Server.Instance.gameStateChangedEvent += OnGameStateChanged;
+                Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
             }
 
-            OnGameStateChanged();
+            OnServerStateChanged(Server.Instance.State.Value);
         }
 
         void OnGameRoundChanged(int round)
         {
-            serverGameRoundText.text = gameRoundString.Value + " : " + Promoscience.Server.Instance.GameRound;
+            serverGameRoundText.text = gameRoundString.Value + " : " + GameManager.Instance.CurrentGame.GameRound;
         }
 
-        void OnGameStateChanged()
+        void OnServerStateChanged(ServerState state)
         {
             string s = gameStateString.Value + " : ";
 
-            if (Promoscience.Server.Instance.GameState == ServerGameState.Lobby)
+            if (Server.Instance.State.Value == ServerState.Lobby)
             {
                 s += lobbyString.Value;
             }
-            else if (Promoscience.Server.Instance.GameState == ServerGameState.Tutorial)
+            else if (Server.Instance.State.Value == ServerState.Tutorial)
             {
                 s += tutorialString.Value;
             }
-            else if (Promoscience.Server.Instance.GameState == ServerGameState.GameRound)
+            else if (Server.Instance.State.Value == ServerState.Round)
             {
-                s += playingRoundString.Value;
+                s += playingString.Value;
             }
-            else if (Promoscience.Server.Instance.GameState == ServerGameState.Intermission)
+            else if (Server.Instance.State.Value == ServerState.Intermission)
             {
                 s += intermissionString.Value;
             }

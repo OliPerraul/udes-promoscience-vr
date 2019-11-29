@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class SingleReplay : BaseReplay
+    public class LabyrinthReplay : BaseReplay
     {
         public Labyrinths.IData LabyrinthData => labyrinth.Data;
 
@@ -26,16 +26,23 @@ namespace UdeS.Promoscience.Replays
 
         private List<PlayerSequence> activeSequences = new List<PlayerSequence>();
 
+        private List<Course> courses;
+
         private System.Threading.Mutex mutex = new System.Threading.Mutex();
+
+        List<Coroutine> started = new List<Coroutine>();
 
         private bool isDirtyToggled = false;
 
         private bool isPlaying = false;
 
         // TODO remove
-        public SingleReplay(
+        public LabyrinthReplay(
             ReplayControllerAsset controller,
-            Labyrinths.IData labyrinth) :base(controller)
+            List<Course> courses,
+            Labyrinths.IData labyrinth) :
+                base(
+                    controller)
         {
             this.controller = controller;// replay;
             this.labyrinthData = labyrinth;
@@ -45,9 +52,12 @@ namespace UdeS.Promoscience.Replays
             controller.OnCourseSelectedHandler += OnCourseSelected;
         }
 
-        public SingleReplay(
+        public LabyrinthReplay(
             ReplayControllerAsset controller,
-            Labyrinths.Labyrinth labyrinth) : base(controller)
+            List<Course> courses,
+            Labyrinths.Labyrinth labyrinth) : 
+                base(
+                    controller)
         {
             this.controller = controller;
             this.labyrinth = labyrinth;
@@ -57,7 +67,7 @@ namespace UdeS.Promoscience.Replays
             controller.OnCourseSelectedHandler += OnCourseSelected;
         }
 
-        public virtual void Start()
+        public override void Start()
         {
             // TODO remove
             if (labyrinth == null)
@@ -85,7 +95,7 @@ namespace UdeS.Promoscience.Replays
 
             EnableDirty(true);
 
-            foreach (Course course in Server.Instance.Courses)
+            foreach (Course course in GameManager.Instance.CurrentGame.Courses)
             {
                 OnCourseAdded(course);
             }
@@ -106,13 +116,11 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        public virtual void Resume()
+        public override void Resume()
         {
             isPlaying = true;
             Server.Instance.StartCoroutine(ResumeCoroutine());
         }
-
-        List<Coroutine> started = new List<Coroutine>();
 
         public IEnumerator ResumeCoroutine()
         {
@@ -154,7 +162,7 @@ namespace UdeS.Promoscience.Replays
             isPlaying = false;
         }
 
-        public virtual void Next()
+        public override void Next()
         {
             if (isPlaying)
             {
@@ -174,7 +182,7 @@ namespace UdeS.Promoscience.Replays
             controller.GlobalMoveIndex++;
         }
 
-        public virtual void Previous()
+        public override void Previous()
         {
             if (isPlaying)
             {
@@ -194,7 +202,7 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        public virtual void Move(int target)
+        public override void Move(int target)
         {
             controller.GlobalMoveIndex = target;
 

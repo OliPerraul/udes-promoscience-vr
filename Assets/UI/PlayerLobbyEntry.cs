@@ -11,7 +11,7 @@ using UdeS.Promoscience.Network;
 namespace UdeS.Promoscience.UI
 {
 
-    public class UILobbyPlayer : MonoBehaviour
+    public class PlayerLobbyEntry : MonoBehaviour
     {
         [SerializeField]
         ScriptableServerPlayerInformation playersInformation;
@@ -20,61 +20,62 @@ namespace UdeS.Promoscience.UI
         //Teams.Resources teamList;
 
         [SerializeField]
-        LocalizeStringAsset connectingString;
+        LocalizeString connectingString = new LocalizeString("Connecting..", "Connexion en cours..");
 
         [SerializeField]
-        LocalizeStringAsset disconnectedString;
+        LocalizeString disconnectedString = new LocalizeString("Disconnecting..", "Déconnexion en cours..");
 
         [SerializeField]
-        LocalizeStringAsset longestStraightString;
+        LocalizeString longestStraightString = new LocalizeString("Longest Straight", "Chemin le plus long");
 
         [SerializeField]
-        LocalizeStringAsset noAssociatedPairString;
+        LocalizeString noAssociatedPairString = new LocalizeString("No associated pair.", "Aucun pair associé.");
 
         [SerializeField]
-        LocalizeStringAsset notReadyString;
+        LocalizeString notReadyString = new LocalizeString("Waiting..", "En attente..");
 
         [SerializeField]
-        LocalizeStringAsset pairedString;
+        LocalizeString pairedString = new LocalizeString("Device paired.", "appareil jumelé.");
 
         [SerializeField]
-        LocalizeStringAsset pairingString;
+        LocalizeString pairingString = new LocalizeString("Device is pairing.", "Aparreil en jumelage.");
 
         [SerializeField]
-        LocalizeStringAsset playingString;
+        LocalizeString playingString = new LocalizeString("In game.", "Dans une partie.");
 
         [SerializeField]
-        LocalizeStringAsset playingTutorialString;
+        LocalizeString playingTutorialString = new LocalizeString("In tutorial", "Dans un tutoriel.");
 
         [SerializeField]
-        LocalizeStringAsset readyString;
+        LocalizeString readyString = new LocalizeString("Ready", "Prêt");
 
         [SerializeField]
-        LocalizeStringAsset reconnectingString;
+        LocalizeString reconnectingString = new LocalizeString("Reconnecting", "Reconnexion");
 
         [SerializeField]
-        LocalizeStringAsset shortestFlightString;
+        LocalizeString shortestFlightString = new LocalizeString("Shortest Flight", "Vol le plus court");
 
         [SerializeField]
-        LocalizeStringAsset standardAlgorithmString;
+        LocalizeString standardAlgorithmString = new LocalizeString("Standard", "Standard");
 
         [SerializeField]
-        LocalizeStringAsset unknownStatusString;
+        LocalizeString unknownStatusString = new LocalizeString("Unknown", "Inconnu");
 
         [SerializeField]
-        LocalizeStringAsset waitingForNextRoundString;
+        LocalizeString waitingForNextRoundString = new LocalizeString("Waiting for next round", "Inconnu");
 
         [SerializeField]
-        LocalizeStringAsset waitingForPairConnectionString;
+        LocalizeString waitingForPairConnectionString = new LocalizeString("Waiting for pair connection.", "En attente de connection a pair.");
+
 
         [SerializeField]
-        LocalizeStringAsset viewingLocalPlayback;
+        LocalizeString viewingLocalPlayback = new LocalizeString("Viewing local playback.", "Reprise globale.");
 
         [SerializeField]
-        LocalizeStringAsset viewingGlobalPlayback;
+        LocalizeString viewingGlobalPlayback = new LocalizeString("Global playback.", "Reprise globale");
 
         [SerializeField]
-        LocalizeStringAsset waitingPlaybackString;
+        LocalizeString waitingPlaybackString  = new LocalizeString("Waiting playback", "Attente de la reprise.");
 
         [SerializeField]
         Image image;

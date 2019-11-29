@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Labyrinths
         {
             get
             {
-                return Resources.Instance.LabyrinthData;
+                return Resources.Instance.Labyrinths;
             }
         }
 

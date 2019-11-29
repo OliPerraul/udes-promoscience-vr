@@ -77,8 +77,8 @@ namespace UdeS.Promoscience.Network
 
                 // Use the steps for playback
                 player.TargetSetViewingLocalPlayback(
-                    player.connectionToClient, 
-                    Server.Instance.Labyrinths.CurrentData.Id, 
+                    player.connectionToClient,
+                    GameManager.Instance.CurrentGame.CurrentLabyrinth.Id, 
                     steps.ToArray(), 
                     stepValues.ToArray());
             }
@@ -92,12 +92,12 @@ namespace UdeS.Promoscience.Network
                 }
                 else
                 {
-                    if (Server.Instance.GameState == ServerGameState.GameRound && player.ServerCourseId != -1)
+                    if (Server.Instance.State.Value == ServerState.Round && player.ServerCourseId != -1)
                     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                         int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
 #endif
-                        if (courseLabyrinthId == Server.Instance.GameRound)
+                        if (courseLabyrinthId == GameManager.Instance.CurrentGame.CurrentLabyrinth.Id)
                         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
@@ -114,7 +114,7 @@ namespace UdeS.Promoscience.Network
 
                                 player.TargetSetRoundCompleted(
                                     player.connectionToClient,
-                                    Server.Instance.Labyrinths.CurrentData.Id,
+                                    GameManager.Instance.CurrentGame.CurrentLabyrinth.Id,
                                     steps.ToArray());
                             }
                             else
@@ -122,7 +122,7 @@ namespace UdeS.Promoscience.Network
                                 if (steps.Count > 0)
                                 {
                                     // Connection drop, used the steps to resume where you were
-                                    Server.Instance.StartGameRoundWithSteps(player, steps.ToArray());
+                                    GameManager.Instance.CurrentGame.JoinGameRoundWithSteps(player, steps.ToArray());
                                     player.TargetSetPairedIpAdress(player.connectionToClient, "");
                                 }
                                 else
@@ -148,15 +148,15 @@ namespace UdeS.Promoscience.Network
             }
             else if (player.ServerPlayerGameState == ClientGameState.Ready)
             {
-                if (Server.Instance.GameState == ServerGameState.Tutorial)
+                if (Server.Instance.State.Value == ServerState.Tutorial)
                 {
-                    Server.Instance.StartTutorial(player);
+                    //GameManager.Instance.CurrentGame.StartTutorial(player);
                 }
-                else if (Server.Instance.GameState == ServerGameState.GameRound)
+                else if (Server.Instance.State.Value == ServerState.Round)
                 {
-                    Server.Instance.StartGameRound(player);
+                    //Server.Instance.StartGameRound(player);
                 }
-                else if (Server.Instance.GameState == ServerGameState.Intermission)
+                else if (Server.Instance.State.Value == ServerState.Intermission)
                 {
                     player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
                 }

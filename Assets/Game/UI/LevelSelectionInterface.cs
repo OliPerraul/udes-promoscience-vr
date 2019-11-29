@@ -40,22 +40,24 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             replayController.OnActionHandler += OnReplayAction;
 
-            Server.Instance.gameStateChangedEvent += OnServerGameStateChanged;
+            Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
 
-            buttonExit.onClick.AddListener(OnExitClicked);
+            //buttonExit.onClick.AddListener(OnExitClicked);
 
             buttonRandom.onClick.AddListener(OnRandomClicked);
         }
 
         public void OnRandomClicked()
         {
-            Server.Instance.StartGameWithLabyrinth(Random.Range(1, Utils.NumLabyrinth+1));// labyrinth.Id);
+            GameManager.Instance.CurrentGame.StartRoundWithLabyrinth(Random.Range(1, Utils.NumLabyrinth+1));
         }
 
-        public void OnExitClicked()
-        {
-            Server.Instance.EndRoundOrTutorial();
-        }
+        // On exit click (cancel game if round not started, or do not finish the round)
+        
+        //public void OnExitClicked()
+        //{
+        //    Server.Instance.EndRoundOrTutorial();
+        //}
 
 
         public override bool Enabled
@@ -77,7 +79,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
                 case Replays.ReplayAction.ExitReplay:
 
                     Enabled = true;
-                    Server.Instance.GameState = ServerGameState.LevelSelect;
+                    Server.Instance.State.Value = ServerState.LevelSelect;
 
                     break;
             }
@@ -85,7 +87,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override void AddLabyrinth(int i)
         {
-            var data = Server.Instance.Labyrinths.Data[i];
+            var data = Resources.Instance.Labyrinths[i];
 
             Labyrinth labyrinth = Resources.Instance
                   .GetLabyrinthTemplate(data)
@@ -126,21 +128,11 @@ namespace UdeS.Promoscience.Labyrinths.UI
             return currentSection;
         }
 
-
-
-        public void OnReplayClicked(IData labyrinth)
-        {
-            Enabled = true;
-            Enabled = false;
-
-            Server.Instance.StartAdvancedReplay(labyrinth);
-        }
-
         public void OnPlayClicked(IData labyrinth)
         {
             Enabled = true;
             Enabled = false;
-            Server.Instance.StartGameWithLabyrinth(labyrinth.Id);
+            GameManager.Instance.CurrentGame.StartRoundWithLabyrinth(labyrinth.Id);
         }
 
         public override void Clear()
@@ -150,27 +142,27 @@ namespace UdeS.Promoscience.Labyrinths.UI
                 if (children.gameObject.activeSelf) Destroy(children.gameObject);
             }
 
-            if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
-            {
-                //int i = 0;
-                foreach (var l in Server.Instance.Labyrinths.Labyrinths)
-                {
-                    if (l == null)
-                        continue;
+            //if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
+            //{
+            //    //int i = 0;
+            //    foreach (var l in Server.Instance.Labyrinths.Labyrinths)
+            //    {
+            //        if (l == null)
+            //            continue;
 
-                    Destroy(l.gameObject);
-                }
-            }
+            //        Destroy(l.gameObject);
+            //    }
+            //}
 
-            Server.Instance.ClearLabyrinths();
+            //Server.Instance.ClearLabyrinths();
         }
 
 
-        public virtual void OnServerGameStateChanged()
+        public virtual void OnServerGameStateChanged(ServerState state)
         {
-            switch (Server.Instance.GameState)
+            switch (state)
             {
-                case ServerGameState.LevelSelect:
+                case ServerState.LevelSelect:
 
                     Enabled = true;
 
@@ -191,8 +183,8 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
                     break;
 
-                case ServerGameState.GameRound:
-                case ServerGameState.Tutorial:
+                case ServerState.Round:
+                case ServerState.Tutorial:
 
                     Enabled = false;
                     foreach (var lab in labyrinths)

@@ -88,7 +88,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
 
         public override void AddLabyrinth(int i)
         {
-            var data = Labyrinths.Resources.Instance.LabyrinthData[i];
+            var data = Labyrinths.Resources.Instance.Labyrinths[i];
 
             Labyrinth labyrinth = Labyrinths.Resources.Instance
                   .GetLabyrinthTemplate(data)
@@ -137,19 +137,19 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
                 if (children.gameObject.activeSelf) Destroy(children.gameObject);
             }
 
-            if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
-            {
-                //int i = 0;
-                foreach (var l in Server.Instance.Labyrinths.Labyrinths)
-                {
-                    if (l == null)
-                        continue;
+            //if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
+            //{
+            //    //int i = 0;
+            //    foreach (var l in Server.Instance.Labyrinths.Labyrinths)
+            //    {
+            //        if (l == null)
+            //            continue;
 
-                    Destroy(l.gameObject);
-                }
-            }
+            //        Destroy(l.gameObject);
+            //    }
+            //}
 
-            Server.Instance.ClearLabyrinths();
+            //Server.Instance.ClearLabyrinths();
         }
 
     }

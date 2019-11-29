@@ -11,9 +11,9 @@ namespace UdeS.Promoscience.UI
 {
 
     //This class is a temporary UI class, should change with scriptable objects
-    public class UITextManager : MonoBehaviour
+    public class TextManager : MonoBehaviour
     {
-        public static UITextManager instance;
+        public static TextManager instance;
 
         [SerializeField]
         GameObject waitingText;

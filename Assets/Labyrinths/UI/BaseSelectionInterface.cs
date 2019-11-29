@@ -35,7 +35,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public Labyrinth CreateNextLabyrinth()
         {
-            var data = Server.Instance.Labyrinths.Data[LabyrinthIndexWrap];
+            var data = Resources.Instance.Labyrinths[LabyrinthIndexWrap];
 
             labyrinthIndex++;
 
@@ -89,21 +89,21 @@ namespace UdeS.Promoscience.Labyrinths.UI
                 if (children.gameObject.activeSelf) Destroy(children.gameObject);
             }
 
-            if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
-            {
-                //int i = 0;
-                foreach (var l in Server.Instance.Labyrinths.Labyrinths)
-                {
-                    if (l == null)
-                        continue;
+            //if (Server.Instance.Labyrinths.Labyrinths.Count != 0)
+            //{
+            //    //int i = 0;
+            //    foreach (var l in Server.Instance.Labyrinths.Labyrinths)
+            //    {
+            //        if (l == null)
+            //            continue;
 
-                    Destroy(l.gameObject);
-                }
-            }
+            //        Destroy(l.gameObject);
+            //    }
+            //}
 
             //buttons.Clear();
 
-            Server.Instance.ClearLabyrinths();
+            //Server.Instance.ClearLabyrinths();
         }
 
 

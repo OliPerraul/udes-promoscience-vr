@@ -27,13 +27,7 @@ namespace UdeS.Promoscience
 
         public Cirrus.Event OnAlgorithmChangedHandler;
 
-        public DeviceType DeviceType
-        {
-            get
-            {
-                return deviceType.Value;
-            }
-        }
+        public DeviceType DeviceType => deviceType.Value;
 
         [SerializeField]
         private Algorithms.Algorithm algorithm;

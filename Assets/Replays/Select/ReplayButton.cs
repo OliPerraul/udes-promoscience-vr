@@ -83,12 +83,12 @@ namespace UdeS.Promoscience.Replays.UI
         {
             if (replay == null)
             { 
-                replay = new SingleReplay(
-                    replayController,
-                    labyrinth);
+                //replay = new SingleReplay(
+                //    replayController,
+                //    labyrinth);
             }            
             
-            Server.Instance.StartAdvancedReplay(replay);
+            //Server.Instance.StartAdvancedReplay(replay);
         }
 
         public void OnRemoved()

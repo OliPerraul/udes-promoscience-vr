@@ -6,7 +6,7 @@ namespace UdeS.Promoscience.Replays
 {
     public class SplitReplay : BaseReplay
     {
-        private List<SingleReplay> replays = new List<SingleReplay>();
+        private List<LabyrinthReplay> replays = new List<LabyrinthReplay>();
 
         public SplitReplay(ReplayControllerAsset controller) : base(controller)
         {

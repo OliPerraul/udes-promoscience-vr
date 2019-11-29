@@ -50,7 +50,7 @@ namespace UdeS.Promoscience.Replays.UI
         public virtual void Awake()
         {
             infoButton.onClick.AddListener(() => gameObject.SetActive(!gameObject.activeSelf));
-            exitButton.onClick.AddListener(() => Server.Instance.StartReplaySelect());
+            //exitButton.onClick.AddListener(() => Server.Instance.StartReplaySelect());
             overlayButton.onClick.AddListener(() => overlay.SetActive(!overlay.activeSelf));
             greyboxButton.onClick.AddListener(() => replayOptions.SendAction(ReplayAction.ToggleGreyboxLabyrinth));
             algorithmButton.onClick.AddListener(() => replayOptions.SendAction(ReplayAction.ToggleAlgorithm));
@@ -59,7 +59,7 @@ namespace UdeS.Promoscience.Replays.UI
             replayOptions.OnMoveIndexChangedHandler += OnMoveIndexChanged;
             replayOptions.OnCourseSelectedHandler += OnCourseSelected;
 
-            Server.Instance.gameStateChangedEvent += OnGameStateChanged;
+            Server.Instance.State.OnValueChangedHandler += OnGameStateChanged;
 
             Enabled = false;
         }
@@ -111,12 +111,12 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-        public void OnGameStateChanged()
+        public void OnGameStateChanged(ServerState state)
         {
-            switch (Server.Instance.GameState)
+            switch (state)
             {
-                case ServerGameState.AdvancedReplay:
-                case ServerGameState.InstantReplay:
+                case ServerState.AdvancedReplay:
+                case ServerState.InstantReplay:
                     Enabled = true;
                     break;
 
