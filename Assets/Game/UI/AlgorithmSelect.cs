@@ -13,6 +13,12 @@ namespace UdeS.Promoscience.Algorithms.UI
 
         private Algorithm[] algorithms;
 
+
+        private Algorithms.Id algorithmId = 0;
+
+        public Algorithms.Id AlgorithmId => algorithmId;
+
+
         public void Awake()
         {
             dropDown.ClearOptions();
@@ -35,8 +41,6 @@ namespace UdeS.Promoscience.Algorithms.UI
             dropDown.onValueChanged.AddListener(OnDropDownSelected);
 
             OnDropDownSelected(0);
-
-
         }
 
         public void AddOption(string option)
@@ -51,20 +55,22 @@ namespace UdeS.Promoscience.Algorithms.UI
             dropDown.options.Add(data);
         }
 
+
+
         public void OnDropDownSelected(int i)
         {
             switch (i)
             {
                 case 0:
-                    GameManager.Instance.CurrentGame.SetAlgorithm(Utils.Random);
+                    algorithmId = Utils.Random;
                     break;
 
                 case 1:
-                    GameManager.Instance.CurrentGame.SetAlgorithm(Id.GameRound);
+                    algorithmId = Id.GameRound;
                     break;
 
                 default:
-                    GameManager.Instance.CurrentGame.SetAlgorithm(algorithms[i - 2].Id);
+                    algorithmId = algorithms[i - 2].Id;
                     break;
             }
         }

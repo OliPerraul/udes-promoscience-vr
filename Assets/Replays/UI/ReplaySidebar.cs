@@ -8,7 +8,7 @@ namespace UdeS.Promoscience.Replays.UI
     public class ReplaySidebar : MonoBehaviour
     {
         [SerializeField]
-        protected ReplayControllerAsset replayOptions;
+        protected ReplayManagerAsset replayOptions;
 
         [SerializeField]
         private UnityEngine.UI.Text algorithmNameText;
@@ -27,6 +27,9 @@ namespace UdeS.Promoscience.Replays.UI
         protected UnityEngine.UI.Button infoButton;
 
         [SerializeField]
+        protected UnityEngine.UI.Button closeButton;
+
+        [SerializeField]
         protected UnityEngine.UI.Button exitButton;
 
         [SerializeField]
@@ -37,6 +40,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         [SerializeField]
         protected UnityEngine.UI.Button algorithmButton;
+
 
         [SerializeField]
         protected GameObject sequenceToggle;
@@ -50,6 +54,8 @@ namespace UdeS.Promoscience.Replays.UI
         public virtual void Awake()
         {
             infoButton.onClick.AddListener(() => gameObject.SetActive(!gameObject.activeSelf));
+            closeButton.onClick.AddListener(() => gameObject.SetActive(false));
+
             //exitButton.onClick.AddListener(() => Server.Instance.StartReplaySelect());
             overlayButton.onClick.AddListener(() => overlay.SetActive(!overlay.activeSelf));
             greyboxButton.onClick.AddListener(() => replayOptions.SendAction(ReplayAction.ToggleGreyboxLabyrinth));
@@ -144,13 +150,7 @@ namespace UdeS.Promoscience.Replays.UI
             set
             {
                 _enabled = value;
-                transform.GetChild(0).gameObject.SetActive(_enabled);
-                infoButton.gameObject.SetActive(_enabled);
-                exitButton.gameObject.SetActive(_enabled);
-                greyboxButton.gameObject.SetActive(_enabled);
-                sequenceToggle.gameObject.SetActive(_enabled);
-                sequencePopup.gameObject.SetActive(_enabled);
-                controls.gameObject.SetActive(_enabled);
+                gameObject.SetActive(_enabled);
                 //algorithmNameText.gameObject.SetActive(_enabled);
                 //algorithmStepsText.gameObject.SetActive(_enabled);
 
@@ -161,12 +161,12 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void EnableOptions(bool enable)
         {
-            isOptionEnabled = enable;
-            sequencePopup.gameObject.SetActive(isOptionEnabled);
-            sequenceToggle.SetActive(isOptionEnabled);
-            overlayButton.gameObject.SetActive(isOptionEnabled);
-            //algorithmButton.gameObject.SetActive(isOptionEnabled);
-            greyboxButton.gameObject.SetActive(isOptionEnabled);
+            //isOptionEnabled = enable;
+            //sequencePopup.gameObject.SetActive(isOptionEnabled);
+            //sequenceToggle.SetActive(isOptionEnabled);
+            //overlayButton.gameObject.SetActive(isOptionEnabled);
+            ////algorithmButton.gameObject.SetActive(isOptionEnabled);
+            //greyboxButton.gameObject.SetActive(isOptionEnabled);
         }
 
         private bool isAlgorithmEnabled = false;

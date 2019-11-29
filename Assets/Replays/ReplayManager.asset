@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14e6e276b49ba7b4e946d9cffbed9e5f, type: 3}
-  m_Name: ReplayController
+  m_Name: ReplayManager
   m_EditorClassIdentifier: 
   moveCount: -2147483648
   moveIndex: 0

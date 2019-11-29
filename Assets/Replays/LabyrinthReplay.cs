@@ -38,7 +38,7 @@ namespace UdeS.Promoscience.Replays
 
         // TODO remove
         public LabyrinthReplay(
-            ReplayControllerAsset controller,
+            ReplayManagerAsset controller,
             List<Course> courses,
             Labyrinths.IData labyrinth) :
                 base(
@@ -53,7 +53,7 @@ namespace UdeS.Promoscience.Replays
         }
 
         public LabyrinthReplay(
-            ReplayControllerAsset controller,
+            ReplayManagerAsset controller,
             List<Course> courses,
             Labyrinths.Labyrinth labyrinth) : 
                 base(
@@ -81,13 +81,15 @@ namespace UdeS.Promoscience.Replays
                 labyrinth.GenerateLabyrinthVisual();
 
                 labyrinth.Init(enableCamera: true);
+
+                labyrinth.Camera.OutputToTexture = true;
             }
             else
             {
                 labyrinth.gameObject.SetActive(true);
             }
 
-            labyrinth.Camera.OutputToTexture = false;
+            ReplayManager.Instance.ViewRawImage.texture = labyrinth.Camera.RenderTexture;
 
             lposition = labyrinth.GetLabyrithStartPosition();
 
@@ -103,7 +105,7 @@ namespace UdeS.Promoscience.Replays
             controller.PlaybackSpeed = 2f;
         }
 
-        public void OnPlaybackSpeedChanged(float speed)
+        public override void OnPlaybackSpeedChanged(float speed)
         {
             foreach (var sq in playerSequences.Values)
             {

@@ -53,7 +53,7 @@ namespace UdeS.Promoscience.UI
 
         void OnGameRoundChanged(int round)
         {
-            serverGameRoundText.text = gameRoundString.Value + " : " + GameManager.Instance.CurrentGame.GameRound;
+            serverGameRoundText.text = gameRoundString.Value + " : " + GameManager.Instance.CurrentGame.Round.Value;
         }
 
         void OnServerStateChanged(ServerState state)

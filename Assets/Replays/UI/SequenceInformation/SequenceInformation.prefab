@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502b3af67acb8c241a0a8fd3a13e18c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  replayOptions: {fileID: 11400000, guid: de57bbb0d7d2fd14ca87e941b30b2cf6, type: 2}
+  replayOptions: {fileID: 11400000, guid: 5244deb39a979454683277ed9dc7f48f, type: 2}
   scoreText: {fileID: 0}
   respectText: {fileID: 0}
   image: {fileID: 7381580355980624221}

@@ -23,7 +23,7 @@ namespace UdeS.Promoscience.UI
         LocalizeString connectingString = new LocalizeString("Connecting..", "Connexion en cours..");
 
         [SerializeField]
-        LocalizeString disconnectedString = new LocalizeString("Disconnecting..", "Déconnexion en cours..");
+        LocalizeString disconnectedString = new LocalizeString("Disconnected", "Déconnecté");
 
         [SerializeField]
         LocalizeString longestStraightString = new LocalizeString("Longest Straight", "Chemin le plus long");

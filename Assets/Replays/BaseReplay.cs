@@ -9,13 +9,13 @@ namespace UdeS.Promoscience.Replays
     public abstract class BaseReplay
     {
         //public Replay replay;
-        protected ReplayControllerAsset controller;
+        protected ReplayManagerAsset controller;
 
         private bool isPlaying = false;
 
         // TODO remove
         public BaseReplay(
-            ReplayControllerAsset controller)       
+            ReplayManagerAsset controller)       
         {
             this.controller = controller;// replay;
             controller.OnActionHandler += OnReplayAction;
@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.Replays
 
         }
 
-        public void OnPlaybackSpeedChanged(float speed)
+        public virtual void OnPlaybackSpeedChanged(float speed)
         {
 
         }

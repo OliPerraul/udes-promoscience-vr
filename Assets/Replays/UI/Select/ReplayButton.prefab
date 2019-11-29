@@ -99,13 +99,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1466660122758156172}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0e52c37d1246d244a859a7c678c2a70, type: 3}
+  m_Script: {fileID: 11500000, guid: dfcef1b3bab1a4d419f6bf14e0dd6603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   labyrinth: {fileID: 0}
   button: {fileID: 1466660122758156162}
   rawImage: {fileID: 6938892827325038499}
-  replayController: {fileID: 11400000, guid: de57bbb0d7d2fd14ca87e941b30b2cf6, type: 2}
+  replayController: {fileID: 11400000, guid: 5244deb39a979454683277ed9dc7f48f, type: 2}
   removeButton: {fileID: 2060485017784780214}
   addButton: {fileID: 3440537924636745774}
 --- !u!1 &1490569412384158871

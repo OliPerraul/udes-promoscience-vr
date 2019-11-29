@@ -321,7 +321,9 @@ namespace UdeS.Promoscience.Labyrinths
         public void Init()
         {
             Source.gameObject.SetActive(true);
-            renderTexture = Object.Instantiate(Resources.Instance.RenderTexture);
+            RenderTexture rt = new RenderTexture(Screen.width, Screen.height, 24);
+            rt.name = Source.name;
+            renderTexture = rt;
         }
 
         public bool Enabled

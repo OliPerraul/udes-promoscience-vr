@@ -11,8 +11,8 @@ namespace UdeS.Promoscience.Labyrinths
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Ressources", order = 1)]
     public class Resources : BaseResources<Resources>
     {
-        [SerializeField]
-        public RenderTexture RenderTexture;
+        //[SerializeField]
+        //public RenderTexture RenderTexture;
 
         [SerializeField]
         public Labyrinth LabyrinthSmall;

@@ -7,18 +7,18 @@ namespace UdeS.Promoscience
     {
         // TODO put in Option menu
         [SerializeField]
-        private LevelOrder levelOrder;
+        private LevelSelectionMode levelSelectionMode;
 
         public Game CurrentGame { get; private set; }
 
-        public void StartTutorial()
+        public void StartQuickplay()
         {
-            CurrentGame = new Tutorial(levelOrder);
+            CurrentGame = new Quickplay(levelSelectionMode);
         }
 
         public void StartNewGame()
         {
-            CurrentGame = new Game(levelOrder);
+            CurrentGame = new Game(levelSelectionMode);
         }
     }
 }

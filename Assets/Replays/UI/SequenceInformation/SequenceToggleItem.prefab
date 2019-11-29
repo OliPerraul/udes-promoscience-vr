@@ -405,7 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb85c6a7055cd5546bf4a3bd639051bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  replayController: {fileID: 11400000, guid: a486ffa3d6b8a7846adaddf27c3cf4a9, type: 2}
+  replayController: {fileID: 11400000, guid: 5244deb39a979454683277ed9dc7f48f, type: 2}
   toggle: {fileID: 2298041557741551047}
   label: {fileID: 2298041557666090400}
   colorImage: {fileID: 2298041558268249666}

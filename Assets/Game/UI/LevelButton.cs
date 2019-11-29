@@ -25,7 +25,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override void OnClick()
         {
-            GameManager.Instance.CurrentGame.StartRoundWithLabyrinth(labyrinth.Id);
+            //GameManager.Instance.CurrentGame.StartRound(
+            //    Random.Range(1, Utils.NumLabyrinth + 1),
+            //    (int)algorithmSelect.AlgorithmId);
         }
     }
 }

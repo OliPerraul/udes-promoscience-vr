@@ -10,9 +10,9 @@ namespace UdeS.Promoscience.Replays.UI
     public class ReplaySelectionInterface : BaseSelectionInterface
     {
         [SerializeField]
-        private ReplayControllerAsset replayController;
+        private ReplayManagerAsset replayController;
 
-        protected ReplayControllerAsset ReplayController => replayController;
+        protected ReplayManagerAsset ReplayController => replayController;
 
         [SerializeField]
         private ReplaySection sectionTemplate;

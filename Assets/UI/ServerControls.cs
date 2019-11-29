@@ -23,54 +23,79 @@ namespace UdeS.Promoscience.Network.UI
     {
         public Cirrus.ObservableValue<ServerControlsFlag> Flags = new Cirrus.ObservableValue<ServerControlsFlag>();
 
+        [SerializeField]
+        private GameObject header;
+
+        [SerializeField]
+        private GameObject body;
+
+        [SerializeField]
+        private GameObject bottom;
+
+
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
             Flags.OnValueChangedHandler += OnFlagsChanged;
+
+            quickPlayButton.onClick.AddListener(() => Server.Instance.StartQuickplay());
+            newGameButton.onClick.AddListener(() => Server.Instance.StartGame());
+            instantReplayButton.onClick.AddListener(() => Server.Instance.StartInstantReplay());
         }
 
-        public bool Enabled
-        {
-            set
-            {
-                target?.gameObject?.SetActive(value);
-            }
-        }
+        public bool Enabled { set => target?.gameObject?.SetActive(value); }
 
         public void OnServerGameStateChanged(ServerState state)
         {
             switch (state)
             {
+                case ServerState.Quickplay:
+                    Flags.Value =
+                        ServerControlsFlag.InstantReplay |
+                        //ServerControlsFlag.NewGame |
+                        ServerControlsFlag.RestartRound |
+                        ServerControlsFlag.EndGame;
+                    break;
+
                 case ServerState.Round:
+                    Flags.Value =
+                        ServerControlsFlag.InstantReplay |
+                        ServerControlsFlag.AdvancedReplay;
+                    break;
+
                 case ServerState.Lobby:
-                case ServerState.Tutorial:
-                case ServerState.Intermission:
-                    Enabled = true;
+                    Flags.Value =
+                        ServerControlsFlag.QuickPlay |
+                        ServerControlsFlag.NewGame;//| ServerControlsFlag;
+                    break;
+            }
 
-                    switch (state)
-                    {
-                        case ServerState.Quickplay:
-                            Flags.Value =
-                                ServerControlsFlag.InstantReplay |
-                                ServerControlsFlag.NewGame |
-                                ServerControlsFlag.RestartRound |
-                                ServerControlsFlag.EndGame;
-                            break;
-
-                        case ServerState.Round:
-                            Flags.Value =
-                               ServerControlsFlag.InstantReplay |
-                               ServerControlsFlag.AdvancedReplay;
-                            break;
-
-
-                    }
+            switch (state)
+            {
+                case ServerState.Round:
+                case ServerState.Quickplay:
+                    header.SetActive(false);
+                    body.SetActive(false);
+                    bottom.SetActive(true);
 
                     break;
+
+                case ServerState.LevelSelect:
+                case ServerState.ReplaySelect:
+                case ServerState.AdvancedReplay:
+                case ServerState.InstantReplay:
+                    header.SetActive(false);
+                    body.SetActive(false);
+                    bottom.SetActive(false);
+                    break;
+
 
                 default:
-                    Enabled = false;
+                    header.SetActive(true);
+                    body.SetActive(true);
+                    bottom.SetActive(true);
                     break;
+
             }
         }
 

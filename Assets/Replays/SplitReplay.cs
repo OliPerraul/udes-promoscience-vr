@@ -8,7 +8,7 @@ namespace UdeS.Promoscience.Replays
     {
         private List<LabyrinthReplay> replays = new List<LabyrinthReplay>();
 
-        public SplitReplay(ReplayControllerAsset controller) : base(controller)
+        public SplitReplay(ReplayManagerAsset controller) : base(controller)
         {
             //controller.
         }

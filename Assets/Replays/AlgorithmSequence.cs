@@ -24,7 +24,7 @@ namespace UdeS.Promoscience.Replays
         protected override bool HasNext => course.AlgorithmHasNext;
 
         public AlgorithmSequence Create(
-            ReplayControllerAsset replay,
+            ReplayManagerAsset replay,
             Labyrinths.Labyrinth labyrinth,
             Course course,
             Vector2Int startPosition)

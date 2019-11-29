@@ -7,7 +7,7 @@ namespace UdeS.Promoscience.Replays
     public class Resources : BaseResources<Resources>
     {
         [SerializeField]
-        public ReplayControllerAsset replayController;
+        public ReplayManagerAsset replayController;
 
         [SerializeField]
         public Segment Segment;

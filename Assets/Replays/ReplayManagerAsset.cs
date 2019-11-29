@@ -33,7 +33,7 @@ namespace UdeS.Promoscience.Replays
 
     public delegate void OnAction(ReplayAction action, params object[] args);
 
-    public class ReplayControllerAsset : ScriptableObject
+    public class ReplayManagerAsset : ScriptableObject
     {
         public IntEvent valueChangeEvent;
 

@@ -7,7 +7,7 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class ReplayManager : MonoBehaviour
+    public class ReplayManager : Cirrus.BaseSingleton<ReplayManager>
     {
         [SerializeField]
         private GameObject sidebar;
@@ -21,8 +21,16 @@ namespace UdeS.Promoscience.Replays
         [SerializeField]
         private UnityEngine.UI.Button exitButton;
 
+
         [SerializeField]
         private UnityEngine.UI.RawImage viewRawImage;
+
+        public UnityEngine.UI.RawImage ViewRawImage => viewRawImage;
+
+        [SerializeField]
+        private ReplayManagerAsset asset;
+
+        private BaseReplay CurrentReplay;
 
         public void Awake()
         {
@@ -30,7 +38,6 @@ namespace UdeS.Promoscience.Replays
             infoButton.onClick.AddListener(() => sidebar.gameObject.SetActive(!sidebar.gameObject.activeSelf));
             Server.Instance.State.OnValueChangedHandler += OnGameStateValueChanged;
         }
-
 
         public void StartReplaySelect()
         {
@@ -152,12 +159,13 @@ namespace UdeS.Promoscience.Replays
 
             //State = ServerState.InstantReplay;
 
-            //CurrentReplay = new Replays.InstantReplay(
+            CurrentReplay = new InstantReplay(
+                asset,
+                SQLiteUtilities.GetSessionCoursesForLabyrinth(
+                    GameManager.Instance.CurrentGame.CurrentLabyrinth.Id),
+                GameManager.Instance.CurrentGame.CurrentLabyrinth);
 
-            //    SQLiteUtilities.GetSessionCoursesForLabyrinth(Labyrinths.CurrentData.Id),
-            //    Labyrinths.CurrentData);
-
-            //CurrentReplay.Start();
+            CurrentReplay.Start();
         }
 
 

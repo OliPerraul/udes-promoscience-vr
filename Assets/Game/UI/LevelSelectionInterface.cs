@@ -10,14 +10,12 @@ namespace UdeS.Promoscience.Labyrinths.UI
         private List<LevelButton> labyrinthButtons = new List<LevelButton>();
 
         [SerializeField]
-        private Replays.ReplayControllerAsset replayController;
+        private Replays.ReplayManagerAsset replayController;
 
-        protected Replays.ReplayControllerAsset ReplayController => replayController;
+        protected Replays.ReplayManagerAsset ReplayController => replayController;
 
-        //[SerializeField]
-        //private LevelButton buttonTemplate;
-
-        //public override BaseButton ButtonTemplate => buttonTemplate;
+        [SerializeField]
+        private Algorithms.UI.AlgorithmSelect algorithmSelect;
 
         [SerializeField]
         private LevelSection sectionTemplate;
@@ -42,18 +40,29 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
 
-            //buttonExit.onClick.AddListener(OnExitClicked);
-
             buttonRandom.onClick.AddListener(OnRandomClicked);
+
+            //button
         }
 
         public void OnRandomClicked()
         {
-            GameManager.Instance.CurrentGame.StartRoundWithLabyrinth(Random.Range(1, Utils.NumLabyrinth+1));
+            GameManager.Instance.CurrentGame.StartRound(
+                Random.Range(1, Utils.NumLabyrinth + 1), 
+                (int)algorithmSelect.AlgorithmId);
         }
 
+        public void OnButtonClicked(BaseButton button)
+        {
+            GameManager.Instance.CurrentGame.StartRound(
+                Random.Range(1, Utils.NumLabyrinth + 1),
+                (int)algorithmSelect.AlgorithmId);
+        }
+
+
+
         // On exit click (cancel game if round not started, or do not finish the round)
-        
+
         //public void OnExitClicked()
         //{
         //    Server.Instance.EndRoundOrTutorial();
@@ -62,11 +71,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override bool Enabled
         {
-            set
-            {
-                gameObject.SetActive(value);
-            }
+            set => gameObject.SetActive(value);
         }
+         
 
         public override int NumSections => sections.Count;
 
@@ -101,7 +108,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             labyrinth.Camera.OutputToTexture = true;
 
-            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
+            labyrinth.transform.position = Vector3.right * Utils.SelectionOffset * (labyrinths.Count - 1);
 
             AddSection().AddButton(labyrinth);
 
@@ -117,9 +124,13 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             currentSection = sectionTemplate.Create(buttonsParent);
 
+            currentSection.gameObject.SetActive(true);
+
+            currentSection.OnButtonClickHandler += OnButtonClicked;
+
             sections.Add(currentSection);
 
-            currentSection.gameObject.SetActive(true);
+
 
             //currentSection.OnButtonRemovedHandler += OnButtonRemoved;
 
@@ -132,7 +143,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         {
             Enabled = true;
             Enabled = false;
-            GameManager.Instance.CurrentGame.StartRoundWithLabyrinth(labyrinth.Id);
+            //GameManager.Instance.CurrentGame.StartRoundWithLabyrinth(labyrinth.Id);
         }
 
         public override void Clear()
@@ -184,6 +195,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
                     break;
 
                 case ServerState.Round:
+                case ServerState.Quickplay:
                 case ServerState.Tutorial:
 
                     Enabled = false;

@@ -16,9 +16,11 @@ namespace UdeS.Promoscience
 
         public Game CurrentGame { get; private set; }
 
+        public ObservableValue<ServerState> State = new ObservableValue<ServerState>();
+
+        [SerializeField]
         private ServerState state;
-        
-       
+
         public static bool IsApplicationServer => Instance == null;
 
         public void Awake()
@@ -34,14 +36,18 @@ namespace UdeS.Promoscience
                     DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             }
 
-            State.OnValueChangedHandler += OnStateValueChanged;
-            State.Value = ServerState.Lobby;                     
+            State.OnValueChangedHandler += OnStateValueChanged;                    
         }
 
-        public ObservableValue<ServerState> State = new ObservableValue<ServerState>();
+        public void Start()
+        {
+            State.Set(ServerState.Lobby);
+        }
 
         public void OnStateValueChanged(ServerState state)
         {
+            this.state = state;
+
             switch (state)
             {
                 case ServerState.InstantReplay:
@@ -54,10 +60,25 @@ namespace UdeS.Promoscience
 
         }
 
+        public void StartQuickplay()
+        {
+            GameManager.Instance.StartQuickplay();
+        }
+
+        public void StartGame()
+        {
+            GameManager.Instance.StartNewGame();
+        }
+
+        public void StartInstantReplay()
+        {
+            Replays.ReplayManager.Instance.StartInstantReplay();
+        }
+
+
 
         // Try find course ID initiated by a team member
         // Otherwise assign new course
-        //
         // Returns true if created a course
         public void AssignCourse(Player player)//, out Course course)
         {                 
@@ -73,9 +94,7 @@ namespace UdeS.Promoscience
 
         public void SaveGameInformationToDatabase()
         {
-            //SQLiteUtilities.InsertServerGameInformation(this);
-
-            
+            //SQLiteUtilities.InsertServerGameInformation(this);            
         }
 
         public void ClearGameInformation()
