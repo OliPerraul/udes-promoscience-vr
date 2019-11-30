@@ -86,12 +86,12 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-
             CurrentReplay = new InstantReplay(
                 asset,
-                SQLiteUtilities.GetSessionCoursesForLabyrinth(
-                    GameManager.Instance.CurrentGame.CurrentLabyrinth.Id),
-                    GameManager.Instance.CurrentGame.CurrentLabyrinth);
+                SQLiteUtilities.GetCoursesForGameRound(
+                    GameManager.Instance.CurrentGame.Id, 
+                    GameManager.Instance.CurrentGame.Round.Value),
+                GameManager.Instance.CurrentGame.CurrentLabyrinth);
 
             CurrentReplay.Start();
         }

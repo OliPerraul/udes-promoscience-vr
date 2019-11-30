@@ -8,6 +8,7 @@ using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
 using Cirrus.Extensions;
 using UdeS.Promoscience.Algorithms;
+using System;
 
 namespace UdeS.Promoscience.Labyrinths
 {

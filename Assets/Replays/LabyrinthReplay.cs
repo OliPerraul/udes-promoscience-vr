@@ -44,6 +44,7 @@ namespace UdeS.Promoscience.Replays
                 base(
                     controller)
         {
+            this.courses = courses;
             this.controller = controller;// replay;
             this.labyrinthData = labyrinth;
 
@@ -97,7 +98,7 @@ namespace UdeS.Promoscience.Replays
 
             EnableDirty(true);
 
-            foreach (Course course in GameManager.Instance.CurrentGame.Courses)
+            foreach (Course course in courses)
             {
                 OnCourseAdded(course);
             }

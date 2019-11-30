@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience
 {
@@ -28,6 +29,16 @@ namespace UdeS.Promoscience
                     labyrinth.Init(enableCamera: true);
 
                     labyrinth.Camera.OutputToTexture = false;
+                    break;
+
+
+                default:
+                    if (labyrinth != null)
+                    {
+                        labyrinth.gameObject.Destroy();
+                        labyrinth = null;
+                    }
+
                     break;
             }
         }

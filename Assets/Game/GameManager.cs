@@ -45,6 +45,8 @@ namespace UdeS.Promoscience
             }
 
             CurrentGame = new Quickplay(levelSelectionMode);
+
+            SQLiteUtilities.InsertGame(CurrentGame.Id);
         }
 
         public void StartNewGame()

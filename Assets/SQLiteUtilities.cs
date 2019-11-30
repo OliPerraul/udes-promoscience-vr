@@ -530,6 +530,80 @@ namespace UdeS.Promoscience
         }
 
 
+        public static List<Course> GetCoursesForGameRound(int gameId, int round)
+        {
+            List<Course> courses = new List<Course>();
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            CreateDatabaseIfItDoesntExist();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "PRAGMA foreign_keys = ON";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "SELECT * FROM " + COURSE + " WHERE " +
+                        COURSE_GAME_ID + " = " + gameId + " AND " +
+                        COURSE_ROUND + " = " + round; 
+
+                    cmd.ExecuteNonQuery();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        // If active course
+                        while (reader.Read())
+                        {
+                            int id = int.Parse(reader[COURSE_ID].ToString());
+                            int teamId = int.Parse(reader[COURSE_TEAM_ID].ToString());
+                            int algId = int.Parse(reader[COURSE_NO_ALGO].ToString());
+                            int sts = int.Parse(reader[COURSE_STATUS].ToString());
+                            int labId = int.Parse(reader[COURSE_LABYRINTH_ID].ToString());
+
+
+                            Queue<int> steps;
+                            Queue<string> stepValues;
+                            GetPlayerStepsForCourse(id, out steps, out stepValues);
+                            var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
+                            //var labyrinth = Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId);
+                            var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
+                            var labdata = Labyrinths.Resources.Instance.GetLabyrinth(labId);
+
+
+                            courses.Add(new Course
+                            {
+                                LabyrinthId = labId,
+                                Id = id,
+                                Actions = steps.ToArray(),
+                                ActionValues = stepValues.ToArray(),
+                                Team = team,
+                                Labyrinth = labdata,
+                                Algorithm = algorithm,
+                                AlgorithmSteps = algorithm.GetAlgorithmSteps(labdata),// as Algorithm)
+                                Status = (CourseStatus)sts
+                            });
+
+
+                        };
+
+                        reader.Close();
+                    }
+                }
+            }
+
+#endif
+
+            return courses;
+        }
+
+
+
         public static List<Course> GetSessionCoursesForLabyrinth(int labyrinthId)
         {
             List<Course> courses = new List<Course>();

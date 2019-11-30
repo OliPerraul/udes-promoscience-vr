@@ -18,6 +18,13 @@ namespace UdeS.Promoscience.Replays.UI
         private UnityEngine.UI.Text algorithmStepsText;
 
         [SerializeField]
+        private UnityEngine.UI.Button algorithmNext;
+
+        [SerializeField]
+        private UnityEngine.UI.Button algorithmPrevious;
+
+
+        [SerializeField]
         private LocalizeInlineString algorithmStepsString = new LocalizeInlineString("Number of steps: ");
 
         [SerializeField]
