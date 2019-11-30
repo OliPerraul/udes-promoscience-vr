@@ -51,7 +51,7 @@ namespace UdeS.Promoscience.UI
             switch (state)
             {
                 case ServerState.LabyrinthReplay:
-                    Flags.Set(ButtonCanvasFlag.Exit | ButtonCanvasFlag.Info);
+                    //Flags.Set(ButtonCanvasFlag.Exit | ButtonCanvasFlag.Info);
                     break;
 
                 case ServerState.LevelSelect:

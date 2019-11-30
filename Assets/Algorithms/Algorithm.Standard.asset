@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -12,11 +13,14 @@ MonoBehaviour:
   m_Name: Algorithm.Standard
   m_EditorClassIdentifier: 
   name:
-    localizeString: {fileID: 0}
-    defaultString: Standard
+    french: 
+    english: 
   description:
-    localizeString: {fileID: 0}
-    defaultString: "\tPriorise le NORD, suivit de l\u2019EST, du SUD et de l\u2019OUEST
+    english: "\tPriorise le NORD, suivit de l\u2019EST, du SUD et de l\u2019OUEST
       en marquant son chemin comme visit\xE9. \n\n\tLorsqu\u2019un cul de sac est
       atteint, il rebrousse chemin jusqu\u2019\xE0 la derni\xE8re intersection en
       marquant son passage comme visit\xE9 et non concluant."
+    french: "\tPriorise le NORD, suivit de l\u2019EST, du SUD et de l\u2019OUEST en
+      marquant son chemin comme visit\xE9. \n\n\tLorsqu\u2019un cul de sac est atteint,
+      il rebrousse chemin jusqu\u2019\xE0 la derni\xE8re intersection en marquant
+      son passage comme visit\xE9 et non concluant."
