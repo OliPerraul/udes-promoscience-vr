@@ -4,7 +4,8 @@
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -12,5 +13,7 @@ MonoBehaviour:
   m_Name: Blue Team
   m_EditorClassIdentifier: 
   teamId: 0
-  teamName: {fileID: 11400000, guid: 7eaa0bfaabe70774fadf6f90560b8905, type: 2}
+  teamName:
+    french: Equipe Bleu
+    english: Blue Team
   teamColor: {r: 0, g: 0, b: 1, a: 1}
