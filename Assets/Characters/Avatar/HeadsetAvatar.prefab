@@ -41,7 +41,7 @@ MonoBehaviour:
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   algorithmRespect: {fileID: 11400000, guid: 6d58c680a021b5e47830ce98afc82c18, type: 2}
   gameAction: {fileID: 11400000, guid: 6240cbf6bb642ad4380bc23fac257310, type: 2}
-  gameRoundManager: {fileID: 11400000, guid: eaa0ab69523e289469a32b6d7fdf0ae2, type: 2}
+  gameManager: {fileID: 11400000, guid: 3af86e7a53b3fe94388ee9bf5fd1db53, type: 2}
   avatar: {fileID: 7478443213828330145}
 --- !u!1001 &2885924936478400729
 PrefabInstance:
@@ -1731,6 +1731,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7292907934052275220, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7292907933909670192, guid: ae4058418e4fa1d47924923585a60d70,
         type: 3}
       propertyPath: m_Name
@@ -1791,20 +1796,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7292907933121202271, guid: ae4058418e4fa1d47924923585a60d70,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7292907934052275220, guid: ae4058418e4fa1d47924923585a60d70,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 8612504218509008771, guid: ae4058418e4fa1d47924923585a60d70,
         type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7292907933121202271, guid: ae4058418e4fa1d47924923585a60d70,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8859091028491197350, guid: ae4058418e4fa1d47924923585a60d70,
         type: 3}

@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -310,7 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895839653b5b36b4f869b5edf3c3cd32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameRound: {fileID: 11400000, guid: eaa0ab69523e289469a32b6d7fdf0ae2, type: 2}
+  gameRound: {fileID: 11400000, guid: 3af86e7a53b3fe94388ee9bf5fd1db53, type: 2}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}
   playerInformation: {fileID: 11400000, guid: 5eb020f2a1782f642befe1f47fbefb99, type: 2}
@@ -725,6 +725,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1307779207878956, guid: 28f07edcf181f89438fcbae02eeecc82, type: 3}
+      propertyPath: m_Name
+      value: Client
+      objectReference: {fileID: 0}
     - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
         type: 3}
       propertyPath: _resources.Array.size
@@ -904,6 +908,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2769672074992380168, guid: 9da6b81bdde8b514f8e71db2b3f449d5,
+        type: 3}
+      propertyPath: m_Name
+      value: TabletAvatar
+      objectReference: {fileID: 0}
     - target: {fileID: 439533441907639354, guid: 9da6b81bdde8b514f8e71db2b3f449d5,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -1298,15 +1311,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2769672074992380168, guid: 9da6b81bdde8b514f8e71db2b3f449d5,
-        type: 3}
-      propertyPath: m_Name
-      value: TabletAvatar
       objectReference: {fileID: 0}
     - target: {fileID: 2769672074992380212, guid: 9da6b81bdde8b514f8e71db2b3f449d5,
         type: 3}

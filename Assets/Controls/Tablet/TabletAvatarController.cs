@@ -60,8 +60,6 @@ namespace UdeS.Promoscience.Controls
             controls.PlayerTilesToPaint.OnValueChangedHandler += OnPlayerTilesToPaint;
             controls.resetPositionAndRotation += StopAllMovement;
             controls.stopAllMovementEvent += ResetPositionAndRotation;
-
-            // TODO replace by network controller asset
             isConnectedToPair.valueChangedEvent += OnConnectOrDisconnect;
             isConnectedToServer.valueChangedEvent += OnConnectOrDisconnect;
         }
