@@ -81,8 +81,8 @@ namespace UdeS.Promoscience
         // Otherwise assign new course
         // Returns true if created a course
         public void AssignCourse(Player player)//, out Course course)
-        {                 
-            
+        {
+            GameManager.Instance.CurrentGame.AssignCourse(player);
         }
 
 
@@ -92,10 +92,14 @@ namespace UdeS.Promoscience
             //gameStateChangedEvent += SaveGameInformationToDatabase;//Work only because gameRound is always updated right before gameState
         }
 
+
+
         public void SaveGameInformationToDatabase()
         {
             //SQLiteUtilities.InsertServerGameInformation(this);            
         }
+
+
 
         public void ClearGameInformation()
         {

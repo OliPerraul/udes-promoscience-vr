@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Network
         DirectiveManagerAsset directive;
 
         [SerializeField]
-        GameRoundManagerAsset gameRound;
+        GameManagerAsset gameManager;
 
         [SerializeField]
         public AvatarControllerAsset controls;
@@ -104,6 +104,9 @@ namespace UdeS.Promoscience.Network
             controls.PlayerRotation.OnValueChangedHandler += SendPlayerRotation;
             controls.PaintingColor.OnValueChangedHandler += SendPaintingColor;
 
+            gameManager.IsRoundCompleted.OnValueChangedHandler += OnRoundCompleted;
+            gameManager.Round.OnValueChangedHandler += OnRoundChanged;
+
 
             if (playerInformation.IsInitialize)
             {
@@ -116,6 +119,19 @@ namespace UdeS.Promoscience.Network
 
             isConnectedToPair.Value = true;
         }
+
+
+        public void OnRoundCompleted(bool completed)
+        {
+            if(completed)
+            SendEndReached();
+        }
+
+        public void OnRoundChanged(int round)
+        {
+            DelayedSendGameInformation();
+        }
+
 
         void OnDisconnect(NetworkMessage netMsg)
         {
@@ -154,9 +170,9 @@ namespace UdeS.Promoscience.Network
                 Client.Instance.State == ClientGameState.PlayingTutorial || 
                 Client.Instance.State == ClientGameState.WaitingForNextRound)
             {
-                if (gameRoundRequest == gameRound.Round.Value)
+                if (gameRoundRequest == gameManager.Round.Value)
                 {
-                    if (gameRound.IsRoundCompleted.Value)
+                    if (gameManager.IsRoundCompleted.Value)
                     {
                         SendEndReached();
                     }
@@ -181,21 +197,15 @@ namespace UdeS.Promoscience.Network
         }
 
 
-        public void OnGameRoundChanged(int gameroudn)
-        {
-            DelayedSendGameInformation();
-        }
-
-
         void DelayedSendGameInformation()
         {
             if (Client.Instance.State == ClientGameState.Playing || 
                 Client.Instance.State == ClientGameState.PlayingTutorial || 
                 Client.Instance.State == ClientGameState.WaitingForNextRound)
             {
-                if (gameRoundRequest == gameRound.Round.Value)
+                if (gameRoundRequest == gameManager.Round.Value)
                 {
-                    if (gameRound.IsRoundCompleted.Value)
+                    if (gameManager.IsRoundCompleted.Value)
                     {
                         SendEndReached();
                     }
@@ -208,7 +218,6 @@ namespace UdeS.Promoscience.Network
                         SendPlayerTilesToPaint(controls.PlayerTilesToPaint.Value);
                     }
 
-                    gameRound.Round.OnValueChangedHandler -= OnGameRoundChanged;
                     isRequestDelayed = false;
                 }
             }
@@ -285,12 +294,5 @@ namespace UdeS.Promoscience.Network
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 
-        //void SendReturnToDivergencePointAnswer(bool value)
-        //{
-        //    ReturnToDivergencePointAnswerMessage msg = new ReturnToDivergencePointAnswerMessage();
-        //    msg.answer = algorithmRespect.ReturnToDivergencePointAnswer.Value;
-
-        //    clientConnection.Send(msg.GetMsgType(), msg);
-        //}
     }
 }

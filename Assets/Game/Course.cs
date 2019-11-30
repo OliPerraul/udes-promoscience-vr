@@ -159,13 +159,7 @@ namespace UdeS.Promoscience
 
         private int moveIndex = 0;
 
-        public int CurrentMoveIndex
-        {
-            get
-            {
-                return moveIndex;
-            }
-        }
+        public int CurrentMoveIndex => moveIndex;
 
 
         private bool IsMovement(GameAction action)

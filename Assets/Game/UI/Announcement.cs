@@ -12,9 +12,6 @@ namespace UdeS.Promoscience.UI
         //ScriptableClientGameState client;
 
         [SerializeField]
-        private GameRoundManagerAsset gameRound;
-
-        [SerializeField]
         private UnityEngine.UI.Text announcementText;
 
         [SerializeField]
@@ -37,32 +34,36 @@ namespace UdeS.Promoscience.UI
 
         public void Awake()
         {
-            timer = new Timer(announcementTime, start: false, repeat: false);
+            //timer = new Timer(announcementTime, start: false, repeat: false);
 
-            gameRound.Round.OnValueChangedHandler += OnGameRoundValueChanged;
-            timer.OnTimeLimitHandler += OnAnnouncementTimeOut;
-            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
+            //gameRound.Round.OnValueChangedHandler += OnGameRoundValueChanged;
+            //timer.OnTimeLimitHandler += OnAnnouncementTimeOut;
+            //Client.Instance.clientStateChangedEvent += OnGameStateChanged;
 
             transform.GetChild(0).gameObject.SetActive(false);
          }
 
 
 
+
+
+
+
         private void OnGameStateChanged()
         {
-            if (Client.Instance.State == ClientGameState.TutorialLabyrinthReady ||
-                Client.Instance.State == ClientGameState.PlayingTutorial)
-            {
-                Message = tutorialString.Value + "\n" +
-                     "(" + Client.Instance.Algorithm.Name + ")";
-            }
-            else if (Client.Instance.State == ClientGameState.LabyrinthReady ||
-                Client.Instance.State == ClientGameState.Playing
-                )
-            {
-                Message = roundString.Value + " " + gameRound.Round.Value.ToString() + "\n" +
-                    "(" + Client.Instance.Algorithm.Name + ")";
-            }
+            //if (Client.Instance.State == ClientGameState.TutorialLabyrinthReady ||
+            //    Client.Instance.State == ClientGameState.PlayingTutorial)
+            //{
+            //    Message = tutorialString.Value + "\n" +
+            //         "(" + Client.Instance.Algorithm.Name + ")";
+            //}
+            //else if (Client.Instance.State == ClientGameState.LabyrinthReady ||
+            //    Client.Instance.State == ClientGameState.Playing
+            //    )
+            //{
+            //    Message = roundString.Value + " " + gameRound.Round.Value.ToString() + "\n" +
+            //        "(" + Client.Instance.Algorithm.Name + ")";
+            //}
 
         }
 

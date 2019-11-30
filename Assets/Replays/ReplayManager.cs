@@ -68,68 +68,6 @@ namespace UdeS.Promoscience.Replays
 
         }
 
-        public void StartAdvancedReplay(Labyrinth labyrinth)
-        {
-            // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
-            foreach (Player player in PlayerList.instance.list)
-            {
-                // Tell clients to pay attention
-                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
-                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
-                    player.ServerPlayerGameState == ClientGameState.Playing)
-                {
-                    player.TargetSetGameState(
-                        player.connectionToClient,
-                        ClientGameState.ViewingGlobalReplay);
-                }
-            }
-
-            //State = ServerState.AdvancedReplay;
-
-            //Labyrinths.CurrentData = labyrinth.Data;
-
-            //CurrentReplay = new Replays.SingleReplay(
-                //replayController,
-                //SQLiteUtilities.GetSessionCoursesForLabyrinth(labyrinth.Id),
-                //labyrinth);
-
-            //CurrentReplay.Start();
-        }
-
-
-
-        public void StartAdvancedReplay(Replays.BaseReplay replay)
-        {
-            // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
-            foreach (Player player in PlayerList.instance.list)
-            {
-                // Tell clients to pay attention
-                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
-                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
-                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
-                    player.ServerPlayerGameState == ClientGameState.Playing)
-                {
-                    player.TargetSetGameState(
-                        player.connectionToClient,
-                        ClientGameState.ViewingGlobalReplay);
-                }
-            }
-
-            //State = ServerState.AdvancedReplay;
-
-            //Courses = SQLiteUtilities.GetSessionCoursesForLabyrinth(replay.LabyrinthData.Id);
-
-            //Labyrinths.CurrentData = replay.LabyrinthData;
-
-            //CurrentReplay = replay;
-
-            //CurrentReplay.Start();
-        }
-
-
         public void StartInstantReplay()
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
@@ -148,13 +86,12 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            //State = ServerState.InstantReplay;
 
             CurrentReplay = new InstantReplay(
                 asset,
                 SQLiteUtilities.GetSessionCoursesForLabyrinth(
                     GameManager.Instance.CurrentGame.CurrentLabyrinth.Id),
-                GameManager.Instance.CurrentGame.CurrentLabyrinth);
+                    GameManager.Instance.CurrentGame.CurrentLabyrinth);
 
             CurrentReplay.Start();
         }

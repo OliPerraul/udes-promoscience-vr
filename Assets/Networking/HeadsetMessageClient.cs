@@ -18,7 +18,7 @@ namespace UdeS.Promoscience.Network
         //private Resources resources;
 
         [SerializeField]
-        GameRoundManagerAsset gameRound;
+        GameManagerAsset gameRound;
 
         [SerializeField]
         ScriptableBoolean isConnectedToPair;

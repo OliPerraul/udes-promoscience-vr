@@ -22,7 +22,7 @@ namespace UdeS.Promoscience.Algorithms
         GameActionManagerAsset gameAction;
 
         [SerializeField]
-        GameRoundManagerAsset gameRoundManager;
+        GameManagerAsset gameManager;
 
         [SerializeField]
         Characters.AvatarCharacter avatar;
@@ -170,7 +170,7 @@ namespace UdeS.Promoscience.Algorithms
 
                     if (Client.Instance.State == ClientGameState.Playing)
                     {
-                        gameRoundManager.IsRoundCompleted.Value = true;
+                        gameManager.IsRoundCompleted.Value = true;
                     }
 
                     controls.OnPlayerReachedTheEndHandler?.Invoke();

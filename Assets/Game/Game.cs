@@ -19,6 +19,8 @@ namespace UdeS.Promoscience
 
     public class Game
     {
+        public int Id = 0;
+
         public Cirrus.ObservableValue<int> Round = new Cirrus.ObservableValue<int>();
 
         public Cirrus.ObservableValue<bool> IsRoundCompleted = new Cirrus.ObservableValue<bool>();
@@ -33,15 +35,15 @@ namespace UdeS.Promoscience
 
         public Algorithms.Id algorithmId;
 
+
+        // Ideally, player should reference a course instead of refering to a course id 
+        public List<Course> Courses = new List<Course>();
+
         public Game(LevelSelectionMode levelOrder)
         {
             levelSelectionMode = levelOrder;
 
-            // When new game starts set all previous courses to innactive
-            foreach (Course c in SQLiteUtilities.GetSessionCourses())
-            {
-                SQLiteUtilities.SetCourseFinished(c.Id);
-            }
+            Id = SQLiteUtilities.GetNextGameID();
 
             switch (levelOrder)
             {
@@ -75,9 +77,6 @@ namespace UdeS.Promoscience
 
             return id;
         }
-
-        // Ideally, player should reference a course instead of refering to a course id 
-        public List<Course> Courses = new List<Course>();
 
         // Try find course ID initiated by a team member
         // Otherwise assign new course
@@ -115,7 +114,9 @@ namespace UdeS.Promoscience
                     player.ServerTeamId,
                     player.serverLabyrinthId,
                     (int)player.serverAlgorithm,
-                    player.ServerCourseId);
+                    player.ServerCourseId,
+                    Round.Value,
+                    Id);
             }
         }
 
@@ -148,6 +149,7 @@ namespace UdeS.Promoscience
                             player.connectionToClient,
                             CurrentLabyrinth.Json,
                             player.serverAlgorithm,
+                            Round.Value,
                             false);
 
                         break;
@@ -191,6 +193,7 @@ namespace UdeS.Promoscience
                             player.connectionToClient,
                             CurrentLabyrinth.Json,
                             player.serverAlgorithm,
+                            Round.Value,
                             false);
 
                         break;
@@ -229,6 +232,7 @@ namespace UdeS.Promoscience
                 player.connectionToClient,
                 CurrentLabyrinth.Json,
                 player.serverAlgorithm,
+                Round.Value,
                 false);
         }
 
@@ -245,6 +249,7 @@ namespace UdeS.Promoscience
                 steps,
                 CurrentLabyrinth.Json,
                 player.serverAlgorithm,
+                Round.Value,
                 false); // TODO start with steps tutorial??
         }
 
@@ -301,6 +306,7 @@ namespace UdeS.Promoscience
                             player.connectionToClient,
                             CurrentLabyrinth.Json,
                             algorithm,
+                            Round.Value,
                             true);
 
                         break;

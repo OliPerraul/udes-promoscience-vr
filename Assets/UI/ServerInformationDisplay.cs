@@ -13,8 +13,8 @@ namespace UdeS.Promoscience.UI
 
     public class ServerInformationDisplay : MonoBehaviour
     {
-        [SerializeField]
-        private GameRoundManagerAsset gameRoundManager;
+        //[SerializeField]
+        //private GameRoundManagerAsset gameRoundManager;
 
         [SerializeField]
         private LocalizeString gameRoundString = new LocalizeString("Round");
@@ -44,7 +44,7 @@ namespace UdeS.Promoscience.UI
         {
             if (Server.Instance != null)
             {
-                gameRoundManager.Round.OnValueChangedHandler += OnGameRoundChanged;
+                //gameRoundManager.Round.OnValueChangedHandler += OnGameRoundChanged;
                 Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
             }
 

@@ -51,7 +51,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         public void OnButtonClicked(BaseButton button)
         {
             GameManager.Instance.CurrentGame.StartRound(
-                Random.Range(1, Utils.NumLabyrinth + 1),
+                button.Labyrinth.Data.Id,
                 (int)algorithmSelect.AlgorithmId);
         }
 
