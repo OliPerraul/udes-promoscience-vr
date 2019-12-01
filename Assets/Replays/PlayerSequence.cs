@@ -121,33 +121,17 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        private State PreviousState
-        {
-            get
-            {                
-                return stateIndex == 0 ? states[stateIndex] : states[stateIndex - 1];
-            }
-        }
+        private State PreviousState => stateIndex == 0 ? states[stateIndex] : states[stateIndex - 1];
+
 
         // List of all segments added so that they can be adjusted
         private List<Segment> segments;
 
 
-        public override int LocalMoveCount
-        {
-            get
-            {
-                return course.MoveCount;
-            }
-        }
+        public override int LocalMoveCount => course.MoveCount;
 
-        public override int LocalMoveIndex
-        {
-            get
-            {
-                return course.CurrentMoveIndex;
-            }
-        }
+
+        public override int LocalMoveIndex => course.CurrentMoveIndex;
 
         private float offsetAmount = 0f;
 
@@ -211,6 +195,22 @@ namespace UdeS.Promoscience.Replays
             backtrackMaterialAlpha = new Material(templateBacktrackMaterial);
 
             segments = new List<Segment>();
+        }
+
+        public void UpdateArrowHead()
+        {
+            if (CurrentSegment != null)
+            {
+                arrowHead.gameObject.SetActive(true);
+
+                arrowHead.transform.rotation = CurrentSegment.Rotation;
+
+                arrowHead.transform.position = CurrentSegment.Position;
+            }
+            else
+            {
+                arrowHead.gameObject.SetActive(false);
+            }
         }
 
         public override void FixedUpdate()
@@ -505,6 +505,7 @@ namespace UdeS.Promoscience.Replays
 
             course.Previous();
 
+
             if (course.OnPlayerSequenceProgressedHandler != null)
                 course.OnPlayerSequenceProgressedHandler.Invoke();
         }
@@ -529,6 +530,7 @@ namespace UdeS.Promoscience.Replays
 
             if (course.OnPlayerSequenceProgressedHandler != null)
                 course.OnPlayerSequenceProgressedHandler.Invoke();
+
         }
 
         protected override IEnumerator DoNextCoroutine()

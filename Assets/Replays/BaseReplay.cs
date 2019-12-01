@@ -63,35 +63,35 @@ namespace UdeS.Promoscience.Replays
         }
 
 
-        public virtual void OnReplayAction(ReplayAction action, params object[] args)
+        public virtual void OnReplayAction(ReplayControlAction action, params object[] args)
         {
             switch (action)
             {
-                case ReplayAction.ToggleOptions:                    
-                    break;
+                //case ReplayAction.ToggleOptions:                    
+                //    break;
 
-                case ReplayAction.ExitReplay:
-                    Clear();
-                    break;
+                ////case ReplayAction.ExitReplay:
+                ////    Clear();
+                ////    break;
 
-                // TODO: Handle play/ stop from replay object and not sequences
-                // to prevent synch issues
-                case ReplayAction.ToggleAlgorithm:
-                    break;
+                //// TODO: Handle play/ stop from replay object and not sequences
+                //// to prevent synch issues
+                //case ReplayAction.ToggleAlgorithm:
+                //    break;
 
-                case ReplayAction.ToggleGreyboxLabyrinth:
-                    //EnableGreybox(!isGreyboxToggled);
-                    break;
+                //case ReplayAction.ToggleGreyboxLabyrinth:
+                //    //EnableGreybox(!isGreyboxToggled);
+                //    break;
 
-                case ReplayAction.Play:
+                case ReplayControlAction.Play:
                     Resume();
                     break;
 
-                case ReplayAction.Resume:
+                case ReplayControlAction.Resume:
                     Resume();
                     break;
 
-                case ReplayAction.Pause:
+                case ReplayControlAction.Pause:
 
                     //mutex.WaitOne();
 
@@ -101,24 +101,24 @@ namespace UdeS.Promoscience.Replays
 
                     break;
 
-                case ReplayAction.Slide:
+                case ReplayControlAction.Slide:
 
 
 
                     break;
 
 
-                case ReplayAction.Next:
+                case ReplayControlAction.Next:
 
 
                     break;
 
-                case ReplayAction.Previous:
+                case ReplayControlAction.Previous:
 
 
                     break;
 
-                case ReplayAction.Stop:
+                case ReplayControlAction.Stop:
 
                     //mutex.WaitOne();
 
@@ -148,12 +148,12 @@ namespace UdeS.Promoscience.Replays
 
 
 
-        public void OnCourseAdded(Course course)
+        public virtual void AddCourse(Course course, bool added)
         {
      
         }
 
-        public void OnCourseRemoved(Course course)
+        public virtual void OnCourseRemoved(Course course)
         {
 
         }

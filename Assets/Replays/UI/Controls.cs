@@ -18,8 +18,8 @@ namespace UdeS.Promoscience.Replays.UI
 
         public Cirrus.Event OnCloseHandler;
 
-        [SerializeField]
-        private GameObject infoPanel;
+        //[SerializeField]
+        //private GameObject infoPanel;
 
         [SerializeField]
         private GameObject navigPanel;
@@ -76,7 +76,7 @@ namespace UdeS.Promoscience.Replays.UI
             set
             {
                 enabled = value;
-                infoPanel.SetActive(enabled);
+                //infoPanel.SetActive(enabled);
                 navigPanel.SetActive(enabled);
             }
         }
@@ -94,13 +94,21 @@ namespace UdeS.Promoscience.Replays.UI
             previousButton.onClick.AddListener(OnPreviousClicked);
             nextButton.onClick.AddListener(OnNextClicked);
             fastfowardButton.onClick.AddListener(OnFastFowardClicked);
-
             slider.onValueChanged.AddListener(OnSliderMoved);           
 
             playbackOptions.OnMoveIndexChangedHandler += OnProgress;
             playbackOptions.OnSequenceFinishedHandler += OnReplaySequenceFinished;            
             playbackOptions.OnMoveCountSetHandler += OnSequenceChanged;
             playbackOptions.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
+        }
+
+
+        public void OnDestroy()
+        {
+            playbackOptions.OnMoveIndexChangedHandler -= OnProgress;
+            playbackOptions.OnSequenceFinishedHandler -= OnReplaySequenceFinished;
+            playbackOptions.OnMoveCountSetHandler -= OnSequenceChanged;
+            playbackOptions.OnPlaybackSpeedHandler -= OnPlaybackSpeedChanged;
         }
 
         public void OnPlaybackSpeedChanged(float value)
@@ -140,13 +148,13 @@ namespace UdeS.Promoscience.Replays.UI
             {
                 isPlaying = true;
                 playImage.sprite = stopSprite;
-                playbackOptions.SendAction(ReplayAction.Play);
+                playbackOptions.SendAction(ReplayControlAction.Play);
             }
             else
             {
                 isPlaying = false;
                 playImage.sprite = playSprite;
-                playbackOptions.SendAction(ReplayAction.Stop);
+                playbackOptions.SendAction(ReplayControlAction.Stop);
             }
         }
 
@@ -156,31 +164,31 @@ namespace UdeS.Promoscience.Replays.UI
             {
                 isPaused = true;
                 playImage.sprite = playSprite;
-                playbackOptions.SendAction(ReplayAction.Pause);
+                playbackOptions.SendAction(ReplayControlAction.Pause);
             }
             else
             {
                 isPaused = false;
                 playImage.sprite = stopSprite;
-                playbackOptions.SendAction(ReplayAction.Resume);
+                playbackOptions.SendAction(ReplayControlAction.Resume);
             }
         }
 
         public void OnPreviousClicked()
         {
-            playbackOptions.SendAction(ReplayAction.Previous);
+            playbackOptions.SendAction(ReplayControlAction.Previous);
         }
 
         public void OnNextClicked()
         {
-            playbackOptions.SendAction(ReplayAction.Next);
+            playbackOptions.SendAction(ReplayControlAction.Next);
         }
 
         public void OnSliderMoved(float value)
         {
             if (sendSliderEvent)
             {
-                playbackOptions.SendAction(ReplayAction.Slide, Mathf.RoundToInt(value));
+                playbackOptions.SendAction(ReplayControlAction.Slide, Mathf.RoundToInt(value));
             }
 
             sendSliderEvent = true;

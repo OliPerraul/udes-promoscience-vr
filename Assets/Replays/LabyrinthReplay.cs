@@ -48,9 +48,12 @@ namespace UdeS.Promoscience.Replays
             this.controller = controller;// replay;
             this.labyrinthData = labyrinth;
 
-            controller.OnActionHandler += OnReplayAction;
-            controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
-            controller.OnCourseSelectedHandler += OnCourseSelected;
+            //controller.OnActionHandler += OnReplayAction;
+            //controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
+            controller.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+            controller.IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
+            controller.IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
+            //controller.OnCourseAddedHandler += OnCourseAdded;
         }
 
         public LabyrinthReplay(
@@ -63,9 +66,12 @@ namespace UdeS.Promoscience.Replays
             this.controller = controller;
             this.labyrinth = labyrinth;
 
-            controller.OnActionHandler += OnReplayAction;
-            controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
-            controller.OnCourseSelectedHandler += OnCourseSelected;
+            //controller.OnActionHandler += OnReplayAction;
+            //controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
+            controller.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+            controller.IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
+            controller.IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
+            //controller.OnCourseAddedHandler += OnCourseAdded;
         }
 
         public override void Start()
@@ -90,7 +96,7 @@ namespace UdeS.Promoscience.Replays
                 labyrinth.gameObject.SetActive(true);
             }
 
-            ReplayManager.Instance.ViewRawImage.texture = labyrinth.Camera.RenderTexture;
+            UI.ReplayDisplay.Instance.ViewRawImage.texture = labyrinth.Camera.RenderTexture;
 
             lposition = labyrinth.GetLabyrithStartPosition();
 
@@ -100,7 +106,7 @@ namespace UdeS.Promoscience.Replays
 
             foreach (Course course in courses)
             {
-                OnCourseAdded(course);
+                AddCourse(course, true);
             }
 
             controller.PlaybackSpeed = 2f;
@@ -179,7 +185,12 @@ namespace UdeS.Promoscience.Replays
 
             foreach (var sq in activeSequences)
             {
-                if (sq.WithinBounds) sq.Next();
+                if (sq.WithinBounds)
+                {
+                    sq.Next();
+                    sq.UpdateArrowHead();
+                }
+
             }
 
             controller.GlobalMoveIndex++;
@@ -201,7 +212,11 @@ namespace UdeS.Promoscience.Replays
 
             foreach (var sq in activeSequences)
             {
-                if (sq.WithinBounds) sq.Previous();
+                if (sq.WithinBounds)
+                {
+                    sq.Previous();
+                    sq.UpdateArrowHead();
+                }
             }
         }
 
@@ -218,10 +233,11 @@ namespace UdeS.Promoscience.Replays
             foreach (var sq in activeSequences)
             {
                 sq.Move(target);
+                sq.UpdateArrowHead();
             }
         }
 
-        public virtual void Pause()
+        public override void Pause()
         {
             if (!isPlaying)
                 return;
@@ -241,7 +257,7 @@ namespace UdeS.Promoscience.Replays
             isPlaying = false;
         }
 
-        public virtual void Stop()
+        public override void Stop()
         {
             foreach (var sq in algorithmSequences.Values)
             {
@@ -288,41 +304,55 @@ namespace UdeS.Promoscience.Replays
 
         }
 
-        public virtual void OnReplayAction(ReplayAction action, params object[] args)
+        public void OnGreyBoxToggled(bool toggled)
+        {
+            EnableGreybox(toggled);
+        }
+
+        public void OnAlgorithmToggled(bool toggled)
+        {
+            EnableDirty(toggled);
+        }
+
+        public void OnCourseToggled(Course course, bool enabled)
+        {
+            playerSequences[course.Id].gameObject.SetActive(enabled);
+
+            if (!enabled)
+            {
+                activeSequences.Remove(playerSequences[course.Id]);
+            }
+            else
+            {
+                activeSequences.Add(playerSequences[course.Id]);
+            }
+
+            if (activeSequences.Count != 0)
+            {
+                // Adjust move count to biggest sequence
+                TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
+                Move(Mathf.Clamp(controller.GlobalMoveIndex, 0, controller.GlobalMoveCount));
+
+                AdjustOffsets();
+            }
+        }
+
+
+        public override void OnReplayAction(ReplayControlAction action, params object[] args)
         {
             Course course;
 
             switch (action)
             {
-                case ReplayAction.ToggleOptions:
-                    break;
-
-                case ReplayAction.ExitReplay:
-                    Clear();
-                    break;
-
-                // TODO: Handle play/ stop from replay object and not sequences
-                // to prevent synch issues
-                case ReplayAction.ToggleAlgorithm:
-                    if (args.Length == 0)
-                        EnableDirty(!isDirtyToggled);
-                    else
-                        EnableDirty((bool)args[0]);
-                    break;
-
-                case ReplayAction.ToggleGreyboxLabyrinth:
-                    EnableGreybox(!isGreyboxToggled);
-                    break;
-
-                case ReplayAction.Play:
+                case ReplayControlAction.Play:
                     Resume();
                     break;
 
-                case ReplayAction.Resume:
+                case ReplayControlAction.Resume:
                     Resume();
                     break;
 
-                case ReplayAction.Pause:
+                case ReplayControlAction.Pause:
 
                     //mutex.WaitOne();
 
@@ -332,7 +362,7 @@ namespace UdeS.Promoscience.Replays
 
                     break;
 
-                case ReplayAction.Slide:
+                case ReplayControlAction.Slide:
 
                     mutex.WaitOne();
 
@@ -344,7 +374,7 @@ namespace UdeS.Promoscience.Replays
                     break;
 
 
-                case ReplayAction.Next:
+                case ReplayControlAction.Next:
 
                     mutex.WaitOne();
 
@@ -354,7 +384,7 @@ namespace UdeS.Promoscience.Replays
 
                     break;
 
-                case ReplayAction.Previous:
+                case ReplayControlAction.Previous:
 
                     mutex.WaitOne();
 
@@ -364,7 +394,7 @@ namespace UdeS.Promoscience.Replays
 
                     break;
 
-                case ReplayAction.Stop:
+                case ReplayControlAction.Stop:
 
                     //mutex.WaitOne();
 
@@ -372,31 +402,6 @@ namespace UdeS.Promoscience.Replays
 
                     //mutex.ReleaseMutex();
 
-                    break;
-
-                case ReplayAction.CourseToggled:
-                    course = (Course)args[0];
-                    bool enabled = (bool)args[1];
-
-                    playerSequences[course.Id].gameObject.SetActive(enabled);
-
-                    if (!enabled)
-                    {
-                        activeSequences.Remove(playerSequences[course.Id]);
-                    }
-                    else
-                    {
-                        activeSequences.Add(playerSequences[course.Id]);
-                    }
-
-                    if (activeSequences.Count != 0)
-                    {
-                        // Adjust move count to biggest sequence
-                        TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
-                        Move(Mathf.Clamp(controller.GlobalMoveIndex, 0, controller.GlobalMoveCount));
-
-                        AdjustOffsets();
-                    }
                     break;
             }
         }
@@ -444,7 +449,7 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        protected virtual void OnSequenceFinished()
+        protected override void OnSequenceFinished()
         {
             if (controller.OnSequenceFinishedHandler != null)
             {
@@ -452,7 +457,7 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        public virtual void Clear()
+        public override void Clear()
         {
             first = null;
 
@@ -487,51 +492,59 @@ namespace UdeS.Promoscience.Replays
 
         Course first = null;
 
-        public void OnCourseAdded(Course course)
+        public override void AddCourse(Course course, bool added)
         {
-            if (!playerSequences.ContainsKey(course.Id))
+            if (added)
             {
-                var sequence =
-                    Resources.Instance.PlayerSequence.Create(
-                        controller,
-                        course,
-                        labyrinth,
-                        lposition);
 
-                playerSequences.Add(course.Id, sequence);
-
-                activeSequences.Add(sequence);
-
-                TrySetMoveCount(sequence.LocalMoveCount);
-
-                if (!algorithmSequences.ContainsKey(course.Algorithm.Id))
+                if (!playerSequences.ContainsKey(course.Id))
                 {
-                    var algorithmSeq =
-                        Resources.Instance.AlgorithmSequence.Create(
+                    var sequence =
+                        Resources.Instance.PlayerSequence.Create(
                             controller,
-                            labyrinth,
                             course,
-                            lposition
-                            );
+                            labyrinth,
+                            lposition);
 
-                    algorithmSequences.Add(course.Algorithm.Id, algorithmSeq);
+                    playerSequences.Add(course.Id, sequence);
 
-                    TrySetMoveCount(algorithmSeq.LocalMoveCount);
+                    activeSequences.Add(sequence);
+
+                    TrySetMoveCount(sequence.LocalMoveCount);
+
+                    if (!algorithmSequences.ContainsKey(course.Algorithm.Id))
+                    {
+                        var algorithmSeq =
+                            Resources.Instance.AlgorithmSequence.Create(
+                                controller,
+                                labyrinth,
+                                course,
+                                lposition
+                                );
+
+                        algorithmSequences.Add(course.Algorithm.Id, algorithmSeq);
+
+                        TrySetMoveCount(algorithmSeq.LocalMoveCount);
+                    }
+
+                    AdjustOffsets();
+
+                    controller.OnCourseAddedHandler?.Invoke(course, true);
+
+                    if (first == null)
+                    {
+                        first = course;
+                        controller.CurrentCourse.Value = course;
+                    }
                 }
-
-                AdjustOffsets();
-
-                controller.SendAction(ReplayAction.AddCourse, true, course);
-
-                if (first == null)
-                {
-                    first = course;
-                    controller.CurrentCourse = course;
-                }
+            }
+            else
+            {
+                OnCourseRemoved(course);
             }
         }
 
-        public void OnCourseRemoved(Course course)
+        public override void OnCourseRemoved(Course course)
         {
             activeSequences.Remove(playerSequences[course.Id]);
             playerSequences.Remove(course.Id);
@@ -540,7 +553,7 @@ namespace UdeS.Promoscience.Replays
 
             AdjustOffsets();
 
-            controller.SendAction(ReplayAction.AddCourse, false, course);
+            controller.OnCourseAddedHandler?.Invoke(course, false);
         }
     }
 }

@@ -6,30 +6,35 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class SequencePopup : MonoBehaviour
+    public class SelectedSequenceDisplay : MonoBehaviour
     {
         [SerializeField]
         private ReplayManagerAsset replayOptions;
 
-        //[SerializeField]
-        //private ScriptableServerGameInformation server;
+        [SerializeField]
+        private UnityEngine.UI.Text teamName;
 
         [SerializeField]
-        private UnityEngine.UI.Text scoreText;
+        private UnityEngine.UI.Image teamIcon;
 
         [SerializeField]
-        private UnityEngine.UI.Text respectText;
+        private UnityEngine.UI.Text stepCountText;
 
         [SerializeField]
-        private UnityEngine.UI.Image image;
+        private UnityEngine.UI.Text respectPercentText;
 
+        [SerializeField]
+        private UnityEngine.UI.Text errorCountText;
+
+        [SerializeField]
+        private UnityEngine.UI.Text elapsedTimeText;
 
         private Course course;
 
         
-        public void OnEnable()
+        public void Awake()
         { 
-            replayOptions.OnCourseSelectedHandler += OnCourseSelected;
+            replayOptions.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
         }
 
 
@@ -49,7 +54,7 @@ namespace UdeS.Promoscience.Replays.UI
 
             course = newCourse;
 
-            image.color = newCourse.Team.TeamColor.SetA(image.color.a);
+            teamIcon.color = newCourse.Team.TeamColor.SetA(teamIcon.color.a);
             newCourse.OnPlayerSequenceProgressedHandler += OnCourseActionIndexChanged;
 
             OnCourseActionIndexChanged();
@@ -63,26 +68,8 @@ namespace UdeS.Promoscience.Replays.UI
                 return;
             }
 
-            respectText.text = course.PreviousActionValue.respect.ToString("P0");
-            scoreText.text = course.PreviousActionValue.error.ToString();
+            respectPercentText.text = course.PreviousActionValue.respect.ToString("P0");
+            stepCountText.text = course.PreviousActionValue.error.ToString();
         }
-
-
-        //public void OnGameStateChanged()
-        //{
-        //    switch (server.GameState)
-        //    {
-        //        case Promoscience.Utils.ServerGameState.SimpleReplay:
-
-        //            if (server.Courses.Count != 0)
-        //            {
-        //                OnSequenceSelected(server.Courses.First());
-        //            }
-
-        //            break;
-        //    }
-        //}
-
-
     }
 }

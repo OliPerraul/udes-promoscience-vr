@@ -24,21 +24,21 @@ namespace UdeS.Promoscience.Replays.UI
         private UnityEngine.UI.Button algorithmPrevious;
 
 
-        [SerializeField]
-        private LocalizeInlineString algorithmStepsString = new LocalizeInlineString("Number of steps: ");
+        //[SerializeField]
+        //private LocalizeInlineString algorithmStepsString = new LocalizeInlineString("Number of steps: ");
 
         [SerializeField]
         protected Controls controls;
 
-        [SerializeField]
-        [UnityEngine.Serialization.FormerlySerializedAs("openButton")]
-        protected UnityEngine.UI.Button infoButton;
+        //[SerializeField]
+        //[UnityEngine.Serialization.FormerlySerializedAs("openButton")]
+        //protected UnityEngine.UI.Button infoButton;
 
         [SerializeField]
         protected UnityEngine.UI.Button closeButton;
 
-        [SerializeField]
-        protected UnityEngine.UI.Button exitButton;
+        //[SerializeField]
+        //protected UnityEngine.UI.Button exitButton;
 
         [SerializeField]
         protected UnityEngine.UI.Button overlayButton;
@@ -53,8 +53,8 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         protected GameObject sequenceToggle;
 
-        [SerializeField]
-        protected SequencePopup sequencePopup;
+        //[SerializeField]
+        //protected SelectedSequenceDisplay sequencePopup;
 
         [SerializeField]
         private GameObject overlay;
@@ -66,12 +66,11 @@ namespace UdeS.Promoscience.Replays.UI
 
             //exitButton.onClick.AddListener(() => Server.Instance.StartReplaySelect());
             overlayButton.onClick.AddListener(() => overlay.SetActive(!overlay.activeSelf));
-            greyboxButton.onClick.AddListener(() => replayOptions.SendAction(ReplayAction.ToggleGreyboxLabyrinth));
-            algorithmButton.onClick.AddListener(() => replayOptions.SendAction(ReplayAction.ToggleAlgorithm));
+            greyboxButton.onClick.AddListener(() => replayOptions.IsToggleGreyboxLabyrinth.Value = !replayOptions.IsToggleGreyboxLabyrinth.Value);
+            algorithmButton.onClick.AddListener(() => replayOptions.IsToggleAlgorithm.Value = !replayOptions.IsToggleAlgorithm.Value);
 
-            replayOptions.OnActionHandler += OnReplayAction;
             replayOptions.OnMoveIndexChangedHandler += OnMoveIndexChanged;
-            replayOptions.OnCourseSelectedHandler += OnCourseSelected;
+            replayOptions.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
 
             Server.Instance.State.OnValueChangedHandler += OnGameStateChanged;
 
@@ -81,7 +80,7 @@ namespace UdeS.Promoscience.Replays.UI
         public void OnMoveIndexChanged(int idx)
         {
             if(course != null)
-            algorithmStepsText.text = algorithmStepsString.Value + course.CurrentAlgorithmMoveIndex;
+            algorithmStepsText.text = course.CurrentAlgorithmMoveIndex.ToString();
         }
 
         public void EnableAlgorithm(bool enable)
@@ -93,28 +92,12 @@ namespace UdeS.Promoscience.Replays.UI
 
         private Course course = null;
 
-        public void OnReplayAction(ReplayAction action, params object[] args)
-        {
-            switch (action)
-            {
-                case ReplayAction.ToggleAlgorithm:
-                    if (args.Length == 0)
-                        EnableAlgorithm(!isAlgorithmEnabled);
-                    else
-                        EnableAlgorithm((bool)args[0]);
-                    break;
-
-                case ReplayAction.CourseToggled:
-                    break;
-            }
-        }
-
 
         public void OnCourseSelected(Course course)
         {
             this.course = course;
             algorithmNameText.text = course.Algorithm.Name;
-            algorithmStepsText.text = algorithmStepsString.Value + course.CurrentAlgorithmMoveIndex;
+            algorithmStepsText.text = course.CurrentAlgorithmMoveIndex.ToString();
         }
 
 
@@ -132,10 +115,6 @@ namespace UdeS.Promoscience.Replays.UI
             }
         }
 
-        public void OnAlgorithmClicked()
-        {
-            replayOptions.SendAction(ReplayAction.ToggleAlgorithm);
-        }
 
         private bool _enabled = false;
 

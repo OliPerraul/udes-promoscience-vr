@@ -42,16 +42,16 @@ public struct LanConnnectionInfo
     }
 }
 
-public class ConnectionDiscovery : NetworkDiscovery
+public class NetworkDiscoveryFix : NetworkDiscovery
 {
-    private ConnectionDiscovery instance;
+    private NetworkDiscoveryFix instance;
 
-    public ConnectionDiscovery Instance
+    public NetworkDiscoveryFix Instance
     {
         get
         {
             if (instance == null)
-                instance = FindObjectOfType<ConnectionDiscovery>();
+                instance = FindObjectOfType<NetworkDiscoveryFix>();
 
             return instance;
         }
@@ -65,8 +65,6 @@ public class ConnectionDiscovery : NetworkDiscovery
 
     private AndroidJavaObject multicastLock;
 
-    private Dictionary<LanConnnectionInfo, float> lanAddresses = new Dictionary<LanConnnectionInfo, float>();
-
     /// <summary>
     /// Starts broadcasting the connection parameters.
     /// </summary>
@@ -77,6 +75,11 @@ public class ConnectionDiscovery : NetworkDiscovery
         {
             if (Application.platform == RuntimePlatform.Android)
                 MulticastLock();
+            
+            if (NetworkTransport.IsStarted && NetworkTransport.IsBroadcastDiscoveryRunning())
+                NetworkTransport.StopBroadcastDiscovery();
+            NetworkTransport.Shutdown();          
+            NetworkTransport.Init();
 
             broadcastData = gameName + ";" + hostName;
             broadcastData = broadcastData.PadRight(20, '#');
@@ -95,12 +98,16 @@ public class ConnectionDiscovery : NetworkDiscovery
         {
             if (Application.platform == RuntimePlatform.Android)
                 MulticastLock();
+            if (NetworkTransport.IsStarted && NetworkTransport.IsBroadcastDiscoveryRunning())
+                NetworkTransport.StopBroadcastDiscovery();
+            
+            NetworkTransport.Shutdown();
+            NetworkTransport.Init();
 
-            base.Initialize();
-            base.StartAsClient();
+            Initialize();
+            StartAsClient();
 
             isListening = true;
-            StartCoroutine(CleanupExpiredEntries());
         }
     }
 
@@ -115,74 +122,18 @@ public class ConnectionDiscovery : NetworkDiscovery
                 multicastLock.Call("release");
 
             base.StopBroadcast();
+
             isBroadcasting = false;
             isListening = false;
-            lanAddresses.Clear();
+
+            if (NetworkTransport.IsStarted && NetworkTransport.IsBroadcastDiscoveryRunning())
+                NetworkTransport.StopBroadcastDiscovery();
+            NetworkTransport.Shutdown();
+
         }
     }
 
-    /// <summary>
-    /// Callback when new broadcastData is received.
-    /// </summary>
-    /// <param name="fromAddress">The address we receive from.</param>
-    /// <param name="data">Additional data (game name)</param>
-    //public override void OnReceivedBroadcast(string fromAddress, string data)
-    //{
-    //    base.OnReceivedBroadcast(fromAddress, data);
-    //    Debug.Log("Received broadcast: " + fromAddress + ", " + data);
 
-    //    data = data.Replace("#", ""); // Remove padded chars
-
-    //    LanConnnectionInfo info = new LanConnnectionInfo(fromAddress, data);
-    //    Debug.Log(info.gameName + ", " + info.hostName);
-
-    //    if (!lanAddresses.ContainsKey(info))
-    //    {
-    //        lanAddresses.Add(info, Time.time + EXPIRE_TIMEOUT);
-    //        UpdateMatchInfo();
-    //    }
-    //    else
-    //    {
-    //        lanAddresses[info] = Time.time + EXPIRE_TIMEOUT;
-    //    }
-    //}
-
-    /// <summary>
-    /// Used to clean up expired entries in our list of available games.
-    /// Uses a timeout to delete it from the list if we don't receive the data again in the specified time window.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator CleanupExpiredEntries()
-    {
-        while (true)
-        {
-            bool changed = false;
-
-            var keys = lanAddresses.Keys.ToList();
-            foreach (var key in keys)
-            {
-                if (lanAddresses[key] <= Time.time)
-                {
-                    lanAddresses.Remove(key);
-                    changed = true;
-                }
-            }
-
-            if (changed)
-                UpdateMatchInfo();
-
-            yield return new WaitForSeconds(EXPIRE_TIMEOUT);
-        }
-    }
-
-    /// <summary>
-    /// Updates the UI list with the available games.
-    /// </summary>
-    private void UpdateMatchInfo()
-    {
-        if (SceneManager.GetActiveScene().name == "JoingameScene")
-            AvailableGamesList.HandleNewGamesList(lanAddresses.Keys.ToList());
-    }
 
     /// <summary>
     /// If you have problems with multicast lock on android, this method can help you

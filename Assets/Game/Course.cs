@@ -17,7 +17,7 @@ using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience
 {
-    public delegate void OnCourseEvent(Course course);
+    //public delegate void OnCourseEvent(Course course);
 
     public enum CourseStatus
     {
@@ -125,7 +125,7 @@ namespace UdeS.Promoscience
 
         public string[] ActionValues;
 
-        public OnCourseEvent OnActionIndexChangedHandler;
+        public Cirrus.Event<Course> OnActionIndexChangedHandler;
 
         public Event OnPlayerSequenceProgressedHandler;
 

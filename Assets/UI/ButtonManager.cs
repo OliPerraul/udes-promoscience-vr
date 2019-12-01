@@ -26,12 +26,16 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         public UnityEngine.UI.Button InfoButton;
 
+        [SerializeField]
+        private Cirrus.SceneAsset StartScene;
+
         public Cirrus.ObservableValue<ButtonCanvasFlag> Flags = new Cirrus.ObservableValue<ButtonCanvasFlag>();
 
         public void Awake()
         {
             Flags.OnValueChangedHandler += OnFlagsChanged;
             Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
+            ExitButton.onClick.AddListener(OnExitClicked);
         }
 
 
@@ -42,9 +46,27 @@ namespace UdeS.Promoscience.UI
             InfoButton.gameObject.SetActive((flags & ButtonCanvasFlag.Info) != 0);
         }
 
+        public void OnExitClicked()
+        {
+            switch (Server.Instance.State.Value)
+            {
+                //case ServerState.LabyrinthReplay:
+                //    //Flags.Set(ButtonCanvasFlag.Exit | ButtonCanvasFlag.Info);
+                //    break;
 
+                //case ServerState.LevelSelect:
+                //    Flags.Set(ButtonCanvasFlag.Random | ButtonCanvasFlag.Exit);
+                //    break;
 
+                //case ServerState.ReplaySelect:
+                //case ServerState.Round:
+                //case ServerState.Quickplay:
+                case ServerState.Lobby:
+                    StartScene.Load();
+                    break;
 
+            }
+        }
 
         public void OnServerStateChanged(ServerState state)
         {

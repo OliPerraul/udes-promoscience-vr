@@ -6,11 +6,16 @@ using UnityEngine.Networking;
 namespace UdeS.Promoscience.Network
 {
 
-    public class ServerNetworkDiscovery : ConnectionDiscovery
+    public class ServerNetworkDiscovery : NetworkDiscoveryFix
     {
         void Start()
         {
             StartBroadcasting("algorinthe", "HELLO");
+        }
+
+        private void OnDestroy()
+        {
+            Stop();
         }
     }
 }

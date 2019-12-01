@@ -20,10 +20,6 @@ namespace UdeS.Promoscience.Replays.UI
         public override BaseSection SectionTemplate => sectionTemplate;
 
         [SerializeField]
-        private UnityEngine.UI.Button buttonExit;
-
-
-        [SerializeField]
         private UnityEngine.UI.Button buttonAdd;
 
 
@@ -101,17 +97,17 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-        public virtual void OnReplayAction(ReplayAction action, params object[] args)
+        public virtual void OnReplayAction(ReplayControlAction action, params object[] args)
         {
-            switch (action)
-            {
-                case ReplayAction.ExitReplay:
+            //switch (action)
+            //{
+            //    case ReplayAction.ExitReplay:
 
-                    Enabled = true;
-                    Server.Instance.State.Value = ServerState.LevelSelect;
+            //        Enabled = true;
+            //        Server.Instance.State.Value = ServerState.LevelSelect;
 
-                    break;
-            }
+            //        break;
+            //}
         }
 
         public override void Clear()

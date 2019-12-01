@@ -75,17 +75,17 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override BaseSection CurrentSection => throw new System.NotImplementedException();
 
-        public virtual void OnReplayAction(Replays.ReplayAction action, params object[] args)
+        public virtual void OnReplayAction(Replays.ReplayControlAction action, params object[] args)
         {
-            switch (action)
-            {
-                case Replays.ReplayAction.ExitReplay:
+            //switch (action)
+            //{
+            //    case Replays.ReplayAction.ExitReplay:
 
-                    Enabled = true;
-                    Server.Instance.State.Value = ServerState.LevelSelect;
+            //        Enabled = true;
+            //        Server.Instance.State.Value = ServerState.LevelSelect;
 
-                    break;
-            }
+            //        break;
+            //}
         }
 
         public override void AddLabyrinth(int i)

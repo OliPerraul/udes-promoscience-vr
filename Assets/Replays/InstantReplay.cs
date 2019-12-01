@@ -24,9 +24,7 @@ namespace UdeS.Promoscience.Replays
 
             Server.Instance.State.Set(ServerState.LabyrinthReplay);
             
-            controller.SendAction(ReplayAction.ToggleOptions, false);
-
-            controller.SendAction(ReplayAction.ToggleAlgorithm, true);
+            controller.IsToggleAlgorithm.Set(true);
 
             controller.PlaybackSpeed = 2f;
         }

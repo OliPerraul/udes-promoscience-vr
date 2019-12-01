@@ -7,7 +7,7 @@ using Cirrus;
 
 namespace UdeS.Promoscience.Replays
 {
-    public enum ReplayAction
+    public enum ReplayControlAction
     {
         Previous,
         Next,
@@ -17,21 +17,19 @@ namespace UdeS.Promoscience.Replays
         Resume,
         Slide,
 
-        ToggleOptions,
-        ToggleAlgorithm,
-        ToggleGreyboxLabyrinth,
+        //ToggleOptions,
 
-        SelectLabyrinth,
-        SelectReplay,
-        ExitReplay,       
+        //SelectLabyrinth,
+        //SelectReplay,
+        //ExitReplay,       
 
-        AddCourse,
-        CourseToggled,
+        //AddCourse,
+        //CourseToggled,
 
         Reset,
     }
 
-    public delegate void OnAction(ReplayAction action, params object[] args);
+    public delegate void OnAction(ReplayControlAction action, params object[] args);
 
     public class ReplayManagerAsset : ScriptableObject
     {
@@ -42,6 +40,17 @@ namespace UdeS.Promoscience.Replays
         public OnAction OnActionHandler;
 
         private float playbackSpeed = 1;
+
+
+        public Event<Course, bool> OnCourseAddedHandler;
+
+        public Event<Course, bool> OnCourseToggledHandler;
+
+        public ObservableValue<bool> IsToggleAlgorithm = new ObservableValue<bool>();
+
+        public ObservableValue<bool> IsToggleGreyboxLabyrinth = new ObservableValue<bool>();
+
+
 
         public float PlaybackSpeed
         {
@@ -70,25 +79,7 @@ namespace UdeS.Promoscience.Replays
 
         public IntEvent OnMoveIndexChangedHandler;
 
-        private Course course;
-
-        public OnCourseEvent OnCourseSelectedHandler;
-
-        public Course CurrentCourse
-        {
-            set
-            {
-                course = value;
-                if (OnCourseSelectedHandler != null)
-                    OnCourseSelectedHandler.Invoke(course);
-            }
-
-            get
-            {
-                return course;
-            }
-        }
-                
+        public ObservableValue<Course> CurrentCourse = new ObservableValue<Course>();
 
         private int index = 0;
 
@@ -178,7 +169,7 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        public void SendAction(ReplayAction action, params object[] args)
+        public void SendAction(ReplayControlAction action, params object[] args)
         {
             if (OnActionHandler != null)
             {

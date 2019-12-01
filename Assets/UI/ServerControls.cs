@@ -159,8 +159,9 @@ namespace UdeS.Promoscience.Network.UI
                 .gameObject.SetActive((flags & ServerControlsFlag.NextRound) != 0);
             quickPlayButton?
                 .gameObject.SetActive((flags & ServerControlsFlag.QuickPlay) != 0);
-            restartRoundButton?
-                .gameObject.SetActive((flags & ServerControlsFlag.RestartRound) != 0);
+            //TODO
+            //restartRoundButton?
+            //    .gameObject.SetActive((flags & ServerControlsFlag.RestartRound) != 0);
         }
 
     }

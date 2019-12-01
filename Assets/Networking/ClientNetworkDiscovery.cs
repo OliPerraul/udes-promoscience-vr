@@ -7,7 +7,7 @@ using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience.Network
 {
-    public class ClientNetworkDiscovery : ConnectionDiscovery
+    public class ClientNetworkDiscovery : NetworkDiscoveryFix
     {
         [SerializeField]
         ScriptableString serverIpAdress;

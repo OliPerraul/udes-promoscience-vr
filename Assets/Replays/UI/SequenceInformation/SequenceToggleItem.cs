@@ -46,20 +46,12 @@ namespace UdeS.Promoscience.Replays.UI
         public void Awake()
         {
             toggle.onValueChanged.AddListener(OnToggle);
-            button.onClick.AddListener(OnClicked);
+            button.onClick.AddListener(() => replayController.CurrentCourse.Value = course);
         }
-
 
         public void OnToggle(bool enabled)
         {
-            replayController.SendAction(ReplayAction.CourseToggled, course, enabled);
+            replayController.OnCourseToggledHandler?.Invoke(course, enabled);
         }
-
-        public void OnClicked()
-        {
-            replayController.CurrentCourse = course;
-        }
-
-
     }
 }

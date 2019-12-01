@@ -11,17 +11,6 @@ namespace UdeS.Promoscience.Replays
     public class ReplayManager : Cirrus.BaseSingleton<ReplayManager>
     {
         [SerializeField]
-        private GameObject sidebar;
-
-        [SerializeField]
-        private GameObject display;
-
-        [SerializeField]
-        private UnityEngine.UI.RawImage viewRawImage;
-
-        public UnityEngine.UI.RawImage ViewRawImage => viewRawImage;
-
-        [SerializeField]
         private ReplayManagerAsset asset;
 
         private BaseReplay CurrentReplay;
@@ -54,17 +43,17 @@ namespace UdeS.Promoscience.Replays
 
         public void OnGameStateValueChanged(ServerState state)
         {
-            switch (state)
-            {
-                case ServerState.LabyrinthReplay:
-                    display.SetActive(true);
-                    //viewRawImage.texture = Server.Instance.CurrentLabyrinth.Camera.RenderTexture;
-                    break;
+            //switch (state)
+            //{
+            //    case ServerState.LabyrinthReplay:
+            //        display.SetActive(true);
+            //        //viewRawImage.texture = Server.Instance.CurrentLabyrinth.Camera.RenderTexture;
+            //        break;
 
-                default:
-                    display.SetActive(false);
-                    break;
-            }
+            //    default:
+            //        display.SetActive(false);
+            //        break;
+            //}
 
         }
 
