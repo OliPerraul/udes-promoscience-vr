@@ -21,13 +21,16 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
+        // Up, right, down left
+
+
         public override List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth)
         {
             List<Tile> algorithmSteps = new List<Tile>();
 
             bool[,] alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
 
-            bool asReachedTheEnd = false;
+            bool hasReachedTheEnd = false;
 
             int direction = labyrinth.StartDirection;
             Vector2Int position = labyrinth.StartPos;
@@ -35,7 +38,7 @@ namespace UdeS.Promoscience.Algorithms
             algorithmSteps.Add(new Tile(position.x, position.y, TileColor.Yellow));
             alreadyVisitedTile[position.x, position.y] = true;
 
-            while (!asReachedTheEnd)
+            while (!hasReachedTheEnd)
             {
                 bool[] isDirectionWalkable = new bool[4];
                 isDirectionWalkable[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]);
@@ -75,19 +78,159 @@ namespace UdeS.Promoscience.Algorithms
 
                 if (position.x == endPosition.x && position.y == endPosition.y)
                 {
-                    asReachedTheEnd = true;
+                    hasReachedTheEnd = true;
                 }
 
-                TileColor tileColor = asReachedTheEnd || isDirectionWalkableAndNotVisited[0] || isDirectionWalkableAndNotVisited[1] || isDirectionWalkableAndNotVisited[2] || isDirectionWalkableAndNotVisited[3] ? TileColor.Yellow : TileColor.Red;
+                TileColor tileColor = hasReachedTheEnd || isDirectionWalkableAndNotVisited[0] || isDirectionWalkableAndNotVisited[1] || isDirectionWalkableAndNotVisited[2] || isDirectionWalkableAndNotVisited[3] ? TileColor.Yellow : TileColor.Red;
 
                 algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
 
                 alreadyVisitedTile[position.x, position.y] = true;
-
-
             }
 
             return algorithmSteps;
+        }
+
+        // Up, right down, left
+
+
+
+        public override bool GetNextStep(
+            AlgorithmProgressState state, 
+            Labyrinths.IData labyrinth, 
+            out Tile tile)
+        {
+            tile = new Tile();
+
+            Direction[] prioritizedDirections = new Direction[4];
+
+            if (state.direction == (int)Direction.Up)
+            {
+                prioritizedDirections = 
+                    new Direction []{
+                        Direction.Right,
+                        Direction.Up,
+                        Direction.Left,
+                        Direction.Down};
+            }
+            else if (state.direction == (int)Direction.Down)
+            {
+                prioritizedDirections =
+                    new Direction[]{
+                        Direction.Left,
+                        Direction.Down,
+                        Direction.Right,
+                        Direction.Up};
+            }
+            else if (state.direction == (int)Direction.Left)
+            {
+                prioritizedDirections =
+                    new Direction[]{
+                        Direction.Up,
+                        Direction.Left,
+                        Direction.Down,
+                        Direction.Right};
+            }
+            else if (state.direction == (int)Direction.Right)
+            {
+                prioritizedDirections =
+                    new Direction[]{
+                        Direction.Down,
+                        Direction.Right,
+                        Direction.Up,
+                        Direction.Left};
+            }
+
+            Vector2Int dest = state.position;
+            bool found = false;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (prioritizedDirections[i] == Direction.Up)
+                {
+                    if (labyrinth.GetIsTileWalkable(
+                        dest = Promoscience.Utils.GetMoveDestination(state.position, Direction.Up)) &&
+                        !state.IsAlreadyVisisted(dest))
+                    {
+                        state.direction = (int)Direction.Up;
+                        found = true;
+                        break;
+                    }
+                }
+                else if (prioritizedDirections[i] == Direction.Down)
+                {
+                    if (labyrinth.GetIsTileWalkable(
+                        dest = Promoscience.Utils.GetMoveDestination(state.position, Direction.Down)) &&
+                        !state.IsAlreadyVisisted(dest))
+                    {
+                        state.direction = (int)Direction.Down;
+                        found = true;
+                        break;
+                    }
+                }
+                else if (prioritizedDirections[i] == Direction.Left)
+                {
+                    if (labyrinth.GetIsTileWalkable(
+                        dest = Promoscience.Utils.GetMoveDestination(state.position, Direction.Left)) &&
+                        !state.IsAlreadyVisisted(dest))
+                    {
+                        state.direction = (int)Direction.Left;
+                        found = true;
+                        break;
+                    }
+                }
+                else if (prioritizedDirections[i] == Direction.Right)
+                {
+                    if (labyrinth.GetIsTileWalkable(
+                        dest = Promoscience.Utils.GetMoveDestination(state.position, Direction.Right)) &&
+                        !state.IsAlreadyVisisted(dest))
+                    {
+                        state.direction = (int)Direction.Right;           
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (found)
+            {
+                if (state.lastRemoved != null)
+                {
+                    state.stack.Add(state.lastRemoved);
+                    state.lastRemoved = null;
+                }
+
+                state.stack.Add(new Action { pos = dest, dir = (Direction)state.direction });
+                state.SetVisited(dest);
+                tile = new Tile
+                {
+                    Position = dest,
+                    Color = TileColor.Yellow
+                };
+                state.position = tile.Position;
+
+                state.hasReachedTheEnd = dest == labyrinth.EndPos;
+            }
+            else if (state.stack.Count != 0)
+            {
+                int last = state.stack.Count - 1;
+                tile = new Tile
+                {
+                    Position = state.stack[last].pos,
+                    Color = TileColor.Red
+                };
+
+                state.position = tile.Position;
+                state.direction = (int)Promoscience.Utils.GetOppositeDirection(state.stack[last].dir);
+                state.lastRemoved = state.stack[last];
+                state.stack.RemoveAt(last);
+                
+            }
+            else return true;
+
+
+            return !state.hasReachedTheEnd;
+
         }
     }
 }

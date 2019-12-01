@@ -82,18 +82,13 @@ namespace UdeS.Promoscience.Labyrinths
 
         public TileType[] Tiles2 { get { return Data.Tiles2; } set { Data.Tiles2 = value; } }
 
-        public string Json
-        {
-            get
-            {
-                return Data.Json;
-            }
-        }
-
+        public string Json => Data.Json;
+        
         public bool GetIsTileWalkable(int x, int y)
         {
             return Data.GetIsTileWalkable(x, y);
         }
+
         public bool GetIsTileWalkable(Vector2Int tile)
         {
             return Data.GetIsTileWalkable(tile);

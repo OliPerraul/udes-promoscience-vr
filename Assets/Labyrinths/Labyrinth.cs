@@ -54,7 +54,15 @@ namespace UdeS.Promoscience.Labyrinths
         Corner1,
         Corner2,
         Corner3,
-        WallEnd = Utils.TILE_WALL_END_ID
+        WallEnd = Utils.TILE_WALL_END_ID,
+
+
+
+        DebugStart = 1800,
+        DebugRed,
+        DebugYellow,
+        DebugGrey,
+
     }
 
     public enum Type

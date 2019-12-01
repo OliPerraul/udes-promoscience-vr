@@ -107,7 +107,6 @@ namespace UdeS.Promoscience
                 };
 
                 Courses.Add(course);
-
                 player.ServerCourseId = course.Id;
 
                 SQLiteUtilities.InsertPlayerCourse(

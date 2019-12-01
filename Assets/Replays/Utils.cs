@@ -76,54 +76,5 @@ namespace UdeS.Promoscience.Replays
             return 0;
         }
 
-        public static Direction GetDirection(Vector2Int origin, Vector2Int destination)
-        {
-            if (origin.y < destination.y)
-            {
-                return Direction.Down;
-            }
-            else if (origin.y > destination.y)
-            {
-                return Direction.Up;
-            }
-            else if (origin.x > destination.x)
-            {
-                return Direction.Left;
-            }
-            else
-            {
-                return Direction.Right;
-            }
-        }
-
-        public static bool IsOppositeDirection(Direction direction, Direction other)
-        {
-            switch (direction)
-            {
-                case Direction.Up:
-                    return
-                        other == Direction.Down;// ||
-                                                //other == Direction.Right;
-
-                case Direction.Down:
-                    return
-                        other == Direction.Up;// ||
-                                              //other == Direction.Left;
-
-                case Direction.Left:
-                    return
-                        //other == Direction.Down ||
-                        other == Direction.Right;
-
-                case Direction.Right:
-                    return
-                        //other == Direction.Up ||
-                        other == Direction.Left;
-
-                default:
-                    return false;
-            }
-        }
-
     }
 }

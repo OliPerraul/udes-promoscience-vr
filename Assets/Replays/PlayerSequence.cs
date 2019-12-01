@@ -292,17 +292,17 @@ namespace UdeS.Promoscience.Replays
             bool isBacktrack,
             bool isError = false)
         {
-            Direction direction = Utils.GetDirection(prevlpos, lpos);
+            Direction direction = Promoscience.Utils.GetDirection(prevlpos, lpos);
 
             bool isInversed = false;
 
             Vector3 middle = labyrinth.GetLabyrinthPositionInWorldPosition(lpos);
-            Vector3 origin = middle + Utils.GetTileEdgePositionFromDirection(Utils.GetDirection(lpos, prevlpos));
-            Vector3 destination = middle + Utils.GetTileEdgePositionFromDirection(Utils.GetDirection(lpos, nextlpos));
+            Vector3 origin = middle + Utils.GetTileEdgePositionFromDirection(Promoscience.Utils.GetDirection(lpos, prevlpos));
+            Vector3 destination = middle + Utils.GetTileEdgePositionFromDirection(Promoscience.Utils.GetDirection(lpos, nextlpos));
 
             bool isTurn =
-                Utils.GetDirection(prevlpos, lpos) !=
-                Utils.GetDirection(lpos, nextlpos);
+                Promoscience.Utils.GetDirection(prevlpos, lpos) !=
+                Promoscience.Utils.GetDirection(lpos, nextlpos);
 
             var time = StepTime;
 
@@ -362,7 +362,7 @@ namespace UdeS.Promoscience.Replays
             {
                 if (sgm != null)
                 {
-                    isInversed = Utils.IsOppositeDirection(direction, sgm.Direction);
+                    isInversed = Promoscience.Utils.IsOppositeDirection(direction, sgm.Direction);
                     sgm.gameObject.SetActive(false);
                 }
 

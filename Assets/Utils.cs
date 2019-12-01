@@ -18,8 +18,14 @@ namespace UdeS.Promoscience
     [Serializable]
     public struct Tile
     {
+        [SerializeField]
         public int x;
+
+        [SerializeField]
         public int y;
+
+        [SerializeField]
+        public bool isEndtile; 
 
 
         public TileColor Color
@@ -36,9 +42,11 @@ namespace UdeS.Promoscience
             }
         }            
 
+        [SerializeField]
         public TileColor color;
 
         // TODO private ??
+        [SerializeField]
         public TileColor previousColor;
 
         public TileColor PreviousColor { get { return previousColor; } }
@@ -46,6 +54,7 @@ namespace UdeS.Promoscience
 
         public Tile(int xPosition, int yPosition, TileColor tileColor)
         {
+            isEndtile = false;
             x = xPosition;
             y = yPosition;
             color = tileColor;
@@ -68,7 +77,14 @@ namespace UdeS.Promoscience
 
     }
 
-
+    //NOTE:
+    // XbyDirection
+    // YByDirection
+    // Used everywhere in this game mean the movement in x/y once direction is applied
+    // Usage: 
+    //      position.x = position.x + xByDirection[direction]
+    // TODO repace by:
+    //      position = Utils.MoveInDirection(position, direction)'..
     public enum Direction
     {
         Up = 0,
@@ -249,6 +265,62 @@ namespace UdeS.Promoscience
         {
             return Vector3.Angle(dir1, dir2) < angleThresholdToCheck;
         }
+
+        public static Direction GetDirection(Vector2Int origin, Vector2Int destination)
+        {
+            if (origin.y < destination.y)
+            {
+                return Direction.Down;
+            }
+            else if (origin.y > destination.y)
+            {
+                return Direction.Up;
+            }
+            else if (origin.x > destination.x)
+            {
+                return Direction.Left;
+            }
+            else
+            {
+                return Direction.Right;
+            }
+        }
+
+        public static bool IsOppositeDirection(Direction direction, Direction other)
+        {
+            return GetOppositeDirection(direction) == other;
+        }
+
+
+        public static Direction GetOppositeDirection(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+
+                    return Direction.Down;// ||
+                                          //other == Direction.Right;
+
+                case Direction.Down:
+
+                    return Direction.Up;// ||
+                                        //other == Direction.Left;
+
+                case Direction.Left:
+
+                    //other == Direction.Down ||
+                    return Direction.Right;
+
+                case Direction.Right:
+
+                    //other == Direction.Up ||
+                    return Direction.Left;
+
+                default:
+                    return Direction.Down;
+            }
+        }
+
 
         //returns -1 when to the left, 1 to the right, and 0 for forward/backward
         public static float AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up)

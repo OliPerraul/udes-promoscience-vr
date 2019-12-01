@@ -15,7 +15,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor
     {
 
         [SerializeField]
-        private Tilemap tilemap;
+        public Tilemap tilemap;
 
         [SerializeField]
         private string labyrinthPath;
@@ -26,6 +26,10 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         [SerializeField]
         private UnityEngine.UI.Button exitButton;
 
+
+
+        [SerializeField]
+        public Resource resource;
 
         public virtual void Awake()
         {
@@ -66,30 +70,32 @@ namespace UdeS.Promoscience.Labyrinths.Editor
             controller.State.Set(State.Select);
         }
 
-
+        // TODO
         public void Save()
         {
-            TileBase[] tiles = tilemap.GetTilesBlock(tilemap.cellBounds);
+            //TileBase[] tiles = tilemap.GetTilesBlock(tilemap.cellBounds);
 
-            Resource resource = AssetDatabase.LoadAssetAtPath<Resource>(labyrinthPath);
+            //Resource resource = AssetDatabase.LoadAssetAtPath<Resource>(labyrinthPath);
 
-            EditorUtility.SetDirty(resource);
+            //EditorUtility.SetDirty(resource);
 
-            for (int y = 0; y < tilemap.size.y; y++)
-            {
-                for (int x = 0; x < tilemap.size.x; x++)
-                {
-                    int i = x + tilemap.size.x * y;
+            //for (int y = 0; y < tilemap.size.y; y++)
+            //{
+            //    for (int x = 0; x < tilemap.size.x; x++)
+            //    {
+            //        var tile = tilemap.GetTile<Tile>(new Vector3Int(x, y, 0));
 
-                    var tile = tilemap.GetTile<Tile>(new Vector3Int(x, y, 0));
+                       // BROKEN HERE
+                       // WE NEED TO DO resource.SetTile(x, y)...
+            //        int i = x + tilemap.size.x * y;
 
-                    resource.Tiles2[i] = tile == null ? TileType.Empty : tile.Type;
-                }
-            }
+            //        resource.Tiles2[i] = tile == null ? TileType.Empty : tile.Type;
+            //    }
+            //}
 
-            resource.PopulateStartAndEndPositions();
+            //resource.PopulateStartAndEndPositions();
 
-            EditorApplication.ExecuteMenuItem("File/Save Project");
+            //EditorApplication.ExecuteMenuItem("File/Save Project");
         }
 
         public void Load()
@@ -100,21 +106,33 @@ namespace UdeS.Promoscience.Labyrinths.Editor
 
             labyrinthPath = "Assets" + labyrinthPath.Substring(Application.dataPath.Length);
 
-            Resource resource = AssetDatabase.LoadAssetAtPath<Resource>(labyrinthPath);
+            resource = AssetDatabase.LoadAssetAtPath<Resource>(labyrinthPath);
 
             tilemap.ClearAllTiles();
-
-            for (int i = 0; i < resource.Tiles2.Length; i++)
+            
+            for (int x = 0; x < resource.GetLabyrithXLenght(); x++)
             {
-                if(resource.Tiles2[i] == TileType.Empty)
-                    continue;
+                for (int y = 0; y < resource.GetLabyrithYLenght(); y++)
+                {
+                    if (resource.GetLabyrithValueAt(x, y) == (int)TileType.Empty)
+                        continue;
 
-                tilemap.SetTile(
-                    new Vector3Int(i.Mod(resource.SizeX), i / resource.SizeX, 0),
-                    Resources.Instance.GetTile(resource.Tiles2[i])
-                    );
+                    tilemap.SetTile(
+                        new Vector3Int(x, y, 0),
+                        Resources.Instance.GetTile((TileType)resource.GetLabyrithValueAt(x, y)));
+                }
             }
         }
+
+
+        public void SetTile(int x, int y, TileType tile)
+        {
+            tilemap.SetTile(
+             new Vector3Int(x, y, 0),
+             Resources.Instance.GetTile(tile)
+             );
+        }
+
     }
 
     [CustomEditor(typeof(LabyrinthEditor))]

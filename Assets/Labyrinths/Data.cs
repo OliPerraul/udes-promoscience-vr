@@ -133,8 +133,12 @@ namespace UdeS.Promoscience.Labyrinths
 
         public bool GetIsTileWalkable(int x, int y)
         {
+            if (GetLabyrithValueAt(x, y) == (int)TileType.Empty)
+                    return false;
+
             if (x >= 0 && x < GetLabyrithXLenght() && y >= 0 && y < GetLabyrithYLenght())
             {
+
                 if ((GetLabyrithValueAt(x, y) >= Utils.TILE_FLOOR_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_FLOOR_END_ID)
                     || (GetLabyrithValueAt(x, y) >= Utils.TILE_START_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_START_END_ID)
                     || (GetLabyrithValueAt(x, y) >= Utils.TILE_END_START_ID && GetLabyrithValueAt(x, y) <= Utils.TILE_END_END_ID))
