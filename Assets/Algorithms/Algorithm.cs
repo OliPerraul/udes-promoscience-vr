@@ -66,6 +66,8 @@ namespace UdeS.Promoscience.Algorithms
 
             var state = new AlgorithmProgressState();
 
+            algorithmSteps.Add(ResetProgressState(state, labyrinth));
+
             while (GetNextStep(state, labyrinth, out Tile tile))
             {
                 algorithmSteps.Add(tile);
