@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Algorithm.Standard
   m_EditorClassIdentifier: 
   name:
-    french: 
-    english: 
+    french: Standard
+    english: Standard
   description:
     english: "\tPriorise le NORD, suivit de l\u2019EST, du SUD et de l\u2019OUEST
       en marquant son chemin comme visit\xE9. \n\n\tLorsqu\u2019un cul de sac est

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Algorithm.LongestStraight
   m_EditorClassIdentifier: 
   name:
-    french: 
-    english: 
+    french: Chemin le plus long
+    english: Longest Straight
   description:
     english: "\tPriorise les d\xE9placements pour lesquels on peut traverser la plus
       grande distance en ligne droite en marquant son chemin comme visit\xE9.\n \n\tEn

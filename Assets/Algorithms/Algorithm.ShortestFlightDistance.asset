@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Algorithm.ShortestFlightDistance
   m_EditorClassIdentifier: 
   name:
-    french: 
-    english: 
+    french: Distance a vol d'oiseau
+    english: Shortest Flight Distance
   description:
     english: "\tPriorise les d\xE9placements dans la direction pour laquelle la distance
       entre l\u2019endroit et la fin est la plus courte en marquant son chemin comme

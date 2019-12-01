@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Algorithm.RightHand
   m_EditorClassIdentifier: 
   name:
-    french: 
-    english: 
+    french: Main droite
+    english: Right Hand
   description:
     english: "\tPriorise toujours les d\xE9placements vers la droite du joueur en
       marquant son chemin comme visit\xE9. \n\n\tIl rebrousse chemin en cas de cul
