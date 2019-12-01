@@ -42,8 +42,8 @@ namespace UdeS.Promoscience.Labyrinths.Editor
             if (dirtyTilemap == null)
             {
                 state = new Algorithms.AlgorithmProgressState();
-                algorithm.ResetProgressState(state, editor.resource);
                 dirtyTilemap = Instantiate(templateTilemap, templateTilemap.transform.parent);
+                SetTile(algorithm.ResetProgressState(state, editor.resource));
             }
 
             running = true;
@@ -89,21 +89,26 @@ namespace UdeS.Promoscience.Labyrinths.Editor
                 if (!algorithm.GetNextStep(state, editor.resource, out Promoscience.Tile tile))
                     break;
 
-                if (tile.Color == TileColor.Red)
-                {
-                    dirtyTilemap.SetTile(new Vector3Int(tile.x, tile.y, 0), Resources.Instance.GetTile(TileType.DebugRed));
-
-                    Debug.Log("red: " + tile.Position);
-                }
-                else if (tile.color == TileColor.Yellow)
-                {
-                    dirtyTilemap.SetTile(new Vector3Int(tile.x, tile.y, 0), Resources.Instance.GetTile(TileType.DebugYellow));
-
-                    Debug.Log("yellow: " + tile.Position);
-                }
+                SetTile(tile);
 
                 yield return new EditorWaitForSeconds(stepSeconds);
 
+            }
+        }
+
+        public void SetTile(Promoscience.Tile tile)
+        {
+            if (tile.Color == TileColor.Red)
+            {
+                dirtyTilemap.SetTile(new Vector3Int(tile.x, tile.y, 0), Resources.Instance.GetTile(TileType.DebugRed));
+
+                Debug.Log("red: " + tile.Position);
+            }
+            else if (tile.color == TileColor.Yellow)
+            {
+                dirtyTilemap.SetTile(new Vector3Int(tile.x, tile.y, 0), Resources.Instance.GetTile(TileType.DebugYellow));
+
+                Debug.Log("yellow: " + tile.Position);
             }
         }
 

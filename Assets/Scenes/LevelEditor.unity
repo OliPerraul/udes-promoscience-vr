@@ -2286,12 +2286,7 @@ MonoBehaviour:
   dirtyTilemap: {fileID: 0}
   running: 0
   state:
-    algorithmSteps:
-    - x: 1
-      y: 1
-      isEndtile: 0
-      color: 1
-      previousColor: 0
+    algorithmSteps: []
     hasReachedTheEnd: 1
     direction: 3
     position: {x: 5, y: 5}

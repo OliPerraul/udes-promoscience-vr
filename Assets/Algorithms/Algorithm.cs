@@ -177,7 +177,7 @@ namespace UdeS.Promoscience.Algorithms
             return !state.hasReachedTheEnd;
         }
 
-        public virtual void ResetProgressState(AlgorithmProgressState state, Labyrinths.IData labyrinth)
+        public virtual Tile ResetProgressState(AlgorithmProgressState state, Labyrinths.IData labyrinth)
         {
             state.isTileAlreadyVisited = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
             state.hasReachedTheEnd = false;
@@ -186,11 +186,16 @@ namespace UdeS.Promoscience.Algorithms
             state.direction = labyrinth.StartDirection;
             state.position = labyrinth.StartPos;
             state.endPosition = labyrinth.EndPos;
-            state.algorithmSteps.Add(new Tile(state.position.x, state.position.y, TileColor.Yellow));
 
-            state.stack.Add(new Action { pos = state.position, dir = (Direction)state.direction });
-            
-            //state.alreadyVisitedTile[state.position.x, state.position.y] = true;
+            state.isTileAlreadyVisited[state.position.x, state.position.y] = true;
+
+            state.stack.Add(new Action
+            {
+                pos = state.position,
+                dir = (Direction)state.direction
+            });
+
+            return new Tile(state.position.x, state.position.y, TileColor.Yellow);
         }
 
 
