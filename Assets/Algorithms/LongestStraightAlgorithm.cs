@@ -6,6 +6,8 @@ using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using UdeS.Promoscience.Network;
+using UdeS.Promoscience.Labyrinths;
+using System.Linq;
 
 namespace UdeS.Promoscience.Algorithms
 {
@@ -30,13 +32,91 @@ namespace UdeS.Promoscience.Algorithms
         //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
         List<Vector3Int> lastVisitedIntersection;
 
-        public override Promoscience.Algorithms.Id Id
+        public override Id Id => Id.LongestStraight;
+
+
+        // up right down left
+        public override Direction[] GetPrioritizedDirections(AlgorithmProgressState state, IData labyrinth)
         {
-            get
+            Vector2Int dest;
+
+            List<PrioritizedDirection> dirs = new List<PrioritizedDirection>();
+
+            //
+
+            int up = 0;
+            dest = state.position;
+
+            for (
+                up = 0;
+                labyrinth.GetIsTileWalkable(
+                    dest = Promoscience.Utils.GetMoveDestination(dest, Direction.Up));
+                up++) ;
+
+
+            dirs.Add(new PrioritizedDirection
             {
-                return Promoscience.Algorithms.Id.LongestStraight;
-            }
+                Prio = up,
+                dir = Direction.Up
+            });
+
+            //
+            int right = 0;
+            dest = state.position;
+
+            for (
+                right = 0;
+                labyrinth.GetIsTileWalkable(
+                    dest = Promoscience.Utils.GetMoveDestination(dest, Direction.Right));
+                right++) ;
+
+
+            dirs.Add(new PrioritizedDirection
+            {
+                Prio = right,
+                dir = Direction.Right
+            });
+
+
+            //
+
+            int down = 0;
+            dest = state.position;
+
+
+            for (
+                down = 0;
+                labyrinth.GetIsTileWalkable(
+                    dest = Promoscience.Utils.GetMoveDestination(dest, Direction.Down));
+                down++) ;
+
+            dirs.Add(new PrioritizedDirection
+            {
+                Prio = down,
+                dir = Direction.Down
+            });
+
+            //
+
+            int left = 0;
+            dest = state.position;
+
+
+            for (
+                left = 0;
+                labyrinth.GetIsTileWalkable(
+                    dest = Promoscience.Utils.GetMoveDestination(dest, Direction.Left));
+                left++) ;
+
+            dirs.Add(new PrioritizedDirection
+            {
+                Prio = left,
+                dir = Direction.Left
+            });
+
+            return dirs.OrderBy(x => x.Prio).Select(x => x.dir).ToArray();
         }
+               
 
         public override List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth)
         {

@@ -30,7 +30,7 @@ namespace UdeS.Promoscience.Algorithms
         }
     }
 
-    public class Algorithm : ScriptableObject
+    public abstract class Algorithm : ScriptableObject
     {
 
         [SerializeField]
@@ -59,18 +59,123 @@ namespace UdeS.Promoscience.Algorithms
 
         protected Algorithm resource;
 
-        //protected Labyrinths.IData labyrinth;
 
+        public virtual List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth)
+        {
+            List<Tile> algorithmSteps = new List<Tile>();
 
-        public virtual List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth) { return null; }
+            var state = new AlgorithmProgressState();
+
+            while (GetNextStep(state, labyrinth, out Tile tile))
+            {
+                algorithmSteps.Add(tile);
+            }
+
+            return algorithmSteps;
+        }
+
+        public abstract Direction[] GetPrioritizedDirections(AlgorithmProgressState state, Labyrinths.IData labyrinth);
+
+        // Up, right down, left
 
         public virtual bool GetNextStep(
-            AlgorithmProgressState wrapper, 
+            AlgorithmProgressState state,
             Labyrinths.IData labyrinth,
-            out Tile tile) {
+            out Tile tile)
+        {
             tile = new Tile();
-            return false; }
 
+            Direction[] prioritizedDirections = GetPrioritizedDirections(state, labyrinth);
+
+            Vector2Int dest = state.position;
+            bool found = false;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (prioritizedDirections[i] == Direction.Up)
+                {
+                    if (labyrinth.GetIsTileWalkable(
+                        dest = Promoscience.Utils.GetMoveDestination(state.position, Direction.Up)) &&
+                        !state.IsAlreadyVisisted(dest))
+                    {
+                        state.direction = (int)Direction.Up;
+                        found = true;
+                        break;
+                    }
+                }
+                else if (prioritizedDirections[i] == Direction.Down)
+                {
+                    if (labyrinth.GetIsTileWalkable(
+                        dest = Promoscience.Utils.GetMoveDestination(state.position, Direction.Down)) &&
+                        !state.IsAlreadyVisisted(dest))
+                    {
+                        state.direction = (int)Direction.Down;
+                        found = true;
+                        break;
+                    }
+                }
+                else if (prioritizedDirections[i] == Direction.Left)
+                {
+                    if (labyrinth.GetIsTileWalkable(
+                        dest = Promoscience.Utils.GetMoveDestination(state.position, Direction.Left)) &&
+                        !state.IsAlreadyVisisted(dest))
+                    {
+                        state.direction = (int)Direction.Left;
+                        found = true;
+                        break;
+                    }
+                }
+                else if (prioritizedDirections[i] == Direction.Right)
+                {
+                    if (labyrinth.GetIsTileWalkable(
+                        dest = Promoscience.Utils.GetMoveDestination(state.position, Direction.Right)) &&
+                        !state.IsAlreadyVisisted(dest))
+                    {
+                        state.direction = (int)Direction.Right;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (found)
+            {
+                if (state.lastRemoved != null)
+                {
+                    state.stack.Add(state.lastRemoved);
+                    state.lastRemoved = null;
+                }
+
+                state.stack.Add(new Action { pos = dest, dir = (Direction)state.direction });
+                state.SetVisited(dest);
+                tile = new Tile
+                {
+                    Position = dest,
+                    Color = TileColor.Yellow
+                };
+                state.position = tile.Position;
+
+                state.hasReachedTheEnd = dest == labyrinth.EndPos;
+            }
+            else if (state.stack.Count != 0)
+            {
+                int last = state.stack.Count - 1;
+                tile = new Tile
+                {
+                    Position = state.stack[last].pos,
+                    Color = TileColor.Red
+                };
+
+                state.position = tile.Position;
+                state.direction = (int)Promoscience.Utils.GetOppositeDirection(state.stack[last].dir);
+                state.lastRemoved = state.stack[last];
+                state.stack.RemoveAt(last);
+
+            }
+            else return true;
+
+            return !state.hasReachedTheEnd;
+        }
 
         public virtual void ResetProgressState(AlgorithmProgressState state, Labyrinths.IData labyrinth)
         {
@@ -98,6 +203,53 @@ namespace UdeS.Promoscience.Algorithms
         public Direction dir;
         public Vector2Int pos;
     }
+
+    public struct PrioritizedDirection
+    {
+        private float prio;
+
+        public Direction dir;
+
+        public const float PriorityCoefficient = 100f;
+
+        private float Bonus
+        {
+            get
+            {
+                switch (dir)
+                {
+                    case Direction.Up:
+                        return 3;
+
+                    case Direction.Right:
+                        return 2;
+
+                    case Direction.Down:
+                        return 1;
+
+                    case Direction.Left:
+                    default:
+                        return 0;
+                        
+                }
+            }
+        }
+
+        // Prioritize north est south ouest (standard
+        public float Prio
+        {
+            get
+            {
+                return (prio * PriorityCoefficient) + Bonus;
+            }
+
+            set
+            {
+                prio = value;
+            }
+        }
+    }
+
 
     [System.Serializable]
     public class AlgorithmProgressState
