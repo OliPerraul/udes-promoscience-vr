@@ -33,11 +33,12 @@ namespace UdeS.Promoscience
 
         private const int tutorialLabyrinthId = 4;
 
-        public Algorithms.Id algorithmId;
+        private Algorithms.Id baseAlgorithmId;
 
 
         // Ideally, player should reference a course instead of refering to a course id 
         public List<Course> Courses = new List<Course>();
+
 
         public Game(LevelSelectionMode levelOrder)
         {
@@ -59,24 +60,6 @@ namespace UdeS.Promoscience
             }
         }
 
-        public Algorithms.Id GetRoundAlgorithm(int teamId)
-        {
-            Algorithms.Id id;
-
-            switch (algorithmId)
-            {
-                case Algorithms.Id.GameRound:
-                    id = (Algorithms.Id)((teamId + Round.Value) % 3) + 1;
-                    break;
-
-                // default to algorithm set by dropdown
-                default:
-                    id = algorithmId;
-                    break;
-            }
-
-            return id;
-        }
 
         // Try find course ID initiated by a team member
         // Otherwise assign new course
@@ -122,8 +105,12 @@ namespace UdeS.Promoscience
         public void StartRound(
             IData labyrinth,
             int algorithmId)
-        {           
+        {
+            Round.Value = (Round.Value % 3) + 1;
+
             CurrentLabyrinth = labyrinth;
+
+            baseAlgorithmId = (Algorithms.Id)algorithmId;
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
@@ -138,7 +125,7 @@ namespace UdeS.Promoscience
                     case ClientGameState.ViewingLocalReplay:
                     case ClientGameState.WaitingForNextRound:
 
-                        player.serverAlgorithm = GetRoundAlgorithm(player.ServerTeamId);
+                        player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm(algorithmId, Round.Value, player.ServerTeamId);
 
                         player.serverLabyrinthId = CurrentLabyrinth.Id;
 
@@ -162,44 +149,7 @@ namespace UdeS.Promoscience
             int labyrinthId, 
             int algorithmId)
         {
-            Round.Value = (Round.Value % 3) + 1;
-            //State = ServerState.GameRound;
-
-            CurrentLabyrinth = Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId);
-
-            Labyrinths.Add(CurrentLabyrinth);
-
-            for (int i = 0; i < PlayerList.instance.list.Count; i++)
-            {
-                Player player = PlayerList.instance.GetPlayerWithId(i);
-
-                switch (player.ServerPlayerGameState)
-                {
-                    case ClientGameState.Ready:
-                    case ClientGameState.PlayingTutorial:
-                    case ClientGameState.Playing:
-                    case ClientGameState.ViewingGlobalReplay:
-                    case ClientGameState.ViewingLocalReplay:
-                    case ClientGameState.WaitingForNextRound:
-
-                        player.serverAlgorithm = GetRoundAlgorithm(player.ServerTeamId);
-
-                        player.serverLabyrinthId = CurrentLabyrinth.Id;
-
-                        AssignCourse(player);
-
-                        player.TargetSetGame(
-                            player.connectionToClient,
-                            CurrentLabyrinth.Json,
-                            player.serverAlgorithm,
-                            Round.Value,
-                            false);
-
-                        break;
-                }
-            }
-
-            DoStartRound();
+            StartRound(Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId), algorithmId);
         }
 
         protected virtual void DoStartRound()
@@ -214,14 +164,17 @@ namespace UdeS.Promoscience
 
         public void StartNextGameRound()
         {
-            Round.Value = (Round.Value % 3) + 1;
-            algorithmId = Algorithms.Id.GameRound;
+            //Round.Value = (Round.Value % 3) + 1;
+            //AlgorithmId = Algorithms.Id.GameRound;
             //StartRoundWithLabyrinth(GameRound);
         }
 
         public void JoinGameRound(Player player)
         {
-            player.serverAlgorithm = GetRoundAlgorithm(player.ServerTeamId);
+            player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm(
+                baseAlgorithmId,
+                Round.Value,
+                player.ServerTeamId);
 
             player.serverLabyrinthId = CurrentLabyrinth.Id;
 
@@ -237,7 +190,10 @@ namespace UdeS.Promoscience
 
         public void JoinGameRoundWithSteps(Player player, int[] steps)
         {
-            player.serverAlgorithm = GetRoundAlgorithm(player.ServerTeamId);
+            player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm(
+                baseAlgorithmId,
+                Round.Value,
+                player.ServerTeamId);
 
             player.serverLabyrinthId = CurrentLabyrinth.Id; ;
 
@@ -254,8 +210,6 @@ namespace UdeS.Promoscience
 
         public void EndRoundOrTutorial()
         {
-            //State = ServerState.Intermission;
-
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
                 Player player = PlayerList.instance.GetPlayerWithId(i);
@@ -269,50 +223,6 @@ namespace UdeS.Promoscience
                 }
             }
         }
-
-        public void StartTutorial()
-        {
-            Round.Value = tutorialLabyrinthId;
-
-            CurrentLabyrinth =
-                Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(tutorialLabyrinthId);
-
-            Labyrinths.Add(CurrentLabyrinth);
-
-
-            for (int i = 0; i < PlayerList.instance.list.Count; i++)
-            {
-                Player player = PlayerList.instance.GetPlayerWithId(i);
-
-                switch (player.ServerPlayerGameState)
-                {
-                    case ClientGameState.Ready:
-                    case ClientGameState.PlayingTutorial:
-                    case ClientGameState.Playing:
-                    case ClientGameState.ViewingGlobalReplay:
-                    case ClientGameState.ViewingLocalReplay:
-                    case ClientGameState.WaitingForNextRound:
-
-                        Algorithms.Id algorithm = Algorithms.Id.Tutorial;
-                        player.serverAlgorithm = algorithm;
-
-                        player.serverLabyrinthId = tutorialLabyrinthId;
-
-                        AssignCourse(player);
-
-                        // TODO send course json over??
-                        player.TargetSetGame(
-                            player.connectionToClient,
-                            CurrentLabyrinth.Json,
-                            algorithm,
-                            Round.Value,
-                            true);
-
-                        break;
-                }
-            }
-        }
-
 
         public void LevelSelect()
         {

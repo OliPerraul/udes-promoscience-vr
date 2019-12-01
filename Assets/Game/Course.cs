@@ -120,12 +120,11 @@ namespace UdeS.Promoscience
 
         #region Player
 
-
         public int[] Actions;
 
         public string[] ActionValues;
 
-        public Cirrus.Event<Course> OnActionIndexChangedHandler;
+        public Event<Course> OnActionIndexChangedHandler;
 
         public Event OnPlayerSequenceProgressedHandler;
 

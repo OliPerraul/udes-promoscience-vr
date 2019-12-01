@@ -2,6 +2,7 @@
 using System.Collections;
 using UdeS.Promoscience.ScriptableObjects;
 using System.Collections.Generic;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Algorithms
 {
@@ -16,12 +17,35 @@ namespace UdeS.Promoscience.Algorithms
         ShortestFlightDistance = 1,
         LongestStraight = 2,
         Standard = 3,
-        None = 4
+        
     }
 
-    public class Utils
+    public static class Utils
     {
         public static Id Random => (Id)UnityEngine.Random.Range((int)Id.Tutorial, (int)Id.Standard);
+
+        private static Id DoGetRoundAlgorithm(int round)
+        {
+            return (Id) round.Mod(Algorithm.NumAlgorithms);
+        }
+
+        public static Id GetRoundAlgorithm(int baseId, int round, int teamId = 0)
+        {
+            return GetRoundAlgorithm((Id)baseId, round, teamId);
+        }
+
+        public static Id GetRoundAlgorithm(Id baseId, int round, int teamId = 0)
+        {
+            switch (baseId)
+            {
+                case Id.GameRound:
+                    return DoGetRoundAlgorithm(round + teamId);
+
+                // default to algorithm set by dropdown
+                default:
+                    return baseId;
+            }
+        }
     }
 
     public abstract class Algorithm : ScriptableObject

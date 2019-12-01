@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Algorithms.UI
 {
-    public class AlgorithmSelect : MonoBehaviour
+    public class LevelAlgorithmSelectionInteface : MonoBehaviour
     {
         public LocalizeInlineString randomString = new LocalizeInlineString("Randomized");
 
@@ -13,11 +13,10 @@ namespace UdeS.Promoscience.Algorithms.UI
 
         private Algorithm[] algorithms;
 
+        [SerializeField]
+        private Id algorithmId = 0;
 
-        private Algorithms.Id algorithmId = 0;
-
-        public Algorithms.Id AlgorithmId => algorithmId;
-
+        public Id AlgorithmId => algorithmId;
 
         public void Awake()
         {
@@ -27,14 +26,11 @@ namespace UdeS.Promoscience.Algorithms.UI
 
             AddOption(gameRoundString.Value);
 
-            algorithms = new Algorithm[Resources.Instance.Algorithms.Length];
-
             int i = 0;
 
             foreach (var algorithm in Resources.Instance.Algorithms)
             {
                 AddOption(algorithm);
-                algorithms[i] = algorithm;
                 i++;
             }
 
@@ -55,8 +51,6 @@ namespace UdeS.Promoscience.Algorithms.UI
             dropDown.options.Add(data);
         }
 
-
-
         public void OnDropDownSelected(int i)
         {
             switch (i)
@@ -70,7 +64,7 @@ namespace UdeS.Promoscience.Algorithms.UI
                     break;
 
                 default:
-                    algorithmId = algorithms[i - 2].Id;
+                    algorithmId = Resources.Instance.Algorithms[i - 2].Id;
                     break;
             }
         }

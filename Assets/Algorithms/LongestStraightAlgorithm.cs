@@ -114,7 +114,7 @@ namespace UdeS.Promoscience.Algorithms
                 dir = Direction.Left
             });
 
-            return dirs.OrderBy(x => x.Prio).Select(x => x.dir).ToArray();
+            return dirs.OrderByDescending(x => x.Prio).Select(x => x.dir).ToArray();
         }
                
 

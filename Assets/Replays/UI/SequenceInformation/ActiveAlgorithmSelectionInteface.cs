@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class AlgorithmSelectionInteface : MonoBehaviour
+    public class ActiveAlgorithmSelectionInteface : MonoBehaviour
     {
         [SerializeField]
         private ReplayManagerAsset replayAsset;

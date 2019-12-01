@@ -16,7 +16,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         protected Replays.ReplayManagerAsset ReplayController => replayController;
 
         [SerializeField]
-        private Algorithms.UI.AlgorithmSelect algorithmSelect;
+        private Algorithms.UI.LevelAlgorithmSelectionInteface algorithmSelect;
 
         [SerializeField]
         private LevelSection sectionTemplate;

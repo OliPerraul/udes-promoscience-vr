@@ -19,6 +19,17 @@ namespace UdeS.Promoscience
             asset.Round.OnValueChangedHandler += OnGameRoundChanged;
         }
 
+        //public Algorithms.Id AlgorithmId
+        //{
+        //    set
+        //    {
+        //        if (CurrentGame != null)
+        //        {
+        //            //CurrentGame.AlgorithmId = value;
+        //        }
+        //    }
+        //}
+
 
         public void OnGameRoundChanged(int round)
         {
