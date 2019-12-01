@@ -84,9 +84,11 @@ namespace UdeS.Promoscience.Labyrinths.Editor
 
         IEnumerator DoCheckCoroutine()
         {
+            Promoscience.Tile tile = new Promoscience.Tile();
+
             while (running)
             {
-                if (!algorithm.GetNextStep(state, editor.resource, out Promoscience.Tile tile))
+                if (!algorithm.GetNextStep(state, editor.resource, out tile))
                     break;
 
                 SetTile(tile);
@@ -94,6 +96,10 @@ namespace UdeS.Promoscience.Labyrinths.Editor
                 yield return new EditorWaitForSeconds(stepSeconds);
 
             }
+
+            // set last tile
+            SetTile(tile);
+
         }
 
         public void SetTile(Promoscience.Tile tile)

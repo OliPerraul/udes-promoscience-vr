@@ -21,13 +21,7 @@ namespace UdeS.Promoscience.Algorithms
 
     public class Utils
     {
-        public static Id Random
-        {
-            get
-            {
-                return (Id)UnityEngine.Random.Range((int)Id.Tutorial, (int)Id.Standard);
-            }
-        }
+        public static Id Random => (Id)UnityEngine.Random.Range((int)Id.Tutorial, (int)Id.Standard);
     }
 
     public abstract class Algorithm : ScriptableObject
@@ -36,24 +30,12 @@ namespace UdeS.Promoscience.Algorithms
         [SerializeField]
         public LocalizeInlineString name;
 
-        public string Name
-        {
-            get
-            {
-                return name.Value;                
-            }
-        }
+        public string Name => name.Value;    
 
         [SerializeField]
         public LocalizeString description;
 
-        public string Description
-        {
-            get
-            {
-                return description.Value;
-            }
-        }
+        public string Description => description.Value;
 
         public const int NumAlgorithms = 4;
 
@@ -66,12 +48,23 @@ namespace UdeS.Promoscience.Algorithms
 
             var state = new AlgorithmProgressState();
 
+            // Add first tile
             algorithmSteps.Add(ResetProgressState(state, labyrinth));
 
-            while (GetNextStep(state, labyrinth, out Tile tile))
+            Tile tile;
+            while (GetNextStep(state, labyrinth, out tile))
             {
+                // FIX: If in dead end, use end of the stack instead (backtracking)
+                if (tile.Position == algorithmSteps[algorithmSteps.Count - 1].Position)
+                {
+                    algorithmSteps.RemoveAt(algorithmSteps.Count - 1);
+                }
+
                 algorithmSteps.Add(tile);
             }
+
+            // Add last tile
+            algorithmSteps.Add(tile);
 
             return algorithmSteps;
         }
@@ -142,33 +135,39 @@ namespace UdeS.Promoscience.Algorithms
 
             if (found)
             {
+                // FIX: Return to last
                 if (state.lastRemoved != null)
                 {
                     state.stack.Add(state.lastRemoved);
                     state.lastRemoved = null;
                 }
 
-                state.stack.Add(new Action { pos = dest, dir = (Direction)state.direction });
+                state.stack.Add(new Action {
+                    pos = dest,
+                    dir = (Direction)state.direction,
+                });
+
                 state.SetVisited(dest);
                 tile = new Tile
                 {
-                    Position = dest,
+                    Position = state.position,
                     Color = TileColor.Yellow
                 };
-                state.position = tile.Position;
 
-                state.hasReachedTheEnd = dest == labyrinth.EndPos;
+                state.position = dest;
+                state.hasReachedTheEnd = state.position == labyrinth.EndPos;            
             }
             else if (state.stack.Count != 0)
             {
                 int last = state.stack.Count - 1;
                 tile = new Tile
                 {
-                    Position = state.stack[last].pos,
+                    // FIX: if we have pushed a yellow tile, red when popped, otherwise yellow when popped
+                    Position = state.position,
                     Color = TileColor.Red
                 };
 
-                state.position = tile.Position;
+                state.position = state.stack[last].pos;
                 state.direction = (int)Promoscience.Utils.GetOppositeDirection(state.stack[last].dir);
                 state.lastRemoved = state.stack[last];
                 state.stack.RemoveAt(last);
@@ -209,6 +208,7 @@ namespace UdeS.Promoscience.Algorithms
     {
         public Direction dir;
         public Vector2Int pos;
+        public TileColor color;
     }
 
     public struct PrioritizedDirection

@@ -187,7 +187,8 @@ namespace UdeS.Promoscience.Algorithms
                         algorithmRespect.Respect = RespectValueComputation((
                             new Vector2Int(
                                 playerSteps[playerSteps.Count - 1].x,
-                                playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + algorithmRespect.WrongColorTilesWhenDiverging.Count);
+                                playerSteps[playerSteps.Count - 1].y) - labyrinthPosition)
+                                    .magnitude + algorithmRespect.WrongColorTilesWhenDiverging.Count);
 
                         // TODO: this is strange, why do we not add a tile here
                         // since we are diverging..??
@@ -209,12 +210,14 @@ namespace UdeS.Promoscience.Algorithms
                         playerSteps.Add(new Tile(
                             labyrinthPosition.x,
                             labyrinthPosition.y,
-                            TileColor.NoColor));
+                            previousTileColor));
                     }
                 }
                 else
                 {
-                    if (labyrinthPosition.x == playerSteps[playerSteps.Count - 1].x && labyrinthPosition.y == playerSteps[playerSteps.Count - 1].y)
+                    if (
+                        labyrinthPosition.x == playerSteps[playerSteps.Count - 1].x && 
+                        labyrinthPosition.y == playerSteps[playerSteps.Count - 1].y)
                     {
                         if (algorithmRespect.WrongColorTilesWhenDiverging.Count == 0)
                         {
@@ -226,7 +229,8 @@ namespace UdeS.Promoscience.Algorithms
                             algorithmRespect.Respect = RespectValueComputation((
                                 new Vector2Int(
                                     playerSteps[playerSteps.Count - 1].x,
-                                    playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + algorithmRespect.WrongColorTilesWhenDiverging.Count);
+                                    playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + 
+                                    algorithmRespect.WrongColorTilesWhenDiverging.Count);
                         }
                     }
                     else
@@ -234,7 +238,8 @@ namespace UdeS.Promoscience.Algorithms
                         algorithmRespect.Respect = RespectValueComputation((
                             new Vector2Int(
                                 playerSteps[playerSteps.Count - 1].x,
-                                playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + algorithmRespect.WrongColorTilesWhenDiverging.Count);
+                                playerSteps[playerSteps.Count - 1].y) - labyrinthPosition).magnitude + 
+                                algorithmRespect.WrongColorTilesWhenDiverging.Count);
                     }
                 }
 
@@ -303,7 +308,11 @@ namespace UdeS.Promoscience.Algorithms
             algorithmRespect.IsDiverging.Value = false;
             algorithmRespect.Respect = 1.0f;
             currentLabyrinthPosition = Client.Instance.Labyrinth.GetLabyrithStartPosition();
-            playerSteps.Add(new Tile(currentLabyrinthPosition.x, currentLabyrinthPosition.y, Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition)));
+            playerSteps.Add(
+                new Tile(
+                    currentLabyrinthPosition.x, 
+                    currentLabyrinthPosition.y, 
+                    Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition)));
         }
 
         public void OnReturnToDivergencePointAnswer(bool doreturn)
