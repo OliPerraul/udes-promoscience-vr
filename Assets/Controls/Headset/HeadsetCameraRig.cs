@@ -18,10 +18,6 @@ namespace UdeS.Promoscience.Controls
 
     public class HeadsetCameraRig : MonoBehaviour, IHeadsetCameraRig
     {
-        //[UnityEngine.Serialization.FormerlySerializedAs("OVRCameraRig")]
-        //[SerializeField]
-        //public OVRCameraRig ovrCameraRig;
-
         [SerializeField]
         private OVRCameraRig firstPersonCamera;
 
@@ -41,16 +37,24 @@ namespace UdeS.Promoscience.Controls
 
         public TransitionCameraAnimatorWrapper TransitionCameraAnimator => transitionCameraAnimatorWrapper;
 
+        [SerializeField]
+        private Transform headsetPointerTransform;
+
+        [SerializeField]
+        private Transform simulatedPointerTransform;
+
+#if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
+        public Transform PointerTransform => simulatedPointerTransform;
+#elif UNITY_ANDROID
+        public Transform PointerTransform => headsetPointerTransform;
+#endif
 
         public Vector3 CameraForward => controls.IsThirdPersonEnabled.Value ?
             thirdPersonCamera.centerEyeAnchor.forward :
             firstPersonCamera.centerEyeAnchor.forward;
 
-        public Quaternion CameraRotation
-        {
-            get
-            {
-                return controls.IsThirdPersonEnabled.Value ?
+        public Quaternion CameraRotation =>
+                controls.IsThirdPersonEnabled.Value ?
                      Quaternion.Euler(
                          0,
                          thirdPersonCamera.centerEyeAnchor.rotation.eulerAngles.y,
@@ -60,13 +64,9 @@ namespace UdeS.Promoscience.Controls
                          firstPersonCamera.centerEyeAnchor.rotation.eulerAngles.y,
                          0);
 
-            }
-        }
-
         public Transform CameraTransform => controls.IsThirdPersonEnabled.Value ?
                     thirdPersonCamera.transform :
                     firstPersonCamera.transform;
-
 
         public void Awake()
         {

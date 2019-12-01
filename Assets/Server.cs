@@ -25,6 +25,9 @@ namespace UdeS.Promoscience
 
         public void Awake()
         {
+            // Randomize seed
+            UnityEngine.Random.InitState((int)Time.time);
+
             // Store all the teams in the DB
             // TODO remove, replace with 'Resources' asset
             foreach (Teams.TeamResource team in Teams.Resources.Instance.Teams)
