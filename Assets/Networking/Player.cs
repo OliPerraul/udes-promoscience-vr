@@ -354,7 +354,7 @@ namespace UdeS.Promoscience.Network
                 .GetLabyrinthTemplate(Client.Instance.LabyrinthData.Value)
                 .Create(Client.Instance.LabyrinthData.Value);
 
-            Client.Instance.Algorithm.Value = Algorithms.Resources.Instance.GetAlgorithm(algo);
+            Client.Instance.Algorithm.Set(Algorithms.Resources.Instance.GetAlgorithm(algo));
 
             gameManager.IsRoundCompleted.Value = false;
 
@@ -380,7 +380,7 @@ namespace UdeS.Promoscience.Network
                 .GetLabyrinthTemplate(Client.Instance.LabyrinthData.Value)
                 .Create(Client.Instance.LabyrinthData.Value);
 
-            Client.Instance.Algorithm.Value = Algorithms.Resources.Instance.GetAlgorithm(algo);
+            Client.Instance.Algorithm.Set(Algorithms.Resources.Instance.GetAlgorithm(algo));
 
             gameManager.IsRoundCompleted.Value = false;
             gameManager.Round.Value = round;

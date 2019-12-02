@@ -8,40 +8,6 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
-public static class AvailableGamesList
-{
-    public static event Action<List<LanConnnectionInfo>> OnAvailableMatchesChanged = delegate { };
-
-    private static List<LanConnnectionInfo> gamesList = new List<LanConnnectionInfo>();
-
-    public static void HandleNewGamesList(List<LanConnnectionInfo> list)
-    {
-        gamesList = list;
-        OnAvailableMatchesChanged(gamesList);
-    }
-
-}
-
-public struct LanConnnectionInfo
-{
-    public const int PORT = 7750; // Port is fixed and defined in NetworkManager settings
-
-    public string ipAddress;
-    public string gameName; // 
-    public string hostName;
-
-    // Parses the info from the broadcasted data
-    public LanConnnectionInfo(string fromAddress, string data)
-    {
-        ipAddress = fromAddress.Substring(fromAddress.LastIndexOf(':') + 1); ;
-
-        string[] tokens = data.Split(';');
-        gameName = tokens[0];
-        hostName = tokens[1];
-    }
-}
-
 public class NetworkDiscoveryFix : NetworkDiscovery
 {
     private NetworkDiscoveryFix instance;
@@ -58,9 +24,8 @@ public class NetworkDiscoveryFix : NetworkDiscovery
     }
 
 
-    private const float EXPIRE_TIMEOUT = 2f;
-
     private bool isBroadcasting = false;
+
     private bool isListening = false;
 
     private AndroidJavaObject multicastLock;
@@ -76,8 +41,9 @@ public class NetworkDiscoveryFix : NetworkDiscovery
             if (Application.platform == RuntimePlatform.Android)
                 MulticastLock();
             
-            if (NetworkTransport.IsStarted && NetworkTransport.IsBroadcastDiscoveryRunning())
+            if (NetworkTransport.IsBroadcastDiscoveryRunning())
                 NetworkTransport.StopBroadcastDiscovery();
+
             NetworkTransport.Shutdown();          
             NetworkTransport.Init();
 
@@ -98,11 +64,15 @@ public class NetworkDiscoveryFix : NetworkDiscovery
         {
             if (Application.platform == RuntimePlatform.Android)
                 MulticastLock();
-            if (NetworkTransport.IsStarted && NetworkTransport.IsBroadcastDiscoveryRunning())
-                NetworkTransport.StopBroadcastDiscovery();
+
+            Debug.Log("Start as Client");
+
+            //if (NetworkTransport.IsBroadcastDiscoveryRunning())
+            //    NetworkTransport.StopBroadcastDiscovery();
             
             NetworkTransport.Shutdown();
             NetworkTransport.Init();
+
 
             Initialize();
             StartAsClient();

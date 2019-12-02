@@ -41,12 +41,12 @@ namespace UdeS.Promoscience
         public ObservableValue<Labyrinths.Labyrinth> Labyrinth = new ObservableValue<Labyrinths.Labyrinth>();
 
 
-        public ObservableValue<ClientGameState> State = new ObservableValue<ClientGameState>(ClientGameState.Unknown);
+        public ObservableValue<ClientGameState> State = new ObservableValue<ClientGameState>(ClientGameState.NotReady);
 
         public void Awake()
         {
-            Debug.Log("Client "+ Utils.StaticCount);
-            Utils.StaticCount++;
+            //Debug.Log("Client "+ Utils.StaticCount);
+            //Utils.StaticCount++;
 
             State.OnValueChangedHandler += OnGameStateChanged;
 
@@ -57,13 +57,6 @@ namespace UdeS.Promoscience
             controls.OnPlayerReachedTheEndHandler += OnPlayerReachedTheEnd;
             
         }
-
-
-        public void Start()
-        {
-            State.Set(ClientGameState.Connecting);
-        }
-
 
         public void OnGameStateChanged(ClientGameState state)
         {

@@ -14,6 +14,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         public static Cirrus.Event OnTileHighlightStaticHandler;
 
+        [SerializeField]
         public GameObject[] highlights;
 
         [SerializeField]
@@ -21,6 +22,15 @@ namespace UdeS.Promoscience.Labyrinths
 
         private bool highlighted = false;
 
+
+        public void Awake()
+        {
+            foreach (var hightlight in highlights)
+            {
+                hightlight.SetActive(false);
+            }
+
+        }
 
         public static void RemoveHighlight()
         {
