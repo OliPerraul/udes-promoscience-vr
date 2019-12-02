@@ -13,6 +13,11 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public Action valueChangedEvent;
 
+        public void OnEnable()
+        {
+            value = "";
+        }
+
         public string Value
         {
             get
