@@ -28,7 +28,7 @@ namespace UdeS.Promoscience
         public DeviceType DeviceType => deviceType.Value;
 
         [SerializeField]
-        public ObservableValue<Algorithms.Algorithm> Algorithm = new ObservableValue<Algorithms.Algorithm>(Algorithms.Resources.Instance.GetAlgorithm(Algorithms.Id.Standard));
+        public ObservableValue<Algorithms.Algorithm> Algorithm = new ObservableValue<Algorithms.Algorithm>();
 
 
         public string[] ActionValues;
