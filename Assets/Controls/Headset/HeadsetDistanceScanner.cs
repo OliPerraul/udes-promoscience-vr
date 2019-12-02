@@ -33,26 +33,25 @@ namespace UdeS.Promoscience.Controls
                     // Unity dosent allow for multitag..
                     var piece = hit.collider.GetComponentInParent<Labyrinths.Piece>();
 
-                    if (piece == null &&
+                    if (piece != null &&
                         (piece.gameObject.name.Contains("Floor") ||
                         piece.gameObject.name.Contains("Start") ||
                         piece.gameObject.name.Contains("End")))
                     {
-                        float dist =
-                            (Client.Instance.Labyrinth.Value.GetLabyrithEndPosition() -
-                            Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(hit.point.x, hit.point.z)).magnitude;
-
                         Algorithms.FloorPainter floor = hit.collider.GetComponentInChildren<Algorithms.FloorPainter>();
                         if (floor != null)
                         {
-                            floor.Highlight();
-                        }
+                            float dist =
+                                (Client.Instance.Labyrinth.Value.GetLabyrithEndPosition() -
+                                Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(hit.point.x, hit.point.z)).magnitude;
 
-                        controller.FlightDistance.Value = ((int)dist) / Labyrinths.Utils.TileSize;
+                            floor.Highlight();
+                            controller.FlightDistance.Value = ((int)dist) / Labyrinths.Utils.TileSize;
+                            return;
+                        }                        
                     }
                 }
             }
-
 
             controller.FlightDistance.Value = -1;
             Algorithms.FloorPainter.RemoveHighlight();

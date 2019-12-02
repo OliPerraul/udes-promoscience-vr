@@ -33,6 +33,9 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private OVRCameraRig transitionCamera;
 
+        [SerializeField]
+        private GameObject paintingColorOverlay;
+
         private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
 
         public TransitionCameraAnimatorWrapper TransitionCameraAnimator => transitionCameraAnimatorWrapper;
@@ -107,7 +110,9 @@ namespace UdeS.Promoscience.Controls
         public void OnThirdPersonEnabled(bool enabled)
         {
             firstPersonCamera.gameObject.SetActive(!enabled);
+            paintingColorOverlay.SetActive(!enabled);
             thirdPersonCamera.gameObject.SetActive(enabled);
+            
         }
 
 

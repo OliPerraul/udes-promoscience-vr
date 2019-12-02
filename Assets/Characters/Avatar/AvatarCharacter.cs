@@ -18,6 +18,11 @@ namespace UdeS.Promoscience.Characters
         [SerializeField]
         private Transform characterTransform;
 
+
+        [SerializeField]
+        private GameObject paintingColorDisplay;
+
+
         public Transform CharacterTransform => characterTransform;
 
         public float BaseLayerLayerWeight { set => ((IAvatarAnimatorWrapper)animatorWrapper).BaseLayerLayerWeight = value; }
@@ -41,6 +46,7 @@ namespace UdeS.Promoscience.Characters
         public void OnThirdPersonEnabled(bool enabled)
         {
             CharacterTransform.gameObject.SetActive(enabled);
+            paintingColorDisplay.SetActive(enabled);
         }
 
         public void OnCameraRotationChanged(Quaternion rotation)

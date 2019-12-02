@@ -1151,12 +1151,12 @@ public class OVRManager : MonoBehaviour
 	private void InitOVRManager()
 	{
 		// Only allow one instance at runtime.
-		if (instance != null)
-		{
-			enabled = false;
-			DestroyImmediate(this);
-			return;
-		}
+		//if (instance != null)
+		//{
+		//	enabled = false;
+		//	DestroyImmediate(this);
+		//	return;
+		//}
 
 		instance = this;
 

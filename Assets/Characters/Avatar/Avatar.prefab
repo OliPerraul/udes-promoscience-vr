@@ -38166,6 +38166,7 @@ MonoBehaviour:
   controller: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   animator: {fileID: 7081709336908559192}
   characterTransform: {fileID: 8612504218509008771}
+  paintingColorDisplay: {fileID: 7292907933121202240}
 --- !u!1 &7292907934052275221
 GameObject:
   m_ObjectHideFlags: 0
@@ -43312,6 +43313,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8612504218509008771}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: 73029f5ef55947442be0e985617c8aba,
+        type: 3}
+      propertyPath: m_Name
+      value: PlayerWIdle
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 73029f5ef55947442be0e985617c8aba,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -43381,11 +43387,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.50000024
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 73029f5ef55947442be0e985617c8aba,
-        type: 3}
-      propertyPath: m_Name
-      value: PlayerWIdle
       objectReference: {fileID: 0}
     - target: {fileID: -6057140222963153312, guid: 73029f5ef55947442be0e985617c8aba,
         type: 3}
