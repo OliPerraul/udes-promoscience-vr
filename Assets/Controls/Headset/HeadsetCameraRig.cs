@@ -34,23 +34,18 @@ namespace UdeS.Promoscience.Controls
         private OVRCameraRig transitionCamera;
 
         [SerializeField]
-        private GameObject paintingColorOverlay;
+        private UnityEngine.UI.Image paintingColorOverlay;
 
         private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
 
         public TransitionCameraAnimatorWrapper TransitionCameraAnimator => transitionCameraAnimatorWrapper;
 
+        [UnityEngine.Serialization.FormerlySerializedAs("simulatedPointerTransform")]
         [SerializeField]
-        private Transform headsetPointerTransform;
+        private Transform pointerTransform;
 
-        [SerializeField]
-        private Transform simulatedPointerTransform;
+        public Transform PointerTransform => pointerTransform;
 
-#if UNITY_STANDALONE_OSX || UNITY_STANDALONE_WIN || UNITY_EDITOR
-        public Transform PointerTransform => simulatedPointerTransform;
-#elif UNITY_ANDROID
-        public Transform PointerTransform => headsetPointerTransform;
-#endif
 
         public Vector3 CameraForward => controls.IsThirdPersonEnabled.Value ?
             thirdPersonCamera.centerEyeAnchor.forward :
@@ -75,6 +70,7 @@ namespace UdeS.Promoscience.Controls
         {
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
             controls.IsTransitionCameraEnabled.OnValueChangedHandler += OnTransitionCameraEnabled;
+            controls.PaintingColor.OnValueChangedHandler += OnPaitingColorChanged;
 
             transitionCameraAnimatorWrapper = transitionCameraAnimator == null ?
                 null :
@@ -82,6 +78,23 @@ namespace UdeS.Promoscience.Controls
 
         }
 
+        private void OnPaitingColorChanged(TileColor value)
+        {
+            if (value == TileColor.Red)
+            {
+                paintingColorOverlay.gameObject.SetActive(true);
+                paintingColorOverlay.color = Color.red;
+            }
+            else if(value == TileColor.Yellow)
+            {
+                paintingColorOverlay.gameObject.SetActive(true);
+                paintingColorOverlay.color = Color.yellow;
+            }
+            else
+            {
+                paintingColorOverlay.gameObject.SetActive(false);
+            }
+        }
 
         public void FixedUpdate()
         {
@@ -110,7 +123,7 @@ namespace UdeS.Promoscience.Controls
         public void OnThirdPersonEnabled(bool enabled)
         {
             firstPersonCamera.gameObject.SetActive(!enabled);
-            paintingColorOverlay.SetActive(!enabled);
+            paintingColorOverlay.gameObject.SetActive(!enabled);
             thirdPersonCamera.gameObject.SetActive(enabled);
             
         }

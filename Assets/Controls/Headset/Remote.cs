@@ -42,9 +42,16 @@ namespace UdeS.Promoscience.Controls
         public void Awake()
         {
             Client.Instance.Algorithm.OnValueChangedHandler += OnAlgorithmChanged;
+            controllerAsset.FlightDistance.OnValueChangedHandler += OnDistance;
+            controllerAsset.WallDistance.OnValueChangedHandler += OnDistance;
+
             EnableWall();
         }
 
+        public void OnDistance(float distance)
+        {
+            distanceText.text = distance < 0 ? "?" : distance.ToString() + " m";
+        }
 
         public void OnAlgorithmChanged(Algorithms.Algorithm algorithm)
         {
@@ -63,12 +70,6 @@ namespace UdeS.Promoscience.Controls
                     break;
 
             }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
     }
 }

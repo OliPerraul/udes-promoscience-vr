@@ -41,10 +41,14 @@ namespace UdeS.Promoscience.Algorithms
             OnTileHighlightStaticHandler?.Invoke();
         }
 
+        private bool higlighted = false;
+
         public void Highlight()
         {
-            if (highlight.activeSelf)
+            if (higlighted)
                 return;
+
+            higlighted = true;
 
             highlight.SetActive(true);
 
@@ -55,6 +59,8 @@ namespace UdeS.Promoscience.Algorithms
 
         public void OnOtherHighlight()
         {
+            higlighted = false;
+
             highlight.SetActive(false);
 
             OnTileHighlightStaticHandler -= OnOtherHighlight;
@@ -63,6 +69,8 @@ namespace UdeS.Promoscience.Algorithms
 
         public void Awake()
         {
+            higlighted = false;
+
             highlight.SetActive(false);
         }
 
