@@ -6,8 +6,10 @@ namespace UdeS.Promoscience.Controls
 {
     public enum ToolType : int
     {
-        DistanceScanner = 0,
-        Compass = 1
+        None = 0,
+        // TODO: make into 2 tools?
+        DistanceScanner = 1,
+        Compass = 2
     }
 
     public static class ToolUtils
@@ -38,28 +40,72 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private HeadsetToolManagerAsset asset;
 
+        private ToolType[] tools = { ToolType.None, ToolType.Compass, ToolType.DistanceScanner };
+
+        private int activeToolIndex = 0;
 
         public void Awake()
         {
+            Client.Instance.Algorithm.OnValueChangedHandler += OnAlgorithm;
+
             asset.CurrentEquipment.OnValueChangedHandler += OnToolChanged;
+
+            controls.IsThirdPersonEnabled.OnValueChangedHandler += (x) => OnToolChanged(asset.CurrentEquipment.Value);
+            
         }
 
         public void Update()
         {
             if (inputScheme.IsUpPressed)
             {
-                asset.CurrentEquipment.Value = (ToolType)((int)asset.CurrentEquipment.Value + 1).Mod(ToolUtils.ToolCount);
+                asset.CurrentEquipment.Value = tools[(activeToolIndex + 1).Mod(tools.Length)];
             }
             else if(inputScheme.IsDownPressed)
             {
-                asset.CurrentEquipment.Value = (ToolType)((int)asset.CurrentEquipment.Value - 1).Mod(ToolUtils.ToolCount);
+                asset.CurrentEquipment.Value = tools[(activeToolIndex - 1) .Mod(tools.Length)];
             }
+        }
+
+        public void OnAlgorithm(Algorithms.Algorithm algorithm)
+        {
+            switch (algorithm.Id)
+            {
+                case Algorithms.Id.ShortestFlightDistance:
+                case Algorithms.Id.LongestStraight:
+                    tools = new ToolType[] { ToolType.None, ToolType.Compass, ToolType.DistanceScanner };
+                    break;
+
+                case Algorithms.Id.Standard:
+                    tools = new ToolType[] { ToolType.None, ToolType.Compass };
+                    break;
+
+                case Algorithms.Id.RightHand:
+                    tools = new ToolType[] { ToolType.None };
+                    break;
+            }
+
+            activeToolIndex = tools.Length - 1;
+            asset.CurrentEquipment.Value = tools[activeToolIndex];
         }
 
         public void OnToolChanged(ToolType tool)
         {
             switch (tool)
             {
+                case ToolType.None:
+                    if (controls.IsThirdPersonEnabled.Value)
+                    {
+                        thirdPersonRemote.gameObject.SetActive(false);
+                        thirdPersonCompass.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        firstPersonRemote.gameObject.SetActive(false);
+                        firstPersonCompass.gameObject.SetActive(false);
+                    }
+                    break;
+
+
                 case ToolType.DistanceScanner:
 
                     if (controls.IsThirdPersonEnabled.Value)

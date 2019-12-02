@@ -19,6 +19,8 @@ namespace UdeS.Promoscience.Controls
 
     public class FlightDistanceScannerModule : DistanceScannerModule
     {
+        private Algorithms.FloorPainter floor;
+
         public override void DoScan(AvatarControllerAsset controller, RaycastHit[] hits)
         {
             IEnumerable<RaycastHit> floors = hits.Where(x => x.collider.GetComponentInChildren<Algorithms.FloorPainter>() != null);
@@ -28,7 +30,7 @@ namespace UdeS.Promoscience.Controls
 
                 if (hit.distance < ScannerUtils.MaxTileDistance)
                 {
-                    // TODO: This is a quick solution (looking for floor in asset name lol)
+                    // TODO: This is a quick solution (looking for floor in asset name)
                     // Bad practice remove
                     // Unity dosent allow for multitag..
                     var piece = hit.collider.GetComponentInParent<Labyrinths.Piece>();
@@ -38,50 +40,61 @@ namespace UdeS.Promoscience.Controls
                         piece.gameObject.name.Contains("Start") ||
                         piece.gameObject.name.Contains("End")))
                     {
-                        Algorithms.FloorPainter floor = hit.collider.GetComponentInChildren<Algorithms.FloorPainter>();
-                        if (floor != null)
+                        Algorithms.FloorPainter newfloor = hit.collider.GetComponentInChildren<Algorithms.FloorPainter>();
+
+                        if (newfloor != null &&
+                            newfloor != floor)
                         {
+                            floor = newfloor;
+
                             float dist =
-                                (Client.Instance.Labyrinth.Value.GetLabyrithEndPosition() -
-                                Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(hit.point.x, hit.point.z)).magnitude;
+                                    (Client.Instance.Labyrinth.Value.GetLabyrithEndPosition() -
+                                    Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(hit.point.x, hit.point.z)).magnitude;
 
                             floor.Highlight();
                             controller.FlightDistance.Value = ((int)dist) / Labyrinths.Utils.TileSize;
                             return;
-                        }                        
+
+                        }
                     }
                 }
             }
 
-            controller.FlightDistance.Value = -1;
-            Algorithms.FloorPainter.RemoveHighlight();
+            //controller.FlightDistance.Value = -1;
+            //Algorithms.FloorPainter.RemoveHighlight();
             
         }
     }
 
     public class WallDistanceScannerModule : DistanceScannerModule
     {
+        private Labyrinths.Piece wall;
+
+
         public override void DoScan(AvatarControllerAsset controller, RaycastHit[] hits)
         {
-            IEnumerable<RaycastHit> pieces = hits.Where(x => x.collider.GetComponentInChildren<Labyrinths.Piece>() != null);
+            IEnumerable<RaycastHit> pieces = hits.Where(x => x.collider.GetComponent<Labyrinths.Piece>() != null);
 
             if (pieces.Count() != 0)
             {
                 RaycastHit hit = pieces.OrderBy(x => x.distance).First();
-
-                controller.WallDistance.Value = ((int)hit.distance) / Labyrinths.Utils.TileSize;
-
-                Labyrinths.Piece piece = hit.collider.GetComponentInChildren<Labyrinths.Piece>();
-                if (piece != null)
+               
+                Labyrinths.Piece newWall = hit.collider.GetComponent<Labyrinths.Piece>();
+                if (newWall != null &&
+                    newWall != wall)
                 {
-                    piece.Highlight();
+                    wall = newWall;
+
+                    newWall.Highlight();
+                    controller.WallDistance.Value = ((int)hit.distance) / Labyrinths.Utils.TileSize;
+                    return;
                 }
 
             }
-            else
-            {
-                controller.WallDistance.Value = -1;
-            }
+
+            //Labyrinths.Piece.RemoveHighlight();
+            //controller.WallDistance.Value = -1;
+
         }
     }
 

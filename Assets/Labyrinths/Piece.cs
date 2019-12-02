@@ -25,6 +25,8 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void Awake()
         {
+            highlighted = false;
+
             foreach (var hightlight in highlights)
             {
                 hightlight.SetActive(false);
@@ -53,6 +55,8 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void OnOtherHighlight()
         {
+            highlighted = false;
+
             foreach (var hightlight in highlights)
             {
                 hightlight.SetActive(false);
@@ -60,8 +64,6 @@ namespace UdeS.Promoscience.Labyrinths
 
             OnTileHighlightStaticHandler -= OnOtherHighlight;
         }
-
-
 
     }
 }
