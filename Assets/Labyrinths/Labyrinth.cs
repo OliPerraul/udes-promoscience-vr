@@ -400,7 +400,7 @@ namespace UdeS.Promoscience.Labyrinths
         private void Start()
         {
             offset = transform.position;
-            //Client.Instance.clientStateChangedEvent += OnGameStateChanged;
+            //Client.Instance.State.OnValueChangedHandler += OnGameStateChanged;
         }
 
         //public void SetCamera(
@@ -418,22 +418,22 @@ namespace UdeS.Promoscience.Labyrinths
 
         public void OnGameStateChanged()
         {
-            //if (Client.Instance.State == ClientGameState.TutorialLabyrinthReady)
+            //if (Client.Instance.State.Value == ClientGameState.TutorialLabyrinthReady)
             //{
             //    GenerateLabyrinthVisual();
-            //    Client.Instance.State = ClientGameState.PlayingTutorial;
+            //    Client.Instance.State.Value = ClientGameState.PlayingTutorial;
             //}
-            //else if (Client.Instance.State == ClientGameState.LabyrinthReady)
+            //else if (Client.Instance.State.Value == ClientGameState.LabyrinthReady)
             //{
             //    GenerateLabyrinthVisual();
-            //    Client.Instance.State = ClientGameState.Playing;
+            //    Client.Instance.State.Value = ClientGameState.Playing;
             //}
-            //else if (Client.Instance.State == ClientGameState.ViewingLocalReplay)
+            //else if (Client.Instance.State.Value == ClientGameState.ViewingLocalReplay)
             //{
             //    GenerateLabyrinthVisual();
 
             //}
-            //else if (Client.Instance.State == ClientGameState.WaitingForNextRound)
+            //else if (Client.Instance.State.Value == ClientGameState.WaitingForNextRound)
             //{
             //    DestroyLabyrinth();
             //}

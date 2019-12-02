@@ -15,15 +15,15 @@ namespace UdeS.Promoscience.Tests
 
         void Start()
         {
-            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnGameStateChanged;
         }
 
-        void OnGameStateChanged()
+        void OnGameStateChanged(ClientGameState state)
         {
-            if (Client.Instance.State == ClientGameState.GeneratingTutorialLabyrinthDataForTest)
+            if (Client.Instance.State.Value == ClientGameState.GeneratingTutorialLabyrinthDataForTest)
             {
                 GenerateTutorialLabyrinthData();
-                Client.Instance.State = ClientGameState.TutorialLabyrinthReady;
+                Client.Instance.State.Value = ClientGameState.TutorialLabyrinthReady;
             }
         }
 

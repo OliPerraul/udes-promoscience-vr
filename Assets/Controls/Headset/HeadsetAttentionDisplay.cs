@@ -10,12 +10,17 @@ namespace UdeS.Promoscience.Controls
         // Start is called before the first frame update
         public void Awake()
         {
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
         }
 
-        public void OnClientStateChanged()
+        public void Start()
         {
-            switch (Client.Instance.State)
+            gameObject.SetActive(false);
+        }
+
+        public void OnClientStateChanged(ClientGameState state)
+        {
+            switch (state)
             {
                 case ClientGameState.WaitingReplay:
                     gameObject.SetActive(true);

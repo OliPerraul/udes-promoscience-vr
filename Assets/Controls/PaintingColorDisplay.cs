@@ -28,13 +28,13 @@ namespace UdeS.Promoscience.UI
         void Awake()
         {
             controls.PaintingColor.OnValueChangedHandler += OnPaintingColorValueChanged;
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
-            OnClientStateChanged();
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
+            OnClientStateChanged(Client.Instance.State.Value);
         }
 
-        void OnClientStateChanged()
+        void OnClientStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (Client.Instance.State.Value)
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:

@@ -36,7 +36,7 @@ namespace UdeS.Promoscience.UI
             directiveManager.CurrentDirective.OnValueChangedHandler += OnNewDirective;
             algorithmRespect.IsCorrectingEnabled.OnValueChangedHandler += OnCorrectingEnabled;
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdpersonENabled;
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
             foreach (var img in images)
             {
@@ -67,9 +67,9 @@ namespace UdeS.Promoscience.UI
         }
 
 
-        void OnClientStateChanged()
+        void OnClientStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (state)
             {
                 case ClientGameState.Connecting:
                 case ClientGameState.WaitingForNextRound:

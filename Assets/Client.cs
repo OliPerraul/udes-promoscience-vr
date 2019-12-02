@@ -25,119 +25,50 @@ namespace UdeS.Promoscience
         [SerializeField]
         private DeviceTypeManagerAsset deviceType;
 
-        public Cirrus.Event OnAlgorithmChangedHandler;
-
         public DeviceType DeviceType => deviceType.Value;
 
         [SerializeField]
-        private Algorithms.Algorithm algorithm;
+        public ObservableValue<Algorithms.Algorithm> Algorithm = new ObservableValue<Algorithms.Algorithm>(Algorithms.Resources.Instance.GetAlgorithm(Algorithms.Id.Standard));
 
-        public Algorithms.Algorithm Algorithm
-        {
-            get
-            {
-                if (algorithm == null)
-                    algorithm = Algorithms.Resources.Instance.GetAlgorithm(Algorithms.Id.Standard);
-
-                return algorithm;
-            }
-
-            set
-            {
-                algorithm = value;
-
-                if (OnAlgorithmChangedHandler != null)
-                    OnAlgorithmChangedHandler.Invoke();
-            }
-        }
-
-        [SerializeField]
-        private ClientGameState value;
-
-        public Action clientStateChangedEvent;
 
         public string[] ActionValues;
 
         public int[] ActionSteps;
 
-        public Cirrus.Event OnLabyrinthChangedHandler;
-
         [SerializeField]
-        private Labyrinths.IData labyrinthData;
+        public ObservableValue<Labyrinths.IData> LabyrinthData = new ObservableValue<Labyrinths.IData>();
 
-        public Labyrinths.IData LabyrinthData
-        {
-            get
-            {
-                return labyrinthData;
-            }
+        public ObservableValue<Labyrinths.Labyrinth> Labyrinth = new ObservableValue<Labyrinths.Labyrinth>();
 
-            set
-            {
-                labyrinthData = value;
 
-                if (OnLabyrinthChangedHandler != null)
-                    OnLabyrinthChangedHandler.Invoke();
-            }
-        }
-
-        private Labyrinths.Labyrinth labyrinth;
-
-        public Labyrinths.Labyrinth Labyrinth
-        {
-            get
-            {
-                return labyrinth;
-            }
-
-            set
-            {
-                if (labyrinth != null)
-                    labyrinth.gameObject.Destroy();
-
-                labyrinth = value;
-            }
-        }
-
-        public ClientGameState State
-        {
-            get
-            {
-                return value;
-            }
-            set
-            {
-                this.value = value;
-                OnValueChanged();
-            }
-        }
+        public ObservableValue<ClientGameState> State = new ObservableValue<ClientGameState>();
 
         public void Awake()
         {
-            value = ClientGameState.Connecting;
+            State.Value = ClientGameState.Connecting;
 
             respectController.ErrorCount = 0;
 
             respectController.Respect = 1;
 
-            clientStateChangedEvent += OnGameStateChanged;
+            State.OnValueChangedHandler += OnGameStateChanged;
 
             controls.OnPlayerReachedTheEndHandler += OnPlayerReachedTheEnd;
             
         }
 
 
-        public void OnGameStateChanged()
+        public void OnGameStateChanged(ClientGameState state)
         {
             if (
-                State == ClientGameState.TutorialLabyrinthReady ||
-                State == ClientGameState.LabyrinthReady ||
-                State == ClientGameState.Playing ||
-                State == ClientGameState.PlayingTutorial)
+                State.Value == ClientGameState.TutorialLabyrinthReady ||
+                State.Value == ClientGameState.LabyrinthReady ||
+                State.Value == ClientGameState.Playing ||
+                State.Value == ClientGameState.PlayingTutorial)
             {
-                Labyrinth.GenerateLabyrinthVisual();
+                Labyrinth.Value.GenerateLabyrinthVisual();
 
-                Labyrinth.Init(enableCamera:false);
+                Labyrinth.Value.Init(enableCamera:false);
 
                 if (controls != null)
                 {
@@ -155,14 +86,14 @@ namespace UdeS.Promoscience
                     controls.IsPlayerControlsEnabled.Value = true;
                 }
             }
-            else if (State == ClientGameState.ViewingLocalReplay)
+            else if (State.Value == ClientGameState.ViewingLocalReplay)
             {
                 //gameCamera.ChangeState(Camera.State.Topdown);
 
                 controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
             }
-            else if (State == ClientGameState.WaitingForNextRound)
+            else if (State.Value == ClientGameState.WaitingForNextRound)
             {
                 controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
@@ -182,27 +113,18 @@ namespace UdeS.Promoscience
                 respectController.IsDiverging.Value = false;
             }
 
-            if (State == ClientGameState.PlayingTutorial ||
-                State == ClientGameState.Playing)
+            if (State.Value == ClientGameState.PlayingTutorial ||
+                State.Value == ClientGameState.Playing)
             {
                 controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
-                State = ClientGameState.WaitingReplay;
+                State.Value = ClientGameState.WaitingReplay;
             }
             else
             {
-                State = ClientGameState.WaitingForNextRound;
+                State.Value = ClientGameState.WaitingForNextRound;
             }
-        }
-
-        public void OnValueChanged()
-        {
-            if (clientStateChangedEvent != null)
-            {
-                clientStateChangedEvent();
-            }
-        }
-    
+        }    
     }
 }

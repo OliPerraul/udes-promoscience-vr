@@ -38,7 +38,7 @@ namespace UdeS.Promoscience.UI
 
             //gameRound.Round.OnValueChangedHandler += OnGameRoundValueChanged;
             //timer.OnTimeLimitHandler += OnAnnouncementTimeOut;
-            //Client.Instance.clientStateChangedEvent += OnGameStateChanged;
+            //Client.Instance.State.OnValueChangedHandler += OnGameStateChanged;
 
             transform.GetChild(0).gameObject.SetActive(false);
          }
@@ -51,18 +51,18 @@ namespace UdeS.Promoscience.UI
 
         private void OnGameStateChanged()
         {
-            //if (Client.Instance.State == ClientGameState.TutorialLabyrinthReady ||
-            //    Client.Instance.State == ClientGameState.PlayingTutorial)
+            //if (Client.Instance.State.Value == ClientGameState.TutorialLabyrinthReady ||
+            //    Client.Instance.State.Value == ClientGameState.PlayingTutorial)
             //{
             //    Message = tutorialString.Value + "\n" +
-            //         "(" + Client.Instance.Algorithm.Name + ")";
+            //         "(" + Client.Instance.Algorithm.Value.Name + ")";
             //}
-            //else if (Client.Instance.State == ClientGameState.LabyrinthReady ||
-            //    Client.Instance.State == ClientGameState.Playing
+            //else if (Client.Instance.State.Value == ClientGameState.LabyrinthReady ||
+            //    Client.Instance.State.Value == ClientGameState.Playing
             //    )
             //{
             //    Message = roundString.Value + " " + gameRound.Round.Value.ToString() + "\n" +
-            //        "(" + Client.Instance.Algorithm.Name + ")";
+            //        "(" + Client.Instance.Algorithm.Value.Name + ")";
             //}
 
         }

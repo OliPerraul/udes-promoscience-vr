@@ -27,18 +27,18 @@ namespace UdeS.Promoscience
 
         void Start()
         {
-            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnGameStateChanged;
         }
 
-        void OnGameStateChanged()
+        void OnGameStateChanged(ClientGameState state)
         {
-            if (Client.Instance.State == ClientGameState.Playing)
+            if (Client.Instance.State.Value == ClientGameState.Playing)
             {
                 musicSource.clip = classicLoopMusic;
                 musicSource.volume = 1f;
                 musicSource.Play();
             }
-            else if (Client.Instance.State == ClientGameState.PlayingTutorial)
+            else if (Client.Instance.State.Value == ClientGameState.PlayingTutorial)
             {
                 musicSource.clip = modernLoopMusic;
                 musicSource.volume = 0.1f;

@@ -108,7 +108,7 @@ namespace UdeS.Promoscience.Controls
 
         private void Awake()
         {
-            Client.Instance.clientStateChangedEvent += OnClientChangedState;
+            Client.Instance.State.OnValueChangedHandler += OnClientChangedState;
 
             controls.stopAllMovementEvent += OnStopAllMovement;
 
@@ -352,9 +352,9 @@ namespace UdeS.Promoscience.Controls
                 }
 
                 Vector2Int labyrinthPosition =
-                    Client.Instance.Labyrinth == null ?
+                    Client.Instance.Labyrinth.Value == null ?
                         Vector2Int.zero :
-                        Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
+                        Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(
                             Transform.position.x,
                             Transform.position.z);
 
@@ -387,9 +387,9 @@ namespace UdeS.Promoscience.Controls
 
 
 
-        public void OnClientChangedState()
+        public void OnClientChangedState(ClientGameState state)
         {
-            switch(Client.Instance.State)
+            switch(Client.Instance.State.Value)
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
@@ -400,7 +400,7 @@ namespace UdeS.Promoscience.Controls
 
                     // Paint the first tile
                     PaintTile(
-                        Client.Instance.Labyrinth.GetLabyrithStartPosition(),
+                        Client.Instance.Labyrinth.Value.GetLabyrithStartPosition(),
                         TileColor.Yellow,
                         saveAction:true);
 
@@ -556,7 +556,7 @@ namespace UdeS.Promoscience.Controls
 
         void RequestMovementInDirection(int direction)
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return;
 
             if (CheckIfMovementIsValidInDirectionFromPosition(direction, Transform.position))
@@ -567,7 +567,7 @@ namespace UdeS.Promoscience.Controls
                     labyrinthPosition,
                     (Direction)controls.ForwardDirection.Value);
 
-                Vector3 pos = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(lpos);
+                Vector3 pos = Client.Instance.Labyrinth.Value.GetLabyrinthPositionInWorldPosition(lpos);
 
                 targetPosition = new Vector3(pos.x, fromPosition.y, pos.z);
 
@@ -655,15 +655,15 @@ namespace UdeS.Promoscience.Controls
 
         bool CheckIfMovementIsValidInDirectionFromPosition(int direction, Vector3 position)
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return false;
 
-            Vector2Int labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(position.x, position.z);
+            Vector2Int labyrinthPosition = Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(position.x, position.z);
 
             if (CheckIfMovementIsValidWhileCorrecting(direction, labyrinthPosition))
             {
                 labyrinthPosition = Utils.GetMoveDestination(labyrinthPosition, direction);
-                return Client.Instance.Labyrinth.GetIsTileWalkable(labyrinthPosition);
+                return Client.Instance.Labyrinth.Value.GetIsTileWalkable(labyrinthPosition);
             }
 
             return false;
@@ -671,11 +671,11 @@ namespace UdeS.Promoscience.Controls
 
         void PaintTile(Vector2Int position, TileColor color, bool saveAction)
         {
-            TileColor tileColor = Client.Instance.Labyrinth.GetTileColor(position);
+            TileColor tileColor = Client.Instance.Labyrinth.Value.GetTileColor(position);
 
             if (color != tileColor)
             {
-                GameObject tile = Client.Instance.Labyrinth.GetTile(position);
+                GameObject tile = Client.Instance.Labyrinth.Value.GetTile(position);
 
                 if (tile)
                 {
@@ -723,10 +723,10 @@ namespace UdeS.Promoscience.Controls
 
         void PaintCurrentPositionTile(bool saveAction)
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return;
 
-            Vector2Int position = Client.Instance.Labyrinth
+            Vector2Int position = Client.Instance.Labyrinth.Value
                 .GetWorldPositionInLabyrinthPosition(
                 Transform.position.x,
                 Transform.position.z);
@@ -778,17 +778,17 @@ namespace UdeS.Promoscience.Controls
         {
             Transform.position = new Vector3(0, Transform.position.y, 0);
 
-            if (Client.Instance.State == ClientGameState.WaitingForNextRound)
+            if (Client.Instance.State.Value == ClientGameState.WaitingForNextRound)
             {
                 controls.ForwardDirection.Value = 0;
             }
             else
             {
-                controls.ForwardDirection.Value = Client.Instance.Labyrinth.GetStartDirection();
+                controls.ForwardDirection.Value = Client.Instance.Labyrinth.Value.GetStartDirection();
             }
 
-            if (Client.Instance.Labyrinth != null)
-                labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(0, 0);
+            if (Client.Instance.Labyrinth.Value != null)
+                labyrinthPosition = Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(0, 0);
 
             Quaternion rotation = new Quaternion(0, 0, 0, 0);
 
@@ -834,7 +834,7 @@ namespace UdeS.Promoscience.Controls
                 PaintTile(tiles[i].x, tiles[i].y, tiles[i].Color, false);
             }
 
-            labyrinthPosition = Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(Transform.position.x, Transform.position.z);
+            labyrinthPosition = Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(Transform.position.x, Transform.position.z);
 
             controls.OnLabyrinthPositionChangedHandler?.Invoke();
 

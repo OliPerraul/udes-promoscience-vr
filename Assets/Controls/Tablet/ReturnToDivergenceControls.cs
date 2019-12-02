@@ -32,7 +32,7 @@ namespace UdeS.Promoscience.UI
 
         void Awake()
         {
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
             algorithmRespect.IsDiverging.OnValueChangedHandler += OnIsDivergingValueChanged;
             algorithmRespect.OnReturnToDivergencePointRequestHandler += OnReturnToDivergenceRequest;
@@ -44,9 +44,7 @@ namespace UdeS.Promoscience.UI
             cancelButton.onClick.AddListener(OnCancelClicked);
             confirmButton.onClick.AddListener(OnConfirmClicked);
 
-
-
-            OnClientStateChanged();
+            OnClientStateChanged(Client.Instance.State.Value);
         }
 
         public void OnReturnToDivergenceClicked()
@@ -66,9 +64,9 @@ namespace UdeS.Promoscience.UI
         }
 
 
-        void OnClientStateChanged()
+        void OnClientStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (Client.Instance.State.Value)
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:

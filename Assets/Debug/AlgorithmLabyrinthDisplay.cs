@@ -23,12 +23,12 @@ namespace UdeS.Promoscience.Tests
 
         void Start()
         {
-            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnGameStateChanged;
         }
 
-        void OnGameStateChanged()
+        void OnGameStateChanged(ClientGameState state)
         {
-            if (Client.Instance.State == ClientGameState.PlayingTutorial || Client.Instance.State == ClientGameState.Playing)
+            if (state == ClientGameState.PlayingTutorial || state == ClientGameState.Playing)
             {
                 GenerateVisualForAlgorithm(Algorithms.Id.ShortestFlightDistance);
             }
@@ -36,7 +36,7 @@ namespace UdeS.Promoscience.Tests
 
         void GenerateVisualForAlgorithm(Algorithms.Id algorithm)
         {
-            algorithmStepsPosition = Client.Instance.Algorithm.GetAlgorithmSteps(Client.Instance.LabyrinthData);
+            algorithmStepsPosition = Client.Instance.Algorithm.Value.GetAlgorithmSteps(Client.Instance.LabyrinthData.Value);
 
             Debug.Log("algorithmStepsPosition Count : " + algorithmStepsPosition.Count);
 
@@ -45,7 +45,7 @@ namespace UdeS.Promoscience.Tests
                 Debug.Log("algorithmStepsPosition #" + i + " : " + algorithmStepsPosition[i].x + " , " + algorithmStepsPosition[i].y + " , " + algorithmStepsPosition[i].Color);
 
                 GameObject obj = Instantiate(sphere, GetWorldPosition(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y), Quaternion.identity, gameObject.transform);
-                Algorithms.FloorPainter floorPainter = Client.Instance.Labyrinth.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<Algorithms.FloorPainter>();
+                Algorithms.FloorPainter floorPainter = Client.Instance.Labyrinth.Value.GetTile(algorithmStepsPosition[i].x, algorithmStepsPosition[i].y).GetComponentInChildren<Algorithms.FloorPainter>();
 
                 if (floorPainter != null)
                 {
@@ -58,12 +58,12 @@ namespace UdeS.Promoscience.Tests
 
         Vector3 GetWorldPosition(int x, int y)
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return Vector3.zero;
 
             Vector3 worldPos = new Vector3();
 
-            Vector2Int startPosition = Client.Instance.Labyrinth.GetLabyrithStartPosition();
+            Vector2Int startPosition = Client.Instance.Labyrinth.Value.GetLabyrithStartPosition();
 
             worldPos.x = (x - startPosition.x) * Labyrinths.Utils.TileSize;
             worldPos.y = 0.5f;

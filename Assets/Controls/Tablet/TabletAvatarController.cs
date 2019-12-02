@@ -198,10 +198,10 @@ namespace UdeS.Promoscience.Controls
 
         void PaintTile(Vector2Int position, TileColor color)
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return;
 
-            GameObject tile = Client.Instance.Labyrinth.GetTile(position);
+            GameObject tile = Client.Instance.Labyrinth.Value.GetTile(position);
 
             if (tile != null)
             {
@@ -231,9 +231,9 @@ namespace UdeS.Promoscience.Controls
 
             avatar.RootTransform.position = new Vector3(0, avatar.RootTransform.position.y, 0);
 
-            if (Client.Instance.Labyrinth != null)
+            if (Client.Instance.Labyrinth.Value != null)
             {
-                direction = Client.Instance.Labyrinth.GetStartDirection();
+                direction = Client.Instance.Labyrinth.Value.GetStartDirection();
             }
 
             Quaternion rotation = new Quaternion(0, 0, 0, 0);

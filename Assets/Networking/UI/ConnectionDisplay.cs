@@ -107,7 +107,7 @@ namespace UdeS.Promoscience.UI
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
             isConnectedToServer.valueChangedEvent += OnIsConnectedToServerValueChanged;
 
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
             serverImage.color = serverImage.color.SetA(disconnectedAlpha);            
             
@@ -139,9 +139,9 @@ namespace UdeS.Promoscience.UI
             }
         }
 
-        public void OnClientStateChanged()
+        public void OnClientStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (state)
             {
                 case ClientGameState.ViewingGlobalReplay:
                     Enable();
@@ -154,20 +154,20 @@ namespace UdeS.Promoscience.UI
             }
         }
 
-
+        public void Start()
+        {
+            transform.gameObject.SetActive(false);
+        }
 
 
         public void Enable()
         {
-            transform.gameObject.SetActive(true);
-            //controls.IsMouseFocusGrabbed.Value = false;
-            
+            transform.gameObject.SetActive(true);            
         }
 
         public void Disable()
         {
             transform.gameObject.SetActive(false);
-            //controls.IsMouseFocusGrabbed.Value = false;
         }
 
         void OnIsConnectedToPairValueChanged()

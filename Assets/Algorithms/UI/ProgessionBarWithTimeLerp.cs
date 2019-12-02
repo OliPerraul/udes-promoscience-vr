@@ -36,15 +36,15 @@ namespace UdeS.Promoscience.UI
 
             algorithmRespect.OnRespectChangedHandler += OnAlgorithmRespectChanged;
 
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
-            OnClientStateChanged();
+            OnClientStateChanged(Client.Instance.State.Value);
         }
 
 
-        public void OnClientStateChanged()
+        public void OnClientStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (Client.Instance.State.Value)
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:

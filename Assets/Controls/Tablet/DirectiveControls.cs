@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.Algorithms
 
         private void Awake()
         {
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
             algorithmRespect.IsCorrectingEnabled.OnValueChangedHandler += OnCorrectingEnabled;
 
@@ -57,9 +57,9 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
-        public void OnClientStateChanged()
+        public void OnClientStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (Client.Instance.State.Value)
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:                

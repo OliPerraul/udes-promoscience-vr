@@ -20,14 +20,14 @@ namespace UdeS.Promoscience.UI
 
         void Awake()
         {
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
-            OnClientStateChanged();
+            OnClientStateChanged(Client.Instance.State.Value);
         }
         
-        void OnClientStateChanged()
+        void OnClientStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (Client.Instance.State.Value)
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:

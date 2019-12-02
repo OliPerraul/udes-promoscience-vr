@@ -37,8 +37,8 @@ namespace UdeS.Promoscience.UI
 
         void Awake()
         {
-            Client.Instance.OnAlgorithmChangedHandler += OnAlgorithmValueChanged;
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            Client.Instance.Algorithm.OnValueChangedHandler += OnAlgorithmValueChanged;
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
             if (Client.Instance.DeviceType == DeviceType.Tablet)
             {
@@ -46,13 +46,13 @@ namespace UdeS.Promoscience.UI
                 closeButton.onClick.AddListener(OnCloseButtonClicked);
             }
 
-            OnClientStateChanged();
+            OnClientStateChanged(Client.Instance.State.Value);
         }
 
 
-        void OnClientStateChanged()
+        void OnClientStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (Client.Instance.State.Value)
             {
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
@@ -61,7 +61,7 @@ namespace UdeS.Promoscience.UI
                     if(Client.Instance.DeviceType == DeviceType.Tablet)
                         descriptionDisplay.SetActive(false);
 
-                    OnAlgorithmValueChanged();
+                    OnAlgorithmValueChanged(Client.Instance.Algorithm.Value);
                     break;
 
                 default:
@@ -90,18 +90,18 @@ namespace UdeS.Promoscience.UI
         }
 
 
-        void OnAlgorithmValueChanged()
+        void OnAlgorithmValueChanged(Algorithms.Algorithm algorithm)
         {
 
             if (Client.Instance.DeviceType == DeviceType.Tablet)
             {
-                text.text = Client.Instance.Algorithm.Name + " (?)";
-                descriptionText.text = Client.Instance.Algorithm.Description;
-                descriptionName.text = Client.Instance.Algorithm.Name;
+                text.text = Client.Instance.Algorithm.Value.Name + " (?)";
+                descriptionText.text = Client.Instance.Algorithm.Value.Description;
+                descriptionName.text = Client.Instance.Algorithm.Value.Name;
             }
             else
             {
-                text.text = Client.Instance.Algorithm.Name;
+                text.text = Client.Instance.Algorithm.Value.Name;
             }
         }
 

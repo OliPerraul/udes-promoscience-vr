@@ -29,7 +29,7 @@ namespace UdeS.Promoscience.Controls
 
         public float ExecuteDistanceScan(Direction direction)
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return -1f;
 
             Ray ray = new Ray(raycastStartPoint.position, Utils.GetDirectionVector(direction));

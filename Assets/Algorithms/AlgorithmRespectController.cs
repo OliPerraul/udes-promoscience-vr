@@ -45,7 +45,7 @@ namespace UdeS.Promoscience.Algorithms
 
         void Awake()
         {
-            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnGameStateChanged;
             controls.PlayerPaintTile.OnValueChangedHandler += OnPlayerPaintTile;
             controls.OnLabyrinthPositionChangedHandler += OnLabyrinthPositionChanged;
             algorithmRespect.OnReturnToDivergencePointRequestHandler += OnReturnToDivergencePointRequest;
@@ -57,9 +57,9 @@ namespace UdeS.Promoscience.Algorithms
         }
 
 
-        void OnGameStateChanged()
+        void OnGameStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (state)
             {
                 case ClientGameState.PlayingTutorial:
                 case ClientGameState.Playing:
@@ -68,7 +68,7 @@ namespace UdeS.Promoscience.Algorithms
                     SetAlgorithmSteps();
                     isAlgorithmRespectActive = true;
 
-                    if (Client.Instance.State != ClientGameState.PlayingTutorial)
+                    if (state != ClientGameState.PlayingTutorial)
                     {
                         if (Client.Instance.ActionSteps.Length > 0)
                         {
@@ -95,7 +95,7 @@ namespace UdeS.Promoscience.Algorithms
                     playerSteps[playerSteps.Count - 1].x,
                     playerSteps[playerSteps.Count - 1].y);
 
-            Vector3 position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(
+            Vector3 position = Client.Instance.Labyrinth.Value.GetLabyrinthPositionInWorldPosition(
                 lpos.x,
                 lpos.y) +
                 new Vector3(0, avatar.RootTransform.position.y, 0);
@@ -125,27 +125,27 @@ namespace UdeS.Promoscience.Algorithms
 
         void OnLabyrinthPositionChanged()
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return;
 
             if (isAlgorithmRespectActive)
             {
                 EvaluateAlgorithmRespectOnPositionChanged(
-                    Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
+                    Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(
                         avatar.RootTransform.position.x, 
                         avatar.RootTransform.position.z),
-                    Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition),
+                    Client.Instance.Labyrinth.Value.GetTileColor(currentLabyrinthPosition),
                     avatar.RootTransform.rotation);
             }
         }
      
         void OnPlayerPaintTile(Tile tile)
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return;
 
             EvaluateAlgorithmRespectOnPaintTile(
-                Client.Instance.Labyrinth.GetWorldPositionInLabyrinthPosition(
+                Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(
                     avatar.RootTransform.position.x,
                     avatar.RootTransform.position.z),
                 tile.Position.x,
@@ -159,16 +159,16 @@ namespace UdeS.Promoscience.Algorithms
             TileColor previousTileColor, 
             Quaternion rotation)
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return;
 
             if (labyrinthPosition != currentLabyrinthPosition)
             {
-                if (labyrinthPosition == Client.Instance.Labyrinth.GetLabyrithEndPosition() && !(algorithmRespect.Respect < 1.0f))
+                if (labyrinthPosition == Client.Instance.Labyrinth.Value.GetLabyrithEndPosition() && !(algorithmRespect.Respect < 1.0f))
                 {
                     gameAction.SetAction(GameAction.CompletedRound);
 
-                    if (Client.Instance.State == ClientGameState.Playing)
+                    if (Client.Instance.State.Value == ClientGameState.Playing)
                     {
                         gameManager.IsRoundCompleted.Value = true;
                     }
@@ -288,8 +288,8 @@ namespace UdeS.Promoscience.Algorithms
         void SetAlgorithmSteps()
         {
             algorithmSteps =
-                Client.Instance.Algorithm.GetAlgorithmSteps(
-                    Client.Instance.LabyrinthData);
+                Client.Instance.Algorithm.Value.GetAlgorithmSteps(
+                    Client.Instance.LabyrinthData.Value);
         }
 
         float RespectValueComputation(float x)
@@ -299,7 +299,7 @@ namespace UdeS.Promoscience.Algorithms
 
         void ResetAlgorithmRespect()
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return;
 
             playerSteps.Clear();
@@ -307,17 +307,17 @@ namespace UdeS.Promoscience.Algorithms
             algorithmRespect.ErrorCount = 0;
             algorithmRespect.IsDiverging.Value = false;
             algorithmRespect.Respect = 1.0f;
-            currentLabyrinthPosition = Client.Instance.Labyrinth.GetLabyrithStartPosition();
+            currentLabyrinthPosition = Client.Instance.Labyrinth.Value.GetLabyrithStartPosition();
             playerSteps.Add(
                 new Tile(
                     currentLabyrinthPosition.x, 
                     currentLabyrinthPosition.y, 
-                    Client.Instance.Labyrinth.GetTileColor(currentLabyrinthPosition)));
+                    Client.Instance.Labyrinth.Value.GetTileColor(currentLabyrinthPosition)));
         }
 
         public void OnReturnToDivergencePointAnswer(bool doreturn)
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return;
 
             if (doreturn)
@@ -331,7 +331,7 @@ namespace UdeS.Promoscience.Algorithms
                         playerSteps[playerSteps.Count - 1].x,
                         playerSteps[playerSteps.Count - 1].y);
 
-                Vector3 position = Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(
+                Vector3 position = Client.Instance.Labyrinth.Value.GetLabyrinthPositionInWorldPosition(
                     lpos.x,
                     lpos.y) +
                     new Vector3(
@@ -364,13 +364,13 @@ namespace UdeS.Promoscience.Algorithms
 
         void StartWithSteps()
         {
-            if (Client.Instance.Labyrinth == null)
+            if (Client.Instance.Labyrinth.Value == null)
                 return;
 
             int[] steps = Client.Instance.ActionSteps;
-            int forwardDirection = Client.Instance.Labyrinth.GetStartDirection();
-            TileColor[,] tiles = new TileColor[Client.Instance.Labyrinth.GetLabyrithXLenght(), Client.Instance.Labyrinth.GetLabyrithYLenght()];
-            Vector2Int position = Client.Instance.Labyrinth.GetLabyrithStartPosition();
+            int forwardDirection = Client.Instance.Labyrinth.Value.GetStartDirection();
+            TileColor[,] tiles = new TileColor[Client.Instance.Labyrinth.Value.GetLabyrithXLenght(), Client.Instance.Labyrinth.Value.GetLabyrithYLenght()];
+            Vector2Int position = Client.Instance.Labyrinth.Value.GetLabyrithStartPosition();
 
             tiles[position.x, position.y] = TileColor.Yellow;
 
@@ -522,7 +522,7 @@ namespace UdeS.Promoscience.Algorithms
                 new PositionRotationAndTile
                 {
                     Position = 
-                    Client.Instance.Labyrinth.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, avatar.RootTransform.position.y, 0),
+                    Client.Instance.Labyrinth.Value.GetLabyrinthPositionInWorldPosition(position) + new Vector3(0, avatar.RootTransform.position.y, 0),
                     Rotation = rotation,
                     Tiles = tilesToPaint
                 };

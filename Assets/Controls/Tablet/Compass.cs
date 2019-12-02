@@ -28,13 +28,13 @@ namespace UdeS.Promoscience.UI
 
         void Awake()
         {
-            Client.Instance.clientStateChangedEvent += OnClientStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
             controls.IsCompassEnabled.OnValueChangedHandler += OnCompassENabled;
 
             startRotation = indicator.transform.rotation;
 
-            OnClientStateChanged();
+            OnClientStateChanged(Client.Instance.State.Value);
         }
 
         private void OnCompassENabled(bool value)
@@ -42,13 +42,13 @@ namespace UdeS.Promoscience.UI
             indicator.gameObject.SetActive(value);
         }
 
-        void OnClientStateChanged()
+        void OnClientStateChanged(ClientGameState state)
         {
-            switch (Client.Instance.State)
+            switch (Client.Instance.State.Value)
             {
                 //case ClientGameState.Playing:
                 //case ClientGameState.PlayingTutorial:
-                //    if (Client.Instance.Algorithm.Id == Algorithms.Id.Standard)
+                //    if (Client.Instance.Algorithm.Value.Id == Algorithms.Id.Standard)
                 //    {
                 //        indicator.gameObject.SetActive(true);
                 //    }

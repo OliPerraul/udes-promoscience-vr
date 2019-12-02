@@ -129,7 +129,7 @@ namespace UdeS.Promoscience.Network
 
         public void OnRoundChanged(int round)
         {
-            DelayedSendGameInformation();
+            DelayedSendGameInformation(Client.Instance.State.Value);
         }
 
 
@@ -166,9 +166,9 @@ namespace UdeS.Promoscience.Network
             RequestForGameInformationMessage msg = netMsg.ReadMessage<RequestForGameInformationMessage>();
             gameRoundRequest = msg.gameRound;
 
-            if (Client.Instance.State == ClientGameState.Playing || 
-                Client.Instance.State == ClientGameState.PlayingTutorial || 
-                Client.Instance.State == ClientGameState.WaitingForNextRound)
+            if (Client.Instance.State.Value == ClientGameState.Playing || 
+                Client.Instance.State.Value == ClientGameState.PlayingTutorial || 
+                Client.Instance.State.Value == ClientGameState.WaitingForNextRound)
             {
                 if (gameRoundRequest == gameManager.Round.Value)
                 {
@@ -191,17 +191,17 @@ namespace UdeS.Promoscience.Network
 
             if (!isRequestDelayed)
             {
-                Client.Instance.clientStateChangedEvent += DelayedSendGameInformation;
+                Client.Instance.State.OnValueChangedHandler += DelayedSendGameInformation;
                 isRequestDelayed = true;
             }
         }
 
 
-        void DelayedSendGameInformation()
+        void DelayedSendGameInformation(ClientGameState state)
         {
-            if (Client.Instance.State == ClientGameState.Playing || 
-                Client.Instance.State == ClientGameState.PlayingTutorial || 
-                Client.Instance.State == ClientGameState.WaitingForNextRound)
+            if (Client.Instance.State.Value == ClientGameState.Playing || 
+                Client.Instance.State.Value == ClientGameState.PlayingTutorial || 
+                Client.Instance.State.Value == ClientGameState.WaitingForNextRound)
             {
                 if (gameRoundRequest == gameManager.Round.Value)
                 {
@@ -289,7 +289,7 @@ namespace UdeS.Promoscience.Network
         void SendPlayerTilesToPaint(Tile[] tiles)
         {
             PlayerTilesToPaintMessage msg = new PlayerTilesToPaintMessage();
-            msg.tiles = Client.Instance.Labyrinth.GetTilesToPaint();
+            msg.tiles = Client.Instance.Labyrinth.Value.GetTilesToPaint();
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }

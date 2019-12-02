@@ -14,6 +14,9 @@ namespace UdeS.Promoscience.Algorithms
         MeshRenderer meshRenderer;
 
         [SerializeField]
+        GameObject highlight;
+
+        [SerializeField]
         Material greyMaterial;
 
         [SerializeField]
@@ -30,6 +33,38 @@ namespace UdeS.Promoscience.Algorithms
 
         [SerializeField]
         TileColor floorColor;
+
+        public static Cirrus.Event OnTileHighlightStaticHandler;
+
+        public static void RemoveHighlight()
+        {
+            OnTileHighlightStaticHandler?.Invoke();
+        }
+
+        public void Highlight()
+        {
+            if (highlight.activeSelf)
+                return;
+
+            highlight.SetActive(true);
+
+            OnTileHighlightStaticHandler?.Invoke();
+
+            OnTileHighlightStaticHandler += OnOtherHighlight;
+        }
+
+        public void OnOtherHighlight()
+        {
+            highlight.SetActive(false);
+
+            OnTileHighlightStaticHandler -= OnOtherHighlight;
+        }
+
+
+        public void Awake()
+        {
+            highlight.SetActive(false);
+        }
 
         public void SetFloorColor(TileColor value, bool paintFloor = false)
         {

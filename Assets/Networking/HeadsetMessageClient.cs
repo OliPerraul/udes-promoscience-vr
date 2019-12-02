@@ -79,7 +79,7 @@ namespace UdeS.Promoscience.Network
             }
             else
             {
-                Client.Instance.State = ClientGameState.Ready;
+                Client.Instance.State.Value = ClientGameState.Ready;
             }
         }
 
@@ -98,9 +98,9 @@ namespace UdeS.Promoscience.Network
             }
         }
 
-        void OnGameStateChanged()
+        void OnGameStateChanged(ClientGameState state)
         {
-            if (Client.Instance.State == ClientGameState.Playing || Client.Instance.State == ClientGameState.PlayingTutorial)
+            if (Client.Instance.State.Value == ClientGameState.Playing || Client.Instance.State.Value == ClientGameState.PlayingTutorial)
             {
                 SendRequestForGameInformation();
             }
@@ -111,7 +111,7 @@ namespace UdeS.Promoscience.Network
             directive.CurrentDirective.OnValueChangedHandler += SendDirective;
             algorithmRespect.OnReturnToDivergencePointRequestHandler += SendReturnToDivergencePointRequest;
 
-            Client.Instance.clientStateChangedEvent += OnGameStateChanged;
+            Client.Instance.State.OnValueChangedHandler += OnGameStateChanged;
 
             isConnectedToPair.Value = true;
         }
@@ -120,7 +120,7 @@ namespace UdeS.Promoscience.Network
         {
             isConnectedToPair.Value = false;
 
-            Client.Instance.clientStateChangedEvent -= OnGameStateChanged;
+            Client.Instance.State.OnValueChangedHandler -= OnGameStateChanged;
             directive.CurrentDirective.OnValueChangedHandler -= SendDirective;
             algorithmRespect.OnReturnToDivergencePointRequestHandler -= SendReturnToDivergencePointRequest;
 
@@ -153,7 +153,7 @@ namespace UdeS.Promoscience.Network
             PlayerInformationMessage msg = netMsg.ReadMessage<PlayerInformationMessage>();
             playerInformation.SetPlayerInformation(msg.teamId);
 
-            Client.Instance.State = ClientGameState.Ready;
+            Client.Instance.State.Value = ClientGameState.Ready;
         }
 
         void OnPlayerPaintTile(NetworkMessage netMsg)
