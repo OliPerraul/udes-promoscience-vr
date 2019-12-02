@@ -26,31 +26,37 @@ namespace UdeS.Promoscience.Controls
             {
                 RaycastHit hit = floors.OrderBy(x => x.distance).First();
 
-                if (hit.distance > ScannerUtils.MaxTileDistance)
+                if (hit.distance < ScannerUtils.MaxTileDistance)
                 {
-                    controller.FlightDistance.Value = -1;
-                    Algorithms.FloorPainter.RemoveHighlight();
-                }
-                else
-                {
-                    float dist =
-                        (Client.Instance.Labyrinth.Value.GetLabyrithEndPosition() -
-                        Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(hit.point.x, hit.point.z)).magnitude;
+                    // TODO: This is a quick solution (looking for floor in asset name lol)
+                    // Bad practice remove
+                    // Unity dosent allow for multitag..
+                    var piece = hit.collider.GetComponentInParent<Labyrinths.Piece>();
 
-                    Algorithms.FloorPainter floor = hit.collider.GetComponentInChildren<Algorithms.FloorPainter>();
-                    if (floor != null)
+                    if (piece == null &&
+                        (piece.gameObject.name.Contains("Floor") ||
+                        piece.gameObject.name.Contains("Start") ||
+                        piece.gameObject.name.Contains("End")))
                     {
-                        floor.Highlight();
-                    }
+                        float dist =
+                            (Client.Instance.Labyrinth.Value.GetLabyrithEndPosition() -
+                            Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(hit.point.x, hit.point.z)).magnitude;
 
-                    controller.FlightDistance.Value = ((int)dist) / Labyrinths.Utils.TileSize;
+                        Algorithms.FloorPainter floor = hit.collider.GetComponentInChildren<Algorithms.FloorPainter>();
+                        if (floor != null)
+                        {
+                            floor.Highlight();
+                        }
+
+                        controller.FlightDistance.Value = ((int)dist) / Labyrinths.Utils.TileSize;
+                    }
                 }
             }
-            else
-            {
-                controller.FlightDistance.Value = -1;
-                Algorithms.FloorPainter.RemoveHighlight();
-            }
+
+
+            controller.FlightDistance.Value = -1;
+            Algorithms.FloorPainter.RemoveHighlight();
+            
         }
     }
 

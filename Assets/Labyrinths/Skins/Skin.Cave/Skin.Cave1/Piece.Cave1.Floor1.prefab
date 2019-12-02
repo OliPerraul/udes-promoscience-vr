@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Piece.Cave1.Floor1
       objectReference: {fileID: 0}
+    - target: {fileID: 1821762834476535566, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
+        type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 867469246454847159, guid: fabdadf1646b1ca4da94e6b4c368e5bf,
         type: 3}
       propertyPath: tileTypes.Array.size
