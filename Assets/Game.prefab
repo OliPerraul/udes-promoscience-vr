@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
-  respectController: {fileID: 0}
+  respectController: {fileID: 11400000, guid: 6d58c680a021b5e47830ce98afc82c18, type: 2}
   waitingForNextRoundRoom: {fileID: 0}
   deviceType: {fileID: 11400000, guid: 3a14ef94c76243f48b6e9b0474c9bed0, type: 2}
   ActionValues: []

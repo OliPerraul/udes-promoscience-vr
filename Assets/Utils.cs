@@ -111,6 +111,7 @@ namespace UdeS.Promoscience
     [Serializable]
     public enum ClientGameState : int
     {
+        Unknown = -1,
         NotReady = 0,
         Connecting = 1,
         Pairing = 2,
@@ -204,6 +205,8 @@ namespace UdeS.Promoscience
 
     public static class Utils
     {
+        public static int StaticCount = 0;
+
         public const int NumColors = 3;
 
         public static Vector2Int GetMoveDestination(Vector2Int lpos, GameAction action)

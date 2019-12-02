@@ -21,13 +21,20 @@ namespace UdeS.Promoscience.Network
 
         int serverPort = 7777;
 
-        private void Start()
+        private void Awake()
         {
+            // TODO: Asset Network manager to hold these values
+            isConnectedToServer.Value = false;
+            serverIpAdress.Value = "";
+
             serverIpAdress.valueChangedEvent += StartConnection;
         }
 
         public void StartConnection()
         {
+            if (serverIpAdress.Value == "")
+                return;
+
             networkPort = serverPort;
             networkAddress = serverIpAdress.Value;
             StartClient();

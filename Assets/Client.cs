@@ -41,20 +41,27 @@ namespace UdeS.Promoscience
         public ObservableValue<Labyrinths.Labyrinth> Labyrinth = new ObservableValue<Labyrinths.Labyrinth>();
 
 
-        public ObservableValue<ClientGameState> State = new ObservableValue<ClientGameState>();
+        public ObservableValue<ClientGameState> State = new ObservableValue<ClientGameState>(ClientGameState.Unknown);
 
         public void Awake()
         {
-            State.Value = ClientGameState.Connecting;
+            Debug.Log("Client "+ Utils.StaticCount);
+            Utils.StaticCount++;
+
+            State.OnValueChangedHandler += OnGameStateChanged;
 
             respectController.ErrorCount = 0;
 
             respectController.Respect = 1;
 
-            State.OnValueChangedHandler += OnGameStateChanged;
-
             controls.OnPlayerReachedTheEndHandler += OnPlayerReachedTheEnd;
             
+        }
+
+
+        public void Start()
+        {
+            State.Set(ClientGameState.Connecting);
         }
 
 

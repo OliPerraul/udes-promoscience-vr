@@ -438,20 +438,20 @@ MonoBehaviour:
   pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
   connectionStatusText: {fileID: 114525602407605726}
   connectingToServerString:
-    localizeString: {fileID: 11400000, guid: 503125f55708eaa4eaa5f34b78a836d3, type: 2}
-    defaultString: '[?]'
+    french: Connexion au serveur..
+    english: Connecting to server..
   connectingToPairString:
-    localizeString: {fileID: 11400000, guid: a2662e8ec78f19f48894e604d0a640be, type: 2}
-    defaultString: '[?]'
+    french: Connexion a l'appareil jumelle..
+    english: Connecting to peer..
   pleaseStandbyString:
-    localizeString: {fileID: 0}
-    defaultString: S.V.P retire ton equipement et porte attention.
+    french: Svp attendre..
+    english: Please standby..
   readyString:
-    localizeString: {fileID: 11400000, guid: df2321abe4b96664696bb2b1eaed8038, type: 2}
-    defaultString: '[?]'
+    french: Ready?
+    english: "Pr\xEAt?"
   waitingForServer:
-    localizeString: {fileID: 11400000, guid: c539fd7114cb28f4dbe934def83d7c36, type: 2}
-    defaultString: '[?]'
+    french: En attente du serveur..
+    english: Waiting for server..
   headsetImage: {fileID: 114462466151155354}
   tabletImage: {fileID: 114196890325669154}
   serverImage: {fileID: 114195446575727518}
@@ -2293,10 +2293,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1b38435d747e448863d488bed16577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizeString: {fileID: 11400000, guid: 1afaac59ede1a864ba9588d333124883, type: 2}
-  inlineLocalizeString:
-    localizeString: {fileID: 0}
-    defaultString: '[?]'
+  localizeString:
+    french: '[?]'
+    english: '[?]'
   text: {fileID: 114525602407605726}
 --- !u!1 &1988452175545074
 GameObject:

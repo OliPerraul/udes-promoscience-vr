@@ -102,6 +102,9 @@ namespace UdeS.Promoscience.UI
 
         void Awake()
         {
+            Debug.Log("Connection Display " + Promoscience.Utils.StaticCount);
+            Promoscience.Utils.StaticCount++;
+
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
             // TODO replace by networkcontrollerasset
             isConnectedToPair.valueChangedEvent += OnIsConnectedToPairValueChanged;
