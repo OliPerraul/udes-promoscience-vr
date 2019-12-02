@@ -6,63 +6,63 @@ namespace UdeS.Promoscience.Controls
 {
     public class DistanceDisplay : MonoBehaviour
     {
-        [SerializeField]
-        private AvatarControllerAsset controllerAsset;
+        //[SerializeField]
+        //private AvatarControllerAsset controllerAsset;
 
-        [SerializeField]
-        private UnityEngine.UI.Text wallDistanceText;
+        //[SerializeField]
+        //private UnityEngine.UI.Text wallDistanceText;
 
-        [SerializeField]
-        private GameObject wallDistanceDisplay;
-
-
-
-        [SerializeField]
-        private UnityEngine.UI.Text flightDistanceText;
-
-        [SerializeField]
-        private GameObject flightDistanceDisplay;
+        //[SerializeField]
+        //private GameObject wallDistanceDisplay;
 
 
-        public void Awake()
-        {
-            Client.Instance.Algorithm.OnValueChangedHandler += OnAlgorithmChanged;
 
-            controllerAsset.WallDistance.OnValueChangedHandler += OnWallDistance;
-            controllerAsset.FlightDistance.OnValueChangedHandler += OnFlightDistance;
-        }
+        //[SerializeField]
+        //private UnityEngine.UI.Text flightDistanceText;
 
-        public void OnAlgorithmChanged(Algorithms.Algorithm algorithm)
-        {
-            switch (algorithm.Id)
-            {
-                case Algorithms.Id.ShortestFlightDistance:
-                    wallDistanceDisplay.SetActive(false);
-                    flightDistanceDisplay.SetActive(true);
-                    break;
+        //[SerializeField]
+        //private GameObject flightDistanceDisplay;
 
-                case Algorithms.Id.LongestStraight:
-                    wallDistanceDisplay.SetActive(true);
-                    flightDistanceDisplay.SetActive(false);
-                    break;
 
-                default:
-                    wallDistanceDisplay.SetActive(false);
-                    flightDistanceDisplay.SetActive(false);
-                    break;
-            }
+        //public void Awake()
+        //{
+        //    Client.Instance.Algorithm.OnValueChangedHandler += OnAlgorithmChanged;
 
-        }
+        //    controllerAsset.WallDistance.OnValueChangedHandler += OnWallDistance;
+        //    controllerAsset.FlightDistance.OnValueChangedHandler += OnFlightDistance;
+        //}
 
-        public void OnWallDistance(float distance)
-        {
-            wallDistanceText.text = distance < 0 ? "?" : distance.ToString() + " m";
-        }
+        //public void OnAlgorithmChanged(Algorithms.Algorithm algorithm)
+        //{
+        //    switch (algorithm.Id)
+        //    {
+        //        case Algorithms.Id.ShortestFlightDistance:
+        //            wallDistanceDisplay.SetActive(false);
+        //            flightDistanceDisplay.SetActive(true);
+        //            break;
 
-        public void OnFlightDistance(float distance)
-        {
-            flightDistanceText.text = distance < 0 ? "?" : distance.ToString() + " m";
-        }
+        //        case Algorithms.Id.LongestStraight:
+        //            wallDistanceDisplay.SetActive(true);
+        //            flightDistanceDisplay.SetActive(false);
+        //            break;
+
+        //        default:
+        //            wallDistanceDisplay.SetActive(false);
+        //            flightDistanceDisplay.SetActive(false);
+        //            break;
+        //    }
+
+        //}
+
+        //public void OnWallDistance(float distance)
+        //{
+        //    wallDistanceText.text = distance < 0 ? "?" : distance.ToString() + " m";
+        //}
+
+        //public void OnFlightDistance(float distance)
+        //{
+        //    flightDistanceText.text = distance < 0 ? "?" : distance.ToString() + " m";
+        //}
 
     }
 }

@@ -175,8 +175,8 @@ public class OVRSystemPerfMetrics
 		{
 			if (singleton != null)
 			{
-				Debug.LogError("Mutiple OVRSystemPerfMetricsTcpServer exists");
-				return;
+				//Debug.LogError("Mutiple OVRSystemPerfMetricsTcpServer exists");
+				//return;
 			}
 			else
 			{

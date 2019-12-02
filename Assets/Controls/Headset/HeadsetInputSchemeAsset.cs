@@ -19,6 +19,10 @@ namespace UdeS.Promoscience.Controls
 
         bool IsRightPressed { get; }
 
+        bool IsUpPressed { get; }
+
+        bool IsDownPressed { get; }
+
         bool IsAnyPressed { get; }
     }
 
@@ -37,6 +41,10 @@ namespace UdeS.Promoscience.Controls
         public bool IsLeftPressed => Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A);
 
         public bool IsRightPressed => Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.D);
+
+        public bool IsUpPressed => Input.GetKeyUp(KeyCode.UpArrow) || Input.GetKeyUp(KeyCode.W);
+
+        public bool IsDownPressed => Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S);
 
         public bool IsAnyPressed => Input.anyKeyDown;
     }
@@ -57,8 +65,13 @@ namespace UdeS.Promoscience.Controls
 
         public bool IsRightPressed => OVRInput.GetUp(OVRInput.Button.Right);
 
-        public bool IsAnyPressed => OVRInput.GetUp(OVRInput.Button.Any);
+        // Swipe up
+        public bool IsUpPressed => OVRInput.GetUp(OVRInput.Button.Up);
 
+        // Swipe down
+        public bool IsDownPressed => OVRInput.GetUp(OVRInput.Button.Down);
+
+        public bool IsAnyPressed => OVRInput.GetUp(OVRInput.Button.Any);
     }
 
     public class HeadsetInputSchemeAsset : ScriptableObject, IHeadsetInputScheme
@@ -78,6 +91,10 @@ namespace UdeS.Promoscience.Controls
         public bool IsLeftPressed => inputScheme.IsLeftPressed;
 
         public bool IsRightPressed => inputScheme.IsRightPressed;
+
+        public bool IsUpPressed => inputScheme.IsUpPressed;
+
+        public bool IsDownPressed => inputScheme.IsDownPressed;
 
         public bool IsAnyPressed => inputScheme.IsAnyPressed;
 

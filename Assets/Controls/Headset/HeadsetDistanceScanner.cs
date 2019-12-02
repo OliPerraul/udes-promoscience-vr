@@ -95,35 +95,60 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private AvatarControllerAsset controller;
 
+        [SerializeField]
+        private HeadsetToolManagerAsset tools;
+
         private DistanceScannerModule module;
 
 
         public void Awake()
         {
             Client.Instance.Algorithm.OnValueChangedHandler += OnAlgorithmChanged;
+            tools.CurrentEquipment.OnValueChangedHandler += OnToolChanged;
+        }
+
+        public void OnToolChanged(ToolType tool)
+        {
+            if (tool == ToolType.DistanceScanner)
+            {
+                OnAlgorithmChanged(Client.Instance.Algorithm.Value);
+            }
+            else
+            {
+                Disable();
+            }
+        }
+
+        public void Disable()
+        {
+            Algorithms.FloorPainter.RemoveHighlight();
+            Labyrinths.Piece.RemoveHighlight();
+            enabled = false;
         }
 
         public void OnAlgorithmChanged(Algorithms.Algorithm algorithm)
         {
+            if (algorithm == null)
+                return;
+
             switch (algorithm.Id)
             {
                 case Algorithms.Id.LongestStraight:
-                    gameObject.SetActive(true);
+                    enabled = true;
                     module = new WallDistanceScannerModule();
                     break;
 
                 case Algorithms.Id.ShortestFlightDistance:
-                    gameObject.SetActive(true);
+                    enabled = true;
                     module = new FlightDistanceScannerModule();
                     break;
 
                 default:
-                    gameObject.SetActive(false);
+                    Disable();
                     module = null;
                     break;
             }
         }
-
 
         public void FixedUpdate()
         {
