@@ -58,11 +58,9 @@ namespace UdeS.Promoscience
                 case LevelSelectionMode.Order:
                     break;
 
+                case LevelSelectionMode.Random://TODO
                 case LevelSelectionMode.Selected:
                     Server.Instance.State.Set(ServerState.LevelSelect);
-                    break;
-
-                case LevelSelectionMode.Random:
                     break;
             }
         }

@@ -8,7 +8,14 @@ namespace UdeS.Promoscience
     public class LiveFeedbackManager : MonoBehaviour
     {
         [SerializeField]
-        private UnityEngine.UI.Text algorithmText;
+        private UnityEngine.UI.Text roundText;
+
+        [SerializeField]
+        private LocalizeInlineString quickPlayString = new LocalizeInlineString("Quickplay", "Partie rapide");
+
+        [SerializeField]
+        private LocalizeInlineString roundString = new LocalizeInlineString("Round ", "Niveau ");
+
 
 
         public void Awake()
@@ -17,6 +24,7 @@ namespace UdeS.Promoscience
         }
 
         private Labyrinths.Labyrinth labyrinth;
+
 
         public void OnServerStateChanged(ServerState state)
         {
@@ -34,8 +42,10 @@ namespace UdeS.Promoscience
 
                     labyrinth.Camera.OutputToTexture = false;
 
-                    //algorithmText.text = GameManager.Instance.CurrentGame.Labyrinths.
-
+                    roundText.text = 
+                        Server.Instance.State.Value == ServerState.Quickplay ? 
+                            quickPlayString.Value : 
+                            roundString.Value + GameManager.Instance.CurrentGame.Round.Value.ToString();
                     break;
 
 
