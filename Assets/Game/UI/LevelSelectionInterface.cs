@@ -50,6 +50,8 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public void OnButtonClicked(BaseButton button)
         {
+            Debug.Log(algorithmSelect.AlgorithmId);
+
             GameManager.Instance.CurrentGame.StartRound(
                 button.Labyrinth.Data.Id,
                 (int)algorithmSelect.AlgorithmId);

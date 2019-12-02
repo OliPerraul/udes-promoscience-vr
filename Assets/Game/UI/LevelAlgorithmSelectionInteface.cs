@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.Algorithms.UI
         private Algorithm[] algorithms;
 
         [SerializeField]
-        private Id algorithmId = 0;
+        private Id algorithmId = Id.LongestStraight;
 
         public Id AlgorithmId => algorithmId;
 
@@ -23,8 +23,6 @@ namespace UdeS.Promoscience.Algorithms.UI
             dropDown.ClearOptions();
 
             AddOption(randomString.Value);
-
-            AddOption(gameRoundString.Value);
 
             int i = 0;
 
@@ -37,6 +35,9 @@ namespace UdeS.Promoscience.Algorithms.UI
             dropDown.onValueChanged.AddListener(OnDropDownSelected);
 
             OnDropDownSelected(0);
+
+
+            algorithmId = Utils.Random;
         }
 
         public void AddOption(string option)
@@ -53,18 +54,19 @@ namespace UdeS.Promoscience.Algorithms.UI
 
         public void OnDropDownSelected(int i)
         {
+            if (i != 0)
+            {
+                Debug.Log(algorithmId = Resources.Instance.Algorithms[i - 1].Id);
+            }
+
             switch (i)
             {
                 case 0:
                     algorithmId = Utils.Random;
                     break;
 
-                case 1:
-                    algorithmId = Id.GameRound;
-                    break;
-
                 default:
-                    algorithmId = Resources.Instance.Algorithms[i - 2].Id;
+                    algorithmId = Resources.Instance.Algorithms[i - 1].Id;
                     break;
             }
         }

@@ -18,8 +18,8 @@ namespace UdeS.Promoscience
 
         public ObservableValue<ServerState> State = new ObservableValue<ServerState>();
 
-        [SerializeField]
-        private ServerState state;
+        //[SerializeField]
+        //private ServerState state;
 
         public static bool IsApplicationServer => Instance == null;
 
@@ -49,7 +49,7 @@ namespace UdeS.Promoscience
 
         public void OnStateValueChanged(ServerState state)
         {
-            this.state = state;
+            //this.state = state;
 
             switch (state)
             {

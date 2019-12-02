@@ -41,8 +41,8 @@ public class NetworkDiscoveryFix : NetworkDiscovery
             if (Application.platform == RuntimePlatform.Android)
                 MulticastLock();
             
-            if (NetworkTransport.IsBroadcastDiscoveryRunning())
-                NetworkTransport.StopBroadcastDiscovery();
+            //if (NetworkTransport.IsBroadcastDiscoveryRunning())
+            //    NetworkTransport.StopBroadcastDiscovery();
 
             NetworkTransport.Shutdown();          
             NetworkTransport.Init();

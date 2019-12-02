@@ -12,7 +12,10 @@ namespace UdeS.Promoscience
         [SerializeField]
         private LevelSelectionMode levelSelectionMode;
 
-        public Game CurrentGame { get; private set; }
+        [SerializeField]
+        public Game currentGame;
+
+        public Game CurrentGame => currentGame;
 
         public void Awake()
         {
@@ -55,7 +58,7 @@ namespace UdeS.Promoscience
                 SQLiteUtilities.SetCourseFinished(c.Id);
             }
 
-            CurrentGame = new Quickplay(levelSelectionMode);
+            currentGame = new Quickplay(levelSelectionMode);
 
             SQLiteUtilities.InsertGame(CurrentGame.Id);
         }
@@ -68,7 +71,7 @@ namespace UdeS.Promoscience
                 SQLiteUtilities.SetCourseFinished(c.Id);
             }
 
-            CurrentGame = new Game(levelSelectionMode);
+            currentGame = new Game(levelSelectionMode);
 
             SQLiteUtilities.InsertGame(CurrentGame.Id);
         }

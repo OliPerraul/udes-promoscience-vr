@@ -9,10 +9,9 @@ namespace UdeS.Promoscience.Algorithms
     [System.Serializable]
     public enum Id : int
     {
-        Randomized = -1,
-        GameRound = -2,
+        //Randomized = -1,
+        ////GameRound = -2,
 
-        Tutorial = 0,
         RightHand = 0,
         ShortestFlightDistance = 1,
         LongestStraight = 2,
@@ -22,29 +21,11 @@ namespace UdeS.Promoscience.Algorithms
 
     public static class Utils
     {
-        public static Id Random => (Id)UnityEngine.Random.Range((int)Id.Tutorial, (int)Id.Standard);
+        public static Id Random => (Id)UnityEngine.Random.Range((int)Id.RightHand, (int)Id.Standard+1);
 
-        private static Id DoGetRoundAlgorithm(int round)
+        public static Id GetRoundAlgorithm(int round, int teamId=0)
         {
-            return (Id) round.Mod(Algorithm.NumAlgorithms);
-        }
-
-        public static Id GetRoundAlgorithm(int baseId, int round, int teamId = 0)
-        {
-            return GetRoundAlgorithm((Id)baseId, round, teamId);
-        }
-
-        public static Id GetRoundAlgorithm(Id baseId, int round, int teamId = 0)
-        {
-            switch (baseId)
-            {
-                case Id.GameRound:
-                    return DoGetRoundAlgorithm(round + teamId);
-
-                // default to algorithm set by dropdown
-                default:
-                    return baseId;
-            }
+            return (Id)(round + teamId).Mod(Algorithm.NumAlgorithms);
         }
     }
 

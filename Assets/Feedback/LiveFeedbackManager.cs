@@ -7,6 +7,10 @@ namespace UdeS.Promoscience
 {
     public class LiveFeedbackManager : MonoBehaviour
     {
+        [SerializeField]
+        private UnityEngine.UI.Text algorithmText;
+
+
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
@@ -29,6 +33,9 @@ namespace UdeS.Promoscience
                     labyrinth.Init(enableCamera: true);
 
                     labyrinth.Camera.OutputToTexture = false;
+
+                    //algorithmText.text = GameManager.Instance.CurrentGame.Labyrinths.
+
                     break;
 
 

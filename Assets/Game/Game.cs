@@ -8,7 +8,7 @@ using UdeS.Promoscience.Network;
 namespace UdeS.Promoscience
 {
     // Controls the flow of the main activity (rounds etc)
-    // A game consists of 3 rounds    
+    // A game consists of 3 rounds       
 
     public enum LevelSelectionMode
     {
@@ -17,22 +17,29 @@ namespace UdeS.Promoscience
         Order
     }
 
+    public class ObservableGame : Cirrus.ObservableValue<Game> { }
+
+    [System.Serializable]
     public class Game
     {
+        [SerializeField]
         public int Id = 0;
 
         public Cirrus.ObservableValue<int> Round = new Cirrus.ObservableValue<int>();
 
         public Cirrus.ObservableValue<bool> IsRoundCompleted = new Cirrus.ObservableValue<bool>();
 
+        [SerializeField]
         protected LevelSelectionMode levelSelectionMode;
 
         public IData CurrentLabyrinth { get; private set; }
 
         public List<IData> Labyrinths = new List<IData>();
 
+        [SerializeField]
         private const int tutorialLabyrinthId = 4;
 
+        [SerializeField]
         private Algorithms.Id baseAlgorithmId;
 
 
@@ -102,6 +109,26 @@ namespace UdeS.Promoscience
             }
         }
 
+        public void StartNextRound(int labyrinthId)
+        {
+            StartNextRound(Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId));
+        }
+
+        public void StartNextRound(
+            IData labyrinth)
+        {
+            StartRound(
+                labyrinth,
+                (int)Algorithms.Utils.GetRoundAlgorithm(Round.Value + 1));
+        }
+
+        public void StartRound(
+            int labyrinthId,
+            int algorithmId)
+        {
+            StartRound(Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId), algorithmId);
+        }
+
         public void StartRound(
             IData labyrinth,
             int algorithmId)
@@ -125,7 +152,7 @@ namespace UdeS.Promoscience
                     case ClientGameState.ViewingLocalReplay:
                     case ClientGameState.WaitingForNextRound:
 
-                        player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm(algorithmId, Round.Value, player.ServerTeamId);
+                        player.serverAlgorithm = baseAlgorithmId;
 
                         player.serverLabyrinthId = CurrentLabyrinth.Id;
 
@@ -145,12 +172,6 @@ namespace UdeS.Promoscience
             DoStartRound();
         }
 
-        public void StartRound(
-            int labyrinthId, 
-            int algorithmId)
-        {
-            StartRound(Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId), algorithmId);
-        }
 
         protected virtual void DoStartRound()
         {
@@ -171,14 +192,11 @@ namespace UdeS.Promoscience
 
         public void JoinGameRound(Player player)
         {
-            player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm(
-                baseAlgorithmId,
-                Round.Value,
-                player.ServerTeamId);
-
-            player.serverLabyrinthId = CurrentLabyrinth.Id;
-
             AssignCourse(player);
+
+            player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm((int)baseAlgorithmId, player.ServerTeamId);
+
+            player.serverLabyrinthId = CurrentLabyrinth.Id; ;
 
             player.TargetSetGame(
                 player.connectionToClient,
@@ -190,14 +208,11 @@ namespace UdeS.Promoscience
 
         public void JoinGameRoundWithSteps(Player player, int[] steps)
         {
-            player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm(
-                baseAlgorithmId,
-                Round.Value,
-                player.ServerTeamId);
+            AssignCourse(player);
+
+            player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm((int)baseAlgorithmId, player.ServerTeamId);
 
             player.serverLabyrinthId = CurrentLabyrinth.Id; ;
-
-            AssignCourse(player);
 
             player.TargetSetGameWithSteps(
                 player.connectionToClient,
@@ -243,14 +258,5 @@ namespace UdeS.Promoscience
 
             //State = ServerState.LevelSelect;
         }
-
-
-
-
-
     }
-
-
-
-
 }
