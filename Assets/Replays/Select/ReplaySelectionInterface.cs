@@ -50,6 +50,31 @@ namespace UdeS.Promoscience.Replays.UI
             replayController.OnActionHandler -= OnReplayAction;
         }
 
+        public override int LabyrinthIndexWrap => labyrinthIndex.Mod(ReplayManager.Instance.SplitReplay.Rounds.Count);
+
+        public override Labyrinth CreateNextLabyrinth()
+        {
+            var data = ReplayManager.Instance.SplitReplay.Rounds[LabyrinthIndexWrap].Labyrinth;
+
+            labyrinthIndex++;
+
+            Labyrinth labyrinth = Labyrinths.Resources.Instance
+              .GetLabyrinthTemplate(data)
+              .Create(data);
+
+            labyrinths.Add(labyrinth);
+
+            labyrinth.GenerateLabyrinthVisual();
+
+            labyrinth.Init(enableCamera: true);
+
+            labyrinth.Camera.OutputToTexture = true;
+
+            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
+
+            return labyrinth;
+        }
+
         public virtual void OnServerGameStateChanged(ServerState state)
         {
             switch (state)
@@ -58,43 +83,43 @@ namespace UdeS.Promoscience.Replays.UI
 
                     Enabled = true;
 
-                    if (labyrinths.Count != 0)
+                    for (labyrinthIndex = 0; labyrinthIndex < ReplayManager.Instance.SplitReplay.Rounds.Count; labyrinthIndex++)
                     {
-                        foreach (var lab in labyrinths)
-                        {
-                            lab.gameObject.SetActive(true);
-                            lab.Camera.OutputToTexture = true;
-                        }
+                        AddLabyrinth(labyrinthIndex);
                     }
-                    else
-                    {
-                        for (labyrinthIndex = 0; labyrinthIndex < ReplayManager.Instance.SplitReplay.Rounds.Count; labyrinthIndex++)
-                        {
-                            AddLabyrinth(labyrinthIndex);
-                        }
-                    }
+
 
                     break;
 
-                case ServerState.LabyrinthReplay:
+                
+                default:
 
                     Enabled = false;
                     foreach (var lab in labyrinths)
                     {
+
+                        if (lab == null)
+                            continue;
                         Destroy(lab.gameObject);
                         
                     }
 
                     labyrinths.Clear();
 
+
+                    foreach (var sec in sections)
+                    {
+                        if (sec == null)
+                            continue;
+
+                        Destroy(sec.gameObject);
+
+                    }
+
+                    sections.Clear();
+
                     break;
 
-                case ServerState.Menu:
-                    break;
-
-                default:
-                    Enabled = false;
-                    break;
             }
         }
 

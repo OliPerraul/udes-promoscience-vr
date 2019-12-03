@@ -112,6 +112,16 @@ namespace UdeS.Promoscience.Replays
             controller.PlaybackSpeed = 2f;
         }
 
+
+        //public override void Clear()
+        //{
+        //    if (labyrinth != null)
+        //    {
+        //        GameObject.Destroy(labyrinth.gameObject);
+        //        labyrinth = null;
+        //    }
+        //}
+
         public override void OnPlaybackSpeedChanged(float speed)
         {
             foreach (var sq in playerSequences.Values)
@@ -461,9 +471,13 @@ namespace UdeS.Promoscience.Replays
         {
             first = null;
 
-            labyrinth.gameObject.Destroy();
+            if (labyrinth != null)
+            {
 
-            labyrinth.gameObject.Destroy();
+                labyrinth.gameObject.Destroy();
+                labyrinth = null;
+
+            }
 
             foreach (Sequence sq in algorithmSequences.Values)
             {
@@ -487,7 +501,6 @@ namespace UdeS.Promoscience.Replays
 
             algorithmSequences.Clear();
 
-            labyrinth = null;
         }
 
         Course first = null;

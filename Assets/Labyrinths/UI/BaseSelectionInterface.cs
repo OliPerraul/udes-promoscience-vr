@@ -24,7 +24,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public int labyrinthIndex = 0;
 
-        public int LabyrinthIndexWrap => labyrinthIndex.Mod(Labyrinths.Resources.NumLabyrinths);
+        public virtual int LabyrinthIndexWrap => labyrinthIndex.Mod(Resources.NumLabyrinths);
 
         //public abstract List<BaseSection> Sections { get; }
 
@@ -38,7 +38,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         }
 
-        public Labyrinth CreateNextLabyrinth()
+        public virtual Labyrinth CreateNextLabyrinth()
         {
             var data = Resources.Instance.Labyrinths[LabyrinthIndexWrap];
 

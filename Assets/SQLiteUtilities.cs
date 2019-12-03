@@ -62,7 +62,7 @@ namespace UdeS.Promoscience
 
         const string COURSE_STATUS = "CourseStatus";
         const string COURSE_ROUND = "CourseRound";
-        const string COURSE_GAME_ID = "CourseGameId";
+        const string COURSE_GAME_ID = GAME_ID;
 
         // active: whether the course is currently played
         const int COURSE_STATUS_ACTIVE = (int)CourseStatus.Active;
@@ -127,7 +127,6 @@ namespace UdeS.Promoscience
                     // ROUNDS
                     cmd.CommandText =
                         "CREATE TABLE IF NOT EXISTS " + ROUNDS + "( " +
-                        ROUNDS + " INTEGER(10) NOT NULL, " +
                         ROUND_ID + " INTEGER(10) NOT NULL, " +
                         ROUND_NUMBER + " INTEGER(10) NOT NULL, " +
                         ROUND_GAME_ID + " INTEGER(10) NOT NULL, " +
@@ -570,7 +569,7 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
 
                     cmd.CommandText = "SELECT * FROM " + ROUNDS + " WHERE " +
-                        COURSE_GAME_ID + " = " + gameId + " AND " +
+                        ROUND_GAME_ID + " = " + gameId + " AND " +
                         ROUND_NUMBER + " = " + round;
 
                     cmd.ExecuteNonQuery();

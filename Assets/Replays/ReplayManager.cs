@@ -59,6 +59,13 @@ namespace UdeS.Promoscience.Replays
                     );
             }
 
+            if (CurrentReplay != null)
+            {
+                CurrentReplay.Clear();
+                CurrentReplay = null;
+            }
+
+
             SplitReplay = new SplitReplay(
                 asset,
                 rounds);
@@ -71,17 +78,21 @@ namespace UdeS.Promoscience.Replays
 
         public void OnGameStateValueChanged(ServerState state)
         {
-            //switch (state)
-            //{
-            //    case ServerState.LabyrinthReplay:
-            //        display.SetActive(true);
-            //        //viewRawImage.texture = Server.Instance.CurrentLabyrinth.Camera.RenderTexture;
-            //        break;
+            switch (state)
+            {
+                case ServerState.LabyrinthReplay:
+                case ServerState.ReplaySelect:
+                    break;
 
-            //    default:
-            //        display.SetActive(false);
-            //        break;
-            //}
+                default:
+                    if (CurrentReplay != null)
+                    {
+                        CurrentReplay.Clear();
+                        CurrentReplay = null;
+                    }
+
+                    break;
+            }
 
         }
 
@@ -102,6 +113,13 @@ namespace UdeS.Promoscience.Replays
                         ClientGameState.ViewingGlobalReplay);
                 }
             }
+
+            if (CurrentReplay != null)
+            {
+                CurrentReplay.Clear();
+                CurrentReplay = null;
+            }
+
 
             CurrentReplay = new InstantReplay(
                 asset,
