@@ -340,8 +340,7 @@ namespace UdeS.Promoscience.Network
             NetworkConnection target, 
             string labyrinth,
             Algorithms.Id algo,
-            int round,
-            bool isTutorial)
+            int round)
         {
             controls.RecordedSteps.Value = new int[0];
 
@@ -360,7 +359,7 @@ namespace UdeS.Promoscience.Network
 
             gameManager.Round.Value = round;
 
-            Client.Instance.State.Value = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
+            Client.Instance.State.Set(ClientGameState.Playing);
         }
 
         [TargetRpc]
@@ -383,6 +382,7 @@ namespace UdeS.Promoscience.Network
             Client.Instance.Algorithm.Set(Algorithms.Resources.Instance.GetAlgorithm(algo));
 
             gameManager.IsRoundCompleted.Value = false;
+
             gameManager.Round.Value = round;
 
             Client.Instance.State.Value = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
