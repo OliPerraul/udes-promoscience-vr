@@ -3,7 +3,9 @@ using System.Collections;
 
 namespace UdeS.Promoscience
 {
-    public class GameManagerAsset : ScriptableObject
+    // TODO remove put in Game
+
+    public class GameAsset : ScriptableObject
     {
         public Cirrus.ObservableValue<int> Round = new Cirrus.ObservableValue<int>();
 

@@ -66,13 +66,12 @@ namespace UdeS.Promoscience.Network
             Persist();
         }
 
-        public void Start()
+        private void Update()
         {
-            Invoke("StartWithDelay", ServerUtils.ServerNetworkManagerDelay);
-        }
+            // Return if destroyed
+            if (gameObject == null)
+                return;
 
-        public void StartWithDelay()
-        {
             if (!isServerStarted)
             {
                 isServerStarted = true;
@@ -81,15 +80,7 @@ namespace UdeS.Promoscience.Network
                 playerDisconnectfromServerEvent += serverPlayerInformation.OnPlayerDisconnect;
                 StartServer();
             }
-        }
-
-        private void Update()
-        {
-            // Return if destroyed
-            if (gameObject == null)
-                return;
-
-            if(isServerStarted)
+            else if(isServerStarted)
             {
                 timer += Time.deltaTime;
 

@@ -77,6 +77,13 @@ namespace UdeS.Promoscience.Replays.UI
             Enabled = false;
         }
 
+        public virtual void OnDestroy()
+        {
+            Server.Instance.State.OnValueChangedHandler -= OnGameStateChanged;
+            replayOptions.OnMoveIndexChangedHandler -= OnMoveIndexChanged;
+            replayOptions.CurrentCourse.OnValueChangedHandler -= OnCourseSelected;
+        }
+
         public void OnMoveIndexChanged(int idx)
         {
             if(course != null)

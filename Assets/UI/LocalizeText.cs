@@ -10,7 +10,7 @@ namespace UdeS.Promoscience.UI
     public class LocalizeText : MonoBehaviour
     {
         [SerializeField]
-        LocalizeInlineString localizeString = new LocalizeInlineString("[?]", "[?]");
+        public LocalizeInlineString localizeString = new LocalizeInlineString("[?]", "[?]");
 
         [SerializeField]
         Text text;

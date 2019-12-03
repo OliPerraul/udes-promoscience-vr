@@ -18,7 +18,7 @@ namespace UdeS.Promoscience
 
         public void OnDestroy()
         {
-            Server.Instance.State.OnValueChangedHandler -= OnServerStateChanged;
+            if(Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnServerStateChanged;
         }
 
         public void OnServerStateChanged(ServerState state)

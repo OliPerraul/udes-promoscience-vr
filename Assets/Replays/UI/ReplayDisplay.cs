@@ -24,7 +24,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnDestroy()
         {
-            Server.Instance.State.OnValueChangedHandler -= OnGameStateValueChanged;
+            if(Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnGameStateValueChanged;
         }
 
         public void OnGameStateValueChanged(ServerState state)

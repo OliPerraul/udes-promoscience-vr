@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override void OnDestroy()
         {
-            Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
+            if(Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
             replayController.OnActionHandler -= OnReplayAction;
         }
 
@@ -50,7 +50,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             if (Server.Instance.State.Value != ServerState.LevelSelect)
                 return;
 
-            GameManager.Instance.CurrentGame.StartRound(
+            GameManager.Instance.CurrentGame.StartNextRound(
                 Random.Range(1, Utils.NumLabyrinth + 1), 
                 (int)algorithmSelect.AlgorithmId);
         }
@@ -59,7 +59,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         {
             Debug.Log(algorithmSelect.AlgorithmId);
 
-            GameManager.Instance.CurrentGame.StartRound(
+            GameManager.Instance.CurrentGame.StartNextRound(
                 button.Labyrinth.Data.Id,
                 (int)algorithmSelect.AlgorithmId);
         }

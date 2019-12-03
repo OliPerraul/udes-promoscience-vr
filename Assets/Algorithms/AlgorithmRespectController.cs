@@ -22,7 +22,7 @@ namespace UdeS.Promoscience.Algorithms
         GameActionManagerAsset gameAction;
 
         [SerializeField]
-        GameManagerAsset gameManager;
+        GameAsset gameManager;
 
         [SerializeField]
         Characters.AvatarCharacter avatar;

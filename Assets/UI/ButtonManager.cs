@@ -40,9 +40,14 @@ namespace UdeS.Promoscience.UI
             ExitButton.onClick.AddListener(OnExitClicked);
         }
 
+        public void Start()
+        {
+            OnServerStateChanged(Server.Instance.State.Value);
+        }
+
         public void OnDestroy()
         {
-            Server.Instance.State.OnValueChangedHandler -= OnServerStateChanged;
+            if(Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnServerStateChanged;
         }
 
         public void OnFlagsChanged(ButtonCanvasFlag flags)
@@ -56,13 +61,11 @@ namespace UdeS.Promoscience.UI
         {
             switch (Server.Instance.State.Value)
             {
-                //case ServerState.LabyrinthReplay:
-                //    //Flags.Set(ButtonCanvasFlag.Exit | ButtonCanvasFlag.Info);
-                //    break;
-
-                //case ServerState.LevelSelect:
-                //    Flags.Set(ButtonCanvasFlag.Random | ButtonCanvasFlag.Exit);
-                //    break;
+                case ServerState.LabyrinthReplay:
+                case ServerState.ReplaySelect:
+                case ServerState.LevelSelect:
+                    Server.Instance.ReturnToGame();
+                    break;
 
                 //case ServerState.ReplaySelect:
                 //case ServerState.Round:

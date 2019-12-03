@@ -1631,6 +1631,9 @@ namespace UdeS.Promoscience
             int sizeY, 
             int[] data)
         {
+            if (!Server.Instance.Settings.CreateSampleLabyrinths)
+                return;
+
             Labyrinths.Resource resource = Cirrus.AssetDatabase.CreateAsset<Labyrinths.Resource>("Labyrinths/"+name);
             resource.Id = id;
             resource.SizeX = sizeX;

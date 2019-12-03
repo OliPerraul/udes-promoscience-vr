@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Network
         DirectiveManagerAsset directive;
 
         [SerializeField]
-        GameManagerAsset gameManager;
+        GameAsset gameManager;
 
         [SerializeField]
         public AvatarControllerAsset controls;

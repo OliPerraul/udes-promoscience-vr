@@ -198,7 +198,7 @@ namespace UdeS.Promoscience.Network
         private AvatarControllerAsset controls;
 
         [SerializeField]
-        GameManagerAsset gameManager;
+        GameAsset gameManager;
 
         //[SerializeField]
         //Labyrinths.ScriptableLabyrinth labyrinthData;
@@ -408,7 +408,6 @@ namespace UdeS.Promoscience.Network
             // No steps required, player watch server screen
             Client.Instance.State.Value = ClientGameState.ViewingGlobalReplay;
         }
-
 
         [TargetRpc]
         public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId, int[] steps)

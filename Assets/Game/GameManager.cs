@@ -1,54 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 namespace UdeS.Promoscience
 {
+    [System.Serializable]
+    public class Level
+    {
+        [SerializeField]
+        public Algorithms.Id Algorithm;
+
+        [SerializeField]
+        public Labyrinths.Resource Labyrinth;
+    }
+
     public class GameManager : Cirrus.BaseSingleton<GameManager>
     {
         [SerializeField]
-        private GameManagerAsset asset;
-
-        // TODO put in Option menu
-        [SerializeField]
-        private LevelSelectionMode levelSelectionMode;
+        private GameAsset asset;
 
         [SerializeField]
-        public Game currentGame;
+        private Level[] predefinedLevels;
+
+        [SerializeField]
+        public Game currentGame = null;
 
         public Game CurrentGame => currentGame;
 
-        public void Awake()
-        {
-            asset.Round.OnValueChangedHandler += OnGameRoundChanged;
-        }
-
-        //public Algorithms.Id AlgorithmId
-        //{
-        //    set
-        //    {
-        //        if (CurrentGame != null)
-        //        {
-        //            //CurrentGame.AlgorithmId = value;
-        //        }
-        //    }
-        //}
-
-
-        public void OnGameRoundChanged(int round)
-        {
-            if (CurrentGame != null)
-            {
-                CurrentGame.Round.Value = round;
-            }
-        }
-
-        public void OnRoundCompleted(bool compl)
-        {
-            if (CurrentGame != null)
-            {
-                CurrentGame.IsRoundCompleted.Value = compl;
-            }
-        }
 
         public void StartQuickplay()
         {
@@ -58,7 +36,9 @@ namespace UdeS.Promoscience
                 SQLiteUtilities.SetCourseFinished(c.Id);
             }
 
-            currentGame = new Quickplay(levelSelectionMode);
+            currentGame = new Quickplay(asset);
+
+            currentGame.Start();
 
             SQLiteUtilities.InsertGame(CurrentGame.Id);
         }
@@ -71,9 +51,23 @@ namespace UdeS.Promoscience
                 SQLiteUtilities.SetCourseFinished(c.Id);
             }
 
-            currentGame = new Game(levelSelectionMode);
+            currentGame = Server.Instance.Settings.IsLevelOrderPredefined.Value ?
+                    new Game(asset, predefinedLevels) :
+                    new Game(asset);
+
+            currentGame.Start();
 
             SQLiteUtilities.InsertGame(CurrentGame.Id);
+        }
+
+        public void StopGame()
+        {
+            if (currentGame != null)
+            {
+                CurrentGame.Stop();
+            }
+
+            currentGame = null;
         }
     }
 }

@@ -14,11 +14,17 @@ namespace UdeS.Promoscience
     [Serializable]
     public class Settings
     {
+        // TODO expose in menu
+        // Would be useful when working on the level editor
+        [SerializeField]
+        private bool createSampleLabyrinths = false;
+
+        public bool CreateSampleLabyrinths => createSampleLabyrinths;
+
         public const string PredefinedLevelOrderString = "PredefinedLevelOrder";
 
         [SerializeField]
-        public ObservableBool PredefinedLevelOrder = new ObservableBool(false);
-
+        public ObservableBool IsLevelOrderPredefined = new ObservableBool(false);
 
         public const int MinNumberOfRounds = 3;
 
@@ -31,7 +37,7 @@ namespace UdeS.Promoscience
 
         public Settings()
         {
-            PredefinedLevelOrder.OnValueChangedHandler += 
+            IsLevelOrderPredefined.OnValueChangedHandler += 
                 (x) => OnSettingChanged(PredefinedLevelOrderString, x);
 
             NumberOfRounds.OnValueChangedHandler += 
@@ -53,7 +59,7 @@ namespace UdeS.Promoscience
         public void LoadFromPlayerPrefs()
         {
             if (PlayerPrefs.HasKey(PredefinedLevelOrderString))
-                PredefinedLevelOrder.Set(PlayerPrefs.GetInt(PredefinedLevelOrderString) == 1, notify: false);
+                IsLevelOrderPredefined.Set(PlayerPrefs.GetInt(PredefinedLevelOrderString) == 1, notify: false);
 
             if (PlayerPrefs.HasKey(NumberOfRoundsString))
                 NumberOfRounds.Set(PlayerPrefs.GetInt(NumberOfRoundsString), notify: false);
@@ -91,7 +97,11 @@ namespace UdeS.Promoscience
         {
             Persist();
 
-            settings = new Settings();
+            if (settings == null)
+            {
+                settings = new Settings();
+            }
+
             settings.LoadFromPlayerPrefs();
 
             // Randomize seed
@@ -151,18 +161,48 @@ namespace UdeS.Promoscience
             Replays.ReplayManager.Instance.StartInstantReplay();
         }
 
+        public void StartAdvancedReplay()
+        {
+            Replays.ReplayManager.Instance.StartInstantReplay();
+        }
+
+
+        // Try find course ID initiated by a team member
+        // Otherwise assign new course
+        // Returns true if created a course
+        public void AssignCourse(Player player)//, out Course course)
+        {
+            GameManager.Instance.CurrentGame.AssignCourse(player);
+        }
+
+        public void StartNextRound()
+        {
+            GameManager.Instance.CurrentGame.StartNextRound();
+        }
+
+        public void ReturnToGame()
+        {
+            Instance.State.Value = GameManager.Instance.CurrentGame.RoundState;
+        }
+
+        public void ReturnToLobby()
+        {
+            Instance.State.Value = ServerState.Lobby;
+        }
+
+        public void StopGame()
+        {
+            GameManager.Instance.StopGame();
+        }
+
 
         public void StartLobby()
         {
             SceneManager.sceneLoaded -= onSceneLoadedCallback;
             onSceneLoadedCallback = new UnityEngine.Events.UnityAction<Scene, LoadSceneMode>(
-                (Scene scene, LoadSceneMode mode) => {
-                    Debug.Log("Lobby");
-                    Instance.State.Value = ServerState.Lobby;
-                }
-                );
-            SceneManager.sceneLoaded += onSceneLoadedCallback;
+                (Scene scene, LoadSceneMode mode) => Instance.State.Value = ServerState.Lobby);
 
+            SceneManager.sceneLoaded += onSceneLoadedCallback;
 
             lobbyScene.Load();
         }
@@ -176,14 +216,6 @@ namespace UdeS.Promoscience
 
             menuScene.Load();
         }       
-
-        // Try find course ID initiated by a team member
-        // Otherwise assign new course
-        // Returns true if created a course
-        public void AssignCourse(Player player)//, out Course course)
-        {
-            GameManager.Instance.CurrentGame.AssignCourse(player);
-        }
 
 
         public void LoadGameInformationFromDatabase()
@@ -207,8 +239,6 @@ namespace UdeS.Promoscience
             //SQLiteUtilities.ResetServerGameInformation();
 #endif
         }
-
-    
     }
 }
 

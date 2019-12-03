@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UdeS.Promoscience.Labyrinths;
 using UdeS.Promoscience.Network;
-
+using Cirrus.Extensions;
+using System;
 
 namespace UdeS.Promoscience
 {
@@ -13,8 +14,7 @@ namespace UdeS.Promoscience
     public enum LevelSelectionMode
     {
         Selected,//Default
-        Random,
-        Order
+        Predefined
     }
 
     public class ObservableGame : Cirrus.ObservableValue<Game> { }
@@ -23,11 +23,17 @@ namespace UdeS.Promoscience
     public class Game
     {
         [SerializeField]
+        private Level[] predefinedLevels;
+
+        [SerializeField]
         public int Id = 0;
 
-        public Cirrus.ObservableValue<int> Round = new Cirrus.ObservableValue<int>();
+        [SerializeField]
+        private GameAsset asset;
 
-        public Cirrus.ObservableValue<bool> IsRoundCompleted = new Cirrus.ObservableValue<bool>();
+        public Cirrus.ObservableValue<int> Round => asset.Round;
+
+        public Cirrus.ObservableValue<bool> IsRoundCompleted => asset.IsRoundCompleted;
 
         [SerializeField]
         protected LevelSelectionMode levelSelectionMode;
@@ -47,22 +53,33 @@ namespace UdeS.Promoscience
         public List<Course> Courses = new List<Course>();
 
 
-        public Game(LevelSelectionMode levelOrder)
+        public Game(GameAsset asset)
         {
-            levelSelectionMode = levelOrder;
+            this.asset = asset;
 
+            roundState = ServerState.Round;
+
+            levelSelectionMode = LevelSelectionMode.Selected;
+        }
+
+        public Game(GameAsset asset, Level[] predefinedLevels)
+        {
+            this.predefinedLevels = predefinedLevels;
+
+            this.asset = asset;
+
+            roundState = ServerState.Round;
+
+            levelSelectionMode = LevelSelectionMode.Predefined;
+        }
+
+        public void Start()
+        {
             Id = SQLiteUtilities.GetNextGameID();
 
-            switch (levelOrder)
-            {
-                case LevelSelectionMode.Order:
-                    break;
+            Round.Value = -1;
 
-                case LevelSelectionMode.Random://TODO
-                case LevelSelectionMode.Selected:
-                    Server.Instance.State.Set(ServerState.LevelSelect);
-                    break;
-            }
+            StartNextRound();            
         }
 
 
@@ -73,7 +90,9 @@ namespace UdeS.Promoscience
         public void AssignCourse(Player player)//, out Course course)
         {
             Course course = null;
+
             int courseId = -1;
+
             SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
 
             // Try to get an active course
@@ -102,43 +121,50 @@ namespace UdeS.Promoscience
                     player.serverLabyrinthId,
                     (int)player.serverAlgorithm,
                     player.ServerCourseId,
-                    Round.Value,
+                    asset.Round.Value,
                     Id);
             }
         }
 
-        public void StartNextRound(int labyrinthId)
+        public void Stop()
         {
-            StartNextRound(Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId));
+            Server.Instance.State.Set(ServerState.ThanksForPlaying);
         }
+
+        public void StartNextRound()
+        {
+            if (levelSelectionMode == LevelSelectionMode.Selected)
+            {
+                Server.Instance.State.Set(ServerState.LevelSelect);
+            }
+            else
+            {
+
+                StartNextRound(
+                predefinedLevels[(Round.Value + 1).Mod(predefinedLevels.Length)].Labyrinth,
+                predefinedLevels[(Round.Value + 1).Mod(predefinedLevels.Length)].Algorithm);
+            }
+        }
+
 
         public void StartNextRound(
-            IData labyrinth)
-        {
-            StartRound(
-                labyrinth,
-                (int)Algorithms.Utils.GetRoundAlgorithm(Round.Value + 1));
-        }
-
-        public void StartRound(
             int labyrinthId,
             int algorithmId)
         {
-            StartRound(Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId), algorithmId);
+            StartNextRound(
+                Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId), 
+                (Algorithms.Id)algorithmId);
         }
 
-        public void StartRound(
+        public void StartNextRound(
             IData labyrinth,
-            int algorithmId)
+            Algorithms.Id algorithmId)
         {
-            if (roundState == ServerState.Round)
-            {
-                Round.Value = (Round.Value % 3) + 1;
-            }
-                
+            Round.Value = (Round.Value + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value);
+
             CurrentLabyrinth = labyrinth;
 
-            baseAlgorithmId = (Algorithms.Id)algorithmId;
+            baseAlgorithmId = algorithmId;
 
             for (int i = 0; i < PlayerList.instance.list.Count; i++)
             {
@@ -180,8 +206,6 @@ namespace UdeS.Promoscience
 
         protected virtual void DoStartRound()
         {
-            Round.Value = (Round.Value % 3) + 1;
-
             Labyrinths.Add(CurrentLabyrinth);
 
             roundState = ServerState.Round;
@@ -189,13 +213,6 @@ namespace UdeS.Promoscience
             Server.Instance.State.Set(ServerState.Round);
         }
 
-
-        public void StartNextGameRound()
-        {
-            //Round.Value = (Round.Value % 3) + 1;
-            //AlgorithmId = Algorithms.Id.GameRound;
-            //StartRoundWithLabyrinth(GameRound);
-        }
 
         public void JoinGameRound(Player player)
         {

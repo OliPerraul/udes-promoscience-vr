@@ -16,7 +16,7 @@ namespace UdeS.Promoscience.Menu
         void Awake()
         {
             predefinedLevelOrderToggle.onValueChanged.AddListener(
-                (x) => Server.Instance.Settings.PredefinedLevelOrder.Value = x);
+                (x) => Server.Instance.Settings.IsLevelOrderPredefined.Value = x);
 
             numberOfRoundField.Value.OnValueChangedHandler += (x) =>
                 Server.Instance.Settings.NumberOfRounds.Value = x;
@@ -26,7 +26,7 @@ namespace UdeS.Promoscience.Menu
         private void Start()
         {
             numberOfRoundField.Value.Set(Server.Instance.Settings.NumberOfRounds.Value, notify: true);
-            predefinedLevelOrderToggle.isOn = Server.Instance.Settings.PredefinedLevelOrder.Value;
+            predefinedLevelOrderToggle.isOn = Server.Instance.Settings.IsLevelOrderPredefined.Value;
         }
 
     }

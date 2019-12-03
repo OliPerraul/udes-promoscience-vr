@@ -107,6 +107,8 @@ namespace UdeS.Promoscience
         ReplaySelect = 1 << 7,
         Quickplay = 1 << 8,
 
+        ThanksForPlaying = 1 << 9,
+
         Menu = 1 << 24,
     }
 

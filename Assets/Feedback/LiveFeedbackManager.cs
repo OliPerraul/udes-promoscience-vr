@@ -23,6 +23,11 @@ namespace UdeS.Promoscience
             Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
         }
 
+        public void OnDestroy()
+        {
+            if (Server.Instance != null) Server.Instance.State.OnValueChangedHandler -= OnServerStateChanged;
+        }
+
         private Labyrinths.Labyrinth labyrinth;
 
 
@@ -32,6 +37,13 @@ namespace UdeS.Promoscience
             {
                 case ServerState.Quickplay:
                 case ServerState.Round:
+
+                    if (labyrinth != null)
+                    {
+                        labyrinth.gameObject.Destroy();
+                        labyrinth = null;
+                    }
+
                     labyrinth = Labyrinths.Resources.Instance
                         .GetLabyrinthTemplate(GameManager.Instance.CurrentGame.CurrentLabyrinth)
                         .Create(GameManager.Instance.CurrentGame.CurrentLabyrinth);
@@ -42,14 +54,20 @@ namespace UdeS.Promoscience
 
                     labyrinth.Camera.OutputToTexture = false;
 
+                    roundText.gameObject.SetActive(true);
+
                     roundText.text = 
                         Server.Instance.State.Value == ServerState.Quickplay ? 
                             quickPlayString.Value : 
-                            roundString.Value + GameManager.Instance.CurrentGame.Round.Value.ToString();
+                            roundString.Value + (GameManager.Instance.CurrentGame.Round.Value +1).ToString();
                     break;
 
+                case ServerState.Menu:
+                    break;
 
                 default:
+                    roundText.gameObject.SetActive(false);
+
                     if (labyrinth != null)
                     {
                         labyrinth.gameObject.Destroy();

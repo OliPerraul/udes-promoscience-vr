@@ -45,7 +45,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override void OnDestroy()
         {
-            Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
+            if(Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
 
             replayController.OnActionHandler -= OnReplayAction;
         }

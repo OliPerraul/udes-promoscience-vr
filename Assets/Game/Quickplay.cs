@@ -6,7 +6,7 @@ namespace UdeS.Promoscience
 {
     public class Quickplay : Game
     {
-        public Quickplay(LevelSelectionMode order) : base(order) { }
+        public Quickplay(GameAsset asset) : base(asset) { }
         
         protected override void DoStartRound()
         {

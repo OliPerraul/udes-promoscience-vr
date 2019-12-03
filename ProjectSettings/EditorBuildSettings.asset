@@ -17,16 +17,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/HeadsetPairing.unity
     guid: d8e7fe7a056e47445a1311706bc0e3f4
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: 7c837a5e97f3faa4e803d2940fd9030a
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Instructions.unity
     guid: ad74d8a6866f322478bc452dc7e5ae85
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: b74830ae3500605499c25b2f2c6e6353
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/LevelEditor.unity
     guid: c0e0f3e022b86ce42bd445ba4e01b0ef
   - enabled: 0
