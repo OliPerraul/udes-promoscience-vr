@@ -250,4 +250,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    LevelSelectionMode: 0
+    PredefinedLevelOrder:
+      _value: 0
+    NumberOfRounds:
+      _value: 3
+  lobbyScene: {fileID: 11400000, guid: d80bad067ed257c49aa4fba7859a3fda, type: 2}
+  menuScene: {fileID: 11400000, guid: e7f762378726b4145bd9dd77f0919167, type: 2}

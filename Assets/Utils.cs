@@ -106,6 +106,8 @@ namespace UdeS.Promoscience
         //SplitReplay = 1 << 6, // Replay select
         ReplaySelect = 1 << 7,
         Quickplay = 1 << 8,
+
+        Menu = 1 << 24,
     }
 
     [Serializable]

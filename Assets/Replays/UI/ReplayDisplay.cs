@@ -22,6 +22,11 @@ namespace UdeS.Promoscience.Replays.UI
             Server.Instance.State.OnValueChangedHandler += OnGameStateValueChanged;
         }
 
+        public void OnDestroy()
+        {
+            Server.Instance.State.OnValueChangedHandler -= OnGameStateValueChanged;
+        }
+
         public void OnGameStateValueChanged(ServerState state)
         {
             switch (state)
@@ -31,6 +36,9 @@ namespace UdeS.Promoscience.Replays.UI
                     //viewRawImage.texture = Server.Instance.CurrentLabyrinth.Camera.RenderTexture;
                     break;
 
+                case ServerState.Menu:
+                    break;
+                
                 default:
                     display.SetActive(false);
                     break;

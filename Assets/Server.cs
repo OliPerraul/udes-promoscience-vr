@@ -60,6 +60,9 @@ namespace UdeS.Promoscience
         }
     }
 
+    [System.Serializable]
+    public class ObservableServerState : ObservableValue<ServerState> { public ObservableServerState(ServerState state) : base(state) { } }
+
     public class Server : BaseSingleton<Server>
     {
         [SerializeField]
@@ -71,9 +74,18 @@ namespace UdeS.Promoscience
 
         public Game CurrentGame { get; private set; }
 
-        public ObservableValue<ServerState> State = new ObservableValue<ServerState>();
+        [SerializeField]
+        public ObservableServerState State = new ObservableServerState(ServerState.Lobby);
 
         public static bool IsApplicationServer => Instance == null;
+
+        [SerializeField]
+        private SceneWrapperAsset lobbyScene;
+
+        [SerializeField]
+        private SceneWrapperAsset menuScene;
+
+        private UnityEngine.Events.UnityAction<Scene, LoadSceneMode> onSceneLoadedCallback;
 
         public void Awake()
         {
@@ -101,7 +113,11 @@ namespace UdeS.Promoscience
 
         public void Start()
         {
-            State.Set(ServerState.Lobby);
+            State.Set(
+                SceneManager.GetActiveScene().path == lobbyScene.ScenePath ?
+                ServerState.Lobby :
+                ServerState.Menu,
+                notify: false);
         }
 
         public void OnStateValueChanged(ServerState state)
@@ -136,6 +152,30 @@ namespace UdeS.Promoscience
         }
 
 
+        public void StartLobby()
+        {
+            SceneManager.sceneLoaded -= onSceneLoadedCallback;
+            onSceneLoadedCallback = new UnityEngine.Events.UnityAction<Scene, LoadSceneMode>(
+                (Scene scene, LoadSceneMode mode) => {
+                    Debug.Log("Lobby");
+                    Instance.State.Value = ServerState.Lobby;
+                }
+                );
+            SceneManager.sceneLoaded += onSceneLoadedCallback;
+
+
+            lobbyScene.Load();
+        }
+
+        public void StartMenu()
+        {
+            SceneManager.sceneLoaded -= onSceneLoadedCallback;
+            onSceneLoadedCallback = new UnityEngine.Events.UnityAction<Scene, LoadSceneMode>(
+                (Scene scene, LoadSceneMode mode) => Instance.State.Value = ServerState.Menu);
+            SceneManager.sceneLoaded += onSceneLoadedCallback;
+
+            menuScene.Load();
+        }       
 
         // Try find course ID initiated by a team member
         // Otherwise assign new course

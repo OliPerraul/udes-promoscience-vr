@@ -33,11 +33,17 @@ namespace UdeS.Promoscience.UI
 
         public void Awake()
         {
-            Flags.OnValueChangedHandler += OnFlagsChanged;
             Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
+
+            Flags.OnValueChangedHandler += OnFlagsChanged;
+            
             ExitButton.onClick.AddListener(OnExitClicked);
         }
 
+        public void OnDestroy()
+        {
+            Server.Instance.State.OnValueChangedHandler -= OnServerStateChanged;
+        }
 
         public void OnFlagsChanged(ButtonCanvasFlag flags)
         {
@@ -62,7 +68,7 @@ namespace UdeS.Promoscience.UI
                 //case ServerState.Round:
                 //case ServerState.Quickplay:
                 case ServerState.Lobby:
-                    StartScene.Load();
+                    Server.Instance.StartMenu();
                     break;
 
             }

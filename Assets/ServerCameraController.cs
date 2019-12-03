@@ -16,6 +16,11 @@ namespace UdeS.Promoscience
             Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
         }
 
+        public void OnDestroy()
+        {
+            Server.Instance.State.OnValueChangedHandler -= OnServerStateChanged;
+        }
+
         public void OnServerStateChanged(ServerState state)
         {
             switch (state)
@@ -23,6 +28,9 @@ namespace UdeS.Promoscience
                 case ServerState.Quickplay:
                 case ServerState.Round:
                     camera.gameObject.SetActive(false);
+                    break;
+
+                case ServerState.Menu:
                     break;
 
                 default:

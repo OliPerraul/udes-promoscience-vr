@@ -45,6 +45,7 @@ namespace Cirrus.UI
 
         public void Update()
         {
+            if(_image.texture != null)
             _image.SizeToParent(_padding);
         }
     }

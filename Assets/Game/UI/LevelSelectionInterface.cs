@@ -38,6 +38,13 @@ namespace UdeS.Promoscience.Labyrinths.UI
             ButtonManager.Instance.RandomButton.onClick.AddListener(OnRandomClicked);
         }
 
+        public override void OnDestroy()
+        {
+            Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
+            replayController.OnActionHandler -= OnReplayAction;
+        }
+
+
         public void OnRandomClicked()
         {
             if (Server.Instance.State.Value != ServerState.LevelSelect)
@@ -69,7 +76,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override bool Enabled
         {
-            set => gameObject.SetActive(value);
+            set { if (gameObject != null) gameObject.SetActive(value); }
         }
          
 
@@ -186,6 +193,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
                     {
                         lab.gameObject.SetActive(false);
                     }
+                    break;
+
+                case ServerState.Menu:
                     break;
 
                 default:

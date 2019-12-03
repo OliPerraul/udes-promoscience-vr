@@ -43,6 +43,13 @@ namespace UdeS.Promoscience.Replays.UI
             buttonAdd.onClick.AddListener(OnAddedBottomClicked);
         }
 
+        public override void OnDestroy()
+        {
+            Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
+
+            replayController.OnActionHandler -= OnReplayAction;
+        }
+
         public virtual void OnServerGameStateChanged(ServerState state)
         {
             switch (state)
@@ -77,6 +84,9 @@ namespace UdeS.Promoscience.Replays.UI
                         lab.gameObject.SetActive(false);
                         lab.Camera.OutputToTexture = false;
                     }
+                    break;
+
+                case ServerState.Menu:
                     break;
 
                 default:

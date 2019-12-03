@@ -12,9 +12,12 @@ using UdeS.Promoscience.UI;
 using System.Threading;
 using System;
 
+
+// TODO put pairing in different scene
+
 namespace UdeS.Promoscience.Network
 {
-    public class PairingServer : MonoBehaviour
+    public class PairingServer : Cirrus.BaseSingleton<PairingServer>
     {
         NetworkServerSimple server = null;
         List<NetworkConnection> clientConnectionList = new List<NetworkConnection>();
@@ -29,18 +32,26 @@ namespace UdeS.Promoscience.Network
 
         private Mutex mutex;
 
-        private void Start()
-        {
-            StartServer();
-        }
-
         public void Awake()
         {
+            Persist();
+
             mutex = new Mutex();
 
             headsets = new List<string>();
             tablets = new List<string>();
             connections = new Dictionary<string, NetworkConnection>();
+        }
+
+
+        public void Start()
+        {
+            Invoke("StartWithDelay", ServerUtils.PairingServerDelay);
+        }
+
+        private void StartWithDelay()
+        {
+            StartServer();
         }
 
         void Update()

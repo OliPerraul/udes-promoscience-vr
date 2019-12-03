@@ -8,40 +8,71 @@ using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience.Network
 {
+    public class ServerUtils
+    {
+        public const float ServerNetworkManagerDelay = 1f;
+        public const float PairingServerDelay = 1.5f;
+    }
+
 
     public class ServerNetworkManager : NetworkManager
     {
-        public static ServerNetworkManager instance;
+        private static ServerNetworkManager _instance = null;
 
-        //[SerializeField]
-        //ScriptableServerGameInformation serverGameInformation;
+
+        public static ServerNetworkManager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = FindObjectOfType<ServerNetworkManager>();
+                }
+
+                return _instance;
+            }
+        }
+
 
         [SerializeField]
         ScriptableServerPlayerInformation serverPlayerInformation;
 
-        Action<String> playerDisconnectfromServerEvent;
-
         const float informationSavingFrequencie = 10.0f;
 
-        float timer = 0;
+        Action<String> playerDisconnectfromServerEvent;
 
-        bool isServerStarted = false;
+        [SerializeField]
+        private float timer = 0;
 
-        void Start()
+        [SerializeField]
+        private bool isServerStarted = false;
+
+
+        public void Persist()
         {
-            if (instance == null)
+            if (_instance != null)
             {
-                instance = this;
+                DestroyImmediate(gameObject);
+                return;
             }
-            else
-            {
-                Destroy(this);
-            }
+
+            transform.SetParent(null);
+            _instance = Instance;
+            DontDestroyOnLoad(gameObject);
         }
 
-        private void Update()
+        public void Awake()
         {
+            Persist();
+        }
 
+        public void Start()
+        {
+            Invoke("StartWithDelay", ServerUtils.ServerNetworkManagerDelay);
+        }
+
+        public void StartWithDelay()
+        {
             if (!isServerStarted)
             {
                 isServerStarted = true;
@@ -50,7 +81,15 @@ namespace UdeS.Promoscience.Network
                 playerDisconnectfromServerEvent += serverPlayerInformation.OnPlayerDisconnect;
                 StartServer();
             }
-            else
+        }
+
+        private void Update()
+        {
+            // Return if destroyed
+            if (gameObject == null)
+                return;
+
+            if(isServerStarted)
             {
                 timer += Time.deltaTime;
 
@@ -92,7 +131,7 @@ namespace UdeS.Promoscience.Network
             Server.Instance.ClearGameInformation();
             serverPlayerInformation.ClearPlayerInformation();
 
-            Application.Quit();
+            //Application.Quit();
         }
     }
 }

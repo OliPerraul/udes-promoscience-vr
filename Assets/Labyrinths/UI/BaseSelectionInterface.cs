@@ -33,6 +33,11 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         }
 
+        public virtual void OnDestroy()
+        {
+
+        }
+
         public Labyrinth CreateNextLabyrinth()
         {
             var data = Resources.Instance.Labyrinths[LabyrinthIndexWrap];

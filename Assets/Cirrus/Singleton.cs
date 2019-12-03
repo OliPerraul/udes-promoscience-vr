@@ -39,6 +39,7 @@ namespace Cirrus
             }
 
             _instance = Instance;
+            transform.SetParent(null);
             DontDestroyOnLoad(gameObject);
         }
 

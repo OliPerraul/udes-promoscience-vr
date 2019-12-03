@@ -45,6 +45,12 @@ namespace UdeS.Promoscience.Network.UI
             instantReplayButton.onClick.AddListener(() => Server.Instance.StartInstantReplay());
         }
 
+        public void OnDestroy()
+        {
+            Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
+        }
+
+
         public void OnExitClicked()
         {
             switch (Server.Instance.State.Value)
@@ -106,6 +112,8 @@ namespace UdeS.Promoscience.Network.UI
                     bottom.SetActive(false);
                     break;
 
+                case ServerState.Menu:
+                    break;
 
                 default:
                     body.SetActive(true);

@@ -14,6 +14,8 @@ namespace Cirrus
         [SerializeField]
         private string _scenePath;
 
+        public string ScenePath => _scenePath;
+
         public void Load()
         {
             SceneManager.LoadScene(_scenePath);
