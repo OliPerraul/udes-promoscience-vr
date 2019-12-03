@@ -64,7 +64,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 50a7b774b5504394f8f698a47d0ed9fc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a3983c59ebf804b4abba687bd7c9e92f, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -440,10 +440,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1b38435d747e448863d488bed16577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizeString: {fileID: 11400000, guid: af8566158ae6a1849ada2d20b5c37291, type: 2}
-  inlineLocalizeString:
-    localizeString: {fileID: 0}
-    defaultString: '[?]'
+  localizeString:
+    french: '[?]'
+    english: '[?]'
   text: {fileID: 3386643010683774713}
 --- !u!1 &3386643010705304004
 GameObject:
@@ -769,10 +768,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1b38435d747e448863d488bed16577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizeString: {fileID: 11400000, guid: 558f9188502b3344aad00ebddaf75f4a, type: 2}
-  inlineLocalizeString:
-    localizeString: {fileID: 0}
-    defaultString: '[?]'
+  localizeString:
+    french: '[?]'
+    english: '[?]'
   text: {fileID: 3386643011042570627}
 --- !u!1 &3386643011136058989
 GameObject:
@@ -2976,10 +2974,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1b38435d747e448863d488bed16577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizeString: {fileID: 11400000, guid: 9b7b6c8297daeb043a36104b1ba8b00f, type: 2}
-  inlineLocalizeString:
-    localizeString: {fileID: 0}
-    defaultString: '[?]'
+  localizeString:
+    french: '[?]'
+    english: '[?]'
   text: {fileID: 3386643012706800185}
 --- !u!1 &3386643012725708191
 GameObject:
