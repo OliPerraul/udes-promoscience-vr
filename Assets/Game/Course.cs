@@ -29,6 +29,9 @@ namespace UdeS.Promoscience
         Finished = 2
     }
 
+    // Is associated to one particular team, vs Round is not
+    // Levels contain a series of courses
+
     public class Course
     {
         public int Id;

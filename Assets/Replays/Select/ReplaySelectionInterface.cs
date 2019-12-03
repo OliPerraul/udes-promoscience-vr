@@ -68,7 +68,7 @@ namespace UdeS.Promoscience.Replays.UI
                     }
                     else
                     {
-                        for (labyrinthIndex = 0; labyrinthIndex < Labyrinths.Utils.NumLabyrinth; labyrinthIndex++)
+                        for (labyrinthIndex = 0; labyrinthIndex < ReplayManager.Instance.SplitReplay.Rounds.Count; labyrinthIndex++)
                         {
                             AddLabyrinth(labyrinthIndex);
                         }
@@ -81,9 +81,12 @@ namespace UdeS.Promoscience.Replays.UI
                     Enabled = false;
                     foreach (var lab in labyrinths)
                     {
-                        lab.gameObject.SetActive(false);
-                        lab.Camera.OutputToTexture = false;
+                        Destroy(lab.gameObject);
+                        
                     }
+
+                    labyrinths.Clear();
+
                     break;
 
                 case ServerState.Menu:
@@ -155,7 +158,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override void AddLabyrinth(int i)
         {
-            var data = GameManager.Instance.CurrentGame.Labyrinths[i];
+            var data = ReplayManager.Instance.SplitReplay.Rounds[i].Labyrinth;
 
             Labyrinth labyrinth = Labyrinths.Resources.Instance
                   .GetLabyrinthTemplate(data)

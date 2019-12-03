@@ -5,6 +5,7 @@ using UdeS.Promoscience;
 using UdeS.Promoscience.Labyrinths;
 using UdeS.Promoscience.Network;
 using UdeS.Promoscience.UI;
+using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Replays
 {
@@ -14,6 +15,8 @@ namespace UdeS.Promoscience.Replays
         private ReplayManagerAsset asset;
 
         private BaseReplay CurrentReplay;
+
+        public SplitReplay SplitReplay;
 
         public void Awake()
         {
@@ -37,7 +40,32 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            //State = ServerState.ReplaySelect;
+            List<Round> rounds = new List<Round>();
+
+            // Get all rounds until now
+            for (int i = 0; i < GameManager.Instance.CurrentGame.RoundNumber.Value + 1; i++)
+            {
+                rounds.Add(
+                    new Round
+                    {
+                        Labyrinth = SQLiteUtilities.GetLabyrinthForGameRound(
+                            GameManager.Instance.CurrentGame.Id,
+                            i),
+
+                        Courses = SQLiteUtilities.GetCoursesForGameRound(
+                            GameManager.Instance.CurrentGame.Id,
+                            i),
+                    }
+                    );
+            }
+
+            SplitReplay = new SplitReplay(
+                asset,
+                rounds);
+
+            CurrentReplay = SplitReplay;
+
+            CurrentReplay.Start();
         }
 
 
@@ -79,7 +107,7 @@ namespace UdeS.Promoscience.Replays
                 asset,
                 SQLiteUtilities.GetCoursesForGameRound(
                     GameManager.Instance.CurrentGame.Id, 
-                    GameManager.Instance.CurrentGame.Round.Value),
+                    GameManager.Instance.CurrentGame.RoundNumber.Value),
                 GameManager.Instance.CurrentGame.CurrentLabyrinth);
 
             CurrentReplay.Start();

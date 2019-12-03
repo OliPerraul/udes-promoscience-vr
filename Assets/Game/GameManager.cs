@@ -4,23 +4,13 @@ using System;
 
 namespace UdeS.Promoscience
 {
-    [System.Serializable]
-    public class Level
-    {
-        [SerializeField]
-        public Algorithms.Id Algorithm;
-
-        [SerializeField]
-        public Labyrinths.Resource Labyrinth;
-    }
-
     public class GameManager : Cirrus.BaseSingleton<GameManager>
     {
         [SerializeField]
         private GameAsset asset;
 
         [SerializeField]
-        private Level[] predefinedLevels;
+        private RoundPreset[] predefinedLevels;
 
         [SerializeField]
         public Game currentGame = null;

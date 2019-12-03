@@ -137,16 +137,16 @@ namespace UdeS.Promoscience.Network.UI
                         LobbyControlsFlag.EndGame;
 
                     // If first round do not allow advanced replay feature
-                    if (GameManager.Instance.CurrentGame.Round.Value < 1)
+                    if (GameManager.Instance.CurrentGame.RoundNumber.Value < 1)
                     {
                         Flags.Value = Flags.Value & ~LobbyControlsFlag.AdvancedReplay;
                     }
 
-                    Debug.Log(GameManager.Instance.CurrentGame.Round.Value);
+                    Debug.Log(GameManager.Instance.CurrentGame.RoundNumber.Value);
 
                     // If last round only allow to end the game
                     if (Server.Instance.Settings.NumberOfRounds.Value - 1 ==
-                        GameManager.Instance.CurrentGame.Round.Value)
+                        GameManager.Instance.CurrentGame.RoundNumber.Value)
                     {
                         Flags.Value = Flags.Value & ~LobbyControlsFlag.NextRound;
                     }

@@ -23,15 +23,19 @@ namespace UdeS.Promoscience
     public class Game
     {
         [SerializeField]
-        private Level[] predefinedLevels;
+        public int Id = 0;
 
         [SerializeField]
-        public int Id = 0;
+        private RoundPreset[] predefinedLevels;
+
+        private List<Round> rounds = new List<Round>();
 
         [SerializeField]
         private GameAsset asset;
 
-        public Cirrus.ObservableValue<int> Round => asset.Round;
+        public Cirrus.ObservableValue<int> RoundNumber => asset.Round;
+
+        public Round Round;
 
         public Cirrus.ObservableValue<bool> IsRoundCompleted => asset.IsRoundCompleted;
 
@@ -54,7 +58,7 @@ namespace UdeS.Promoscience
 
         public ServerState RoundState => roundState;
 
-        public bool IsStarted => Round.Value >= 0;
+        public bool IsStarted => RoundNumber.Value >= 0;
 
 
         // Ideally, player should reference a course instead of refering to a course id 
@@ -70,7 +74,7 @@ namespace UdeS.Promoscience
             levelSelectionMode = LevelSelectionMode.Selected;
         }
 
-        public Game(GameAsset asset, Level[] predefinedLevels)
+        public Game(GameAsset asset, RoundPreset[] predefinedLevels)
         {
             this.predefinedLevels = predefinedLevels;
 
@@ -85,7 +89,7 @@ namespace UdeS.Promoscience
         {
             Id = SQLiteUtilities.GetNextGameID();
 
-            Round.Value = -1;
+            RoundNumber.Value = -1;
 
             StartNextRound();            
         }
@@ -149,8 +153,8 @@ namespace UdeS.Promoscience
             {
 
                 StartNextRound(
-                predefinedLevels[(Round.Value + 1).Mod(predefinedLevels.Length)].Labyrinth,
-                predefinedLevels[(Round.Value + 1).Mod(predefinedLevels.Length)].Algorithm);
+                predefinedLevels[(RoundNumber.Value + 1).Mod(predefinedLevels.Length)].Labyrinth,
+                predefinedLevels[(RoundNumber.Value + 1).Mod(predefinedLevels.Length)].Algorithm);
             }
         }
 
@@ -168,7 +172,14 @@ namespace UdeS.Promoscience
             IData labyrinth,
             Algorithms.Id algorithmId)
         {
-            Round.Value = (Round.Value + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value);
+            RoundNumber.Value = (RoundNumber.Value + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value);
+
+            SQLiteUtilities.InsertRound(
+                SQLiteUtilities.GetNextRoundID(),
+                RoundNumber.Value,
+                Id,
+                labyrinth.Id
+                );
 
             CurrentLabyrinth = labyrinth;
 
@@ -199,7 +210,7 @@ namespace UdeS.Promoscience
                             player.connectionToClient,
                             CurrentLabyrinth.Json,
                             player.serverAlgorithm,
-                            Round.Value);
+                            RoundNumber.Value);
 
                         break;
                 }
@@ -231,7 +242,7 @@ namespace UdeS.Promoscience
                 player.connectionToClient,
                 CurrentLabyrinth.Json,
                 player.serverAlgorithm,
-                Round.Value);
+                RoundNumber.Value);
         }
 
         public void JoinGameRoundWithSteps(Player player, int[] steps)
@@ -247,7 +258,7 @@ namespace UdeS.Promoscience
                 steps,
                 CurrentLabyrinth.Json,
                 player.serverAlgorithm,
-                Round.Value,
+                RoundNumber.Value,
                 false); // TODO start with steps tutorial??
         }
 

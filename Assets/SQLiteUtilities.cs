@@ -28,6 +28,7 @@ namespace UdeS.Promoscience
         const string TEAM = "Team";
         const string LABYRINTH = "Labyrinth";
         const string COURSE = "Course";
+        const string ROUNDS = "Rounds";
         const string EVENT = "Event";
         const string DEVICE_PAIRING = "DevicePairing";
         const string SERVER_GAME_INFORMATION = "ServerGameInformation";
@@ -46,6 +47,12 @@ namespace UdeS.Promoscience
         //Labyrinth table column
         const string LABYRINTH_ID = "LabyrinthID";
         const string LABYRINTH_SPECS = "LabyrinthSpecs";
+
+        //Rounds table column
+        const string ROUND_ID = "RoundID";
+        const string ROUND_NUMBER = "RoundNumber";
+        const string ROUND_GAME_ID = GAME_ID;
+        const string ROUND_LABYRINTH_ID = LABYRINTH_ID;
 
         //Course table column
         const string COURSE_ID = "CourseID";
@@ -109,12 +116,25 @@ namespace UdeS.Promoscience
                                       "PRIMARY KEY(" + TEAM_ID + ") );";
                     cmd.ExecuteNonQuery();
 
-
+                    // GAMES
                     cmd.CommandText =
                         "CREATE TABLE IF NOT EXISTS " + GAMES + "( " +
                         GAME_ID + " INTEGER(10) NOT NULL, " +
                         "PRIMARY KEY(" + GAME_ID + ") );";
                     cmd.ExecuteNonQuery();
+
+
+                    // ROUNDS
+                    cmd.CommandText =
+                        "CREATE TABLE IF NOT EXISTS " + ROUNDS + "( " +
+                        ROUNDS + " INTEGER(10) NOT NULL, " +
+                        ROUND_ID + " INTEGER(10) NOT NULL, " +
+                        ROUND_NUMBER + " INTEGER(10) NOT NULL, " +
+                        ROUND_GAME_ID + " INTEGER(10) NOT NULL, " +
+                        ROUND_LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
+                        "PRIMARY KEY(" + ROUND_ID + ") );";
+                    cmd.ExecuteNonQuery();
+
 
                     // STORE LABYRINTH AS FILES NOT IN THE DB
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + LABYRINTH + " ( " +
@@ -527,6 +547,55 @@ namespace UdeS.Promoscience
             }
 #endif
             return courses;
+        }
+
+
+        public static Labyrinths.IData GetLabyrinthForGameRound(int gameId, int round)
+        {
+            int labId = -1;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            CreateDatabaseIfItDoesntExist();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "PRAGMA foreign_keys = ON";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "SELECT * FROM " + ROUNDS + " WHERE " +
+                        COURSE_GAME_ID + " = " + gameId + " AND " +
+                        ROUND_NUMBER + " = " + round;
+
+                    cmd.ExecuteNonQuery();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        // If active course
+                        while (reader.Read())
+                        {
+                            labId = int.Parse(reader[ROUND_LABYRINTH_ID].ToString());
+                        };
+
+                        reader.Close();
+                    }
+                }
+            }
+
+            if (labId > 0)
+            {
+                return Labyrinths.Resources.Instance.GetLabyrinth(labId);
+            }
+
+#endif
+
+            return null;
         }
 
 
@@ -1034,6 +1103,61 @@ namespace UdeS.Promoscience
 #endif
         }
 
+        /*
+                            // ROUNDS
+                    cmd.CommandText =
+                        "CREATE TABLE IF NOT EXISTS " + ROUNDS + "( " +
+                        ROUNDS + " INTEGER(10) NOT NULL, " +
+                        ROUND_ID + " INTEGER(10) NOT NULL, " +
+                        ROUND_NUMBER + " INTEGER(10) NOT NULL, " +
+                        ROUND_GAME_ID + " INTEGER(10) NOT NULL, " +
+                        ROUND_LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
+                        "PRIMARY KEY(" + ROUND_ID + ") );";
+                    cmd.ExecuteNonQuery();
+             
+             */
+
+        // Insert new round
+        public static void InsertRound(
+            int id,
+            int number,
+            int gameId,
+            int labyrinthId
+            )
+        {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
+            CreateDatabaseIfItDoesntExist();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "PRAGMA foreign_keys = ON";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText =
+                        "INSERT INTO " + ROUNDS + " (" +
+                        ROUND_ID + ", " +
+                        ROUND_NUMBER + ", " +
+                        ROUND_GAME_ID + ", " +
+                        ROUND_LABYRINTH_ID + ") " +
+                        "VALUES ('" +
+                        id + "', '" +
+                        number + "', '" +
+                        gameId + "', '" +
+                        labyrinthId + "');";
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+#endif
+        }
 
 
 
@@ -1564,6 +1688,65 @@ namespace UdeS.Promoscience
 #endif
             return courseId;
         }
+
+        public static int GetNextRoundID()
+        {
+            int roundId = 0;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "SELECT Count(*) FROM " + ROUNDS;
+                    cmd.ExecuteNonQuery();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            roundId = reader.GetInt32(0);
+                        }
+                        reader.Close();
+                    }
+
+                    bool isNotUnique = true;
+                    while (isNotUnique)
+                    {
+                        roundId++;
+
+                        cmd.CommandText = "SELECT Count(*) FROM " + ROUNDS + " WHERE " + ROUND_ID + "='" + roundId + "'";
+                        cmd.ExecuteNonQuery();
+
+                        using (SqliteDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                if (reader.GetInt32(0) == 0)
+                                {
+                                    isNotUnique = false;
+                                }
+                            }
+                            else
+                            {
+                                isNotUnique = false;
+                            }
+                        }
+                    }
+                }
+            }
+#endif
+            return roundId;
+        }
+
+
 
 
 

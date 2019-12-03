@@ -59,7 +59,7 @@ namespace UdeS.Promoscience
                     roundText.text = 
                         Server.Instance.State.Value == ServerState.Quickplay ? 
                             quickPlayString.Value : 
-                            roundString.Value + (GameManager.Instance.CurrentGame.Round.Value +1).ToString();
+                            roundString.Value + (GameManager.Instance.CurrentGame.RoundNumber.Value +1).ToString();
                     break;
 
                 case ServerState.Menu:
