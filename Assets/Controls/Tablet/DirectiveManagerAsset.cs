@@ -38,7 +38,7 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public void Set(Directive directive)
         {
-            CurrentDirective.Set(directive, forceNotification: true);
+            CurrentDirective.Set(directive, notify: true);
         }
 
         void OnDirective(Directive directive)

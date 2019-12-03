@@ -28,5 +28,19 @@ namespace Cirrus
                 return _instance;
             }
         }
+
+
+        public void Persist()
+        {
+            if (_instance != null)
+            {
+                DestroyImmediate(gameObject);
+                return;
+            }
+
+            _instance = Instance;
+            DontDestroyOnLoad(gameObject);
+        }
+
     }
 }

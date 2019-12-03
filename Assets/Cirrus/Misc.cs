@@ -24,6 +24,17 @@ namespace Cirrus
 
     public delegate void BoolEvent(bool value);
 
+    [System.Serializable]
+    public class ObservableInt : ObservableValue<int> { public ObservableInt(int value) : base(value) { } }
+
+    [System.Serializable]
+    public class ObservableBool : ObservableValue<bool> { public ObservableBool(bool value) : base(value) { } }
+
+    [System.Serializable]
+    public class ObservableFloat : ObservableValue<float> { public ObservableFloat(float value) : base(value) { } }
+
+    [System.Serializable]
+    public class ObservableString : ObservableValue<string> { public ObservableString(string value) : base(value) { } }
 
 
     [Serializable]
@@ -31,6 +42,7 @@ namespace Cirrus
     {
         public Event<T> OnValueChangedHandler;
 
+        [SerializeField]
         private T _value;
 
         public ObservableValue() { }
@@ -58,13 +70,14 @@ namespace Cirrus
             }
         }
 
-        public void Set(T value, bool forceNotification=true)
+        public void Set(T value, bool notify=true)
         {
             _value = value;
 
-            if(forceNotification)
-                if (OnValueChangedHandler != null)
-                    OnValueChangedHandler.Invoke(value);
+            if (notify)
+            {
+                OnValueChangedHandler?.Invoke(value);    
+            }
         }
     }
 }

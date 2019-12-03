@@ -131,8 +131,11 @@ namespace UdeS.Promoscience
             IData labyrinth,
             int algorithmId)
         {
-            Round.Value = (Round.Value % 3) + 1;
-
+            if (roundState == ServerState.Round)
+            {
+                Round.Value = (Round.Value % 3) + 1;
+            }
+                
             CurrentLabyrinth = labyrinth;
 
             baseAlgorithmId = (Algorithms.Id)algorithmId;
@@ -170,12 +173,18 @@ namespace UdeS.Promoscience
             DoStartRound();
         }
 
+        [SerializeField]
+        protected ServerState roundState;
+
+        public ServerState RoundState => roundState;
 
         protected virtual void DoStartRound()
         {
             Round.Value = (Round.Value % 3) + 1;
 
             Labyrinths.Add(CurrentLabyrinth);
+
+            roundState = ServerState.Round;
 
             Server.Instance.State.Set(ServerState.Round);
         }

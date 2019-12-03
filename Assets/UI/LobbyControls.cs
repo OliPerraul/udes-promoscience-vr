@@ -7,7 +7,7 @@ namespace UdeS.Promoscience.Network.UI
 {
 
     [System.Serializable]
-    public enum ServerControlsFlag// : int
+    public enum LobbyControlsFlag// : int
     {
         None = 0,//1 << 0,
         QuickPlay = 1 << 0,
@@ -20,9 +20,9 @@ namespace UdeS.Promoscience.Network.UI
         AdvancedReplay = 1 << 7,
     }
 
-    public class ServerControls : MonoBehaviour
+    public class LobbyControls : MonoBehaviour
     {
-        public Cirrus.ObservableValue<ServerControlsFlag> Flags = new Cirrus.ObservableValue<ServerControlsFlag>();
+        public Cirrus.ObservableValue<LobbyControlsFlag> Flags = new Cirrus.ObservableValue<LobbyControlsFlag>();
 
         [SerializeField]
         private GameObject header;
@@ -72,21 +72,21 @@ namespace UdeS.Promoscience.Network.UI
             {
                 case ServerState.Quickplay:
                     Flags.Value =
-                        ServerControlsFlag.InstantReplay |
-                        ServerControlsFlag.RestartRound |
-                        ServerControlsFlag.EndGame;
+                        LobbyControlsFlag.InstantReplay |
+                        LobbyControlsFlag.RestartRound |
+                        LobbyControlsFlag.EndGame;
                     break;
 
                 case ServerState.Round:
                     Flags.Value =
-                        ServerControlsFlag.InstantReplay |
-                        ServerControlsFlag.AdvancedReplay;
+                        LobbyControlsFlag.InstantReplay |
+                        LobbyControlsFlag.AdvancedReplay;
                     break;
 
                 case ServerState.Lobby:
                     Flags.Value =
-                        ServerControlsFlag.QuickPlay |
-                        ServerControlsFlag.NewGame;//| ServerControlsFlag;
+                        LobbyControlsFlag.QuickPlay |
+                        LobbyControlsFlag.NewGame;//| ServerControlsFlag;
                     break;
             }
 
@@ -143,22 +143,22 @@ namespace UdeS.Promoscience.Network.UI
         [SerializeField]
         private UnityEngine.UI.Button advancedReplayButton;
 
-        public void OnFlagsChanged(ServerControlsFlag flags)
+        public void OnFlagsChanged(LobbyControlsFlag flags)
         {
             advancedReplayButton?
-                .gameObject.SetActive((flags & ServerControlsFlag.AdvancedReplay) != 0);
+                .gameObject.SetActive((flags & LobbyControlsFlag.AdvancedReplay) != 0);
             endGameButton?
-                .gameObject.SetActive((flags & ServerControlsFlag.EndGame) != 0);
+                .gameObject.SetActive((flags & LobbyControlsFlag.EndGame) != 0);
             endRoundButton?
-                .gameObject.SetActive((flags & ServerControlsFlag.EndRound) != 0);
+                .gameObject.SetActive((flags & LobbyControlsFlag.EndRound) != 0);
             instantReplayButton?
-                .gameObject.SetActive((flags & ServerControlsFlag.InstantReplay) != 0);
+                .gameObject.SetActive((flags & LobbyControlsFlag.InstantReplay) != 0);
             newGameButton?
-                .gameObject.SetActive((flags & ServerControlsFlag.NewGame) != 0);
+                .gameObject.SetActive((flags & LobbyControlsFlag.NewGame) != 0);
             nextRoundButton?
-                .gameObject.SetActive((flags & ServerControlsFlag.NextRound) != 0);
+                .gameObject.SetActive((flags & LobbyControlsFlag.NextRound) != 0);
             quickPlayButton?
-                .gameObject.SetActive((flags & ServerControlsFlag.QuickPlay) != 0);
+                .gameObject.SetActive((flags & LobbyControlsFlag.QuickPlay) != 0);
             //TODO
             //restartRoundButton?
             //    .gameObject.SetActive((flags & ServerControlsFlag.RestartRound) != 0);

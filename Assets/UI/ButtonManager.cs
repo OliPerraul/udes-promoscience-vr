@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.UI
         public UnityEngine.UI.Button InfoButton;
 
         [SerializeField]
-        private Cirrus.SceneAsset StartScene;
+        private Cirrus.SceneWrapperAsset StartScene;
 
         public Cirrus.ObservableValue<ButtonCanvasFlag> Flags = new Cirrus.ObservableValue<ButtonCanvasFlag>();
 

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 namespace Cirrus
 {
     [CreateAssetMenu(menuName = "Cirrus/Scene Wrapper")]
-    public class SceneAsset : ScriptableObject
+    public class SceneWrapperAsset : ScriptableObject
     {
         [SerializeField]
         private Object _scene;

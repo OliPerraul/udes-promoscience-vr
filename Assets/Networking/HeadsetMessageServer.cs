@@ -153,7 +153,7 @@ namespace UdeS.Promoscience.Network
         void OnDirective(NetworkMessage netMsg)
         {
             DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
-            directive.CurrentDirective.Set(msg.directive, forceNotification:true);
+            directive.CurrentDirective.Set(msg.directive, notify:true);
         }
 
         void OnReturnToDivergencePointRequest(NetworkMessage netMsg)

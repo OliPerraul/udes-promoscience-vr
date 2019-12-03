@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Tablet.unity
     guid: 9e12a4f89d918cb42b9f07b41c927c8e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Headset.unity
     guid: 7c7e0db851197af47923a8764540efff
   - enabled: 0
@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Instructions.unity
     guid: ad74d8a6866f322478bc452dc7e5ae85
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Start.unity
     guid: b74830ae3500605499c25b2f2c6e6353
   - enabled: 0
@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Oculus/VR/Scenes/ControllerModels.unity
     guid: 39cfe7aa0a2d46c47994d8d0308ec663
+  - enabled: 1
+    path: Assets/Scenes/Settings.unity
+    guid: b7f7f6879ae3e0b4f918efbe285f87e7
   m_configObjects: {}
