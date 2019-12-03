@@ -8,7 +8,7 @@ namespace UdeS.Promoscience
 
     // TODO client settings?
     [Serializable]
-    public class Settings
+    public class ServerSettings
     {
         // TODO expose in menu
         // Would be useful when working on the level editor
@@ -31,7 +31,7 @@ namespace UdeS.Promoscience
         [SerializeField]
         public ObservableInt NumberOfRounds = new ObservableInt(MinNumberOfRounds);
 
-        public Settings()
+        public ServerSettings()
         {
             IsLevelOrderPredefined.OnValueChangedHandler +=
                 (x) => OnSettingChanged(PredefinedLevelOrderString, x);

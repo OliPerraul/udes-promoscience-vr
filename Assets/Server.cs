@@ -16,9 +16,9 @@ namespace UdeS.Promoscience
     public class Server : BaseSingleton<Server>
     {
         [SerializeField]
-        private Settings settings;
+        private ServerSettings settings;
 
-        public Settings Settings => settings;
+        public ServerSettings Settings => settings;
 
         private Replays.BaseReplay replay;
 
@@ -43,7 +43,7 @@ namespace UdeS.Promoscience
 
             if (settings == null)
             {
-                settings = new Settings();
+                settings = new ServerSettings();
             }
 
             settings.LoadFromPlayerPrefs();
