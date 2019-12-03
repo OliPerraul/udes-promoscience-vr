@@ -25,7 +25,7 @@ MonoBehaviour:
   character: {fileID: 7478443213828330145}
   isThirdPersonEnabled: 0
   directionTransform: {fileID: 2769672074598114348}
-  transitionTime: 1.5
+  transitionTime: 2
 --- !u!114 &2214864400375542857
 MonoBehaviour:
   m_ObjectHideFlags: 0
