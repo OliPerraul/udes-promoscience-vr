@@ -31,9 +31,9 @@ namespace UdeS.Promoscience.Controls.UI
             controls.IsCompassEnabled.OnValueChangedHandler += OnCompassEnabled;
         }
 
-        private void OnCompassEnabled(bool value)
+        private void OnCompassEnabled(TabletCameraMode value)
         {
-            gameObject.SetActive(value);
+            gameObject.SetActive(value == TabletCameraMode.ThirdPerson);
         }
 
         // TODO only on movement

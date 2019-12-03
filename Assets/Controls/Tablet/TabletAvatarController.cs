@@ -9,6 +9,8 @@ using UdeS.Promoscience.Network;
 using UdeS.Promoscience.Characters;
 using System;
 
+using Cirrus.Extensions;
+
 namespace UdeS.Promoscience.Controls
 {
     public class TabletAvatarController : MonoBehaviour
@@ -67,7 +69,7 @@ namespace UdeS.Promoscience.Controls
         void Start()
         {
             controls.IsThirdPersonEnabled.Set(true);
-            controls.IsCompassEnabled.Set(false);
+            controls.IsCompassEnabled.Set(TabletCameraMode.ThirdPerson);
             directiveManager.CurrentDirective.OnValueChangedHandler += OnNewDirective;
         }
 
@@ -75,7 +77,7 @@ namespace UdeS.Promoscience.Controls
         {
             if (value == Directive.Compass)
             {
-                controls.IsCompassEnabled.Value = !controls.IsCompassEnabled.Value;
+                controls.IsCompassEnabled.Value = (TabletCameraMode)((int)controls.IsCompassEnabled.Value + 1).Mod(TabletUtils.NumCameraMode);
             }
         }
 

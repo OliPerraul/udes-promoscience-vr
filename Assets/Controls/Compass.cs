@@ -36,9 +36,16 @@ namespace UdeS.Promoscience.UI
             OnClientStateChanged(Client.Instance.State.Value);
         }
 
-        private void OnCompassENabled(bool value)
+        private void OnCompassENabled(TabletCameraMode value)
         {
-            indicator.gameObject.SetActive(value);
+            if (value == TabletCameraMode.ThirdPerson)
+            {
+                indicator.gameObject.SetActive(true);
+            }
+            else
+            {
+                indicator.gameObject.SetActive(false);
+            }
         }
 
         void OnClientStateChanged(ClientGameState state)

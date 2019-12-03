@@ -11,6 +11,20 @@ using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience.Controls
 {
+
+    public enum TabletCameraMode
+    {
+        Topdown,
+        FPS,
+        ThirdPerson
+    }
+
+    public class TabletUtils
+    {
+        public const int NumCameraMode = 3;
+    }
+
+
     public class TabletCameraRig : MonoBehaviour
     {
         [SerializeField]
@@ -22,17 +36,39 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private GameObject TopdownCamera;
 
+        [SerializeField]
+        private GameObject FirstPersonCamera;
+
         public void Awake()
         {
             controls.IsCompassEnabled.OnValueChangedHandler += OnCompassEnabled;
         }
 
-        public void OnCompassEnabled(bool enabled)
+        public void OnCompassEnabled(TabletCameraMode enabled)
         {
-            Debug.Log(enabled);
+            switch (enabled)
+            {
+                case TabletCameraMode.FPS:
+                    controls.IsThirdPersonEnabled.Value = false;
+                    ThirdPersonCamera.SetActive(false);
+                    TopdownCamera.SetActive(false);
+                    FirstPersonCamera.SetActive(true);
+                    break;
 
-            ThirdPersonCamera.SetActive(!enabled);
-            TopdownCamera.SetActive(enabled);
+                case TabletCameraMode.ThirdPerson:
+                    controls.IsThirdPersonEnabled.Value = true;
+                    ThirdPersonCamera.SetActive(true);
+                    TopdownCamera.SetActive(false);
+                    FirstPersonCamera.SetActive(false);
+                    break;
+
+                case TabletCameraMode.Topdown:
+                    controls.IsThirdPersonEnabled.Value = false;
+                    ThirdPersonCamera.SetActive(false);
+                    TopdownCamera.SetActive(true);
+                    FirstPersonCamera.SetActive(false);
+                    break;
+            }
 
         }
     }
