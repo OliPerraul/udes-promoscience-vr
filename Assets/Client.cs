@@ -60,14 +60,9 @@ namespace UdeS.Promoscience
 
         public void OnGameStateChanged(ClientGameState state)
         {
-            if (
-                State.Value == ClientGameState.TutorialLabyrinthReady ||
-                State.Value == ClientGameState.LabyrinthReady ||
-                State.Value == ClientGameState.Playing ||
-                State.Value == ClientGameState.PlayingTutorial)
+            if (State.Value == ClientGameState.Playing)
             {
                 Labyrinth.Value.GenerateLabyrinthVisual();
-
                 Labyrinth.Value.Init(enableCamera:false);
 
                 if (controls != null)

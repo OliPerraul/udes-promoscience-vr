@@ -346,6 +346,13 @@ namespace UdeS.Promoscience.Network
 
             Client.Instance.LabyrinthData.Value = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
 
+            // Destroy old labyrinth
+            if (Client.Instance.Labyrinth.Value != null)
+            {
+                Destroy(Client.Instance.Labyrinth.Value.gameObject);
+                Client.Instance.Labyrinth.Value = null;
+            }
+
             Labyrinths.Data data = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
 
             Client.Instance.Labyrinth.Value = 
