@@ -10,7 +10,7 @@ using Cirrus;
 
 namespace UdeS.Promoscience
 {
-    [Serializable]
+    [System.Serializable]
     public class ObservableServerState : ObservableValue<ServerState> { public ObservableServerState(ServerState state) : base(state) { } }
 
     public class Server : BaseSingleton<Server>
@@ -107,7 +107,7 @@ namespace UdeS.Promoscience
 
         public void StartAdvancedReplay()
         {
-            Replays.ReplayManager.Instance.StartInstantReplay();
+            Replays.ReplayManager.Instance.StartReplaySelect();
         }
 
 
@@ -137,19 +137,6 @@ namespace UdeS.Promoscience
         public void StopGame()
         {
             GameManager.Instance.StopGame();
-
-            for (int i = 0; i < PlayerList.instance.list.Count; i++)
-            {
-                Player player = PlayerList.instance.GetPlayerWithId(i);
-                SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
-
-                if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
-                    player.ServerPlayerGameState == ClientGameState.Playing)
-                {
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
-                    player.TargetSetEndRoundOrTutorial(player.connectionToClient);
-                }
-            }
         }
 
 
