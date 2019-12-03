@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -729,35 +729,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Client
       objectReference: {fileID: 0}
-    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
-        type: 3}
-      propertyPath: _resources.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
-        type: 3}
-      propertyPath: _resources.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: acf68f3b6fc107249884cf57b7e781dc,
-        type: 2}
-    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
-        type: 3}
-      propertyPath: _resources.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 25414d0b76ef8ac4fb9064fb2d9fa01e,
-        type: 2}
-    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
-        type: 3}
-      propertyPath: _resources.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f,
-        type: 2}
-    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
-        type: 3}
-      propertyPath: _resources.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682,
-        type: 2}
     - target: {fileID: 4110188661362624, guid: 28f07edcf181f89438fcbae02eeecc82, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -806,6 +777,35 @@ PrefabInstance:
       propertyPath: respectController
       value: 
       objectReference: {fileID: 11400000, guid: 6d58c680a021b5e47830ce98afc82c18,
+        type: 2}
+    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
+        type: 3}
+      propertyPath: _resources.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
+        type: 3}
+      propertyPath: _resources.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: acf68f3b6fc107249884cf57b7e781dc,
+        type: 2}
+    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
+        type: 3}
+      propertyPath: _resources.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 25414d0b76ef8ac4fb9064fb2d9fa01e,
+        type: 2}
+    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
+        type: 3}
+      propertyPath: _resources.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f,
+        type: 2}
+    - target: {fileID: 114345426861101078, guid: 28f07edcf181f89438fcbae02eeecc82,
+        type: 3}
+      propertyPath: _resources.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9843eaed3f0fc7e428aa3da49b99a682,
         type: 2}
     m_RemovedComponents:
     - {fileID: 4800835423032950806, guid: 28f07edcf181f89438fcbae02eeecc82, type: 3}
@@ -2216,6 +2216,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2882013605365316417, guid: 9da6b81bdde8b514f8e71db2b3f449d5,
+        type: 3}
+      propertyPath: m_Name
+      value: Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9da6b81bdde8b514f8e71db2b3f449d5, type: 3}

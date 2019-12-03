@@ -18,7 +18,12 @@ namespace UdeS.Promoscience.UI
         public void Awake()
         {
             if (text != null)
-                text.text = localizeString.Value;
+            {
+                if (localizeString.Value != "[?]" || localizeString.Value != "")
+                {
+                    text.text = localizeString.Value;
+                }
+            }
         }
 
     }
