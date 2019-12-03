@@ -126,7 +126,15 @@ namespace UdeS.Promoscience
 
         public void ReturnToGame()
         {
-            Instance.State.Value = GameManager.Instance.CurrentGame.RoundState;
+            if (GameManager.Instance.CurrentGame == null || 
+                !GameManager.Instance.CurrentGame.IsStarted)
+            {
+                ReturnToLobby();
+            }
+            else
+            {
+                Instance.State.Value = GameManager.Instance.CurrentGame.RoundState;
+            }
         }
 
         public void ReturnToLobby()
