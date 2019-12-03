@@ -73,7 +73,6 @@ public class NetworkDiscoveryFix : NetworkDiscovery
             NetworkTransport.Shutdown();
             NetworkTransport.Init();
 
-
             Initialize();
             StartAsClient();
 
