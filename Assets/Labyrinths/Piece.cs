@@ -34,6 +34,11 @@ namespace UdeS.Promoscience.Labyrinths
 
         }
 
+        public void OnDestroy()
+        {
+            OnTileHighlightStaticHandler -= OnOtherHighlight;
+        }
+
         public static void RemoveHighlight()
         {
             OnTileHighlightStaticHandler?.Invoke();

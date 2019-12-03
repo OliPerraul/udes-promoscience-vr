@@ -74,6 +74,11 @@ namespace UdeS.Promoscience.Algorithms
             highlight.SetActive(false);
         }
 
+        public void OnDestroy()
+        {
+            OnTileHighlightStaticHandler -= OnOtherHighlight;
+        }
+
         public void SetFloorColor(TileColor value, bool paintFloor = false)
         {
             floorColor = value;
