@@ -76,6 +76,24 @@ namespace UdeS.Promoscience.Controls
                 null :
                 new TransitionCameraAnimatorWrapper(transitionCameraAnimator);
 
+            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
+
+        }
+
+        public void OnClientStateChanged(ClientGameState state)
+        {
+            switch (state)
+            {
+                case ClientGameState.WaitingForNextRound:
+                case ClientGameState.ViewingGlobalReplay:
+                case ClientGameState.ViewingLocalReplay:
+                case ClientGameState.WaitingReplay:
+                case ClientGameState.WaitingForPairConnection:
+                
+                    OnPaitingColorChanged(TileColor.NoColor);
+
+                    break;
+            }
         }
 
         private void OnPaitingColorChanged(TileColor value)

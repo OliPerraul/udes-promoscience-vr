@@ -116,13 +116,11 @@ namespace UdeS.Promoscience
             if (State.Value == ClientGameState.PlayingTutorial ||
                 State.Value == ClientGameState.Playing)
             {
+                Destroy(Labyrinth.Value.gameObject);
+
                 controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
-                State.Value = ClientGameState.WaitingReplay;
-            }
-            else
-            {
                 State.Value = ClientGameState.WaitingForNextRound;
             }
         }    
