@@ -49,6 +49,12 @@ namespace UdeS.Promoscience
         private Algorithms.Id baseAlgorithmId;
 
 
+        [SerializeField]
+        protected ServerState roundState;
+
+        public ServerState RoundState => roundState;
+
+
         // Ideally, player should reference a course instead of refering to a course id 
         public List<Course> Courses = new List<Course>();
 
@@ -199,10 +205,6 @@ namespace UdeS.Promoscience
             DoStartRound();
         }
 
-        [SerializeField]
-        protected ServerState roundState;
-
-        public ServerState RoundState => roundState;
 
         protected virtual void DoStartRound()
         {
