@@ -197,8 +197,7 @@ namespace UdeS.Promoscience
                             player.connectionToClient,
                             CurrentLabyrinth.Json,
                             player.serverAlgorithm,
-                            Round.Value,
-                            false);
+                            Round.Value);
 
                         break;
                 }
@@ -230,8 +229,7 @@ namespace UdeS.Promoscience
                 player.connectionToClient,
                 CurrentLabyrinth.Json,
                 player.serverAlgorithm,
-                Round.Value,
-                false);
+                Round.Value);
         }
 
         public void JoinGameRoundWithSteps(Player player, int[] steps)
