@@ -54,6 +54,8 @@ namespace UdeS.Promoscience
 
         public ServerState RoundState => roundState;
 
+        public bool IsStarted => Round.Value >= 0;
+
 
         // Ideally, player should reference a course instead of refering to a course id 
         public List<Course> Courses = new List<Course>();

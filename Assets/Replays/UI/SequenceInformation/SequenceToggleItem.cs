@@ -9,8 +9,16 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class SequenceToggleItem : MonoBehaviour
     {
+        public static Cirrus.Event OnOtherSelectedHandler;
+
         [SerializeField]
         private ReplayManagerAsset replayController;
+
+        [SerializeField]
+        private UnityEngine.Color selectedColor;
+
+        [SerializeField]
+        private UnityEngine.Color defaultColor;
 
         [SerializeField]
         private UnityEngine.UI.Toggle toggle;
@@ -22,9 +30,21 @@ namespace UdeS.Promoscience.Replays.UI
         private UnityEngine.UI.Image colorImage;
 
         [SerializeField]
+        private UnityEngine.UI.Image selectedImage;
+        
+
+
+        [SerializeField]
         private Course course;
 
         public UnityEngine.UI.Button button;
+
+        public void OnValidate()
+        {
+            //if(button != null)
+            //defaultColor = button.image.color;
+        }
+
 
         public SequenceToggleItem Create(
             Transform parent, 
@@ -46,8 +66,30 @@ namespace UdeS.Promoscience.Replays.UI
         public void Awake()
         {
             toggle.onValueChanged.AddListener(OnToggle);
-            button.onClick.AddListener(() => replayController.CurrentCourse.Value = course);
+            button.onClick.AddListener(() =>
+            {               
+                OnOtherSelectedHandler?.Invoke();
+
+                selectedImage.color = selectedColor;
+                OnOtherSelectedHandler += OnOtherSelected;
+
+                replayController.CurrentCourse.Value = course;
+            });
         }
+
+        public void OnDestroy()
+        {
+            OnOtherSelectedHandler -= OnOtherSelected;
+        }
+
+        public void OnOtherSelected()
+        {
+            OnOtherSelectedHandler -= OnOtherSelected;
+            selectedImage.color = defaultColor;
+        }
+
+
+
 
         public void OnToggle(bool enabled)
         {
