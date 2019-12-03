@@ -185,6 +185,8 @@ namespace UdeS.Promoscience
                     case ClientGameState.ViewingLocalReplay:
                     case ClientGameState.WaitingForNextRound:
 
+                        Debug.Log(player);
+
                         player.serverAlgorithm = baseAlgorithmId;
 
                         player.serverLabyrinthId = CurrentLabyrinth.Id;
@@ -249,21 +251,21 @@ namespace UdeS.Promoscience
                 false); // TODO start with steps tutorial??
         }
 
-        public void EndRoundOrTutorial()
-        {
-            for (int i = 0; i < PlayerList.instance.list.Count; i++)
-            {
-                Player player = PlayerList.instance.GetPlayerWithId(i);
-                SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
+        //public void EndRoundOrTutorial()
+        //{
+        //    for (int i = 0; i < PlayerList.instance.list.Count; i++)
+        //    {
+        //        Player player = PlayerList.instance.GetPlayerWithId(i);
+        //        SQLiteUtilities.SetCourseInactive(player.ServerCourseId);
 
-                if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
-                    player.ServerPlayerGameState == ClientGameState.Playing)
-                {
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
-                    player.TargetSetEndRoundOrTutorial(player.connectionToClient);
-                }
-            }
-        }
+        //        if (player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
+        //            player.ServerPlayerGameState == ClientGameState.Playing)
+        //        {
+        //            player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
+        //            player.TargetSetEndRoundOrTutorial(player.connectionToClient);
+        //        }
+        //    }
+        //}
 
         public void LevelSelect()
         {
