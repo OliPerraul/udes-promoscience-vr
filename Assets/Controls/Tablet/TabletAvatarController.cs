@@ -69,7 +69,7 @@ namespace UdeS.Promoscience.Controls
         void Start()
         {
             controls.IsThirdPersonEnabled.Set(true);
-            controls.IsCompassEnabled.Set(TabletCameraMode.ThirdPerson);
+            controls.TabletCameraMode.Set(TabletCameraMode.ThirdPerson);
             directiveManager.CurrentDirective.OnValueChangedHandler += OnNewDirective;
         }
 
@@ -77,7 +77,7 @@ namespace UdeS.Promoscience.Controls
         {
             if (value == Directive.Compass)
             {
-                controls.IsCompassEnabled.Value = (TabletCameraMode)((int)controls.IsCompassEnabled.Value + 1).Mod(TabletUtils.NumCameraMode);
+                controls.TabletCameraMode.Value = (TabletCameraMode)((int)controls.TabletCameraMode.Value + 1).Mod(TabletUtils.NumCameraMode);
             }
         }
 

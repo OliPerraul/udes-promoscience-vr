@@ -41,29 +41,37 @@ namespace UdeS.Promoscience.Controls
 
         public void Awake()
         {
-            controls.IsCompassEnabled.OnValueChangedHandler += OnCompassEnabled;
+            controls.TabletCameraMode.OnValueChangedHandler += OnCompassEnabled;
+            controls.CameraRotation.OnValueChangedHandler += OnCameraRotationChanged;
         }
+
+        public void OnCameraRotationChanged(Quaternion rotation)
+        {
+            FirstPersonCamera.transform.rotation = rotation;
+        }
+
+
 
         public void OnCompassEnabled(TabletCameraMode enabled)
         {
             switch (enabled)
             {
                 case TabletCameraMode.FPS:
-                    controls.IsThirdPersonEnabled.Value = false;
+                    //controls.IsThirdPersonEnabled.Value = false;
                     ThirdPersonCamera.SetActive(false);
                     TopdownCamera.SetActive(false);
                     FirstPersonCamera.SetActive(true);
                     break;
 
                 case TabletCameraMode.ThirdPerson:
-                    controls.IsThirdPersonEnabled.Value = true;
+                    //controls.IsThirdPersonEnabled.Value = true;
                     ThirdPersonCamera.SetActive(true);
                     TopdownCamera.SetActive(false);
                     FirstPersonCamera.SetActive(false);
                     break;
 
                 case TabletCameraMode.Topdown:
-                    controls.IsThirdPersonEnabled.Value = false;
+                    //controls.IsThirdPersonEnabled.Value = false;
                     ThirdPersonCamera.SetActive(false);
                     TopdownCamera.SetActive(true);
                     FirstPersonCamera.SetActive(false);

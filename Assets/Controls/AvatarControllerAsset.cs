@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.Controls
         // TODO split tablet vs headset avatar controller asset
 
         // TODO put in tablet
-        public Cirrus.ObservableValue<TabletCameraMode> IsCompassEnabled = new Cirrus.ObservableValue<TabletCameraMode>(TabletCameraMode.ThirdPerson);
+        public Cirrus.ObservableValue<TabletCameraMode> TabletCameraMode = new Cirrus.ObservableValue<TabletCameraMode>(Controls.TabletCameraMode.ThirdPerson);
 
         public Cirrus.ObservableValue<bool> IsPlayerControlsEnabled = new Cirrus.ObservableValue<bool>(true);
 

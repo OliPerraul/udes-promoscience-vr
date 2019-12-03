@@ -28,7 +28,7 @@ namespace UdeS.Promoscience.Controls.UI
 
         void Awake()
         {
-            controls.IsCompassEnabled.OnValueChangedHandler += OnCompassEnabled;
+            controls.TabletCameraMode.OnValueChangedHandler += OnCompassEnabled;
         }
 
         private void OnCompassEnabled(TabletCameraMode value)

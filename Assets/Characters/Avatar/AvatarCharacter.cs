@@ -36,12 +36,31 @@ namespace UdeS.Promoscience.Characters
             controller.CameraRotation.OnValueChangedHandler += OnCameraRotationChanged;
             controller.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
             controller.Animation.OnValueChangedHandler += OnAnimationChanged;
+            controller.TabletCameraMode.OnValueChangedHandler += OnTabletCameraMode;
         }
 
         public void Start()
         {
             animatorWrapper.Play(AvatarAnimation.Idle);
         }
+
+        public void OnTabletCameraMode(TabletCameraMode mode)
+        {
+            switch (mode)
+            {
+                case TabletCameraMode.ThirdPerson:
+                case TabletCameraMode.Topdown:
+                    CharacterTransform.gameObject.SetActive(true);
+                    paintingColorDisplay.SetActive(true);
+                    break;
+
+                default:
+                    CharacterTransform.gameObject.SetActive(false);
+                    paintingColorDisplay.SetActive(false);
+                    break;
+            }
+        }
+
 
         public void OnThirdPersonEnabled(bool enabled)
         {

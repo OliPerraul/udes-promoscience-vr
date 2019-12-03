@@ -29,7 +29,7 @@ namespace UdeS.Promoscience.UI
         {
             Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
-            controls.IsCompassEnabled.OnValueChangedHandler += OnCompassENabled;
+            controls.TabletCameraMode.OnValueChangedHandler += OnCompassENabled;
 
             startRotation = indicator.transform.rotation;
 
