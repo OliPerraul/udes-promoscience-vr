@@ -33,8 +33,8 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private OVRCameraRig transitionCamera;
 
-        [SerializeField]
-        private UnityEngine.UI.Image paintingColorOverlay;
+        //[SerializeField]
+        //private UnityEngine.UI.Image paintingColorOverlay;
 
         private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
 
@@ -98,20 +98,21 @@ namespace UdeS.Promoscience.Controls
 
         private void OnPaitingColorChanged(TileColor value)
         {
-            if (value == TileColor.Red)
-            {
-                paintingColorOverlay.gameObject.SetActive(true);
-                paintingColorOverlay.color = Color.red;
-            }
-            else if(value == TileColor.Yellow)
-            {
-                paintingColorOverlay.gameObject.SetActive(true);
-                paintingColorOverlay.color = Color.yellow;
-            }
-            else
-            {
-                paintingColorOverlay.gameObject.SetActive(false);
-            }
+
+            //if (value == TileColor.Red)
+            //{
+            //    paintingColorOverlay.gameObject.SetActive(true);
+            //    paintingColorOverlay.color = Color.red;
+            //}
+            //else if (value == TileColor.Yellow)
+            //{
+            //    paintingColorOverlay.gameObject.SetActive(true);
+            //    paintingColorOverlay.color = Color.yellow;
+            //}
+            //else
+            //{
+            //    paintingColorOverlay.gameObject.SetActive(false);
+            //}
         }
 
         public void FixedUpdate()
@@ -141,7 +142,7 @@ namespace UdeS.Promoscience.Controls
         public void OnThirdPersonEnabled(bool enabled)
         {
             firstPersonCamera.gameObject.SetActive(!enabled);
-            paintingColorOverlay.gameObject.SetActive(!enabled);
+            //paintingColorOverlay.gameObject.SetActive(!enabled);
             thirdPersonCamera.gameObject.SetActive(enabled);
             
         }
