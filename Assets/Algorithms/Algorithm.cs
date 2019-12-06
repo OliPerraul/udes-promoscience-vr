@@ -78,6 +78,9 @@ namespace UdeS.Promoscience.Algorithms
 
         // Up, right down, left
 
+        // Originally base on:
+        // https://github.com/ferenc-nemeth/maze-generation-algorithms/blob/757c6289286387ad661813e6ecc0ec04edea30c0/solver/solver.cpp
+        // void maze::solver::wall_follower
         public virtual bool GetNextStep(
             AlgorithmProgressState state,
             Labyrinths.IData labyrinth,
