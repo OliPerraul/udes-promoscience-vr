@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.Algorithms
         public override Id Id => Id.ShortestFlightDistance;
 
         // up right down left
-        public override Direction[] GetPrioritizedDirections(AlgorithmProgressState state, IData labyrinth)
+        public override Direction[] GetPrioritizedDirections(AlgorithmExecutionState state, ILabyrinth labyrinth)
         {
             List<PrioritizedDirection> dirs = new List<PrioritizedDirection>();
 

@@ -15,8 +15,8 @@ namespace UdeS.Promoscience.Algorithms
         // Up, right down, left
 
         public override Direction[] GetPrioritizedDirections(
-            AlgorithmProgressState state,
-            Labyrinths.IData labyrinth)
+            AlgorithmExecutionState state,
+            Labyrinths.ILabyrinth labyrinth)
         {
             Direction[] prioritizedDirections = new Direction[4];
 

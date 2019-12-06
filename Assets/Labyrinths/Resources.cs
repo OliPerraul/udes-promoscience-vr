@@ -15,13 +15,13 @@ namespace UdeS.Promoscience.Labyrinths
         //public RenderTexture RenderTexture;
 
         [SerializeField]
-        public Labyrinth LabyrinthSmall;
+        public LabyrinthObject LabyrinthSmall;
 
         [SerializeField]
-        public Labyrinth LabyrinthMedium;
+        public LabyrinthObject LabyrinthMedium;
 
         [SerializeField]
-        public Labyrinth LabyrinthLarge;
+        public LabyrinthObject LabyrinthLarge;
 
         public void OnValidate()
         {
@@ -38,7 +38,7 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        public Labyrinth GetLabyrinthTemplate(IData data)
+        public LabyrinthObject GetLabyrinthObject(ILabyrinth data)
         {
             switch (Utils.GetType(data))
             {
@@ -67,7 +67,7 @@ namespace UdeS.Promoscience.Labyrinths
 
         // TODO: remove offset with Id and index
         // right now needed cuz round determine labyrinth
-        public IData GetLabyrinth(int id)
+        public ILabyrinth GetLabyrinth(int id)
         {
             return Labyrinths[id-1];
         }

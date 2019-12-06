@@ -12,7 +12,7 @@ using System.Linq;
 namespace UdeS.Promoscience.Labyrinths
 {
     [CreateAssetMenu(fileName = "Labyrinth", menuName = "Algorinthe/Labyrinths/Labyrinth", order = 1)]
-    public class Resource : ScriptableObject, IData
+    public class Resource : ScriptableObject, ILabyrinth
     {
         [SerializeField]
         private SkinResource skin;
@@ -31,7 +31,7 @@ namespace UdeS.Promoscience.Labyrinths
         }
 
         [SerializeField]
-        private Data data;
+        private Labyrinth data;
 
         public void OnValidate()
         {
@@ -47,12 +47,12 @@ namespace UdeS.Promoscience.Labyrinths
         }
 
 
-        public IData Data
+        public ILabyrinth Data
         {
             get
             {
                 if (data == null)
-                    data = new Data();
+                    data = new Labyrinth();
                 return data;
             }
         }

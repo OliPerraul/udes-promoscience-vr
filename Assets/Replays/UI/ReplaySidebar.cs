@@ -8,38 +8,6 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class ReplaySidebar : MonoBehaviour
     {
-        //[SerializeField]
-        //protected ReplayManagerAsset replayOptions;
-
-        [SerializeField]
-        private UnityEngine.UI.Text algorithmNameText;
-
-        [SerializeField]
-        private UnityEngine.UI.Text algorithmStepsText;
-
-        [SerializeField]
-        private UnityEngine.UI.Button algorithmNext;
-
-        [SerializeField]
-        private UnityEngine.UI.Button algorithmPrevious;
-
-
-        //[SerializeField]
-        //private LocalizeInlineString algorithmStepsString = new LocalizeInlineString("Number of steps: ");
-
-        [SerializeField]
-        protected Controls controls;
-
-        //[SerializeField]
-        //[UnityEngine.Serialization.FormerlySerializedAs("openButton")]
-        //protected UnityEngine.UI.Button infoButton;
-
-        [SerializeField]
-        protected UnityEngine.UI.Button closeButton;
-
-        //[SerializeField]
-        //protected UnityEngine.UI.Button exitButton;
-
         [SerializeField]
         protected UnityEngine.UI.Button overlayButton;
 
@@ -49,15 +17,14 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         protected UnityEngine.UI.Button algorithmButton;
 
+        [SerializeField]
+        private UnityEngine.UI.Button openSidebarButton;
 
         [SerializeField]
-        protected GameObject sequenceToggle;
-
-        //[SerializeField]
-        //protected SelectedSequenceDisplay sequencePopup;
+        private UnityEngine.UI.Button closeSidebarButton;
 
         [SerializeField]
-        private GameObject overlay;
+        private GameObject content;
 
         private LabyrinthReplay replay;
 
@@ -66,10 +33,17 @@ namespace UdeS.Promoscience.Replays.UI
         {
             Server.Instance.State.OnValueChangedHandler += OnGameStateChanged;
 
-            ButtonManager.Instance.InfoButton.onClick.AddListener(() => Enabled = !Enabled);
-            ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnReplayStarted;
+            closeSidebarButton.onClick.AddListener(() =>
+            {
+                Enabled = false;
+                openSidebarButton.gameObject.SetActive(true);
+            });
 
-            closeButton.onClick.AddListener(() => Enabled = false);
+            openSidebarButton.onClick.AddListener(() =>
+            {
+                Enabled = true;
+                openSidebarButton.gameObject.SetActive(false);
+            });
 
             Enabled = false;
         }
@@ -84,48 +58,15 @@ namespace UdeS.Promoscience.Replays.UI
             if (replay != null)
             {
                 replay.OnMoveIndexChangedHandler -= OnMoveIndexChanged;
-                replay.CurrentCourse.OnValueChangedHandler -= OnCourseSelected;
             }
         }
-
-
-        public void OnReplayStarted(LabyrinthReplay replay)
-        {
-            if (this.replay != null)
-            {
-                this.replay.OnMoveIndexChangedHandler -= OnMoveIndexChanged;
-                this.replay.CurrentCourse.OnValueChangedHandler -= OnCourseSelected;
-            }
-
-            this.replay = replay;
-
-            this.replay.OnMoveIndexChangedHandler += OnMoveIndexChanged;
-            this.replay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
-        }
-
 
         public void OnMoveIndexChanged(int idx)
         {
-            if(course != null)
-            algorithmStepsText.text = course.CurrentAlgorithmMoveIndex.ToString();
+            //if(course != null)
+            //algorithmStepsText.text = course.Cu.ToString();
         }
 
-        public void EnableAlgorithm(bool enable)
-        {
-            isAlgorithmEnabled = enable;
-            //algorithmNameText.gameObject.SetActive(enable);
-            //algorithmStepsText.gameObject.SetActive(enable);
-        }
-
-        private Course course = null;
-
-
-        public void OnCourseSelected(Course course)
-        {
-            this.course = course;
-            algorithmNameText.text = course.Algorithm.Name;
-            algorithmStepsText.text = course.CurrentAlgorithmMoveIndex.ToString();
-        }
 
 
         public void OnGameStateChanged(ServerState state)
@@ -141,7 +82,6 @@ namespace UdeS.Promoscience.Replays.UI
                     break;
             }
         }
-
 
         private bool _enabled = false;
 
@@ -161,25 +101,12 @@ namespace UdeS.Promoscience.Replays.UI
                 ButtonManager.Instance.Flags.Value =
                     _enabled ?
                     ButtonCanvasFlag.None :
-                    ButtonCanvasFlag.Info | ButtonCanvasFlag.Exit;                        
+                    ButtonCanvasFlag.Exit;                        
 
-                gameObject.SetActive(_enabled);
+                content.SetActive(_enabled);
             }
         }
 
-        private bool isOptionEnabled = false;
-
-        public void EnableOptions(bool enable)
-        {
-            //isOptionEnabled = enable;
-            //sequencePopup.gameObject.SetActive(isOptionEnabled);
-            //sequenceToggle.SetActive(isOptionEnabled);
-            //overlayButton.gameObject.SetActive(isOptionEnabled);
-            ////algorithmButton.gameObject.SetActive(isOptionEnabled);
-            //greyboxButton.gameObject.SetActive(isOptionEnabled);
-        }
-
-        private bool isAlgorithmEnabled = false;
 
     }
 }

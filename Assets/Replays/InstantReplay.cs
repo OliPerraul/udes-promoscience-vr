@@ -7,12 +7,7 @@ namespace UdeS.Promoscience.Replays
 {
     public class InstantReplay : LabyrinthReplay
     {
-        public InstantReplay(
-            List<Course> courses,
-            IData labyrinth) : 
-                base(
-                    courses, 
-                    labyrinth) { }
+        public InstantReplay(Round round) : base(round) { }
 
         public override void Start()
         {

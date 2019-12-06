@@ -7,11 +7,11 @@ namespace UdeS.Promoscience.Labyrinths
     [System.Serializable]
     public class LabyrinthManager
     {
-        public IData CurrentData { get; set; }
+        public ILabyrinth CurrentData { get; set; }
 
-        public Labyrinth CurrentLabyrinth { get; set; }
+        public LabyrinthObject CurrentLabyrinth { get; set; }
 
-        public ICollection<IData> data = new List<IData>();
+        public ICollection<ILabyrinth> data = new List<ILabyrinth>();
 
         public List<Resource> Data
         {
@@ -21,7 +21,7 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        public ICollection<Labyrinth> Labyrinths
+        public ICollection<LabyrinthObject> Labyrinths
         {
             get
             {
@@ -29,14 +29,14 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        private Dictionary<int, Labyrinth> labyrinths = new Dictionary<int, Labyrinth>();
+        private Dictionary<int, LabyrinthObject> labyrinths = new Dictionary<int, LabyrinthObject>();
 
-        public IDictionary<int, Labyrinth> IdPairs
+        public IDictionary<int, LabyrinthObject> IdPairs
         {
             get
             {
                 if (labyrinths == null)
-                    labyrinths = new Dictionary<int, Labyrinth>();
+                    labyrinths = new Dictionary<int, LabyrinthObject>();
                 return labyrinths;
             }
         }

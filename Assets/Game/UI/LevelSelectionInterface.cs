@@ -116,8 +116,8 @@ namespace UdeS.Promoscience.Labyrinths.UI
         {
             var data = Resources.Instance.Labyrinths[i];
 
-            Labyrinth labyrinth = Resources.Instance
-                  .GetLabyrinthTemplate(data)
+            LabyrinthObject labyrinth = Resources.Instance
+                  .GetLabyrinthObject(data)
                   .Create(data);
 
             labyrinths.Add(labyrinth);
@@ -159,7 +159,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             return currentSection;
         }
 
-        public void OnPlayClicked(IData labyrinth)
+        public void OnPlayClicked(ILabyrinth labyrinth)
         {
             Enabled = true;
             Enabled = false;

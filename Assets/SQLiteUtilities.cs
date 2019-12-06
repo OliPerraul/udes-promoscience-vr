@@ -511,9 +511,9 @@ namespace UdeS.Promoscience
                             int algId = int.Parse(reader[COURSE_NO_ALGO].ToString());
                             int lid = int.Parse(reader[COURSE_LABYRINTH_ID].ToString());
 
-                            Queue<int> steps;
-                            Queue<string> stepValues;
-                            GetPlayerStepsForCourse(id, out steps, out stepValues);
+                            //Queue<int> steps;
+                            //Queue<string> stepValues;
+                            //GetPlayerStepsForCourse(id, out steps, out stepValues);
                             //int teamId
 
                             //// Add sentinel values
@@ -529,12 +529,12 @@ namespace UdeS.Promoscience
                             {
                                 LabyrinthId = lid,
                                 Id = id,
-                                Actions = steps.ToArray(),
-                                ActionValues = stepValues.ToArray(),
+                                //Actions = steps.ToArray(),
+                                //ActionValues = stepValues.ToArray(),
                                 Team = team,
                                 Labyrinth = labyrinth,
                                 Algorithm = algorithm,
-                                AlgorithmSteps = algorithm.GetAlgorithmSteps(labyrinth)                                    
+                                //AlgorithmSteps = algorithm.GetAlgorithmSteps(labyrinth)                                    
                             });
 
 
@@ -549,7 +549,7 @@ namespace UdeS.Promoscience
         }
 
 
-        public static Labyrinths.IData GetLabyrinthForGameRound(int gameId, int round)
+        public static Labyrinths.ILabyrinth GetLabyrinthForGameRound(int gameId, int round)
         {
             int labId = -1;
 
@@ -635,9 +635,9 @@ namespace UdeS.Promoscience
                             int labId = int.Parse(reader[COURSE_LABYRINTH_ID].ToString());
 
 
-                            Queue<int> steps;
-                            Queue<string> stepValues;
-                            GetPlayerStepsForCourse(id, out steps, out stepValues);
+                            //Queue<int> steps;
+                            //Queue<string> stepValues;
+                            //GetPlayerStepsForCourse(id, out steps, out stepValues);
                             var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
                             //var labyrinth = Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId);
                             var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
@@ -648,12 +648,12 @@ namespace UdeS.Promoscience
                             {
                                 LabyrinthId = labId,
                                 Id = id,
-                                Actions = steps.ToArray(),
-                                ActionValues = stepValues.ToArray(),
+                                //Actions = steps.ToArray(),
+                                //ActionValues = stepValues.ToArray(),
                                 Team = team,
                                 Labyrinth = labdata,
                                 Algorithm = algorithm,
-                                AlgorithmSteps = algorithm.GetAlgorithmSteps(labdata),// as Algorithm)
+                                //AlgorithmSteps = algorithm.GetAlgorithmSteps(labdata),// as Algorithm)
                                 Status = (CourseStatus)sts
                             });
 
@@ -708,9 +708,9 @@ namespace UdeS.Promoscience
                             int algId = int.Parse(reader[COURSE_NO_ALGO].ToString());
                             int sts = int.Parse(reader[COURSE_STATUS].ToString());
 
-                            Queue<int> steps;
-                            Queue<string> stepValues;
-                            GetPlayerStepsForCourse(id, out steps, out stepValues);
+                            //Queue<int> steps;
+                            //Queue<string> stepValues;
+                            //GetPlayerStepsForCourse(id, out steps, out stepValues);
                             var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
                             var labyrinth = Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId);
                             var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
@@ -719,12 +719,12 @@ namespace UdeS.Promoscience
                             {
                                 LabyrinthId = labyrinthId,
                                 Id = id,
-                                Actions = steps.ToArray(),
-                                ActionValues = stepValues.ToArray(),
+                                //Actions = steps.ToArray(),
+                                //ActionValues = stepValues.ToArray(),
                                 Team = team,
                                 Labyrinth = labyrinth,
                                 Algorithm = algorithm,
-                                AlgorithmSteps = algorithm.GetAlgorithmSteps(labyrinth),// as Algorithm)
+                                //AlgorithmSteps = algorithm.GetAlgorithmSteps(labyrinth),// as Algorithm)
                                 Status = (CourseStatus)sts
                             });
 
@@ -741,9 +741,9 @@ namespace UdeS.Promoscience
             return courses;
         }
 
-        public static List<Labyrinths.IData> GetLabyrinths()
+        public static List<Labyrinths.ILabyrinth> GetLabyrinths()
         {
-            List<Labyrinths.IData> labyrinths = new List<Labyrinths.IData>();
+            List<Labyrinths.ILabyrinth> labyrinths = new List<Labyrinths.ILabyrinth>();
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
@@ -799,7 +799,7 @@ namespace UdeS.Promoscience
             return labyrinths;
         }
 
-        public static void ReadLabyrinthDataFromId(int id, Labyrinths.IData labyrinth)
+        public static void ReadLabyrinthDataFromId(int id, Labyrinths.ILabyrinth labyrinth)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
 

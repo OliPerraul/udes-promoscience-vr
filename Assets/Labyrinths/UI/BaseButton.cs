@@ -11,9 +11,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
         public Event<BaseButton> OnClickedHandler;
 
         [SerializeField]
-        protected Labyrinth labyrinth;
+        protected LabyrinthObject labyrinth;
 
-        public Labyrinth Labyrinth => labyrinth;
+        public LabyrinthObject Labyrinth => labyrinth;
 
         [SerializeField]
         protected UnityEngine.UI.Button button;
@@ -29,6 +29,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public abstract void OnClick();
 
-        public abstract BaseButton Create(Transform parent, Labyrinth labyrinth);
+        public abstract BaseButton Create(Transform parent, LabyrinthObject labyrinth);
     }
 }

@@ -30,7 +30,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         public bool running = false;
 
         [SerializeField]
-        private Algorithms.AlgorithmProgressState state;
+        private Algorithms.AlgorithmExecutionState state;
 
         private EditorCoroutine coroutine;
 
@@ -41,7 +41,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         {
             if (dirtyTilemap == null)
             {
-                state = new Algorithms.AlgorithmProgressState();
+                state = new Algorithms.AlgorithmExecutionState();
                 dirtyTilemap = Instantiate(templateTilemap, templateTilemap.transform.parent);
                 SetTile(algorithm.ResetProgressState(state, editor.resource));
             }

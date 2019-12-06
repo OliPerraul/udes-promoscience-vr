@@ -15,7 +15,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override BaseButton Create(
             Transform parent,
-            Labyrinth labyrinth)
+            LabyrinthObject labyrinth)
         {
             var l = this.Create(parent);
             l.labyrinth = labyrinth;

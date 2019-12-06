@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor
     {
         public Cirrus.ObservableValue<State> State = new Cirrus.ObservableValue<State>();
 
-        public IData Labyrinth;
+        public ILabyrinth Labyrinth;
 
 
     }

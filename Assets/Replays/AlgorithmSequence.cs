@@ -10,32 +10,36 @@ namespace UdeS.Promoscience.Replays
 {
     public class AlgorithmSequence : Sequence
     {
-        private Course course;
+        private Algorithms.AlgorithmExecution execution;
+
+        private BaseReplay replay;
+
+        protected override BaseReplay Replay => replay;
 
         private Dictionary<Vector2Int, Stack<TileColor>> dictionary;
 
-        public override int LocalMoveCount => course.AlgorithmMoveCount;
+        public override int LocalMoveCount => execution.LocalMoveCount;
 
-        public override int LocalMoveIndex => course.CurrentAlgorithmMoveIndex;
+        public override int LocalMoveIndex => execution.LocalMoveIndex;
 
+        protected override bool HasPrevious => execution.HasPrevious;
 
-        protected override bool HasPrevious => course.AlgorithmHasPrevious;
-
-        protected override bool HasNext => course.AlgorithmHasNext;
+        protected override bool HasNext => execution.HasNext;
 
         public AlgorithmSequence Create(
-            LabyrinthReplay replay,
-            Labyrinths.Labyrinth labyrinth,
-            Course course,
+            BaseReplay replay,
+            Labyrinths.LabyrinthObject labyrinth,
+            Algorithms.Algorithm algorithm,
             Vector2Int startPosition)
         {
-            var sequence = this.Create(labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
+            var sequence = this.Create(
+                labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
 
             sequence.replay = replay;
             sequence.labyrinth = labyrinth;
             sequence.lposition = startPosition;
             sequence.startlposition = startPosition;
-            sequence.course = course;
+            sequence.execution = new Algorithms.AlgorithmExecution(algorithm, labyrinth);
 
             return sequence;
         }
@@ -79,7 +83,7 @@ namespace UdeS.Promoscience.Replays
             {
                 Stack<TileColor> stack;
 
-                foreach (var tile in course.AlgorithmSteps)
+                foreach (var tile in execution.Steps)
                 {
                     if (dictionary.TryGetValue(tile.Position, out stack))
                     {
@@ -89,7 +93,7 @@ namespace UdeS.Promoscience.Replays
             }
             else
             {
-                foreach (var tile in course.AlgorithmSteps)
+                foreach (var tile in execution.Steps)
                 {
                     PaintTile(tile.Position, TileColor.Grey);
                 }
@@ -99,7 +103,7 @@ namespace UdeS.Promoscience.Replays
 
         protected override void DoNext()
         {
-            lposition = course.AlgorithmSteps[course.CurrentAlgorithmMoveIndex].Position;
+            lposition = execution.Steps[execution.LocalMoveIndex].Position;
 
             Stack <TileColor> stack;
 
@@ -110,19 +114,19 @@ namespace UdeS.Promoscience.Replays
                 dictionary.Add(lposition, stack);
             }
 
-            if(!isHidden) PaintTile(course.AlgorithmSteps[course.CurrentAlgorithmMoveIndex]);
-            stack.Push(course.AlgorithmSteps[course.CurrentAlgorithmMoveIndex].Color);
+            if(!isHidden) PaintTile(execution.Steps[execution.LocalMoveIndex]);
+            stack.Push(execution.Steps[execution.LocalMoveIndex].Color);
 
-            course.AlgorithmNext();
+            execution.Next();
         }
 
         protected override void DoPrevious()
         {
-            course.AlgorithmPrevious();
+            execution.Previous();
 
             Stack<TileColor> stack;
 
-            lposition = HasPrevious ? course.AlgorithmSteps[course.CurrentAlgorithmMoveIndex].Position : startlposition;
+            lposition = HasPrevious ? execution.Steps[execution.LocalMoveIndex].Position : startlposition;
 
             if (dictionary.TryGetValue(lposition, out stack))
             {

@@ -24,7 +24,7 @@ namespace UdeS.Promoscience.Algorithms
 
         public override Id Id => Id.Standard;
 
-        public override Direction[] GetPrioritizedDirections(AlgorithmProgressState state, IData labyrinth)
+        public override Direction[] GetPrioritizedDirections(AlgorithmExecutionState state, ILabyrinth labyrinth)
         {
             return new Direction[] { Direction.Up, Direction.Right, Direction.Down, Direction.Left };
         }

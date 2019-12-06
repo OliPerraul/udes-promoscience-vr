@@ -52,7 +52,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             RespectLayout();
         }
 
-        public virtual void AddButton(Labyrinth labyrinth)
+        public virtual void AddButton(LabyrinthObject labyrinth)
         {
             var button = ButtonTemplate.Create(
                 transform,

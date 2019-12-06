@@ -36,7 +36,7 @@ namespace UdeS.Promoscience.Algorithms
 
 
         // up right down left
-        public override Direction[] GetPrioritizedDirections(AlgorithmProgressState state, IData labyrinth)
+        public override Direction[] GetPrioritizedDirections(AlgorithmExecutionState state, ILabyrinth labyrinth)
         {
             Vector2Int dest;
 
@@ -118,7 +118,7 @@ namespace UdeS.Promoscience.Algorithms
         }
                
 
-        public override List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth)
+        public override List<Tile> GetAlgorithmSteps(Labyrinths.ILabyrinth labyrinth)
         {
             algorithmSteps = new List<Tile>();
             lastVisitedIntersection = new List<Vector3Int>();
@@ -216,7 +216,7 @@ namespace UdeS.Promoscience.Algorithms
             return algorithmSteps;
         }
 
-        void MoveInDirection(Labyrinths.IData labyrinth, int direction)
+        void MoveInDirection(Labyrinths.ILabyrinth labyrinth, int direction)
         {
             for (int i = 0; i < directionStraight[direction]; i++)
             {
@@ -251,7 +251,7 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
-        int GetStraightLenghtInDirection(Labyrinths.IData labyrinth, Vector2Int position, int direction)
+        int GetStraightLenghtInDirection(Labyrinths.ILabyrinth labyrinth, Vector2Int position, int direction)
         {
             int straightLenght = 0;
 

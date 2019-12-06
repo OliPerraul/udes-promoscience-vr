@@ -30,7 +30,10 @@ namespace UdeS.Promoscience.Replays
             GameManager.Instance.OnGameEndedHandler += OnGameEnded;
         }
 
-        
+        public void Update()
+        {
+
+        }
 
         public void OnGameCreated(Game game)
         {
@@ -48,8 +51,6 @@ namespace UdeS.Promoscience.Replays
         {
             currentRound = round;
         }
-
-
 
         public void StartReplaySelect()
         {
@@ -76,26 +77,6 @@ namespace UdeS.Promoscience.Replays
         }
 
 
-        public void OnGameStateValueChanged(ServerState state)
-        {
-            switch (state)
-            {
-                case ServerState.LabyrinthReplay:
-                case ServerState.ReplaySelect:
-                    break;
-
-                default:
-                    //if (CurrentReplay != null)
-                    //{
-                    //    CurrentReplay.Clear();
-                    //    CurrentReplay = null;
-                    //}
-
-                    break;
-            }
-
-        }
-
         public void StartInstantReplay()
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
@@ -114,18 +95,30 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            var replay = new InstantReplay(
-                SQLiteUtilities.GetCoursesForGameRound(
-                    currentGame.Id,
-                    currentRound.Number),
-                currentRound.Labyrinth);
+            var replay = new InstantReplay(currentRound);
 
             OnLabyrinthReplayCreatedHandler?.Invoke(replay);
             replay.Start();
         }
 
-        public void Update()
+
+        public void OnGameStateValueChanged(ServerState state)
         {
+            switch (state)
+            {
+                case ServerState.LabyrinthReplay:
+                case ServerState.ReplaySelect:
+                    break;
+
+                default:
+                    //if (CurrentReplay != null)
+                    //{
+                    //    CurrentReplay.Clear();
+                    //    CurrentReplay = null;
+                    //}
+
+                    break;
+            }
 
         }
     }

@@ -29,7 +29,7 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private UnityEngine.UI.Text elapsedTimeText;
 
-        private Course course;
+        private CourseExecution course;
 
         
         public void Awake()
@@ -40,16 +40,15 @@ namespace UdeS.Promoscience.Replays.UI
         public void OnLabyrinthReplayStarted(LabyrinthReplay replay)
         {
             this.replay = replay;
-            replay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+            //replay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
         }
 
-        public void OnCourseSelected(Course newCourse)
+        public void OnCourseSelected(CourseExecution execution)
         {
-
-            if (newCourse == null)
+            if (execution == null)
                 return;
 
-            if (course == newCourse)
+            if (course == execution)
                 return;
 
             if (course != null)
@@ -57,10 +56,10 @@ namespace UdeS.Promoscience.Replays.UI
                 course.OnPlayerSequenceProgressedHandler -= OnCourseActionIndexChanged;
             }
 
-            course = newCourse;
+            course = execution;
 
-            teamIcon.color = newCourse.Team.TeamColor.SetA(teamIcon.color.a);
-            newCourse.OnPlayerSequenceProgressedHandler += OnCourseActionIndexChanged;
+            teamIcon.color = execution.Course.Team.TeamColor.SetA(teamIcon.color.a);
+            execution.OnPlayerSequenceProgressedHandler += OnCourseActionIndexChanged;
 
             OnCourseActionIndexChanged();
         }

@@ -55,14 +55,14 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override int LabyrinthIndexWrap => labyrinthIndex.Mod(replay.Rounds.Count);
 
-        public override Labyrinth CreateNextLabyrinth()
+        public override LabyrinthObject CreateNextLabyrinth()
         {
             var data = replay.Rounds[LabyrinthIndexWrap].Labyrinth;
 
             labyrinthIndex++;
 
-            Labyrinth labyrinth = Labyrinths.Resources.Instance
-              .GetLabyrinthTemplate(data)
+            LabyrinthObject labyrinth = Labyrinths.Resources.Instance
+              .GetLabyrinthObject(data)
               .Create(data);
 
             labyrinths.Add(labyrinth);
@@ -188,8 +188,8 @@ namespace UdeS.Promoscience.Replays.UI
         {
             var data = replay.Rounds[i].Labyrinth;
 
-            Labyrinth labyrinth = Labyrinths.Resources.Instance
-                  .GetLabyrinthTemplate(data)
+            LabyrinthObject labyrinth = Labyrinths.Resources.Instance
+                  .GetLabyrinthObject(data)
                   .Create(data);
 
             labyrinths.Add(labyrinth);

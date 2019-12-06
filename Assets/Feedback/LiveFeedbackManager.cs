@@ -17,7 +17,7 @@ namespace UdeS.Promoscience
         private LocalizeInlineString roundString = new LocalizeInlineString("Round ", "Niveau ");
 
 
-        private Labyrinths.Labyrinth labyrinth;
+        private Labyrinths.LabyrinthObject labyrinth;
 
         private Game game;
 
@@ -86,7 +86,7 @@ namespace UdeS.Promoscience
             }
 
             labyrinth = Labyrinths.Resources.Instance
-                .GetLabyrinthTemplate(round.Labyrinth)
+                .GetLabyrinthObject(round.Labyrinth)
                 .Create(round.Labyrinth);
 
             labyrinth.GenerateLabyrinthVisual();

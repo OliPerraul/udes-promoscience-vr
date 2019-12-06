@@ -35,7 +35,11 @@ namespace UdeS.Promoscience.Replays
             public bool IsBacktracking = false;
         }
 
-        private Course course;
+        private LabyrinthReplay replay;
+
+        protected override BaseReplay Replay => replay;
+
+        private CourseExecution course;
 
         [SerializeField]
         protected Error errorIndicatorTemplate;
@@ -95,7 +99,10 @@ namespace UdeS.Promoscience.Replays
         /// Contains the list of all segments (Active or innactive)
         /// We use this to adjust offset when needed
         /// </summary>
-        private List<State> states;
+        private List<State> states = new List<State>();
+
+        // List of all segments added so that they can be adjusted
+        private List<Segment> segments = new List<Segment>();
 
         private int stateIndex = 0;
 
@@ -112,13 +119,7 @@ namespace UdeS.Promoscience.Replays
 
         private State PreviousState => stateIndex == 0 ? states[stateIndex] : states[stateIndex - 1];
 
-
-        // List of all segments added so that they can be adjusted
-        private List<Segment> segments;
-
-
         public override int LocalMoveCount => course.MoveCount;
-
 
         public override int LocalMoveIndex => course.CurrentMoveIndex;
 
@@ -127,7 +128,7 @@ namespace UdeS.Promoscience.Replays
         public PlayerSequence Create(
             LabyrinthReplay replay,
             Course course,
-            Labyrinths.Labyrinth labyrinth,
+            Labyrinths.LabyrinthObject labyrinth,
             Vector2Int startPosition)
         {
             PlayerSequence sequence = this.Create(
@@ -135,13 +136,14 @@ namespace UdeS.Promoscience.Replays
 
             sequence.replay = replay;
             sequence.labyrinth = labyrinth;
-            sequence.course = course;
             sequence.material.color = course.Team.TeamColor;
             sequence.backtrackMaterial.color = course.Team.TeamColor;
             sequence.materialAlpha.color = course.Team.TeamColor.SetA(previousSegmentAlpha);
             sequence.backtrackMaterialAlpha.color = course.Team.TeamColor.SetA(previousSegmentAlpha);
 
             sequence.arrowHead.GetComponentInChildren<SpriteRenderer>().color = sequence.material.color;
+
+            sequence.course = new CourseExecution(course, labyrinth);
 
             sequence.states.Add(new State
             {
@@ -172,18 +174,13 @@ namespace UdeS.Promoscience.Replays
         {
             base.Awake();
 
-            // Never destroy segments (merely deactivate them
-            states = new List<State>();
-
             material = new Material(templateMaterial);
 
             backtrackMaterial = new Material(templateBacktrackMaterial);
 
             materialAlpha = new Material(templateMaterial);
 
-            backtrackMaterialAlpha = new Material(templateBacktrackMaterial);
-
-            segments = new List<Segment>();
+            backtrackMaterialAlpha = new Material(templateBacktrackMaterial);            
         }
 
         public void UpdateArrowHead()
@@ -215,7 +212,11 @@ namespace UdeS.Promoscience.Replays
         }
 
         // Use in return to divergent location
-        private void ReturnToDivergent(State state, Vector2Int fromlpos, Tile[] playerSteps, Tile[] wrong)
+        private void ReturnToDivergent(
+            State state, 
+            Vector2Int fromlpos, 
+            Tile[] playerSteps, 
+            Tile[] wrong)
         {
             // Hide path
             Segment sgm;

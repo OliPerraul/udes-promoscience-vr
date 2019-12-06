@@ -100,14 +100,14 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override Labyrinths.UI.BaseButton Create(
             Transform parent,
-            Labyrinths.Labyrinth labyrinth)
+            Labyrinths.LabyrinthObject labyrinth)
         {
             return CreateReplayButton(parent, labyrinth);
         }
 
         public ReplayButton CreateReplayButton(
             Transform parent,
-            Labyrinths.Labyrinth labyrinth)
+            Labyrinths.LabyrinthObject labyrinth)
         {
             var l = this.Create(parent);
             l.labyrinth = labyrinth;

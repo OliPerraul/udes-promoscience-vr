@@ -36,9 +36,9 @@ namespace UdeS.Promoscience
         public int[] ActionSteps;
 
         [SerializeField]
-        public ObservableValue<Labyrinths.IData> LabyrinthData = new ObservableValue<Labyrinths.IData>();
+        public ObservableValue<Labyrinths.ILabyrinth> LabyrinthData = new ObservableValue<Labyrinths.ILabyrinth>();
 
-        public ObservableValue<Labyrinths.Labyrinth> Labyrinth = new ObservableValue<Labyrinths.Labyrinth>();
+        public ObservableValue<Labyrinths.LabyrinthObject> Labyrinth = new ObservableValue<Labyrinths.LabyrinthObject>();
 
 
         public ObservableValue<ClientGameState> State = new ObservableValue<ClientGameState>(ClientGameState.NotReady);

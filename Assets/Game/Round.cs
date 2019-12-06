@@ -20,7 +20,9 @@ namespace UdeS.Promoscience
 
         public List<Course> Courses = new List<Course>();
 
-        public Labyrinths.IData Labyrinth;
+        public Algorithms.Algorithm Algorithm;
+
+        public Labyrinths.ILabyrinth Labyrinth;
 
     }
 }

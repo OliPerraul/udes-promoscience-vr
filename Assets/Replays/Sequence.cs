@@ -14,9 +14,9 @@ namespace UdeS.Promoscience.Replays
     public abstract class Sequence : MonoBehaviour
     {
         ////[SerializeField]
-        protected LabyrinthReplay replay;
+        protected abstract BaseReplay Replay { get; }
 
-        protected Labyrinths.Labyrinth labyrinth;
+        protected Labyrinths.LabyrinthObject labyrinth;
 
         protected bool isPlaying = false;
 
@@ -51,7 +51,7 @@ namespace UdeS.Promoscience.Replays
 
         protected abstract bool HasNext { get; }
 
-        public virtual bool WithinBounds => replay.GlobalMoveIndex < LocalMoveCount;
+        public virtual bool WithinBounds => Replay.GlobalMoveIndex < LocalMoveCount;
 
         public abstract int LocalMoveCount { get; }
 

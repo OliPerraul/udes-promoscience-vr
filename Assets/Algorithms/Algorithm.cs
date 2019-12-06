@@ -16,7 +16,6 @@ namespace UdeS.Promoscience.Algorithms
         ShortestFlightDistance = 1,
         LongestStraight = 2,
         Standard = 3,
-        
     }
 
     public static class Utils
@@ -31,7 +30,6 @@ namespace UdeS.Promoscience.Algorithms
 
     public abstract class Algorithm : ScriptableObject
     {
-
         [SerializeField]
         public LocalizeInlineString name;
 
@@ -47,11 +45,14 @@ namespace UdeS.Promoscience.Algorithms
         protected Algorithm resource;
 
 
-        public virtual List<Tile> GetAlgorithmSteps(Labyrinths.IData labyrinth)
+        public virtual Id Id { get { return 0; } }
+
+
+        public virtual List<Tile> GetAlgorithmSteps(Labyrinths.ILabyrinth labyrinth)
         {
             List<Tile> algorithmSteps = new List<Tile>();
 
-            var state = new AlgorithmProgressState();
+            var state = new AlgorithmExecutionState();
 
             // Add first tile
             algorithmSteps.Add(ResetProgressState(state, labyrinth));
@@ -59,12 +60,6 @@ namespace UdeS.Promoscience.Algorithms
             Tile tile;
             while (GetNextStep(state, labyrinth, out tile))
             {
-                // FIX: If in dead end, use end of the stack instead (backtracking)
-                if (tile.Position == algorithmSteps[algorithmSteps.Count - 1].Position)
-                {
-                    algorithmSteps.RemoveAt(algorithmSteps.Count - 1);
-                }
-
                 algorithmSteps.Add(tile);
             }
 
@@ -74,7 +69,7 @@ namespace UdeS.Promoscience.Algorithms
             return algorithmSteps;
         }
 
-        public abstract Direction[] GetPrioritizedDirections(AlgorithmProgressState state, Labyrinths.IData labyrinth);
+        public abstract Direction[] GetPrioritizedDirections(AlgorithmExecutionState state, Labyrinths.ILabyrinth labyrinth);
 
         // Up, right down, left
 
@@ -82,8 +77,8 @@ namespace UdeS.Promoscience.Algorithms
         // https://github.com/ferenc-nemeth/maze-generation-algorithms/blob/757c6289286387ad661813e6ecc0ec04edea30c0/solver/solver.cpp
         // void maze::solver::wall_follower
         public virtual bool GetNextStep(
-            AlgorithmProgressState state,
-            Labyrinths.IData labyrinth,
+            AlgorithmExecutionState state,
+            Labyrinths.ILabyrinth labyrinth,
             out Tile tile)
         {
             tile = new Tile();
@@ -91,6 +86,7 @@ namespace UdeS.Promoscience.Algorithms
             Direction[] prioritizedDirections = GetPrioritizedDirections(state, labyrinth);
 
             Vector2Int dest = state.position;
+
             bool found = false;
 
             for (int i = 0; i < 4; i++)
@@ -162,6 +158,7 @@ namespace UdeS.Promoscience.Algorithms
                     Color = TileColor.Yellow
                 };
 
+                state.algorithmSteps.Add(tile);
                 state.position = dest;
                 state.hasReachedTheEnd = state.position == labyrinth.EndPos;            
             }
@@ -175,19 +172,28 @@ namespace UdeS.Promoscience.Algorithms
                     Color = TileColor.Red
                 };
 
+                state.algorithmSteps.Add(tile);
                 state.position = state.stack[last].pos;
                 state.direction = (int)Promoscience.Utils.GetOppositeDirection(state.stack[last].dir);
                 state.lastRemoved = state.stack[last];
                 state.stack.RemoveAt(last);
-
             }
-            else return true;
+            else return false;
+
+            // FIX: If in dead end, use end of the stack instead (backtracking)
+            if (tile.Position == state.algorithmSteps[state.algorithmSteps.Count - 1].Position)
+            {
+                state.algorithmSteps.RemoveAt(state.algorithmSteps.Count - 1);
+            }
+
+            state.algorithmSteps.Add(tile);
 
             return !state.hasReachedTheEnd;
         }
 
-        public virtual Tile ResetProgressState(AlgorithmProgressState state, Labyrinths.IData labyrinth)
+        public virtual Tile ResetProgressState(AlgorithmExecutionState state, Labyrinths.ILabyrinth labyrinth)
         {
+            state.algorithmSteps = new List<Tile>();
             state.isTileAlreadyVisited = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
             state.hasReachedTheEnd = false;
             state.lastRemoved = null;
@@ -204,19 +210,10 @@ namespace UdeS.Promoscience.Algorithms
                 dir = (Direction)state.direction
             });
 
-            return new Tile(state.position.x, state.position.y, TileColor.Yellow);
+            state.algorithmSteps.Add(new Tile(state.position.x, state.position.y, TileColor.Yellow));
+            return state.algorithmSteps[0];
         }
 
-
-        public virtual Id Id { get { return 0; } }
-
-    }
-
-    public class Action
-    {
-        public Direction dir;
-        public Vector2Int pos;
-        public TileColor color;
     }
 
     public struct PrioritizedDirection
@@ -264,45 +261,4 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
     }
-
-
-    [System.Serializable]
-    public class AlgorithmProgressState
-    {
-        [SerializeField]
-        public List<Action> stack = new List<Action>();
-
-        [SerializeField]
-        public Action lastRemoved = null;
-
-        [SerializeField]
-        public List<Tile> algorithmSteps = new List<Tile>();// = new List<Tile>();
-
-        public void SetVisited(Vector2Int pos)
-        {
-            isTileAlreadyVisited[pos.x, pos.y] = true;
-        }
-
-        public bool IsAlreadyVisisted(Vector2Int pos)
-        {
-            return isTileAlreadyVisited[pos.x, pos.y];
-        }
-
-        [SerializeField]
-        public bool[,] isTileAlreadyVisited;// = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
-
-        [SerializeField]
-        public bool hasReachedTheEnd;// = false;
-
-        [SerializeField]
-        public int direction;// = labyrinth.StartDirection;
-
-        [SerializeField]
-        public Vector2Int position;/// = labyrinth.StartPos;
-
-        [SerializeField]
-        public Vector2Int endPosition;// = labyrinth.EndPos;
-
-    }
-
 }

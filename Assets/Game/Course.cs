@@ -40,88 +40,21 @@ namespace UdeS.Promoscience
 
         public CourseStatus Status;
 
-        public Labyrinths.IData Labyrinth;
+        public Labyrinths.ILabyrinth Labyrinth;
 
         public Algorithms.Algorithm Algorithm;
 
         public Teams.TeamResource Team;
-
-        #region Algorithm
-        
-        public List<Tile> AlgorithmSteps;
-
-        private int algorithmMoveIndex = 0;
+    }
 
 
-        public bool AlgorithmHasPrevious
-        {
-            get
-            {
-                if (AlgorithmSteps.Count == 0)
-                    return false;
+    public class CourseExecution : Algorithms.ICourseExecution
+    {
+        private Course course;
 
-                return algorithmMoveIndex > 0;
-            }
-        }
+        public Course Course => course;
 
-        public bool AlgorithmHasNext
-        {
-            get
-            {
-                if (AlgorithmSteps.Count == 0)
-                    return false;
-
-                return algorithmMoveIndex < AlgorithmMoveCount;
-            }
-        }
-
-        public int AlgorithmMoveCount
-        {
-            get
-            {
-                return AlgorithmSteps.Count;
-            }
-        }
-
-        public bool AlgorithmNext()
-        {
-            algorithmMoveIndex = AlgorithmHasPrevious ?
-                (AlgorithmHasNext ?
-                    algorithmMoveIndex :
-                    AlgorithmMoveCount - 1) :
-                0;
-
-            algorithmMoveIndex++;
-            return true;
-        }
-
-        public bool AlgorithmPrevious()
-        {
-            algorithmMoveIndex--;
-
-            // Clamp
-            algorithmMoveIndex = AlgorithmHasPrevious ?
-                (AlgorithmHasNext ?
-                    algorithmMoveIndex :
-                    AlgorithmMoveCount - 1) :
-                0;
-            return true;
-        }
-
-        public int CurrentAlgorithmMoveIndex
-        {
-            get
-            {
-                return UnityEngine.Mathf.Clamp(
-                    algorithmMoveIndex,
-                    0,
-                    AlgorithmSteps.Count);
-            }
-        }
-
-        #endregion
-
-        #region Player
+        public Labyrinths.ILabyrinth Labyrinth;
 
         public int[] Actions;
 
@@ -135,34 +68,20 @@ namespace UdeS.Promoscience
 
         private int currentActionIndex = 0;
 
-
-        private int CurrentActionIndex
-        {
-            get
-            {
-                return currentActionIndex;
-            }
-
-            set
-            {
-                if (value != currentActionIndex)
-                {
-                    previousActionValue = CurrentActionValue;
-                }                
-
-                currentActionIndex = value;
-
-                if (OnActionIndexChangedHandler != null)
-                {
-                    OnActionIndexChangedHandler.Invoke(this);
-                }
-            }
-        }
+        private int moveCount = -1;
 
         private int moveIndex = 0;
 
         public int CurrentMoveIndex => moveIndex;
 
+        public CourseExecution(Course course, Labyrinths.ILabyrinth labyrinth)
+        {
+            this.course = course;
+
+            Queue<int> steps;
+            Queue<string> stepValues;
+            SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
+        }
 
         private bool IsMovement(GameAction action)
         {
@@ -174,14 +93,33 @@ namespace UdeS.Promoscience
                 case GameAction.MoveRight:
                 case GameAction.ReturnToDivergencePoint:
                 case GameAction.EndMovement:
-                //case GameAction.Finish://sentinel value
+                    //case GameAction.Finish://sentinel value
                     return true;
                 default:
                     return false;
             }
         }
 
-        private int moveCount = -1;
+        private int CurrentActionIndex
+        {
+            get => currentActionIndex;          
+
+            set
+            {
+                if (value != currentActionIndex)
+                {
+                    previousActionValue = CurrentActionValue;
+                }
+
+                currentActionIndex = value;
+
+                if (OnActionIndexChangedHandler != null)
+                {
+                    OnActionIndexChangedHandler.Invoke(course);
+                }
+            }
+        }
+
 
         public int MoveCount
         {
@@ -238,8 +176,8 @@ namespace UdeS.Promoscience
         public bool Previous()
         {
             moveIndex = HasPrevious ?
-                (HasNext ? 
-                    moveIndex : 
+                (HasNext ?
+                    moveIndex :
                     moveCount) :
                 0;
 
@@ -248,6 +186,8 @@ namespace UdeS.Promoscience
             CurrentActionIndex = GetPreviousMovementIndex();
             return true;
         }
+
+
 
         public bool HasPrevious
         {
@@ -272,14 +212,16 @@ namespace UdeS.Promoscience
         }
 
 
-        public GameAction CurrentAction
+        /// <summary>
+        /// Warning JSON parsing done here! (TODO: remove property)
+        /// </summary>
+        public GameAction PreviousAction
         {
             get
             {
-                if (currentActionIndex >= Actions.Length)
-                    return GameAction.Unknown;
-
-                return (GameAction)Actions[CurrentActionIndex];
+                return HasPrevious ?
+                    (GameAction)Actions[GetPreviousMovementIndex()] :
+                    (GameAction)Actions[0];
             }
         }
 
@@ -310,19 +252,16 @@ namespace UdeS.Promoscience
             }
         }
 
-        /// <summary>
-        /// Warning JSON parsing done here! (TODO: remove property)
-        /// </summary>
-        public GameAction PreviousAction
+        public GameAction CurrentAction
         {
             get
             {
-                return HasPrevious ?
-                    (GameAction)Actions[GetPreviousMovementIndex()] :
-                    (GameAction) Actions[0];
+                if (currentActionIndex >= Actions.Length)
+                    return GameAction.Unknown;
+
+                return (GameAction)Actions[CurrentActionIndex];
             }
         }
 
-        #endregion
     }
 }

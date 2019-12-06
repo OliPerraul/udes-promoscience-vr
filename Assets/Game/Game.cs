@@ -47,14 +47,10 @@ namespace UdeS.Promoscience
 
         public virtual ServerState RoundState => ServerState.Round;
 
-        //public bool IsStarted => RoundNumber.Value >= 0;
-
         public Cirrus.Event<Round> OnRoundStartedHandler;
 
         public Cirrus.Event<Round> OnRoundEndedHandler;
 
-
-        // Ideally, player should reference a course instead of refering to a course id 
         public List<Course> Courses = new List<Course>();
 
         private int NextRoundNumber => currentRound == null ? 0 : (currentRound.Number + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value);
@@ -102,15 +98,13 @@ namespace UdeS.Promoscience
             }
             else
             {
-                var algorithm = Algorithms.Resources.Instance.GetAlgorithm(player.serverAlgorithm);
-
                 course = new Course
                 {
                     Id = SQLiteUtilities.GetNextCourseID(),
                     Team = Teams.Resources.Instance.GetScriptableTeamWithId(player.ServerTeamId),
                     Labyrinth = currentRound.Labyrinth,
-                    Algorithm = algorithm,
-                    AlgorithmSteps = algorithm.GetAlgorithmSteps(currentRound.Labyrinth) // labyrinth)  
+                    Algorithm = Algorithms.Resources.Instance.GetAlgorithm(player.serverAlgorithm),
+                    //AlgorithmSteps = algorithm.GetAlgorithmSteps(currentRound.Labyrinth) // labyrinth)  
                 };
 
                 Courses.Add(course);
@@ -157,13 +151,14 @@ namespace UdeS.Promoscience
         }
 
         public void StartNextRound(
-            IData labyrinth,
+            ILabyrinth labyrinth,
             Algorithms.Id algorithmId)
         {
             currentRound = new Round
             {
                 Number = NextRoundNumber,
-                Labyrinth = labyrinth
+                Labyrinth = labyrinth,
+                Algorithm = Algorithms.Resources.Instance.GetAlgorithm(algorithmId)
             };
 
             SQLiteUtilities.InsertRound(

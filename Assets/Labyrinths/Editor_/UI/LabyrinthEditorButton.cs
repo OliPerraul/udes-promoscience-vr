@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
 
         public override BaseButton Create(
             Transform parent,
-            Labyrinth labyrinth)
+            LabyrinthObject labyrinth)
         {
             var l = this.Create(parent);
             l.labyrinth = labyrinth;

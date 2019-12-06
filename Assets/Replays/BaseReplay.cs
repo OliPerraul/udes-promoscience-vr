@@ -297,12 +297,12 @@ namespace UdeS.Promoscience.Replays
 
 
 
-        public virtual void AddCourse(Course course, bool added)
+        public virtual void AddCourse(Course course)
         {
      
         }
 
-        public virtual void OnCourseRemoved(Course course)
+        public virtual void RemoveCourse(Course course)
         {
 
         }

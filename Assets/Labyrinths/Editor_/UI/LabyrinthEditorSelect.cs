@@ -90,8 +90,8 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
         {
             var data = Labyrinths.Resources.Instance.Labyrinths[i];
 
-            Labyrinth labyrinth = Labyrinths.Resources.Instance
-                  .GetLabyrinthTemplate(data)
+            LabyrinthObject labyrinth = Labyrinths.Resources.Instance
+                  .GetLabyrinthObject(data)
                   .Create(data);
 
             labyrinths.Add(labyrinth);

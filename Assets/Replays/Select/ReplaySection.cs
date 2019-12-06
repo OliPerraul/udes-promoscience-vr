@@ -69,7 +69,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         }
 
-        public override void AddButton(Labyrinth labyrinth)
+        public override void AddButton(LabyrinthObject labyrinth)
         {
             var button = buttonTemplate.CreateReplayButton(
                 transform,

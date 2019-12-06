@@ -351,7 +351,7 @@ namespace UdeS.Promoscience.Network
         {
             controls.RecordedSteps.Value = new int[0];
 
-            Client.Instance.LabyrinthData.Value = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
+            Client.Instance.LabyrinthData.Value = JsonUtility.FromJson<Labyrinths.Labyrinth>(labyrinth);
 
             // Destroy old labyrinth
             if (Client.Instance.Labyrinth.Value != null)
@@ -360,11 +360,11 @@ namespace UdeS.Promoscience.Network
                 Client.Instance.Labyrinth.Value = null;
             }
 
-            Labyrinths.Data data = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
+            Labyrinths.Labyrinth data = JsonUtility.FromJson<Labyrinths.Labyrinth>(labyrinth);
 
             Client.Instance.Labyrinth.Value = 
                 Labyrinths.Resources.Instance
-                .GetLabyrinthTemplate(Client.Instance.LabyrinthData.Value)
+                .GetLabyrinthObject(Client.Instance.LabyrinthData.Value)
                 .Create(Client.Instance.LabyrinthData.Value);
 
             Client.Instance.Algorithm.Set(Algorithms.Resources.Instance.GetAlgorithm(algo));
@@ -387,10 +387,10 @@ namespace UdeS.Promoscience.Network
         {
             controls.RecordedSteps.Value = steps;
 
-            Client.Instance.LabyrinthData.Value = JsonUtility.FromJson<Labyrinths.Data>(labyrinth);
+            Client.Instance.LabyrinthData.Value = JsonUtility.FromJson<Labyrinths.Labyrinth>(labyrinth);
 
             Client.Instance.Labyrinth.Value = Labyrinths.Resources.Instance
-                .GetLabyrinthTemplate(Client.Instance.LabyrinthData.Value)
+                .GetLabyrinthObject(Client.Instance.LabyrinthData.Value)
                 .Create(Client.Instance.LabyrinthData.Value);
 
             Client.Instance.Algorithm.Set(Algorithms.Resources.Instance.GetAlgorithm(algo));

@@ -8,7 +8,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 {
     public abstract class BaseSelectionInterface : MonoBehaviour
     {
-        protected List<Labyrinth> labyrinths = new List<Labyrinth>();
+        protected List<LabyrinthObject> labyrinths = new List<LabyrinthObject>();
 
         [SerializeField]
         protected Transform buttonsParent;
@@ -38,14 +38,14 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         }
 
-        public virtual Labyrinth CreateNextLabyrinth()
+        public virtual LabyrinthObject CreateNextLabyrinth()
         {
             var data = Resources.Instance.Labyrinths[LabyrinthIndexWrap];
 
             labyrinthIndex++;
 
-            Labyrinth labyrinth = Labyrinths.Resources.Instance
-              .GetLabyrinthTemplate(data)
+            LabyrinthObject labyrinth = Labyrinths.Resources.Instance
+              .GetLabyrinthObject(data)
               .Create(data);
 
             labyrinths.Add(labyrinth);
