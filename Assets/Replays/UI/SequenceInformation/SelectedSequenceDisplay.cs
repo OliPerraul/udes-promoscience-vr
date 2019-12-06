@@ -34,13 +34,13 @@ namespace UdeS.Promoscience.Replays.UI
         
         public void Awake()
         {
-            ReplayManager.Instance.OnLabyrinthReplayStartedHandler += OnLabyrinthReplayStarted;
-            replay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+            ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnLabyrinthReplayStarted;
         }
 
         public void OnLabyrinthReplayStarted(LabyrinthReplay replay)
         {
             this.replay = replay;
+            replay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
         }
 
         public void OnCourseSelected(Course newCourse)

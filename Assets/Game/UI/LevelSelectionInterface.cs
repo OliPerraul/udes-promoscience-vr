@@ -35,9 +35,9 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             ButtonManager.Instance.RandomButton.onClick.AddListener(OnRandomClicked);
 
-            ReplayManager.Instance.OnSplitReplayStartedHandler += OnReplayStarted;
+            ReplayManager.Instance.OnSplitReplayCreatedHandler += OnReplayStarted;
 
-            GameManager.Instance.OnGameStartedHandler += OnGameStarted;
+            GameManager.Instance.OnGameCreatedHandler += OnGameStarted;
         }
 
         public override void OnDestroy()

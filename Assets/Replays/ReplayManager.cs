@@ -15,9 +15,9 @@ namespace UdeS.Promoscience.Replays
 
         //public SplitReplay SplitReplay;
 
-        public Cirrus.Event<LabyrinthReplay> OnLabyrinthReplayStartedHandler;
+        public Cirrus.Event<LabyrinthReplay> OnLabyrinthReplayCreatedHandler;
 
-        public Cirrus.Event<SplitReplay> OnSplitReplayStartedHandler;
+        public Cirrus.Event<SplitReplay> OnSplitReplayCreatedHandler;
 
         private Game currentGame;
 
@@ -26,19 +26,17 @@ namespace UdeS.Promoscience.Replays
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnGameStateValueChanged;
-            GameManager.Instance.OnGameStartedHandler += OnGameStarted;
+            GameManager.Instance.OnGameCreatedHandler += OnGameCreated;
             GameManager.Instance.OnGameEndedHandler += OnGameEnded;
         }
 
         
 
-        public void OnGameStarted(Game game)
+        public void OnGameCreated(Game game)
         {
             currentGame = game;
 
-            currentGame.OnRoundEndedHandler += OnRoundStarted;
-
-            currentGame.OnRoundEndedHandler += OnRoundEnded;
+            currentGame.OnRoundStartedHandler += OnRoundStarted;
         }
 
         public void OnGameEnded(Game game)
@@ -47,11 +45,6 @@ namespace UdeS.Promoscience.Replays
         }
 
         public void OnRoundStarted(Round round)
-        {
-            currentRound = round;
-        }
-
-        public void OnRoundEnded(Round round)
         {
             currentRound = round;
         }
@@ -75,16 +68,11 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            List<Round> rounds = new List<Round>();
-
-            rounds.AddRange(currentGame.Rounds);
-
             var replay = new SplitReplay(
                 currentGame.Rounds);
 
+            OnSplitReplayCreatedHandler?.Invoke(replay);
             replay.Start();
-
-            OnSplitReplayStartedHandler?.Invoke(replay);
         }
 
 
@@ -132,8 +120,8 @@ namespace UdeS.Promoscience.Replays
                     currentRound.Number),
                 currentRound.Labyrinth);
 
+            OnLabyrinthReplayCreatedHandler?.Invoke(replay);
             replay.Start();
-            OnLabyrinthReplayStartedHandler?.Invoke(replay);
         }
 
         public void Update()

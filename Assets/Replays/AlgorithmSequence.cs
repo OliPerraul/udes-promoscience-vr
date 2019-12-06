@@ -10,8 +10,6 @@ namespace UdeS.Promoscience.Replays
 {
     public class AlgorithmSequence : Sequence
     {
-        private LabyrinthReplay replay;
-
         private Course course;
 
         private Dictionary<Vector2Int, Stack<TileColor>> dictionary;

@@ -25,12 +25,12 @@ namespace UdeS.Promoscience.Replays.UI
         public void Awake()
         {       
             items = new Dictionary<int, SequenceToggleItem>();
-            ReplayManager.Instance.OnLabyrinthReplayStartedHandler += OnReplayStarted;
+            ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnReplayStarted;
         }
 
         public void OnReplayStarted(LabyrinthReplay replay)
         {
-            if (this.replay != replay)
+            if (this.replay != null)
             {
                 this.replay.OnActionHandler -= OnReplayAction;
                 this.replay.OnCourseAddedHandler -= OnCourseAdded;

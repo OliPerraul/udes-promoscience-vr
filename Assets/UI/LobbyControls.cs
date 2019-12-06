@@ -80,7 +80,7 @@ namespace UdeS.Promoscience.Network.UI
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
-            GameManager.Instance.OnGameStartedHandler += OnGameStarted;
+            GameManager.Instance.OnGameCreatedHandler += OnGameStarted;
 
             Flags.OnValueChangedHandler += OnFlagsChanged;
             quickPlayButton.onClick.AddListener(() => Server.Instance.StartQuickplay());
@@ -105,6 +105,7 @@ namespace UdeS.Promoscience.Network.UI
 
         public void OnGameStarted(Game game)
         {
+            this.game = game;
             game.OnRoundStartedHandler += OnRoundStarted;
         }
 
@@ -125,6 +126,7 @@ namespace UdeS.Promoscience.Network.UI
                     break;
 
                 case ServerState.Round:
+
                     Flags.Value =
                         LobbyControlsFlag.InstantReplay |
                         LobbyControlsFlag.AdvancedReplay |
@@ -137,8 +139,7 @@ namespace UdeS.Promoscience.Network.UI
                         Flags.Value = Flags.Value & ~LobbyControlsFlag.AdvancedReplay;
                     }
 
-                    
-
+                   
                     // If last round only allow to end the game
                     if (Server.Instance.Settings.NumberOfRounds.Value - 1 ==
                         round.Number)

@@ -74,7 +74,7 @@ namespace UdeS.Promoscience.Replays.UI
                 replay.CurrentCourse.Value = course;
             });
 
-            ReplayManager.Instance.OnLabyrinthReplayStartedHandler += OnLabyrinthReplay;
+            ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnLabyrinthReplay;
         }
 
         public void OnLabyrinthReplay(LabyrinthReplay replay)

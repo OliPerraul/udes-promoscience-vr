@@ -17,7 +17,7 @@ namespace UdeS.Promoscience
 
         public Game CurrentGame => currentGame;
 
-        public Cirrus.Event<Game> OnGameStartedHandler;
+        public Cirrus.Event<Game> OnGameCreatedHandler;
 
         public Cirrus.Event<Game> OnGameEndedHandler;
 
@@ -29,13 +29,13 @@ namespace UdeS.Promoscience
                 SQLiteUtilities.SetCourseFinished(c.Id);
             }
 
-            currentGame = new Quickplay();
+            currentGame = new Quickplay(SQLiteUtilities.GetNextGameID());
 
             SQLiteUtilities.InsertGame(currentGame.Id);
 
             currentGame.Start();
 
-            OnGameStartedHandler?.Invoke(currentGame);
+            OnGameCreatedHandler?.Invoke(currentGame);
         }
 
         public void StartNewGame()
@@ -47,14 +47,17 @@ namespace UdeS.Promoscience
             }
 
             currentGame = Server.Instance.Settings.IsLevelOrderPredefined.Value ?
-                    new Game(predefinedLevels) :
-                    new Game();
-
-            currentGame.Start();
+                    new Game(
+                        SQLiteUtilities.GetNextGameID(),
+                        predefinedLevels) :
+                    new Game(
+                        SQLiteUtilities.GetNextGameID());
 
             SQLiteUtilities.InsertGame(currentGame.Id);
 
-            OnGameStartedHandler?.Invoke(currentGame);
+            OnGameCreatedHandler?.Invoke(currentGame);
+
+            currentGame.Start();
         }
 
         public void StopGame()

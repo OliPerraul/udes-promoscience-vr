@@ -99,8 +99,8 @@ namespace UdeS.Promoscience.Replays.UI
             fastfowardButton.onClick.AddListener(OnFastFowardClicked);
             slider.onValueChanged.AddListener(OnSliderMoved);
 
-            ReplayManager.Instance.OnLabyrinthReplayStartedHandler += OnSplitReplayStarted;
-            ReplayManager.Instance.OnSplitReplayStartedHandler += OnSplitReplayStarted;
+            ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnSplitReplayStarted;
+            ReplayManager.Instance.OnSplitReplayCreatedHandler += OnSplitReplayStarted;
         }
 
         

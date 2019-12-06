@@ -25,7 +25,7 @@ namespace UdeS.Promoscience
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
-            GameManager.Instance.OnGameStartedHandler += OnGameStarted;
+            GameManager.Instance.OnGameCreatedHandler += OnGameStarted;
             GameManager.Instance.OnGameEndedHandler += OnGameEnded;
         }
 

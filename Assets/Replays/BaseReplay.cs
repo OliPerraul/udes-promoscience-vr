@@ -39,6 +39,18 @@ namespace UdeS.Promoscience.Replays
 
         public ObservableValue<bool> IsToggleGreyboxLabyrinth = new ObservableValue<bool>();
 
+        public Event<float> OnPlaybackSpeedHandler;
+
+        public Cirrus.Event OnSequenceFinishedHandler;
+
+        public Event<int> OnMoveCountSetHandler;
+
+        public Event<int> OnMoveIndexChangedHandler;
+
+        public ObservableValue<Course> CurrentCourse = new ObservableValue<Course>();
+
+        private int index = 0;
+
 
         public float PlaybackSpeed
         {
@@ -55,18 +67,6 @@ namespace UdeS.Promoscience.Replays
                 }
             }
         }
-
-        public FloatEvent OnPlaybackSpeedHandler;
-
-        public Cirrus.Event OnSequenceFinishedHandler;
-
-        public IntEvent OnMoveCountSetHandler;
-
-        public IntEvent OnMoveIndexChangedHandler;
-
-        public ObservableValue<Course> CurrentCourse = new ObservableValue<Course>();
-
-        private int index = 0;
 
         public virtual void OnEnable()
         {

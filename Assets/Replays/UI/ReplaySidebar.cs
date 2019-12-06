@@ -65,8 +65,9 @@ namespace UdeS.Promoscience.Replays.UI
         public virtual void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnGameStateChanged;
+
             ButtonManager.Instance.InfoButton.onClick.AddListener(() => Enabled = !Enabled);
-            ReplayManager.Instance.OnLabyrinthReplayStartedHandler += OnReplayStarted;
+            ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnReplayStarted;
 
             closeButton.onClick.AddListener(() => Enabled = false);
 
@@ -75,24 +76,28 @@ namespace UdeS.Promoscience.Replays.UI
 
         public virtual void OnDestroy()
         {
-            Server.Instance.State.OnValueChangedHandler -= OnGameStateChanged;
+            if (Server.Instance != null)
+            {
+                Server.Instance.State.OnValueChangedHandler -= OnGameStateChanged;
+            }
 
             if (replay != null)
             {
-                
                 replay.OnMoveIndexChangedHandler -= OnMoveIndexChanged;
                 replay.CurrentCourse.OnValueChangedHandler -= OnCourseSelected;
             }
         }
 
 
-        public void OnReplayStarted(BaseReplay replay)
+        public void OnReplayStarted(LabyrinthReplay replay)
         {
             if (this.replay != null)
             {
                 this.replay.OnMoveIndexChangedHandler -= OnMoveIndexChanged;
                 this.replay.CurrentCourse.OnValueChangedHandler -= OnCourseSelected;
             }
+
+            this.replay = replay;
 
             this.replay.OnMoveIndexChangedHandler += OnMoveIndexChanged;
             this.replay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;

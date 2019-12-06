@@ -57,26 +57,31 @@ namespace UdeS.Promoscience
         // Ideally, player should reference a course instead of refering to a course id 
         public List<Course> Courses = new List<Course>();
 
+        private int NextRoundNumber => currentRound == null ? 0 : (currentRound.Number + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value);
 
-        public Game()
+        public Game(
+            int id)
         {
+            this.Id = id;
+
             levelSelectionMode = LevelSelectionMode.Selected;
         }
 
-        public Game(RoundPreset[] predefinedLevels)
+        public Game(
+            int id,
+            RoundPreset[] predefinedLevels)
         {
             this.predefinedLevels = predefinedLevels;
+
+            this.Id = id;
 
             levelSelectionMode = LevelSelectionMode.Predefined;
         }
 
         public void Start()
         {
-            Id = SQLiteUtilities.GetNextGameID();
-
             StartNextRound();            
         }
-
 
         // Try find course ID initiated by a team member
         // Otherwise assign new course
@@ -136,8 +141,8 @@ namespace UdeS.Promoscience
             {
 
                 StartNextRound(
-                predefinedLevels[(currentRound.Number + 1).Mod(predefinedLevels.Length)].Labyrinth,
-                predefinedLevels[(currentRound.Number + 1).Mod(predefinedLevels.Length)].Algorithm);
+                    predefinedLevels[NextRoundNumber.Mod(predefinedLevels.Length)].Labyrinth,
+                    predefinedLevels[NextRoundNumber.Mod(predefinedLevels.Length)].Algorithm);
             }
         }
 
@@ -157,7 +162,7 @@ namespace UdeS.Promoscience
         {
             currentRound = new Round
             {
-                Number = currentRound == null ? 0 : (currentRound.Number + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value),
+                Number = NextRoundNumber,
                 Labyrinth = labyrinth
             };
 
@@ -202,6 +207,7 @@ namespace UdeS.Promoscience
             }
 
             OnRoundStartedHandler?.Invoke(currentRound);
+
             Server.Instance.State.Set(RoundState);
         }
 

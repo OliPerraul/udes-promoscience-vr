@@ -37,8 +37,6 @@ namespace UdeS.Promoscience.Replays
 
         private Course course;
 
-        private LabyrinthReplay replay;
-
         [SerializeField]
         protected Error errorIndicatorTemplate;
 
@@ -198,10 +196,7 @@ namespace UdeS.Promoscience.Replays
 
                 arrowHead.transform.position = CurrentSegment.Position;
             }
-            else
-            {
-                arrowHead.gameObject.SetActive(false);
-            }
+            else arrowHead.gameObject.SetActive(false);
         }
 
         public override void FixedUpdate()
@@ -216,10 +211,7 @@ namespace UdeS.Promoscience.Replays
 
                 arrowHead.transform.position = CurrentSegment.Position;
             }
-            else
-            {
-                arrowHead.gameObject.SetActive(false);
-            }
+            else arrowHead.gameObject.SetActive(false);
         }
 
         // Use in return to divergent location

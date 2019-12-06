@@ -20,13 +20,7 @@ namespace UdeS.Promoscience.Replays
 
         protected bool isPlaying = false;
 
-        public bool IsPlaying
-        {
-            get
-            {
-                return isPlaying;
-            }
-        }
+        public bool IsPlaying => isPlaying;
 
         [SerializeField]
         protected float stepTime = 0.6f;
@@ -41,14 +35,7 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        protected float StepTime
-        {
-            get
-            {
-                return stepTime / modifier;
-            }
-        }
-
+        protected float StepTime => stepTime / modifier;
 
         protected Mutex mutex;
 
