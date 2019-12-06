@@ -10,11 +10,13 @@ namespace Cirrus
 
     public delegate void Event<T>(T value);
 
+    public delegate void ArgsEvent<T>(T value, params object[] args);
+
     public delegate void Event<A, B>(A a, B b);
 
     public delegate void Event<A,B,C>(A a, B b, C c);
 
-
+    
 
     public delegate void FloatEvent(float value);
 

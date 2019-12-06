@@ -13,10 +13,13 @@ namespace UdeS.Promoscience
         private RoundPreset[] predefinedLevels;
 
         [SerializeField]
-        public Game currentGame = null;
+        private Game currentGame = null;
 
         public Game CurrentGame => currentGame;
 
+        public Cirrus.Event<Game> OnGameStartedHandler;
+
+        public Cirrus.Event<Game> OnGameEndedHandler;
 
         public void StartQuickplay()
         {
@@ -26,11 +29,13 @@ namespace UdeS.Promoscience
                 SQLiteUtilities.SetCourseFinished(c.Id);
             }
 
-            currentGame = new Quickplay(asset);
+            currentGame = new Quickplay();
+
+            SQLiteUtilities.InsertGame(currentGame.Id);
 
             currentGame.Start();
 
-            SQLiteUtilities.InsertGame(CurrentGame.Id);
+            OnGameStartedHandler?.Invoke(currentGame);
         }
 
         public void StartNewGame()
@@ -42,19 +47,21 @@ namespace UdeS.Promoscience
             }
 
             currentGame = Server.Instance.Settings.IsLevelOrderPredefined.Value ?
-                    new Game(asset, predefinedLevels) :
-                    new Game(asset);
+                    new Game(predefinedLevels) :
+                    new Game();
 
             currentGame.Start();
 
-            SQLiteUtilities.InsertGame(CurrentGame.Id);
+            SQLiteUtilities.InsertGame(currentGame.Id);
+
+            OnGameStartedHandler?.Invoke(currentGame);
         }
 
         public void StopGame()
         {
             if (currentGame != null)
             {
-                CurrentGame.Stop();
+                currentGame.Stop();
             }
 
             currentGame = null;

@@ -37,6 +37,8 @@ namespace UdeS.Promoscience.Replays
 
         private Course course;
 
+        private LabyrinthReplay replay;
+
         [SerializeField]
         protected Error errorIndicatorTemplate;
 
@@ -63,21 +65,10 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        protected override bool HasNext
-        {
-            get
-            {
-                return course.HasNext;
-            }
-        }
+        protected override bool HasNext => course.HasNext;
 
-        protected override bool HasPrevious
-        {
-            get
-            {
-                return course.HasPrevious;
-            }
-        }
+        protected override bool HasPrevious => course.HasPrevious;
+
 
         [SerializeField]
         private GameObject arrowHead;
@@ -136,7 +127,7 @@ namespace UdeS.Promoscience.Replays
         private float offsetAmount = 0f;
 
         public PlayerSequence Create(
-            ReplayManagerAsset replay,
+            LabyrinthReplay replay,
             Course course,
             Labyrinths.Labyrinth labyrinth,
             Vector2Int startPosition)

@@ -59,6 +59,13 @@ namespace UdeS.Promoscience.Network
 
         public int serverLabyrinthId;
 
+
+        [SerializeField]
+        int serverRoundNumber = -1;
+
+        public int ServerRoundNumber;
+
+
         public int ServerCourseId
         {
             get

@@ -8,8 +8,8 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class ReplaySidebar : MonoBehaviour
     {
-        [SerializeField]
-        protected ReplayManagerAsset replayOptions;
+        //[SerializeField]
+        //protected ReplayManagerAsset replayOptions;
 
         [SerializeField]
         private UnityEngine.UI.Text algorithmNameText;
@@ -59,20 +59,16 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private GameObject overlay;
 
+        private LabyrinthReplay replay;
+
+
         public virtual void Awake()
         {
-            ButtonManager.Instance.InfoButton.onClick.AddListener(() => Enabled = !Enabled);
-            closeButton.onClick.AddListener(() => Enabled = false);
-
-            //exitButton.onClick.AddListener(() => Server.Instance.StartReplaySelect());
-            overlayButton.onClick.AddListener(() => overlay.SetActive(!overlay.activeSelf));
-            greyboxButton.onClick.AddListener(() => replayOptions.IsToggleGreyboxLabyrinth.Value = !replayOptions.IsToggleGreyboxLabyrinth.Value);
-            algorithmButton.onClick.AddListener(() => replayOptions.IsToggleAlgorithm.Value = !replayOptions.IsToggleAlgorithm.Value);
-
-            replayOptions.OnMoveIndexChangedHandler += OnMoveIndexChanged;
-            replayOptions.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
-
             Server.Instance.State.OnValueChangedHandler += OnGameStateChanged;
+            ButtonManager.Instance.InfoButton.onClick.AddListener(() => Enabled = !Enabled);
+            ReplayManager.Instance.OnLabyrinthReplayStartedHandler += OnReplayStarted;
+
+            closeButton.onClick.AddListener(() => Enabled = false);
 
             Enabled = false;
         }
@@ -80,9 +76,28 @@ namespace UdeS.Promoscience.Replays.UI
         public virtual void OnDestroy()
         {
             Server.Instance.State.OnValueChangedHandler -= OnGameStateChanged;
-            replayOptions.OnMoveIndexChangedHandler -= OnMoveIndexChanged;
-            replayOptions.CurrentCourse.OnValueChangedHandler -= OnCourseSelected;
+
+            if (replay != null)
+            {
+                
+                replay.OnMoveIndexChangedHandler -= OnMoveIndexChanged;
+                replay.CurrentCourse.OnValueChangedHandler -= OnCourseSelected;
+            }
         }
+
+
+        public void OnReplayStarted(BaseReplay replay)
+        {
+            if (this.replay != null)
+            {
+                this.replay.OnMoveIndexChangedHandler -= OnMoveIndexChanged;
+                this.replay.CurrentCourse.OnValueChangedHandler -= OnCourseSelected;
+            }
+
+            this.replay.OnMoveIndexChangedHandler += OnMoveIndexChanged;
+            this.replay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+        }
+
 
         public void OnMoveIndexChanged(int idx)
         {

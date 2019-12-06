@@ -16,6 +16,8 @@ namespace UdeS.Promoscience
 
     public class Round
     {
+        public int Number = 0;
+
         public List<Course> Courses = new List<Course>();
 
         public Labyrinths.IData Labyrinth;

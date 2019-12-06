@@ -6,7 +6,7 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class ActiveAlgorithmSelectionInteface : MonoBehaviour
     {
-        [SerializeField]
-        private ReplayManagerAsset replayAsset;
+        //[SerializeField]
+        //private ReplayManagerAsset replayAsset;
     }
 }

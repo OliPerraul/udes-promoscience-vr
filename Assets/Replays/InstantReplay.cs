@@ -8,11 +8,9 @@ namespace UdeS.Promoscience.Replays
     public class InstantReplay : LabyrinthReplay
     {
         public InstantReplay(
-            ReplayManagerAsset controller, 
             List<Course> courses,
             IData labyrinth) : 
                 base(
-                    controller, 
                     courses, 
                     labyrinth) { }
 
@@ -24,9 +22,9 @@ namespace UdeS.Promoscience.Replays
 
             Server.Instance.State.Set(ServerState.LabyrinthReplay);
             
-            controller.IsToggleAlgorithm.Set(true);
+            IsToggleAlgorithm.Set(true);
 
-            controller.PlaybackSpeed = 2f;
+            PlaybackSpeed = 2f;
         }
     }
 }

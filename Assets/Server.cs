@@ -124,10 +124,12 @@ namespace UdeS.Promoscience
             GameManager.Instance.CurrentGame.StartNextRound();
         }
 
+
+
         public void ReturnToGame()
         {
             if (GameManager.Instance.CurrentGame == null || 
-                !GameManager.Instance.CurrentGame.IsStarted)
+                GameManager.Instance.CurrentGame.CurrentRound == null)
             {
                 ReturnToLobby();
             }

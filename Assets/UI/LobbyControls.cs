@@ -70,11 +70,17 @@ namespace UdeS.Promoscience.Network.UI
         [SerializeField]
         private UnityEngine.UI.Button endThanksButton;
 
+        private Game game;
 
+        private Round round;
+
+
+        public bool Enabled { set => target?.gameObject?.SetActive(value); }
 
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
+            GameManager.Instance.OnGameStartedHandler += OnGameStarted;
 
             Flags.OnValueChangedHandler += OnFlagsChanged;
             quickPlayButton.onClick.AddListener(() => Server.Instance.StartQuickplay());
@@ -97,27 +103,16 @@ namespace UdeS.Promoscience.Network.UI
             if (Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
         }
 
+        public void OnGameStarted(Game game)
+        {
+            game.OnRoundStartedHandler += OnRoundStarted;
+        }
 
 
-
-        //public void OnExitClicked()
-        //{
-        //    switch (Server.Instance.State.Value)
-        //    {
-        //        case ServerState.Lobby:
-        //        case ServerState.Quickplay:
-        //        case ServerState.Round:
-        //            break;
-
-
-        //        case ServerState.LevelSelect:
-        //        case ServerState.ReplaySelect:
-        //            break;
-        //    }
-        //}
-
-
-        public bool Enabled { set => target?.gameObject?.SetActive(value); }
+        public void OnRoundStarted(Round round)
+        {
+            this.round = round;
+        }
 
         public void OnServerGameStateChanged(ServerState state)
         {
@@ -137,16 +132,16 @@ namespace UdeS.Promoscience.Network.UI
                         LobbyControlsFlag.EndGame;
 
                     // If first round do not allow advanced replay feature
-                    if (GameManager.Instance.CurrentGame.RoundNumber.Value < 1)
+                    if (round.Number < 1)
                     {
                         Flags.Value = Flags.Value & ~LobbyControlsFlag.AdvancedReplay;
                     }
 
-                    Debug.Log(GameManager.Instance.CurrentGame.RoundNumber.Value);
+                    
 
                     // If last round only allow to end the game
                     if (Server.Instance.Settings.NumberOfRounds.Value - 1 ==
-                        GameManager.Instance.CurrentGame.RoundNumber.Value)
+                        round.Number)
                     {
                         Flags.Value = Flags.Value & ~LobbyControlsFlag.NextRound;
                     }

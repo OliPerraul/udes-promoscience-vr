@@ -16,8 +16,8 @@ namespace UdeS.Promoscience.Replays.UI
 
     public class ReplayButton : Labyrinths.UI.BaseButton
     {
-        [SerializeField]
-        private ReplayManagerAsset replayController;
+        //[SerializeField]
+        //private Replay replayController;
 
         [SerializeField]
         private UnityEngine.UI.Button removeButton;

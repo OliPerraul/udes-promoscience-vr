@@ -11,8 +11,7 @@ namespace UdeS.Promoscience.Replays.UI
     {
         public static Cirrus.Event OnOtherSelectedHandler;
 
-        [SerializeField]
-        private ReplayManagerAsset replayController;
+        private LabyrinthReplay replay;
 
         [SerializeField]
         private UnityEngine.Color selectedColor;
@@ -72,10 +71,17 @@ namespace UdeS.Promoscience.Replays.UI
 
                 selectedImage.color = selectedColor;
                 OnOtherSelectedHandler += OnOtherSelected;
-
-                replayController.CurrentCourse.Value = course;
+                replay.CurrentCourse.Value = course;
             });
+
+            ReplayManager.Instance.OnLabyrinthReplayStartedHandler += OnLabyrinthReplay;
         }
+
+        public void OnLabyrinthReplay(LabyrinthReplay replay)
+        {
+            this.replay = replay;            
+        }
+
 
         public void OnDestroy()
         {
@@ -89,11 +95,11 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-
-
         public void OnToggle(bool enabled)
         {
-            replayController.OnCourseToggledHandler?.Invoke(course, enabled);
+
+
+            replay.OnCourseToggledHandler?.Invoke(course, enabled);
         }
     }
 }

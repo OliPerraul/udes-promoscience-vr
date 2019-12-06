@@ -13,8 +13,8 @@ namespace UdeS.Promoscience.Replays
 
     public abstract class Sequence : MonoBehaviour
     {
-        //[SerializeField]
-        protected ReplayManagerAsset replay;
+        ////[SerializeField]
+        protected LabyrinthReplay replay;
 
         protected Labyrinths.Labyrinth labyrinth;
 
@@ -58,25 +58,13 @@ namespace UdeS.Promoscience.Replays
 
         protected Coroutine coroutineResult;
 
-        public Coroutine NextCoroutineResult
-        {
-            get
-            {
-                return coroutineResult;
-            }
-        }
+        public Coroutine NextCoroutineResult => coroutineResult;
 
         protected abstract bool HasPrevious { get; }
 
         protected abstract bool HasNext { get; }
 
-        public virtual bool WithinBounds
-        {
-            get
-            {
-                return replay.GlobalMoveIndex < LocalMoveCount;
-            }
-        }
+        public virtual bool WithinBounds => replay.GlobalMoveIndex < LocalMoveCount;
 
         public abstract int LocalMoveCount { get; }
 

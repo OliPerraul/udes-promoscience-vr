@@ -6,14 +6,10 @@ namespace UdeS.Promoscience
 {
     public class Quickplay : Game
     {
-        public Quickplay(GameAsset asset) : base(asset) { }
-        
-        protected override void DoStartRound()
-        {
-            roundState = ServerState.Quickplay;
+        public override ServerState RoundState => ServerState.Quickplay;
 
-            Server.Instance.State.Set(ServerState.Quickplay);
-        }
+        
+
 
     }
 }

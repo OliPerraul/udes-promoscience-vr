@@ -6,17 +6,14 @@ namespace UdeS.Promoscience.Replays
 {
     public class SplitReplay : BaseReplay
     {
-        private List<Round> rounds;
+        public IList<Round> rounds;
 
-        public List<Round> Rounds => rounds;
+        public IList<Round> Rounds => rounds;
 
         private List<LabyrinthReplay> replays = new List<LabyrinthReplay>();
 
         public SplitReplay(
-            ReplayManagerAsset controller,
-            List<Round> rounds) :
-        base(
-            controller)
+            IList<Round> rounds) : base()
         {
             this.rounds = rounds;
         }

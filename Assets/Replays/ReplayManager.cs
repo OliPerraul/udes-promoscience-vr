@@ -11,17 +11,52 @@ namespace UdeS.Promoscience.Replays
 {
     public class ReplayManager : Cirrus.BaseSingleton<ReplayManager>
     {
-        [SerializeField]
-        private ReplayManagerAsset asset;
+        //private BaseReplay CurrentReplay;
 
-        private BaseReplay CurrentReplay;
+        //public SplitReplay SplitReplay;
 
-        public SplitReplay SplitReplay;
+        public Cirrus.Event<LabyrinthReplay> OnLabyrinthReplayStartedHandler;
+
+        public Cirrus.Event<SplitReplay> OnSplitReplayStartedHandler;
+
+        private Game currentGame;
+
+        private Round currentRound;
 
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnGameStateValueChanged;
+            GameManager.Instance.OnGameStartedHandler += OnGameStarted;
+            GameManager.Instance.OnGameEndedHandler += OnGameEnded;
         }
+
+        
+
+        public void OnGameStarted(Game game)
+        {
+            currentGame = game;
+
+            currentGame.OnRoundEndedHandler += OnRoundStarted;
+
+            currentGame.OnRoundEndedHandler += OnRoundEnded;
+        }
+
+        public void OnGameEnded(Game game)
+        {
+            currentGame = game;
+        }
+
+        public void OnRoundStarted(Round round)
+        {
+            currentRound = round;
+        }
+
+        public void OnRoundEnded(Round round)
+        {
+            currentRound = round;
+        }
+
+
 
         public void StartReplaySelect()
         {
@@ -42,37 +77,14 @@ namespace UdeS.Promoscience.Replays
 
             List<Round> rounds = new List<Round>();
 
-            // Get all rounds until now
-            for (int i = 0; i < GameManager.Instance.CurrentGame.RoundNumber.Value + 1; i++)
-            {
-                rounds.Add(
-                    new Round
-                    {
-                        Labyrinth = SQLiteUtilities.GetLabyrinthForGameRound(
-                            GameManager.Instance.CurrentGame.Id,
-                            i),
+            rounds.AddRange(currentGame.Rounds);
 
-                        Courses = SQLiteUtilities.GetCoursesForGameRound(
-                            GameManager.Instance.CurrentGame.Id,
-                            i),
-                    }
-                    );
-            }
+            var replay = new SplitReplay(
+                currentGame.Rounds);
 
-            if (CurrentReplay != null)
-            {
-                CurrentReplay.Clear();
-                CurrentReplay = null;
-            }
+            replay.Start();
 
-
-            SplitReplay = new SplitReplay(
-                asset,
-                rounds);
-
-            CurrentReplay = SplitReplay;
-
-            CurrentReplay.Start();
+            OnSplitReplayStartedHandler?.Invoke(replay);
         }
 
 
@@ -85,11 +97,11 @@ namespace UdeS.Promoscience.Replays
                     break;
 
                 default:
-                    if (CurrentReplay != null)
-                    {
-                        CurrentReplay.Clear();
-                        CurrentReplay = null;
-                    }
+                    //if (CurrentReplay != null)
+                    //{
+                    //    CurrentReplay.Clear();
+                    //    CurrentReplay = null;
+                    //}
 
                     break;
             }
@@ -114,25 +126,15 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            if (CurrentReplay != null)
-            {
-                CurrentReplay.Clear();
-                CurrentReplay = null;
-            }
-
-
-            CurrentReplay = new InstantReplay(
-                asset,
+            var replay = new InstantReplay(
                 SQLiteUtilities.GetCoursesForGameRound(
-                    GameManager.Instance.CurrentGame.Id, 
-                    GameManager.Instance.CurrentGame.RoundNumber.Value),
-                GameManager.Instance.CurrentGame.CurrentLabyrinth);
+                    currentGame.Id,
+                    currentRound.Number),
+                currentRound.Labyrinth);
 
-            CurrentReplay.Start();
+            replay.Start();
+            OnLabyrinthReplayStartedHandler?.Invoke(replay);
         }
-
-
-
 
         public void Update()
         {

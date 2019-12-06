@@ -8,8 +8,8 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class SequenceToggleInterface : MonoBehaviour
     {
-        [SerializeField]
-        private ReplayManagerAsset replayOptions;
+        //[SerializeField]
+        private LabyrinthReplay replay;
 
         [SerializeField]
         private SequenceToggleItem itemTemplate;
@@ -25,10 +25,22 @@ namespace UdeS.Promoscience.Replays.UI
         public void Awake()
         {       
             items = new Dictionary<int, SequenceToggleItem>();
-            replayOptions.OnActionHandler += OnReplayAction;
-            replayOptions.OnCourseAddedHandler += OnCourseAdded;
+            ReplayManager.Instance.OnLabyrinthReplayStartedHandler += OnReplayStarted;
         }
 
+        public void OnReplayStarted(LabyrinthReplay replay)
+        {
+            if (this.replay != replay)
+            {
+                this.replay.OnActionHandler -= OnReplayAction;
+                this.replay.OnCourseAddedHandler -= OnCourseAdded;
+            }
+
+            this.replay = replay;
+
+            this.replay.OnActionHandler += OnReplayAction;
+            this.replay.OnCourseAddedHandler += OnCourseAdded;
+        }
 
         public void OnCourseAdded(Course course, bool added)
         {

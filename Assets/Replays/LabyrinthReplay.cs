@@ -38,39 +38,31 @@ namespace UdeS.Promoscience.Replays
 
         // TODO remove
         public LabyrinthReplay(
-            ReplayManagerAsset controller,
             List<Course> courses,
-            Labyrinths.IData labyrinth) :
-                base(
-                    controller)
+            Labyrinths.IData labyrinth) : base()
         {
             this.courses = courses;
-            this.controller = controller;// replay;
             this.labyrinthData = labyrinth;
 
             //controller.OnActionHandler += OnReplayAction;
             //controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
-            controller.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
-            controller.IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
-            controller.IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
+            CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+            IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
+            IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
             //controller.OnCourseAddedHandler += OnCourseAdded;
         }
 
         public LabyrinthReplay(
-            ReplayManagerAsset controller,
             List<Course> courses,
-            Labyrinths.Labyrinth labyrinth) : 
-                base(
-                    controller)
+            Labyrinths.Labyrinth labyrinth) : base()
         {
-            this.controller = controller;
             this.labyrinth = labyrinth;
 
             //controller.OnActionHandler += OnReplayAction;
             //controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
-            controller.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
-            controller.IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
-            controller.IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
+            CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+            IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
+            IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
             //controller.OnCourseAddedHandler += OnCourseAdded;
         }
 
@@ -109,7 +101,7 @@ namespace UdeS.Promoscience.Replays
                 AddCourse(course, true);
             }
 
-            controller.PlaybackSpeed = 2f;
+            PlaybackSpeed = 2f;
         }
 
 
@@ -145,7 +137,7 @@ namespace UdeS.Promoscience.Replays
         {
             isPlaying = true;
 
-            while (controller.HasNext)
+            while (HasNext)
             {
                 started.Clear();
 
@@ -174,7 +166,7 @@ namespace UdeS.Promoscience.Replays
                     yield return sq;
                 }
 
-                controller.GlobalMoveIndex++;
+                GlobalMoveIndex++;
                 yield return null;
             }
 
@@ -203,7 +195,7 @@ namespace UdeS.Promoscience.Replays
 
             }
 
-            controller.GlobalMoveIndex++;
+            GlobalMoveIndex++;
         }
 
         public override void Previous()
@@ -213,7 +205,7 @@ namespace UdeS.Promoscience.Replays
                 Pause();
             }
 
-            controller.GlobalMoveIndex--;
+            GlobalMoveIndex--;
 
             foreach (var sq in algorithmSequences.Values)
             {
@@ -232,7 +224,7 @@ namespace UdeS.Promoscience.Replays
 
         public override void Move(int target)
         {
-            controller.GlobalMoveIndex = target;
+            GlobalMoveIndex = target;
 
             foreach (var sq in algorithmSequences.Values)
             {
@@ -262,7 +254,7 @@ namespace UdeS.Promoscience.Replays
                 sq.Stop();
             }
 
-            Move(controller.GlobalMoveIndex);
+            Move(GlobalMoveIndex);
 
             isPlaying = false;
         }
@@ -341,7 +333,7 @@ namespace UdeS.Promoscience.Replays
             {
                 // Adjust move count to biggest sequence
                 TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
-                Move(Mathf.Clamp(controller.GlobalMoveIndex, 0, controller.GlobalMoveCount));
+                Move(Mathf.Clamp(GlobalMoveIndex, 0, GlobalMoveCount));
 
                 AdjustOffsets();
             }
@@ -433,10 +425,10 @@ namespace UdeS.Promoscience.Replays
 
         public void TrySetMoveCount(int candidateMvcnt)
         {
-            if (candidateMvcnt > controller.GlobalMoveCount)
-                controller.GlobalMoveCount = candidateMvcnt;
+            if (candidateMvcnt > GlobalMoveCount)
+                GlobalMoveCount = candidateMvcnt;
 
-            Debug.Log(controller.GlobalMoveCount);
+            Debug.Log(GlobalMoveCount);
         }
 
         public virtual float GetOffsetAmount(float idx)
@@ -461,9 +453,9 @@ namespace UdeS.Promoscience.Replays
 
         protected override void OnSequenceFinished()
         {
-            if (controller.OnSequenceFinishedHandler != null)
+            if (OnSequenceFinishedHandler != null)
             {
-                controller.OnSequenceFinishedHandler.Invoke();
+                OnSequenceFinishedHandler.Invoke();
             }
         }
 
@@ -514,7 +506,7 @@ namespace UdeS.Promoscience.Replays
                 {
                     var sequence =
                         Resources.Instance.PlayerSequence.Create(
-                            controller,
+                            this,                            
                             course,
                             labyrinth,
                             lposition);
@@ -529,7 +521,7 @@ namespace UdeS.Promoscience.Replays
                     {
                         var algorithmSeq =
                             Resources.Instance.AlgorithmSequence.Create(
-                                controller,
+                                this,
                                 labyrinth,
                                 course,
                                 lposition
@@ -542,12 +534,12 @@ namespace UdeS.Promoscience.Replays
 
                     AdjustOffsets();
 
-                    controller.OnCourseAddedHandler?.Invoke(course, true);
+                    OnCourseAddedHandler?.Invoke(course, true);
 
                     if (first == null)
                     {
                         first = course;
-                        controller.CurrentCourse.Value = course;
+                        CurrentCourse.Value = course;
                     }
                 }
             }
@@ -566,7 +558,7 @@ namespace UdeS.Promoscience.Replays
 
             AdjustOffsets();
 
-            controller.OnCourseAddedHandler?.Invoke(course, false);
+            OnCourseAddedHandler?.Invoke(course, false);
         }
     }
 }

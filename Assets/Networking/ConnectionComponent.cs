@@ -78,7 +78,7 @@ namespace UdeS.Promoscience.Network
                 // Use the steps for playback
                 player.TargetSetViewingLocalPlayback(
                     player.connectionToClient,
-                    GameManager.Instance.CurrentGame.CurrentLabyrinth.Id, 
+                    GameManager.Instance.CurrentGame.CurrentRound.Labyrinth.Id, 
                     steps.ToArray(), 
                     stepValues.ToArray());
             }
@@ -97,7 +97,7 @@ namespace UdeS.Promoscience.Network
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                         int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
 #endif
-                        if (courseLabyrinthId == GameManager.Instance.CurrentGame.CurrentLabyrinth.Id)
+                        if (courseLabyrinthId == GameManager.Instance.CurrentGame.CurrentRound.Labyrinth.Id)
                         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
@@ -114,7 +114,7 @@ namespace UdeS.Promoscience.Network
 
                                 player.TargetSetRoundCompleted(
                                     player.connectionToClient,
-                                    GameManager.Instance.CurrentGame.CurrentLabyrinth.Id,
+                                    GameManager.Instance.CurrentGame.CurrentRound.Labyrinth.Id,
                                     steps.ToArray());
                             }
                             else

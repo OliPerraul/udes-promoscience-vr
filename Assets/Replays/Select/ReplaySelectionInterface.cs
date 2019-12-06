@@ -10,18 +10,12 @@ namespace UdeS.Promoscience.Replays.UI
     public class ReplaySelectionInterface : BaseSelectionInterface
     {
         [SerializeField]
-        private ReplayManagerAsset replayController;
-
-        protected ReplayManagerAsset ReplayController => replayController;
-
-        [SerializeField]
         private ReplaySection sectionTemplate;
 
         public override BaseSection SectionTemplate => sectionTemplate;
 
         [SerializeField]
         private UnityEngine.UI.Button buttonAdd;
-
 
         private ReplaySection currentSection = null;
 
@@ -31,6 +25,14 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override int NumSections => sections.Count;
 
+        private SplitReplay replay;
+
+
+        public void OnSplitReplayStarted(SplitReplay replay)
+        {
+            replay.OnActionHandler += OnReplayAction;
+        }
+
 
         public override void Awake()
         {
@@ -38,23 +40,24 @@ namespace UdeS.Promoscience.Replays.UI
 
             Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
 
-            replayController.OnActionHandler += OnReplayAction;
-
             buttonAdd.onClick.AddListener(OnAddedBottomClicked);
         }
 
         public override void OnDestroy()
         {
             if(Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
-
-            replayController.OnActionHandler -= OnReplayAction;
         }
 
-        public override int LabyrinthIndexWrap => labyrinthIndex.Mod(ReplayManager.Instance.SplitReplay.Rounds.Count);
+        public void OnReplayStarted(SplitReplay replay)
+        {
+            this.replay = replay;
+        }
+
+        public override int LabyrinthIndexWrap => labyrinthIndex.Mod(replay.Rounds.Count);
 
         public override Labyrinth CreateNextLabyrinth()
         {
-            var data = ReplayManager.Instance.SplitReplay.Rounds[LabyrinthIndexWrap].Labyrinth;
+            var data = replay.Rounds[LabyrinthIndexWrap].Labyrinth;
 
             labyrinthIndex++;
 
@@ -83,7 +86,7 @@ namespace UdeS.Promoscience.Replays.UI
 
                     Enabled = true;
 
-                    for (labyrinthIndex = 0; labyrinthIndex < ReplayManager.Instance.SplitReplay.Rounds.Count; labyrinthIndex++)
+                    for (labyrinthIndex = 0; labyrinthIndex < replay.Rounds.Count; labyrinthIndex++)
                     {
                         AddLabyrinth(labyrinthIndex);
                     }
@@ -183,7 +186,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override void AddLabyrinth(int i)
         {
-            var data = ReplayManager.Instance.SplitReplay.Rounds[i].Labyrinth;
+            var data = replay.Rounds[i].Labyrinth;
 
             Labyrinth labyrinth = Labyrinths.Resources.Instance
                   .GetLabyrinthTemplate(data)

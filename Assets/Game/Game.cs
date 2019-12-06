@@ -30,21 +30,14 @@ namespace UdeS.Promoscience
 
         private List<Round> rounds = new List<Round>();
 
-        [SerializeField]
-        private GameAsset asset;
+        public IList<Round> Rounds => rounds;
 
-        public Cirrus.ObservableValue<int> RoundNumber => asset.Round;
+        private Round currentRound;
 
-        public Round Round;
-
-        public Cirrus.ObservableValue<bool> IsRoundCompleted => asset.IsRoundCompleted;
+        public Round CurrentRound => currentRound;
 
         [SerializeField]
         protected LevelSelectionMode levelSelectionMode;
-
-        public IData CurrentLabyrinth { get; private set; }
-
-        public List<IData> Labyrinths = new List<IData>();
 
         [SerializeField]
         private const int tutorialLabyrinthId = 4;
@@ -52,35 +45,27 @@ namespace UdeS.Promoscience
         [SerializeField]
         private Algorithms.Id baseAlgorithmId;
 
+        public virtual ServerState RoundState => ServerState.Round;
 
-        [SerializeField]
-        protected ServerState roundState;
+        //public bool IsStarted => RoundNumber.Value >= 0;
 
-        public ServerState RoundState => roundState;
+        public Cirrus.Event<Round> OnRoundStartedHandler;
 
-        public bool IsStarted => RoundNumber.Value >= 0;
+        public Cirrus.Event<Round> OnRoundEndedHandler;
 
 
         // Ideally, player should reference a course instead of refering to a course id 
         public List<Course> Courses = new List<Course>();
 
 
-        public Game(GameAsset asset)
+        public Game()
         {
-            this.asset = asset;
-
-            roundState = ServerState.Round;
-
             levelSelectionMode = LevelSelectionMode.Selected;
         }
 
-        public Game(GameAsset asset, RoundPreset[] predefinedLevels)
+        public Game(RoundPreset[] predefinedLevels)
         {
             this.predefinedLevels = predefinedLevels;
-
-            this.asset = asset;
-
-            roundState = ServerState.Round;
 
             levelSelectionMode = LevelSelectionMode.Predefined;
         }
@@ -88,8 +73,6 @@ namespace UdeS.Promoscience
         public void Start()
         {
             Id = SQLiteUtilities.GetNextGameID();
-
-            RoundNumber.Value = -1;
 
             StartNextRound();            
         }
@@ -120,9 +103,9 @@ namespace UdeS.Promoscience
                 {
                     Id = SQLiteUtilities.GetNextCourseID(),
                     Team = Teams.Resources.Instance.GetScriptableTeamWithId(player.ServerTeamId),
-                    Labyrinth = CurrentLabyrinth,
+                    Labyrinth = currentRound.Labyrinth,
                     Algorithm = algorithm,
-                    AlgorithmSteps = algorithm.GetAlgorithmSteps(CurrentLabyrinth) // labyrinth)  
+                    AlgorithmSteps = algorithm.GetAlgorithmSteps(currentRound.Labyrinth) // labyrinth)  
                 };
 
                 Courses.Add(course);
@@ -133,7 +116,7 @@ namespace UdeS.Promoscience
                     player.serverLabyrinthId,
                     (int)player.serverAlgorithm,
                     player.ServerCourseId,
-                    asset.Round.Value,
+                    player.ServerRoundNumber,
                     Id);
             }
         }
@@ -153,8 +136,8 @@ namespace UdeS.Promoscience
             {
 
                 StartNextRound(
-                predefinedLevels[(RoundNumber.Value + 1).Mod(predefinedLevels.Length)].Labyrinth,
-                predefinedLevels[(RoundNumber.Value + 1).Mod(predefinedLevels.Length)].Algorithm);
+                predefinedLevels[(currentRound.Number + 1).Mod(predefinedLevels.Length)].Labyrinth,
+                predefinedLevels[(currentRound.Number + 1).Mod(predefinedLevels.Length)].Algorithm);
             }
         }
 
@@ -164,7 +147,7 @@ namespace UdeS.Promoscience
             int algorithmId)
         {
             StartNextRound(
-                Promoscience.Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId), 
+                Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId), 
                 (Algorithms.Id)algorithmId);
         }
 
@@ -172,16 +155,18 @@ namespace UdeS.Promoscience
             IData labyrinth,
             Algorithms.Id algorithmId)
         {
-            RoundNumber.Value = (RoundNumber.Value + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value);
+            currentRound = new Round
+            {
+                Number = currentRound == null ? 0 : (currentRound.Number + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value),
+                Labyrinth = labyrinth
+            };
 
             SQLiteUtilities.InsertRound(
                 SQLiteUtilities.GetNextRoundID(),
-                RoundNumber.Value,
+                currentRound.Number,
                 Id,
                 labyrinth.Id
                 );
-
-            CurrentLabyrinth = labyrinth;
 
             baseAlgorithmId = algorithmId;
 
@@ -202,32 +187,24 @@ namespace UdeS.Promoscience
 
                         player.serverAlgorithm = baseAlgorithmId;
 
-                        player.serverLabyrinthId = CurrentLabyrinth.Id;
+                        player.serverLabyrinthId = currentRound.Labyrinth.Id;
 
                         AssignCourse(player);
 
                         player.TargetSetGame(
                             player.connectionToClient,
-                            CurrentLabyrinth.Json,
+                            currentRound.Labyrinth.Json,
                             player.serverAlgorithm,
-                            RoundNumber.Value);
+                            currentRound.Number);
 
                         break;
                 }
             }
 
-            DoStartRound();
+            OnRoundStartedHandler?.Invoke(currentRound);
+            Server.Instance.State.Set(RoundState);
         }
 
-
-        protected virtual void DoStartRound()
-        {
-            Labyrinths.Add(CurrentLabyrinth);
-
-            roundState = ServerState.Round;
-
-            Server.Instance.State.Set(ServerState.Round);
-        }
 
 
         public void JoinGameRound(Player player)
@@ -236,13 +213,13 @@ namespace UdeS.Promoscience
 
             player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm((int)baseAlgorithmId, player.ServerTeamId);
 
-            player.serverLabyrinthId = CurrentLabyrinth.Id; ;
+            player.serverLabyrinthId = currentRound.Labyrinth.Id;
 
             player.TargetSetGame(
                 player.connectionToClient,
-                CurrentLabyrinth.Json,
+                currentRound.Labyrinth.Json,
                 player.serverAlgorithm,
-                RoundNumber.Value);
+                currentRound.Number);
         }
 
         public void JoinGameRoundWithSteps(Player player, int[] steps)
@@ -251,14 +228,14 @@ namespace UdeS.Promoscience
 
             player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm((int)baseAlgorithmId, player.ServerTeamId);
 
-            player.serverLabyrinthId = CurrentLabyrinth.Id; ;
+            player.serverLabyrinthId = currentRound.Labyrinth.Id;
 
             player.TargetSetGameWithSteps(
                 player.connectionToClient,
                 steps,
-                CurrentLabyrinth.Json,
+                currentRound.Labyrinth.Json,
                 player.serverAlgorithm,
-                RoundNumber.Value,
+                currentRound.Number,
                 false); // TODO start with steps tutorial??
         }
 
