@@ -6,6 +6,7 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class AlgorithmSelectionInteface : MonoBehaviour
     {
+
         [SerializeField]
         private UnityEngine.UI.Text algorithmNameText;
 
@@ -18,5 +19,6 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private UnityEngine.UI.Button algorithmPrevious;
 
+        public Cirrus.ObservableValue<Algorithms.Id> Algorithm = new Cirrus.ObservableValue<Algorithms.Id>();
     }
 }

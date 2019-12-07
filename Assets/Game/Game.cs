@@ -47,9 +47,10 @@ namespace UdeS.Promoscience
 
         public virtual ServerState RoundState => ServerState.Round;
 
-        public Cirrus.Event<Round> OnRoundStartedHandler;
+        // TODO replace listening to server state with this
+        //public Cirrus.Event<Round> OnRoundStartedHandler;
 
-        public Cirrus.Event<Round> OnRoundEndedHandler;
+        //public Cirrus.Event<Round> OnRoundEndedHandler;
 
         public List<Course> Courses = new List<Course>();
 
@@ -200,8 +201,6 @@ namespace UdeS.Promoscience
                         break;
                 }
             }
-
-            OnRoundStartedHandler?.Invoke(currentRound);
 
             Server.Instance.State.Set(RoundState);
         }

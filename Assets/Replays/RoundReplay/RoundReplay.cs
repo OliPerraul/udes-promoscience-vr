@@ -3,12 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using Cirrus.Extensions;
 using System.Linq;
+using Cirrus;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class LabyrinthReplay : BaseReplay
+    public class RoundReplay : BaseReplay
     {
+        public ObservableValue<Course> CurrentCourse = new ObservableValue<Course>();
+
+        public Event<Course> OnCourseAddedHandler;
+
+        public Event<Course> OnCourseRemovedHandler;
+
+        public Event<Course, bool> OnCourseToggledHandler;
+
+        public ObservableValue<bool> IsToggleAlgorithm = new ObservableValue<bool>();
+
+        public ObservableValue<bool> IsToggleGreyboxLabyrinth = new ObservableValue<bool>();
+
         private Round round;
+
+        public Labyrinths.ILabyrinth Labyrinth => round.Labyrinth;
 
         public Labyrinths.LabyrinthObject labyrinthObject;
 
@@ -35,16 +50,16 @@ namespace UdeS.Promoscience.Replays
         private bool isPlaying = false;
 
         // TODO remove
-        public LabyrinthReplay(Round round) : base()
+        public RoundReplay(
+            ReplayControlsAsset controls,
+            Round round) : 
+            base(controls)
         {
             this.round = round;
 
-            //controller.OnActionHandler += OnReplayAction;
-            //controller.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
             CurrentCourse.OnValueChangedHandler += OnCourseSelected;
             IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
             IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
-            //controller.OnCourseAddedHandler += OnCourseAdded;
         }
 
         public void CreateLabyrinth()
@@ -84,7 +99,7 @@ namespace UdeS.Promoscience.Replays
                 AddCourse(course);
             }
 
-            PlaybackSpeed = 2f;
+            controls.PlaybackSpeed = 2f;
         }
 
         public override void OnPlaybackSpeedChanged(float speed)
@@ -284,7 +299,7 @@ namespace UdeS.Promoscience.Replays
         }
 
 
-        public override void OnReplayAction(ReplayControlAction action, params object[] args)
+        public override void OnReplayControlAction(ReplayControlAction action)
         {
             switch (action)
             {
@@ -305,18 +320,6 @@ namespace UdeS.Promoscience.Replays
                     //mutex.ReleaseMutex();
 
                     break;
-
-                case ReplayControlAction.Slide:
-
-                    mutex.WaitOne();
-
-                    int current = (int)args[0];
-                    Move(current);
-
-                    mutex.ReleaseMutex();
-
-                    break;
-
 
                 case ReplayControlAction.Next:
 
@@ -392,10 +395,10 @@ namespace UdeS.Promoscience.Replays
 
         protected override void OnSequenceFinished()
         {
-            if (OnSequenceFinishedHandler != null)
-            {
-                OnSequenceFinishedHandler.Invoke();
-            }
+            //if (OnSequenceFinishedHandler != null)
+            //{
+            //    OnSequenceFinishedHandler.Invoke();
+            //}
         }
 
         public override void Clear()
@@ -415,14 +418,11 @@ namespace UdeS.Promoscience.Replays
             playerSequences.Clear();
 
             activeSequences.Clear();
-
-
-
         }
 
         Course first = null;
 
-        public override void AddCourse(Course course)
+        public void AddCourse(Course course)
         {
             if (!playerSequences.ContainsKey(course.Id))
             {
@@ -441,7 +441,7 @@ namespace UdeS.Promoscience.Replays
 
                 AdjustOffsets();
 
-                OnCourseAddedHandler?.Invoke(course, true);
+                OnCourseAddedHandler?.Invoke(course);
 
                 if (first == null)
                 {
@@ -451,7 +451,7 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        public override void RemoveCourse(Course course)
+        public void RemoveCourse(Course course)
         {
             activeSequences.Remove(playerSequences[course.Id]);
             playerSequences.Remove(course.Id);
@@ -460,7 +460,7 @@ namespace UdeS.Promoscience.Replays
 
             AdjustOffsets();
 
-            OnCourseAddedHandler?.Invoke(course, false);
+            OnCourseRemovedHandler?.Invoke(course);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace UdeS.Promoscience.Replays.UI
     {
         public static Cirrus.Event OnOtherSelectedHandler;
 
-        private LabyrinthReplay replay;
+        private RoundReplay replay;
 
         [SerializeField]
         private UnityEngine.Color selectedColor;
@@ -46,7 +46,7 @@ namespace UdeS.Promoscience.Replays.UI
 
 
         public SequenceToggleItem Create(
-            Transform parent, 
+            Transform parent,
             Course course)
         {
             SequenceToggleItem item = this.Create(parent);
@@ -74,10 +74,10 @@ namespace UdeS.Promoscience.Replays.UI
                 replay.CurrentCourse.Value = course;
             });
 
-            ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnLabyrinthReplay;
+            //ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnLabyrinthReplay;
         }
 
-        public void OnLabyrinthReplay(LabyrinthReplay replay)
+        public void OnLabyrinthReplay(RoundReplay replay)
         {
             this.replay = replay;            
         }

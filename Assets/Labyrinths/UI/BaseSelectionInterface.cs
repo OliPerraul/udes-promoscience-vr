@@ -112,7 +112,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         }
 
 
-        public virtual void OnAddedBottomClicked()//Transform parent)
+        public virtual void AddBottomLabyrinth()//Transform parent)
         {
             AddSection().AddButton(CreateNextLabyrinth());
 

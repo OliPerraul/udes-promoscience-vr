@@ -25,14 +25,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override int NumSections => sections.Count;
 
-        private SplitReplay replay;
-
-
-        public void OnSplitReplayStarted(SplitReplay replay)
-        {
-            replay.OnActionHandler += OnReplayAction;
-        }
-
+        private GameReplay replay;
 
         public override void Awake()
         {
@@ -40,57 +33,58 @@ namespace UdeS.Promoscience.Replays.UI
 
             Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
 
-            buttonAdd.onClick.AddListener(OnAddedBottomClicked);
+            buttonAdd.onClick.AddListener(() => AddBottomLabyrinth());
         }
+
+
+
 
         public override void OnDestroy()
         {
-            if(Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
+            if(
+                Server.Instance != null && 
+                Server.Instance.gameObject != null)
+                Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
         }
 
-        public void OnReplayStarted(SplitReplay replay)
+        public void AddInitialLabyrinths()
         {
-            this.replay = replay;
+            for (int i = 0; i < ReplayManager.Instance.GameReplay.Value.Rounds.Count; i++)
+            {
+                if (i % Labyrinths.Utils.SelectMaxHorizontal == 0)
+                {
+                    AddBottomLabyrinth();
+                }
+
+                sections[sections.Count - 1].AddButton(CreateNextLabyrinth());
+            }
+
+            OnContentChangedHandler?.Invoke();
         }
 
-        public override int LabyrinthIndexWrap => labyrinthIndex.Mod(replay.Rounds.Count);
 
         public override LabyrinthObject CreateNextLabyrinth()
         {
-            var data = replay.Rounds[LabyrinthIndexWrap].Labyrinth;
+            var replay = ReplayManager.Instance.GameReplay.Value.AddReplay();
 
-            labyrinthIndex++;
+            replay.Start();
 
-            LabyrinthObject labyrinth = Labyrinths.Resources.Instance
-              .GetLabyrinthObject(data)
-              .Create(data);
+            replay.LabyrinthObject.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
 
-            labyrinths.Add(labyrinth);
-
-            labyrinth.GenerateLabyrinthVisual();
-
-            labyrinth.Init(enableCamera: true);
-
-            labyrinth.Camera.OutputToTexture = true;
-
-            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
-
-            return labyrinth;
+            return replay.LabyrinthObject;
         }
 
         public virtual void OnServerGameStateChanged(ServerState state)
         {
             switch (state)
             {
-                case ServerState.ReplaySelect:
+                case ServerState.GameReplay:
 
                     Enabled = true;
 
-                    for (labyrinthIndex = 0; labyrinthIndex < replay.Rounds.Count; labyrinthIndex++)
-                    {
-                        AddLabyrinth(labyrinthIndex);
-                    }
+                    //ReplayManager.Instance.GameReplay.OnActionHandler += OnReplayAction;
 
+                    AddInitialLabyrinths();
 
                     break;
 
@@ -176,38 +170,9 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-        public override void OnAddedBottomClicked()//Transform parent)
+        public override void AddBottomLabyrinth()//Transform parent)
         {
             AddSection().AddButton(CreateNextLabyrinth());
-
-            OnContentChangedHandler?.Invoke();
-        }
-
-
-        public override void AddLabyrinth(int i)
-        {
-            var data = replay.Rounds[i].Labyrinth;
-
-            LabyrinthObject labyrinth = Labyrinths.Resources.Instance
-                  .GetLabyrinthObject(data)
-                  .Create(data);
-
-            labyrinths.Add(labyrinth);
-
-            labyrinth.GenerateLabyrinthVisual();
-
-            labyrinth.Init(enableCamera: true);
-
-            labyrinth.Camera.OutputToTexture = true;
-
-            labyrinth.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
-
-            if (i % Labyrinths.Utils.SelectMaxHorizontal == 0)
-            {
-                AddSection();
-            }
-
-            sections[sections.Count - 1].AddButton(labyrinth);
 
             OnContentChangedHandler?.Invoke();
         }

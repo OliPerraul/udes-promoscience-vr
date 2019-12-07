@@ -7,89 +7,15 @@ using Cirrus;
 
 namespace UdeS.Promoscience.Replays
 {
-    public enum ReplayControlAction
-    {
-        Previous,
-        Next,
-        Play,
-        Stop,
-        Pause,
-        Resume,
-        Slide,
-
-        Reset,
-    }
-
-
     public abstract class BaseReplay
     {
-        public Event<int> valueChangeEvent;
-
-        public Cirrus.Event OnLabyrinthReplayHandler;
-
-        public ArgsEvent<ReplayControlAction> OnActionHandler;
-
-        private float playbackSpeed = 1;
-  
-        public Event<Course, bool> OnCourseAddedHandler;
-
-        public Event<Course, bool> OnCourseToggledHandler;
-
-        public ObservableValue<bool> IsToggleAlgorithm = new ObservableValue<bool>();
-
-        public ObservableValue<bool> IsToggleGreyboxLabyrinth = new ObservableValue<bool>();
-
-        public Event<float> OnPlaybackSpeedHandler;
-
-        public Cirrus.Event OnSequenceFinishedHandler;
+        protected ReplayControlsAsset controls;
 
         public Event<int> OnMoveCountSetHandler;
 
         public Event<int> OnMoveIndexChangedHandler;
 
-        public ObservableValue<Course> CurrentCourse = new ObservableValue<Course>();
-
         private int index = 0;
-
-
-        public float PlaybackSpeed
-        {
-            get => playbackSpeed;
-
-            set
-            {
-                playbackSpeed = value;
-                if (playbackSpeed > Utils.MaxPlaybackSpeed) playbackSpeed = Utils.MinPlaybackSpeed;
-                if (playbackSpeed < Utils.MinPlaybackSpeed) playbackSpeed = Utils.MaxPlaybackSpeed;
-                if (OnPlaybackSpeedHandler != null)
-                {
-                    OnPlaybackSpeedHandler.Invoke(playbackSpeed);
-                }
-            }
-        }
-
-        public virtual void OnEnable()
-        {
-            moveIndex = 0;
-            moveCount = int.MinValue;
-
-        }
-
-        public int CourseIndex
-        {
-            get
-            {
-                return index;
-            }
-
-            set
-            {
-                index = value;
-
-                if (valueChangeEvent != null)
-                    valueChangeEvent.Invoke(index);
-            }
-        }
 
         [SerializeField]
         private int moveCount = int.MinValue;
@@ -154,21 +80,15 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        public void SendAction(ReplayControlAction action, params object[] args)
-        {
-            if (OnActionHandler != null)
-            {
-                OnActionHandler?.Invoke(action, args);
-            }
-        }
 
         private bool isPlaying = false;
 
         // TODO remove
-        public BaseReplay()
+        public BaseReplay(ReplayControlsAsset controls)
         {
-            OnActionHandler += OnReplayAction;
-            OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
+            this.controls = controls;
+            controls.OnControlActionHandler += OnReplayControlAction;
+            controls.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
         }
 
         public virtual void Start()
@@ -212,7 +132,7 @@ namespace UdeS.Promoscience.Replays
         }
 
 
-        public virtual void OnReplayAction(ReplayControlAction action, params object[] args)
+        public virtual void OnReplayControlAction(ReplayControlAction action)
         {
             switch (action)
             {
@@ -293,18 +213,6 @@ namespace UdeS.Promoscience.Replays
 
 
             //labyrinth = null;         
-        }
-
-
-
-        public virtual void AddCourse(Course course)
-        {
-     
-        }
-
-        public virtual void RemoveCourse(Course course)
-        {
-
         }
     }
 }

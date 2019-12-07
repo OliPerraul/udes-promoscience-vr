@@ -70,17 +70,11 @@ namespace UdeS.Promoscience.Network.UI
         [SerializeField]
         private UnityEngine.UI.Button endThanksButton;
 
-        private Game game;
-
-        private Round round;
-
-
         public bool Enabled { set => target?.gameObject?.SetActive(value); }
 
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnServerGameStateChanged;
-            GameManager.Instance.OnGameCreatedHandler += OnGameStarted;
 
             Flags.OnValueChangedHandler += OnFlagsChanged;
             quickPlayButton.onClick.AddListener(() => Server.Instance.StartQuickplay());
@@ -103,18 +97,6 @@ namespace UdeS.Promoscience.Network.UI
             if (Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
         }
 
-        public void OnGameStarted(Game game)
-        {
-            this.game = game;
-            game.OnRoundStartedHandler += OnRoundStarted;
-        }
-
-
-        public void OnRoundStarted(Round round)
-        {
-            this.round = round;
-        }
-
         public void OnServerGameStateChanged(ServerState state)
         {
             switch (state)
@@ -134,7 +116,7 @@ namespace UdeS.Promoscience.Network.UI
                         LobbyControlsFlag.EndGame;
 
                     // If first round do not allow advanced replay feature
-                    if (round.Number < 1)
+                    if (GameManager.Instance.CurrentGame.CurrentRound.Number < 1)
                     {
                         Flags.Value = Flags.Value & ~LobbyControlsFlag.AdvancedReplay;
                     }
@@ -142,7 +124,7 @@ namespace UdeS.Promoscience.Network.UI
                    
                     // If last round only allow to end the game
                     if (Server.Instance.Settings.NumberOfRounds.Value - 1 ==
-                        round.Number)
+                        GameManager.Instance.CurrentGame.CurrentRound.Number)
                     {
                         Flags.Value = Flags.Value & ~LobbyControlsFlag.NextRound;
                     }
@@ -171,8 +153,8 @@ namespace UdeS.Promoscience.Network.UI
                     break;
 
                 case ServerState.LevelSelect:
-                case ServerState.ReplaySelect:
-                case ServerState.LabyrinthReplay:
+                case ServerState.GameReplay:
+                case ServerState.RoundReplay:
                     body.SetActive(false);
                     bottom.SetActive(false);
                     end.SetActive(false);

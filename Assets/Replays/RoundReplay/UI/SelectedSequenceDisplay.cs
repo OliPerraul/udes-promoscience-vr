@@ -9,9 +9,6 @@ namespace UdeS.Promoscience.Replays.UI
     public class SelectedSequenceDisplay : MonoBehaviour
     {
         [SerializeField]
-        private LabyrinthReplay replay;
-
-        [SerializeField]
         private UnityEngine.UI.Text teamName;
 
         [SerializeField]
@@ -31,16 +28,34 @@ namespace UdeS.Promoscience.Replays.UI
 
         private CourseExecution course;
 
-        
+        private RoundReplay replay;
+
         public void Awake()
         {
-            ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnLabyrinthReplayStarted;
+            //ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnLabyrinthReplayStarted;
+            ReplayManager.Instance.RoundReplay.OnValueChangedHandler += OnReplayChanged;
         }
 
-        public void OnLabyrinthReplayStarted(LabyrinthReplay replay)
+        public void OnReplayChanged(RoundReplay replay)
         {
+            if (this.replay != null)
+            {
+                //ReplayManager.Instance.LabyrinthReplay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+            }
+
             this.replay = replay;
-            //replay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+        }
+
+        public void OnServerStateChanged(ServerState state)
+        {
+            switch (state)
+            {
+                case ServerState.RoundReplay:
+                    //ReplayManager.Instance.LabyrinthReplay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
+
+
+                    break;
+            }
         }
 
         public void OnCourseSelected(CourseExecution execution)

@@ -9,12 +9,13 @@ namespace UdeS.Promoscience.Controls
         None = 0,
         // TODO: make into 2 tools?
         DistanceScanner = 1,
-        Compass = 2
+        Compass = 2,
+        Clipboard = 3 // Algorithm clipboard
     }
 
     public static class ToolUtils
     {
-        public const int ToolCount = 2;
+        public const int ToolCount = 4;
     }
 
     public class HeadsetToolManager : MonoBehaviour

@@ -16,7 +16,6 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private GameObject display;
 
-
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnGameStateValueChanged;
@@ -24,14 +23,15 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnDestroy()
         {
-            if(Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnGameStateValueChanged;
+            if(Server.Instance != null && Server.Instance.gameObject != null)
+                Server.Instance.State.OnValueChangedHandler -= OnGameStateValueChanged;
         }
 
         public void OnGameStateValueChanged(ServerState state)
         {
             switch (state)
             {
-                case ServerState.LabyrinthReplay:
+                case ServerState.RoundReplay:
                     display.SetActive(true);
                     //viewRawImage.texture = Server.Instance.CurrentLabyrinth.Camera.RenderTexture;
                     break;

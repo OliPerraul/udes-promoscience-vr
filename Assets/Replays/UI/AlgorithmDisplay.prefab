@@ -108,6 +108,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224341542589256242}
   - component: {fileID: 5671706865827106908}
+  - component: {fileID: 6684050037184760635}
   m_Layer: 5
   m_Name: AlgorithmDisplay
   m_TagString: Untagged
@@ -153,6 +154,22 @@ MonoBehaviour:
   _isHiddenAlpha: 1
   _hiddenAlpha: 0.2
   isOverriden: 0
+--- !u!114 &6684050037184760635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733295445268462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 027f9d7696e085e42a66d62c176defc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  algorithmNameText: {fileID: 114583807382481942}
+  algorithmStepsText: {fileID: 114593052672488682}
+  algorithmNext: {fileID: 7556771401520247734}
+  algorithmPrevious: {fileID: 81460209037545593}
 --- !u!1 &1768880850358536
 GameObject:
   m_ObjectHideFlags: 0

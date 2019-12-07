@@ -10,7 +10,10 @@ using Cirrus;
 using Cirrus.Extensions;
 using System.Collections.Generic;
 using System.Linq;
+using UdeS.Promoscience.Algorithms;
+using UdeS.Promoscience.Labyrinths;
 using UdeS.Promoscience.ScriptableObjects;
+using UdeS.Promoscience.Teams;
 //using UdeS.Promoscience.Utils;
 
 // TODO: course iterator vs. course as separate class?
@@ -32,23 +35,39 @@ namespace UdeS.Promoscience
     // Is associated to one particular team, vs Round is not
     // Levels contain a series of courses
 
-    public class Course
+    public interface ICourse
     {
-        public int Id;
+        int Id { get; }
 
-        public int LabyrinthId;
+        int LabyrinthId { get; }
 
-        public CourseStatus Status;
+        CourseStatus Status { get; }
 
-        public Labyrinths.ILabyrinth Labyrinth;
+        Labyrinths.ILabyrinth Labyrinth{ get; }
 
-        public Algorithms.Algorithm Algorithm;
+        Algorithms.Algorithm Algorithm { get; }
 
-        public Teams.TeamResource Team;
+        Teams.TeamResource Team { get; }
+    }
+
+    public class Course : ICourse
+    {
+        public int Id { get; set; }
+
+        public int LabyrinthId { get; set;  }
+
+        public CourseStatus Status { get; set; }
+
+        public Labyrinths.ILabyrinth Labyrinth { get; set; }
+
+        public Algorithms.Algorithm Algorithm { get; set; }
+
+        public Teams.TeamResource Team { get; set; }
+
     }
 
 
-    public class CourseExecution : Algorithms.ICourseExecution
+    public class CourseExecution : ICourseExecution, ICourse
     {
         private Course course;
 
@@ -263,5 +282,16 @@ namespace UdeS.Promoscience
             }
         }
 
+        public int Id => ((ICourse)course).Id;
+
+        public int LabyrinthId => ((ICourse)course).LabyrinthId;
+
+        public CourseStatus Status => ((ICourse)course).Status;
+
+        ILabyrinth ICourse.Labyrinth => ((ICourse)course).Labyrinth;
+
+        public Algorithm Algorithm => ((ICourse)course).Algorithm;
+
+        public TeamResource Team => ((ICourse)course).Team;
     }
 }

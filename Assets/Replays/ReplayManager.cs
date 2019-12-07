@@ -11,23 +11,23 @@ namespace UdeS.Promoscience.Replays
 {
     public class ReplayManager : Cirrus.BaseSingleton<ReplayManager>
     {
-        //private BaseReplay CurrentReplay;
+        [SerializeField]
+        private ReplayControlsAsset roundReplayControls;
 
-        //public SplitReplay SplitReplay;
+        public Cirrus.ObservableValue<RoundReplay> RoundReplay = new Cirrus.ObservableValue<RoundReplay>();
 
-        public Cirrus.Event<LabyrinthReplay> OnLabyrinthReplayCreatedHandler;
 
-        public Cirrus.Event<SplitReplay> OnSplitReplayCreatedHandler;
+        [SerializeField]
+        private ReplayControlsAsset gameReplayControls;
 
-        private Game currentGame;
+        public Cirrus.ObservableValue<GameReplay> GameReplay = new Cirrus.ObservableValue<GameReplay>();
 
-        private Round currentRound;
 
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnGameStateValueChanged;
-            GameManager.Instance.OnGameCreatedHandler += OnGameCreated;
-            GameManager.Instance.OnGameEndedHandler += OnGameEnded;
+            //GameManager.Instance.OnGameCreatedHandler += OnGameCreated;
+            //GameManager.Instance.OnGameEndedHandler += OnGameEnded;
         }
 
         public void Update()
@@ -35,24 +35,7 @@ namespace UdeS.Promoscience.Replays
 
         }
 
-        public void OnGameCreated(Game game)
-        {
-            currentGame = game;
-
-            currentGame.OnRoundStartedHandler += OnRoundStarted;
-        }
-
-        public void OnGameEnded(Game game)
-        {
-            currentGame = game;
-        }
-
-        public void OnRoundStarted(Round round)
-        {
-            currentRound = round;
-        }
-
-        public void StartReplaySelect()
+        public void StartGameReplay()
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -69,15 +52,14 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            var replay = new SplitReplay(
-                currentGame.Rounds);
+            GameReplay.Value = new GameReplay(
+                gameReplayControls,
+                GameManager.Instance.CurrentGame.Rounds);
 
-            OnSplitReplayCreatedHandler?.Invoke(replay);
-            replay.Start();
+            GameReplay.Value.Start();
         }
 
-
-        public void StartInstantReplay()
+        public void StartLabyrinthReplay()
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -95,10 +77,11 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            var replay = new InstantReplay(currentRound);
+            RoundReplay.Value = new InstantReplay(
+                roundReplayControls,
+                GameManager.Instance.CurrentGame.CurrentRound);
 
-            OnLabyrinthReplayCreatedHandler?.Invoke(replay);
-            replay.Start();
+            RoundReplay.Value.Start();
         }
 
 
@@ -106,8 +89,8 @@ namespace UdeS.Promoscience.Replays
         {
             switch (state)
             {
-                case ServerState.LabyrinthReplay:
-                case ServerState.ReplaySelect:
+                case ServerState.RoundReplay:
+                case ServerState.GameReplay:
                     break;
 
                 default:

@@ -23,10 +23,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         private LevelSection currentSection;
 
-        private Game currentGame;
-
-        private Replays.SplitReplay replay;
-
         public override void Awake()
         {
             base.Awake();
@@ -35,29 +31,11 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
             ButtonManager.Instance.RandomButton.onClick.AddListener(OnRandomClicked);
 
-            ReplayManager.Instance.OnSplitReplayCreatedHandler += OnReplayStarted;
-
-            GameManager.Instance.OnGameCreatedHandler += OnGameStarted;
         }
 
         public override void OnDestroy()
         {
             if(Server.Instance != null && Server.Instance.gameObject != null) Server.Instance.State.OnValueChangedHandler -= OnServerGameStateChanged;
-
-            if (replay != null)
-            {
-                replay.OnActionHandler -= OnReplayAction;
-            }
-        }
-
-        public void OnReplayStarted(Replays.SplitReplay replay)
-        {
-            replay.OnActionHandler += OnReplayAction;
-        }
-
-        public void OnGameStarted(Game game)
-        {
-            currentGame = game;
         }
 
         public void OnRandomClicked()
@@ -65,7 +43,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             if (Server.Instance.State.Value != ServerState.LevelSelect)
                 return;
 
-            currentGame.StartNextRound(
+            GameManager.Instance.CurrentGame.StartNextRound(
                 Random.Range(1, Utils.NumLabyrinth + 1), 
                 (int)algorithmSelect.AlgorithmId);
         }
@@ -74,7 +52,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         {
             Debug.Log(algorithmSelect.AlgorithmId);
 
-            currentGame.StartNextRound(
+            GameManager.Instance.CurrentGame.StartNextRound(
                 button.Labyrinth.Data.Id,
                 (int)algorithmSelect.AlgorithmId);
         }

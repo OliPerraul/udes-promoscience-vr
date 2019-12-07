@@ -5,7 +5,7 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience
 {
-    public class LiveFeedbackManager : MonoBehaviour
+    public class SpectatorManager : MonoBehaviour
     {
         [SerializeField]
         private UnityEngine.UI.Text roundText;
@@ -16,17 +16,13 @@ namespace UdeS.Promoscience
         [SerializeField]
         private LocalizeInlineString roundString = new LocalizeInlineString("Round ", "Niveau ");
 
-
         private Labyrinths.LabyrinthObject labyrinth;
-
-        private Game game;
-
 
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
-            GameManager.Instance.OnGameCreatedHandler += OnGameStarted;
-            GameManager.Instance.OnGameEndedHandler += OnGameEnded;
+            //GameManager.Instance.OnGameCreatedHandler += OnGameStarted;
+            //GameManager.Instance.OnGameEndedHandler += OnGameEnded;
         }
 
         public void OnDestroy()
@@ -41,6 +37,28 @@ namespace UdeS.Promoscience
                 case ServerState.Quickplay:
                 case ServerState.Round:
 
+                    if (labyrinth != null)
+                    {
+                        labyrinth.gameObject.Destroy();
+                        labyrinth = null;
+                    }
+
+                    labyrinth = Labyrinths.Resources.Instance
+                        .GetLabyrinthObject(GameManager.Instance.CurrentGame.CurrentRound.Labyrinth)
+                        .Create(GameManager.Instance.CurrentGame.CurrentRound.Labyrinth);
+
+                    labyrinth.GenerateLabyrinthVisual();
+
+                    labyrinth.Init(enableCamera: true);
+
+                    labyrinth.Camera.OutputToTexture = false;
+
+                    roundText.gameObject.SetActive(true);
+
+                    roundText.text =
+                        GameManager.Instance.CurrentGame.RoundState == ServerState.Quickplay ?
+                            quickPlayString.Value :
+                            roundString.Value + (GameManager.Instance.CurrentGame.CurrentRound.Number + 1).ToString();
 
                     break;
 
@@ -56,52 +74,13 @@ namespace UdeS.Promoscience
                     //    labyrinth = null;
                     //}
 
+
+
                     break;
             }
         }
 
 
-        public void OnGameStarted(Game game)
-        {
-            this.game = game;
-
-            game.OnRoundStartedHandler += OnRoundStarted;
-
-        }
-
-        public void OnGameEnded(Game game)
-        {
-            game.OnRoundStartedHandler -= OnRoundStarted;
-            //game.OnRoundE
-
-        }
-
-
-        public void OnRoundStarted(Round round)
-        {
-            if (labyrinth != null)
-            {
-                labyrinth.gameObject.Destroy();
-                labyrinth = null;
-            }
-
-            labyrinth = Labyrinths.Resources.Instance
-                .GetLabyrinthObject(round.Labyrinth)
-                .Create(round.Labyrinth);
-
-            labyrinth.GenerateLabyrinthVisual();
-
-            labyrinth.Init(enableCamera: true);
-
-            labyrinth.Camera.OutputToTexture = false;
-
-            roundText.gameObject.SetActive(true);
-
-            roundText.text =
-                game.RoundState == ServerState.Quickplay ?
-                    quickPlayString.Value :
-                    roundString.Value + (round.Number + 1).ToString();
-        }
 
 
 

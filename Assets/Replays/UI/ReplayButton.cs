@@ -20,6 +20,9 @@ namespace UdeS.Promoscience.Replays.UI
         //private Replay replayController;
 
         [SerializeField]
+        private AlgorithmSelectionInteface algorithmSelection;
+
+        [SerializeField]
         private UnityEngine.UI.Button removeButton;
 
         [SerializeField]
@@ -31,7 +34,6 @@ namespace UdeS.Promoscience.Replays.UI
 
         public Cirrus.Event<ReplayButton> OnReplayClickedHandler;
 
-        private BaseReplay replay;
 
         private ButtonMode mode;
 
@@ -76,17 +78,13 @@ namespace UdeS.Promoscience.Replays.UI
 
             removeButton.onClick.AddListener(OnRemoved);
 
+            algorithmSelection.Algorithm.OnValueChangedHandler += (x) => Debug.Log("DSAD");
+
             Mode = mode;
         }
 
         public override void OnClick()
-        {
-            if (replay == null)
-            { 
-                //replay = new SingleReplay(
-                //    replayController,
-                //    labyrinth);
-            }            
+        {   
             
             //Server.Instance.StartAdvancedReplay(replay);
         }

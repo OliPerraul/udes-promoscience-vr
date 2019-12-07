@@ -80,7 +80,7 @@ namespace UdeS.Promoscience
 
             switch (state)
             {
-                case ServerState.LabyrinthReplay:
+                case ServerState.RoundReplay:
                     break;
 
                 default:
@@ -102,12 +102,12 @@ namespace UdeS.Promoscience
 
         public void StartInstantReplay()
         {
-            Replays.ReplayManager.Instance.StartInstantReplay();
+            Replays.ReplayManager.Instance.StartLabyrinthReplay();
         }
 
         public void StartAdvancedReplay()
         {
-            Replays.ReplayManager.Instance.StartReplaySelect();
+            Replays.ReplayManager.Instance.StartGameReplay();
         }
 
 

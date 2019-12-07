@@ -64,29 +64,20 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private Button nextButton;
 
-        private BaseReplay replay;
-
+        //[SerializeField]
+        //private ControlsServerResponseAsset serverResponse;
 
         private bool enabled = false;
 
         public bool Enabled
         {
-            get
-            {
-                return enabled;
-            }
-
+            get => enabled;
+                      
             set
             {
                 enabled = value;
-                //infoPanel.SetActive(enabled);
                 navigPanel.SetActive(enabled);
             }
-        }
-
-        public void OnValidate()
-        {
-
         }
 
         // Use this for initialization
@@ -99,51 +90,52 @@ namespace UdeS.Promoscience.Replays.UI
             fastfowardButton.onClick.AddListener(OnFastFowardClicked);
             slider.onValueChanged.AddListener(OnSliderMoved);
 
-            ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnSplitReplayStarted;
-            ReplayManager.Instance.OnSplitReplayCreatedHandler += OnSplitReplayStarted;
+            //serverResponse.Init(this);
+            //Server.Instance.State.OnValueChangedHandler += serverResponse.OnServerStateChanged;
         }
 
-        
-
-        public void OnSplitReplayStarted(BaseReplay replay)
+        public void OnServerStateChanged(ServerState state)
         {
-            if (this.replay != null)
+            switch (state)
             {
-                this.replay.OnMoveIndexChangedHandler -= OnProgress;
-                this.replay.OnSequenceFinishedHandler -= OnReplaySequenceFinished;
-                this.replay.OnMoveCountSetHandler -= OnSequenceChanged;
-                this.replay.OnPlaybackSpeedHandler -= OnPlaybackSpeedChanged;
+                //case ServerState.LabyrinthReplay:
+                //case ServerState.MultiLabyrinthReplay:
+
+                //    if (replay != null)
+                //    {
+                //        ReplayManager.Instance.CurrentReplay.OnMoveIndexChangedHandler -= OnProgress;
+                //        ReplayManager.Instance.CurrentReplay.OnSequenceFinishedHandler -= OnReplaySequenceFinished;
+                //        ReplayManager.Instance.CurrentReplay.OnMoveCountSetHandler -= OnSequenceChanged;
+                //        ReplayManager.Instance.CurrentReplay.OnPlaybackSpeedHandler -= OnPlaybackSpeedChanged;
+                //    }
+
+                //    replay = ReplayManager.Instance.CurrentReplay;
+
+                //    ReplayManager.Instance.CurrentReplay.OnMoveIndexChangedHandler += OnProgress;
+                //    ReplayManager.Instance.CurrentReplay.OnSequenceFinishedHandler += OnReplaySequenceFinished;
+                //    ReplayManager.Instance.CurrentReplay.OnMoveCountSetHandler += OnSequenceChanged;
+                //    ReplayManager.Instance.CurrentReplay.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
+
+                //    break;
+
+                //default:
+                //    ReplayManager.Instance.CurrentReplay.OnMoveIndexChangedHandler -= OnProgress;
+                //    ReplayManager.Instance.CurrentReplay.OnSequenceFinishedHandler -= OnReplaySequenceFinished;
+                //    ReplayManager.Instance.CurrentReplay.OnMoveCountSetHandler -= OnSequenceChanged;
+                //    ReplayManager.Instance.CurrentReplay.OnPlaybackSpeedHandler -= OnPlaybackSpeedChanged;
+                //    break;
             }
-
-            this.replay = replay;
-
-            replay.OnMoveIndexChangedHandler += OnProgress;
-            replay.OnSequenceFinishedHandler += OnReplaySequenceFinished;
-            replay.OnMoveCountSetHandler += OnSequenceChanged;
-            replay.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
         }
 
-
-
-        public void OnDestroy()
-        {
-            if (this.replay != null)
-            {
-                this.replay.OnMoveIndexChangedHandler -= OnProgress;
-                this.replay.OnSequenceFinishedHandler -= OnReplaySequenceFinished;
-                this.replay.OnMoveCountSetHandler -= OnSequenceChanged;
-                this.replay.OnPlaybackSpeedHandler -= OnPlaybackSpeedChanged;
-            }
-        }
 
         public void OnPlaybackSpeedChanged(float value)
         {
-            playbackSpeedText.text = "x" + replay.PlaybackSpeed;
+            //playbackSpeedText.text = "x" + replay.PlaybackSpeed;
         }
 
         private void OnFastFowardClicked()
         {
-            replay.PlaybackSpeed += 0.5f;
+            //replay.PlaybackSpeed += 0.5f;
         }
 
         private void OnSequenceChanged(int mvcnt)
@@ -160,7 +152,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnDropdown(int index)
         {
-            replay.CourseIndex = index;
+            //replay.CourseIndex = index;
         }
 
         private bool isPlaying = false;
@@ -173,13 +165,13 @@ namespace UdeS.Promoscience.Replays.UI
             {
                 isPlaying = true;
                 playImage.sprite = stopSprite;
-                replay.SendAction(ReplayControlAction.Play);
+                //replay.SendAction(ReplayControlAction.Play);
             }
             else
             {
                 isPlaying = false;
                 playImage.sprite = playSprite;
-                replay.SendAction(ReplayControlAction.Stop);
+                //replay.SendAction(ReplayControlAction.Stop);
             }
         }
 
@@ -189,31 +181,31 @@ namespace UdeS.Promoscience.Replays.UI
             {
                 isPaused = true;
                 playImage.sprite = playSprite;
-                replay.SendAction(ReplayControlAction.Pause);
+                //replay.SendAction(ReplayControlAction.Pause);
             }
             else
             {
                 isPaused = false;
                 playImage.sprite = stopSprite;
-                replay.SendAction(ReplayControlAction.Resume);
+                //replay.SendAction(ReplayControlAction.Resume);
             }
         }
 
         public void OnPreviousClicked()
         {
-            replay.SendAction(ReplayControlAction.Previous);
+            //replay.SendAction(ReplayControlAction.Previous);
         }
 
         public void OnNextClicked()
         {
-            replay.SendAction(ReplayControlAction.Next);
+            //replay.SendAction(ReplayControlAction.Next);
         }
 
         public void OnSliderMoved(float value)
         {
             if (sendSliderEvent)
             {
-                replay.SendAction(ReplayControlAction.Slide, Mathf.RoundToInt(value));
+                //replay.SendAction(ReplayControlAction.Slide, Mathf.RoundToInt(value));
             }
 
             sendSliderEvent = true;

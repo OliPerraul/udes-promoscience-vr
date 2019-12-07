@@ -61,8 +61,8 @@ namespace UdeS.Promoscience.UI
         {
             switch (Server.Instance.State.Value)
             {
-                case ServerState.LabyrinthReplay:
-                case ServerState.ReplaySelect:
+                case ServerState.RoundReplay:
+                case ServerState.GameReplay:
                 case ServerState.LevelSelect:
                     Server.Instance.ReturnToGame();
                     break;
@@ -81,7 +81,7 @@ namespace UdeS.Promoscience.UI
         {
             switch (state)
             {
-                case ServerState.LabyrinthReplay:
+                case ServerState.RoundReplay:
                     //Flags.Set(ButtonCanvasFlag.Exit | ButtonCanvasFlag.Info);
                     break;
 
@@ -89,7 +89,7 @@ namespace UdeS.Promoscience.UI
                     Flags.Set(ButtonCanvasFlag.Random | ButtonCanvasFlag.Exit);
                     break;
 
-                case ServerState.ReplaySelect:
+                case ServerState.GameReplay:
                 case ServerState.Round:
                 case ServerState.Quickplay:
                 case ServerState.Lobby:

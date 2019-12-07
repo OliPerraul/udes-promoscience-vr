@@ -35,7 +35,7 @@ namespace UdeS.Promoscience.Replays
             public bool IsBacktracking = false;
         }
 
-        private LabyrinthReplay replay;
+        private RoundReplay replay;
 
         protected override BaseReplay Replay => replay;
 
@@ -126,7 +126,7 @@ namespace UdeS.Promoscience.Replays
         private float offsetAmount = 0f;
 
         public PlayerSequence Create(
-            LabyrinthReplay replay,
+            RoundReplay replay,
             Course course,
             Labyrinths.LabyrinthObject labyrinth,
             Vector2Int startPosition)

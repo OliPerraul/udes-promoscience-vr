@@ -17,9 +17,10 @@ namespace UdeS.Promoscience
 
         public Game CurrentGame => currentGame;
 
-        public Cirrus.Event<Game> OnGameCreatedHandler;
+        // Use these events instead
+        //public Cirrus.Event<Game> OnGameCreatedHandler;
 
-        public Cirrus.Event<Game> OnGameEndedHandler;
+        //public Cirrus.Event<Game> OnGameEndedHandler;
 
         public void StartQuickplay()
         {
@@ -35,7 +36,7 @@ namespace UdeS.Promoscience
 
             currentGame.Start();
 
-            OnGameCreatedHandler?.Invoke(currentGame);
+            //OnGameCreatedHandler?.Invoke(currentGame);
         }
 
         public void StartNewGame()
@@ -55,7 +56,7 @@ namespace UdeS.Promoscience
 
             SQLiteUtilities.InsertGame(currentGame.Id);
 
-            OnGameCreatedHandler?.Invoke(currentGame);
+            //OnGameCreatedHandler?.Invoke(currentGame);
 
             currentGame.Start();
         }

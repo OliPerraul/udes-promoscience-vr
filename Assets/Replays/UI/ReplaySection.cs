@@ -9,7 +9,6 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-
     public class ReplaySection : Labyrinths.UI.BaseSection
     {
         [SerializeField]

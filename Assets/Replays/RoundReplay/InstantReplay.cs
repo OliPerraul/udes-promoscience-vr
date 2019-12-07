@@ -5,9 +5,11 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class InstantReplay : LabyrinthReplay
+    public class InstantReplay : RoundReplay
     {
-        public InstantReplay(Round round) : base(round) { }
+        public InstantReplay(
+            ReplayControlsAsset controls,
+            Round round) : base(controls, round) { }
 
         public override void Start()
         {
@@ -15,11 +17,11 @@ namespace UdeS.Promoscience.Replays
 
             Resume();
 
-            Server.Instance.State.Set(ServerState.LabyrinthReplay);
+            Server.Instance.State.Set(ServerState.RoundReplay);
             
             IsToggleAlgorithm.Set(true);
 
-            PlaybackSpeed = 2f;
+            controls.PlaybackSpeed = 2f;
         }
     }
 }
