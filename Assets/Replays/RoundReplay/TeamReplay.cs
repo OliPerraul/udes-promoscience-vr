@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replays
 {
-    public delegate void OnSequenceEvent(PlayerSequence sequence);
+    public delegate void OnSequenceEvent(TeamReplay sequence);
 
-    public class PlayerSequence : Sequence
+    public class TeamReplay : LabyrinthReplay
     {
         public class State
         {
@@ -125,13 +125,13 @@ namespace UdeS.Promoscience.Replays
 
         private float offsetAmount = 0f;
 
-        public PlayerSequence Create(
+        public TeamReplay Create(
             RoundReplay replay,
             Course course,
             Labyrinths.LabyrinthObject labyrinth,
             Vector2Int startPosition)
         {
-            PlayerSequence sequence = this.Create(
+            TeamReplay sequence = this.Create(
                 labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
 
             sequence.replay = replay;

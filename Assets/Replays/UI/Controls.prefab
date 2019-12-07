@@ -370,7 +370,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 128}
+  m_AnchoredPosition: {x: 0, y: 81}
   m_SizeDelta: {x: 540, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5854816962068098901
@@ -385,8 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc3b860b1c2fbe41be202f3f3c65747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playbackOptions: {fileID: 11400000, guid: 5244deb39a979454683277ed9dc7f48f, type: 2}
-  infoPanel: {fileID: 0}
+  asset: {fileID: 11400000, guid: 5ca61c9a84ebc0e409a98d5272fb177d, type: 2}
   navigPanel: {fileID: 5854816962068098907}
   playSprite: {fileID: 21300000, guid: 47993edb47d87e34f9684ccb02c2f2c9, type: 3}
   stopSprite: {fileID: 21300000, guid: 6b343c5577291fb4f9be924139fc08f5, type: 3}
@@ -1292,16 +1291,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: -1
       objectReference: {fileID: 0}
-    - target: {fileID: 114896132728136572, guid: 0594ff68a002b0c489015be281826522,
-        type: 3}
-      propertyPath: m_TargetGraphic
-      value: 
-      objectReference: {fileID: 5825342745718026791}
     - target: {fileID: 114766324957776548, guid: 0594ff68a002b0c489015be281826522,
         type: 3}
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114896132728136572, guid: 0594ff68a002b0c489015be281826522,
+        type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 5825342745718026791}
     - target: {fileID: 1325240602465114, guid: 0594ff68a002b0c489015be281826522, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1498,16 +1497,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: -64
       objectReference: {fileID: 0}
-    - target: {fileID: 114896132728136572, guid: 0594ff68a002b0c489015be281826522,
-        type: 3}
-      propertyPath: m_TargetGraphic
-      value: 
-      objectReference: {fileID: 5825342745647758893}
     - target: {fileID: 114766324957776548, guid: 0594ff68a002b0c489015be281826522,
         type: 3}
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114896132728136572, guid: 0594ff68a002b0c489015be281826522,
+        type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 5825342745647758893}
     - target: {fileID: 1325240602465114, guid: 0594ff68a002b0c489015be281826522, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1697,16 +1696,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114896132728136572, guid: 0594ff68a002b0c489015be281826522,
-        type: 3}
-      propertyPath: m_TargetGraphic
-      value: 
-      objectReference: {fileID: 5825342743781667534}
     - target: {fileID: 114766324957776548, guid: 0594ff68a002b0c489015be281826522,
         type: 3}
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114896132728136572, guid: 0594ff68a002b0c489015be281826522,
+        type: 3}
+      propertyPath: m_TargetGraphic
+      value: 
+      objectReference: {fileID: 5825342743781667534}
     - target: {fileID: 1325240602465114, guid: 0594ff68a002b0c489015be281826522, type: 3}
       propertyPath: m_IsActive
       value: 0

@@ -10,9 +10,9 @@ namespace UdeS.Promoscience.Replays
         public Segment Segment;
 
         [SerializeField]
-        public PlayerSequence PlayerSequence;
+        public TeamReplay PlayerSequence;
 
         [SerializeField]
-        public AlgorithmSequence AlgorithmSequence;
+        public AlgorithmReplay AlgorithmSequence;
     }
 }

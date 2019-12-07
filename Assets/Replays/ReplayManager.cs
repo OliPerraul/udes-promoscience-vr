@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.Replays
 
         public void Awake()
         {
-            Server.Instance.State.OnValueChangedHandler += OnGameStateValueChanged;
+            Server.Instance.State.OnValueChangedHandler += OnServerStateValueChanged;
             //GameManager.Instance.OnGameCreatedHandler += OnGameCreated;
             //GameManager.Instance.OnGameEndedHandler += OnGameEnded;
         }
@@ -59,7 +59,7 @@ namespace UdeS.Promoscience.Replays
             GameReplay.Value.Start();
         }
 
-        public void StartLabyrinthReplay()
+        public void StartRoundReplay()
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -85,20 +85,41 @@ namespace UdeS.Promoscience.Replays
         }
 
 
-        public void OnGameStateValueChanged(ServerState state)
+        public void OnServerStateValueChanged(ServerState state)
         {
             switch (state)
             {
-                case ServerState.RoundReplay:
                 case ServerState.GameReplay:
+
+                    if (RoundReplay.Value != null)
+                    {
+                        RoundReplay.Value.Clear();
+                        RoundReplay.Value = null;
+                    }
+
+                    break;
+
+                case ServerState.RoundReplay:
+                    if (GameReplay.Value != null)
+                    {
+                        GameReplay.Value.Clear();
+                        GameReplay.Value = null;
+                    }
                     break;
 
                 default:
-                    //if (CurrentReplay != null)
-                    //{
-                    //    CurrentReplay.Clear();
-                    //    CurrentReplay = null;
-                    //}
+
+                    if (GameReplay.Value != null)
+                    {
+                        GameReplay.Value.Clear();
+                        GameReplay.Value = null;
+                    }
+
+                    if (RoundReplay.Value != null)
+                    {
+                        RoundReplay.Value.Clear();
+                        RoundReplay.Value = null;
+                    }
 
                     break;
             }

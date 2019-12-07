@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14e6e276b49ba7b4e946d9cffbed9e5f, type: 3}
-  m_Name: ReplayManager
+  m_Script: {fileID: 11500000, guid: 3aa46ad4df5e8ce40bc473d8d79ec9e9, type: 3}
+  m_Name: ReplayControls.Round
   m_EditorClassIdentifier: 
-  moveCount: -2147483648
-  moveIndex: 0

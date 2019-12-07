@@ -33,11 +33,11 @@ namespace UdeS.Promoscience.Replays
 
         protected Vector3 wposition;
 
-        private Dictionary<int, PlayerSequence> playerSequences = new Dictionary<int, PlayerSequence>();
+        private Dictionary<int, TeamReplay> playerSequences = new Dictionary<int, TeamReplay>();
 
-        private AlgorithmSequence algorithmSequence;
+        private AlgorithmReplay algorithmSequence;
 
-        private List<PlayerSequence> activeSequences = new List<PlayerSequence>();
+        private List<TeamReplay> activeSequences = new List<TeamReplay>();
 
         private List<Course> Courses => round.Courses;
 
@@ -109,7 +109,10 @@ namespace UdeS.Promoscience.Replays
                 sq.PlaybackSpeed = speed;
             }
 
-            algorithmSequence.PlaybackSpeed = speed;
+            if (algorithmSequence != null)
+            {
+                algorithmSequence.PlaybackSpeed = speed;
+            }
         }
 
         public override void Resume()
@@ -405,15 +408,15 @@ namespace UdeS.Promoscience.Replays
         {
             first = null;
 
+            algorithmSequence.gameObject.Destroy();
+
+            algorithmSequence = null;
+
             if (labyrinthObject != null)
             {
-
                 labyrinthObject.gameObject.Destroy();
                 labyrinthObject = null;
-
             }
-
-
 
             playerSequences.Clear();
 

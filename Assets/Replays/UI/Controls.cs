@@ -11,8 +11,8 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class Controls : MonoBehaviour
     {
-        //[SerializeField]
-        //private ReplayManagerAsset playbackOptions;
+        [SerializeField]
+        private ReplayControlsAsset asset;
 
         public Cirrus.Event OnExpandHandler;
 
@@ -165,13 +165,13 @@ namespace UdeS.Promoscience.Replays.UI
             {
                 isPlaying = true;
                 playImage.sprite = stopSprite;
-                //replay.SendAction(ReplayControlAction.Play);
+                asset.SendAction(ReplayControlAction.Play);
             }
             else
             {
                 isPlaying = false;
                 playImage.sprite = playSprite;
-                //replay.SendAction(ReplayControlAction.Stop);
+                asset.SendAction(ReplayControlAction.Stop);
             }
         }
 
@@ -181,31 +181,31 @@ namespace UdeS.Promoscience.Replays.UI
             {
                 isPaused = true;
                 playImage.sprite = playSprite;
-                //replay.SendAction(ReplayControlAction.Pause);
+                asset.SendAction(ReplayControlAction.Pause);
             }
             else
             {
                 isPaused = false;
                 playImage.sprite = stopSprite;
-                //replay.SendAction(ReplayControlAction.Resume);
+                asset.SendAction(ReplayControlAction.Resume);
             }
         }
 
         public void OnPreviousClicked()
         {
-            //replay.SendAction(ReplayControlAction.Previous);
+            asset.SendAction(ReplayControlAction.Previous);
         }
 
         public void OnNextClicked()
         {
-            //replay.SendAction(ReplayControlAction.Next);
+            asset.SendAction(ReplayControlAction.Next);
         }
 
         public void OnSliderMoved(float value)
         {
             if (sendSliderEvent)
             {
-                //replay.SendAction(ReplayControlAction.Slide, Mathf.RoundToInt(value));
+                asset.SlideValue.Value = Mathf.RoundToInt(value);
             }
 
             sendSliderEvent = true;

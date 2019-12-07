@@ -14,6 +14,9 @@ namespace UdeS.Promoscience
     public class Client : BaseSingleton<Client>
     {
         [SerializeField]
+        private ClientSettings settings;
+
+        [SerializeField]
         private AvatarControllerAsset controls;
 
         [SerializeField]
@@ -45,8 +48,13 @@ namespace UdeS.Promoscience
 
         public void Awake()
         {
-            //Debug.Log("Client "+ Utils.StaticCount);
-            //Utils.StaticCount++;
+            if (settings == null)
+            {
+                settings = new ClientSettings();
+            }
+
+            settings.LoadFromPlayerPrefs();
+
 
             State.OnValueChangedHandler += OnGameStateChanged;
 

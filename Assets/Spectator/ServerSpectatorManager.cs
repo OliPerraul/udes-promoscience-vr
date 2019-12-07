@@ -5,7 +5,7 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience
 {
-    public class SpectatorManager : MonoBehaviour
+    public class ServerSpectatorManager : MonoBehaviour
     {
         [SerializeField]
         private UnityEngine.UI.Text roundText;
@@ -66,13 +66,13 @@ namespace UdeS.Promoscience
                     break;
 
                 default:
-                    //roundText.gameObject.SetActive(false);
+                    roundText.gameObject.SetActive(false);
 
-                    //if (labyrinth != null)
-                    //{
-                    //    labyrinth.gameObject.Destroy();
-                    //    labyrinth = null;
-                    //}
+                    if (labyrinth != null)
+                    {
+                        labyrinth.gameObject.Destroy();
+                        labyrinth = null;
+                    }
 
 
 

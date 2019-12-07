@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Replays
     }
 
 
-    public class ReplayControlsAsset : MonoBehaviour
+    public class ReplayControlsAsset : ScriptableObject
     {
         private float playbackSpeed = 1f;
 
@@ -39,8 +39,13 @@ namespace UdeS.Promoscience.Replays
 
         public Cirrus.Event<float> OnPlaybackSpeedHandler;
 
-        public Cirrus.ObservableValue<float> SlideValue = new Cirrus.ObservableValue<float>();
+        public Cirrus.ObservableValue<int> SlideValue = new Cirrus.ObservableValue<int>();
 
         public Cirrus.Event<ReplayControlAction> OnControlActionHandler;
+
+        public void SendAction(ReplayControlAction action)
+        {
+            OnControlActionHandler?.Invoke(action);
+        }
     }
 }

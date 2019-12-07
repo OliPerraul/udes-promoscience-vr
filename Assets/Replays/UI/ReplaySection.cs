@@ -37,6 +37,18 @@ namespace UdeS.Promoscience.Replays.UI
             select.OnContentChangedHandler += () => AdjustContent();
         }
 
+        public void OnDestroy()
+        {
+            //buttons.Clear();
+
+            foreach (var button in buttons)
+            {
+                button.gameObject.Destroy();
+            }
+
+            buttons.Clear();
+        }
+
         public void AdjustContent()
         {
             if (buttons.Count == 0)
@@ -68,11 +80,11 @@ namespace UdeS.Promoscience.Replays.UI
 
         }
 
-        public override void AddButton(LabyrinthObject labyrinth)
+        public virtual void AddButton(PreviewReplay replay)
         {
             var button = buttonTemplate.CreateReplayButton(
                 transform,
-                labyrinth);
+                replay);
 
             buttons.Add(button);
 

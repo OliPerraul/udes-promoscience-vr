@@ -102,7 +102,7 @@ namespace UdeS.Promoscience
 
         public void StartInstantReplay()
         {
-            Replays.ReplayManager.Instance.StartLabyrinthReplay();
+            Replays.ReplayManager.Instance.StartRoundReplay();
         }
 
         public void StartAdvancedReplay()

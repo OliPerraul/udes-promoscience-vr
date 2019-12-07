@@ -77,19 +77,6 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override BaseSection CurrentSection => throw new System.NotImplementedException();
 
-        public virtual void OnReplayAction(Replays.ReplayControlAction action, params object[] args)
-        {
-            //switch (action)
-            //{
-            //    case Replays.ReplayAction.ExitReplay:
-
-            //        Enabled = true;
-            //        Server.Instance.State.Value = ServerState.LevelSelect;
-
-            //        break;
-            //}
-        }
-
         public override void AddLabyrinth(int i)
         {
             var data = Resources.Instance.Labyrinths[i];
@@ -178,21 +165,24 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
                     break;
 
-                case ServerState.Round:
-                case ServerState.Quickplay:
-
-                    Enabled = false;
-                    foreach (var lab in labyrinths)
-                    {
-                        lab.gameObject.SetActive(false);
-                    }
-                    break;
-
-                case ServerState.Menu:
-                    break;
 
                 default:
                     Enabled = false;
+                    foreach (var lab in labyrinths)
+                    {
+                        lab.gameObject.Destroy();
+                    }
+
+                    labyrinths.Clear();
+
+
+                    foreach (var sect in sections)
+                    {
+                        sect.gameObject.Destroy();
+                    }
+
+                    sections.Clear();
+
                     break;
             }
         }

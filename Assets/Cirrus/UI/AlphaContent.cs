@@ -25,6 +25,9 @@ namespace Cirrus.UI
 
                 foreach (var g in _graphics)
                 {
+                    if (g == null)
+                        continue;
+
                     g.color = g.color.SetA(value);
                 }
             }
@@ -37,6 +40,7 @@ namespace Cirrus.UI
         {
             if (_graphics == null || _graphics.Length == 0)
             {
+
                 _graphics = GetComponentsInChildren<Image>();
             }
         }

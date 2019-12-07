@@ -29,12 +29,16 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnReplayChangedHandler(RoundReplay replay)
         {
+  
             if (this.replay != null)
             {
                 this.replay.OnCourseAddedHandler -= OnCourseAdded;
             }
-
+           
             this.replay = replay;
+
+            if (replay == null)
+                return;
 
             this.replay.OnCourseAddedHandler += OnCourseAdded;
             this.replay.OnCourseAddedHandler += OnCourseRemoved;

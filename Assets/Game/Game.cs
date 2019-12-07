@@ -162,6 +162,8 @@ namespace UdeS.Promoscience
                 Algorithm = Algorithms.Resources.Instance.GetAlgorithm(algorithmId)
             };
 
+            rounds.Add(currentRound);
+
             SQLiteUtilities.InsertRound(
                 SQLiteUtilities.GetNextRoundID(),
                 currentRound.Number,

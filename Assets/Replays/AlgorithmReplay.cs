@@ -1,64 +1,149 @@
 ﻿using UnityEngine;
 using System.Collections;
+//using UdeS.Promoscience.Utils;
+using UdeS.Promoscience.ScriptableObjects;
+using System.Collections.Generic;
+using System.Threading;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class AlgorithmReplay : BaseReplay
+    public class AlgorithmReplay : LabyrinthReplay
     {
-        private Round round;
+        private Algorithms.AlgorithmExecution execution;
 
-        private Labyrinths.LabyrinthObject labyrinthObject;
+        private BaseReplay replay;
 
-        public Labyrinths.LabyrinthObject LabyrinthObject => labyrinthObject;
+        protected override BaseReplay Replay => replay;
 
-        private Vector2Int lposition;
+        private Dictionary<Vector2Int, Stack<TileColor>> dictionary;
 
-        private Vector3 wposition;
+        public override int LocalMoveCount => execution.LocalMoveCount;
 
-        private AlgorithmSequence sequence;
+        public override int LocalMoveIndex => execution.LocalMoveIndex;
 
-        //public
-        public AlgorithmReplay(
-            ReplayControlsAsset controls,
-            Round round) : 
-            base(controls)
+        protected override bool HasPrevious => execution.HasPrevious;
+
+        protected override bool HasNext => execution.HasNext;
+
+        public AlgorithmReplay Create(
+            BaseReplay replay,
+            Labyrinths.LabyrinthObject labyrinth,
+            Algorithms.Algorithm algorithm,
+            Vector2Int startPosition)
         {
-            this.round = round;
+            var sequence = this.Create(
+                labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
+
+            sequence.replay = replay;
+            sequence.labyrinth = labyrinth;
+            sequence.lposition = startPosition;
+            sequence.startlposition = startPosition;
+            sequence.execution = new Algorithms.AlgorithmExecution(algorithm, labyrinth);
+
+            return sequence;
         }
 
-        public void CreateLabyrinth()
+        public override void Awake()
         {
-            labyrinthObject = Labyrinths.Resources.Instance
-                .GetLabyrinthObject(round.Labyrinth)
-                .Create(round.Labyrinth);
+            base.Awake();
 
-            labyrinthObject.GenerateLabyrinthVisual();
-
-            labyrinthObject.Init(enableCamera: true);
-
-            labyrinthObject.Camera.OutputToTexture = true;
-
-            UI.ReplayDisplay.Instance.ViewRawImage.texture = labyrinthObject.Camera.RenderTexture;
-
-            lposition = labyrinthObject.GetLabyrithStartPosition();
-
-            wposition = labyrinthObject.GetLabyrinthPositionInWorldPosition(lposition);
+            dictionary = new Dictionary<Vector2Int, Stack<TileColor>>();
         }
 
-
-        public override void Start()
+        public override void FixedUpdate()
         {
-            CreateLabyrinth();
+            base.FixedUpdate();
+        }
 
-            sequence =
-                Resources.Instance.AlgorithmSequence.Create(
-                this,
-                labyrinthObject,
-                round.Algorithm,
-                lposition
-                );
+        private void PaintTile(Tile tile)
+        {
+            labyrinth.SetTileColor(tile.Position, tile.Color);
+        }
 
-            controls.PlaybackSpeed = 2f;
+        private void PaintTile(Vector2Int position, TileColor action)
+        {
+            labyrinth.SetTileColor(position, action);
+        }
+
+        protected override IEnumerator DoNextCoroutine()
+        {
+            DoNext();
+            yield return new WaitForSeconds(StepTime);          
+            yield return null;
+        }
+
+        private bool isHidden = false;
+
+        public void Show(bool show=true)
+        {
+            isHidden = show;
+
+            if (show)
+            {
+                Stack<TileColor> stack;
+
+                foreach (var tile in execution.Steps)
+                {
+                    if (dictionary.TryGetValue(tile.Position, out stack))
+                    {
+                        PaintTile(tile.Position, stack.Peek());
+                    }
+                }
+            }
+            else
+            {
+                foreach (var tile in execution.Steps)
+                {
+                    PaintTile(tile.Position, TileColor.Grey);
+                }
+
+            }
+        }
+
+        protected override void DoNext()
+        {
+            lposition = execution.Steps[execution.LocalMoveIndex].Position;
+
+            Stack <TileColor> stack;
+
+            if (!dictionary.TryGetValue(lposition, out stack))
+            {
+                stack = new Stack<TileColor>();
+                stack.Push(TileColor.Grey); // add base color
+                dictionary.Add(lposition, stack);
+            }
+
+            if(!isHidden) PaintTile(execution.Steps[execution.LocalMoveIndex]);
+            stack.Push(execution.Steps[execution.LocalMoveIndex].Color);
+
+            execution.Next();
+        }
+
+        protected override void DoPrevious()
+        {
+            execution.Previous();
+
+            Stack<TileColor> stack;
+
+            lposition = HasPrevious ? execution.Steps[execution.LocalMoveIndex].Position : startlposition;
+
+            if (dictionary.TryGetValue(lposition, out stack))
+            {
+                if (stack.Count != 0)
+                {
+                    stack.Pop();
+                    if (stack.Count != 0)
+                    {
+                        if(!isHidden) PaintTile(lposition, stack.Peek());
+                    }
+                }
+            }
         }
     }
 }
+
+
+
+
+

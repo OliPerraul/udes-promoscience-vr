@@ -29,6 +29,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public abstract void OnClick();
 
-        public abstract BaseButton Create(Transform parent, LabyrinthObject labyrinth);
+        // TODO: this abstraction does not really work, see subclass
+        public virtual BaseButton Create(Transform parent, LabyrinthObject labyrinth) { return null; }
     }
 }

@@ -37,8 +37,6 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-
-
         public override void OnDestroy()
         {
             if(
@@ -55,23 +53,19 @@ namespace UdeS.Promoscience.Replays.UI
                 {
                     AddBottomLabyrinth();
                 }
-
-                sections[sections.Count - 1].AddButton(CreateNextLabyrinth());
+                else
+                {
+                    sections[sections.Count - 1].AddButton(CreateNextLabyrinth());
+                }
             }
 
             OnContentChangedHandler?.Invoke();
         }
 
 
-        public override LabyrinthObject CreateNextLabyrinth()
+        public virtual PreviewReplay CreateNextLabyrinth()
         {
-            var replay = ReplayManager.Instance.GameReplay.Value.AddReplay();
-
-            replay.Start();
-
-            replay.LabyrinthObject.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * (labyrinths.Count - 1);
-
-            return replay.LabyrinthObject;
+            return ReplayManager.Instance.GameReplay.Value.CreatePreviewReplay();
         }
 
         public virtual void OnServerGameStateChanged(ServerState state)
@@ -92,17 +86,7 @@ namespace UdeS.Promoscience.Replays.UI
                 default:
 
                     Enabled = false;
-                    foreach (var lab in labyrinths)
-                    {
-
-                        if (lab == null)
-                            continue;
-                        Destroy(lab.gameObject);
-                        
-                    }
-
-                    labyrinths.Clear();
-
+                    
 
                     foreach (var sec in sections)
                     {
@@ -131,19 +115,6 @@ namespace UdeS.Promoscience.Replays.UI
             set => gameObject.SetActive(value);
         }
 
-
-        public virtual void OnReplayAction(ReplayControlAction action, params object[] args)
-        {
-            //switch (action)
-            //{
-            //    case ReplayAction.ExitReplay:
-
-            //        Enabled = true;
-            //        Server.Instance.State.Value = ServerState.LevelSelect;
-
-            //        break;
-            //}
-        }
 
         public override void Clear()
         {
@@ -177,13 +148,8 @@ namespace UdeS.Promoscience.Replays.UI
             OnContentChangedHandler?.Invoke();
         }
 
-        public override BaseSection AddSection()
+        public virtual ReplaySection AddSection()
         {
-            if (sections.Count == 1)
-            {
-                sections[0].RespectLayout();
-            }
-
             currentSection = sectionTemplate.Create(buttonsParent);
 
             sections.Add(currentSection);
@@ -193,6 +159,8 @@ namespace UdeS.Promoscience.Replays.UI
             currentSection.OnButtonRemovedHandler += OnButtonRemoved;
 
             currentSection.OnRemovedHandler += OnSectionRemoved;
+
+            AdjustContent();
 
             return currentSection;
         }
@@ -208,15 +176,6 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnButtonRemoved(ReplayButton button)
         {
-            labyrinths.Remove(button.Labyrinth);
-
-            for (int i = 0; i < labyrinths.Count; i++)
-            {
-                labyrinths[i].transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * i;
-            }
-
-            labyrinthIndex = labyrinths.Count;
-
             OnContentChangedHandler?.Invoke();
         }
 

@@ -16,8 +16,8 @@ namespace UdeS.Promoscience.Replays.UI
 
     public class ReplayButton : Labyrinths.UI.BaseButton
     {
-        //[SerializeField]
-        //private Replay replayController;
+        [SerializeField]
+        private PreviewReplay replay;
 
         [SerializeField]
         private AlgorithmSelectionInteface algorithmSelection;
@@ -27,6 +27,12 @@ namespace UdeS.Promoscience.Replays.UI
 
         [SerializeField]
         private UnityEngine.UI.Button addButton;
+
+        [SerializeField]
+        private UnityEngine.UI.Text roundNumberText;
+
+        [SerializeField]
+        private UnityEngine.UI.Text stepText;
 
         public Cirrus.Event<Transform,ReplayButton> OnRemovedHandler;
 
@@ -41,6 +47,9 @@ namespace UdeS.Promoscience.Replays.UI
         {
             set
             {
+                if (gameObject == null)
+                    return;
+
                 mode = value;
 
                 switch (value)
@@ -84,33 +93,32 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
         public override void OnClick()
-        {   
-            
-            //Server.Instance.StartAdvancedReplay(replay);
+        {
+            replay?.OnRoundReplayStartedHandler(replay);
         }
 
         public void OnRemoved()
         {
-            Labyrinth.gameObject?.Destroy();
+            replay.Remove();
             gameObject?.Destroy();
             OnRemovedHandler?.Invoke(transform.parent, this);
         }
 
-        public override Labyrinths.UI.BaseButton Create(
+        public virtual Labyrinths.UI.BaseButton Create(
             Transform parent,
-            Labyrinths.LabyrinthObject labyrinth)
+            PreviewReplay replay)
         {
-            return CreateReplayButton(parent, labyrinth);
+            return CreateReplayButton(parent, replay);
         }
 
         public ReplayButton CreateReplayButton(
             Transform parent,
-            Labyrinths.LabyrinthObject labyrinth)
+            PreviewReplay replay)
         {
             var l = this.Create(parent);
-            l.labyrinth = labyrinth;
-            l.rawImage.texture = labyrinth.Camera.RenderTexture;
-
+            l.replay = replay;
+            l.rawImage.texture = replay.LabyrinthObject.Camera.RenderTexture;
+            l.roundNumberText.text = (replay.RoundNumber + 1).ToString();
             return l;
         }
     }

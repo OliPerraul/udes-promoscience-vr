@@ -36,13 +36,11 @@ namespace UdeS.Promoscience.Replays.UI
             closeSidebarButton.onClick.AddListener(() =>
             {
                 Enabled = false;
-                openSidebarButton.gameObject.SetActive(true);
             });
 
             openSidebarButton.onClick.AddListener(() =>
             {
                 Enabled = true;
-                openSidebarButton.gameObject.SetActive(false);
             });
 
             Enabled = false;
@@ -101,8 +99,9 @@ namespace UdeS.Promoscience.Replays.UI
                 ButtonManager.Instance.Flags.Value =
                     _enabled ?
                     ButtonCanvasFlag.None :
-                    ButtonCanvasFlag.Exit;                        
+                    ButtonCanvasFlag.Exit;
 
+                openSidebarButton.gameObject.SetActive(!_enabled);
                 content.SetActive(_enabled);
             }
         }

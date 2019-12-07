@@ -10,8 +10,8 @@ public interface ISequence
 
 namespace UdeS.Promoscience.Replays
 {
-
-    public abstract class Sequence : MonoBehaviour
+    // TODO derive BaseReplay
+    public abstract class LabyrinthReplay : MonoBehaviour
     {
         ////[SerializeField]
         protected abstract BaseReplay Replay { get; }
@@ -87,9 +87,10 @@ namespace UdeS.Promoscience.Replays
         protected abstract IEnumerator DoNextCoroutine();
 
 
-        public virtual void StartNextCoroutine()
+        public virtual Coroutine StartNextCoroutine()
         {
             coroutineResult = StartCoroutine(DoNextCoroutine());
+            return coroutineResult;
         }
 
         public virtual void Next()

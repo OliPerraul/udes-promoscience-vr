@@ -5,10 +5,48 @@ using Cirrus;
 
 namespace UdeS.Promoscience
 {
+    public class Settings
+    {
+        public void OnSettingChanged(string setting, bool enabled)
+        {
+            PlayerPrefs.SetInt(setting, enabled ? 1 : 0);
+            PlayerPrefs.Save();
+        }
+
+        public void OnSettingChanged(string setting, int value)
+        {
+            PlayerPrefs.SetInt(setting, value);
+            PlayerPrefs.Save();
+        }
+    }
+
 
     // TODO client settings?
     [Serializable]
-    public class ServerSettings
+    public class ClientSettings : Settings
+    {
+        public const string IsLeftHandedString = "IsLeftHanded";
+
+        [SerializeField]
+        public ObservableBool IsLeftHanded = new ObservableBool(false);
+
+
+        public ClientSettings()
+        {
+            IsLeftHanded.OnValueChangedHandler +=
+                (x) => OnSettingChanged(IsLeftHandedString, x);
+        }
+
+        public void LoadFromPlayerPrefs()
+        {
+            if (PlayerPrefs.HasKey(IsLeftHandedString))
+                IsLeftHanded.Set(PlayerPrefs.GetInt(IsLeftHandedString) == 1, notify: false);
+
+        }
+    }
+
+    [Serializable]
+    public class ServerSettings : Settings
     {
         // TODO expose in menu
         // Would be useful when working on the level editor
@@ -38,18 +76,6 @@ namespace UdeS.Promoscience
 
             NumberOfRounds.OnValueChangedHandler +=
                 (x) => OnSettingChanged(NumberOfRoundsString, Mathf.Clamp(x, MinNumberOfRounds, MaxNumberOfRounds));
-        }
-
-        public void OnSettingChanged(string setting, bool enabled)
-        {
-            PlayerPrefs.SetInt(setting, enabled ? 1 : 0);
-            PlayerPrefs.Save();
-        }
-
-        public void OnSettingChanged(string setting, int value)
-        {
-            PlayerPrefs.SetInt(setting, value);
-            PlayerPrefs.Save();
         }
 
         public void LoadFromPlayerPrefs()
