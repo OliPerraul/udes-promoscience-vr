@@ -76,6 +76,8 @@ namespace UdeS.Promoscience.Replays
 
             this.selectedTeam = selectedTeam;
 
+            this.sidebar = sidebar;
+
             teamToggle.OnCourseSelectedHandler += OnCourseSelected;
 
             sidebar.IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
