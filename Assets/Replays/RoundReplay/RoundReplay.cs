@@ -9,18 +9,6 @@ namespace UdeS.Promoscience.Replays
 {
     public class RoundReplay : ControlReplay
     {
-        public ObservableValue<Course> CurrentCourse = new ObservableValue<Course>();
-
-        public Event<Course> OnCourseAddedHandler;
-
-        public Event<Course> OnCourseRemovedHandler;
-
-        public Event<Course, bool> OnCourseToggledHandler;
-
-        public ObservableValue<bool> IsToggleAlgorithm = new ObservableValue<bool>();
-
-        public ObservableValue<bool> IsToggleGreyboxLabyrinth = new ObservableValue<bool>();
-
         private Round round;
 
         public Labyrinths.ILabyrinth Labyrinth => round.Labyrinth;
@@ -47,16 +35,36 @@ namespace UdeS.Promoscience.Replays
 
         List<Coroutine> started = new List<Coroutine>();
 
+        // TODO remove
         private bool isDirtyToggled = false;
 
         private bool isPlaying = false;
 
         private AlgorithmSelectionAsset algorithmSelection;
 
+        private TeamToggleAsset teamToggle;
+
+        private UI.SelectedTeamAsset selectedTeam;
+
+        private UI.SidebarAsset sidebar;
+
+        private Course first;
+
+        public void OnCourseSelected(Course course)
+        {
+            if (playerSequences.TryGetValue(course.Id, out TeamReplay replay))
+            {
+                selectedTeam.OnReplayCourseSelectedHandler?.Invoke(replay);
+            }
+        }
+
         // TODO remove
         public RoundReplay(
             ReplayControlsAsset controls,
             AlgorithmSelectionAsset algorithmSelection,
+            TeamToggleAsset teamToggle,
+            UI.SelectedTeamAsset selectedTeam,
+            UI.SidebarAsset sidebar,
             Round round) 
             : base(controls)
         {
@@ -64,9 +72,54 @@ namespace UdeS.Promoscience.Replays
 
             this.algorithmSelection = algorithmSelection;
 
-            CurrentCourse.OnValueChangedHandler += OnCourseSelected;
-            IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
-            IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
+            this.teamToggle = teamToggle;
+
+            this.selectedTeam = selectedTeam;
+
+            teamToggle.OnCourseSelectedHandler += OnCourseSelected;
+
+            sidebar.IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
+
+            sidebar.IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
+        }
+
+        public override void Clear()
+        {
+
+            teamToggle.OnCourseSelectedHandler -= OnCourseSelected;
+
+            teamToggle.OnCourseToggledHandler -= OnCourseToggled;
+
+            sidebar.IsToggleAlgorithm.OnValueChangedHandler -= OnAlgorithmToggled;
+
+            sidebar.IsToggleGreyboxLabyrinth.OnValueChangedHandler -= OnGreyBoxToggled;
+
+
+            base.Clear();
+
+            first = null;
+
+            algorithmSequence.gameObject.Destroy();
+
+            algorithmSequence = null;
+
+            if (labyrinthObject != null)
+            {
+                labyrinthObject.gameObject.Destroy();
+                labyrinthObject = null;
+            }
+
+            playerSequences.Clear();
+
+            activeSequences.Clear();
+        }
+
+
+        public void SetMoveCount()
+        {
+            int algMvCnt = algorithmSequence.MoveCount;
+            int teamMvCnt = activeSequences.Max(x => x.MoveCount);
+            controls.ReplayMoveCount.Value = Mathf.Max(algMvCnt, teamMvCnt);
         }
 
         public override void Initialize()
@@ -99,7 +152,7 @@ namespace UdeS.Promoscience.Replays
                 lposition
                 );
 
-            foreach (Course course in Courses)
+            foreach (Course course in round.Courses)
             {
                 AddCourse(course);
             }
@@ -111,6 +164,138 @@ namespace UdeS.Promoscience.Replays
         {
             Server.Instance.State.Set(ServerState.RoundReplay);
         }
+
+        bool isGreyboxToggled = false;
+
+        public void EnableGreybox(bool enable)
+        {
+            isGreyboxToggled = enable;
+
+            labyrinthObject.GenerateLabyrinthVisual(
+                isGreyboxToggled ?
+                Labyrinths.Resources.Instance.GreyboxSkin :
+                null);
+
+            EnableAlgorithm(isDirtyToggled);
+        }
+
+        public void EnableAlgorithm(bool enable)
+        {
+            isDirtyToggled = enable;
+
+            algorithmSequence.Show(!enable);
+        }
+
+        public void EnableOptions(bool enable) { }
+
+        public void OnGreyBoxToggled(bool toggled)
+        {
+            EnableGreybox(toggled);
+        }
+
+        public void OnAlgorithmToggled(bool toggled)
+        {
+            EnableAlgorithm(toggled);
+        }
+
+        public void OnCourseToggled(Course course, bool enabled)
+        {
+            playerSequences[course.Id].gameObject.SetActive(enabled);
+
+            if (!enabled)
+            {
+                activeSequences.Remove(playerSequences[course.Id]);
+            }
+            else
+            {
+                activeSequences.Add(playerSequences[course.Id]);
+            }
+
+            if (activeSequences.Count != 0)
+            {
+                // Adjust move count to biggest sequence
+                SetMoveCount();
+                //OnSlideValueChanged(Mathf.Clamp(GlobalMoveIndex, 0, GlobalMoveCount));
+
+                AdjustOffsets();
+            }
+        }
+
+
+
+        public virtual float GetOffsetAmount(float idx)
+        {
+            return
+                // origin of segment at the center, move it to the left
+                (-Labyrinths.Utils.TileSize / 2) +
+                // number of offsets (minimum 1 to align back at the center if no other sgms)
+                (idx + 1) *
+                // width of the level divided by the amount of sequences we are trying to fit
+                // Number of player sequences + 1 (active sequences contains algorithm)
+                (Labyrinths.Utils.TileSize / (activeSequences.Count + 1));
+        }
+
+        public virtual void AdjustOffsets()
+        {
+            for (int i = 0; i < activeSequences.Count; i++)
+            {
+                activeSequences[i].AdjustOffset(GetOffsetAmount(i));
+            }
+        }
+
+        //protected override void OnSequenceFinished()
+        //{
+        //    //if (OnSequenceFinishedHandler != null)
+        //    //{
+        //    //    OnSequenceFinishedHandler.Invoke();
+        //    //}
+        //}
+
+        public void AddCourse(Course course)
+        {
+            if (!playerSequences.ContainsKey(course.Id))
+            {
+                var sequence =
+                    Resources.Instance.PlayerSequence.Create(
+                        this,                            
+                        course,
+                        labyrinthObject,
+                        lposition);
+
+                playerSequences.Add(course.Id, sequence);
+
+                activeSequences.Add(sequence);
+
+                AdjustOffsets();
+
+                teamToggle.OnReplayCourseAddedHandler?.Invoke(course);
+
+                if (first == null)
+                {
+                    first = course;
+                    teamToggle.OnCourseSelectedHandler?.Invoke(course);
+                }
+
+                SetMoveCount();
+            }
+        }
+
+        public void RemoveCourse(Course course)
+        {
+            activeSequences.Remove(playerSequences[course.Id]);
+
+            playerSequences.Remove(course.Id);
+
+            SetMoveCount();
+
+            AdjustOffsets();
+
+            teamToggle.OnReplayCourseRemovedHandler?.Invoke(course);
+
+            SetMoveCount();
+        }
+
+
 
         //public override void OnPlaybackSpeedChanged(float speed)
         //{
@@ -254,173 +439,5 @@ namespace UdeS.Promoscience.Replays
 
         //    isPlaying = false;
         //}
-
-        bool isGreyboxToggled = false;
-
-        public void EnableGreybox(bool enable)
-        {
-            isGreyboxToggled = enable;
-
-            labyrinthObject.GenerateLabyrinthVisual(
-                isGreyboxToggled ?
-                Labyrinths.Resources.Instance.GreyboxSkin :
-                null);
-
-            EnableAlgorithm(isDirtyToggled);
-        }
-
-        public void EnableAlgorithm(bool enable)
-        {
-            isDirtyToggled = enable;
-
-            algorithmSequence.Show(!enable);
-        }
-
-        public void EnableOptions(bool enable) { }
-
-        public void OnGreyBoxToggled(bool toggled)
-        {
-            EnableGreybox(toggled);
-        }
-
-        public void OnAlgorithmToggled(bool toggled)
-        {
-            EnableAlgorithm(toggled);
-        }
-
-        public void OnCourseToggled(Course course, bool enabled)
-        {
-            playerSequences[course.Id].gameObject.SetActive(enabled);
-
-            if (!enabled)
-            {
-                activeSequences.Remove(playerSequences[course.Id]);
-            }
-            else
-            {
-                activeSequences.Add(playerSequences[course.Id]);
-            }
-
-            if (activeSequences.Count != 0)
-            {
-                // Adjust move count to biggest sequence
-                TrySetMoveCount(activeSequences.Max(x => x.MoveCount));
-                //OnSlideValueChanged(Mathf.Clamp(GlobalMoveIndex, 0, GlobalMoveCount));
-
-                AdjustOffsets();
-            }
-        }
-
-        public void OnCourseSelected(Course course)
-        {
-            //foreach (AlgorithmSequence sq in algorithmSequences.Values)
-            //{
-            //    sq.Show(false);
-            //}
-            //algorithmSequence.Show(false);
-
-            //algorithmSequence.Show(true);
-
-        }
-
-        public void TrySetMoveCount(int candidateMvcnt)
-        {
-            //if (candidateMvcnt > GlobalMoveCount)
-            //    GlobalMoveCount = candidateMvcnt;
-
-            //Debug.Log(GlobalMoveCount);
-        }
-
-        public virtual float GetOffsetAmount(float idx)
-        {
-            return
-                // origin of segment at the center, move it to the left
-                (-Labyrinths.Utils.TileSize / 2) +
-                // number of offsets (minimum 1 to align back at the center if no other sgms)
-                (idx + 1) *
-                // width of the level divided by the amount of sequences we are trying to fit
-                // Number of player sequences + 1 (active sequences contains algorithm)
-                (Labyrinths.Utils.TileSize / (activeSequences.Count + 1));
-        }
-
-        public virtual void AdjustOffsets()
-        {
-            for (int i = 0; i < activeSequences.Count; i++)
-            {
-                activeSequences[i].AdjustOffset(GetOffsetAmount(i));
-            }
-        }
-
-        //protected override void OnSequenceFinished()
-        //{
-        //    //if (OnSequenceFinishedHandler != null)
-        //    //{
-        //    //    OnSequenceFinishedHandler.Invoke();
-        //    //}
-        //}
-
-        public override void Clear()
-        {
-            base.Clear();
-
-            first = null;
-
-            algorithmSequence.gameObject.Destroy();
-
-            algorithmSequence = null;
-
-            if (labyrinthObject != null)
-            {
-                labyrinthObject.gameObject.Destroy();
-                labyrinthObject = null;
-            }
-
-            playerSequences.Clear();
-
-            activeSequences.Clear();
-        }
-
-        Course first = null;
-
-        public void AddCourse(Course course)
-        {
-            if (!playerSequences.ContainsKey(course.Id))
-            {
-                var sequence =
-                    Resources.Instance.PlayerSequence.Create(
-                        this,                            
-                        course,
-                        labyrinthObject,
-                        lposition);
-
-                playerSequences.Add(course.Id, sequence);
-
-                activeSequences.Add(sequence);
-
-                TrySetMoveCount(sequence.MoveCount);
-
-                AdjustOffsets();
-
-                OnCourseAddedHandler?.Invoke(course);
-
-                if (first == null)
-                {
-                    first = course;
-                    CurrentCourse.Value = course;
-                }
-            }
-        }
-
-        public void RemoveCourse(Course course)
-        {
-            activeSequences.Remove(playerSequences[course.Id]);
-            playerSequences.Remove(course.Id);
-
-            TrySetMoveCount(activeSequences.Max(x => x.MoveCount));
-
-            AdjustOffsets();
-
-            OnCourseRemovedHandler?.Invoke(course);
-        }
     }
 }

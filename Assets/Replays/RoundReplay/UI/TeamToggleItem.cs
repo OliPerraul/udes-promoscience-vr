@@ -9,9 +9,10 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class TeamToggleItem : MonoBehaviour
     {
-        public static Cirrus.Event OnOtherSelectedHandler;
+        [SerializeField]
+        private TeamToggleAsset asset;
 
-        private RoundReplay replay;
+        public static Cirrus.Event OnOtherSelectedHandler;
 
         [SerializeField]
         private UnityEngine.Color selectedColor;
@@ -30,13 +31,13 @@ namespace UdeS.Promoscience.Replays.UI
 
         [SerializeField]
         private UnityEngine.UI.Image selectedImage;
-        
-
 
         [SerializeField]
         private Course course;
 
         public UnityEngine.UI.Button button;
+
+
 
         public void OnValidate()
         {
@@ -71,17 +72,11 @@ namespace UdeS.Promoscience.Replays.UI
 
                 selectedImage.color = selectedColor;
                 OnOtherSelectedHandler += OnOtherSelected;
-                replay.CurrentCourse.Value = course;
+                asset?.OnCourseSelectedHandler(course);
             });
 
             //ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnLabyrinthReplay;
         }
-
-        public void OnLabyrinthReplay(RoundReplay replay)
-        {
-            this.replay = replay;            
-        }
-
 
         public void OnDestroy()
         {
@@ -98,8 +93,7 @@ namespace UdeS.Promoscience.Replays.UI
         public void OnToggle(bool enabled)
         {
 
-
-            replay.OnCourseToggledHandler?.Invoke(course, enabled);
+            asset.OnCourseToggledHandler?.Invoke(course, enabled);
         }
     }
 }

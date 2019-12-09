@@ -9,6 +9,9 @@ namespace UdeS.Promoscience.Replays.UI
     public class ReplaySidebar : MonoBehaviour
     {
         [SerializeField]
+        private SidebarAsset asset;
+
+        [SerializeField]
         protected UnityEngine.UI.Button overlayButton;
 
         [SerializeField]
@@ -32,6 +35,7 @@ namespace UdeS.Promoscience.Replays.UI
         public virtual void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnGameStateChanged;
+
 
             closeSidebarButton.onClick.AddListener(() =>
             {

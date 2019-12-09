@@ -52,7 +52,7 @@ namespace UdeS.Promoscience
 
         //public Cirrus.Event<Round> OnRoundEndedHandler;
 
-        public List<Course> Courses = new List<Course>();
+        //public List<Course> Courses = new List<Course>();
 
         private int NextRoundNumber => currentRound == null ? 0 : (currentRound.Number + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value);
 
@@ -108,7 +108,7 @@ namespace UdeS.Promoscience
                     //AlgorithmSteps = algorithm.GetAlgorithmSteps(currentRound.Labyrinth) // labyrinth)  
                 };
 
-                Courses.Add(course);
+                currentRound.Courses.Add(course);
                 player.ServerCourseId = course.Id;
 
                 SQLiteUtilities.InsertPlayerCourse(

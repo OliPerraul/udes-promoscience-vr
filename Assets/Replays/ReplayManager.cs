@@ -12,6 +12,15 @@ namespace UdeS.Promoscience.Replays
     public class ReplayManager : Cirrus.BaseSingleton<ReplayManager>
     {
         [SerializeField]
+        private UI.SidebarAsset roundSidebar;
+
+        [SerializeField]
+        private UI.SelectedTeamAsset roundSelectedTeam;
+
+        [SerializeField]
+        private TeamToggleAsset roundTeamToggle;
+
+        [SerializeField]
         private ReplayControlsAsset roundReplayControls;
 
         [SerializeField]
@@ -93,6 +102,9 @@ namespace UdeS.Promoscience.Replays
             RoundReplay.Value = new RoundReplay(
                 roundReplayControls,
                 roundAlgorithmSelection,
+                roundTeamToggle,
+                roundSelectedTeam, 
+                roundSidebar,
                 round);
 
             RoundReplay.Value.Initialize();

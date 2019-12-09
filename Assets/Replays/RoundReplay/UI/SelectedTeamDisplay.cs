@@ -9,6 +9,9 @@ namespace UdeS.Promoscience.Replays.UI
     public class SelectedTeamDisplay : MonoBehaviour
     {
         [SerializeField]
+        private SelectedTeamAsset asset;
+
+        [SerializeField]
         private UnityEngine.UI.Text teamName;
 
         [SerializeField]
@@ -28,23 +31,12 @@ namespace UdeS.Promoscience.Replays.UI
 
         private CourseExecution course;
 
-        private RoundReplay replay;
-
         public void Awake()
         {
             //ReplayManager.Instance.OnLabyrinthReplayCreatedHandler += OnLabyrinthReplayStarted;
-            ReplayManager.Instance.RoundReplay.OnValueChangedHandler += OnReplayChanged;
+            asset.OnReplayCourseSelectedHandler += OnCourseSelected;
         }
 
-        public void OnReplayChanged(RoundReplay replay)
-        {
-            if (this.replay != null)
-            {
-                //ReplayManager.Instance.LabyrinthReplay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
-            }
-
-            this.replay = replay;
-        }
 
         public void OnServerStateChanged(ServerState state)
         {
@@ -58,12 +50,12 @@ namespace UdeS.Promoscience.Replays.UI
             }
         }
 
-        public void OnCourseSelected(CourseExecution execution)
+        public void OnCourseSelected(TeamReplay replay)
         {
-            if (execution == null)
+            if (replay.Execution == null)
                 return;
 
-            if (course == execution)
+            if (course == replay.Execution)
                 return;
 
             if (course != null)
@@ -71,10 +63,10 @@ namespace UdeS.Promoscience.Replays.UI
                 course.OnPlayerSequenceProgressedHandler -= OnCourseActionIndexChanged;
             }
 
-            course = execution;
+            course = replay.Execution;
 
-            teamIcon.color = execution.Course.Team.TeamColor.SetA(teamIcon.color.a);
-            execution.OnPlayerSequenceProgressedHandler += OnCourseActionIndexChanged;
+            teamIcon.color = replay.Execution.Course.Team.TeamColor.SetA(teamIcon.color.a);
+            replay.Execution.OnPlayerSequenceProgressedHandler += OnCourseActionIndexChanged;
 
             OnCourseActionIndexChanged();
         }

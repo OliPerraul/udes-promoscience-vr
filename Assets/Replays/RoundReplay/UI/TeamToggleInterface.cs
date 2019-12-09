@@ -8,8 +8,8 @@ namespace UdeS.Promoscience.Replays.UI
 {
     public class TeamToggleInterface : MonoBehaviour
     {
-        //[SerializeField]
-        private RoundReplay replay;
+        [SerializeField]
+        private TeamToggleAsset asset;
 
         [SerializeField]
         private TeamToggleItem itemTemplate;
@@ -24,26 +24,10 @@ namespace UdeS.Promoscience.Replays.UI
         public void Awake()
         {       
             items = new Dictionary<int, TeamToggleItem>();
-            ReplayManager.Instance.RoundReplay.OnValueChangedHandler += OnReplayChangedHandler;
+
+            asset.OnReplayCourseAddedHandler += OnCourseAdded;
+            asset.OnReplayCourseRemovedHandler += OnCourseRemoved;
         }
-
-        public void OnReplayChangedHandler(RoundReplay replay)
-        {
-  
-            if (this.replay != null)
-            {
-                this.replay.OnCourseAddedHandler -= OnCourseAdded;
-            }
-           
-            this.replay = replay;
-
-            if (replay == null)
-                return;
-
-            this.replay.OnCourseAddedHandler += OnCourseAdded;
-            this.replay.OnCourseAddedHandler += OnCourseRemoved;
-        }
-
 
         public void OnCourseAdded(Course course)
         {

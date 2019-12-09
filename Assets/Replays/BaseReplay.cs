@@ -19,7 +19,7 @@ namespace UdeS.Promoscience.Replays
 
         public virtual Event<float> OnPlaybackSpeedChangedHandler { get; set; }
 
-        public bool HasNext => MoveCount == 0 ? false : MoveIndex < MoveCount - 1;
+        public bool HasNext => MoveCount == 0 ? false : MoveIndex < MoveCount;
 
         public bool HasPrevious => MoveCount == 0 ? false : MoveIndex > 0;
 
@@ -53,7 +53,7 @@ namespace UdeS.Promoscience.Replays
 
             protected set
             {
-                moveIndex = value < MoveCount ? value : MoveCount - 1;
+                moveIndex = value < MoveCount ? value : MoveCount;
                 moveIndex = moveIndex < 0 ? 0 : moveIndex;
                 OnMoveIndexChangedHandler?.Invoke(moveIndex);
             }

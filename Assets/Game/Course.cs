@@ -73,7 +73,7 @@ namespace UdeS.Promoscience
 
         public Course Course => course;
 
-        public Labyrinths.ILabyrinth Labyrinth;
+        public ILabyrinth Labyrinth;
 
         public int[] Actions;
 
@@ -93,13 +93,16 @@ namespace UdeS.Promoscience
 
         public int CurrentMoveIndex => moveIndex;
 
-        public CourseExecution(Course course, Labyrinths.ILabyrinth labyrinth)
+        public CourseExecution(Course course, ILabyrinth labyrinth)
         {
             this.course = course;
 
             Queue<int> steps;
             Queue<string> stepValues;
             SQLiteUtilities.GetPlayerStepsForCourse(course.Id, out steps, out stepValues);
+
+            Actions = steps.ToArray();
+            ActionValues = stepValues.ToArray();
         }
 
         private bool IsMovement(GameAction action)

@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa46ad4df5e8ce40bc473d8d79ec9e9, type: 3}
   m_Name: ReplayControls.Game
   m_EditorClassIdentifier: 
+  ReplayMoveCount:
+    _value: 0
+  SlideValue:
+    _value: 0

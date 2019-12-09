@@ -68,11 +68,11 @@ namespace UdeS.Promoscience.Algorithms
         [SerializeField]
         private int moveIndex = 0;
 
-        public int MoveIndex => moveIndex;
+        public int MoveIndex => moveIndex > MoveCount - 1 ? MoveCount - 1 : moveIndex;
 
         public bool HasPrevious => moveIndex > 0;
 
-        public bool HasNext => moveIndex < MoveCount - 1;
+        public bool HasNext => moveIndex < MoveCount;
 
         public AlgorithmExecution(
             Algorithm algorithm, 
@@ -110,14 +110,12 @@ namespace UdeS.Promoscience.Algorithms
 
         public bool Previous()
         {
-            moveIndex--;
+            moveIndex = HasPrevious ?
+                moveIndex :
+                0;
 
             // Clamp
-            moveIndex = HasPrevious ?
-                (HasNext ?
-                    moveIndex :
-                    MoveCount - 1) :
-                0;
+            moveIndex--;
 
             return true;
         }

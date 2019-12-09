@@ -35,13 +35,13 @@ namespace UdeS.Promoscience.Replays
             public bool IsBacktracking = false;
         }
 
-        private RoundReplay replay;
+        private RoundReplay parent;
 
         protected override BaseReplay Parent => parent;
 
-        private RoundReplay parent;
-
         private CourseExecution course;
+
+        public CourseExecution Execution => course;
 
         [SerializeField]
         protected Error errorIndicatorTemplate;
@@ -128,26 +128,26 @@ namespace UdeS.Promoscience.Replays
         private float offsetAmount = 0f;
 
         public TeamReplay Create(
-            RoundReplay replay,
+            RoundReplay parent,
             Course course,
             Labyrinths.LabyrinthObject labyrinth,
             Vector2Int startPosition)
         {
-            TeamReplay sequence = this.Create(
+            TeamReplay replay = this.Create(
                 labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
 
-            sequence.replay = replay;
-            sequence.labyrinth = labyrinth;
-            sequence.material.color = course.Team.TeamColor;
-            sequence.backtrackMaterial.color = course.Team.TeamColor;
-            sequence.materialAlpha.color = course.Team.TeamColor.SetA(previousSegmentAlpha);
-            sequence.backtrackMaterialAlpha.color = course.Team.TeamColor.SetA(previousSegmentAlpha);
+            replay.parent = parent;
+            replay.labyrinth = labyrinth;
+            replay.material.color = course.Team.TeamColor;
+            replay.backtrackMaterial.color = course.Team.TeamColor;
+            replay.materialAlpha.color = course.Team.TeamColor.SetA(previousSegmentAlpha);
+            replay.backtrackMaterialAlpha.color = course.Team.TeamColor.SetA(previousSegmentAlpha);
 
-            sequence.arrowHead.GetComponentInChildren<SpriteRenderer>().color = sequence.material.color;
+            replay.arrowHead.GetComponentInChildren<SpriteRenderer>().color = replay.material.color;
 
-            sequence.course = new CourseExecution(course, labyrinth);
+            replay.course = new CourseExecution(course, labyrinth);
 
-            sequence.states.Add(new State
+            replay.states.Add(new State
             {
                 PrevLPos = startPosition,
                 LPos = startPosition,
@@ -155,8 +155,23 @@ namespace UdeS.Promoscience.Replays
 
             });
 
-            return sequence;
+            parent.OnResumeHandler += replay.OnResume;
+            parent.OnMoveIndexChangedHandler += replay.OnMoveIndexChanged;
+
+            return replay;
         }
+
+
+        public void OnResume()
+        {
+            resumeCoroutineResult = StartCoroutine(DoNextCoroutine());
+        }
+
+        public void OnMoveIndexChanged(int index)
+        {
+            Move(index);
+        }
+    
 
         public override void AdjustOffset(float amount)// maxOffset)
         {

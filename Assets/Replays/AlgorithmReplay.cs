@@ -136,8 +136,7 @@ namespace UdeS.Promoscience.Replays
         }
 
         public void DoReset()
-        {
-
+        {       
             while (HasPrevious) DoPrevious();
             execution.Reset();
             dictionary.Clear();
@@ -147,8 +146,6 @@ namespace UdeS.Promoscience.Replays
 
         protected override void DoNext()
         {
-            execution.Next();
-
             lposition = execution.Steps[execution.MoveIndex].Position;
 
             if (!dictionary.TryGetValue(lposition, out Stack<TileColor> stack))
@@ -160,10 +157,14 @@ namespace UdeS.Promoscience.Replays
 
             if(!isHidden) PaintTile(execution.Steps[execution.MoveIndex]);
             stack.Push(execution.Steps[execution.MoveIndex].Color);
+
+            execution.Next();
         }
 
         protected override void DoPrevious()
         {
+            execution.Previous();
+
             lposition = HasPrevious ? execution.Steps[execution.MoveIndex].Position : startlposition;
 
             if (dictionary.TryGetValue(lposition, out Stack<TileColor> stack))
@@ -178,7 +179,6 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            execution.Previous();
         }
     }
 }
