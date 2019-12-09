@@ -69,7 +69,7 @@ namespace UdeS.Promoscience.Labyrinths
         // right now needed cuz round determine labyrinth
         public ILabyrinth GetLabyrinth(int id)
         {
-            return Labyrinths[id-1];
+            return Labyrinths[id];
         }
 
         [SerializeField]
