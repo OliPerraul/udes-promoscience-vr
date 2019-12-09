@@ -485,7 +485,7 @@ namespace UdeS.Promoscience.Replays
                 CurrentState.NextLPos = Utils.GetMoveDestination(PreviousState.NextLPos, course.CurrentAction);
             }
 
-            bool isBacktrack = course.CurrentActionValue.previousColor == TileColor.Red;
+            bool isBacktrack = course.CurrentActionValue.tile.Color == TileColor.Red;
 
             UpdateState(
                 CurrentState,

@@ -16,7 +16,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         public Tile tile;
 
         [SerializeField]
-        public TileColor previousColor;
+        public TileColor color;
 
         [SerializeField]
         public Tile[] wrongTiles;
@@ -56,30 +56,11 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public Action valueChangedEvent;
 
-        public string Value
-        {
-            get
-            {
-                return value;
-            }
-        }
+        public string Value => value;
 
+        public GameAction Action => action;
 
-        public GameAction Action
-        {
-            get
-            {
-                return action;
-            }
-        }
-
-        public string DateTimeString
-        {
-            get
-            {
-                return dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            }
-        }
+        public string DateTimeString => dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
 
         public void SetAction(GameAction gameAction)
         {
@@ -89,7 +70,7 @@ namespace UdeS.Promoscience.ScriptableObjects
             {
                 respect = algorithmRespect.Respect,
                 error = algorithmRespect.ErrorCount,
-                previousColor = controls.PlayerPaintTile.Value.PreviousColor//.Value;//.Tile;
+                color = controls.PlayerPaintTile.Value.Color
             });
 
             DateTime actionDateTime = DateTime.Now;
@@ -118,7 +99,7 @@ namespace UdeS.Promoscience.ScriptableObjects
                 playerSteps = playerSteps,
                 respect = algorithmRespect.Respect,
                 error = algorithmRespect.ErrorCount,
-                previousColor = controls.PlayerPaintTile.Value.PreviousColor
+                color = controls.PlayerPaintTile.Value.Color
             });
 
             if (actionDateTime == dateTime)//Doesn't seems o be working, there is event that have the same milliseconds
