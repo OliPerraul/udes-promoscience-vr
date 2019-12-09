@@ -33,6 +33,11 @@ namespace UdeS.Promoscience
         [SerializeField]
         public ObservableValue<Algorithms.Algorithm> Algorithm = new ObservableValue<Algorithms.Algorithm>();
 
+        
+        private DateTime roundBeginTime;
+
+        public DateTime RoundBeginTime => roundBeginTime;
+
 
         public string[] ActionValues;
 
@@ -72,6 +77,7 @@ namespace UdeS.Promoscience
             {
                 Labyrinth.Value.GenerateLabyrinthVisual();
                 Labyrinth.Value.Init(enableCamera:false);
+                roundBeginTime = DateTime.Now;
 
                 if (controls != null)
                 {

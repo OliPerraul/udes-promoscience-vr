@@ -35,6 +35,9 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         [SerializeField]
         public int error = 0;
+
+        [SerializeField]
+        public int elapsedSeconds = 0;
     }
 
     [CreateAssetMenu(fileName = "Data", menuName = "Data/GameAction", order = 1)]
@@ -62,18 +65,22 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public string DateTimeString => dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");
 
+
         public void SetAction(GameAction gameAction)
         {
             action = gameAction;
+
+            DateTime actionDateTime = DateTime.Now;
+
+            TimeSpan elapsed = actionDateTime.Subtract(Client.Instance.RoundBeginTime);
 
             value = JsonUtility.ToJson(new ActionValue
             {
                 respect = algorithmRespect.Respect,
                 error = algorithmRespect.ErrorCount,
-                color = controls.PlayerPaintTile.Value.Color
+                color = controls.PlayerPaintTile.Value.Color,
+                elapsedSeconds = Convert.ToInt32(elapsed.TotalSeconds)
             });
-
-            DateTime actionDateTime = DateTime.Now;
 
             if (actionDateTime == dateTime)//Doesn't seems o be working, there is event that have the same milliseconds
             {

@@ -80,7 +80,9 @@ namespace UdeS.Promoscience.Replays.UI
             }
 
             respectPercentText.text = course.PreviousActionValue.respect.ToString("P0");
-            stepCountText.text = course.PreviousActionValue.error.ToString();
+            stepCountText.text = course.CurrentMoveIndex.ToString();
+            errorCountText.text = course.PreviousActionValue.error.ToString();
+            elapsedTimeText.text = course.PreviousActionValue.elapsedSeconds.ToString() + " sec(s)";
         }
     }
 }
