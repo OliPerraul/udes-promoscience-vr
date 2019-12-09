@@ -60,15 +60,9 @@ namespace UdeS.Promoscience.Algorithms
             ResetProgressState(state, labyrinth);
 
             Tile tile;
-            while (GetNextStep(state, labyrinth, out tile))
-            {
-                algorithmSteps.Add(tile);
-            }
+            while (GetNextStep(state, labyrinth, out tile)) { }
 
-            // Add last tile
-            algorithmSteps.Add(tile);
-
-            return algorithmSteps;
+            return state.algorithmSteps;
         }
 
         public abstract Direction[] GetPrioritizedDirections(AlgorithmExecutionState state, Labyrinths.ILabyrinth labyrinth);
