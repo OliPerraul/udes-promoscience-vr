@@ -9,7 +9,7 @@ namespace UdeS.Promoscience.Controls
     public class HeadsetHowToControlsDisplay : MonoBehaviour
     {
         [SerializeField]
-        private AvatarControllerAsset controller;
+        private ControlsAsset controller;
 
         [SerializeField]
         private DirectiveManagerAsset directiveManager;

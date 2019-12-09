@@ -13,7 +13,7 @@ namespace UdeS.Promoscience.UI
     public class DirectiveDisplay : MonoBehaviour
     {
         [SerializeField]
-        private Controls.AvatarControllerAsset controls;
+        private Controls.ControlsAsset controls;
 
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;

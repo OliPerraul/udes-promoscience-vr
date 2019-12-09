@@ -25,7 +25,7 @@ namespace UdeS.Promoscience.Controls
         private OVRCameraRig thirdPersonCamera;
 
         [SerializeField]
-        private AvatarControllerAsset controls;
+        private ControlsAsset controls;
 
         [SerializeField]
         private Animator transitionCameraAnimator;

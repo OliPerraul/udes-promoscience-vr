@@ -8,7 +8,7 @@ using UdeS.Promoscience.Controls;
 
 namespace UdeS.Promoscience.Editor
 {
-    [CustomEditor(typeof(AvatarControllerAsset))]
+    [CustomEditor(typeof(ControlsAsset))]
     public class ScriptableControlerEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Editor
 
             GUI.enabled = Application.isPlaying;
 
-            AvatarControllerAsset scriptableControler = target as AvatarControllerAsset;
+            ControlsAsset scriptableControler = target as ControlsAsset;
 
             if (GUILayout.Button("On Controls Enable Value Changed"))
             {

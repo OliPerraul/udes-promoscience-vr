@@ -202,7 +202,7 @@ namespace UdeS.Promoscience.Network
         DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
-        private AvatarControllerAsset controls;
+        private ControlsAsset controls;
 
         [SerializeField]
         GameAsset gameManager;

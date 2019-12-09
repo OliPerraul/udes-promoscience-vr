@@ -28,7 +28,7 @@ namespace UdeS.Promoscience.Controls
     public class TabletCameraRig : MonoBehaviour
     {
         [SerializeField]
-        private AvatarControllerAsset controls;
+        private ControlsAsset controls;
 
         [SerializeField]
         private GameObject ThirdPersonCamera;

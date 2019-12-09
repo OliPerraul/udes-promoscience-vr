@@ -8,7 +8,7 @@ namespace UdeS.Promoscience.Characters
     public class AvatarCharacter : MonoBehaviour, IAvatarAnimatorWrapper
     {
         [SerializeField]
-        private AvatarControllerAsset controller;
+        private ControlsAsset controller;
 
         [SerializeField]
         private Animator animator;

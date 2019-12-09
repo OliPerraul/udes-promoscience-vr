@@ -13,13 +13,13 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Controls
 {
-    public class TabletAvatarController : MonoBehaviour
+    public class TabletControlsManager : MonoBehaviour
     {
         [SerializeField]
         private DirectiveManagerAsset directiveManager;
 
         [SerializeField]
-        AvatarControllerAsset controls;
+        ControlsAsset controls;
 
         [SerializeField]
         ScriptableBoolean isConnectedToPair;

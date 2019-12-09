@@ -10,10 +10,12 @@ using System;
 
 namespace UdeS.Promoscience.UI
 {
-    public class Compass : MonoBehaviour
+    public class Compass : BaseTool
     {
+        public override ToolId Id => ToolId.Compass;
+
         [SerializeField]
-        AvatarControllerAsset controls;
+        ControlsAsset controls;
 
         [SerializeField]
         Transform indicator;

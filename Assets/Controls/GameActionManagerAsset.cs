@@ -47,7 +47,7 @@ namespace UdeS.Promoscience.ScriptableObjects
         private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         [SerializeField]
-        private AvatarControllerAsset controls;
+        private ControlsAsset controls;
 
 
         [SerializeField]

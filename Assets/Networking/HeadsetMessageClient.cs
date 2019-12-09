@@ -36,7 +36,7 @@ namespace UdeS.Promoscience.Network
         //[SerializeField]
         //ScriptableAction returnToDivergencePointRequest;
         [SerializeField]
-        AvatarControllerAsset controls;
+        ControlsAsset controls;
 
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;

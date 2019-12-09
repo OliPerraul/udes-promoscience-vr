@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.Controls
     // FOR REAL WHY IS THIS CHARACTER CONTROLLER SO GODDAM COMPLICATED
     // Our guy is just moving on a grid...
 
-    public class HeadsetAvatarController : MonoBehaviour
+    public class HeadsetControlsManager : MonoBehaviour
     {
         [SerializeField]
         private float angleLookatTurnThreshold = 65;
@@ -43,7 +43,7 @@ namespace UdeS.Promoscience.Controls
         private HeadsetInputSchemeAsset inputScheme;
 
         [SerializeField]
-        private AvatarControllerAsset controls;
+        private ControlsAsset controls;
 
         [SerializeField]
         private Characters.AvatarCharacter character;

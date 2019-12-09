@@ -11,7 +11,7 @@ namespace UdeS.Promoscience.UI
     public class PaintingColorDisplay : MonoBehaviour
     {
         [SerializeField]
-        AvatarControllerAsset controls;
+        ControlsAsset controls;
 
         [SerializeField]
         GameObject colorRings;

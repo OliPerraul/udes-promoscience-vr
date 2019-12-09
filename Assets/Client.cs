@@ -16,8 +16,10 @@ namespace UdeS.Promoscience
         [SerializeField]
         private ClientSettings settings;
 
+        public ClientSettings Settings => settings;
+
         [SerializeField]
-        private AvatarControllerAsset controls;
+        private ControlsAsset controls;
 
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset respectController;

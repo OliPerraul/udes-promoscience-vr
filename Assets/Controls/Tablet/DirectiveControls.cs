@@ -11,7 +11,7 @@ namespace UdeS.Promoscience.Algorithms
     public class DirectiveControls : MonoBehaviour
     {
         [SerializeField]
-        AvatarControllerAsset controls;
+        ControlsAsset controls;
 
         [SerializeField]
         DirectiveManagerAsset directiveManager;

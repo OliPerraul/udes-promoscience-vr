@@ -20,7 +20,7 @@ namespace UdeS.Promoscience.Network
         GameAsset gameManager;
 
         [SerializeField]
-        public AvatarControllerAsset controls;
+        public ControlsAsset controls;
 
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;

@@ -21,7 +21,7 @@ namespace UdeS.Promoscience.Controls.UI
         private TMPro.TextMeshProUGUI west;
 
         [SerializeField]
-        private AvatarControllerAsset controls;
+        private ControlsAsset controls;
 
         [SerializeField]
         private DistanceScanner distanceScanner;

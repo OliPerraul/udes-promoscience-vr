@@ -13,7 +13,7 @@ namespace UdeS.Promoscience.Algorithms
     public class AlgorithmRespectController : MonoBehaviour
     {
         [SerializeField]
-        AvatarControllerAsset controls;
+        ControlsAsset controls;
 
         [SerializeField]
         AlgorithmRespectAsset algorithmRespect;

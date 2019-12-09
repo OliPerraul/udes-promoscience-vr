@@ -7,7 +7,7 @@ using UdeS.Promoscience.Characters;
 namespace UdeS.Promoscience.Controls
 {
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Avatar Controler", order = 1)]
-    public class AvatarControllerAsset : ScriptableObject
+    public class ControlsAsset : ScriptableObject
     {
         // TODO split tablet vs headset avatar controller asset
 
@@ -58,7 +58,7 @@ namespace UdeS.Promoscience.Controls
 
         public Cirrus.ObservableValue<float> WallDistance = new Cirrus.ObservableValue<float>();
 
-        public Cirrus.ObservableValue<float> FlightDistance = new Cirrus.ObservableValue<float>();
+        public Cirrus.ObservableValue<float> ScannedDistance = new Cirrus.ObservableValue<float>();
 
 
         public void StopAllMovement()

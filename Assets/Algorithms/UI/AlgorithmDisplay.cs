@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.UI
     public class AlgorithmDisplay : MonoBehaviour
     {
         [SerializeField]
-        AvatarControllerAsset controls;
+        ControlsAsset controls;
 
         [SerializeField]
         GameObject display;

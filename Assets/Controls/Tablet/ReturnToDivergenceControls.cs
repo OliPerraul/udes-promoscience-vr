@@ -12,7 +12,7 @@ namespace UdeS.Promoscience.UI
     public class ReturnToDivergenceControls : MonoBehaviour
     {
         [SerializeField]
-        private AvatarControllerAsset controls;
+        private ControlsAsset controls;
 
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;

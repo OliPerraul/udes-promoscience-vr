@@ -18,7 +18,7 @@ namespace UdeS.Promoscience.Labyrinths
         public GameObject[] highlights;
 
         [SerializeField]
-        private Controls.AvatarControllerAsset controls;
+        private Controls.ControlsAsset controls;
 
         private bool highlighted = false;
 

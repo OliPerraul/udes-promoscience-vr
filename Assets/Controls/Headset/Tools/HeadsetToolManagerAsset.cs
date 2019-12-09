@@ -6,7 +6,7 @@ namespace UdeS.Promoscience.Controls
 {
     public class HeadsetToolManagerAsset : ScriptableObject
     {
-        public Cirrus.ObservableValue<ToolType> CurrentEquipment = new Cirrus.ObservableValue<ToolType>();
+        public Cirrus.ObservableValue<ToolId> CurrentTool = new Cirrus.ObservableValue<ToolId>();
 
     }
 }
