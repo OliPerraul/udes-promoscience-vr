@@ -52,15 +52,13 @@ namespace UdeS.Promoscience.Algorithms
 
         public virtual List<Tile> GetAlgorithmSteps(Labyrinths.ILabyrinth labyrinth)
         {
-            List<Tile> algorithmSteps = new List<Tile>();
+            //List<Tile> algorithmSteps = new List<Tile>();
 
             var state = new AlgorithmExecutionState();
 
-            // Add first tile
             ResetProgressState(state, labyrinth);
 
-            Tile tile;
-            while (GetNextStep(state, labyrinth, out tile)) { }
+            while (GetNextStep(state, labyrinth, out Tile tile)) { }
 
             return state.algorithmSteps;
         }
@@ -154,7 +152,14 @@ namespace UdeS.Promoscience.Algorithms
                     Color = TileColor.Yellow
                 };
 
-                state.algorithmSteps.Add(tile);
+                // FIX: If in dead end, use end of the stack instead (backtracking)
+                if (
+                    state.algorithmSteps.Count > 0 && 
+                    tile.Position == state.algorithmSteps[state.algorithmSteps.Count - 1].Position)
+                {
+                    state.algorithmSteps.RemoveAt(state.algorithmSteps.Count - 1);
+                }
+
                 state.position = dest;
                 state.hasReachedTheEnd = state.position == labyrinth.EndPos;            
             }
@@ -168,20 +173,21 @@ namespace UdeS.Promoscience.Algorithms
                     Color = TileColor.Red
                 };
 
-                state.algorithmSteps.Add(tile);
+                // FIX: If in dead end, use end of the stack instead (backtracking)
+                if (
+                    state.algorithmSteps.Count > 0 &&
+                    tile.Position == state.algorithmSteps[state.algorithmSteps.Count - 1].Position)
+                {
+                    state.algorithmSteps.RemoveAt(state.algorithmSteps.Count - 1);
+                }
+
                 state.position = state.stack[last].pos;
                 state.direction = (int)Promoscience.Utils.GetOppositeDirection(state.stack[last].dir);
                 state.lastRemoved = state.stack[last];
                 state.stack.RemoveAt(last);
             }
-            else return false;
 
-            // FIX: If in dead end, use end of the stack instead (backtracking)
-            if (tile.Position == state.algorithmSteps[state.algorithmSteps.Count - 1].Position)
-            {
-                state.algorithmSteps.RemoveAt(state.algorithmSteps.Count - 1);
-            }
-
+            // Do add tile
             state.algorithmSteps.Add(tile);
 
             return !state.hasReachedTheEnd;
