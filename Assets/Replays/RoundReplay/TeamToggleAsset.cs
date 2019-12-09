@@ -5,7 +5,7 @@ namespace UdeS.Promoscience.Replays
 {
     // Only one replaytoggle interface asset
     // replay asset did not make sense because multiple replay exist
-    public class SequenceToggleAsset : MonoBehaviour
+    public class TeamToggleAsset : MonoBehaviour
     {
         public Cirrus.Event<Course, bool> OnCourseToggledHandler;
 

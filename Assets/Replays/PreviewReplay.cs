@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using Cirrus.Extensions;
 using Cirrus;
+using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Replays
 {
@@ -10,6 +11,8 @@ namespace UdeS.Promoscience.Replays
     public class PreviewReplay : BaseReplay
     {
         private Round round;
+
+        public Round Round => round;
 
         public int RoundNumber => round.Number;
 
@@ -21,27 +24,54 @@ namespace UdeS.Promoscience.Replays
 
         private Vector3 wposition;
 
-        private AlgorithmReplay sequence;
+        private AlgorithmReplay algorithm;
+
+        public Algorithms.Id Algorithm {
+            set => algorithm.Algorithm = value;
+        }
+
+        public Cirrus.Event OnAlgorithmChangedHandler;
 
         public Event<PreviewReplay> OnRemovedHandler;
 
         public Event<PreviewReplay> OnRoundReplayStartedHandler;
 
-        private bool isPlaying = false;
+        protected override IEnumerable<IReplayWorker> Workers => new List<IReplayWorker>{algorithm};
 
         private System.Threading.Mutex mutex = new System.Threading.Mutex();
 
-        //public
-        public PreviewReplay(
-            ReplayControlsAsset controls,
-            Round round) : 
-            base(controls)
+        public override int MoveCount => algorithm.MoveCount;
+
+        private GameReplay parentReplay;
+
+        public void OnParentMoveIndexChanged(int index) => MoveIndex = index;
+
+        public void OnParentPlaybackSpeedChanged(float speed) => PlaybackSpeed = speed;
+
+        public void OnAlgorithmChanged()
         {
-            this.round = round;
+            MoveIndex = MoveIndex < MoveCount ? MoveIndex : MoveCount - 1;
+            OnAlgorithmChangedHandler?.Invoke();
         }
 
-        public void CreateLabyrinth()
+        //public
+        public PreviewReplay(
+            Round round,
+            GameReplay parentReplay)
         {
+            this.round = round;
+
+            this.parentReplay = parentReplay;
+
+            parentReplay.OnMoveIndexChangedHandler += OnParentMoveIndexChanged;
+            parentReplay.OnPlaybackSpeedChangedHandler += OnParentPlaybackSpeedChanged;
+            parentReplay.OnResumeHandler += OnResume;
+        }
+
+        public void Initialize()
+        {
+            //base.Initialize();
+
             labyrinthObject = Labyrinths.Resources.Instance
                 .GetLabyrinthObject(round.Labyrinth)
                 .Create(round.Labyrinth);
@@ -57,14 +87,8 @@ namespace UdeS.Promoscience.Replays
             lposition = labyrinthObject.GetLabyrithStartPosition();
 
             wposition = labyrinthObject.GetLabyrinthPositionInWorldPosition(lposition);
-        }
 
-
-        public override void Start()
-        {
-            CreateLabyrinth();
-
-            sequence =
+            algorithm =
                 Resources.Instance.AlgorithmSequence.Create(
                 this,
                 labyrinthObject,
@@ -72,159 +96,35 @@ namespace UdeS.Promoscience.Replays
                 lposition
                 );
 
-            controls.PlaybackSpeed = 2f;
+            algorithm.OnChangedHandler += OnAlgorithmChanged;
         }
 
 
         // TODO combine
         public void Remove()
         {
+            parentReplay.OnMoveIndexChangedHandler -= OnParentMoveIndexChanged;
+            parentReplay.OnPlaybackSpeedChangedHandler -= OnParentPlaybackSpeedChanged;
+            parentReplay.OnResumeHandler -= OnResume;
+
+            if (algorithm != null)
+                algorithm.gameObject.Destroy();
+
             labyrinthObject?.gameObject?.Destroy();
             OnRemovedHandler?.Invoke(this);
         }
 
         // TODO combine
-        public override void Clear()
+        public void Clear()
         {
+            parentReplay.OnMoveIndexChangedHandler -= OnParentMoveIndexChanged;
+            parentReplay.OnPlaybackSpeedChangedHandler -= OnParentPlaybackSpeedChanged;
+            parentReplay.OnResumeHandler -= OnResume;
+
+            if (algorithm != null)
+                algorithm.gameObject.Destroy();
+
             labyrinthObject?.gameObject?.Destroy();
-        }
-
-
-        public override void OnPlaybackSpeedChanged(float speed)
-        {
-            sequence.PlaybackSpeed = speed;
-        }
-
-        public override void Resume()
-        {
-            isPlaying = true;
-            Server.Instance.StartCoroutine(ResumeCoroutine());
-        }
-
-        public IEnumerator ResumeCoroutine()
-        {
-            isPlaying = true;
-
-            while (HasNext)
-            {
-                //next in algorithm
-                if (sequence.WithinBounds)
-                {
-                    yield return sequence.StartNextCoroutine();
-                    GlobalMoveIndex++;
-                }
-
-                yield return null;
-            }
-
-            isPlaying = false;
-        }
-
-        public override void Next()
-        {
-            if (isPlaying)
-            {
-                Pause();
-            }
-
-            if (sequence.WithinBounds) sequence.Next();
-
-            GlobalMoveIndex++;
-        }
-
-        public override void Previous()
-        {
-            if (isPlaying)
-            {
-                Pause();
-            }
-
-            GlobalMoveIndex--;
-
-            if (sequence.WithinBounds) sequence.Previous();            
-        }
-
-        public override void Move(int target)
-        {
-            GlobalMoveIndex = target;
-
-            sequence.Move(target);
-        }
-
-        public override void Pause()
-        {
-            if (!isPlaying)
-                return;
-
-            sequence.Stop();
-
-            Move(GlobalMoveIndex);
-
-            isPlaying = false;
-        }
-
-        public override void Stop()
-        {
-            sequence.Stop();
-
-            Move(0);
-
-            isPlaying = false;
-        }
-
-
-        public override void OnReplayControlAction(ReplayControlAction action)
-        {
-            switch (action)
-            {
-                case ReplayControlAction.Play:
-                    Resume();
-                    break;
-
-                case ReplayControlAction.Resume:
-                    Resume();
-                    break;
-
-                case ReplayControlAction.Pause:
-
-                    //mutex.WaitOne();
-
-                    //Pause();
-
-                    //mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayControlAction.Next:
-
-                    mutex.WaitOne();
-
-                    Next();
-
-                    mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayControlAction.Previous:
-
-                    mutex.WaitOne();
-
-                    Previous();
-
-                    mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayControlAction.Stop:
-
-                    //mutex.WaitOne();
-
-                    //Stop();
-
-                    //mutex.ReleaseMutex();
-
-                    break;
-            }
         }
     }
 }

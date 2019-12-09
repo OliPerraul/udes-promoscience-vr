@@ -14,6 +14,9 @@ namespace UdeS.Promoscience.Replays
         [SerializeField]
         private ReplayControlsAsset roundReplayControls;
 
+        [SerializeField]
+        private AlgorithmSelectionAsset roundAlgorithmSelection;
+
         public Cirrus.ObservableValue<RoundReplay> RoundReplay = new Cirrus.ObservableValue<RoundReplay>();
 
 
@@ -56,10 +59,20 @@ namespace UdeS.Promoscience.Replays
                 gameReplayControls,
                 GameManager.Instance.CurrentGame.Rounds);
 
+            GameReplay.Value.Initialize();
+
             GameReplay.Value.Start();
+
         }
 
-        public void StartRoundReplay()
+
+        public void StartCurrentRoundReplay()
+        {
+            StartRoundReplay(GameManager.Instance.CurrentGame.CurrentRound);   
+        }
+
+
+        public void StartRoundReplay(Round round)
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -77,12 +90,16 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            RoundReplay.Value = new InstantReplay(
+            RoundReplay.Value = new RoundReplay(
                 roundReplayControls,
-                GameManager.Instance.CurrentGame.CurrentRound);
+                roundAlgorithmSelection,
+                round);
+
+            RoundReplay.Value.Initialize();
 
             RoundReplay.Value.Start();
         }
+
 
 
         public void OnServerStateValueChanged(ServerState state)

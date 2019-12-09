@@ -10,38 +10,66 @@ namespace UdeS.Promoscience.Replays
 {
     public class AlgorithmReplay : LabyrinthReplay
     {
+        private bool isHidden = false;
+
+        [SerializeField]
         private Algorithms.AlgorithmExecution execution;
 
-        private BaseReplay replay;
+        private BaseReplay parent;
 
-        protected override BaseReplay Replay => replay;
+        protected override BaseReplay Parent => parent;
 
         private Dictionary<Vector2Int, Stack<TileColor>> dictionary;
 
-        public override int LocalMoveCount => execution.LocalMoveCount;
+        public Cirrus.Event OnChangedHandler;
 
-        public override int LocalMoveIndex => execution.LocalMoveIndex;
+        public Algorithms.Id Algorithm {
+            set
+            {
+
+                int previousMoveIndex = MoveIndex;
+
+                DoReset();
+
+                execution =
+                    new Algorithms.AlgorithmExecution(
+                        Algorithms.Resources.Instance.GetAlgorithm(value),
+                        labyrinth);
+
+                Move(previousMoveIndex);
+
+                OnChangedHandler?.Invoke();
+            }
+        }
+
+
+        public override int MoveCount => execution.MoveCount;
+
+        public override int MoveIndex => execution.MoveIndex;
 
         protected override bool HasPrevious => execution.HasPrevious;
 
         protected override bool HasNext => execution.HasNext;
 
         public AlgorithmReplay Create(
-            BaseReplay replay,
+            BaseReplay parent,
             Labyrinths.LabyrinthObject labyrinth,
             Algorithms.Algorithm algorithm,
             Vector2Int startPosition)
         {
-            var sequence = this.Create(
+            var replay = this.Create(
                 labyrinth.GetLabyrinthPositionInWorldPosition(startPosition));
 
-            sequence.replay = replay;
-            sequence.labyrinth = labyrinth;
-            sequence.lposition = startPosition;
-            sequence.startlposition = startPosition;
-            sequence.execution = new Algorithms.AlgorithmExecution(algorithm, labyrinth);
+            replay.parent = parent;
+            replay.labyrinth = labyrinth;
+            replay.lposition = startPosition;
+            replay.startlposition = startPosition;
+            replay.execution = new Algorithms.AlgorithmExecution(algorithm, labyrinth);
 
-            return sequence;
+            parent.OnResumeHandler += replay.OnResume;
+            parent.OnMoveIndexChangedHandler += replay.OnMoveIndexChanged;
+
+            return replay;
         }
 
         public override void Awake()
@@ -56,6 +84,16 @@ namespace UdeS.Promoscience.Replays
             base.FixedUpdate();
         }
 
+        public void OnResume()
+        {
+            resumeCoroutineResult = StartCoroutine(ResumeCoroutine());
+        }
+
+        public void OnMoveIndexChanged(int index)
+        {
+            Move(index);
+        }
+
         private void PaintTile(Tile tile)
         {
             labyrinth.SetTileColor(tile.Position, tile.Color);
@@ -66,14 +104,12 @@ namespace UdeS.Promoscience.Replays
             labyrinth.SetTileColor(position, action);
         }
 
-        protected override IEnumerator DoNextCoroutine()
+        protected IEnumerator ResumeCoroutine()
         {
-            DoNext();
+            if (HasNext) DoNext();
             yield return new WaitForSeconds(StepTime);          
             yield return null;
         }
-
-        private bool isHidden = false;
 
         public void Show(bool show=true)
         {
@@ -81,11 +117,9 @@ namespace UdeS.Promoscience.Replays
 
             if (show)
             {
-                Stack<TileColor> stack;
-
                 foreach (var tile in execution.Steps)
                 {
-                    if (dictionary.TryGetValue(tile.Position, out stack))
+                    if (dictionary.TryGetValue(tile.Position, out Stack<TileColor>  stack))
                     {
                         PaintTile(tile.Position, stack.Peek());
                     }
@@ -101,34 +135,38 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
+        public void DoReset()
+        {
+
+            while (HasPrevious) DoPrevious();
+            execution.Reset();
+            dictionary.Clear();
+
+        }
+
+
         protected override void DoNext()
         {
-            lposition = execution.Steps[execution.LocalMoveIndex].Position;
+            execution.Next();
 
-            Stack <TileColor> stack;
+            lposition = execution.Steps[execution.MoveIndex].Position;
 
-            if (!dictionary.TryGetValue(lposition, out stack))
+            if (!dictionary.TryGetValue(lposition, out Stack<TileColor> stack))
             {
                 stack = new Stack<TileColor>();
                 stack.Push(TileColor.Grey); // add base color
                 dictionary.Add(lposition, stack);
             }
 
-            if(!isHidden) PaintTile(execution.Steps[execution.LocalMoveIndex]);
-            stack.Push(execution.Steps[execution.LocalMoveIndex].Color);
-
-            execution.Next();
+            if(!isHidden) PaintTile(execution.Steps[execution.MoveIndex]);
+            stack.Push(execution.Steps[execution.MoveIndex].Color);
         }
 
         protected override void DoPrevious()
         {
-            execution.Previous();
+            lposition = HasPrevious ? execution.Steps[execution.MoveIndex].Position : startlposition;
 
-            Stack<TileColor> stack;
-
-            lposition = HasPrevious ? execution.Steps[execution.LocalMoveIndex].Position : startlposition;
-
-            if (dictionary.TryGetValue(lposition, out stack))
+            if (dictionary.TryGetValue(lposition, out Stack<TileColor> stack))
             {
                 if (stack.Count != 0)
                 {
@@ -139,6 +177,8 @@ namespace UdeS.Promoscience.Replays
                     }
                 }
             }
+
+            execution.Previous();
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replays
 {
-    // TODO: inherit sequence elemet
+    // TODO: inherit element
     public class Error : Segment
     {
         [SerializeField]

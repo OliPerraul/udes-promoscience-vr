@@ -7,7 +7,7 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class SequenceToggleItem : MonoBehaviour
+    public class TeamToggleItem : MonoBehaviour
     {
         public static Cirrus.Event OnOtherSelectedHandler;
 
@@ -45,11 +45,11 @@ namespace UdeS.Promoscience.Replays.UI
         }
 
 
-        public SequenceToggleItem Create(
+        public TeamToggleItem Create(
             Transform parent,
             Course course)
         {
-            SequenceToggleItem item = this.Create(parent);
+            TeamToggleItem item = this.Create(parent);
 
             item.course = course;
             item.label.text = course.Team.name + " (" +

@@ -1889,7 +1889,7 @@ PrefabInstance:
     - target: {fileID: 8612070917104560876, guid: 5a8d5f38a687ce740a05ce4e0e074585,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00012207031
+      value: 0.000011331778
       objectReference: {fileID: 0}
     - target: {fileID: 8612070917104560876, guid: 5a8d5f38a687ce740a05ce4e0e074585,
         type: 3}
@@ -2646,6 +2646,11 @@ PrefabInstance:
     - target: {fileID: 1786733013051128204, guid: 5a8d5f38a687ce740a05ce4e0e074585,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6015958363732467179, guid: 5a8d5f38a687ce740a05ce4e0e074585,
+        type: 3}
+      propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -10500,6 +10505,12 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5550409271808705875, guid: df36430906204c544a3da487c2629125,
+        type: 3}
+      propertyPath: asset
+      value: 
+      objectReference: {fileID: 11400000, guid: 99016e756ee0b4f4fbb67a0a5827424e,
+        type: 2}
     m_RemovedComponents:
     - {fileID: 6877124806720888372, guid: df36430906204c544a3da487c2629125, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: df36430906204c544a3da487c2629125, type: 3}
@@ -10788,7 +10799,6 @@ GameObject:
   - component: {fileID: 1506232801}
   - component: {fileID: 1506232806}
   - component: {fileID: 1506232805}
-  - component: {fileID: 1506232804}
   m_Layer: 5
   m_Name: Sidebar
   m_TagString: Untagged
@@ -10862,22 +10872,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1506232798}
   m_CullTransparentMesh: 0
---- !u!114 &1506232804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1506232798}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 027f9d7696e085e42a66d62c176defc0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  algorithmNameText: {fileID: 0}
-  algorithmStepsText: {fileID: 0}
-  algorithmNext: {fileID: 0}
-  algorithmPrevious: {fileID: 0}
 --- !u!114 &1506232805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12462,6 +12456,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundReplayControls: {fileID: 11400000, guid: 5ca61c9a84ebc0e409a98d5272fb177d,
+    type: 2}
+  roundAlgorithmSelection: {fileID: 11400000, guid: 99016e756ee0b4f4fbb67a0a5827424e,
     type: 2}
   gameReplayControls: {fileID: 11400000, guid: 412b63b5a1cb3494397cfc15afd378df, type: 2}
 --- !u!1001 &1857700098

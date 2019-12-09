@@ -56,8 +56,6 @@ namespace UdeS.Promoscience
 
             SQLiteUtilities.InsertGame(currentGame.Id);
 
-            //OnGameCreatedHandler?.Invoke(currentGame);
-
             currentGame.Start();
         }
 

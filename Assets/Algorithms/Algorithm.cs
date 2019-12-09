@@ -20,6 +20,8 @@ namespace UdeS.Promoscience.Algorithms
 
     public static class Utils
     {
+        public static int NumAlgorithms => 4;
+
         public static Id Random => (Id)UnityEngine.Random.Range((int)Id.RightHand, (int)Id.Standard+1);
 
         public static Id GetRoundAlgorithm(int round, int teamId=0)
@@ -216,7 +218,7 @@ namespace UdeS.Promoscience.Algorithms
 
     }
 
-    public struct PrioritizedDirection
+    public struct PriorityDirection
     {
         private float prio;
 
@@ -224,6 +226,8 @@ namespace UdeS.Promoscience.Algorithms
 
         public const float PriorityCoefficient = 100f;
 
+        // Standard algorithm rule
+        // Up, right down left in order of importance
         private float Bonus
         {
             get

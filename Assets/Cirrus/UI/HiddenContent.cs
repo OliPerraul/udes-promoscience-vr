@@ -27,6 +27,10 @@ namespace Cirrus.UI
         [SerializeField]
         private bool isOverriden = false;
 
+        private bool isSupposedToBeHidden = false;
+
+        private bool isHidden = false;
+
         public void Awake()
         {
             if (!isOverriden)
@@ -35,17 +39,24 @@ namespace Cirrus.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            isSupposedToBeHidden = false;
             Show();
         }
 
-
         public void OnPointerExit(PointerEventData eventData)
         {
+            isSupposedToBeHidden = true;
+
             Hide();
         }
 
         public void Hide()
         {
+            if (isHidden)
+                return;
+
+            isHidden = true;
+
             if (_isHiddenAlpha)
             {
                 Hidden.GetComponent<IAlphaContent>()?.Set(_hiddenAlpha);
@@ -58,6 +69,11 @@ namespace Cirrus.UI
 
         public void Show()
         {
+            if (!isHidden)
+                return;
+
+            isHidden = false;
+
             Hidden.SetActive(true);
 
             if (_isHiddenAlpha)
@@ -66,5 +82,12 @@ namespace Cirrus.UI
             }
         }
 
+        public void Update()
+        {
+            if (Input.GetMouseButton(0))
+            {
+                Show();
+            }
+        }
     }
 }

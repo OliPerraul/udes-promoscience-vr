@@ -2,10 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cirrus.Extensions;
+using System.Linq;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class GameReplay : BaseReplay
+    public class GameReplay : ControlReplay
     {
         public IList<Round> rounds;
 
@@ -13,18 +14,9 @@ namespace UdeS.Promoscience.Replays
 
         private List<PreviewReplay> previews = new List<PreviewReplay>();
 
-        public int currentReplayindex = 0;
+        public IList<PreviewReplay> Previews => previews;
 
-        public int CurrentIndexWrap {
-            get {
-                return currentReplayindex.Mod(rounds.Count);
-            }
-
-            set {
-                currentReplayindex = value;
-                currentReplayindex = currentReplayindex.Mod(rounds.Count);
-            }
-        }
+        protected override IEnumerable<IReplayWorker> Workers => Previews;
 
         public GameReplay(
             ReplayControlsAsset controls,
@@ -33,15 +25,25 @@ namespace UdeS.Promoscience.Replays
             this.rounds = rounds;
         }
 
+        public override void Initialize()
+        {
+            for (int i = 0; i < rounds.Count; i++)
+            {
+                CreatePreviewReplay();
+            }
+
+            
+        }
+
         public override void Start()
         {
-            base.Start();
-
-            Resume();
-
             Server.Instance.State.Set(ServerState.GameReplay);
         }
 
+        public void OnRoundReplayStarted(PreviewReplay preview)
+        {
+            ReplayManager.Instance.StartRoundReplay(preview.Round);
+        }
 
         public override void Clear()
         {
@@ -53,49 +55,53 @@ namespace UdeS.Promoscience.Replays
             previews.Clear();
         }
 
+        public void SetMoveCount()
+        {
+            controls.ReplayMoveCount.Value = previews.Count == 0 ? 0 : previews.Max(x => x.MoveCount);
+        }
+
         public PreviewReplay CreatePreviewReplay()
         {
             previews.Add(new PreviewReplay(
-                controls,
-                rounds[CurrentIndexWrap++]));
+                rounds[previews.Count.Mod(rounds.Count)],
+                this));
+
+            previews[previews.Count - 1].Initialize();
 
             previews[previews.Count - 1].OnRemovedHandler += OnPreviewRemoved;
 
-            controls.OnPlaybackSpeedHandler += previews[previews.Count - 1].OnPlaybackSpeedChanged;
-
-            controls.OnControlActionHandler += previews[previews.Count - 1].OnReplayControlAction;
-
             previews[previews.Count - 1].OnRoundReplayStartedHandler += OnRoundReplayStarted;
 
-            previews[previews.Count - 1].Start();
+            previews[previews.Count - 1].OnAlgorithmChangedHandler += () => SetMoveCount();
 
             previews[previews.Count - 1].LabyrinthObject.transform.position = 
                 Vector3.right * Labyrinths.Utils.SelectionOffset * (previews.Count - 1);
 
+            previews[previews.Count - 1].OnParentMoveIndexChanged(MoveIndex);
+
+            // TODO: do not do this for every lab at when init
+            SetMoveCount();
+
             return previews[previews.Count - 1];
-        }
-
-
-        public void OnRoundReplayStarted(PreviewReplay preview)
-        {
-            ReplayManager.Instance.StartRoundReplay();
         }
 
         public void OnPreviewRemoved(PreviewReplay preview)
         {
             previews.Remove(preview);
 
-            controls.OnPlaybackSpeedHandler += preview.OnPlaybackSpeedChanged;
+            //controls.OnPlaybackSpeedHandler -= preview.OnPlaybackSpeedChanged;
 
-            controls.OnControlActionHandler += preview.OnReplayControlAction;
+            //controls.OnControlActionHandler -= preview.OnReplayControlAction;
 
             for (int i = 0; i < previews.Count; i++)
             {
                 previews[i].LabyrinthObject.transform.position = Vector3.right * Labyrinths.Utils.SelectionOffset * i;
             }
 
-            currentReplayindex = previews.Count;
+            SetMoveCount();
         }
+
+
 
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class SelectedSequenceDisplay : MonoBehaviour
+    public class SelectedTeamDisplay : MonoBehaviour
     {
         [SerializeField]
         private UnityEngine.UI.Text teamName;

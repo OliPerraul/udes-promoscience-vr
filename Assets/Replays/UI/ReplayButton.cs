@@ -40,7 +40,6 @@ namespace UdeS.Promoscience.Replays.UI
 
         public Cirrus.Event<ReplayButton> OnReplayClickedHandler;
 
-
         private ButtonMode mode;
 
         public ButtonMode Mode
@@ -87,7 +86,8 @@ namespace UdeS.Promoscience.Replays.UI
 
             removeButton.onClick.AddListener(OnRemoved);
 
-            algorithmSelection.Algorithm.OnValueChangedHandler += (x) => Debug.Log("DSAD");
+            algorithmSelection.Algorithm.OnValueChangedHandler += (x) => replay.Algorithm = x;
+
 
             Mode = mode;
         }
@@ -115,11 +115,21 @@ namespace UdeS.Promoscience.Replays.UI
             Transform parent,
             PreviewReplay replay)
         {
-            var l = this.Create(parent);
-            l.replay = replay;
-            l.rawImage.texture = replay.LabyrinthObject.Camera.RenderTexture;
-            l.roundNumberText.text = (replay.RoundNumber + 1).ToString();
-            return l;
+            var button = this.Create(parent);
+            button.gameObject.SetActive(true);
+
+            button.replay = replay;
+            button.rawImage.texture = replay.LabyrinthObject.Camera.RenderTexture;
+            button.roundNumberText.text = (replay.RoundNumber + 1).ToString();
+            button.replay.OnMoveIndexChangedHandler += (x) => button.stepText.text = x.ToString();
+
+            button.replay.OnAlgorithmChangedHandler += () => button.stepText.text = button.replay.MoveIndex.ToString();
+            button.stepText.text = replay.MoveIndex.ToString();
+
+            button.algorithmSelection.Algorithm.Set(replay.Round.Algorithm.Id);
+            
+
+            return button;
         }
     }
 

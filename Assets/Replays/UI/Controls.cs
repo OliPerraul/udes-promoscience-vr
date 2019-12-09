@@ -90,43 +90,9 @@ namespace UdeS.Promoscience.Replays.UI
             fastfowardButton.onClick.AddListener(OnFastFowardClicked);
             slider.onValueChanged.AddListener(OnSliderMoved);
 
-            //serverResponse.Init(this);
-            //Server.Instance.State.OnValueChangedHandler += serverResponse.OnServerStateChanged;
+            asset.ReplayMoveCount.OnValueChangedHandler += (x) => slider.maxValue = x;
+            asset.ReplayMoveIndexChangedHandler += (x) => slider.SetValueWithoutNotify(x);
         }
-
-        public void OnServerStateChanged(ServerState state)
-        {
-            switch (state)
-            {
-                //case ServerState.LabyrinthReplay:
-                //case ServerState.MultiLabyrinthReplay:
-
-                //    if (replay != null)
-                //    {
-                //        ReplayManager.Instance.CurrentReplay.OnMoveIndexChangedHandler -= OnProgress;
-                //        ReplayManager.Instance.CurrentReplay.OnSequenceFinishedHandler -= OnReplaySequenceFinished;
-                //        ReplayManager.Instance.CurrentReplay.OnMoveCountSetHandler -= OnSequenceChanged;
-                //        ReplayManager.Instance.CurrentReplay.OnPlaybackSpeedHandler -= OnPlaybackSpeedChanged;
-                //    }
-
-                //    replay = ReplayManager.Instance.CurrentReplay;
-
-                //    ReplayManager.Instance.CurrentReplay.OnMoveIndexChangedHandler += OnProgress;
-                //    ReplayManager.Instance.CurrentReplay.OnSequenceFinishedHandler += OnReplaySequenceFinished;
-                //    ReplayManager.Instance.CurrentReplay.OnMoveCountSetHandler += OnSequenceChanged;
-                //    ReplayManager.Instance.CurrentReplay.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
-
-                //    break;
-
-                //default:
-                //    ReplayManager.Instance.CurrentReplay.OnMoveIndexChangedHandler -= OnProgress;
-                //    ReplayManager.Instance.CurrentReplay.OnSequenceFinishedHandler -= OnReplaySequenceFinished;
-                //    ReplayManager.Instance.CurrentReplay.OnMoveCountSetHandler -= OnSequenceChanged;
-                //    ReplayManager.Instance.CurrentReplay.OnPlaybackSpeedHandler -= OnPlaybackSpeedChanged;
-                //    break;
-            }
-        }
-
 
         public void OnPlaybackSpeedChanged(float value)
         {

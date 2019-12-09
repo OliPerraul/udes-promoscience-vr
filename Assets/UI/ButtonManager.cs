@@ -109,6 +109,9 @@ namespace UdeS.Promoscience.UI
 
                 case ServerState.Round:
                 case ServerState.Quickplay:
+                    Flags.Set(ButtonCanvasFlag.None);
+                    break;
+
                 case ServerState.Lobby:
                     Flags.Set(ButtonCanvasFlag.Exit);
                     break;

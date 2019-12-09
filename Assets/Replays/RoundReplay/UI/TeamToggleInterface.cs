@@ -6,24 +6,24 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays.UI
 {
-    public class SequenceToggleInterface : MonoBehaviour
+    public class TeamToggleInterface : MonoBehaviour
     {
         //[SerializeField]
         private RoundReplay replay;
 
         [SerializeField]
-        private SequenceToggleItem itemTemplate;
+        private TeamToggleItem itemTemplate;
 
         [UnityEngine.Serialization.FormerlySerializedAs("scrollContentParent")]
         [SerializeField]
         private Transform toggleContentParent;
 
         [SerializeField]
-        private Dictionary<int, SequenceToggleItem> items;
+        private Dictionary<int, TeamToggleItem> items;
         
         public void Awake()
         {       
-            items = new Dictionary<int, SequenceToggleItem>();
+            items = new Dictionary<int, TeamToggleItem>();
             ReplayManager.Instance.RoundReplay.OnValueChangedHandler += OnReplayChangedHandler;
         }
 
@@ -50,7 +50,7 @@ namespace UdeS.Promoscience.Replays.UI
             if (items.ContainsKey(course.Id))
                 return;
 
-            SequenceToggleItem item = itemTemplate.Create(
+            TeamToggleItem item = itemTemplate.Create(
                 toggleContentParent,
                 course);
 
@@ -59,7 +59,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnCourseRemoved(Course course)
         {
-            SequenceToggleItem item;
+            TeamToggleItem item;
             if (items.TryGetValue(course.Id, out item))
             {
                 item.gameObject.Destroy();

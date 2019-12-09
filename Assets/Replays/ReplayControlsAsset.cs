@@ -19,6 +19,19 @@ namespace UdeS.Promoscience.Replays
 
     public class ReplayControlsAsset : ScriptableObject
     {
+        public Cirrus.Event<int> ReplayMoveIndexChangedHandler;
+
+        [SerializeField]
+        public Cirrus.ObservableInt ReplayMoveCount = new Cirrus.ObservableInt(0);
+
+
+        public Cirrus.Event<float> OnPlaybackSpeedHandler;
+
+        [SerializeField]
+        public Cirrus.ObservableInt SlideValue = new Cirrus.ObservableInt(0);
+
+        public Cirrus.Event<ReplayControlAction> OnControlActionHandler;
+
         private float playbackSpeed = 1f;
 
         public float PlaybackSpeed
@@ -37,11 +50,12 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        public Cirrus.Event<float> OnPlaybackSpeedHandler;
+        public void OnEnable()
+        {
+            ReplayMoveCount = new Cirrus.ObservableInt(0);
+            SlideValue = new Cirrus.ObservableInt(0);
+        }
 
-        public Cirrus.ObservableValue<int> SlideValue = new Cirrus.ObservableValue<int>();
-
-        public Cirrus.Event<ReplayControlAction> OnControlActionHandler;
 
         public void SendAction(ReplayControlAction action)
         {

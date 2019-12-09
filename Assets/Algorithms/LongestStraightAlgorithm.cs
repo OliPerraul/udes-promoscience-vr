@@ -13,36 +13,22 @@ namespace UdeS.Promoscience.Algorithms
 {
     public class LongestStraightAlgorithm : Algorithm
     {
-        bool asReachedTheEnd;
-        bool[] isDirectionWalkableAndNotVisited = new bool[4];
-        bool[,] alreadyVisitedTile;
-
-        readonly int[] xByDirection = { 0, 1, 0, -1 };
-        readonly int[] yByDirection = { -1, 0, 1, 0 };
-
-        int[] directionStraight = new int[4];
-
         TileColor tileColor;
 
         Vector2Int position;
+
         Vector2Int endPosition;
 
         List<Tile> algorithmSteps;
 
-        //lastVisitedIntersection the two first value are the map position and the third value is the step number to get to the intersection
-        List<Vector3Int> lastVisitedIntersection;
-
         public override Id Id => Id.LongestStraight;
-
 
         // up right down left
         public override Direction[] GetPrioritizedDirections(AlgorithmExecutionState state, ILabyrinth labyrinth)
         {
             Vector2Int dest;
 
-            List<PrioritizedDirection> dirs = new List<PrioritizedDirection>();
-
-            //
+            List<PriorityDirection> dirs = new List<PriorityDirection>();
 
             int up = 0;
             dest = state.position;
@@ -54,7 +40,7 @@ namespace UdeS.Promoscience.Algorithms
                 up++) ;
 
 
-            dirs.Add(new PrioritizedDirection
+            dirs.Add(new PriorityDirection
             {
                 Prio = up,
                 dir = Direction.Up
@@ -71,7 +57,7 @@ namespace UdeS.Promoscience.Algorithms
                 right++) ;
 
 
-            dirs.Add(new PrioritizedDirection
+            dirs.Add(new PriorityDirection
             {
                 Prio = right,
                 dir = Direction.Right
@@ -83,14 +69,13 @@ namespace UdeS.Promoscience.Algorithms
             int down = 0;
             dest = state.position;
 
-
             for (
                 down = 0;
                 labyrinth.GetIsTileWalkable(
                     dest = Promoscience.Utils.GetMoveDestination(dest, Direction.Down));
                 down++) ;
 
-            dirs.Add(new PrioritizedDirection
+            dirs.Add(new PriorityDirection
             {
                 Prio = down,
                 dir = Direction.Down
@@ -108,7 +93,7 @@ namespace UdeS.Promoscience.Algorithms
                     dest = Promoscience.Utils.GetMoveDestination(dest, Direction.Left));
                 left++) ;
 
-            dirs.Add(new PrioritizedDirection
+            dirs.Add(new PriorityDirection
             {
                 Prio = left,
                 dir = Direction.Left
@@ -118,151 +103,152 @@ namespace UdeS.Promoscience.Algorithms
         }
                
 
-        public override List<Tile> GetAlgorithmSteps(Labyrinths.ILabyrinth labyrinth)
-        {
-            algorithmSteps = new List<Tile>();
-            lastVisitedIntersection = new List<Vector3Int>();
+        //public override List<Tile> GetAlgorithmSteps(ILabyrinth labyrinth)
+        //{
+        //    algorithmSteps = new List<Tile>();
 
-            alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
+        //    lastVisitedIntersection = new List<Vector3Int>();
 
-            asReachedTheEnd = false;
+        //    alreadyVisitedTile = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
 
-            int direction = labyrinth.StartDirection;
+        //    asReachedTheEnd = false;
 
-            tileColor = TileColor.Yellow;
+        //    int direction = labyrinth.StartDirection;
 
-            position = labyrinth.StartPos;
+        //    tileColor = TileColor.Yellow;
 
-            endPosition = labyrinth.EndPos;
+        //    position = labyrinth.StartPos;
 
-            algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
+        //    endPosition = labyrinth.EndPos;
 
-            alreadyVisitedTile[position.x, position.y] = true;
+        //    algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
 
-            while (!asReachedTheEnd)
-            {
-                directionStraight[0] = alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 0);
-                directionStraight[1] = alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 1);
-                directionStraight[2] = alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 2);
-                directionStraight[3] = alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 3);
+        //    alreadyVisitedTile[position.x, position.y] = true;
 
-                if (directionStraight[0] > 0 && directionStraight[0] >= directionStraight[1] && directionStraight[0] >= directionStraight[2] && directionStraight[0] >= directionStraight[3])
-                {
-                    direction = 0;
-                    MoveInDirection(labyrinth, direction);
-                }
-                else if (directionStraight[1] > 0 && directionStraight[1] >= directionStraight[2] && directionStraight[1] >= directionStraight[3])
-                {
-                    direction = 1;
-                    MoveInDirection(labyrinth, direction);
-                }
-                else if (directionStraight[2] > 0 && directionStraight[2] >= directionStraight[3])
-                {
-                    direction = 2;
-                    MoveInDirection(labyrinth, direction);
-                }
-                else if (directionStraight[3] > 0)
-                {
-                    direction = 3;
-                    MoveInDirection(labyrinth, direction);
-                }
-                else
-                {
-                    int i;
-                    if (position.x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && position.y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
-                    {
-                        i = lastVisitedIntersection[lastVisitedIntersection.Count - 1].z - 1;
-                        lastVisitedIntersection.RemoveAt(lastVisitedIntersection.Count - 1);
-                    }
-                    else
-                    {
-                        i = algorithmSteps.Count - 2;
-                    }
+        //    while (!asReachedTheEnd)
+        //    {
+        //        directionStraight[0] = alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 0);
+        //        directionStraight[1] = alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 1);
+        //        directionStraight[2] = alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 2);
+        //        directionStraight[3] = alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]] ? 0 : GetStraightLenghtInDirection(labyrinth, new Vector2Int(position.x, position.y), 3);
 
-                    algorithmSteps[algorithmSteps.Count - 1] = new Tile(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, TileColor.Red);
+        //        if (directionStraight[0] > 0 && directionStraight[0] >= directionStraight[1] && directionStraight[0] >= directionStraight[2] && directionStraight[0] >= directionStraight[3])
+        //        {
+        //            direction = 0;
+        //            MoveInDirection(labyrinth, direction);
+        //        }
+        //        else if (directionStraight[1] > 0 && directionStraight[1] >= directionStraight[2] && directionStraight[1] >= directionStraight[3])
+        //        {
+        //            direction = 1;
+        //            MoveInDirection(labyrinth, direction);
+        //        }
+        //        else if (directionStraight[2] > 0 && directionStraight[2] >= directionStraight[3])
+        //        {
+        //            direction = 2;
+        //            MoveInDirection(labyrinth, direction);
+        //        }
+        //        else if (directionStraight[3] > 0)
+        //        {
+        //            direction = 3;
+        //            MoveInDirection(labyrinth, direction);
+        //        }
+        //        else
+        //        {
+        //            int i;
+        //            if (position.x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && position.y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
+        //            {
+        //                i = lastVisitedIntersection[lastVisitedIntersection.Count - 1].z - 1;
+        //                lastVisitedIntersection.RemoveAt(lastVisitedIntersection.Count - 1);
+        //            }
+        //            else
+        //            {
+        //                i = algorithmSteps.Count - 2;
+        //            }
 
-                    bool isReturnedToLastIntersection = false;
+        //            algorithmSteps[algorithmSteps.Count - 1] = new Tile(algorithmSteps[algorithmSteps.Count - 1].x, algorithmSteps[algorithmSteps.Count - 1].y, TileColor.Red);
 
-                    while (!isReturnedToLastIntersection)
-                    {
-                        if (i < 0)
-                        {
-                            //Labyrith is impossible!
-                            return algorithmSteps;
-                        }
+        //            bool isReturnedToLastIntersection = false;
 
-                        if (algorithmSteps[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmSteps[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
-                        {
-                            isReturnedToLastIntersection = true;
-                            position.x = algorithmSteps[i].x;
-                            position.y = algorithmSteps[i].y;
-                            algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
-                        }
-                        else
-                        {
-                            algorithmSteps.Add(new Tile(algorithmSteps[i].x, algorithmSteps[i].y, TileColor.Red));
-                        }
+        //            while (!isReturnedToLastIntersection)
+        //            {
+        //                if (i < 0)
+        //                {
+        //                    //Labyrith is impossible!
+        //                    return algorithmSteps;
+        //                }
 
-                        i--;
-                    }
-                }
+        //                if (algorithmSteps[i].x == lastVisitedIntersection[lastVisitedIntersection.Count - 1].x && algorithmSteps[i].y == lastVisitedIntersection[lastVisitedIntersection.Count - 1].y)
+        //                {
+        //                    isReturnedToLastIntersection = true;
+        //                    position.x = algorithmSteps[i].x;
+        //                    position.y = algorithmSteps[i].y;
+        //                    algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
+        //                }
+        //                else
+        //                {
+        //                    algorithmSteps.Add(new Tile(algorithmSteps[i].x, algorithmSteps[i].y, TileColor.Red));
+        //                }
 
-                if (position.x == endPosition.x && position.y == endPosition.y)
-                {
-                    asReachedTheEnd = true;
-                }
-            }
+        //                i--;
+        //            }
+        //        }
 
-            return algorithmSteps;
-        }
+        //        if (position.x == endPosition.x && position.y == endPosition.y)
+        //        {
+        //            asReachedTheEnd = true;
+        //        }
+        //    }
 
-        void MoveInDirection(Labyrinths.ILabyrinth labyrinth, int direction)
-        {
-            for (int i = 0; i < directionStraight[direction]; i++)
-            {
-                position.x += xByDirection[direction];
-                position.y += yByDirection[direction];
+        //    return algorithmSteps;
+        //}
 
-                isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
-                isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]];
-                isDirectionWalkableAndNotVisited[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]) && !alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]];
-                isDirectionWalkableAndNotVisited[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]) && !alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]];
+        //void MoveInDirection(Labyrinths.ILabyrinth labyrinth, int direction)
+        //{
+        //    for (int i = 0; i < directionStraight[direction]; i++)
+        //    {
+        //        position.x += xByDirection[direction];
+        //        position.y += yByDirection[direction];
 
-                if (!alreadyVisitedTile[position.x, position.y])
-                {
-                    if ((isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 1) % 4])
-                       || (isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 3) % 4])
-                       || (isDirectionWalkableAndNotVisited[(direction + 1) % 4] && isDirectionWalkableAndNotVisited[(direction + 3) % 4]))
-                    {
-                        lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmSteps.Count));
-                    }
+        //        isDirectionWalkableAndNotVisited[0] = labyrinth.GetIsTileWalkable(position.x + xByDirection[0], position.y + yByDirection[0]) && !alreadyVisitedTile[position.x + xByDirection[0], position.y + yByDirection[0]];
+        //        isDirectionWalkableAndNotVisited[1] = labyrinth.GetIsTileWalkable(position.x + xByDirection[1], position.y + yByDirection[1]) && !alreadyVisitedTile[position.x + xByDirection[1], position.y + yByDirection[1]];
+        //        isDirectionWalkableAndNotVisited[2] = labyrinth.GetIsTileWalkable(position.x + xByDirection[2], position.y + yByDirection[2]) && !alreadyVisitedTile[position.x + xByDirection[2], position.y + yByDirection[2]];
+        //        isDirectionWalkableAndNotVisited[3] = labyrinth.GetIsTileWalkable(position.x + xByDirection[3], position.y + yByDirection[3]) && !alreadyVisitedTile[position.x + xByDirection[3], position.y + yByDirection[3]];
 
-                    alreadyVisitedTile[position.x, position.y] = true;
-                }
+        //        if (!alreadyVisitedTile[position.x, position.y])
+        //        {
+        //            if ((isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 1) % 4])
+        //               || (isDirectionWalkableAndNotVisited[direction] && isDirectionWalkableAndNotVisited[(direction + 3) % 4])
+        //               || (isDirectionWalkableAndNotVisited[(direction + 1) % 4] && isDirectionWalkableAndNotVisited[(direction + 3) % 4]))
+        //            {
+        //                lastVisitedIntersection.Add(new Vector3Int(position.x, position.y, algorithmSteps.Count));
+        //            }
 
-                algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
+        //            alreadyVisitedTile[position.x, position.y] = true;
+        //        }
+
+        //        algorithmSteps.Add(new Tile(position.x, position.y, tileColor));
 
 
-                if (position.x == endPosition.x && position.y == endPosition.y)
-                {
-                    asReachedTheEnd = true;
-                    break;
-                }
-            }
-        }
+        //        if (position.x == endPosition.x && position.y == endPosition.y)
+        //        {
+        //            asReachedTheEnd = true;
+        //            break;
+        //        }
+        //    }
+        //}
 
-        int GetStraightLenghtInDirection(Labyrinths.ILabyrinth labyrinth, Vector2Int position, int direction)
-        {
-            int straightLenght = 0;
+        //int GetStraightLenghtInDirection(Labyrinths.ILabyrinth labyrinth, Vector2Int position, int direction)
+        //{
+        //    int straightLenght = 0;
 
-            while (labyrinth.GetIsTileWalkable(position.x + xByDirection[(direction) % 4], position.y + yByDirection[(direction) % 4]) && !alreadyVisitedTile[position.x + xByDirection[(direction) % 4], position.y + yByDirection[(direction) % 4]])
-            {
-                straightLenght++;
-                position.x += xByDirection[direction];
-                position.y += yByDirection[direction];
-            }
+        //    while (labyrinth.GetIsTileWalkable(position.x + xByDirection[(direction) % 4], position.y + yByDirection[(direction) % 4]) && !alreadyVisitedTile[position.x + xByDirection[(direction) % 4], position.y + yByDirection[(direction) % 4]])
+        //    {
+        //        straightLenght++;
+        //        position.x += xByDirection[direction];
+        //        position.y += yByDirection[direction];
+        //    }
 
-            return straightLenght;
-        }
+        //    return straightLenght;
+        //}
     }
 }

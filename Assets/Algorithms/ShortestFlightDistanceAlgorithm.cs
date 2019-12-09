@@ -27,30 +27,30 @@ namespace UdeS.Promoscience.Algorithms
         // up right down left
         public override Direction[] GetPrioritizedDirections(AlgorithmExecutionState state, ILabyrinth labyrinth)
         {
-            List<PrioritizedDirection> dirs = new List<PrioritizedDirection>();
+            List<PriorityDirection> dirs = new List<PriorityDirection>();
 
-            dirs.Add(new PrioritizedDirection
+            dirs.Add(new PriorityDirection
             {
                 Prio = 
                     (labyrinth.EndPos - Promoscience.Utils.GetMoveDestination(state.position, Direction.Up)).magnitude,
                 dir = Direction.Up
             });
 
-            dirs.Add(new PrioritizedDirection
+            dirs.Add(new PriorityDirection
             {
                 Prio = 
                     (labyrinth.EndPos - Promoscience.Utils.GetMoveDestination(state.position, Direction.Right)).magnitude,
                 dir = Direction.Right
             });
 
-            dirs.Add(new PrioritizedDirection
+            dirs.Add(new PriorityDirection
             {
                 Prio = 
                     (labyrinth.EndPos - Promoscience.Utils.GetMoveDestination(state.position, Direction.Down)).magnitude,
                 dir = Direction.Down
             });
 
-            dirs.Add(new PrioritizedDirection
+            dirs.Add(new PriorityDirection
             {
                 Prio = 
                     (labyrinth.EndPos - Promoscience.Utils.GetMoveDestination(state.position, Direction.Left)).magnitude,

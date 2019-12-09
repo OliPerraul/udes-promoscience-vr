@@ -37,7 +37,9 @@ namespace UdeS.Promoscience.Replays
 
         private RoundReplay replay;
 
-        protected override BaseReplay Replay => replay;
+        protected override BaseReplay Parent => parent;
+
+        private RoundReplay parent;
 
         private CourseExecution course;
 
@@ -119,9 +121,9 @@ namespace UdeS.Promoscience.Replays
 
         private State PreviousState => stateIndex == 0 ? states[stateIndex] : states[stateIndex - 1];
 
-        public override int LocalMoveCount => course.MoveCount;
+        public override int MoveCount => course.MoveCount;
 
-        public override int LocalMoveIndex => course.CurrentMoveIndex;
+        public override int MoveIndex => course.CurrentMoveIndex;
 
         private float offsetAmount = 0f;
 
@@ -266,7 +268,6 @@ namespace UdeS.Promoscience.Replays
                     isBacktracking);
             }
         }
-
 
         public void UpdateState(
             State state,

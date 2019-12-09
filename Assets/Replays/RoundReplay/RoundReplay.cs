@@ -7,7 +7,7 @@ using Cirrus;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class RoundReplay : BaseReplay
+    public class RoundReplay : ControlReplay
     {
         public ObservableValue<Course> CurrentCourse = new ObservableValue<Course>();
 
@@ -41,6 +41,8 @@ namespace UdeS.Promoscience.Replays
 
         private List<Course> Courses => round.Courses;
 
+        protected override IEnumerable<IReplayWorker> Workers => activeSequences.Concat(new List<IReplayWorker>{algorithmSequence});
+
         private System.Threading.Mutex mutex = new System.Threading.Mutex();
 
         List<Coroutine> started = new List<Coroutine>();
@@ -49,21 +51,30 @@ namespace UdeS.Promoscience.Replays
 
         private bool isPlaying = false;
 
+        private AlgorithmSelectionAsset algorithmSelection;
+
         // TODO remove
         public RoundReplay(
             ReplayControlsAsset controls,
-            Round round) : 
-            base(controls)
+            AlgorithmSelectionAsset algorithmSelection,
+            Round round) 
+            : base(controls)
         {
             this.round = round;
+
+            this.algorithmSelection = algorithmSelection;
 
             CurrentCourse.OnValueChangedHandler += OnCourseSelected;
             IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
             IsToggleGreyboxLabyrinth.OnValueChangedHandler += OnGreyBoxToggled;
         }
 
-        public void CreateLabyrinth()
+        public override void Initialize()
         {
+            base.Initialize();
+
+            controls.PlaybackSpeed = 2f;
+
             labyrinthObject = Labyrinths.Resources.Instance
                 .GetLabyrinthObject(round.Labyrinth)
                 .Create(round.Labyrinth);
@@ -79,12 +90,6 @@ namespace UdeS.Promoscience.Replays
             lposition = labyrinthObject.GetLabyrithStartPosition();
 
             wposition = labyrinthObject.GetLabyrinthPositionInWorldPosition(lposition);
-        }
-
-
-        public override void Start()
-        {
-            CreateLabyrinth();
 
             algorithmSequence =
                 Resources.Instance.AlgorithmSequence.Create(
@@ -99,151 +104,156 @@ namespace UdeS.Promoscience.Replays
                 AddCourse(course);
             }
 
-            controls.PlaybackSpeed = 2f;
         }
 
-        public override void OnPlaybackSpeedChanged(float speed)
+
+        public override void Start()
         {
-            foreach (var sq in playerSequences.Values)
-            {
-                sq.PlaybackSpeed = speed;
-            }
-
-            if (algorithmSequence != null)
-            {
-                algorithmSequence.PlaybackSpeed = speed;
-            }
+            Server.Instance.State.Set(ServerState.RoundReplay);
         }
 
-        public override void Resume()
-        {
-            isPlaying = true;
-            Server.Instance.StartCoroutine(ResumeCoroutine());
-        }
+        //public override void OnPlaybackSpeedChanged(float speed)
+        //{
+        //    foreach (var sq in playerSequences.Values)
+        //    {
+        //        sq.PlaybackSpeed = speed;
+        //    }
 
-        public IEnumerator ResumeCoroutine()
-        {
-            isPlaying = true;
+        //    if (algorithmSequence != null)
+        //    {
+        //        algorithmSequence.PlaybackSpeed = speed;
+        //    }
+        //}
 
-            while (HasNext)
-            {
-                started.Clear();
+        //public override void Resume()
+        //{
+        //    isPlaying = true;
+        //    Server.Instance.StartCoroutine(ResumeCoroutine());
+        //}
 
-                //next in algorithm
-                if (algorithmSequence.WithinBounds)
-                {
-                    algorithmSequence.StartNextCoroutine();
-                    started.Add(algorithmSequence.NextCoroutineResult);
-                }
+        //public IEnumerator ResumeCoroutine()
+        //{
+        //    isPlaying = true;
 
-                // next in player sequence
-                foreach (var sq in activeSequences)
-                {
-                    if (sq.WithinBounds)
-                    {
-                        sq.StartNextCoroutine();
-                        started.Add(sq.NextCoroutineResult);
-                    }
-                }
+        //    while (HasNext)
+        //    {
+        //        started.Clear();
 
-                foreach (var sq in started)
-                {
-                    yield return sq;
-                }
+        //        //next in algorithm
+        //        //if (algorithmSequence.WithinBounds)
+        //        {
+        //            algorithmSequence.StartNextCoroutine();
+        //            started.Add(algorithmSequence.NextCoroutineResult);
+        //        }
 
-                GlobalMoveIndex++;
-                yield return null;
-            }
+        //        // next in player sequence
+        //        foreach (var sq in activeSequences)
+        //        {
+        //            //if (sq.WithinBounds)
+        //            {
+        //                sq.StartNextCoroutine();
+        //                started.Add(sq.NextCoroutineResult);
+        //            }
+        //        }
 
-            isPlaying = false;
-        }
+        //        foreach (var sq in started)
+        //        {
+        //            yield return sq;
+        //        }
 
-        public override void Next()
-        {
-            if (isPlaying)
-            {
-                Pause();
-            }
+        //        //GlobalMoveIndex++;
+        //        yield return null;
+        //    }
 
-            if (algorithmSequence.WithinBounds) algorithmSequence.Next();            
+        //    isPlaying = false;
+        //}
 
-            foreach (var sq in activeSequences)
-            {
-                if (sq.WithinBounds)
-                {
-                    sq.Next();
-                    sq.UpdateArrowHead();
-                }
+        //public override void Next()
+        //{
+        //    if (isPlaying)
+        //    {
+        //        Pause();
+        //    }
 
-            }
+        //    //if (algorithmSequence.WithinBounds) algorithmSequence.Next();            
 
-            GlobalMoveIndex++;
-        }
+        //    foreach (var sq in activeSequences)
+        //    {
+        //        //if (sq.WithinBounds)
+        //        {
+        //            sq.Next();
+        //            sq.UpdateArrowHead();
+        //        }
 
-        public override void Previous()
-        {
-            if (isPlaying)
-            {
-                Pause();
-            }
+        //    }
 
-            GlobalMoveIndex--;
+        //    //GlobalMoveIndex++;
+        //}
 
-            if (algorithmSequence.WithinBounds) algorithmSequence.Previous();
+        //public override void Previous()
+        //{
+        //    if (isPlaying)
+        //    {
+        //        Pause();
+        //    }
 
-            foreach (var sq in activeSequences)
-            {
-                if (sq.WithinBounds)
-                {
-                    sq.Previous();
-                    sq.UpdateArrowHead();
-                }
-            }
-        }
+        //    //GlobalMoveIndex--;
 
-        public override void Move(int target)
-        {
-            GlobalMoveIndex = target;
+        //    //if (algorithmSequence.WithinBounds) algorithmSequence.Previous();
 
-            algorithmSequence.Move(target);
+        //    foreach (var sq in activeSequences)
+        //    {
+        //        //if (sq.WithinBounds)
+        //        {
+        //            sq.Previous();
+        //            sq.UpdateArrowHead();
+        //        }
+        //    }
+        //}
 
-            foreach (var sq in activeSequences)
-            {
-                sq.Move(target);
-                sq.UpdateArrowHead();
-            }
-        }
+        //public override void OnSlideValueChanged(int target)
+        //{
+        //    //GlobalMoveIndex = target;
 
-        public override void Pause()
-        {
-            if (!isPlaying)
-                return;
+        //    algorithmSequence.Move(target);
 
-            algorithmSequence.Stop();
+        //    foreach (var sq in activeSequences)
+        //    {
+        //        sq.Move(target);
+        //        sq.UpdateArrowHead();
+        //    }
+        //}
 
-            foreach (var sq in activeSequences)
-            {
-                sq.Stop();
-            }
+        //public override void Pause()
+        //{
+        //    if (!isPlaying)
+        //        return;
 
-            Move(GlobalMoveIndex);
+        //    algorithmSequence.Stop();
 
-            isPlaying = false;
-        }
+        //    foreach (var sq in activeSequences)
+        //    {
+        //        sq.Stop();
+        //    }
 
-        public override void Stop()
-        {
-            algorithmSequence.Stop();
+        //    //OnSlideValueChanged(GlobalMoveIndex);
 
-            foreach (var sq in activeSequences)
-            {
-                sq.Stop();
-            }
+        //    isPlaying = false;
+        //}
 
-            Move(0);
+        //public override void Stop()
+        //{
+        //    algorithmSequence.Stop();
 
-            isPlaying = false;
-        }
+        //    foreach (var sq in activeSequences)
+        //    {
+        //        sq.Stop();
+        //    }
+
+        //    OnSlideValueChanged(0);
+
+        //    isPlaying = false;
+        //}
 
         bool isGreyboxToggled = false;
 
@@ -294,65 +304,10 @@ namespace UdeS.Promoscience.Replays
             if (activeSequences.Count != 0)
             {
                 // Adjust move count to biggest sequence
-                TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
-                Move(Mathf.Clamp(GlobalMoveIndex, 0, GlobalMoveCount));
+                TrySetMoveCount(activeSequences.Max(x => x.MoveCount));
+                //OnSlideValueChanged(Mathf.Clamp(GlobalMoveIndex, 0, GlobalMoveCount));
 
                 AdjustOffsets();
-            }
-        }
-
-
-        public override void OnReplayControlAction(ReplayControlAction action)
-        {
-            switch (action)
-            {
-                case ReplayControlAction.Play:
-                    Resume();
-                    break;
-
-                case ReplayControlAction.Resume:
-                    Resume();
-                    break;
-
-                case ReplayControlAction.Pause:
-
-                    //mutex.WaitOne();
-
-                    //Pause();
-
-                    //mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayControlAction.Next:
-
-                    mutex.WaitOne();
-
-                    Next();
-
-                    mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayControlAction.Previous:
-
-                    mutex.WaitOne();
-
-                    Previous();
-
-                    mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayControlAction.Stop:
-
-                    //mutex.WaitOne();
-
-                    //Stop();
-
-                    //mutex.ReleaseMutex();
-
-                    break;
             }
         }
 
@@ -370,10 +325,10 @@ namespace UdeS.Promoscience.Replays
 
         public void TrySetMoveCount(int candidateMvcnt)
         {
-            if (candidateMvcnt > GlobalMoveCount)
-                GlobalMoveCount = candidateMvcnt;
+            //if (candidateMvcnt > GlobalMoveCount)
+            //    GlobalMoveCount = candidateMvcnt;
 
-            Debug.Log(GlobalMoveCount);
+            //Debug.Log(GlobalMoveCount);
         }
 
         public virtual float GetOffsetAmount(float idx)
@@ -396,16 +351,18 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
-        protected override void OnSequenceFinished()
-        {
-            //if (OnSequenceFinishedHandler != null)
-            //{
-            //    OnSequenceFinishedHandler.Invoke();
-            //}
-        }
+        //protected override void OnSequenceFinished()
+        //{
+        //    //if (OnSequenceFinishedHandler != null)
+        //    //{
+        //    //    OnSequenceFinishedHandler.Invoke();
+        //    //}
+        //}
 
         public override void Clear()
         {
+            base.Clear();
+
             first = null;
 
             algorithmSequence.gameObject.Destroy();
@@ -440,7 +397,7 @@ namespace UdeS.Promoscience.Replays
 
                 activeSequences.Add(sequence);
 
-                TrySetMoveCount(sequence.LocalMoveCount);
+                TrySetMoveCount(sequence.MoveCount);
 
                 AdjustOffsets();
 
@@ -459,7 +416,7 @@ namespace UdeS.Promoscience.Replays
             activeSequences.Remove(playerSequences[course.Id]);
             playerSequences.Remove(course.Id);
 
-            TrySetMoveCount(activeSequences.Max(x => x.LocalMoveCount));
+            TrySetMoveCount(activeSequences.Max(x => x.MoveCount));
 
             AdjustOffsets();
 

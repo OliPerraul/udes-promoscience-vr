@@ -109,7 +109,7 @@ MonoBehaviour:
   removeButton: {fileID: 2060485017784780214}
   addButton: {fileID: 3440537924636745774}
   roundNumberText: {fileID: 6899606272889765146}
-  stepText: {fileID: 0}
+  stepText: {fileID: 3110220000487256094}
 --- !u!114 &4547098244861173214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1393,13 +1393,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2710008808599905008}
-  m_Father: {fileID: 3242770630369679253}
-  m_RootOrder: 2
+  m_Father: {fileID: 1466660122758156173}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -48}
+  m_SizeDelta: {x: 320, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3181710346051861166
 MonoBehaviour:
@@ -2044,9 +2044,8 @@ RectTransform:
   m_Children:
   - {fileID: 5599052128076779409}
   - {fileID: 5113651299191394309}
-  - {fileID: 9166642699246219375}
   m_Father: {fileID: 1466660122758156173}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2112,8 +2111,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 258843596852280797}
-  - {fileID: 3110220000487256094}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 4935178759178989089}
   - {fileID: 5735916549514924861}
   - {fileID: 799745297384431977}
@@ -2286,12 +2285,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de2bee246c366fb44a9174cb2e834efa, type: 3}
---- !u!1 &1466660122758156172 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1153719877443598312, guid: de2bee246c366fb44a9174cb2e834efa,
-    type: 3}
-  m_PrefabInstance: {fileID: 313080995965188196}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6938892827325038499 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7211300680225048519, guid: de2bee246c366fb44a9174cb2e834efa,
@@ -2319,6 +2312,12 @@ MonoBehaviour:
 --- !u!224 &1466660122758156173 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1153719877443598313, guid: de2bee246c366fb44a9174cb2e834efa,
+    type: 3}
+  m_PrefabInstance: {fileID: 313080995965188196}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1466660122758156172 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1153719877443598312, guid: de2bee246c366fb44a9174cb2e834efa,
     type: 3}
   m_PrefabInstance: {fileID: 313080995965188196}
   m_PrefabAsset: {fileID: 0}
@@ -2633,18 +2632,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &799745297384431977 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6860829849601600822, guid: df36430906204c544a3da487c2629125,
-    type: 3}
-  m_PrefabInstance: {fileID: 6066300842343205983}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4935178759178989089 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1176163628650308222, guid: df36430906204c544a3da487c2629125,
@@ -2655,5 +2642,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &799745297384431977 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6860829849601600822, guid: df36430906204c544a3da487c2629125,
+    type: 3}
+  m_PrefabInstance: {fileID: 6066300842343205983}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

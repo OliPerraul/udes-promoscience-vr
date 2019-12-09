@@ -10,11 +10,11 @@ public interface ISequence
 
 namespace UdeS.Promoscience.Replays
 {
-    // TODO derive BaseReplay
-    public abstract class LabyrinthReplay : MonoBehaviour
+    // TODO do not derive mono behaviour
+    public abstract class LabyrinthReplay : MonoBehaviour, IReplayWorker
     {
         ////[SerializeField]
-        protected abstract BaseReplay Replay { get; }
+        protected abstract BaseReplay Parent { get; }
 
         protected Labyrinths.LabyrinthObject labyrinth;
 
@@ -43,28 +43,21 @@ namespace UdeS.Promoscience.Replays
 
         protected Vector2Int startlposition;
 
-        protected Coroutine coroutineResult;
+        protected Coroutine resumeCoroutineResult;
 
-        public Coroutine NextCoroutineResult => coroutineResult;
+        public Coroutine ResumeCoroutineResult => resumeCoroutineResult;
 
         protected abstract bool HasPrevious { get; }
 
         protected abstract bool HasNext { get; }
 
-        public virtual bool WithinBounds => Replay.GlobalMoveIndex < LocalMoveCount;
+        public abstract int MoveCount { get; }
 
-        public abstract int LocalMoveCount { get; }
-
-        public abstract int LocalMoveIndex { get; }
-
-        //protected abstract void Move(int target);
+        public abstract int MoveIndex { get; }
 
         protected abstract void DoPrevious();
 
         protected abstract void DoNext();
-
-        //public abstract void Resume();
-
 
         public virtual void Awake()
         {
@@ -84,13 +77,14 @@ namespace UdeS.Promoscience.Replays
         }
 
 
-        protected abstract IEnumerator DoNextCoroutine();
+        protected virtual IEnumerator DoNextCoroutine() { yield return null; }
 
 
         public virtual Coroutine StartNextCoroutine()
         {
-            coroutineResult = StartCoroutine(DoNextCoroutine());
-            return coroutineResult;
+            return null;
+            //coroutineResult = StartCoroutine(DoNextCoroutine());
+            //return coroutineResult;
         }
 
         public virtual void Next()
@@ -113,11 +107,11 @@ namespace UdeS.Promoscience.Replays
 
         public virtual void Stop()
         {
-            if (coroutineResult != null)
-            {
-                StopCoroutine(coroutineResult);
-                coroutineResult = null;
-            }
+            //if (coroutineResult != null)
+            //{
+            //    StopCoroutine(coroutineResult);
+            //    coroutineResult = null;
+            //}
         }
 
         public virtual void AdjustOffset(float ofst)
@@ -127,14 +121,14 @@ namespace UdeS.Promoscience.Replays
 
         public void Move(int target)
         {
-            if (target == LocalMoveIndex)
+            if (target == MoveIndex)
                 return;
 
-            if (Mathf.Sign(LocalMoveIndex - target) < 0)
+            if (Mathf.Sign(MoveIndex - target) < 0)
             {
                 while (HasNext)
                 {
-                    if (LocalMoveIndex == target)
+                    if (MoveIndex == target)
                         return;
 
                     Next();
@@ -146,7 +140,7 @@ namespace UdeS.Promoscience.Replays
                 {
                     Previous();
 
-                    if (LocalMoveIndex == target)
+                    if (MoveIndex == target)
                         return;
                 }
             }

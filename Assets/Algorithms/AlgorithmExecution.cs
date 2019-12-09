@@ -54,35 +54,53 @@ namespace UdeS.Promoscience.Algorithms
         public Vector2Int endPosition;// = labyrinth.EndPos;
     }
 
+    [System.Serializable]
     public class AlgorithmExecution
     {
+        [SerializeField]
         private List<Tile> steps;
 
+        [SerializeField]
         public List<Tile> Steps => steps;
 
-        private int progressIndex = 0;
+        public int MoveCount => steps.Count;
 
-        public int LocalMoveCount => steps.Count;
-
+        [SerializeField]
         private int moveIndex = 0;
 
-        public int LocalMoveIndex => moveIndex;
+        public int MoveIndex => moveIndex;
 
         public bool HasPrevious => moveIndex > 0;
 
-        public bool HasNext => moveIndex < LocalMoveCount;
+        public bool HasNext => moveIndex < MoveCount - 1;
 
-        public AlgorithmExecution(Algorithm algorithm, Labyrinths.ILabyrinth labyrinth)
+        public AlgorithmExecution(
+            Algorithm algorithm, 
+            Labyrinths.ILabyrinth labyrinth)
         {
             steps = algorithm.GetAlgorithmSteps(labyrinth);
         }
+
+        public void Reset()
+        {
+            moveIndex = 0;
+        }
+
+
+        //public AlgorithmExecution(
+        //    Algorithm algorithm, 
+        //    Labyrinths.ILabyrinth labyrinth, 
+        //    int until) : this(algorithm, labyrinth)
+        //{
+        //    moveIndex = until < MoveCount ? until : MoveCount - 1;
+        //}
 
         public bool Next()
         {
             moveIndex = HasPrevious ?
                 (HasNext ?
                     moveIndex :
-                    LocalMoveCount - 1) :
+                    MoveCount - 1) :
                 0;
 
             moveIndex++;
@@ -98,7 +116,7 @@ namespace UdeS.Promoscience.Algorithms
             moveIndex = HasPrevious ?
                 (HasNext ?
                     moveIndex :
-                    LocalMoveCount - 1) :
+                    MoveCount - 1) :
                 0;
 
             return true;

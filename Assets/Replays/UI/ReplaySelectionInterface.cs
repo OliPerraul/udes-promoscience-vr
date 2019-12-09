@@ -51,11 +51,11 @@ namespace UdeS.Promoscience.Replays.UI
             {
                 if (i % Labyrinths.Utils.SelectMaxHorizontal == 0)
                 {
-                    AddBottomLabyrinth();
+                    AddInitialBottomLabyrinth(i);
                 }
                 else
                 {
-                    sections[sections.Count - 1].AddButton(CreateNextLabyrinth());
+                    sections[sections.Count - 1].AddButton(ReplayManager.Instance.GameReplay.Value.Previews[i]);
                 }
             }
 
@@ -138,6 +138,13 @@ namespace UdeS.Promoscience.Replays.UI
             //buttons.Clear();
 
             //Server.Instance.ClearLabyrinths();
+        }
+
+        public void AddInitialBottomLabyrinth(int i)
+        {
+            AddSection().AddButton(ReplayManager.Instance.GameReplay.Value.Previews[i]);
+
+            OnContentChangedHandler?.Invoke();
         }
 
 

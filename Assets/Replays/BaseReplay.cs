@@ -1,218 +1,88 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Cirrus.Extensions;
-using System.Linq;
 using Cirrus;
 
 namespace UdeS.Promoscience.Replays
 {
-    public abstract class BaseReplay
+    public interface IReplayWorker
     {
-        protected ReplayControlsAsset controls;
+        Coroutine ResumeCoroutineResult { get; }
 
-        public Event<int> OnMoveCountSetHandler;
+    }
+
+    public abstract class BaseReplay : IReplayWorker
+    {
+        public abstract int MoveCount { get;}
 
         public Event<int> OnMoveIndexChangedHandler;
 
-        private int index = 0;
+        public virtual Event<float> OnPlaybackSpeedChangedHandler { get; set; }
 
-        [SerializeField]
-        private int moveCount = int.MinValue;
+        public bool HasNext => MoveCount == 0 ? false : MoveIndex < MoveCount - 1;
 
-        public int GlobalMoveCount
-        {
-            get
-            {
-                return moveCount;
-            }
+        public bool HasPrevious => MoveCount == 0 ? false : MoveIndex > 0;
 
-            set
-            {
-                if (moveCount != value)
-                {
-                    moveCount = value;
-                    if (OnMoveCountSetHandler != null) OnMoveCountSetHandler(value);
-                }
+        public Coroutine ResumeCoroutineResult => resumeCoroutineResult;
 
-            }
-        }
+        protected Coroutine resumeCoroutineResult;
 
-        [SerializeField]
-        private int moveIndex = 0;
-
-        public int GlobalMoveIndex
-        {
-            get
-            {
-                return moveIndex;
-            }
-
-            set
-            {
-                if (value >= 0 && value <= GlobalMoveCount)
-                {
-                    moveIndex = value;
-                    if (OnMoveIndexChangedHandler != null) OnMoveIndexChangedHandler.Invoke(moveIndex);
-                }
-            }
-        }
-
-        public bool HasNext
-        {
-            get
-            {
-                if (GlobalMoveCount == 0)
-                    return false;
-
-                return GlobalMoveIndex < GlobalMoveCount;
-            }
-        }
-
-        public bool HasPrevious
-        {
-            get
-            {
-                if (GlobalMoveCount == 0)
-                    return false;
-
-                return GlobalMoveIndex > 0;
-            }
-        }
-
+        protected abstract IEnumerable<IReplayWorker> Workers { get; }
 
         private bool isPlaying = false;
 
-        // TODO remove
-        public BaseReplay(ReplayControlsAsset controls)
+        public Cirrus.Event OnResumeHandler;
+
+        private float playbackSpeed;
+
+        protected virtual float PlaybackSpeed
         {
-            this.controls = controls;
-            controls.OnControlActionHandler += OnReplayControlAction;
-            controls.OnPlaybackSpeedHandler += OnPlaybackSpeedChanged;
+            get => playbackSpeed;
+
+            set {
+                playbackSpeed = value;
+                OnPlaybackSpeedChangedHandler?.Invoke(playbackSpeed);
+            }
         }
 
-        public virtual void Start()
-        {
+        private int moveIndex = 0;
 
+        public virtual int MoveIndex
+        {
+            get => moveIndex;
+
+            protected set
+            {
+                moveIndex = value < MoveCount ? value : MoveCount - 1;
+                moveIndex = moveIndex < 0 ? 0 : moveIndex;
+                OnMoveIndexChangedHandler?.Invoke(moveIndex);
+            }
         }
 
-        public virtual void OnPlaybackSpeedChanged(float speed)
+        public void OnResume()
         {
-
+            Resume();
         }
 
         public virtual void Resume()
         {
-
+            resumeCoroutineResult = ReplayManager.Instance.StartCoroutine(ResumeCoroutine());
         }
 
-        public virtual void Next()
+        public virtual IEnumerator ResumeCoroutine()
         {
-
-        }
-
-        public virtual void Previous()
-        {
-
-        }
-
-        public virtual void Move(int target)
-        {
-
-        }
-
-        public virtual void Pause()
-        {
-
-        }
-
-        public virtual void Stop()
-        {
-
-        }
-
-
-        public virtual void OnReplayControlAction(ReplayControlAction action)
-        {
-            switch (action)
+            while (HasNext)
             {
-                //case ReplayAction.ToggleOptions:                    
-                //    break;
+                OnResumeHandler?.Invoke();
 
-                ////case ReplayAction.ExitReplay:
-                ////    Clear();
-                ////    break;
+                // next in player sequence
+                foreach (var worker in Workers)
+                {
+                    yield return worker.ResumeCoroutineResult;
+                }
 
-                //// TODO: Handle play/ stop from replay object and not sequences
-                //// to prevent synch issues
-                //case ReplayAction.ToggleAlgorithm:
-                //    break;
-
-                //case ReplayAction.ToggleGreyboxLabyrinth:
-                //    //EnableGreybox(!isGreyboxToggled);
-                //    break;
-
-                case ReplayControlAction.Play:
-                    Resume();
-                    break;
-
-                case ReplayControlAction.Resume:
-                    Resume();
-                    break;
-
-                case ReplayControlAction.Pause:
-
-                    //mutex.WaitOne();
-
-                    //Pause();
-
-                    //mutex.ReleaseMutex();
-
-                    break;
-
-                case ReplayControlAction.Slide:
-
-
-
-                    break;
-
-
-                case ReplayControlAction.Next:
-
-
-                    break;
-
-                case ReplayControlAction.Previous:
-
-
-                    break;
-
-                case ReplayControlAction.Stop:
-
-                    //mutex.WaitOne();
-
-                    //Stop();
-
-                    //mutex.ReleaseMutex();
-
-                    break;
-
-
+                yield return null;
             }
-        }
-
-
-
-        protected virtual void OnSequenceFinished()
-        {
-
-        }
-
-        public virtual void Clear()
-        {
-
-
-            //labyrinth = null;         
         }
     }
 }

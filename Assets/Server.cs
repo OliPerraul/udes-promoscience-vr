@@ -20,7 +20,7 @@ namespace UdeS.Promoscience
 
         public ServerSettings Settings => settings;
 
-        private Replays.BaseReplay replay;
+        private Replays.ControlReplay replay;
 
         public Game CurrentGame { get; private set; }
 
@@ -102,7 +102,7 @@ namespace UdeS.Promoscience
 
         public void StartInstantReplay()
         {
-            Replays.ReplayManager.Instance.StartRoundReplay();
+            Replays.ReplayManager.Instance.StartCurrentRoundReplay();
         }
 
         public void StartAdvancedReplay()
