@@ -57,7 +57,7 @@ namespace UdeS.Promoscience.Algorithms
             var state = new AlgorithmExecutionState();
 
             // Add first tile
-            algorithmSteps.Add(ResetProgressState(state, labyrinth));
+            ResetProgressState(state, labyrinth);
 
             Tile tile;
             while (GetNextStep(state, labyrinth, out tile))
@@ -199,21 +199,17 @@ namespace UdeS.Promoscience.Algorithms
             state.isTileAlreadyVisited = new bool[labyrinth.GetLabyrithXLenght(), labyrinth.GetLabyrithYLenght()];
             state.hasReachedTheEnd = false;
             state.lastRemoved = null;
-
             state.direction = labyrinth.StartDirection;
             state.position = labyrinth.StartPos;
             state.endPosition = labyrinth.EndPos;
-
             state.isTileAlreadyVisited[state.position.x, state.position.y] = true;
-
             state.stack.Add(new Action
             {
                 pos = state.position,
                 dir = (Direction)state.direction
             });
 
-            state.algorithmSteps.Add(new Tile(state.position.x, state.position.y, TileColor.Yellow));
-            return state.algorithmSteps[0];
+            return new Tile(state.position.x, state.position.y, TileColor.Yellow);
         }
 
     }
