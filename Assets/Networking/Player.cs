@@ -30,11 +30,11 @@ namespace UdeS.Promoscience.Network
                 if(Client.Instance != null)
                     Client.Instance.State.OnValueChangedHandler -= SendCmdPlayerGameState;
 
-                if (deviceType.Value == Promoscience.DeviceType.Headset)
+                if (Utils.CurrentDeviceType == DeviceType.Headset)
                 {
                     gameAction.valueChangedEvent -= SendCmdPlayerAction;
                 }
-                else if (deviceType.Value == Promoscience.DeviceType.Tablet)
+                else if (Utils.CurrentDeviceType == DeviceType.Tablet)
                 {
                     playerInformation.playerInformationChangedEvent -= SendCmdPlayerInformation;
                 }
@@ -198,8 +198,8 @@ namespace UdeS.Promoscience.Network
         GameActionManagerAsset gameAction;
 
 
-        [SerializeField]
-        DeviceTypeManagerAsset deviceType;
+        //[SerializeField]
+        //DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
         private ControlsAsset controls;
@@ -227,7 +227,7 @@ namespace UdeS.Promoscience.Network
         }
 
         [Client]
-        void ClientInitialize()
+        public void ClientInitialize()
         {
             // TODO
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
@@ -240,16 +240,16 @@ namespace UdeS.Promoscience.Network
 
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-            if (deviceType.Value == Promoscience.DeviceType.Tablet)
+            if (Utils.CurrentDeviceType == DeviceType.Tablet)
             {
                 playerInformation.playerInformationChangedEvent += SendCmdPlayerInformation;
             }
-            else if (deviceType.Value == Promoscience.DeviceType.Headset)
+            else if (Utils.CurrentDeviceType == DeviceType.Headset)
             {
                 gameAction.valueChangedEvent += SendCmdPlayerAction;
             }
 
-            CmdSetDeviceType(deviceType.Value);
+            CmdSetDeviceType(Utils.CurrentDeviceType);
             CmdSetDeviceName(ServerDeviceName);
             CmdSetUniqueIdentifier(deviceUniqueIdentifier);
 

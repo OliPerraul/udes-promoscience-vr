@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.UI
             Client.Instance.Algorithm.OnValueChangedHandler += OnAlgorithmValueChanged;
             Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
-            if (Client.Instance.DeviceType == DeviceType.Tablet)
+            if (Promoscience.Utils.CurrentDeviceType == DeviceType.Tablet)
             {
                 algorithmButton.onClick.AddListener(OnButtonClicked);
                 closeButton.onClick.AddListener(OnCloseButtonClicked);
@@ -58,7 +58,7 @@ namespace UdeS.Promoscience.UI
                 case ClientGameState.PlayingTutorial:
                     display.gameObject.SetActive(true);
 
-                    if(Client.Instance.DeviceType == DeviceType.Tablet)
+                    if(Promoscience.Utils.CurrentDeviceType == DeviceType.Tablet)
                         descriptionDisplay.SetActive(false);
 
                     OnAlgorithmValueChanged(Client.Instance.Algorithm.Value);
@@ -67,7 +67,7 @@ namespace UdeS.Promoscience.UI
                 default:
                     display.gameObject.SetActive(false);
 
-                    if (Client.Instance.DeviceType == DeviceType.Tablet)
+                    if (Promoscience.Utils.CurrentDeviceType == DeviceType.Tablet)
                         descriptionDisplay.SetActive(false);
                     break;
 
@@ -77,23 +77,22 @@ namespace UdeS.Promoscience.UI
 
         public void OnButtonClicked()
         {
-            if (Client.Instance.DeviceType == DeviceType.Tablet)
+            if (Promoscience.Utils.CurrentDeviceType == DeviceType.Tablet)
                 descriptionDisplay.gameObject.SetActive(!descriptionDisplay.gameObject.activeSelf);
         }
 
         public void OnCloseButtonClicked()
         {
-            if (Client.Instance.DeviceType == DeviceType.Tablet)
+            if (Promoscience.Utils.CurrentDeviceType == DeviceType.Tablet)
             {
                 descriptionDisplay.gameObject.SetActive(false);//.gameObject.activeSelf);
             }
         }
 
 
-        void OnAlgorithmValueChanged(Algorithms.Algorithm algorithm)
+        public void OnAlgorithmValueChanged(Algorithms.Algorithm algorithm)
         {
-
-            if (Client.Instance.DeviceType == DeviceType.Tablet)
+            if (Promoscience.Utils.CurrentDeviceType == DeviceType.Tablet)
             {
                 text.text = Client.Instance.Algorithm.Value.Name + " (?)";
                 descriptionText.text = Client.Instance.Algorithm.Value.Description;

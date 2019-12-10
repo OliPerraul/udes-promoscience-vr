@@ -605,8 +605,8 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 100
-  m_PreferredHeight: 19.615479
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
@@ -1546,20 +1546,20 @@ MonoBehaviour:
   pairingStatus: {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
   connectionStatusText: {fileID: 114753471845641588}
   connectingToPairString:
-    localizeString: {fileID: 11400000, guid: 503125f55708eaa4eaa5f34b78a836d3, type: 2}
-    defaultString: '[?]'
+    french: 
+    english: 
   connectingToPairingServerString:
-    localizeString: {fileID: 11400000, guid: 1afaac59ede1a864ba9588d333124883, type: 2}
-    defaultString: '[?]'
+    french: 
+    english: 
   pairingRequestSentString:
-    localizeString: {fileID: 11400000, guid: ce26d654048969648a9771b69eea0d00, type: 2}
-    defaultString: '[?]'
+    french: 
+    english: 
   pairingResultSuccessString:
-    localizeString: {fileID: 11400000, guid: 5bb84640c74cfe542a27aa0665c07818, type: 2}
-    defaultString: '[?]'
+    french: 
+    english: 
   pairingResultFailString:
-    localizeString: {fileID: 11400000, guid: 5ffdff238c1311040b428dfa06168d9d, type: 2}
-    defaultString: '[?]'
+    french: 
+    english: 
   headsetImage: {fileID: 114189879940551006}
   tabletImage: {fileID: 114329158054191810}
   serverImage: {fileID: 114488704645412940}
@@ -1763,19 +1763,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 87c316b602156405d92e616621658222, type: 3}
     m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 12
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '[ConnectingToPairingServer]'
+  m_Text: Connexion au serveur de jumelage
 --- !u!114 &114542221617622448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1788,10 +1788,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1b38435d747e448863d488bed16577, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localizeString: {fileID: 11400000, guid: 1afaac59ede1a864ba9588d333124883, type: 2}
-  inlineLocalizeString:
-    localizeString: {fileID: 0}
-    defaultString: '[?]'
+  localizeString:
+    french: '[?]'
+    english: '[?]'
+  localizeStringBlock:
+    english: '[?]'
+    french: '[?]'
   text: {fileID: 114753471845641588}
 --- !u!1 &1769695125830132
 GameObject:

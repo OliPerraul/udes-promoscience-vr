@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.SceneManagement;
 ////using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience
@@ -176,7 +177,7 @@ namespace UdeS.Promoscience
         NoType,
         Tablet,
         Headset,
-        SupportDevice,
+        Server,
     }
 
     // THE ORDER IS IMPORTANT AND MUST MATCH THE UI LOL
@@ -213,6 +214,22 @@ namespace UdeS.Promoscience
         public static int StaticCount = 0;
 
         public const int NumColors = 3;
+
+
+        public static DeviceType CurrentDeviceType
+        {
+
+            get
+            {
+                string sceneName = SceneManager.GetActiveScene().name;
+
+                if (sceneName[0] == 'T') return DeviceType.Tablet;
+
+                else if (sceneName[0] == 'H') return DeviceType.Headset;
+
+                else return DeviceType.Headset;
+            }
+        }
 
         public static Vector2Int GetMoveDestination(Vector2Int lpos, GameAction action)
         {

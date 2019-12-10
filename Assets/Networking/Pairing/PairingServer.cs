@@ -19,39 +19,33 @@ namespace UdeS.Promoscience.Network
 {
     public class PairingServer : Cirrus.BaseSingleton<PairingServer>
     {
-        NetworkServerSimple server = null;
-        List<NetworkConnection> clientConnectionList = new List<NetworkConnection>();
+        private NetworkServerSimple server = null;
+
+        private List<NetworkConnection> clientConnectionList = new List<NetworkConnection>();
 
         // Tablet, Headset
         public List<string> headsets;
+
         public List<string> tablets;
-        //public Dictionary<int, NetworkConnection> connections;
+        
         public Dictionary<string, NetworkConnection> connections;
 
+        [SerializeField]
         public int serverPort = 9995;
 
-        private Mutex mutex;
+        private Mutex pairingMutex = new Mutex();
+
+        private Mutex startedMutex = new Mutex();
+
+        private bool isStarted = false;
 
         public void Awake()
         {
             Persist();
 
-            mutex = new Mutex();
-
             headsets = new List<string>();
             tablets = new List<string>();
             connections = new Dictionary<string, NetworkConnection>();
-        }
-
-
-        public void Start()
-        {
-            Invoke("StartWithDelay", ServerUtils.PairingServerDelay);
-        }
-
-        private void StartWithDelay()
-        {
-            StartServer();
         }
 
         void Update()
@@ -62,19 +56,37 @@ namespace UdeS.Promoscience.Network
             }
         }
 
-        void StartServer()
+
+        public void StartServer()
         {
+            startedMutex.WaitOne();
+
+            isStarted = true;
+
             server = new NetworkServerSimple();
+
             server.RegisterHandler(MsgType.Connect, OnConnect);
+
             server.RegisterHandler((short)CustomMsgType.PairingRequest, OnPairingRequest);
+
             server.RegisterHandler((short)CustomMsgType.UnpairingRequest, OnUnpairingRequest);
+
             server.Listen(serverPort);
+
+            startedMutex.ReleaseMutex();
         }
 
-        void StopServer()
+        public void StopServer()
         {
+            startedMutex.WaitOne();
+
+            isStarted = false;
+
             server.Stop();
+
             server = null;
+
+            startedMutex.ReleaseMutex();
         }
 
         void OnConnect(NetworkMessage netMsg)
@@ -91,16 +103,16 @@ namespace UdeS.Promoscience.Network
 
             NetworkConnection conn;
 
-            mutex.WaitOne();
+            pairingMutex.WaitOne();
 
             headsets.Remove(deviceId);
             tablets.Remove(deviceId);
             connections.Remove(deviceId);
 
-            mutex.ReleaseMutex();
+            pairingMutex.ReleaseMutex();
         }
 
-        void OnPairingRequest(NetworkMessage netMsg)
+        private void OnPairingRequest(NetworkMessage netMsg)
         {
             PairingRequestMessage msg = netMsg.ReadMessage<PairingRequestMessage>();
             string headsetId = null;
@@ -108,7 +120,7 @@ namespace UdeS.Promoscience.Network
             NetworkConnection tabletCon;
             NetworkConnection headsetCon;
 
-            mutex.WaitOne();
+            pairingMutex.WaitOne();
 
             tabletId = msg.deviceId;
             headsetId = msg.deviceId;
@@ -160,7 +172,7 @@ namespace UdeS.Promoscience.Network
             }
             
 
-            mutex.ReleaseMutex();
+            pairingMutex.ReleaseMutex();
         }
 
         private bool Pair(NetworkConnection tabletConnection, string tabletId, NetworkConnection headsetConnection, string headsetId)

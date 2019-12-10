@@ -12,8 +12,8 @@ namespace UdeS.Promoscience.UI
 {
     public class PairingDisplay : MonoBehaviour
     {
-        [SerializeField]
-        private DeviceTypeManagerAsset deviceType;
+        //[SerializeField]
+        //private DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
         private Network.ScriptablePairingStatus pairingStatus;
@@ -82,7 +82,7 @@ namespace UdeS.Promoscience.UI
 
             serverImage.color = serverImage.color.SetA(disconnectedAlpha);            
             
-            switch (deviceType.Value)
+            switch (Promoscience.Utils.CurrentDeviceType)
             {
                 case DeviceType.Headset:
                     headsetImage.color = headsetImage.color.SetA(1);

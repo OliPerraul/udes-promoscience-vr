@@ -27,10 +27,10 @@ namespace UdeS.Promoscience
         [SerializeField]
         private GameObject waitingForNextRoundRoom;
 
-        [SerializeField]
-        private DeviceTypeManagerAsset deviceType;
+        //[SerializeField]
+        //private DeviceTypeManagerAsset deviceType;
 
-        public DeviceType DeviceType => deviceType.Value;
+        //public DeviceType DeviceType => deviceType.Value;
 
         [SerializeField]
         public ObservableValue<Algorithms.Algorithm> Algorithm = new ObservableValue<Algorithms.Algorithm>();

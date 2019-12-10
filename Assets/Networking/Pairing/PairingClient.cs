@@ -13,8 +13,8 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         private ScriptablePairingStatus pairingStatus;
 
-        [SerializeField]
-        DeviceTypeManagerAsset deviceType;
+        //[SerializeField]
+        //DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
         ScriptableString serverIpAdress;
@@ -88,13 +88,13 @@ namespace UdeS.Promoscience.Network
 
             string deviceName = SystemInfo.deviceModel;
 
-            if (deviceType.Value == Promoscience.DeviceType.Tablet)
+            if (Utils.CurrentDeviceType == DeviceType.Tablet)
             {
-                pairingRequestMsg.deviceType = Promoscience.DeviceType.Tablet;
+                pairingRequestMsg.deviceType = DeviceType.Tablet;
             }
-            else if (deviceType.Value == Promoscience.DeviceType.Headset)
+            else if (Utils.CurrentDeviceType == DeviceType.Headset)
             {
-                pairingRequestMsg.deviceType = Promoscience.DeviceType.Headset;
+                pairingRequestMsg.deviceType = DeviceType.Headset;
             }
 
             client.Send(

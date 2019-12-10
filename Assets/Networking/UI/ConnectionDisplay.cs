@@ -15,8 +15,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private ControlsAsset controls;
 
-        [SerializeField]
-        private DeviceTypeManagerAsset deviceType;
+        //[SerializeField]
+        //private DeviceTypeManagerAsset deviceType;
 
         [SerializeField]
         private Network.ScriptablePairingStatus pairingStatus;
@@ -100,7 +100,7 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         private float readyCloseDelay = 2f;
 
-        void Awake()
+        public void Awake()
         {
             Debug.Log("Connection Display " + Promoscience.Utils.StaticCount);
             Promoscience.Utils.StaticCount++;
@@ -114,7 +114,7 @@ namespace UdeS.Promoscience.UI
 
             serverImage.color = serverImage.color.SetA(disconnectedAlpha);            
             
-            switch (deviceType.Value)
+            switch (Promoscience.Utils.CurrentDeviceType)
             {
                 case DeviceType.Headset:
                     headsetImage.color = headsetImage.color.SetA(1);
