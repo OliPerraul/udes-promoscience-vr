@@ -17,8 +17,8 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         [SerializeField]
         private Algorithms.Algorithm algorithm;
 
-        [SerializeField]
-        private LabyrinthEditor editor;
+        //[SerializeField]
+        //private LabyrinthEditor editor;
 
         [SerializeField]
         private UnityEngine.Tilemaps.Tilemap templateTilemap;
@@ -43,7 +43,8 @@ namespace UdeS.Promoscience.Labyrinths.Editor
             {
                 state = new Algorithms.AlgorithmExecutionState();
                 dirtyTilemap = Instantiate(templateTilemap, templateTilemap.transform.parent);
-                SetTile(algorithm.ResetProgressState(state, editor.resource));
+                //TODO
+                //SetTile(algorithm.ResetProgressState(state, editor.resource));
             }
 
             running = true;
@@ -88,8 +89,9 @@ namespace UdeS.Promoscience.Labyrinths.Editor
 
             while (running)
             {
-                if (!algorithm.GetNextStep(state, editor.resource, out tile))
-                    break;
+                // TODO
+                //if (!algorithm.GetNextStep(state, editor.resource, out tile))
+                //    break;
 
                 SetTile(tile);
 
@@ -117,9 +119,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor
                 Debug.Log("yellow: " + tile.Position);
             }
         }
-
     }
-
 
     [CustomEditor(typeof(AlgorithmChecker))]
     public class SomeScriptEditor2 : UnityEditor.Editor

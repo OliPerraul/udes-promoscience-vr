@@ -48,12 +48,10 @@ namespace UdeS.Promoscience
     [Serializable]
     public class ServerSettings : Settings
     {
-        // TODO expose in menu
-        // Would be useful when working on the level editor
-        [SerializeField]
-        private bool createSampleLabyrinths = false;
+        public const string CreateSampleLabyrinthsString = "CreateSampleLabyrinths";
 
-        public bool CreateSampleLabyrinths => createSampleLabyrinths;
+        [SerializeField]
+        public ObservableBool CreateSampleLabyrinths = new ObservableBool(false);
 
         public const string PredefinedLevelOrderString = "PredefinedLevelOrder";
 
@@ -71,6 +69,9 @@ namespace UdeS.Promoscience
 
         public ServerSettings()
         {
+            CreateSampleLabyrinths.OnValueChangedHandler +=
+                (x) => OnSettingChanged(CreateSampleLabyrinthsString, x);
+
             IsLevelOrderPredefined.OnValueChangedHandler +=
                 (x) => OnSettingChanged(PredefinedLevelOrderString, x);
 
@@ -80,6 +81,9 @@ namespace UdeS.Promoscience
 
         public void LoadFromPlayerPrefs()
         {
+            if (PlayerPrefs.HasKey(CreateSampleLabyrinthsString))
+                CreateSampleLabyrinths.Set(PlayerPrefs.GetInt(CreateSampleLabyrinthsString) == 1, notify: false);
+
             if (PlayerPrefs.HasKey(PredefinedLevelOrderString))
                 IsLevelOrderPredefined.Set(PlayerPrefs.GetInt(PredefinedLevelOrderString) == 1, notify: false);
 

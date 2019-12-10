@@ -209,6 +209,15 @@ namespace UdeS.Promoscience
     }
 
 
+    public static class Layers
+    {
+        public static int Objects = LayerMask.NameToLayer("Objects");
+        public static int ObjectsFlags = 1 << Objects;
+
+        public static int Labyrinth = LayerMask.NameToLayer("Labyrinth");
+        public static int LabyrinthFlags = 1 << Labyrinth;
+    }
+
     public static class Utils
     {
         public static int StaticCount = 0;

@@ -13,13 +13,13 @@ namespace UdeS.Promoscience.Labyrinths
 
         public ICollection<ILabyrinth> data = new List<ILabyrinth>();
 
-        public List<Resource> Data
-        {
-            get
-            {
-                return Resources.Instance.Labyrinths;
-            }
-        }
+        //public List<Resource> Data
+        //{
+        //    get
+        //    {
+        //        return Resources.Instance.LabyrinthsResources;
+        //    }
+        //}
 
         public ICollection<LabyrinthObject> Labyrinths
         {

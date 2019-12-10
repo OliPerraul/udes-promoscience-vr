@@ -6,24 +6,27 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths.Editor.UI
 {
-    public class LabyrinthEditorSelect : BaseSelectionInterface
+    public class EditorSelectionInterface : BaseSelectionInterface
     {
-        [SerializeField]
-        private ControllerAsset controller;
+        //[SerializeField]
+        //private ControllerAsset controller;
 
         [SerializeField]
-        private LabyrinthEditorSection sectionTemplate;
+        private EditorSelectSection sectionTemplate;
 
         public override BaseSection SectionTemplate => sectionTemplate;
 
-        private List<LabyrinthEditorSection> sections = new List<LabyrinthEditorSection>();
+        private List<EditorSelectSection> sections = new List<EditorSelectSection>();
 
-        private LabyrinthEditorSection currentSection;
+        private EditorSelectSection currentSection;
 
         public override BaseSection CurrentSection => currentSection;
 
         [SerializeField]
         private UnityEngine.UI.Button exitButton;
+
+        [SerializeField]
+        private UnityEngine.UI.Button addButton;
 
         public override int NumSections => sections.Count;
 
@@ -31,14 +34,18 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
         {
             base.Awake();
 
-            controller.State.OnValueChangedHandler += OnStateChanged;
+            EditorController.Instance.State.OnValueChangedHandler += OnStateChanged;
+
             exitButton.onClick.AddListener(OnExitClicked);
+            addButton.onClick.AddListener(AddLabyrinth);
+            
         }
 
 
         public void OnDestroy()
         {
-            controller.State.OnValueChangedHandler -= OnStateChanged;
+            if (EditorController.Instance != null)
+            EditorController.Instance.State.OnValueChangedHandler -= OnStateChanged;
         }
 
         public void OnExitClicked()
@@ -46,22 +53,22 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
 
         }
 
-        public virtual void OnStateChanged(State state)
+        public virtual void OnStateChanged(EditorState state)
         {
             switch (state)
             {
-                case State.Select:
+                case EditorState.Select:
 
                     Enabled = true;
 
-                    if (labyrinths.Count != 0)
-                    {
-                        foreach (var lab in labyrinths)
-                        {
-                            lab.gameObject.SetActive(true);
-                        }
-                    }
-                    else
+                    //if (labyrinths.Count != 0)
+                    //{
+                    //    foreach (var lab in labyrinths)
+                    //    {
+                    //        lab.gameObject.SetActive(true);
+                    //    }
+                    //}
+                    //else
                     {
                         for (labyrinthIndex = 0; labyrinthIndex < Utils.NumLabyrinth; labyrinthIndex++)
                         {
@@ -71,16 +78,33 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
 
                     break;
 
-                case State.Editor:
+                case EditorState.Editor:
 
-                    Enabled = false;
                     foreach (var lab in labyrinths)
                     {
-                        lab.gameObject.SetActive(false);
+                        if (lab == null)
+                            continue;
+
+                        lab.gameObject.Destroy();
                     }
+
+                    labyrinths.Clear();
+
+                    foreach (var lab in sections)
+                    {
+                        if (lab == null)
+                            continue;
+
+                        lab.gameObject.Destroy();
+                    }
+
+                    sections.Clear();
+
+                    Enabled = false;
                     break;
 
                 default:
+                    
                     Enabled = false;
                     break;
             }
@@ -88,7 +112,32 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
 
         public override void AddLabyrinth(int i)
         {
-            var data = Labyrinths.Resources.Instance.Labyrinths[i];
+            var data = Server.Instance.Labyrinths[i];
+
+            LabyrinthObject labyrinth = Labyrinths.Resources.Instance
+                  .GetLabyrinthObject(data)
+                  .Create(data);
+
+            labyrinths.Add(labyrinth);
+
+            labyrinth.GenerateLabyrinthVisual();
+
+            labyrinth.Init(enableCamera: true);
+
+            labyrinth.Camera.OutputToTexture = true;
+
+            labyrinth.transform.position = Vector3.right * Utils.SelectionOffset * (labyrinths.Count - 1);
+
+            AddSection().AddButton(labyrinth);
+
+            OnContentChangedHandler?.Invoke();
+        }
+
+        public void AddLabyrinth()
+        {
+            var data = SQLiteUtilities.CreateSampleLabyrinth();
+
+            Server.Instance.Labyrinths.Add(data);
 
             LabyrinthObject labyrinth = Labyrinths.Resources.Instance
                   .GetLabyrinthObject(data)

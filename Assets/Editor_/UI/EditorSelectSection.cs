@@ -5,15 +5,15 @@ using UdeS.Promoscience.Labyrinths.UI;
 namespace UdeS.Promoscience.Labyrinths.Editor.UI
 {
 
-    public class LabyrinthEditorSection : BaseSection
+    public class EditorSelectSection : BaseSection
     {
         [SerializeField]
-        private LabyrinthEditorSelect levelSelect;
+        private EditorSelectionInterface levelSelect;
 
         public override BaseSelectionInterface Select => levelSelect;
 
         [SerializeField]
-        private LabyrinthEditorButton buttonTemplate;
+        private EditorSelectButton buttonTemplate;
 
         public override BaseButton ButtonTemplate => buttonTemplate;
 

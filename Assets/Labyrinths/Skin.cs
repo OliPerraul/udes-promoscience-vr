@@ -22,7 +22,8 @@ namespace UdeS.Promoscience.Labyrinths
                 return null;
 
             var res = skin.Pieces.FirstOrDefault(x => x != null && x.TileTypes.Contains(type));//?.First();
-            Debug.Assert(res != null, Enum.GetName(typeof(TileType), type) + " does not exist in " + skin.Name);
+            if(res == null)
+            Debug.LogWarning(Enum.GetName(typeof(TileType), type) + " does not exist in " + skin.Name);
             return res;
         }
     }

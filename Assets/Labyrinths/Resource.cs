@@ -8,6 +8,7 @@ using UdeS.Promoscience.Network;
 using UnityEditor;
 
 using System.Linq;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths
 {
@@ -42,7 +43,12 @@ namespace UdeS.Promoscience.Labyrinths
 
             if (data.Id < 0)
             {
-                data.Id = Resources.Instance.Labyrinths.IndexOf(this);
+                data.Id = Resources.Instance.LabyrinthsResources.IndexOf(this);
+            }
+
+            if (data.Name.IsNullOrEmpty())
+            {
+                data.Name = name;
             }
         }
 
@@ -83,7 +89,9 @@ namespace UdeS.Promoscience.Labyrinths
         public TileType[] Tiles2 { get { return Data.Tiles2; } set { Data.Tiles2 = value; } }
 
         public string Json => Data.Json;
-        
+
+        public string Name { get => Data.Name; set => Data.Name = value; }
+
         public bool GetIsTileWalkable(int x, int y)
         {
             return Data.GetIsTileWalkable(x, y);
@@ -131,6 +139,15 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
+        public void SetLabyrithValueAt(int x, int y, TileType tile)
+        {
+            Data.SetLabyrithValueAt(x, y, tile);
+        }
+
+        public void SetLabyrithValueAt(Vector2Int pos, TileType tile)
+        {
+            Data.SetLabyrithValueAt(pos, tile);
+        }
     }
 
 

@@ -10,6 +10,9 @@ namespace UdeS.Promoscience.Menu
         private UnityEngine.UI.Toggle predefinedLevelOrderToggle;
 
         [SerializeField]
+        private UnityEngine.UI.Toggle generateSampleLevelsToggle;
+
+        [SerializeField]
         private IntFieldSetting numberOfRoundField;
 
         // Start is called before the first frame update
@@ -17,6 +20,9 @@ namespace UdeS.Promoscience.Menu
         {
             predefinedLevelOrderToggle.onValueChanged.AddListener(
                 (x) => Server.Instance.Settings.IsLevelOrderPredefined.Value = x);
+
+            generateSampleLevelsToggle.onValueChanged.AddListener(
+                (x) => Server.Instance.Settings.CreateSampleLabyrinths.Value = x);
 
             numberOfRoundField.Value.OnValueChangedHandler += (x) =>
                 Server.Instance.Settings.NumberOfRounds.Value = x;

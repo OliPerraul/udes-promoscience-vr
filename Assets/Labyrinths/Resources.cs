@@ -23,6 +23,12 @@ namespace UdeS.Promoscience.Labyrinths
         [SerializeField]
         public LabyrinthObject LabyrinthLarge;
 
+        [SerializeField]
+        public List<SkinResource> Skins;
+
+        [SerializeField]
+        public SkinResource GreyboxSkin;
+
         public void OnValidate()
         {
             if (Skins == null || Skins.Count == 0)
@@ -31,10 +37,19 @@ namespace UdeS.Promoscience.Labyrinths
                 Skins = skins == null ? null : skins.ToList();
             }
 
-            if (Labyrinths == null || Labyrinths.Count == 0)
+            // Remove null skins
+            for (int i = 0; i < Skins.Count; i++) // var skin in Skins)
+            {
+                if (Skins[i] == null)
+                {
+                    Skins.RemoveAt(i);
+                }
+            }
+
+            if (LabyrinthsResources == null || LabyrinthsResources.Count == 0)
             {
                 var labs = Cirrus.AssetDatabase.FindObjectsOfType<Resource>();
-                Labyrinths = labs == null ? null : labs.ToList();
+                LabyrinthsResources = labs == null ? null : labs.ToList();
             }
         }
 
@@ -56,27 +71,41 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        public static int NumLabyrinths => Instance.Labyrinths.Count;
+        public static int NumLabyrinths => Server.Instance.Labyrinths.Count;
         
+        // TODO deprecate
         [UnityEngine.Serialization.FormerlySerializedAs("LabyrinthData")]
         [SerializeField]
-        public List<Resource> Labyrinths;
+        public List<Resource> LabyrinthsResources;
+
+
+        //// TODO this should not be inside a Sciptableobject
+        //private List<ILabyrinth> labyrinths;
+
+        //public List<ILabyrinth> Labyrinths
+        //{
+        //    get
+        //    {
+        //        if (labyrinths == null || labyrinths.Count == 0)
+        //        {
+        //            labyrinths = SQLiteUtilities.LoadAllLabyrinths2().ToList();
+        //        }
+
+        //        return labyrinths;
+        //    }
+        //}
 
         //[SerializeField]
         //public Resource TutorialLabyrinthData;
 
         // TODO: remove offset with Id and index
         // right now needed cuz round determine labyrinth
+        // TODO remove 
         public ILabyrinth GetLabyrinth(int id)
         {
-            return Labyrinths[id];
+            return Server.Instance.Labyrinths.Where((x) => x.Id == id).FirstOrDefault();
         }
 
-        [SerializeField]
-        public List<SkinResource> Skins;
-
-        [SerializeField]
-        public SkinResource GreyboxSkin;
     }
 }
 

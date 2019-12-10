@@ -79,7 +79,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public override void AddLabyrinth(int i)
         {
-            var data = Resources.Instance.Labyrinths[i];
+            var data = Server.Instance.Labyrinths[i];
 
             LabyrinthObject labyrinth = Resources.Instance
                   .GetLabyrinthObject(data)

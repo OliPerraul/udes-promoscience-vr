@@ -26,8 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: b74830ae3500605499c25b2f2c6e6353
-  - enabled: 0
-    path: Assets/Scenes/LevelEditor.unity
+  - enabled: 1
+    path: Assets/Scenes/Editor.unity
     guid: c0e0f3e022b86ce42bd445ba4e01b0ef
   - enabled: 0
     path: Assets/Oculus/VR/Scenes/ControllerModels.unity

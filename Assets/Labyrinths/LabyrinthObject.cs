@@ -15,6 +15,9 @@ namespace UdeS.Promoscience.Labyrinths
     [System.Serializable]
     public class Camera
     {
+        // TODO remove this..
+        public static Camera CurrentCamera;
+
         [SerializeField]
         private RenderTexture renderTexture;
 
@@ -102,6 +105,8 @@ namespace UdeS.Promoscience.Labyrinths
 
         public SkinResource Skin => Data.Skin;
 
+        string ILabyrinth.Name { get => Data.Name; set => Data.Name = value; }
+
         private Vector3 offset;
 
         public void Awake()
@@ -112,6 +117,8 @@ namespace UdeS.Promoscience.Labyrinths
         private void Start()
         {
             offset = transform.position;
+
+            Debug.Log(offset);
             //Client.Instance.State.OnValueChangedHandler += OnGameStateChanged;
         }
 
@@ -194,8 +201,13 @@ namespace UdeS.Promoscience.Labyrinths
 
             Vector3 tilePosition = GetLabyrinthPositionInWorldPosition(x, y);
 
+            Piece piece = this.GetPiece((TileType)tileId);
+
+            if (piece == null)
+                return null;
+
             tile = Instantiate(
-                this.GetPiece((TileType)tileId).gameObject, 
+                piece.gameObject, 
                 tilePosition,
                 Quaternion.identity, 
                 gameObject.transform); 
@@ -271,6 +283,17 @@ namespace UdeS.Promoscience.Labyrinths
             return labyrinthTiles[x, y];
         }
 
+        public Piece GetTilePiece(Vector2Int position)
+        {
+            return labyrinthTiles[position.x, position.y].GetComponentInChildren<Piece>();
+        }
+
+        public Piece GetTilePiece(int x, int y)
+        {
+            return labyrinthTiles[x, y].GetComponentInChildren<Piece>();
+        }
+
+
         public void Init(bool enableCamera)
         {
             Camera.Source.gameObject.SetActive(true);
@@ -282,6 +305,13 @@ namespace UdeS.Promoscience.Labyrinths
 
             Camera.Source.transform.position += Vector3.up * Camera.HeightOffset;
             Camera.Source.enabled = enableCamera;
+
+            //TODO remove
+            // Used for editor
+            if (enableCamera)
+            { 
+                Camera.CurrentCamera = Camera;
+            }
         }
 
         //Labyrith start should always be in a dead end
@@ -392,6 +422,33 @@ namespace UdeS.Promoscience.Labyrinths
         public int GetLabyrithValueAt(int x, int y)
         {
             return Data.GetLabyrithValueAt(x, y);
+        }
+
+        public void SetLabyrithValueAt(int x, int y, TileType tile)
+        {
+            if (x < 0)
+                return;
+            if (x >= SizeX)
+                return;
+            if (y < 0)
+                return;
+            if (y >= SizeY)
+                return;
+
+
+            labyrinthTiles[x, y].Destroy();
+            labyrinthTiles[x, y] = InstantiateLabyrithTile(x, y, (int)tile, Data.Skin);
+            Data.SetLabyrithValueAt(x, y, tile);
+        }
+
+        public void SetLabyrithValueAt(Vector2Int pos, TileType tile)
+        {
+            SetLabyrithValueAt(pos.x, pos.y, tile);
+        }
+
+        public void PopulateStartAndEndPositions()
+        {
+            Data.PopulateStartAndEndPositions();
         }
     }
 

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skin: {fileID: 11400000, guid: da1963385689a074f87e5e7d6486ee60, type: 2}
   data:
+    name: Danger Cave
     id: 0
     sizeX: 11
     sizeY: 11

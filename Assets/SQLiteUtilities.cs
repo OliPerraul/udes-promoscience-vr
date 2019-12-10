@@ -16,6 +16,8 @@ using UnityEngine;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Network;
 using UdeS.Promoscience;
+using UdeS.Promoscience.Labyrinths;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience
 {
@@ -26,7 +28,9 @@ namespace UdeS.Promoscience
         //Database table 
         const string GAMES = "Games";
         const string TEAM = "Team";
-        const string LABYRINTH = "Labyrinth";
+
+        const string LABYRINTH = "Labyrinth"; // TODO deprecate
+        const string LABYRINTHS2 = "Labyrinths2";
         const string COURSE = "Course";
         const string ROUNDS = "Rounds";
         const string EVENT = "Event";
@@ -44,6 +48,11 @@ namespace UdeS.Promoscience
         const string TEAM_COLOR = "TeamColor";
         const string TEAM_CREATION_DATE_TIME = "TeamCreationDateTime";
 
+        //Labyrinth table column
+        const string LABYRINTH2_ID = "LabyrinthID2";
+        const string LABYRINTH2_DATA = "LabyrinthData2"; // JSON
+
+        // TODO remove
         //Labyrinth table column
         const string LABYRINTH_ID = "LabyrinthID";
         const string LABYRINTH_SPECS = "LabyrinthSpecs";
@@ -109,12 +118,20 @@ namespace UdeS.Promoscience
                     cmd.CommandType = CommandType.Text;
 
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + TEAM + "( " +
-                                      TEAM_ID + " INTEGER(10) NOT NULL, " +
-                                      TEAM_NAME + " varchar(255) NOT NULL, " +
-                                      TEAM_COLOR + " varchar(255) NOT NULL, " +
-                                      TEAM_CREATION_DATE_TIME + " DATETIME NOT NULL, " +
-                                      "PRIMARY KEY(" + TEAM_ID + ") );";
+                        TEAM_ID + " INTEGER(10) NOT NULL, " +
+                        TEAM_NAME + " varchar(255) NOT NULL, " +
+                        TEAM_COLOR + " varchar(255) NOT NULL, " +
+                        TEAM_CREATION_DATE_TIME + " DATETIME NOT NULL, " +
+                        "PRIMARY KEY(" + TEAM_ID + ") );";
                     cmd.ExecuteNonQuery();
+
+                    // LABYRINTHS 2
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + LABYRINTHS2 + "( " +
+                        LABYRINTH2_ID + " INTEGER(10) NOT NULL, " +
+                        LABYRINTH2_DATA + " TEXT NOT NULL, " +
+                        "PRIMARY KEY(" + LABYRINTH2_ID + ") );";
+                    cmd.ExecuteNonQuery();
+
 
                     // GAMES
                     cmd.CommandText =
@@ -135,39 +152,52 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
 
 
-                    // STORE LABYRINTH AS FILES NOT IN THE DB
+                    // TODO deprecate
+                    // Labyrinths2
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + LABYRINTH + " ( " +
-                                      LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
-                                      LABYRINTH_SPECS + " varchar(255), " +
-                                      "PRIMARY KEY(" + LABYRINTH_ID + ") );";
+                        LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
+                        LABYRINTH_SPECS + " varchar(255), " +
+                        "PRIMARY KEY(" + LABYRINTH_ID + ") );";
                     cmd.ExecuteNonQuery();
+
+
 
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + COURSE + " ( " +
-                                      COURSE_ID + " INTEGER(10) NOT NULL, " +
-                                      COURSE_TEAM_ID + " INTEGER(10) NOT NULL, " +
-                                      COURSE_LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
-                                      COURSE_NO_ALGO + " INTEGER(10) NOT NULL, " +
-                                      COURSE_STATUS + " INTEGER(10) NOT NULL, " +
-                                      COURSE_ROUND + " INTEGER(10) NOT NULL, " +
-                                      COURSE_GAME_ID + " INTEGER(10) NOT NULL, " +
-                                      "PRIMARY KEY(" + COURSE_ID + "), " +
-                                      "FOREIGN KEY(" + COURSE_TEAM_ID + ") REFERENCES " + TEAM + "(" + TEAM_ID + ")); ";
-                                      //"FOREIGN KEY(" + COURSE_LABYRINTH_ID + ") REFERENCES " + LABYRINTH + "(" + LABYRINTH_ID + ")); ";
+                        COURSE_ID + " INTEGER(10) NOT NULL, " +
+                        COURSE_TEAM_ID + " INTEGER(10) NOT NULL, " +
+                        COURSE_LABYRINTH_ID + " INTEGER(10) NOT NULL, " +
+                        COURSE_NO_ALGO + " INTEGER(10) NOT NULL, " +
+                        COURSE_STATUS + " INTEGER(10) NOT NULL, " +
+                        COURSE_ROUND + " INTEGER(10) NOT NULL, " +
+                        COURSE_GAME_ID + " INTEGER(10) NOT NULL, " +
+                        "PRIMARY KEY(" + COURSE_ID + "), " +
+                        "FOREIGN KEY(" + COURSE_TEAM_ID + ") REFERENCES " + TEAM + "(" + TEAM_ID + ")); ";
+                    //"FOREIGN KEY(" + COURSE_LABYRINTH_ID + ") REFERENCES " + LABYRINTH + "(" + LABYRINTH_ID + ")); ";
                     cmd.ExecuteNonQuery();
 
+
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + EVENT + " ( " +
-                                      EVENT_ID + " INTEGER PRIMARY KEY ASC, " +
-                                      EVENT_TYPE + " INTEGER(10) NOT NULL, " +
-                                      EVENT_VALUE + " TEXT NOT NULL, " +
-                                      EVENT_TIME + " DEFAULT(STRFTIME('YYYY-MM-DD HH:MM:SS.SSS', 'NOW')), " +
-                                      EVENT_COURSE_ID + " INTEGER(10) NOT NULL, " +
-                                      "FOREIGN KEY(" + EVENT_COURSE_ID + ") REFERENCES " + COURSE + "(" + COURSE_ID + ") ); ";
+                      EVENT_ID + " INTEGER PRIMARY KEY ASC, " +
+                      EVENT_TYPE + " INTEGER(10) NOT NULL, " +
+                      EVENT_VALUE + " TEXT NOT NULL, " +
+                      EVENT_TIME + " DEFAULT(STRFTIME('YYYY-MM-DD HH:MM:SS.SSS', 'NOW')), " +
+                      EVENT_COURSE_ID + " INTEGER(10) NOT NULL, " +
+                      "FOREIGN KEY(" + EVENT_COURSE_ID + ") REFERENCES " + COURSE + "(" + COURSE_ID + ") ); ";
+                    cmd.ExecuteNonQuery();
+
+
+                    cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + LABYRINTHS2 + " ( " +
+                        LABYRINTH2_ID + " INTEGER PRIMARY KEY ASC, " +
+                        EVENT_TYPE + " INTEGER(10) NOT NULL, " +
+                        EVENT_VALUE + " TEXT NOT NULL, " +
+                        EVENT_COURSE_ID + " INTEGER(10) NOT NULL, " +
+                        "FOREIGN KEY(" + EVENT_COURSE_ID + ") REFERENCES " + COURSE + "(" + COURSE_ID + ") ); ";
                     cmd.ExecuteNonQuery();
 
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + DEVICE_PAIRING + " ( " +
-                                      DEVICE_PAIRING_TABLET_ID + " varchar(255) NOT NULL UNIQUE, " +
-                                      DEVICE_PAIRING_HEADSET_ID + " varchar(255) NOT NULL UNIQUE, " +
-                                      "PRIMARY KEY(" + DEVICE_PAIRING_TABLET_ID + "," + DEVICE_PAIRING_HEADSET_ID + ")); ";
+                                    DEVICE_PAIRING_TABLET_ID + " varchar(255) NOT NULL UNIQUE, " +
+                                    DEVICE_PAIRING_HEADSET_ID + " varchar(255) NOT NULL UNIQUE, " +
+                                    "PRIMARY KEY(" + DEVICE_PAIRING_TABLET_ID + "," + DEVICE_PAIRING_HEADSET_ID + ")); ";
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -239,7 +269,7 @@ namespace UdeS.Promoscience
 
                     cmd.CommandText = "CREATE TABLE IF NOT EXISTS " + SERVER_PLAYER_INFORMATION + " ( " +
                                       SERVER_PLAYER_INFORMATION_SAVE_SLOT_ID + " INTEGER(10) NOT NULL, " +
-                                      SERVER_PLAYER_COURSE_ID + " INTEGER(10), " +                                      
+                                      SERVER_PLAYER_COURSE_ID + " INTEGER(10), " +
                                       SERVER_PLAYER_TEAM_ID + " INTEGER(10), " +
                                       SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER + " varchar(255) NOT NULL UNIQUE, " +
                                       SERVER_PLAYER_GAME_STATE_ID + " INTEGER(10) NOT NULL, " +
@@ -427,7 +457,7 @@ namespace UdeS.Promoscience
                         while (reader.Read())
                         {
                             Debug.Log(SERVER_PLAYER_INFORMATION_SAVE_SLOT_ID + ": " + reader[SERVER_PLAYER_INFORMATION_SAVE_SLOT_ID]
-                                + "\t " + SERVER_PLAYER_COURSE_ID + ": " + reader[SERVER_PLAYER_COURSE_ID]                                
+                                + "\t " + SERVER_PLAYER_COURSE_ID + ": " + reader[SERVER_PLAYER_COURSE_ID]
                                 + "\t " + SERVER_PLAYER_TEAM_ID + ": " + reader[SERVER_PLAYER_TEAM_ID]
                                 + "\t " + SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER + ": " + reader[SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER]
                                 + "\t " + SERVER_PLAYER_GAME_STATE_ID + ": " + reader[SERVER_PLAYER_GAME_STATE_ID]);
@@ -495,7 +525,7 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
 
                     cmd.CommandText = "SELECT * FROM " + COURSE + " WHERE " +
-                        //COURSE_LABYRINTH_ID + " = " + labyrinthId + " AND (" +
+                            //COURSE_LABYRINTH_ID + " = " + labyrinthId + " AND (" +
                             COURSE_STATUS + " = " + COURSE_STATUS_ACTIVE + " OR " +
                             COURSE_STATUS + " = " + COURSE_STATUS_SESSION;
 
@@ -549,7 +579,7 @@ namespace UdeS.Promoscience
         }
 
 
-        public static Labyrinths.ILabyrinth GetLabyrinthForGameRound(int gameId, int round)
+        public static ILabyrinth GetLabyrinthForGameRound(int gameId, int round)
         {
             int labId = -1;
 
@@ -619,7 +649,7 @@ namespace UdeS.Promoscience
 
                     cmd.CommandText = "SELECT * FROM " + COURSE + " WHERE " +
                         COURSE_GAME_ID + " = " + gameId + " AND " +
-                        COURSE_ROUND + " = " + round; 
+                        COURSE_ROUND + " = " + round;
 
                     cmd.ExecuteNonQuery();
 
@@ -733,7 +763,7 @@ namespace UdeS.Promoscience
 
                         reader.Close();
                     }
-                }                
+                }
             }
 
 #endif
@@ -1072,7 +1102,7 @@ namespace UdeS.Promoscience
 
                     cmd.CommandText = "PRAGMA foreign_keys = ON";
                     cmd.ExecuteNonQuery();
-                    
+
                     cmd.CommandText = "SELECT * FROM " + COURSE + " WHERE " +
                         COURSE_TEAM_ID + "='" + teamId + "' AND " +
                         COURSE_STATUS + "='" + COURSE_STATUS_ACTIVE + "'";
@@ -1181,7 +1211,7 @@ namespace UdeS.Promoscience
                     cmd.ExecuteNonQuery();
 
                     cmd.CommandText =
-                        "INSERT INTO " + GAMES + " (" +  
+                        "INSERT INTO " + GAMES + " (" +
                         GAME_ID + ") " +
                         "VALUES ('" +
                         id + "');";
@@ -1221,25 +1251,25 @@ namespace UdeS.Promoscience
                     cmd.CommandText = "PRAGMA foreign_keys = ON";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = 
-                        "INSERT INTO " + COURSE + " (" + 
-                        COURSE_ID + ", " + 
-                        COURSE_TEAM_ID + ", " + 
-                        COURSE_LABYRINTH_ID + ", " + 
+                    cmd.CommandText =
+                        "INSERT INTO " + COURSE + " (" +
+                        COURSE_ID + ", " +
+                        COURSE_TEAM_ID + ", " +
+                        COURSE_LABYRINTH_ID + ", " +
                         COURSE_NO_ALGO + ", " +
                         COURSE_STATUS + ", " +
                         COURSE_ROUND + ", " +
                         COURSE_GAME_ID + ") " +
-                        "VALUES ('" + 
-                        courseId + "', '" + 
-                        teamId + "', '" + 
-                        labyrinthId + "', '" + 
+                        "VALUES ('" +
+                        courseId + "', '" +
+                        teamId + "', '" +
+                        labyrinthId + "', '" +
                         algorithmId + "', '" +
                         COURSE_STATUS_ACTIVE + "', '" +
                         round + "', '" +
                         gameId + "');";
 
-                    cmd.ExecuteNonQuery();                                             
+                    cmd.ExecuteNonQuery();
                 }
             }
 
@@ -1288,14 +1318,14 @@ namespace UdeS.Promoscience
 
 
         public static void InsertPlayerAction(
-            int teamId, 
-            string teamName, 
-            string teamColor, 
-            int courseId, 
-            int labyrinthId, 
-            int algorithmId, 
-            int eventType, 
-            string dateTime, 
+            int teamId,
+            string teamName,
+            string teamColor,
+            int courseId,
+            int labyrinthId,
+            int algorithmId,
+            int eventType,
+            string dateTime,
             string EventValue)
         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
@@ -1406,7 +1436,7 @@ namespace UdeS.Promoscience
                             + SERVER_PLAYER_GAME_STATE_ID
                             + ") VALUES ( '"
                             + i + "', '"
-                            + playerInformation.PlayerCourseId + "', '"                            
+                            + playerInformation.PlayerCourseId + "', '"
                             + playerInformation.PlayerTeamId + "', '"
                             + playerInformation.PlayerDeviceUniqueIdentifier + "', '"
                             + (int)playerInformation.PlayerGameState + "');";
@@ -1439,7 +1469,7 @@ namespace UdeS.Promoscience
                     {
                         while (reader.Read())
                         {
-                            int courseId = int.Parse(reader[SERVER_PLAYER_COURSE_ID].ToString());                            
+                            int courseId = int.Parse(reader[SERVER_PLAYER_COURSE_ID].ToString());
                             int teamId = int.Parse(reader[SERVER_PLAYER_TEAM_ID].ToString());
                             string deviceUniqueIdentifier = reader[SERVER_PLAYER_DEVICE_UNIQUE_IDENTIFIER].ToString();
                             ClientGameState gameState = (ClientGameState)int.Parse(reader[SERVER_PLAYER_GAME_STATE_ID].ToString());
@@ -1541,7 +1571,7 @@ namespace UdeS.Promoscience
         }
 
         public static Queue<int> GetPlayerStepsForCourse(int courseId)
-        {            
+        {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
             CreateDatabaseIfItDoesntExist();
 
@@ -1745,6 +1775,110 @@ namespace UdeS.Promoscience
             return roundId;
         }
 
+        public static int GetNextLabyrinthID2()
+        {
+            int labyrinthId = 0;
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "SELECT Count(*) FROM " + LABYRINTHS2;
+                    cmd.ExecuteNonQuery();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            labyrinthId = reader.GetInt32(0);
+                        }
+                        reader.Close();
+                    }
+
+                    bool isNotUnique = true;
+                    while (isNotUnique)
+                    {
+                        labyrinthId++;
+
+                        cmd.CommandText = "SELECT Count(*) FROM " + LABYRINTHS2 + " WHERE " + LABYRINTH2_ID + "='" + labyrinthId + "'";
+                        cmd.ExecuteNonQuery();
+
+                        using (SqliteDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                if (reader.GetInt32(0) == 0)
+                                {
+                                    isNotUnique = false;
+                                }
+                            }
+                            else
+                            {
+                                isNotUnique = false;
+                            }
+                        }
+                    }
+                }
+            }
+#endif
+            return labyrinthId;
+        }
+
+        public static IEnumerable<ILabyrinth> LoadAllLabyrinths2()
+        {
+            List<ILabyrinth> labyrinths = new List<ILabyrinth>();
+
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+            CreateDatabaseIfItDoesntExist();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "PRAGMA foreign_keys = ON";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "SELECT * FROM " + LABYRINTHS2 +";";
+
+                    cmd.ExecuteNonQuery();
+
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        // If active course
+                        while (reader.Read())
+                        {
+                            string data = reader[LABYRINTH2_DATA].ToString();
+
+                            int id = int.Parse(reader[LABYRINTH2_ID].ToString());
+                            
+                            if (!data.IsNullOrEmpty())
+                            {
+                                labyrinths.Add(Labyrinths.Utils.LoadFromJson(data));
+                                //TODO cleanup
+                                labyrinths[labyrinths.Count - 1].Id = id;
+                            }
+                        };
+
+                        reader.Close();
+                    }
+                }
+            }
+#endif
+            return labyrinths;
+        }
 
 
 
@@ -1806,25 +1940,163 @@ namespace UdeS.Promoscience
             return gameId;
         }
 
-        public static void CreateLabyrinthAsset(
-            string name, 
-            int id, 
-            int sizeX, 
-            int sizeY, 
-            int[] data)
+        public static void InsertNewLabyrinth2(ILabyrinth labyrinth)
         {
-            if (!Server.Instance.Settings.CreateSampleLabyrinths)
-                return;
 
-            Labyrinths.Resource resource = Cirrus.AssetDatabase.CreateAsset<Labyrinths.Resource>("Labyrinths/"+name);
-            resource.Id = id;
-            resource.SizeX = sizeX;
-            resource.SizeY = sizeY;
-            resource.Tiles2 = Labyrinths.Utils.ConvertToTiles(data);
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+           
+            CreateDatabaseIfItDoesntExist();
+
+            int id = GetNextLabyrinthID2();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "PRAGMA foreign_keys = ON";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText =
+                        "INSERT INTO " + LABYRINTHS2 + " (" +
+                        LABYRINTH2_ID + ", " +
+                        LABYRINTH2_DATA + ") " +
+                        "VALUES ('" +
+                        id + "', '" +
+                        labyrinth.Json + "');";
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+#endif
         }
 
-        // TODO load from json?
-        static void InsertBasicLabyrinths()
+        // Insert new round
+        public static void UpdateLabyrinth(
+            ILabyrinth labyrinth
+            )
+        {
+#if UNITY_EDITOR || UNITY_STANDALONE_WIN
+
+            CreateDatabaseIfItDoesntExist();
+
+            string dbPath = "URI=file:" + Application.persistentDataPath + "/" + fileName;
+
+            using (SqliteConnection conn = new SqliteConnection(dbPath))
+            {
+                conn.Open();
+                // Do set course inactive
+                using (SqliteCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandType = CommandType.Text;
+
+                    cmd.CommandText = "PRAGMA foreign_keys = ON";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText =
+                        " UPDATE " + LABYRINTHS2 +
+                        " SET " + LABYRINTH2_DATA + " = " + "'"+ labyrinth.Json + "'"+
+                        " WHERE " + LABYRINTH2_ID + " = " + labyrinth.Id + ";"; 
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+#endif
+
+        }
+
+        // TODO remove static skin id
+        public static int SkinId = 0;
+
+        public static void CreateLabyrinthAsset(
+            string name,
+            int id,
+            int sizeX,
+            int sizeY,
+            int[] data)
+        {
+
+            //Labyrinths.Resource resource = Cirrus.AssetDatabase.CreateAsset<Labyrinths.Resource>("Labyrinths/"+name);
+            //resource.Id = id;
+            //resource.SizeX = sizeX;
+            //resource.SizeY = sizeY;
+            //resource.Tiles2 = Labyrinths.Utils.ConvertToTiles(data);
+
+
+            if (!Server.Instance.Settings.CreateSampleLabyrinths.Value)
+                return;
+            
+            if (Labyrinths.Resources.Instance.Skins == null || Labyrinths.Resources.Instance.Skins.Count == 0)
+                return;
+
+            var lab = new Labyrinth
+            {
+                SkinId = SkinId,
+                Name = name,
+                SizeX = sizeX,
+                SizeY = sizeY,
+                Tiles2 = Labyrinths.Utils.ConvertToTiles(data)
+            };
+
+            lab.PopulateStartAndEndPositions();
+
+            InsertNewLabyrinth2(lab);
+
+            SkinId++;
+            SkinId = SkinId.Mod(Labyrinths.Resources.Instance.Skins.Count);
+
+            //return lab;
+        }
+
+
+        public static Labyrinth CreateLabyrinth2(
+            string name,
+            int id,
+            int sizeX,
+            int sizeY,
+            int[] data)
+        {
+
+            //Labyrinths.Resource resource = Cirrus.AssetDatabase.CreateAsset<Labyrinths.Resource>("Labyrinths/"+name);
+            //resource.Id = id;
+            //resource.SizeX = sizeX;
+            //resource.SizeY = sizeY;
+            //resource.Tiles2 = Labyrinths.Utils.ConvertToTiles(data);
+
+
+            //if (!Server.Instance.Settings.CreateSampleLabyrinths.Value)
+            //    return;
+
+            //if (Labyrinths.Resources.Instance.Skins == null || Labyrinths.Resources.Instance.Skins.Count == 0)
+            //    return;
+
+            var lab = new Labyrinth
+            {
+                SkinId = SkinId,
+                Name = name,
+                SizeX = sizeX,
+                SizeY = sizeY,
+                Tiles2 = Labyrinths.Utils.ConvertToTiles(data)
+            };
+
+            lab.PopulateStartAndEndPositions();
+
+            InsertNewLabyrinth2(lab);
+
+            SkinId++;
+            SkinId = SkinId.Mod(Labyrinths.Resources.Instance.Skins.Count);
+
+            return lab;
+        }
+
+
+
+        // TODO This is not the right place to put this
+        public static void InsertBasicLabyrinths()
         {
 
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
@@ -1869,7 +2141,7 @@ namespace UdeS.Promoscience
             data[(2 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
             data[(2 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
             data[(2 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(2 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(2 * sizeY) + 7] = (int)TileType.Floor3; //Labyrinths.Utils.TILE_ROME_FLOOR_ID;Labyrinths.Utils.TILE_ROME_FLOOR_ID;
             data[(2 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
             data[(2 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
             data[(2 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
@@ -1903,7 +2175,7 @@ namespace UdeS.Promoscience
             //Colum 5
             data[(5 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
             data[(5 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
-            data[(5 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 2] = (int)TileType.Floor3; //Labyrinths.Utils.TILE_ROME_FLOOR_ID;;//Labyrinths.Utils.TILE_ROME_FLOOR_ID;
             data[(5 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
             data[(5 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
             data[(5 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_END_ID;
@@ -1943,7 +2215,7 @@ namespace UdeS.Promoscience
             data[(8 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
             data[(8 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
             data[(8 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
-            data[(8 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(8 * sizeY) + 3] = (int)TileType.Floor3; //Labyrinths.Utils.TILE_ROME_FLOOR_ID;
             data[(8 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
             data[(8 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
             data[(8 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
@@ -1977,18 +2249,18 @@ namespace UdeS.Promoscience
             data[(10 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
             data[(10 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
             data[(10 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
-                       
+
             SQLiteUtilities.InsertOrReplaceLabyrinth(
-                id, 
-                sizeX, 
-                sizeY, 
+                id,
+                sizeX,
+                sizeY,
                 data);
 
             CreateLabyrinthAsset(
-                "Labyrinth.Tutorial", 
-                id, 
-                sizeX, 
-                sizeY, 
+                "Labyrinth.Tutorial",
+                id,
+                sizeX,
+                sizeY,
                 data);
 
             //Labyrinth 1
@@ -2126,7 +2398,7 @@ namespace UdeS.Promoscience
             data[(9 * sizeY) + 7] = Labyrinths.Utils.TILE_PTOL_VERTICAL_WALL_ID;
             data[(9 * sizeY) + 8] = Labyrinths.Utils.TILE_PTOL_VERTICAL_WALL_B_ID;
             data[(9 * sizeY) + 9] = Labyrinths.Utils.TILE_PTOL_VERTICAL_WALL_ID;
-            data[(9 * sizeY) + 10] = Labyrinths.Utils.TILE_PTOL_TOWER_WALL_ID;          
+            data[(9 * sizeY) + 10] = Labyrinths.Utils.TILE_PTOL_TOWER_WALL_ID;
 
             SQLiteUtilities.InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
             CreateLabyrinthAsset(
@@ -2496,7 +2768,9 @@ namespace UdeS.Promoscience
             data[(12 * sizeY) + 11] = Labyrinths.Utils.TILE_KART_VERTICAL_WALL_ID;
             data[(12 * sizeY) + 12] = Labyrinths.Utils.TILE_KART_TOWER_WALL_ID;
 
+            //TODO remove
             InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
+
             CreateLabyrinthAsset(
                 "Labyrinth.3",
                 id,
@@ -2506,6 +2780,176 @@ namespace UdeS.Promoscience
 
 #endif
         }
+
+        // TODO remove
+        public static Labyrinth CreateSampleLabyrinth()
+        {
+            int id = 4;
+            int sizeX = 11;
+            int sizeY = 11;
+            int[] data = new int[sizeX * sizeY];
+
+            //Colum 0
+            data[(0 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(0 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(0 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(0 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+
+            //Colum 1
+            data[(1 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(1 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_START_ID;
+            data[(1 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(1 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+
+            //Colum 2
+            data[(2 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(2 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(2 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(2 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(2 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(2 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+
+            //Colum 3
+            data[(3 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(3 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(3 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+
+            //Colum 4
+            data[(4 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+            data[(4 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(4 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(4 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(4 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(4 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(4 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(4 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(4 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+
+            //Colum 5
+            data[(5 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_END_ID;
+            data[(5 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(5 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(5 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+
+            //Colum 6
+            data[(6 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(6 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(6 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(6 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(6 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(6 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(6 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+
+            //Colum 7
+            data[(7 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(7 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(7 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+
+            //Colum 8
+            data[(8 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+            data[(8 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(8 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(8 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(8 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(8 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(8 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(8 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(8 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(8 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(8 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_B_ID;
+
+            //Colum 9
+            data[(9 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+            data[(9 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_FLOOR_ID;
+            data[(9 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_HORIZONTAL_WALL_ID;
+
+            //Colum 10
+            data[(10 * sizeY) + 0] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+            data[(10 * sizeY) + 1] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 2] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(10 * sizeY) + 3] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 4] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(10 * sizeY) + 5] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 6] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(10 * sizeY) + 7] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 8] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_B_ID;
+            data[(10 * sizeY) + 9] = Labyrinths.Utils.TILE_ROME_VERTICAL_WALL_ID;
+            data[(10 * sizeY) + 10] = Labyrinths.Utils.TILE_ROME_TOWER_WALL_ID;
+
+            //TODO remove
+            SQLiteUtilities.InsertOrReplaceLabyrinth(
+                id,
+                sizeX,
+                sizeY,
+                data);
+
+            var lab = CreateLabyrinth2(
+                "Labyrinth.Tutorial",
+                id,
+                sizeX,
+                sizeY,
+                data);
+
+            return lab;
+
+        }
+
     }
 }
 
