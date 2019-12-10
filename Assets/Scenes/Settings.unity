@@ -1500,6 +1500,24 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: 1
   m_LayoutPriority: 1
+--- !u!1 &868388519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1727397442980398, guid: 49e79c1c08d535f479968a740365fe8d,
+    type: 3}
+  m_PrefabInstance: {fileID: 1749950335}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &868388520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868388519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df9441dcf746bd248bcb8ad306f2df35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &935865993
 GameObject:
   m_ObjectHideFlags: 0

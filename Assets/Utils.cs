@@ -369,10 +369,15 @@ namespace UdeS.Promoscience
 
 
         public const float MovementSpeed = 2f;
+
         public const float MovementAcceleration = 1f;
+
         public const float MovementMaxSpeed = 0.5f;
+
         public const float TurningSpeed = 1.0f;
+
         public const float TurningAcceleration = 2f;
+
         public const float TurningMaxSpeed = 0.5f;
     }
 }
