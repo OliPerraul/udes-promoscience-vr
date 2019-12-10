@@ -22,19 +22,36 @@ namespace UdeS.Promoscience.UI
         private Text connectionStatusText;
 
         [SerializeField]
-        private LocalizeInlineString connectingToPairString;
+        private LocalizeInlineString connectingToPairString2 =
+            new LocalizeInlineString(
+                "Connecting to paired device.",
+                "Connexion a l'appareil jumelé.");
 
         [SerializeField]
-        private LocalizeInlineString connectingToPairingServerString;
+        private LocalizeInlineString connectingToPairingServerString2 = 
+            new LocalizeInlineString(
+                "Connecting to pairing server.", 
+                "Connexion au serveur de jumelage.");
+
+        // jumelés
+        [SerializeField]
+        private LocalizeInlineString pairingRequestSentString2 = 
+            new LocalizeInlineString(
+                "Pairing request sent.", 
+                "Demande de jumelage envoyée.");
 
         [SerializeField]
-        private LocalizeInlineString pairingRequestSentString;
+        private LocalizeInlineString pairingResultSuccessString2 =
+            new LocalizeInlineString(
+                "Devices successfully paired.",
+                "Appareils jumelés avec succès.");
+
 
         [SerializeField]
-        private LocalizeInlineString pairingResultSuccessString;
-
-        [SerializeField]
-        private LocalizeInlineString pairingResultFailString;
+        private LocalizeInlineString pairingResultFailString2 =
+            new LocalizeInlineString(
+                "Pairing error occured. Please try again.",
+                "Erreur de jumelage. S.V.P. réessayer.");
 
         //[SerializeField]
         //private ScriptableClientGameState gameState;
@@ -121,22 +138,22 @@ namespace UdeS.Promoscience.UI
             {
                 case Network.ScriptablePairingStatus.ConnectionStatus.Connecting:
                     serverImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
-                    connectionStatusText.text = connectingToPairingServerString.Value;
+                    connectionStatusText.text = connectingToPairingServerString2.Value;
                     break;
 
                 case Network.ScriptablePairingStatus.ConnectionStatus.Pairing:
                     serverImage.color = pairedDeviceImage.color.SetA(1);
-                    connectionStatusText.text = pairingRequestSentString.Value;
+                    connectionStatusText.text = pairingRequestSentString2.Value;
                     break;
 
                 case Network.ScriptablePairingStatus.ConnectionStatus.PairingFail:
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(disconnectedAlpha);
-                    connectionStatusText.text = pairingResultFailString.Value;
+                    connectionStatusText.text = pairingResultFailString2.Value;
                     break;
 
                 case Network.ScriptablePairingStatus.ConnectionStatus.PairingSuccess:
                     pairedDeviceImage.color = pairedDeviceImage.color.SetA(1);
-                    connectionStatusText.text = pairingResultSuccessString.Value;
+                    connectionStatusText.text = pairingResultSuccessString2.Value;
                     //StartCoroutine(ShowConnection());
                     break;
             }
