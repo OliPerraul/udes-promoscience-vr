@@ -21,7 +21,14 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private HeadsetToolManagerAsset asset;
 
-        private ToolId[] ids = { ToolId.None, ToolId.Compass, ToolId.PaintBucket };
+        private ToolId[] ids = {
+                        ToolId.None,
+                        ToolId.PaintBucket,
+                        ToolId.AlgorithmClipboard,
+                        ToolId.Compass,
+                        ToolId.FlightDistanceScanner,
+                        ToolId.WallDistanceScanner
+            };
 
         [SerializeField]
         private BaseTool[] tools;
@@ -39,6 +46,8 @@ namespace UdeS.Promoscience.Controls
         private Dictionary<ToolId, BaseTool> CurrentTools => currentTools;
 
         private BaseTool currentTool = null;
+
+        private int currentToolIndex = 0;
 
 
         public void Awake()
@@ -79,12 +88,16 @@ namespace UdeS.Promoscience.Controls
         {
             if (inputScheme.IsUpPressed)
             {
-                asset.CurrentTool.Value = ids[((int)asset.CurrentTool.Value + 1).Mod(ids.Length)];
+                currentToolIndex++;
+                currentToolIndex = currentToolIndex.Mod(ids.Length);
             }
             else if(inputScheme.IsDownPressed)
             {
-                asset.CurrentTool.Value = ids[((int)asset.CurrentTool.Value - 1) .Mod(ids.Length)];
+                currentToolIndex--;
+                currentToolIndex = currentToolIndex.Mod(ids.Length);
             }
+
+            asset.CurrentTool.Value = ids[currentToolIndex]; 
         }
 
         public void OnPreferenceChanged(bool preference)
@@ -104,17 +117,17 @@ namespace UdeS.Promoscience.Controls
 
         public void OnToolChanged(ToolId id)
         {
-            switch (Client.Instance.State.Value)
-            {
-                case ClientGameState.Playing:
-                case ClientGameState.PlayingTutorial:
-                    break;
+            //switch (Client.Instance.State.Value)
+            //{
+            //    case ClientGameState.Playing:
+            //    case ClientGameState.PlayingTutorial:
+            //        break;
 
-                default:
-                    if (currentTool != null) currentTool.gameObject.SetActive(false);
-                    currentTool = null;
-                    return;
-            }
+            //    default:
+            //        if (currentTool != null) currentTool.gameObject.SetActive(false);
+            //        currentTool = null;
+            //        return;
+            //}
 
             if (CurrentTools.TryGetValue(id, out BaseTool tool))
             {
@@ -164,7 +177,8 @@ namespace UdeS.Promoscience.Controls
             }
 
             // Put last tool in hand
-            asset.CurrentTool.Value = ids[ids.Length - 1];
+            currentToolIndex = ids.Length - 1;
+            asset.CurrentTool.Value = ids[currentToolIndex];
         }
 
 

@@ -19,6 +19,16 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private float angleLookatTurnThreshold = 65;
 
+        //[SerializeField]
+        //private float changeHandednessTimeLimit = 5;
+
+        [SerializeField]
+        [UnityEngine.Serialization.FormerlySerializedAs("transitionTime")]
+        private float transitionTimeLimit = 2f;
+
+        [SerializeField]
+        private float primaryIndexTriggerHeldTimeLimit = 1f;
+
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
@@ -70,6 +80,7 @@ namespace UdeS.Promoscience.Controls
 
         private readonly float[] rotationByDirection = { 0f, 90f, 180f, 270f };
 
+        [SerializeField]
         private float primaryIndexTriggerHeldTime = 0;
 
         private float lerpValue = 0;
@@ -125,9 +136,6 @@ namespace UdeS.Promoscience.Controls
 
         private Timer transitionTimer;
 
-        [SerializeField]
-        private float transitionTime = 2f;
-
         public void Start()
         {
             //controls.IsThirdPersonEnabled.Set(false);
@@ -138,8 +146,20 @@ namespace UdeS.Promoscience.Controls
 
             // TODO put in client State event
             controls.IsTransitionCameraEnabled.Set(false);
-            transitionTimer = new Timer(transitionTime, start: false);
+            transitionTimer = new Timer(transitionTimeLimit, start: false);
             transitionTimer.OnTimeLimitHandler += OnTransitionTimeout;
+
+            StartCoroutine(DelayedStart());
+        }
+
+        public IEnumerator DelayedStart()
+        {
+            yield return new WaitForSeconds(1f);
+
+            Client.Instance.Settings.IsLeftHanded.Set(
+                OVRInput.IsControllerConnected(OVRInput.Controller.LTrackedRemote));
+
+            yield return null;
         }
 
 
@@ -195,22 +215,25 @@ namespace UdeS.Promoscience.Controls
                 {
                     primaryIndexTriggerHeldTime += Time.deltaTime;
 
-                    if (primaryIndexTriggerHeldTime >= 1)
+                    if (!isPrimaryIndexTriggerHeld &&
+                        primaryIndexTriggerHeldTime >= primaryIndexTriggerHeldTimeLimit)
                     {
-                        controls.IsThirdPersonEnabled.Value = !controls.IsThirdPersonEnabled.Value;
                         primaryIndexTriggerHeldTime = 0;
+                        controls.IsThirdPersonEnabled.Value = !controls.IsThirdPersonEnabled.Value;
                         isPrimaryIndexTriggerHeld = true;
                     }
                 }
 
                 if (inputScheme.IsPrimaryIndexTriggerUp && !isPrimaryIndexTriggerHeld)
                 {
+                    primaryIndexTriggerHeldTime = 0;
                     controls.PaintingColor.Value = (TileColor)((int)controls.PaintingColor.Value + 1).Mod(Utils.NumColors);
                     PaintCurrentPositionTile(true);
                     isPrimaryIndexTriggerHeld = false;
                 }
                 else if (inputScheme.IsPrimaryIndexTriggerUp)
                 {
+                    primaryIndexTriggerHeldTime = 0;
                     isPrimaryIndexTriggerHeld = false;
                 }
             }

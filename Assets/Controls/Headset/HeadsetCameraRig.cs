@@ -68,6 +68,8 @@ namespace UdeS.Promoscience.Controls
 
         public void Awake()
         {
+            //OVRManager.instance.han
+
             controls.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
             controls.IsTransitionCameraEnabled.OnValueChangedHandler += OnTransitionCameraEnabled;
             controls.PaintingColor.OnValueChangedHandler += OnPaitingColorChanged;
