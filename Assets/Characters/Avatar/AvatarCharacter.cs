@@ -35,6 +35,9 @@ namespace UdeS.Promoscience.Characters
 
         public void Awake()
         {
+            DEbUGTEXT.Instance.text.text = "Hello world";
+
+
             animatorWrapper = new AvatarAnimatorWrapper(animator);
             controller.CameraRotation.OnValueChangedHandler += OnCameraRotationChanged;
             controller.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
