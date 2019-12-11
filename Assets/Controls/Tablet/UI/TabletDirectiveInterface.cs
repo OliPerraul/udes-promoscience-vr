@@ -8,7 +8,7 @@ using UdeS.Promoscience.Controls;
 
 namespace UdeS.Promoscience.Algorithms
 {
-    public class DirectiveControls : MonoBehaviour
+    public class TabletDirectiveInterface : MonoBehaviour
     {
         [SerializeField]
         ControlsAsset controls;
@@ -27,8 +27,6 @@ namespace UdeS.Promoscience.Algorithms
         {
             Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
-            algorithmRespect.IsCorrectingEnabled.OnValueChangedHandler += OnCorrectingEnabled;
-
             for(int i = 0; i < buttons.Length; i++)
             {
                 if (buttons[i] == null)
@@ -44,13 +42,13 @@ namespace UdeS.Promoscience.Algorithms
             }
         }
 
-        public void OnCorrectingEnabled(bool enabled)
-        {
-            buttons[(int)Directive.Stop].image.sprite =
-                enabled ?
-                    directiveManager.GoDirectiveSprite :
-                    directiveManager.StopDirectiveSprite;
-        }
+        //public void OnCorrectingEnabled(bool enabled)
+        //{
+        //    buttons[(int)Directive.Stop].image.sprite =
+        //        enabled ?
+        //            directiveManager.GoDirectiveSprite :
+        //            directiveManager.StopDirectiveSprite;
+        //}
 
         public void OnValidate()
         {

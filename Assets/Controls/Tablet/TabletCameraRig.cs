@@ -14,14 +14,14 @@ namespace UdeS.Promoscience.Controls
 
     public enum TabletCameraMode
     {
-        Topdown,
+        //Topdown,
         FPS,
         ThirdPerson
     }
 
     public class TabletUtils
     {
-        public const int NumCameraMode = 3;
+        public const int NumCameraMode = 2;
     }
 
 
@@ -41,7 +41,7 @@ namespace UdeS.Promoscience.Controls
 
         public void Awake()
         {
-            controls.TabletCameraMode.OnValueChangedHandler += OnCompassEnabled;
+            controls.TabletCameraMode.OnValueChangedHandler += OnTabletCameraModeChanged;
             controls.CameraRotation.OnValueChangedHandler += OnCameraRotationChanged;
         }
 
@@ -55,30 +55,29 @@ namespace UdeS.Promoscience.Controls
             FirstPersonCamera.transform.rotation = rotation;
         }
 
-        public void OnCompassEnabled(TabletCameraMode enabled)
+        public void OnTabletCameraModeChanged(TabletCameraMode enabled)
         {
             switch (enabled)
             {
                 case TabletCameraMode.FPS:
-                    //controls.IsThirdPersonEnabled.Value = false;
                     ThirdPersonCamera.SetActive(false);
-                    TopdownCamera.SetActive(false);
                     FirstPersonCamera.SetActive(true);
                     break;
 
                 case TabletCameraMode.ThirdPerson:
                     //controls.IsThirdPersonEnabled.Value = true;
                     ThirdPersonCamera.SetActive(true);
-                    TopdownCamera.SetActive(false);
                     FirstPersonCamera.SetActive(false);
+                    //TopdownCamera.SetActive(false);
+
                     break;
 
-                case TabletCameraMode.Topdown:
-                    //controls.IsThirdPersonEnabled.Value = false;
-                    ThirdPersonCamera.SetActive(false);
-                    TopdownCamera.SetActive(true);
-                    FirstPersonCamera.SetActive(false);
-                    break;
+                //case TabletCameraMode.Topdown:
+                //    //controls.IsThirdPersonEnabled.Value = false;
+                //    ThirdPersonCamera.SetActive(false);
+                //    TopdownCamera.SetActive(true);
+                //    FirstPersonCamera.SetActive(false);
+                //    break;
             }
 
         }

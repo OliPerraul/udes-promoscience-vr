@@ -83,8 +83,8 @@ namespace UdeS.Promoscience.Controls
             if (Promoscience.UI.Utils.IsUIElementActive())
                 return;
 
-            // If touching and dragging move cam
-            // Otherwise not
+            // If touching and dragging: rotate camera
+            // Otherwise: not
             if (Input.touchSupported)
             {
                 if (Input.GetTouch(0).phase != TouchPhase.Moved)

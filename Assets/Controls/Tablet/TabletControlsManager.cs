@@ -70,15 +70,6 @@ namespace UdeS.Promoscience.Controls
         {
             controls.IsThirdPersonEnabled.Set(true);
             controls.TabletCameraMode.Set(TabletCameraMode.ThirdPerson);
-            directiveManager.CurrentDirective.OnValueChangedHandler += OnNewDirective;
-        }
-
-        private void OnNewDirective(Directive value)
-        {
-            if (value == Directive.Compass)
-            {
-                controls.TabletCameraMode.Value = (TabletCameraMode)((int)controls.TabletCameraMode.Value + 1).Mod(TabletUtils.NumCameraMode);
-            }
         }
 
         private void Update()

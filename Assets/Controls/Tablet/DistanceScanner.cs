@@ -9,6 +9,8 @@ using UdeS.Promoscience.Controls;
 
 using System.Linq;
 
+
+// TODO deprecade
 namespace UdeS.Promoscience.Controls
 {
     public class DistanceScanner : MonoBehaviour

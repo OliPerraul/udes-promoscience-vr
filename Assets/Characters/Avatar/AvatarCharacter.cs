@@ -49,7 +49,6 @@ namespace UdeS.Promoscience.Characters
             switch (mode)
             {
                 case TabletCameraMode.ThirdPerson:
-                case TabletCameraMode.Topdown:
                     CharacterTransform.gameObject.SetActive(true);
                     paintingColorDisplay.SetActive(true);
                     break;

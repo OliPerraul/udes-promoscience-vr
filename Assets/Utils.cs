@@ -193,10 +193,7 @@ namespace UdeS.Promoscience
         Grey,
         Yellow,
         Red,
-        Question,
-        Compass,
         Stop,
-        ReturnToDivergence
     }
 
     [Serializable]

@@ -107,20 +107,7 @@ namespace UdeS.Promoscience.UI
 
             switch (directive)
             {
-                case Directive.Question:
-                case Directive.Compass:
-                    return;
-
-                case Directive.Stop:
-                    directiveImage = images[(int)directive-2];
-
-                    directiveImage.sprite =
-                        directiveImage.sprite == directiveManager.StopDirectiveSprite ?
-                            directiveManager.GoDirectiveSprite :
-                            directiveManager.StopDirectiveSprite;
-                    break;
-
-                default:
+                 default:
                     directiveImage = images[(int)directive];
                     break;
             }

@@ -12,15 +12,6 @@ namespace UdeS.Promoscience.ScriptableObjects
     public class DirectiveManagerAsset : ScriptableObject
     {
         [SerializeField]
-        public Sprite StopDirectiveSprite;
-
-        [SerializeField]
-        public Sprite GoDirectiveSprite;
-
-        [SerializeField]
-        private Algorithms.AlgorithmRespectAsset algorithmRespect;
-
-        [SerializeField]
         private GameActionManagerAsset gameActionManager;
 
         [SerializeField]
@@ -51,7 +42,6 @@ namespace UdeS.Promoscience.ScriptableObjects
 
                 case Directive.Stop:
                     gameActionManager.SetAction(GameAction.ReceivedDirectiveStop);
-                    algorithmRespect.IsCorrectingEnabled.Value = !algorithmRespect.IsCorrectingEnabled.Value;
                     break;
 
                 case Directive.TurnLeft:

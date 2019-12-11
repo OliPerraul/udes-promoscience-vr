@@ -18,8 +18,6 @@ namespace UdeS.Promoscience.Controls
         private HeadsetInputSchemeAsset inputScheme;
 
 
-
-
         public void Awake()
         {
             directiveManager.CurrentDirective.OnValueChangedHandler += OnNewDirective;
@@ -36,14 +34,17 @@ namespace UdeS.Promoscience.Controls
             gameObject.SetActive(false);
         }
 
+
+
+
         void OnNewDirective(Directive directive)
         {
-            // TODO handle somewhere else?
-            // QUestion directive brings up the help
-            if (directive == Directive.Question)
-            {
-                gameObject.SetActive(true);
-            }
+            //// TODO handle somewhere else?
+            //// QUestion directive brings up the help
+            //if (directive == Directive.Question)
+            //{
+            //    gameObject.SetActive(true);
+            //}
         }
 
         public void Update()
