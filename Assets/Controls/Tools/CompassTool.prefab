@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e586eea7a3762a6468717e4aabd19f7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLeftHanded: 0
+  isThirdPerson: 0
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   indicator: {fileID: 6597614544530385072}
 --- !u!1 &6600054854136666498
@@ -311,17 +313,17 @@ PrefabInstance:
     - target: {fileID: 9216616480783542052, guid: 86a3ff5692fca494daf12f2d1bec86a2,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9216616480783542052, guid: 86a3ff5692fca494daf12f2d1bec86a2,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9216616480783542052, guid: 86a3ff5692fca494daf12f2d1bec86a2,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9216616480783542052, guid: 86a3ff5692fca494daf12f2d1bec86a2,
         type: 3}
@@ -347,6 +349,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216616480783542052, guid: 86a3ff5692fca494daf12f2d1bec86a2,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.8174086
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216616480783542052, guid: 86a3ff5692fca494daf12f2d1bec86a2,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.8174086
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216616480783542052, guid: 86a3ff5692fca494daf12f2d1bec86a2,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3.8174086
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86a3ff5692fca494daf12f2d1bec86a2, type: 3}

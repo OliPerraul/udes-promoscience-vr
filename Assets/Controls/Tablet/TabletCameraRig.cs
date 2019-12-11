@@ -55,10 +55,6 @@ namespace UdeS.Promoscience.Controls
             FirstPersonCamera.transform.rotation = rotation;
         }
 
-
-
-
-
         public void OnCompassEnabled(TabletCameraMode enabled)
         {
             switch (enabled)

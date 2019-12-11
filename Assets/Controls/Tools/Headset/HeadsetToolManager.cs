@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Controls
 {
-    public static class ToolUtils
-    {
-        public const int ToolCount = 4;
-    }
+    //public static class ToolUtils
+    //{
+    //    public const int ToolCount = 4;
+    //}
 
     public class HeadsetToolManager : MonoBehaviour
     {
@@ -31,21 +31,21 @@ namespace UdeS.Promoscience.Controls
             };
 
         [SerializeField]
-        private BaseTool[] tools;
+        private HeadsetTool[] tools;
 
-        private Dictionary<ToolId, BaseTool> leftHandedThirdPerson = new Dictionary<ToolId, BaseTool>();
+        private Dictionary<ToolId, HeadsetTool> leftHandedThirdPerson = new Dictionary<ToolId, HeadsetTool>();
 
-        private Dictionary<ToolId, BaseTool> rightHandedThirdPerson = new Dictionary<ToolId, BaseTool>();
+        private Dictionary<ToolId, HeadsetTool> rightHandedThirdPerson = new Dictionary<ToolId, HeadsetTool>();
 
-        private Dictionary<ToolId, BaseTool> leftHandedFirstPerson = new Dictionary<ToolId, BaseTool>();
+        private Dictionary<ToolId, HeadsetTool> leftHandedFirstPerson = new Dictionary<ToolId, HeadsetTool>();
 
-        private Dictionary<ToolId, BaseTool> rightHandedFirstPerson = new Dictionary<ToolId, BaseTool>();
+        private Dictionary<ToolId, HeadsetTool> rightHandedFirstPerson = new Dictionary<ToolId, HeadsetTool>();
 
-        private Dictionary<ToolId, BaseTool> currentTools;
+        private Dictionary<ToolId, HeadsetTool> currentTools;
 
-        private Dictionary<ToolId, BaseTool> CurrentTools => currentTools;
+        private Dictionary<ToolId, HeadsetTool> CurrentTools => currentTools;
 
-        private BaseTool currentTool = null;
+        private HeadsetTool currentTool = null;
 
         private int currentToolIndex = 0;
 
@@ -80,7 +80,7 @@ namespace UdeS.Promoscience.Controls
         {
             if (tools == null || tools.Length == 0)
             {
-                tools = GetComponentsInChildren<BaseTool>();
+                tools = GetComponentsInChildren<HeadsetTool>();
             }
         }
 
@@ -129,7 +129,7 @@ namespace UdeS.Promoscience.Controls
             //        return;
             //}
 
-            if (CurrentTools.TryGetValue(id, out BaseTool tool))
+            if (CurrentTools.TryGetValue(id, out HeadsetTool tool))
             {
                 if(currentTool != null) currentTool.gameObject.SetActive(false);
                 currentTool = tool;
@@ -156,7 +156,7 @@ namespace UdeS.Promoscience.Controls
                         ToolId.PaintBucket,
                         ToolId.AlgorithmClipboard,
                         ToolId.Compass,
-                        ToolId.FlightDistanceScanner };
+                        ToolId.WallDistanceScanner };
                     break;
 
                 case Algorithms.Id.Standard:
@@ -181,55 +181,5 @@ namespace UdeS.Promoscience.Controls
             asset.CurrentTool.Value = ids[currentToolIndex];
         }
 
-
-
-        //public void OnToolChanged(ToolId tool)
-        //{
-        //    switch (tool)
-        //    {
-        //        case ToolId.None:
-        //            if (controls.IsThirdPersonEnabled.Value)
-        //            {
-        //                thirdPersonRemote.gameObject.SetActive(false);
-        //                thirdPersonCompass.gameObject.SetActive(false);
-        //            }
-        //            else
-        //            {
-        //                firstPersonRemote.gameObject.SetActive(false);
-        //                firstPersonCompass.gameObject.SetActive(false);
-        //            }
-        //            break;
-
-
-        //        case ToolId.FlightDistanceScanner:
-
-        //            if (controls.IsThirdPersonEnabled.Value)
-        //            {
-        //                thirdPersonRemote.gameObject.SetActive(true);
-        //                thirdPersonCompass.gameObject.SetActive(false);
-        //            }
-        //            else
-        //            {
-        //                firstPersonRemote.gameObject.SetActive(true);
-        //                firstPersonCompass.gameObject.SetActive(false);
-        //            }
-        //            break;
-
-        //        case ToolId.Compass:
-
-        //            if (controls.IsThirdPersonEnabled.Value)
-        //            {
-        //                thirdPersonRemote.gameObject.SetActive(false);
-        //                thirdPersonCompass.gameObject.SetActive(true);
-        //            }
-        //            else
-        //            {
-        //                firstPersonRemote.gameObject.SetActive(false);
-        //                firstPersonCompass.gameObject.SetActive(true);
-        //            }
-
-        //            break;
-        //    }
-        //}
     }
 }

@@ -83,6 +83,14 @@ namespace UdeS.Promoscience.Controls
             if (Promoscience.UI.Utils.IsUIElementActive())
                 return;
 
+            // If touching and dragging move cam
+            // Otherwise not
+            if (Input.touchSupported)
+            {
+                if (Input.GetTouch(0).phase != TouchPhase.Moved)
+                    return;
+            }
+
             // Read the user input
             var x = Input.GetAxis("Mouse X");
             var y = Input.GetAxis("Mouse Y");

@@ -109,7 +109,7 @@ namespace UdeS.Promoscience.Controls
     //}
 
 
-    public class ScannerTool : BaseTool
+    public class ScannerTool : HeadsetTool
     {
         public override ToolId Id => resource.ToolId;
 

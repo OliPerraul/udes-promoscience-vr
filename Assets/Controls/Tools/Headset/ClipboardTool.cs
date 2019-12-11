@@ -4,7 +4,7 @@ using System.Collections;
 namespace UdeS.Promoscience.Controls
 {
     // Shows progress and algorithm name
-    public class ClipboardTool : BaseTool
+    public class ClipboardTool : HeadsetTool
     {
         public override ToolId Id => ToolId.AlgorithmClipboard;
 
