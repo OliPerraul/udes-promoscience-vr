@@ -45,10 +45,17 @@ namespace UdeS.Promoscience.Controls
             controls.CameraRotation.OnValueChangedHandler += OnCameraRotationChanged;
         }
 
+        public void Start()
+        {
+            Screen.orientation = ScreenOrientation.AutoRotation;
+        }
+
         public void OnCameraRotationChanged(Quaternion rotation)
         {
             FirstPersonCamera.transform.rotation = rotation;
         }
+
+
 
 
 

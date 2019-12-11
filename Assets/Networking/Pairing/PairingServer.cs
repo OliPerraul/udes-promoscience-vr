@@ -45,7 +45,12 @@ namespace UdeS.Promoscience.Network
 
         public void Awake()
         {
-            Persist();
+            //Persist();
+        }
+
+        public void OnDestroy()
+        {
+            StopServer();
         }
 
         public void Update()

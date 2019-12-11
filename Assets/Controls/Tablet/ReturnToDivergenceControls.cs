@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.UI
             controls.OnPlayerReachedTheEndHandler += OnPlayerReachedTheEnd;
             controls.isControlsEnableValueChangedEvent += OnControlsEnableValueChanged;
 
-            returnToDivergenceButton.onClick.AddListener(OnReturnToDivergenceClicked);
+            //returnToDivergenceButton.onClick.AddListener(OnReturnToDivergenceClicked);
             cancelButton.onClick.AddListener(OnCancelClicked);
             confirmButton.onClick.AddListener(OnConfirmClicked);
 
@@ -87,7 +87,8 @@ namespace UdeS.Promoscience.UI
             if (!controls.IsControlsEnabled.Value)
             {
                 confirmatioPanel.SetActive(false);
-                returnToDivergenceButton.gameObject.SetActive(false);
+                if (returnToDivergenceButton != null)
+                    returnToDivergenceButton.gameObject.SetActive(false);
             }
         }
 
@@ -96,19 +97,28 @@ namespace UdeS.Promoscience.UI
         {
             if (isdiverg)
             {
-                returnToDivergenceButton.gameObject.SetActive(true);
+                if (returnToDivergenceButton != null)
+                    returnToDivergenceButton.gameObject.SetActive(true);
             }
             else
             {
                 confirmatioPanel.SetActive(false);
-                returnToDivergenceButton.gameObject.SetActive(false);
+                if (returnToDivergenceButton != null)
+                {
+
+                    returnToDivergenceButton.gameObject.SetActive(false);
+                }
             }
         }
 
         void OnPlayerReachedTheEnd()
         {
             confirmatioPanel.SetActive(false);
-            returnToDivergenceButton.gameObject.SetActive(false);
+
+            if (returnToDivergenceButton != null)
+            {
+                returnToDivergenceButton.gameObject.SetActive(false);
+            }
         }
 
         void OnReturnToDivergenceRequest()

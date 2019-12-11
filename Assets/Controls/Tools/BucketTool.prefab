@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3827850321194854629}
   - component: {fileID: 2775621053377636775}
   - component: {fileID: 3096092206696426190}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1744995063790837186}
   - component: {fileID: 8727254947045632906}
   - component: {fileID: 9052571229128631965}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tube01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 5855379105958147808}
   - component: {fileID: 3062988323527554619}
   - component: {fileID: 5116038540791725706}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Torus02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -279,7 +279,7 @@ GameObject:
   - component: {fileID: 3761202614794334754}
   - component: {fileID: 57127929021858014}
   - component: {fileID: 6575609730058746973}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: White
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,7 +371,7 @@ GameObject:
   - component: {fileID: 6685607745557210594}
   - component: {fileID: 7642175157080424138}
   - component: {fileID: 1112002692173195220}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Object01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -447,7 +447,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7948905916611122325}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: bucket (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -486,7 +486,7 @@ GameObject:
   - component: {fileID: 6302222789673505057}
   - component: {fileID: 7016919648221228362}
   - component: {fileID: 5896322821138015263}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Yellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -578,6 +578,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BucketTool
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839921808800121249, guid: 86a3ff5692fca494daf12f2d1bec86a2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9216616480783542052, guid: 86a3ff5692fca494daf12f2d1bec86a2,
         type: 3}
