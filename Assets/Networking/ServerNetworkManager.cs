@@ -119,8 +119,10 @@ namespace UdeS.Promoscience.Network
         {
             StopServer();
 
-            Server.Instance.ClearGameInformation();
-            serverPlayerInformation.ClearPlayerInformation();
+            // FIX
+            // Do not clear player information when exit lobby
+            //Server.Instance.ClearGameInformation();
+            //serverPlayerInformation.ClearPlayerInformation();
 
             //Application.Quit();
         }

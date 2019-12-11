@@ -101,6 +101,9 @@ namespace UdeS.Promoscience.UI
             if (playerInformation != null)
             {
                 playersInformation.orderChangedEvent -= OnOrderChanged;
+                playerInformation.playerChangedEvent -= SetPlayer;
+                playerInformation.playerTeamIdChangedEvent -= UpdateLobbyPlayerTeam;
+                playerInformation.playerGameStateChangedEvent -= UpdateLobbyPlayerStatusText;
             }
         }
 
