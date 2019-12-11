@@ -120,6 +120,12 @@ namespace UdeS.Promoscience
 
         }
 
+        public void OnApplicationQuit()
+        {
+            // TODO remove from here
+            SQLiteUtilities.ResetServerPlayerInformation();
+        }
+
         public void StartQuickplay()
         {
             GameManager.Instance.StartQuickplay();
