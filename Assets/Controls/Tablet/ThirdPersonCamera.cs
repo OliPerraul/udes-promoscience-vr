@@ -79,6 +79,10 @@ namespace UdeS.Promoscience.Controls
             if (Time.timeScale < float.Epsilon)
                 return;
 
+            // DO not rotate id UI elem
+            if (Promoscience.UI.Utils.IsUIElementActive())
+                return;
+
             // Read the user input
             var x = Input.GetAxis("Mouse X");
             var y = Input.GetAxis("Mouse Y");
