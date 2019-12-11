@@ -101,15 +101,28 @@ namespace UdeS.Promoscience.Replays
 
             first = null;
 
-            algorithmSequence.gameObject.Destroy();
+            if (algorithmSequence != null)
+            {
+                algorithmSequence.gameObject.Destroy();
 
-            algorithmSequence = null;
+                algorithmSequence = null;
+            }
+
 
             if (labyrinthObject != null)
             {
                 labyrinthObject.gameObject.Destroy();
                 labyrinthObject = null;
             }
+
+            foreach(var team in playerSequences)
+            {
+                if (team.Value == null)
+                    continue;
+
+                team.Value.gameObject.Destroy();
+            }
+
 
             playerSequences.Clear();
 
