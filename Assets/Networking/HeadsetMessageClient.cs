@@ -149,10 +149,15 @@ namespace UdeS.Promoscience.Network
             }
         }
 
+
+        // IT BREAKS HERE FOR CONNECXION WITH TABLET
         void OnPlayerInformation(NetworkMessage netMsg)
         {
             PlayerInformationMessage msg = netMsg.ReadMessage<PlayerInformationMessage>();
             playerInformation.SetPlayerInformation(msg.teamId);
+
+            DEbUGTEXT.Instance.text.text = "Player Info received";
+
 
             Client.Instance.State.Value = ClientGameState.Ready;
         }
