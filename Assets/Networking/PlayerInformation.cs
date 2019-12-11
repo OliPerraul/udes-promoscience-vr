@@ -131,6 +131,8 @@ namespace UdeS.Promoscience.Network
             }
         }
 
+        // TODO remove
+        // This messes up because player connects first time in pairing screen
         public void OnPlayerReconnect(Player p)
         {
             player = p;
