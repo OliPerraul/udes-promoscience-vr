@@ -148,13 +148,11 @@ namespace UdeS.Promoscience.Network
             }
             else if (player.ServerPlayerGameState == ClientGameState.Ready)
             {
-                if (Server.Instance.State.Value == ServerState.Quickplay)
+                if (
+                    Server.Instance.State.Value == ServerState.Round ||
+                    Server.Instance.State.Value == ServerState.Quickplay)
                 {
-                    //GameManager.Instance.CurrentGame.StartTutorial(player);
-                }
-                else if (Server.Instance.State.Value == ServerState.Round)
-                {
-                    //Server.Instance.StartGameRound(player);
+                    GameManager.Instance.CurrentGame.JoinGameRound(player);
                 }
                 else if (Server.Instance.State.Value == ServerState.Intermission)
                 {

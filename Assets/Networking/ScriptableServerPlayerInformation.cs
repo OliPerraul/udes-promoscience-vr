@@ -53,14 +53,15 @@ namespace UdeS.Promoscience.ScriptableObjects
 
         public void AddPlayerOrReconnect(Player player)
         {
-            for (int i = 0; i < playersInformation.Count; i++)
-            {
-                if (playersInformation[i].PlayerDeviceUniqueIdentifier == player.deviceUniqueIdentifier)
-                {
-                    playersInformation[i].OnPlayerReconnect(player);
-                    return;
-                }
-            }
+            // TODO remove
+            //for (int i = 0; i < playersInformation.Count; i++)
+            //{
+            //    if (playersInformation[i].PlayerDeviceUniqueIdentifier == player.deviceUniqueIdentifier)
+            //    {
+            //        playersInformation[i].OnPlayerReconnect(player);
+            //        return;
+            //    }
+            //}
 
             PlayerInformation playerinformation = new PlayerInformation(player);
             playersInformation.Add(playerinformation);
