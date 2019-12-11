@@ -11,7 +11,11 @@ namespace UdeS.Promoscience.Menu
 
         public void Awake()
         {
-            startButton.onClick.AddListener(()=>Server.Instance.StartLobby());
+            startButton.onClick.AddListener(()=> {
+                Server.Instance.StartLobby();
+                
+                
+                });
         }
     }
 }

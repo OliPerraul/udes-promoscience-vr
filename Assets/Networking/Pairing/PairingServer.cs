@@ -42,6 +42,7 @@ namespace UdeS.Promoscience.Network
 
         private bool isStarted = false;
 
+        public bool IsStarted => isStarted;
 
         public void Awake()
         {
