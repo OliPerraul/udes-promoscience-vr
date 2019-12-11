@@ -14,6 +14,9 @@ namespace UdeS.Promoscience.UI
         private Controls.ControlsAsset controls;
 
         [SerializeField]
+        private Controls.TabletControlsAsset tabletControls;
+
+        [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         [SerializeField]
@@ -43,7 +46,7 @@ namespace UdeS.Promoscience.UI
 
             cameraButton.onClick.AddListener(
                 () =>
-                    controls.TabletCameraMode.Value = (TabletCameraMode)((int)controls.TabletCameraMode.Value + 1).Mod(TabletUtils.NumCameraMode));
+                    tabletControls.TabletCameraMode.Value = (TabletCameraMode)((int)tabletControls.TabletCameraMode.Value + 1).Mod(TabletUtils.NumCameraMode));
         }
 
 

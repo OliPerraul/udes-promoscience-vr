@@ -38164,6 +38164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  tabletControls: {fileID: 11400000, guid: fda3f9db223ebd74b9120eed972f74f2, type: 2}
   animator: {fileID: 7081709336908559192}
   characterTransform: {fileID: 8612504218509008771}
   paintingColorDisplay: {fileID: 7292907933121202240}

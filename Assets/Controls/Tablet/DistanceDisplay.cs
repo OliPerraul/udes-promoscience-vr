@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Controls.UI
 {
-
+    // TODO remove
     public class DistanceDisplay : MonoBehaviour
     {
         [SerializeField]
@@ -28,7 +28,7 @@ namespace UdeS.Promoscience.Controls.UI
 
         void Awake()
         {
-            controls.TabletCameraMode.OnValueChangedHandler += OnCompassEnabled;
+            //controls.TabletCameraMode.OnValueChangedHandler += OnCompassEnabled;
         }
 
         private void OnCompassEnabled(TabletCameraMode value)
@@ -39,11 +39,11 @@ namespace UdeS.Promoscience.Controls.UI
         // TODO only on movement
         public void Update()
         {
-            int dist = -1;
-            north.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Up)) < 0 ? "?": dist.ToString();
-            south.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Down)) < 0 ? "?" : dist.ToString();
-            west.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Left)) < 0 ? "?" : dist.ToString();
-            east.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Right)) < 0 ? "?" : dist.ToString();
+            //int dist = -1;
+            //north.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Up)) < 0 ? "?": dist.ToString();
+            //south.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Down)) < 0 ? "?" : dist.ToString();
+            //west.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Left)) < 0 ? "?" : dist.ToString();
+            //east.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Right)) < 0 ? "?" : dist.ToString();
         }
     }
 }

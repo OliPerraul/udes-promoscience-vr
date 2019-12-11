@@ -19,7 +19,11 @@ namespace UdeS.Promoscience.Controls
         private DirectiveManagerAsset directiveManager;
 
         [SerializeField]
+        // TODO remove
         ControlsAsset controls;
+
+        [SerializeField]
+        private TabletControlsAsset tabletControls;
 
         [SerializeField]
         ScriptableBoolean isConnectedToPair;
@@ -69,7 +73,7 @@ namespace UdeS.Promoscience.Controls
         void Start()
         {
             controls.IsThirdPersonEnabled.Set(true);
-            controls.TabletCameraMode.Set(TabletCameraMode.ThirdPerson);
+            tabletControls.TabletCameraMode.Set(TabletCameraMode.ThirdPerson);
         }
 
         private void Update()
@@ -102,11 +106,13 @@ namespace UdeS.Promoscience.Controls
                         isTurning = false;
                         avatar.CharacterTransform.rotation = targetRotation;
                         DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
+                        tabletControls.TabletFirstPersonCameraRoation.Value = avatar.CharacterTransform.rotation;
                     }
                     else
                     {
                         avatar.CharacterTransform.rotation = Quaternion.Lerp(lastRotation, targetRotation, rotationLerpValue);
                         DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
+                        tabletControls.TabletFirstPersonCameraRoation.Value = avatar.CharacterTransform.rotation;
 
 
                     }
@@ -136,11 +142,14 @@ namespace UdeS.Promoscience.Controls
                     {
                         avatar.CharacterTransform.rotation = rotationQueue.Dequeue();
                         DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
+                        tabletControls.TabletFirstPersonCameraRoation.Value = avatar.CharacterTransform.rotation;
                     }
                     else
                     {
                         lastRotation = avatar.CharacterTransform.rotation;
                         DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
+                        tabletControls.TabletFirstPersonCameraRoation.Value = avatar.CharacterTransform.rotation;
+
                         targetRotation = rotationQueue.Dequeue();
                         isTurning = true;
                     }
@@ -244,8 +253,10 @@ namespace UdeS.Promoscience.Controls
                 rotation.eulerAngles = new Vector3(0, 270, 0);
             }
 
+            // TODO encapsulate
             avatar.CharacterTransform.rotation = rotation;
             DirectionArrowTransform.rotation = avatar.CharacterTransform.rotation;
+            tabletControls.TabletFirstPersonCameraRoation.Value = avatar.CharacterTransform.rotation;
         }
     }
 }

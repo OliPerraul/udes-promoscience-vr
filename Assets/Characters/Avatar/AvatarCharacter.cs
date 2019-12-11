@@ -11,6 +11,9 @@ namespace UdeS.Promoscience.Characters
         private ControlsAsset controller;
 
         [SerializeField]
+        private TabletControlsAsset tabletControls;
+
+        [SerializeField]
         private Animator animator;
 
         public Transform RootTransform => transform;
@@ -36,7 +39,8 @@ namespace UdeS.Promoscience.Characters
             controller.CameraRotation.OnValueChangedHandler += OnCameraRotationChanged;
             controller.IsThirdPersonEnabled.OnValueChangedHandler += OnThirdPersonEnabled;
             controller.Animation.OnValueChangedHandler += OnAnimationChanged;
-            controller.TabletCameraMode.OnValueChangedHandler += OnTabletCameraMode;
+
+            tabletControls.TabletCameraMode.OnValueChangedHandler += OnTabletCameraMode;
         }
 
         public void Start()

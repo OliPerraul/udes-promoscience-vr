@@ -31,23 +31,9 @@ namespace UdeS.Promoscience.UI
         {
             Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
-            controls.TabletCameraMode.OnValueChangedHandler += OnCompassENabled;
-
             startRotation = indicator.transform.rotation;
 
             OnClientStateChanged(Client.Instance.State.Value);
-        }
-
-        private void OnCompassENabled(TabletCameraMode value)
-        {
-            if (value == TabletCameraMode.ThirdPerson)
-            {
-                indicator.gameObject.SetActive(true);
-            }
-            else
-            {
-                indicator.gameObject.SetActive(false);
-            }
         }
 
         void OnClientStateChanged(ClientGameState state)
