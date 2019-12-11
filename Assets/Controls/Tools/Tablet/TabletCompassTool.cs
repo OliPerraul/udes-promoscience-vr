@@ -17,8 +17,8 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         ControlsAsset controls;
 
-        [SerializeField]
-        TabletControlsAsset tabletControls;
+        //[SerializeField]
+        //TabletControlsAsset tabletControls;
 
         [SerializeField]
         Transform indicator;
