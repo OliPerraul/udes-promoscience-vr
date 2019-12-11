@@ -9,10 +9,7 @@ namespace UdeS.Promoscience.Controls
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Avatar Controler", order = 1)]
     public class ControlsAsset : ScriptableObject
     {
-        // TODO split tablet vs headset avatar controller asset
 
-        // TODO put in tablet
-        public Cirrus.ObservableValue<TabletCameraMode> TabletCameraMode = new Cirrus.ObservableValue<TabletCameraMode>(Controls.TabletCameraMode.ThirdPerson);
 
         public Cirrus.ObservableValue<bool> IsPlayerControlsEnabled = new Cirrus.ObservableValue<bool>(true);
 

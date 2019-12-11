@@ -28,20 +28,26 @@ namespace UdeS.Promoscience.Controls
     public class TabletCameraRig : MonoBehaviour
     {
         [SerializeField]
+        // TODO remove
         private ControlsAsset controls;
+
+        [SerializeField]
+        private TabletControlsAsset tabletControls;
+
 
         [SerializeField]
         private GameObject ThirdPersonCamera;
 
-        [SerializeField]
-        private GameObject TopdownCamera;
+        //[SerializeField]
+        //private GameObject TopdownCamera;
 
         [SerializeField]
         private GameObject FirstPersonCamera;
 
         public void Awake()
         {
-            controls.TabletCameraMode.OnValueChangedHandler += OnTabletCameraModeChanged;
+            tabletControls.TabletCameraMode.OnValueChangedHandler += OnTabletCameraModeChanged;
+            tabletControls.TabletFirstPersonCameraRoation.OnValueChangedHandler += OnCameraRotationChanged;
             controls.CameraRotation.OnValueChangedHandler += OnCameraRotationChanged;
         }
 

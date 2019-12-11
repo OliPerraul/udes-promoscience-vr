@@ -18,6 +18,9 @@ namespace UdeS.Promoscience.UI
         ControlsAsset controls;
 
         [SerializeField]
+        TabletControlsAsset tabletControls;
+
+        [SerializeField]
         Transform indicator;
 
         int direction = 0;
@@ -31,24 +34,24 @@ namespace UdeS.Promoscience.UI
         {
             Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
-            controls.TabletCameraMode.OnValueChangedHandler += OnCompassENabled;
+            //tabletControls.TabletCameraMode.OnValueChangedHandler += OnCompassENabled;
 
             startRotation = indicator.transform.rotation;
 
             OnClientStateChanged(Client.Instance.State.Value);
         }
 
-        private void OnCompassENabled(TabletCameraMode value)
-        {
-            if (value == TabletCameraMode.ThirdPerson)
-            {
-                indicator.gameObject.SetActive(true);
-            }
-            else
-            {
-                indicator.gameObject.SetActive(false);
-            }
-        }
+        //private void OnCompassENabled(TabletCameraMode value)
+        //{
+        //    if (value == TabletCameraMode.ThirdPerson)
+        //    {
+        //        indicator.gameObject.SetActive(true);
+        //    }
+        //    else
+        //    {
+        //        indicator.gameObject.SetActive(false);
+        //    }
+        //}
 
         void OnClientStateChanged(ClientGameState state)
         {
