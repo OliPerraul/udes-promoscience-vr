@@ -20,6 +20,10 @@ namespace UdeS.Promoscience.Network
     {
         private NetworkServerSimple server = null;
 
+        [SerializeField]
+        private ServerNetworkDiscovery discovery;
+
+
         private List<NetworkConnection> clientConnectionList = new List<NetworkConnection>();
 
         private NetworkConnection tabletConnection = null;
@@ -70,6 +74,8 @@ namespace UdeS.Promoscience.Network
 
             isStarted = true;
 
+            discovery.DoStart();
+
             PairingState.Value = ServerPairingState.None;
 
             server = new NetworkServerSimple();
@@ -94,6 +100,8 @@ namespace UdeS.Promoscience.Network
             isStarted = false;
 
             server.Stop();
+
+            discovery.DoStop();
 
             server = null;
 

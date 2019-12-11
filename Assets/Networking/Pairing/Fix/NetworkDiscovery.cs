@@ -97,6 +97,7 @@ public class NetworkDiscoveryFix : NetworkDiscovery
 
             if (NetworkTransport.IsStarted && NetworkTransport.IsBroadcastDiscoveryRunning())
                 NetworkTransport.StopBroadcastDiscovery();
+
             NetworkTransport.Shutdown();
 
         }

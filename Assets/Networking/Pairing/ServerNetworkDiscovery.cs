@@ -8,12 +8,12 @@ namespace UdeS.Promoscience.Network
 
     public class ServerNetworkDiscovery : NetworkDiscoveryFix
     {
-        void Start()
+        public void DoStart()
         {
             StartBroadcasting("algorinthe", "HELLO");
         }
 
-        private void OnDestroy()
+        public void DoStop()
         {
             Stop();
         }

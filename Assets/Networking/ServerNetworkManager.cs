@@ -63,7 +63,7 @@ namespace UdeS.Promoscience.Network
 
         public void Awake()
         {
-            Persist();
+            //Persist();
         }
 
         private void Update()

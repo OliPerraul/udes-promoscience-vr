@@ -6430,6 +6430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 785e7b02514aa8f4bbf2adf928ae988a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  discovery: {fileID: 8904820410777956352}
   TabletId: 
   HeadsetId: 
   serverPort: 9995
