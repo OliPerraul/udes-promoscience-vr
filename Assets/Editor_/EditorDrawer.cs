@@ -95,6 +95,10 @@ namespace UdeS.Promoscience.Labyrinths.Editor
             }
 
             mouseHeld.Value = Input.GetMouseButton(0);
+            if (Input.GetMouseButtonUp(0))
+            {
+                mouseHeld.Value = false;
+            }
         }
 
         public virtual void OnStateChanged(EditorState state)
@@ -120,7 +124,10 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         {
             if (held)
             {
-                Draw(tilePosition.Value, SelectedTileType.Value);
+                if (Input.GetMouseButton(0))
+                {
+                    Draw(tilePosition.Value, SelectedTileType.Value);
+                }
             }
         }
 
@@ -155,13 +162,24 @@ namespace UdeS.Promoscience.Labyrinths.Editor
             {
                 tilePosition.Value = EditorController.Instance.LabyrinthObject.GetWorldPositionInLabyrinthPosition(hit.point.x, hit.point.z);
             }
+            else
+            {
+                if (CursorTile != null)
+                {
+                    CursorTile.gameObject.Destroy();
+                    CursorTile = null;
+                }
+            }
         }
 
         public void OnTilePositionChanged(Vector2Int tilePosition)
         {
             if (mouseHeld.Value)
             {
-                Draw(tilePosition, SelectedTileType.Value);
+                if (Input.GetMouseButton(0))
+                {
+                    Draw(tilePosition, SelectedTileType.Value);
+                }
             }
 
             MoveDrawerTile(tilePosition.x, tilePosition.y);
@@ -222,6 +240,9 @@ namespace UdeS.Promoscience.Labyrinths.Editor
 
         public void Draw(Vector2Int pos, TileType tile)
         {
+            if (CursorTile == null)
+                return;
+
             // TODO remove
             // Right now i'm just checking if the skin has the desired tile
             // Otherwise do not allow draw

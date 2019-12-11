@@ -117,6 +117,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor
             SQLiteUtilities.UpdateLabyrinth(Labyrinth);
         }
 
+        //TODO
         public void OnTrash()
         {
 

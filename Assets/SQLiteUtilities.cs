@@ -2012,7 +2012,7 @@ namespace UdeS.Promoscience
         // TODO remove static skin id
         public static int SkinId = 0;
 
-        public static void CreateLabyrinthAsset(
+        public static void CreateLabyrinth(
             string name,
             int id,
             int sizeX,
@@ -2096,6 +2096,8 @@ namespace UdeS.Promoscience
 
 
         // TODO This is not the right place to put this
+        // Default levels should not be hardcoded
+        // TODO levels should be put into json not in DB
         public static void InsertBasicLabyrinths()
         {
 
@@ -2256,7 +2258,7 @@ namespace UdeS.Promoscience
                 sizeY,
                 data);
 
-            CreateLabyrinthAsset(
+            CreateLabyrinth(
                 "Labyrinth.Tutorial",
                 id,
                 sizeX,
@@ -2401,7 +2403,7 @@ namespace UdeS.Promoscience
             data[(9 * sizeY) + 10] = Labyrinths.Utils.TILE_PTOL_TOWER_WALL_ID;
 
             SQLiteUtilities.InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
-            CreateLabyrinthAsset(
+            CreateLabyrinth(
                 "Labyrinth.1",
                 id,
                 sizeX,
@@ -2559,7 +2561,7 @@ namespace UdeS.Promoscience
             data[(10 * sizeY) + 10] = Labyrinths.Utils.TILE_BRIT_TOWER_WALL_ID;
 
             InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
-            CreateLabyrinthAsset(
+            CreateLabyrinth(
                 "Labyrinth.2",
                 id,
                 sizeX,
@@ -2771,7 +2773,7 @@ namespace UdeS.Promoscience
             //TODO remove
             InsertOrReplaceLabyrinth(id, sizeX, sizeY, data);
 
-            CreateLabyrinthAsset(
+            CreateLabyrinth(
                 "Labyrinth.3",
                 id,
                 sizeX,
