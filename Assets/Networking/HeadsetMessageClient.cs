@@ -100,7 +100,8 @@ namespace UdeS.Promoscience.Network
 
         void OnGameStateChanged(ClientGameState state)
         {
-            if (Client.Instance.State.Value == ClientGameState.Playing || Client.Instance.State.Value == ClientGameState.PlayingTutorial)
+            if (Client.Instance.State.Value == ClientGameState.Playing || 
+                Client.Instance.State.Value == ClientGameState.PlayingTutorial)
             {
                 SendRequestForGameInformation();
             }
