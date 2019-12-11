@@ -269,6 +269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 74985583}
   - component: {fileID: 74985582}
+  - component: {fileID: 74985585}
   - component: {fileID: 74985584}
   m_Layer: 0
   m_Name: ServerNetworkManager
@@ -293,7 +294,7 @@ MonoBehaviour:
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
   m_NetworkAddress: localhost
-  m_DontDestroyOnLoad: 1
+  m_DontDestroyOnLoad: 0
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
@@ -391,6 +392,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   list: []
+--- !u!114 &74985585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74985581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c51c9591c27b90641a29b7df22b2e4f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &95488058
 PrefabInstance:
   m_ObjectHideFlags: 0
