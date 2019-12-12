@@ -100,8 +100,11 @@ namespace UdeS.Promoscience.Replays
                 // next in player sequence
                 foreach (var worker in Workers)
                 {
-                    //if (worker.ResumeCoroutineResult == null)
-                    //    continue;
+                    if (worker == null)
+                        continue;
+
+                    if (worker.ResumeCoroutineResult == null)
+                        continue;
 
                     yield return worker.ResumeCoroutineResult;
                 }
