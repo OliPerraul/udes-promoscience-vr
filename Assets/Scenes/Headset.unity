@@ -177,6 +177,7 @@ MonoBehaviour:
   directive: {fileID: 11400000, guid: 865b88713241bca4aaa0e826f2aef839, type: 2}
   gameManager: {fileID: 11400000, guid: 3af86e7a53b3fe94388ee9bf5fd1db53, type: 2}
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  headsetTools: {fileID: 11400000, guid: 436c795e862df3043b5e4e814a07a4f8, type: 2}
   algorithmRespect: {fileID: 11400000, guid: 6d58c680a021b5e47830ce98afc82c18, type: 2}
   isConnectedToPair: {fileID: 11400000, guid: 4789e0d16f75eef48b6c4bb029f1d7e2, type: 2}
   pairedIpAdress: {fileID: 11400000, guid: 902b7af32781e6a4f99827db28b6aeba, type: 2}

@@ -23,6 +23,9 @@ namespace UdeS.Promoscience.Network
         public ControlsAsset controls;
 
         [SerializeField]
+        public HeadsetToolManagerAsset headsetTools;
+
+        [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         // TODO replace by network manager asset
@@ -104,6 +107,12 @@ namespace UdeS.Promoscience.Network
             controls.BroadcastPlayerRotation.OnValueChangedHandler += SendPlayerRotation;
             controls.PaintingColor.OnValueChangedHandler += SendPaintingColor;
 
+
+            // For both type of scanner
+            headsetTools.ScannedDistance.OnValueChangedHandler += SendToolScannedDistance;
+            headsetTools.CompassRotation.OnValueChangedHandler += SendCompassRotation;
+
+
             gameManager.IsRoundCompleted.OnValueChangedHandler += OnRoundCompleted;
             gameManager.Round.OnValueChangedHandler += OnRoundChanged;
 
@@ -155,6 +164,15 @@ namespace UdeS.Promoscience.Network
             DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
             directive.CurrentDirective.Set(msg.directive, notify:true);
         }
+
+
+
+        //void OnDirective(NetworkMessage netMsg)
+        //{
+        //    DirectiveMessage msg = netMsg.ReadMessage<DirectiveMessage>();
+        //    directive.CurrentDirective.Set(msg.directive, notify: true);
+        //}
+
 
         void OnReturnToDivergencePointRequest(NetworkMessage netMsg)
         {
@@ -232,6 +250,7 @@ namespace UdeS.Promoscience.Network
         }
 
 
+
         void SendPaintingColor(TileColor paintingColor)
         {
             PaintingColorMessage msg = new PaintingColorMessage();
@@ -290,6 +309,28 @@ namespace UdeS.Promoscience.Network
         {
             PlayerTilesToPaintMessage msg = new PlayerTilesToPaintMessage();
             msg.tiles = Client.Instance.Labyrinth.Value.GetTilesToPaint();
+
+            clientConnection.Send(msg.GetMsgType(), msg);
+        }
+
+
+        // Tools
+        // For both scanners
+        public void SendToolScannedDistance(float scannedDistance)
+        {
+            ScannedDistanceMessage msg = new ScannedDistanceMessage();
+            msg.distance = scannedDistance; // Client.Instance.Labyrinth.Value.GetTilesToPaint();
+
+            clientConnection.Send(msg.GetMsgType(), msg);
+        }
+
+
+                // Tools
+        // For both scanners
+        public void SendCompassRotation(Quaternion rotation)
+        {
+            CompassRotationMessage msg = new CompassRotationMessage();
+            msg.rot = rotation; // Client.Instance.Labyrinth.Value.GetTilesToPaint();
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }

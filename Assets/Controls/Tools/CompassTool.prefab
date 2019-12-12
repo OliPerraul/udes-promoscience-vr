@@ -15,6 +15,7 @@ MonoBehaviour:
   isLeftHanded: 0
   isThirdPerson: 0
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
+  headsetTools: {fileID: 11400000, guid: 436c795e862df3043b5e4e814a07a4f8, type: 2}
   indicator: {fileID: 6597614544530385072}
 --- !u!1 &6600054854136666498
 GameObject:
@@ -195,7 +196,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6601072567720875180}
-  m_LocalRotation: {x: 0.25881898, y: -0, z: -0, w: 0.9659259}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_Children:

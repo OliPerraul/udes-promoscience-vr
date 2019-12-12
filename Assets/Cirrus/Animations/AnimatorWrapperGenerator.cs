@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-
+﻿
 using UnityEngine;
 using System.Collections;
 using UnityEditor;
@@ -14,15 +13,17 @@ namespace Cirrus.Animations
     [CreateAssetMenu(menuName = "Cirrus/Animations/Animator Wrapper")]
     public class AnimatorWrapperGenerator : UnityEngine.ScriptableObject
     {
-        [SerializeField]
-        private UnityEditor.Animations.AnimatorController _animator;
-
 
         [SerializeField]
         private string _name;
 
         [SerializeField]
         private string _namespace;
+
+#if UNITY_EDITOR
+
+        [SerializeField]
+        private UnityEditor.Animations.AnimatorController _animator;
 
         private const int kSpacesPerIndentLevel = 4;
 
@@ -299,9 +300,11 @@ namespace Cirrus.Animations
             File.WriteAllText(filePath, code);
         }
 
+#endif
+
     }
 
-
+#if UNITY_EDITOR
 
     [CustomEditor(typeof(AnimatorWrapperGenerator))]
     public class SomeScriptEditor : UnityEditor.Editor
@@ -317,7 +320,11 @@ namespace Cirrus.Animations
             }
         }
     }
-}
 
 
 #endif
+
+}
+
+
+

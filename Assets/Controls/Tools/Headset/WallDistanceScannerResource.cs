@@ -11,7 +11,7 @@ namespace UdeS.Promoscience.Controls
         private Labyrinths.Piece wall;
 
 
-        public override void DoScan(ControlsAsset controller, RaycastHit[] hits)
+        public override void DoScan(HeadsetToolManagerAsset tools, RaycastHit[] hits)
         {
             IEnumerable<RaycastHit> pieces = hits.Where(x => x.collider.GetComponent<Labyrinths.Piece>() != null);
 
@@ -26,7 +26,7 @@ namespace UdeS.Promoscience.Controls
                     wall = newWall;
 
                     newWall.Highlight();
-                    controller.WallDistance.Value = ((int)hit.distance) / Labyrinths.Utils.TileSize;
+                    tools.ScannedDistance.Value = ((int)hit.distance) / Labyrinths.Utils.TileSize;
                     return;
                 }
 

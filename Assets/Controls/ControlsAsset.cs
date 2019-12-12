@@ -53,11 +53,6 @@ namespace UdeS.Promoscience.Controls
 
         public Cirrus.ObservableValue<AvatarAnimation> Animation = new Cirrus.ObservableValue<AvatarAnimation>();
 
-        public Cirrus.ObservableValue<float> WallDistance = new Cirrus.ObservableValue<float>();
-
-        public Cirrus.ObservableValue<float> ScannedDistance = new Cirrus.ObservableValue<float>();
-
-
         public void StopAllMovement()
         {
             if (stopAllMovementEvent != null)

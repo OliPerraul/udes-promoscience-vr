@@ -17,75 +17,43 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         ControlsAsset controls;
 
-        //[SerializeField]
-        //TabletControlsAsset tabletControls;
+        [SerializeField]
+        private TabletControlsAsset tabletControls;
 
         [SerializeField]
         Transform indicator;
 
-        int direction = 0;
+        //int direction = 0;
 
-        private Quaternion startRotation;
+        //private Quaternion startRotation;
 
-        readonly int[] xByDirection = { 0, 1, 0, -1 };
-        readonly int[] yByDirection = { -1, 0, 1, 0 };
+        //readonly int[] xByDirection = { 0, 1, 0, -1 };
+        //readonly int[] yByDirection = { -1, 0, 1, 0 };
 
         void Awake()
         {
-            Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
+            //Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
+
+            tabletControls.CompassRotation.OnValueChangedHandler += OnCompassRotation;
 
             //tabletControls.TabletCameraMode.OnValueChangedHandler += OnCompassENabled;
 
-            startRotation = indicator.transform.rotation;
+            //startRotation = indicator.transform.rotation;
 
-            OnClientStateChanged(Client.Instance.State.Value);
+            //OnClientStateChanged(Client.Instance.State.Value);
         }
 
-        //private void OnCompassENabled(TabletCameraMode value)
-        //{
-        //    if (value == TabletCameraMode.ThirdPerson)
-        //    {
-        //        indicator.gameObject.SetActive(true);
-        //    }
-        //    else
-        //    {
-        //        indicator.gameObject.SetActive(false);
-        //    }
-        //}
 
-        void OnClientStateChanged(ClientGameState state)
+        void OnCompassRotation(Quaternion rot)
         {
-            switch (Client.Instance.State.Value)
-            {
-                //case ClientGameState.Playing:
-                //case ClientGameState.PlayingTutorial:
-                //    if (Client.Instance.Algorithm.Value.Id == Algorithms.Id.Standard)
-                //    {
-                //        indicator.gameObject.SetActive(true);
-                //    }
-                //    else
-                //    {
-                //        indicator.gameObject.SetActive(false);
-                //    }
-                //    break;
+            indicator.rotation = rot;
 
-                //default:
-                //    indicator.gameObject.SetActive(false);
-                //    break;
+            //if (indicator.gameObject.activeSelf)
+            //{
+            //    var rotation = Quaternion.LookRotation(indicator.position + new Vector3(100 * Labyrinths.Utils.TileSize * xByDirection[direction], 0, 100 * Labyrinths.Utils.TileSize * -yByDirection[direction]));
+            //    indicator.localRotation = rotation;
 
-            }
-        }
-
-        void Update()
-        {
-            indicator.rotation = startRotation;
-
-            if (indicator.gameObject.activeSelf)
-            {
-                var rotation = Quaternion.LookRotation(indicator.position + new Vector3(100 * Labyrinths.Utils.TileSize * xByDirection[direction], 0, 100 * Labyrinths.Utils.TileSize * -yByDirection[direction]));
-                indicator.localRotation = rotation;
-
-            }
+            //}
         }
 
     }

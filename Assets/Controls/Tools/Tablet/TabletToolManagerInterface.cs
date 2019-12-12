@@ -38,6 +38,22 @@ namespace UdeS.Promoscience.Controls
 
             asset.CurrentTool.OnValueChangedHandler += OnCurrentToolChanged;
 
+            asset.ScannedDistance.OnValueChangedHandler += OnScannedDistanceChanged;
+
+        }
+
+        // TODO 
+        /// TODO  2 diffeent Scanned Distance
+        public void OnScannedDistanceChanged(float scanned)
+        {
+            if (scanned < 0)
+            {
+                flightDistanceText.text = "?";
+                wallDistanceText.text = "?";
+            }
+
+            flightDistanceText.text = scanned + " m";
+            wallDistanceText.text = scanned.ToString() + " m";
         }
 
         public void OnCurrentToolChanged(ToolId id)
