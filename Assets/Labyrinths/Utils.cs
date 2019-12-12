@@ -95,9 +95,9 @@ namespace UdeS.Promoscience.Labyrinths
 
 
         /// <summary>
-        /// TODO replace with Resources.NumLabyrinth
+        /// TODO replace with LabyrinthManager.NumLabyrinth
         /// </summary>
-        public static int NumLabyrinth => Server.Instance.Labyrinths.Count;
+        public static int NumLabyrinth => Labyrinths.LabyrinthManager.Instance.Labyrinths.Count;
 
         public const int SelectMaxHorizontal = 2;
 

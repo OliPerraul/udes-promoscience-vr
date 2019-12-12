@@ -71,7 +71,7 @@ namespace UdeS.Promoscience.Labyrinths
             }
         }
 
-        public static int NumLabyrinths => Server.Instance.Labyrinths.Count;
+        public static int NumLabyrinths => LabyrinthManager.Instance.Labyrinths.Count;
         
         // TODO deprecate
         [UnityEngine.Serialization.FormerlySerializedAs("LabyrinthData")]
@@ -101,10 +101,10 @@ namespace UdeS.Promoscience.Labyrinths
         // TODO: remove offset with Id and index
         // right now needed cuz round determine labyrinth
         // TODO remove 
-        public ILabyrinth GetLabyrinth(int id)
-        {
-            return Server.Instance.Labyrinths.Where((x) => x.Id == id).FirstOrDefault();
-        }
+        //public ILabyrinth GetLabyrinth(int id)
+        //{
+        //    return Server.Instance.Labyrinths.Where((x) => x.Id == id).FirstOrDefault();
+        //}
 
     }
 }

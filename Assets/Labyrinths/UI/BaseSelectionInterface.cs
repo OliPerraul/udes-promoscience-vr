@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
 
         public virtual LabyrinthObject CreateNextLabyrinth()
         {
-            var data = Server.Instance.Labyrinths[LabyrinthIndexWrap];
+            var data = LabyrinthManager.Instance.Labyrinths[LabyrinthIndexWrap];
 
             labyrinthIndex++;
 

@@ -28,9 +28,9 @@ namespace UdeS.Promoscience
         [SerializeField]
         private LevelPreset[] predefinedLevels;
 
-        private List<Level> rounds = new List<Level>();
+        private List<Level> levels = new List<Level>();
 
-        public IList<Level> Levels => rounds;
+        public IList<Level> Levels => levels;
 
         private Level currentLevel;
 
@@ -147,7 +147,7 @@ namespace UdeS.Promoscience
             int algorithmId)
         {
             StartNextLevel(
-                Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId), 
+                LabyrinthManager.Instance.GetLabyrinth(labyrinthId), 
                 (Algorithms.Id)algorithmId);
         }
 
@@ -162,7 +162,7 @@ namespace UdeS.Promoscience
                 Algorithm = Algorithms.Resources.Instance.GetAlgorithm(algorithmId)
             };
 
-            rounds.Add(currentLevel);
+            levels.Add(currentLevel);
 
             SQLiteUtilities.InsertLevel(
                 SQLiteUtilities.GetNextLevelID(),

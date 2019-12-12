@@ -552,7 +552,7 @@ namespace UdeS.Promoscience
                             //stepValues.Enqueue(JsonUtility.ToJson(new ActionValue()));
 
                             var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
-                            var labyrinth = Labyrinths.Resources.Instance.GetLabyrinth(lid);
+                            var labyrinth = LabyrinthManager.Instance.GetLabyrinth(lid);
                             var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
 
                             courses.Add(new Course
@@ -619,7 +619,7 @@ namespace UdeS.Promoscience
 
             if (labId > 0)
             {
-                return Labyrinths.Resources.Instance.GetLabyrinth(labId);
+                return LabyrinthManager.Instance.GetLabyrinth(labId);
             }
 
 #endif
@@ -671,7 +671,7 @@ namespace UdeS.Promoscience
                             var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
                             //var labyrinth = Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId);
                             var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
-                            var labdata = Labyrinths.Resources.Instance.GetLabyrinth(labId);
+                            var labdata = LabyrinthManager.Instance.GetLabyrinth(labId);
 
 
                             courses.Add(new Course
@@ -742,7 +742,7 @@ namespace UdeS.Promoscience
                             //Queue<string> stepValues;
                             //GetPlayerStepsForCourse(id, out steps, out stepValues);
                             var algorithm = Algorithms.Resources.Instance.GetAlgorithm((Algorithms.Id)algId);
-                            var labyrinth = Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId);
+                            var labyrinth = LabyrinthManager.Instance.GetLabyrinth(labyrinthId);
                             var team = Teams.Resources.Instance.GetScriptableTeamWithId(teamId);
 
                             courses.Add(new Course

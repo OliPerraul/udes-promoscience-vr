@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Cirrus.Extensions;
 
 namespace UdeS.Promoscience
 {
@@ -10,10 +11,16 @@ namespace UdeS.Promoscience
         [SerializeField]
         public Algorithms.Id Algorithm;
 
-        [SerializeField]
-        public Labyrinths.Resource Labyrinth;
+        //[SerializeField]
+        //private int labyrinthId;
+
+        //public int LabyrinthId => labyrinthId.Mod(Server.Instance.Labyrinths.Count);
+
+        public Labyrinths.ILabyrinth Labyrinth => Labyrinths.LabyrinthManager.Instance.GetNextLabyrinth();
     }
 
+    // Previously named Round
+    // TODO rename remaining round reference?
     public class Level
     {
         public int Number = 0;

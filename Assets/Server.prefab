@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5537631853292095899}
   - component: {fileID: 5537631853292095898}
   - component: {fileID: 5537631853292095897}
+  - component: {fileID: 7051927168614169697}
   m_Layer: 0
   m_Name: Server
   m_TagString: Untagged
@@ -109,7 +110,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0a2296e6eec0d5b4498a35db8e776302, type: 2}
   - {fileID: 11400000, guid: 07aac683d064d3440ab716d251d9585b, type: 2}
   - {fileID: 11400000, guid: 1ccea2acd443f4ad4bb9a9f33fc960c0, type: 2}
-  - {fileID: 11400000, guid: 5244deb39a979454683277ed9dc7f48f, type: 2}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 6f2420bf043169343a01238664fdb11f, type: 2}
   - {fileID: 11400000, guid: 31255de3cf55c9c4298bab11e4bdeb6e, type: 2}
   - {fileID: 11400000, guid: 55c20d90441374b488d8d3b827bb37c0, type: 2}
@@ -250,9 +251,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    PredefinedLevelOrder:
+    CreateSampleLabyrinths:
+      _value: 0
+    IsLevelOrderPredefined:
       _value: 0
     NumberOfRounds:
       _value: 3
+  State:
+    _value: 1
   lobbyScene: {fileID: 11400000, guid: d80bad067ed257c49aa4fba7859a3fda, type: 2}
   menuScene: {fileID: 11400000, guid: e7f762378726b4145bd9dd77f0919167, type: 2}
+--- !u!114 &7051927168614169697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5537631853292095892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c39b12f37aaf2db46a008c0c24cb86ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

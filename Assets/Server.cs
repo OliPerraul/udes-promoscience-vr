@@ -18,26 +18,7 @@ namespace UdeS.Promoscience
     {
         /// TODODODODODOO
 
-        // TODO this should not be inside a Sciptableobject nor here
-        private List<ILabyrinth> labyrinths;
-
-        public List<ILabyrinth> Labyrinths
-        {
-            get
-            {
-                if (labyrinths == null || labyrinths.Count == 0)
-                {
-                    labyrinths = SQLiteUtilities.LoadAllLabyrinths2().ToList();
-                }
-
-                return labyrinths;
-            }
-        }
-
-        public ILabyrinth GetLabyrinth(int id)
-        {
-            return Server.Instance.Labyrinths.Where((x) => x.Id == id).FirstOrDefault();
-        }
+        // TODO Labyrinth manager??/
 
 
         /// TODODODODODOO

@@ -9,9 +9,9 @@ namespace UdeS.Promoscience.Replays
 {
     public class LevelReplay : ControlReplay
     {
-        private Level round;
+        private Level level;
 
-        public Labyrinths.ILabyrinth Labyrinth => round.Labyrinth;
+        public Labyrinths.ILabyrinth Labyrinth => level.Labyrinth;
 
         public Labyrinths.LabyrinthObject labyrinthObject;
 
@@ -27,7 +27,7 @@ namespace UdeS.Promoscience.Replays
 
         private List<TeamReplay> activeSequences = new List<TeamReplay>();
 
-        private List<Course> Courses => round.Courses;
+        private List<Course> Courses => level.Courses;
 
         protected override IEnumerable<IReplayWorker> Workers => activeSequences.Concat(new List<IReplayWorker>{algorithmSequence});
 
@@ -68,7 +68,7 @@ namespace UdeS.Promoscience.Replays
             Level round) 
             : base(controls)
         {
-            this.round = round;
+            this.level = round;
 
             this.algorithmSelection = algorithmSelection;
 
@@ -144,8 +144,8 @@ namespace UdeS.Promoscience.Replays
             controls.PlaybackSpeed = 2f;
 
             labyrinthObject = Labyrinths.Resources.Instance
-                .GetLabyrinthObject(round.Labyrinth)
-                .Create(round.Labyrinth);
+                .GetLabyrinthObject(level.Labyrinth)
+                .Create(level.Labyrinth);
 
             labyrinthObject.GenerateLabyrinthVisual();
 
@@ -163,11 +163,11 @@ namespace UdeS.Promoscience.Replays
                 Resources.Instance.AlgorithmSequence.Create(
                 this,
                 labyrinthObject,
-                round.Algorithm,
+                level.Algorithm,
                 lposition
                 );
 
-            foreach (Course course in round.Courses)
+            foreach (Course course in level.Courses)
             {
                 AddCourse(course);
             }

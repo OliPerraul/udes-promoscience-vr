@@ -109,9 +109,9 @@ namespace UdeS.Promoscience.Labyrinths.Editor
 
             // Save session
             //TODO improve
-            var sessionLab = Server.Instance.GetLabyrinth(Labyrinth.Id);
-            var idx = Server.Instance.Labyrinths.IndexOf(sessionLab);// Instance.GetLabyrinth(Labyrinth.Id);
-            Server.Instance.Labyrinths[idx] = Labyrinth;
+            var sessionLab = LabyrinthManager.Instance.GetLabyrinth(Labyrinth.Id);
+            var idx = LabyrinthManager.Instance.Labyrinths.IndexOf(sessionLab);// Instance.GetLabyrinth(Labyrinth.Id);
+            LabyrinthManager.Instance.Labyrinths[idx] = Labyrinth;
 
             // Save persistent
             SQLiteUtilities.UpdateLabyrinth(Labyrinth);

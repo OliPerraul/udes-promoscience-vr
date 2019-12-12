@@ -112,7 +112,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
 
         public override void AddLabyrinth(int i)
         {
-            var data = Server.Instance.Labyrinths[i];
+            var data = LabyrinthManager.Instance.Labyrinths[i];
 
             LabyrinthObject labyrinth = Labyrinths.Resources.Instance
                   .GetLabyrinthObject(data)
@@ -137,7 +137,7 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
         {
             var data = SQLiteUtilities.CreateSampleLabyrinth();
 
-            Server.Instance.Labyrinths.Add(data);
+            LabyrinthManager.Instance.Labyrinths.Add(data);
 
             LabyrinthObject labyrinth = Labyrinths.Resources.Instance
                   .GetLabyrinthObject(data)
