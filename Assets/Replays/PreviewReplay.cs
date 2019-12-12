@@ -66,6 +66,7 @@ namespace UdeS.Promoscience.Replays
             parentReplay.OnMoveIndexChangedHandler += OnParentMoveIndexChanged;
             parentReplay.OnPlaybackSpeedChangedHandler += OnParentPlaybackSpeedChanged;
             parentReplay.OnResumeHandler += OnResume;
+            parentReplay.OnStopHandler += OnStop;
         }
 
         public void Initialize()
@@ -120,6 +121,7 @@ namespace UdeS.Promoscience.Replays
             parentReplay.OnMoveIndexChangedHandler -= OnParentMoveIndexChanged;
             parentReplay.OnPlaybackSpeedChangedHandler -= OnParentPlaybackSpeedChanged;
             parentReplay.OnResumeHandler -= OnResume;
+            parentReplay.OnResumeHandler -= OnStop;
 
             if (algorithm != null)
                 algorithm.gameObject.Destroy();

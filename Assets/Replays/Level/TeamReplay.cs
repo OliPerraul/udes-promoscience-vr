@@ -156,6 +156,7 @@ namespace UdeS.Promoscience.Replays
             });
 
             parent.OnResumeHandler += replay.OnResume;
+            parent.OnStopHandler += replay.OnStop;
             parent.OnMoveIndexChangedHandler += replay.OnMoveIndexChanged;
 
             return replay;
@@ -164,7 +165,21 @@ namespace UdeS.Promoscience.Replays
 
         public void OnResume()
         {
-            resumeCoroutineResult = StartCoroutine(DoNextCoroutine());
+            if (HasNext)
+            {
+                resumeCoroutineResult = StartCoroutine(DoNextCoroutine());
+            }
+        }
+
+        public void OnStop()
+        {
+            if (resumeCoroutineResult != null)
+            {
+                StopCoroutine(resumeCoroutineResult);
+                resumeCoroutineResult = null;
+            }
+
+            //resumeCoroutineResult = StartCoroutine(DoNextCoroutine());
         }
 
         public void OnMoveIndexChanged(int index)

@@ -11,10 +11,13 @@ namespace UdeS.Promoscience.UI
     public class TabletCommandsInterface : MonoBehaviour
     {
         [SerializeField]
-        private Controls.ControlsAsset controls;
+        private TabletCommandsAsset asset;
 
         [SerializeField]
-        private Controls.TabletControlsAsset tabletControls;
+        private ControlsAsset controls;
+
+        [SerializeField]
+        private TabletControlsAsset tabletControls;
 
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;
@@ -48,7 +51,9 @@ namespace UdeS.Promoscience.UI
         {
             initBGAslpha = returnToDivergentButtonBG.color.a;
             initIconAlph = returnToDivergentButtonICON.color.a;
+            OnIsDivergin(false);
             algorithmRespect.IsDiverging.OnValueChangedHandler += OnIsDivergin;
+            
 
             fixItButton.onClick.AddListener(
                 () =>
@@ -63,6 +68,12 @@ namespace UdeS.Promoscience.UI
             cameraButton.onClick.AddListener(
                 () =>
                     tabletControls.TabletCameraMode.Value = (TabletCameraMode)((int)tabletControls.TabletCameraMode.Value + 1).Mod(TabletUtils.NumCameraMode));
+
+            returnToDivergentButton.onClick.AddListener(() =>
+            {
+                asset.OnReturnToDivergentRequestHandler?.Invoke();
+            }
+            );
 
 
             //contro

@@ -33,6 +33,8 @@ namespace UdeS.Promoscience.Replays
 
         public Cirrus.Event OnResumeHandler;
 
+        public Cirrus.Event OnStopHandler;
+
         private float playbackSpeed;
 
         protected virtual float PlaybackSpeed
@@ -59,6 +61,26 @@ namespace UdeS.Promoscience.Replays
             }
         }
 
+        public void OnStop()
+        {
+            Resume();
+        }
+
+        public virtual void Stop()
+        {
+            // TODO distinguish stop and pause
+            MoveIndex = 0;
+
+            if (resumeCoroutineResult != null)
+            {
+                ReplayManager.Instance.StopCoroutine(resumeCoroutineResult);
+                resumeCoroutineResult = null;
+            }
+
+            OnStopHandler?.Invoke();
+        }
+
+
         public void OnResume()
         {
             Resume();
@@ -78,6 +100,9 @@ namespace UdeS.Promoscience.Replays
                 // next in player sequence
                 foreach (var worker in Workers)
                 {
+                    //if (worker.ResumeCoroutineResult == null)
+                    //    continue;
+
                     yield return worker.ResumeCoroutineResult;
                 }
 

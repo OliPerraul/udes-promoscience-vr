@@ -11,6 +11,9 @@ namespace UdeS.Promoscience.Controls
         private ControlsAsset controls;
 
         [SerializeField]
+        private HeadsetToolManagerAsset headsetTools;
+
+        [SerializeField]
         private GameObject yellowColor;
 
         [SerializeField]
@@ -22,7 +25,17 @@ namespace UdeS.Promoscience.Controls
         public void Awake()
         {
             controls.PaintingColor.OnValueChangedHandler += OnPaintingColorChanged;
+            headsetTools.CurrentTool.OnValueChangedHandler += OnToolchanged;
         }
+
+        public void OnToolchanged(ToolId id)
+        {
+            if (id == ToolId.PaintBucket)
+            {
+                OnPaintingColorChanged(controls.PaintingColor.Value);
+            }
+        }
+
 
         public void OnPaintingColorChanged(TileColor color)
         {

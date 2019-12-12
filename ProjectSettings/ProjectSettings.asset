@@ -165,8 +165,13 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
+<<<<<<< HEAD
     Android: com.promosciences.AlgorintheFinal2
     Standalone: com.promosciences.Algorinthe20
+=======
+    Android: com.promosciences.Algorinthe20
+    Standalone: com.promosciences.Algorinthe2
+>>>>>>> eb3966e3a4032b0347fbe5cbf50a2a3f0b5c8481
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 19

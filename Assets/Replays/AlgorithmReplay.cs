@@ -67,6 +67,7 @@ namespace UdeS.Promoscience.Replays
             replay.execution = new Algorithms.AlgorithmExecution(algorithm, labyrinth);
 
             parent.OnResumeHandler += replay.OnResume;
+            parent.OnStopHandler += replay.OnStop;
             parent.OnMoveIndexChangedHandler += replay.OnMoveIndexChanged;
 
             return replay;
@@ -86,7 +87,21 @@ namespace UdeS.Promoscience.Replays
 
         public void OnResume()
         {
-            resumeCoroutineResult = StartCoroutine(ResumeCoroutine());
+            if (HasNext)
+            {
+                resumeCoroutineResult = StartCoroutine(ResumeCoroutine());
+            }
+        }
+
+        public void OnStop()
+        {
+            if (resumeCoroutineResult != null)
+            {
+                StopCoroutine(resumeCoroutineResult);
+                resumeCoroutineResult = null;
+            }
+
+            //resumeCoroutineResult = StartCoroutine(DoNextCoroutine());
         }
 
         public void OnMoveIndexChanged(int index)
