@@ -31,7 +31,7 @@ namespace UdeS.Promoscience.Network
 
 
         ScannedDistance = 124,
-            CompassRot = 125
+        CompassRot = 125
     }
 
     // TODO use template type instead??
