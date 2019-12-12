@@ -239,7 +239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controls: {fileID: 11400000, guid: ed471d115bcf88c42b4ce3c56fa02cce, type: 2}
   tabletControls: {fileID: 11400000, guid: fda3f9db223ebd74b9120eed972f74f2, type: 2}
-  indicator: {fileID: 1581496904471179479}
+  indicator: {fileID: 1857884217561957048}
 --- !u!1 &7776363629454006821
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,12 +548,12 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 6600054854136666498, guid: 64e0f85ea6d1ab844aeac79364fc0b1a,
+    - target: {fileID: 6601401763826549526, guid: 64e0f85ea6d1ab844aeac79364fc0b1a,
         type: 3}
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
-    - target: {fileID: 6601401763826549526, guid: 64e0f85ea6d1ab844aeac79364fc0b1a,
+    - target: {fileID: 6600054854136666498, guid: 64e0f85ea6d1ab844aeac79364fc0b1a,
         type: 3}
       propertyPath: m_Layer
       value: 10
@@ -575,6 +575,12 @@ GameObject:
 --- !u!4 &863756983803069532 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5312917996025589332, guid: 64e0f85ea6d1ab844aeac79364fc0b1a,
+    type: 3}
+  m_PrefabInstance: {fileID: 4776041715792013832}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1857884217561957048 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6597614544530385072, guid: 64e0f85ea6d1ab844aeac79364fc0b1a,
     type: 3}
   m_PrefabInstance: {fileID: 4776041715792013832}
   m_PrefabAsset: {fileID: 0}

@@ -7,6 +7,9 @@ namespace UdeS.Promoscience.Controls
     public class TabletToolManagerInterface : MonoBehaviour
     {
         [SerializeField]
+        private ControlsAsset controls;
+
+        [SerializeField]
         private TabletToolManagerAsset asset;
 
         [SerializeField]
@@ -28,6 +31,12 @@ namespace UdeS.Promoscience.Controls
         private UnityEngine.UI.Text flightDistanceText;
 
         [SerializeField]
+        private GameObject compassDisplay;
+
+        [SerializeField]
+        private UnityEngine.UI.Text compassText;
+
+        [SerializeField]
         private GameObject previewImage;
 
 
@@ -36,10 +45,18 @@ namespace UdeS.Promoscience.Controls
             previous.onClick.AddListener(() => asset.OnLeftPressedHandler?.Invoke());
             next.onClick.AddListener(() => asset.OnRightPressedHandler?.Invoke());
 
+            controls.ForwardDirection.OnValueChangedHandler += OnForwardValueCHanged;
+
+
             asset.CurrentTool.OnValueChangedHandler += OnCurrentToolChanged;
 
             asset.ScannedDistance.OnValueChangedHandler += OnScannedDistanceChanged;
 
+        }
+
+        public void Start()
+        {
+            OnScannedDistanceChanged(-1);
         }
 
         // TODO 
@@ -57,6 +74,30 @@ namespace UdeS.Promoscience.Controls
             wallDistanceText.text = scanned.ToString() + " m";
         }
 
+        public void OnForwardValueCHanged(int dir)
+        {
+            switch ((Direction)dir)
+            {
+                case Direction.Up:// North
+                    compassText.text = "Nord";
+                    break;
+
+                case Direction.Down:// North
+                    compassText.text = "Sud";
+
+                    break;
+
+                case Direction.Left:// North
+                    compassText.text = "Est";
+                    break;
+
+                case Direction.Right:// North
+                    compassText.text = "Ouest";
+                    break;
+            }
+        }
+
+
         public void OnCurrentToolChanged(ToolId id)
         {
             switch (id)
@@ -64,18 +105,29 @@ namespace UdeS.Promoscience.Controls
                 case ToolId.FlightDistanceScanner:
                     wallDistanceDisplay.gameObject.SetActive(false);
                     flightDistanceDisplay.gameObject.SetActive(true);
+                    compassDisplay.gameObject.SetActive(false);
                     previewImage.gameObject.SetActive(false);
                     break;
 
                 case ToolId.WallDistanceScanner:
                     wallDistanceDisplay.gameObject.SetActive(true);
                     flightDistanceDisplay.gameObject.SetActive(false);
+                    compassDisplay.gameObject.SetActive(false);
+                    previewImage.gameObject.SetActive(false);
+                    break;
+
+                // TODO use compass object
+                case ToolId.Compass:
+                    wallDistanceDisplay.gameObject.SetActive(false);
+                    flightDistanceDisplay.gameObject.SetActive(false);
+                    compassDisplay.gameObject.SetActive(true);
                     previewImage.gameObject.SetActive(false);
                     break;
 
                 default:
                     wallDistanceDisplay.gameObject.SetActive(false);
                     flightDistanceDisplay.gameObject.SetActive(false);
+                    compassDisplay.gameObject.SetActive(false);
                     previewImage.gameObject.SetActive(true);
                     break;
 
