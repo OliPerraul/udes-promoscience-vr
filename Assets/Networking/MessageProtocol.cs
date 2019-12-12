@@ -26,12 +26,9 @@ namespace UdeS.Promoscience.Network
         RequestForGameInformation = 111,
         ReturnToDivergencePointAnswer = 112,
         ReturnToDivergencePointRequest = 113,
-
         PaintingColor = 114,
-
-
-        ScannedDistance = 124,
-        CompassRot = 125
+        ScannedDistance = 115,
+        CompassRot = 116
     }
 
     // TODO use template type instead??

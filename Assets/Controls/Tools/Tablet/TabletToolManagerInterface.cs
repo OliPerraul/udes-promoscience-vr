@@ -50,9 +50,10 @@ namespace UdeS.Promoscience.Controls
             {
                 flightDistanceText.text = "?";
                 wallDistanceText.text = "?";
+                return;
             }
 
-            flightDistanceText.text = scanned + " m";
+            flightDistanceText.text = scanned.ToString() + " m";
             wallDistanceText.text = scanned.ToString() + " m";
         }
 

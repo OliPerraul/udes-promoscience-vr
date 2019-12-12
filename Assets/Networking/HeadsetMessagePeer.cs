@@ -11,7 +11,7 @@ using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.Network
 {
-    public class HeadsetMessageServer : MonoBehaviour
+    public class HeadsetMessagePeer : MonoBehaviour
     {
         [SerializeField]
         DirectiveManagerAsset directive;

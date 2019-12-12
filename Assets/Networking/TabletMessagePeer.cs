@@ -10,7 +10,7 @@ using System;
 
 namespace UdeS.Promoscience.Network
 {
-    public class HeadsetMessageClient : MonoBehaviour
+    public class TabletMessagePeer : MonoBehaviour
     {
         //[SerializeField]
         //ScriptableFloat algorithmRespect;
