@@ -400,9 +400,9 @@ namespace UdeS.Promoscience.Controls
                     lastPosition = character.RootTransform.position;
                 }
 
-                if (character.RootTransform.rotation != lastRotation)
+                if (directionTransform.rotation != lastRotation)
                 {
-                    controls.PlayerRotation.Value = cameraRig.CameraRotation;
+                    controls.BroadcastPlayerRotation.Value = directionTransform.rotation;//.CameraRotation;
                     lastRotation = cameraRig.CameraRotation;
                 }
             }

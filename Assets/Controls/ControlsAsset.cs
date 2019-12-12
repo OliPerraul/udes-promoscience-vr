@@ -39,7 +39,7 @@ namespace UdeS.Promoscience.Controls
 
         public Cirrus.ObservableValue<Vector3> PlayerPosition = new Cirrus.ObservableValue<Vector3>();
 
-        public Cirrus.ObservableValue<Quaternion> PlayerRotation = new Cirrus.ObservableValue<Quaternion>();
+        public Cirrus.ObservableValue<Quaternion> BroadcastPlayerRotation = new Cirrus.ObservableValue<Quaternion>();
 
         public Cirrus.ObservableValue<Tile> PlayerPaintTile = new Cirrus.ObservableValue<Tile>();
 
