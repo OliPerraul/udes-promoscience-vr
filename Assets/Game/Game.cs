@@ -123,6 +123,21 @@ namespace UdeS.Promoscience
 
         public void Stop()
         {
+
+            foreach (Player player in PlayerList.instance.list)
+            {
+                // Tell clients to pay attention
+                if (player.ServerPlayerGameState == ClientGameState.WaitingReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingGlobalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.PlayingTutorial ||
+                    player.ServerPlayerGameState == ClientGameState.ViewingLocalReplay ||
+                    player.ServerPlayerGameState == ClientGameState.Playing)
+                {
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextLevel);
+                }
+            }
+
             Server.Instance.State.Set(ServerState.ThanksForPlaying);
         }
 
