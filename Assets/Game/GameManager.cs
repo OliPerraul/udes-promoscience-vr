@@ -10,7 +10,7 @@ namespace UdeS.Promoscience
         private GameAsset asset;
 
         [SerializeField]
-        private RoundPreset[] predefinedLevels;
+        private LevelPreset[] predefinedLevels;
 
         [SerializeField]
         private Game currentGame = null;

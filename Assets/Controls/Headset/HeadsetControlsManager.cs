@@ -802,7 +802,7 @@ namespace UdeS.Promoscience.Controls
         {
             Transform.position = new Vector3(0, Transform.position.y, 0);
 
-            if (Client.Instance.State.Value == ClientGameState.WaitingForNextRound)
+            if (Client.Instance.State.Value == ClientGameState.WaitingForNextLevel)
             {
                 controls.ForwardDirection.Value = 0;
             }

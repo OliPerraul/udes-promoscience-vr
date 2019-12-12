@@ -8,9 +8,9 @@ namespace UdeS.Promoscience.Replays
 {
     public class GameReplay : ControlReplay
     {
-        public IList<Round> rounds;
+        public IList<Level> levels;
 
-        public IList<Round> Rounds => rounds;
+        public IList<Level> Levels => levels;
 
         private List<PreviewReplay> previews = new List<PreviewReplay>();
 
@@ -20,14 +20,14 @@ namespace UdeS.Promoscience.Replays
 
         public GameReplay(
             ReplayControlsAsset controls,
-            IList<Round> rounds) : base(controls)
+            IList<Level> levels) : base(controls)
         {
-            this.rounds = rounds;
+            this.levels = levels;
         }
 
         public override void Initialize()
         {
-            for (int i = 0; i < rounds.Count; i++)
+            for (int i = 0; i < levels.Count; i++)
             {
                 CreatePreviewReplay();
             }
@@ -40,9 +40,9 @@ namespace UdeS.Promoscience.Replays
             Server.Instance.State.Set(ServerState.GameReplay);
         }
 
-        public void OnRoundReplayStarted(PreviewReplay preview)
+        public void OnLevelReplayStarted(PreviewReplay preview)
         {
-            ReplayManager.Instance.StartRoundReplay(preview.Round);
+            ReplayManager.Instance.StartLevelReplay(preview.Level);
         }
 
         public override void Clear()
@@ -63,14 +63,14 @@ namespace UdeS.Promoscience.Replays
         public PreviewReplay CreatePreviewReplay()
         {
             previews.Add(new PreviewReplay(
-                rounds[previews.Count.Mod(rounds.Count)],
+                levels[previews.Count.Mod(levels.Count)],
                 this));
 
             previews[previews.Count - 1].Initialize();
 
             previews[previews.Count - 1].OnRemovedHandler += OnPreviewRemoved;
 
-            previews[previews.Count - 1].OnRoundReplayStartedHandler += OnRoundReplayStarted;
+            previews[previews.Count - 1].OnLevelReplayStartedHandler += OnLevelReplayStarted;
 
             previews[previews.Count - 1].OnAlgorithmChangedHandler += () => SetMoveCount();
 

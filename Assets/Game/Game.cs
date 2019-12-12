@@ -26,15 +26,15 @@ namespace UdeS.Promoscience
         public int Id = 0;
 
         [SerializeField]
-        private RoundPreset[] predefinedLevels;
+        private LevelPreset[] predefinedLevels;
 
-        private List<Round> rounds = new List<Round>();
+        private List<Level> rounds = new List<Level>();
 
-        public IList<Round> Rounds => rounds;
+        public IList<Level> Levels => rounds;
 
-        private Round currentRound;
+        private Level currentLevel;
 
-        public Round CurrentRound => currentRound;
+        public Level CurrentLevel => currentLevel;
 
         [SerializeField]
         protected LevelSelectionMode levelSelectionMode;
@@ -45,7 +45,7 @@ namespace UdeS.Promoscience
         [SerializeField]
         private Algorithms.Id baseAlgorithmId;
 
-        public virtual ServerState RoundState => ServerState.Round;
+        public virtual ServerState LevelState => ServerState.Level;
 
         // TODO replace listening to server state with this
         //public Cirrus.Event<Round> OnRoundStartedHandler;
@@ -54,7 +54,7 @@ namespace UdeS.Promoscience
 
         //public List<Course> Courses = new List<Course>();
 
-        private int NextRoundNumber => currentRound == null ? 0 : (currentRound.Number + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value);
+        private int NextLevelNumber => currentLevel == null ? 0 : (currentLevel.Number + 1).Mod(Server.Instance.Settings.NumberOfRounds.Value);
 
         public Game(
             int id)
@@ -66,7 +66,7 @@ namespace UdeS.Promoscience
 
         public Game(
             int id,
-            RoundPreset[] predefinedLevels)
+            LevelPreset[] predefinedLevels)
         {
             this.predefinedLevels = predefinedLevels;
 
@@ -77,7 +77,7 @@ namespace UdeS.Promoscience
 
         public void Start()
         {
-            StartNextRound();            
+            StartNextLevel();            
         }
 
         // Try find course ID initiated by a team member
@@ -103,12 +103,12 @@ namespace UdeS.Promoscience
                 {
                     Id = SQLiteUtilities.GetNextCourseID(),
                     Team = Teams.Resources.Instance.GetScriptableTeamWithId(player.ServerTeamId),
-                    Labyrinth = currentRound.Labyrinth,
+                    Labyrinth = currentLevel.Labyrinth,
                     Algorithm = Algorithms.Resources.Instance.GetAlgorithm(player.serverAlgorithm),
                     //AlgorithmSteps = algorithm.GetAlgorithmSteps(currentRound.Labyrinth) // labyrinth)  
                 };
 
-                currentRound.Courses.Add(course);
+                currentLevel.Courses.Add(course);
                 player.ServerCourseId = course.Id;
 
                 SQLiteUtilities.InsertPlayerCourse(
@@ -116,7 +116,7 @@ namespace UdeS.Promoscience
                     player.serverLabyrinthId,
                     (int)player.serverAlgorithm,
                     player.ServerCourseId,
-                    player.ServerRoundNumber,
+                    player.ServerLevelNumber,
                     Id);
             }
         }
@@ -126,7 +126,7 @@ namespace UdeS.Promoscience
             Server.Instance.State.Set(ServerState.ThanksForPlaying);
         }
 
-        public void StartNextRound()
+        public void StartNextLevel()
         {
             if (levelSelectionMode == LevelSelectionMode.Selected)
             {
@@ -135,38 +135,38 @@ namespace UdeS.Promoscience
             else
             {
 
-                StartNextRound(
-                    predefinedLevels[NextRoundNumber.Mod(predefinedLevels.Length)].Labyrinth,
-                    predefinedLevels[NextRoundNumber.Mod(predefinedLevels.Length)].Algorithm);
+                StartNextLevel(
+                    predefinedLevels[NextLevelNumber.Mod(predefinedLevels.Length)].Labyrinth,
+                    predefinedLevels[NextLevelNumber.Mod(predefinedLevels.Length)].Algorithm);
             }
         }
 
 
-        public void StartNextRound(
+        public void StartNextLevel(
             int labyrinthId,
             int algorithmId)
         {
-            StartNextRound(
+            StartNextLevel(
                 Labyrinths.Resources.Instance.GetLabyrinth(labyrinthId), 
                 (Algorithms.Id)algorithmId);
         }
 
-        public void StartNextRound(
+        public void StartNextLevel(
             ILabyrinth labyrinth,
             Algorithms.Id algorithmId)
         {
-            currentRound = new Round
+            currentLevel = new Level
             {
-                Number = NextRoundNumber,
+                Number = NextLevelNumber,
                 Labyrinth = labyrinth,
                 Algorithm = Algorithms.Resources.Instance.GetAlgorithm(algorithmId)
             };
 
-            rounds.Add(currentRound);
+            rounds.Add(currentLevel);
 
-            SQLiteUtilities.InsertRound(
-                SQLiteUtilities.GetNextRoundID(),
-                currentRound.Number,
+            SQLiteUtilities.InsertLevel(
+                SQLiteUtilities.GetNextLevelID(),
+                currentLevel.Number,
                 Id,
                 labyrinth.Id
                 );
@@ -184,60 +184,60 @@ namespace UdeS.Promoscience
                     case ClientGameState.Playing:
                     case ClientGameState.ViewingGlobalReplay:
                     case ClientGameState.ViewingLocalReplay:
-                    case ClientGameState.WaitingForNextRound:
+                    case ClientGameState.WaitingForNextLevel:
 
                         Debug.Log(player);
 
                         player.serverAlgorithm = baseAlgorithmId;
 
-                        player.serverLabyrinthId = currentRound.Labyrinth.Id;
+                        player.serverLabyrinthId = currentLevel.Labyrinth.Id;
 
                         AssignCourse(player);
 
                         player.TargetSetGame(
                             player.connectionToClient,
-                            currentRound.Labyrinth.Json,
+                            currentLevel.Labyrinth.Json,
                             player.serverAlgorithm,
-                            currentRound.Number);
+                            currentLevel.Number);
 
                         break;
                 }
             }
 
-            Server.Instance.State.Set(RoundState);
+            Server.Instance.State.Set(LevelState);
         }
 
 
 
-        public void JoinGameRound(Player player)
+        public void JoinGameLevel(Player player)
         {
             AssignCourse(player);
 
-            player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm((int)baseAlgorithmId, player.ServerTeamId);
+            player.serverAlgorithm = Algorithms.Utils.GetLevelAlgorithm((int)baseAlgorithmId, player.ServerTeamId);
 
-            player.serverLabyrinthId = currentRound.Labyrinth.Id;
+            player.serverLabyrinthId = currentLevel.Labyrinth.Id;
 
             player.TargetSetGame(
                 player.connectionToClient,
-                currentRound.Labyrinth.Json,
+                currentLevel.Labyrinth.Json,
                 player.serverAlgorithm,
-                currentRound.Number);
+                currentLevel.Number);
         }
 
-        public void JoinGameRoundWithSteps(Player player, int[] steps)
+        public void JoinGameLevelWithSteps(Player player, int[] steps)
         {
             AssignCourse(player);
 
-            player.serverAlgorithm = Algorithms.Utils.GetRoundAlgorithm((int)baseAlgorithmId, player.ServerTeamId);
+            player.serverAlgorithm = Algorithms.Utils.GetLevelAlgorithm((int)baseAlgorithmId, player.ServerTeamId);
 
-            player.serverLabyrinthId = currentRound.Labyrinth.Id;
+            player.serverLabyrinthId = currentLevel.Labyrinth.Id;
 
             player.TargetSetGameWithSteps(
                 player.connectionToClient,
                 steps,
-                currentRound.Labyrinth.Json,
+                currentLevel.Labyrinth.Json,
                 player.serverAlgorithm,
-                currentRound.Number,
+                currentLevel.Number,
                 false); // TODO start with steps tutorial??
         }
 

@@ -234,7 +234,7 @@ namespace UdeS.Promoscience.Network
         void SendRequestForGameInformation()
         {
             RequestForGameInformationMessage msg = new RequestForGameInformationMessage();
-            msg.gameRound = gameRound.Round.Value;
+            msg.gameRound = gameRound.Level.Value;
 
             client.Send(msg.GetMsgType(), msg);
         }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace UdeS.Promoscience
 {
     [System.Serializable]
-    public class RoundPreset
+    public class LevelPreset
     {
         [SerializeField]
         public Algorithms.Id Algorithm;
@@ -14,7 +14,7 @@ namespace UdeS.Promoscience
         public Labyrinths.Resource Labyrinth;
     }
 
-    public class Round
+    public class Level
     {
         public int Number = 0;
 

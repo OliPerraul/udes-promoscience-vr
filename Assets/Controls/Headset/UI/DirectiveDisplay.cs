@@ -72,7 +72,7 @@ namespace UdeS.Promoscience.UI
             switch (state)
             {
                 case ClientGameState.Connecting:
-                case ClientGameState.WaitingForNextRound:
+                case ClientGameState.WaitingForNextLevel:
                 case ClientGameState.Playing:
                 case ClientGameState.PlayingTutorial:
                     if (directiveImage != null)

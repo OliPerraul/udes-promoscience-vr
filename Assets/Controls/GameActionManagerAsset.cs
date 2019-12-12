@@ -72,7 +72,7 @@ namespace UdeS.Promoscience.ScriptableObjects
 
             DateTime actionDateTime = DateTime.Now;
 
-            TimeSpan elapsed = actionDateTime.Subtract(Client.Instance.RoundBeginTime);
+            TimeSpan elapsed = actionDateTime.Subtract(Client.Instance.LevelBeginTime);
 
             value = JsonUtility.ToJson(new ActionValue
             {

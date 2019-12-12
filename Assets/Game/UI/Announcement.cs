@@ -6,6 +6,8 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.UI
 {
+
+    // TODO remove unused
     public class Announcement : MonoBehaviour
     {
         //[SerializeField]

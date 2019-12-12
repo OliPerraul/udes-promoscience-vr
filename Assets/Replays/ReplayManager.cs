@@ -26,7 +26,7 @@ namespace UdeS.Promoscience.Replays
         [SerializeField]
         private AlgorithmSelectionAsset roundAlgorithmSelection;
 
-        public Cirrus.ObservableValue<RoundReplay> RoundReplay = new Cirrus.ObservableValue<RoundReplay>();
+        public Cirrus.ObservableValue<LevelReplay> LevelReplay = new Cirrus.ObservableValue<LevelReplay>();
 
 
         [SerializeField]
@@ -66,7 +66,7 @@ namespace UdeS.Promoscience.Replays
 
             GameReplay.Value = new GameReplay(
                 gameReplayControls,
-                GameManager.Instance.CurrentGame.Rounds);
+                GameManager.Instance.CurrentGame.Levels);
 
             GameReplay.Value.Initialize();
 
@@ -75,13 +75,13 @@ namespace UdeS.Promoscience.Replays
         }
 
 
-        public void StartCurrentRoundReplay()
+        public void StartCurrentLevelReplay()
         {
-            StartRoundReplay(GameManager.Instance.CurrentGame.CurrentRound);   
+            StartLevelReplay(GameManager.Instance.CurrentGame.CurrentLevel);   
         }
 
 
-        public void StartRoundReplay(Round round)
+        public void StartLevelReplay(Level round)
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -99,7 +99,7 @@ namespace UdeS.Promoscience.Replays
                 }
             }
 
-            RoundReplay.Value = new RoundReplay(
+            LevelReplay.Value = new LevelReplay(
                 roundReplayControls,
                 roundAlgorithmSelection,
                 roundTeamToggle,
@@ -107,9 +107,9 @@ namespace UdeS.Promoscience.Replays
                 roundSidebar,
                 round);
 
-            RoundReplay.Value.Initialize();
+            LevelReplay.Value.Initialize();
 
-            RoundReplay.Value.Start();
+            LevelReplay.Value.Start();
         }
 
 
@@ -120,15 +120,15 @@ namespace UdeS.Promoscience.Replays
             {
                 case ServerState.GameReplay:
 
-                    if (RoundReplay.Value != null)
+                    if (LevelReplay.Value != null)
                     {
-                        RoundReplay.Value.Clear();
-                        RoundReplay.Value = null;
+                        LevelReplay.Value.Clear();
+                        LevelReplay.Value = null;
                     }
 
                     break;
 
-                case ServerState.RoundReplay:
+                case ServerState.LevelReplay:
                     if (GameReplay.Value != null)
                     {
                         GameReplay.Value.Clear();
@@ -144,10 +144,10 @@ namespace UdeS.Promoscience.Replays
                         GameReplay.Value = null;
                     }
 
-                    if (RoundReplay.Value != null)
+                    if (LevelReplay.Value != null)
                     {
-                        RoundReplay.Value.Clear();
-                        RoundReplay.Value = null;
+                        LevelReplay.Value.Clear();
+                        LevelReplay.Value = null;
                     }
 
                     break;

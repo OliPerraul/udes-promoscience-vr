@@ -42,7 +42,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             switch (state)
             {
-                case ServerState.RoundReplay:
+                case ServerState.LevelReplay:
                     //ReplayManager.Instance.LabyrinthReplay.CurrentCourse.OnValueChangedHandler += OnCourseSelected;
 
 

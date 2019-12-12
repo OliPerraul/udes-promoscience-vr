@@ -14,9 +14,9 @@ namespace UdeS.Promoscience.Network.UI
         QuickPlay = 1 << 0,
         NewGame = 1 << 1,
         EndGame = 1 << 2,
-        NextRound = 1 << 3,
-        RestartRound = 1 << 4,
-        EndRound = 1 << 5,
+        NextLevel = 1 << 3,
+        RestartLevel = 1 << 4,
+        EndLevel = 1 << 5,
         InstantReplay = 1 << 6,
         AdvancedReplay = 1 << 7,
 
@@ -81,7 +81,7 @@ namespace UdeS.Promoscience.Network.UI
             newGameButton.onClick.AddListener(() => Server.Instance.StartGame());
             instantReplayButton.onClick.AddListener(() => Server.Instance.StartInstantReplay());
             advancedReplayButton.onClick.AddListener(() => Server.Instance.StartAdvancedReplay());
-            nextRoundButton.onClick.AddListener(() => Server.Instance.StartNextRound());
+            nextRoundButton.onClick.AddListener(() => Server.Instance.StartNextLevel());
             endGameButton.onClick.AddListener(() => Server.Instance.StopGame());
             endThanksButton.onClick.AddListener(() => Server.Instance.ReturnToLobby());
             
@@ -107,16 +107,16 @@ namespace UdeS.Promoscience.Network.UI
                         LobbyControlsFlag.EndGame;
                     break;
 
-                case ServerState.Round:
+                case ServerState.Level:
 
                     Flags.Value =
                         LobbyControlsFlag.InstantReplay |
                         LobbyControlsFlag.AdvancedReplay |
-                        LobbyControlsFlag.NextRound |
+                        LobbyControlsFlag.NextLevel |
                         LobbyControlsFlag.EndGame;
 
                     // If first round do not allow advanced replay feature
-                    if (GameManager.Instance.CurrentGame.CurrentRound.Number < 1)
+                    if (GameManager.Instance.CurrentGame.CurrentLevel.Number < 1)
                     {
                         Flags.Value = Flags.Value & ~LobbyControlsFlag.AdvancedReplay;
                     }
@@ -124,9 +124,9 @@ namespace UdeS.Promoscience.Network.UI
                    
                     // If last round only allow to end the game
                     if (Server.Instance.Settings.NumberOfRounds.Value - 1 ==
-                        GameManager.Instance.CurrentGame.CurrentRound.Number)
+                        GameManager.Instance.CurrentGame.CurrentLevel.Number)
                     {
-                        Flags.Value = Flags.Value & ~LobbyControlsFlag.NextRound;
+                        Flags.Value = Flags.Value & ~LobbyControlsFlag.NextLevel;
                     }
 
                     break;
@@ -145,7 +145,7 @@ namespace UdeS.Promoscience.Network.UI
 
             switch (state)
             {
-                case ServerState.Round:
+                case ServerState.Level:
                 case ServerState.Quickplay:
                     body.SetActive(false);
                     bottom.SetActive(true);
@@ -154,7 +154,7 @@ namespace UdeS.Promoscience.Network.UI
 
                 case ServerState.LevelSelect:
                 case ServerState.GameReplay:
-                case ServerState.RoundReplay:
+                case ServerState.LevelReplay:
                     body.SetActive(false);
                     bottom.SetActive(false);
                     end.SetActive(false);
@@ -184,13 +184,13 @@ namespace UdeS.Promoscience.Network.UI
             endGameButton?
                 .gameObject.SetActive((flags & LobbyControlsFlag.EndGame) != 0);
             endRoundButton?
-                .gameObject.SetActive((flags & LobbyControlsFlag.EndRound) != 0);
+                .gameObject.SetActive((flags & LobbyControlsFlag.EndLevel) != 0);
             instantReplayButton?
                 .gameObject.SetActive((flags & LobbyControlsFlag.InstantReplay) != 0);
             newGameButton?
                 .gameObject.SetActive((flags & LobbyControlsFlag.NewGame) != 0);
             nextRoundButton?
-                .gameObject.SetActive((flags & LobbyControlsFlag.NextRound) != 0);
+                .gameObject.SetActive((flags & LobbyControlsFlag.NextLevel) != 0);
             quickPlayButton?
                 .gameObject.SetActive((flags & LobbyControlsFlag.QuickPlay) != 0);
 

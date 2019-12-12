@@ -38,7 +38,7 @@ namespace UdeS.Promoscience
         
         private DateTime roundBeginTime;
 
-        public DateTime RoundBeginTime => roundBeginTime;
+        public DateTime LevelBeginTime => roundBeginTime;
 
 
         public string[] ActionValues;
@@ -104,7 +104,7 @@ namespace UdeS.Promoscience
                 controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
             }
-            else if (State.Value == ClientGameState.WaitingForNextRound)
+            else if (State.Value == ClientGameState.WaitingForNextLevel)
             {
                 controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
@@ -132,7 +132,7 @@ namespace UdeS.Promoscience
                 controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
-                State.Value = ClientGameState.WaitingForNextRound;
+                State.Value = ClientGameState.WaitingForNextLevel;
             }
         }    
     }

@@ -86,7 +86,7 @@ namespace UdeS.Promoscience.Controls
         {
             switch (state)
             {
-                case ClientGameState.WaitingForNextRound:
+                case ClientGameState.WaitingForNextLevel:
                 case ClientGameState.ViewingGlobalReplay:
                 case ClientGameState.ViewingLocalReplay:
                 case ClientGameState.WaitingReplay:

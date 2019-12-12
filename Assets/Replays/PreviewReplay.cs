@@ -10,11 +10,11 @@ namespace UdeS.Promoscience.Replays
     // Preview the replay for a labyrinth via the selection interface (Algorithm only)
     public class PreviewReplay : BaseReplay
     {
-        private Round round;
+        private Level level;
 
-        public Round Round => round;
+        public Level Level => level;
 
-        public int RoundNumber => round.Number;
+        public int LevelNumber => level.Number;
 
         private Labyrinths.LabyrinthObject labyrinthObject;
 
@@ -34,7 +34,7 @@ namespace UdeS.Promoscience.Replays
 
         public Event<PreviewReplay> OnRemovedHandler;
 
-        public Event<PreviewReplay> OnRoundReplayStartedHandler;
+        public Event<PreviewReplay> OnLevelReplayStartedHandler;
 
         protected override IEnumerable<IReplayWorker> Workers => new List<IReplayWorker>{algorithm};
 
@@ -56,10 +56,10 @@ namespace UdeS.Promoscience.Replays
 
         //public
         public PreviewReplay(
-            Round round,
+            Level round,
             GameReplay parentReplay)
         {
-            this.round = round;
+            this.level = round;
 
             this.parentReplay = parentReplay;
 
@@ -73,8 +73,8 @@ namespace UdeS.Promoscience.Replays
             //base.Initialize();
 
             labyrinthObject = Labyrinths.Resources.Instance
-                .GetLabyrinthObject(round.Labyrinth)
-                .Create(round.Labyrinth);
+                .GetLabyrinthObject(level.Labyrinth)
+                .Create(level.Labyrinth);
 
             labyrinthObject.GenerateLabyrinthVisual();
 
@@ -92,7 +92,7 @@ namespace UdeS.Promoscience.Replays
                 Resources.Instance.AlgorithmSequence.Create(
                 this,
                 labyrinthObject,
-                round.Algorithm,
+                level.Algorithm,
                 lposition
                 );
 

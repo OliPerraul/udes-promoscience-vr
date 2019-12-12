@@ -61,9 +61,9 @@ namespace UdeS.Promoscience.Network
 
 
         [SerializeField]
-        int serverRoundNumber = -1;
+        int serverLevelNumber = -1;
 
-        public int ServerRoundNumber;
+        public int ServerLevelNumber;
 
 
         public int ServerCourseId
@@ -369,9 +369,9 @@ namespace UdeS.Promoscience.Network
 
             Client.Instance.Algorithm.Set(Algorithms.Resources.Instance.GetAlgorithm(algo));
 
-            gameManager.IsRoundCompleted.Value = false;
+            gameManager.IsLevelCompleted.Value = false;
 
-            gameManager.Round.Value = round;
+            gameManager.Level.Value = round;
 
             Client.Instance.State.Set(ClientGameState.Playing);
         }
@@ -395,9 +395,9 @@ namespace UdeS.Promoscience.Network
 
             Client.Instance.Algorithm.Set(Algorithms.Resources.Instance.GetAlgorithm(algo));
 
-            gameManager.IsRoundCompleted.Value = false;
+            gameManager.IsLevelCompleted.Value = false;
 
-            gameManager.Round.Value = round;
+            gameManager.Level.Value = round;
 
             Client.Instance.State.Value = isTutorial ? ClientGameState.PlayingTutorial : ClientGameState.Playing;
         }
@@ -405,8 +405,8 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetViewingLocalPlayback(NetworkConnection target, int labyrinthId, int[] steps, string[] stepValues)
         {
-            gameManager.IsRoundCompleted.Value = true;
-            gameManager.Round.Value = labyrinthId;
+            gameManager.IsLevelCompleted.Value = true;
+            gameManager.Level.Value = labyrinthId;
             //recordedSteps.Value = steps;
             Client.Instance.ActionValues = stepValues;
             Client.Instance.ActionSteps = steps;
@@ -416,24 +416,24 @@ namespace UdeS.Promoscience.Network
         [TargetRpc]
         public void TargetSetViewingGlobalPlayback(NetworkConnection target, int labyrinthId, int[] steps, string[] stepValues)
         {
-            gameManager.IsRoundCompleted.Value = true;
-            gameManager.Round.Value = labyrinthId;
+            gameManager.IsLevelCompleted.Value = true;
+            gameManager.Level.Value = labyrinthId;
 
             // No steps required, player watch server screen
             Client.Instance.State.Value = ClientGameState.ViewingGlobalReplay;
         }
 
         [TargetRpc]
-        public void TargetSetRoundCompleted(NetworkConnection target, int labyrinthId, int[] steps)
+        public void TargetSetLevelCompleted(NetworkConnection target, int labyrinthId, int[] steps)
         {
-            gameManager.IsRoundCompleted.Value = true;
-            gameManager.Round.Value = labyrinthId;
+            gameManager.IsLevelCompleted.Value = true;
+            gameManager.Level.Value = labyrinthId;
             controls.RecordedSteps.Value = steps;
-            Client.Instance.State.Value = ClientGameState.WaitingForNextRound;
+            Client.Instance.State.Value = ClientGameState.WaitingForNextLevel;
         }
 
         [TargetRpc]
-        public void TargetSetEndRoundOrTutorial(NetworkConnection target)
+        public void TargetSetEndLevelOrTutorial(NetworkConnection target)
         {
             Client.Instance.Labyrinth.Value.gameObject.Destroy();
             Client.Instance.Labyrinth.Value = null;

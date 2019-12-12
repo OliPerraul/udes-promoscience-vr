@@ -78,7 +78,7 @@ namespace UdeS.Promoscience.Network
                 // Use the steps for playback
                 player.TargetSetViewingLocalPlayback(
                     player.connectionToClient,
-                    GameManager.Instance.CurrentGame.CurrentRound.Labyrinth.Id, 
+                    GameManager.Instance.CurrentGame.CurrentLevel.Labyrinth.Id, 
                     steps.ToArray(), 
                     stepValues.ToArray());
             }
@@ -92,12 +92,12 @@ namespace UdeS.Promoscience.Network
                 }
                 else
                 {
-                    if (Server.Instance.State.Value == ServerState.Round && player.ServerCourseId != -1)
+                    if (Server.Instance.State.Value == ServerState.Level && player.ServerCourseId != -1)
                     {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
                         int courseLabyrinthId = SQLiteUtilities.GetPlayerCourseLabyrinthId(player.ServerCourseId);
 #endif
-                        if (courseLabyrinthId == GameManager.Instance.CurrentGame.CurrentRound.Labyrinth.Id)
+                        if (courseLabyrinthId == GameManager.Instance.CurrentGame.CurrentLevel.Labyrinth.Id)
                         {
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
 
@@ -112,9 +112,9 @@ namespace UdeS.Promoscience.Network
                                     player.connectionToClient, 
                                     "");
 
-                                player.TargetSetRoundCompleted(
+                                player.TargetSetLevelCompleted(
                                     player.connectionToClient,
-                                    GameManager.Instance.CurrentGame.CurrentRound.Labyrinth.Id,
+                                    GameManager.Instance.CurrentGame.CurrentLevel.Labyrinth.Id,
                                     steps.ToArray());
                             }
                             else
@@ -122,7 +122,7 @@ namespace UdeS.Promoscience.Network
                                 if (steps.Count > 0)
                                 {
                                     // Connection drop, used the steps to resume where you were
-                                    GameManager.Instance.CurrentGame.JoinGameRoundWithSteps(player, steps.ToArray());
+                                    GameManager.Instance.CurrentGame.JoinGameLevelWithSteps(player, steps.ToArray());
                                     player.TargetSetPairedIpAdress(player.connectionToClient, "");
                                 }
                                 else
@@ -149,14 +149,14 @@ namespace UdeS.Promoscience.Network
             else if (player.ServerPlayerGameState == ClientGameState.Ready)
             {
                 if (
-                    Server.Instance.State.Value == ServerState.Round ||
+                    Server.Instance.State.Value == ServerState.Level ||
                     Server.Instance.State.Value == ServerState.Quickplay)
                 {
-                    GameManager.Instance.CurrentGame.JoinGameRound(player);
+                    GameManager.Instance.CurrentGame.JoinGameLevel(player);
                 }
                 else if (Server.Instance.State.Value == ServerState.Intermission)
                 {
-                    player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextRound);
+                    player.TargetSetGameState(player.connectionToClient, ClientGameState.WaitingForNextLevel);
                 }
             }
         }

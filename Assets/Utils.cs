@@ -102,12 +102,12 @@ namespace UdeS.Promoscience
         Intermission = 1 << 3,
 
         //Tutorial = 1 << 1,
-        Round = 1 << 2,
+        Level = 1 << 2,
         Quickplay = 1 << 8,             
         LevelSelect = 1 << 5,
 
         GameReplay = 1 << 7,
-        RoundReplay = 1 << 4,       
+        LevelReplay = 1 << 4,       
 
         ThanksForPlaying = 1 << 9,
 
@@ -128,7 +128,7 @@ namespace UdeS.Promoscience
         TutorialLabyrinthReady = 7,
         PlayingTutorial = 8,
         Playing = 9,
-        WaitingForNextRound = 10,
+        WaitingForNextLevel = 10,
         Reconnecting = 11,
         ReconnectingNoAssociatedPair = 12,
         WaitingForPairConnection = 13,
@@ -157,7 +157,7 @@ namespace UdeS.Promoscience
         PaintFloorRed = 7,
         UnpaintFloor = 8,
         ReturnToDivergencePoint = 9,
-        CompletedRound = 10,
+        CompletedLevel = 10,
         ReceivedDirectiveMoveForward = 11,
         ReceivedDirectiveStop = 12,
         ReceivedDirectiveTurnLeft = 13,

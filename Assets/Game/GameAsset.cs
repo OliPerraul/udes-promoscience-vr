@@ -7,9 +7,9 @@ namespace UdeS.Promoscience
 
     public class GameAsset : ScriptableObject
     {
-        public Cirrus.ObservableValue<int> Round = new Cirrus.ObservableValue<int>();
+        public Cirrus.ObservableValue<int> Level = new Cirrus.ObservableValue<int>();
 
-        public Cirrus.ObservableValue<bool> IsRoundCompleted = new Cirrus.ObservableValue<bool>();
+        public Cirrus.ObservableValue<bool> IsLevelCompleted = new Cirrus.ObservableValue<bool>();
 
     }
 }

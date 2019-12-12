@@ -26,7 +26,7 @@ namespace UdeS.Promoscience
             switch (state)
             {
                 case ServerState.Quickplay:
-                case ServerState.Round:
+                case ServerState.Level:
                     camera.gameObject.SetActive(false);
                     break;
 

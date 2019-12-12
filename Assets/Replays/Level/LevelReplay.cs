@@ -7,9 +7,9 @@ using Cirrus;
 
 namespace UdeS.Promoscience.Replays
 {
-    public class RoundReplay : ControlReplay
+    public class LevelReplay : ControlReplay
     {
-        private Round round;
+        private Level round;
 
         public Labyrinths.ILabyrinth Labyrinth => round.Labyrinth;
 
@@ -59,13 +59,13 @@ namespace UdeS.Promoscience.Replays
         }
 
         // TODO remove
-        public RoundReplay(
+        public LevelReplay(
             ReplayControlsAsset controls,
             AlgorithmSelectionAsset algorithmSelection,
             TeamToggleAsset teamToggle,
             UI.SelectedTeamAsset selectedTeam,
             UI.SidebarAsset sidebar,
-            Round round) 
+            Level round) 
             : base(controls)
         {
             this.round = round;
@@ -177,7 +177,7 @@ namespace UdeS.Promoscience.Replays
 
         public override void Start()
         {
-            Server.Instance.State.Set(ServerState.RoundReplay);
+            Server.Instance.State.Set(ServerState.LevelReplay);
         }
 
         bool isGreyboxToggled = false;

@@ -94,7 +94,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public override void OnClick()
         {
-            replay?.OnRoundReplayStartedHandler(replay);
+            replay?.OnLevelReplayStartedHandler(replay);
         }
 
         public void OnRemoved()
@@ -120,13 +120,13 @@ namespace UdeS.Promoscience.Replays.UI
 
             button.replay = replay;
             button.rawImage.texture = replay.LabyrinthObject.Camera.RenderTexture;
-            button.roundNumberText.text = (replay.RoundNumber + 1).ToString();
+            button.roundNumberText.text = (replay.LevelNumber + 1).ToString();
             button.replay.OnMoveIndexChangedHandler += (x) => button.stepText.text = x.ToString();
 
             button.replay.OnAlgorithmChangedHandler += () => button.stepText.text = button.replay.MoveIndex.ToString();
             button.stepText.text = replay.MoveIndex.ToString();
 
-            button.algorithmSelection.Algorithm.Set(replay.Round.Algorithm.Id);
+            button.algorithmSelection.Algorithm.Set(replay.Level.Algorithm.Id);
             
 
             return button;

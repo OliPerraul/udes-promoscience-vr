@@ -47,7 +47,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void AddInitialLabyrinths()
         {
-            for (int i = 0; i < ReplayManager.Instance.GameReplay.Value.Rounds.Count; i++)
+            for (int i = 0; i < ReplayManager.Instance.GameReplay.Value.Levels.Count; i++)
             {
                 if (i % Labyrinths.Utils.SelectMaxHorizontal == 0)
                 {

@@ -53,7 +53,7 @@ namespace UdeS.Promoscience.UI
 
         void OnGameRoundChanged(int round)
         {
-            serverGameRoundText.text = gameRoundString.Value + " : " + GameManager.Instance.CurrentGame.CurrentRound.Number;
+            serverGameRoundText.text = gameRoundString.Value + " : " + GameManager.Instance.CurrentGame.CurrentLevel.Number;
         }
 
         void OnServerStateChanged(ServerState state)
@@ -68,7 +68,7 @@ namespace UdeS.Promoscience.UI
             {
                 s += tutorialString.Value;
             }
-            else if (Server.Instance.State.Value == ServerState.Round)
+            else if (Server.Instance.State.Value == ServerState.Level)
             {
                 s += playingString.Value;
             }

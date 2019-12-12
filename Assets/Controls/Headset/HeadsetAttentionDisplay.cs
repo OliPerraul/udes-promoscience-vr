@@ -23,7 +23,7 @@ namespace UdeS.Promoscience.Controls
             switch (state)
             {
                 case ClientGameState.WaitingReplay:
-                case ClientGameState.WaitingForNextRound:
+                case ClientGameState.WaitingForNextLevel:
                 case ClientGameState.ViewingGlobalReplay:
                     gameObject.SetActive(true);
                     break;

@@ -234,7 +234,7 @@ namespace UdeS.Promoscience.UI
 
                     statusText.text = text;
                 }
-                else if (playerInformation.PlayerGameState == ClientGameState.WaitingForNextRound)
+                else if (playerInformation.PlayerGameState == ClientGameState.WaitingForNextLevel)
                 {
                     statusText.text = waitingForNextRoundString.Value;
                 }

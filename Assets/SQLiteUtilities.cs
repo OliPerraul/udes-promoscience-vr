@@ -1147,7 +1147,7 @@ namespace UdeS.Promoscience
              */
 
         // Insert new round
-        public static void InsertRound(
+        public static void InsertLevel(
             int id,
             int number,
             int gameId,
@@ -1544,7 +1544,7 @@ namespace UdeS.Promoscience
 
                     cmd.CommandText = "SELECT Count(*) FROM " + EVENT
                         + " WHERE " + EVENT_COURSE_ID + "=" + courseId
-                        + " AND " + EVENT_TYPE + "=" + (int)GameAction.CompletedRound;
+                        + " AND " + EVENT_TYPE + "=" + (int)GameAction.CompletedLevel;
                     cmd.ExecuteNonQuery();
 
                     using (SqliteDataReader reader = cmd.ExecuteReader())
@@ -1718,7 +1718,7 @@ namespace UdeS.Promoscience
             return courseId;
         }
 
-        public static int GetNextRoundID()
+        public static int GetNextLevelID()
         {
             int roundId = 0;
 

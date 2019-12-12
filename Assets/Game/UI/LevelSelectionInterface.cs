@@ -43,7 +43,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
             if (Server.Instance.State.Value != ServerState.LevelSelect)
                 return;
 
-            GameManager.Instance.CurrentGame.StartNextRound(
+            GameManager.Instance.CurrentGame.StartNextLevel(
                 Random.Range(1, Utils.NumLabyrinth + 1), 
                 (int)algorithmSelect.AlgorithmId);
         }
@@ -52,7 +52,7 @@ namespace UdeS.Promoscience.Labyrinths.UI
         {
             Debug.Log(algorithmSelect.AlgorithmId);
 
-            GameManager.Instance.CurrentGame.StartNextRound(
+            GameManager.Instance.CurrentGame.StartNextLevel(
                 button.Labyrinth.Data.Id,
                 (int)algorithmSelect.AlgorithmId);
         }

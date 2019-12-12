@@ -110,7 +110,7 @@ namespace UdeS.Promoscience
 
             switch (state)
             {
-                case ServerState.RoundReplay:
+                case ServerState.LevelReplay:
                     break;
 
                 default:
@@ -138,7 +138,7 @@ namespace UdeS.Promoscience
 
         public void StartInstantReplay()
         {
-            Replays.ReplayManager.Instance.StartCurrentRoundReplay();
+            Replays.ReplayManager.Instance.StartCurrentLevelReplay();
         }
 
         public void StartAdvancedReplay()
@@ -155,9 +155,9 @@ namespace UdeS.Promoscience
             GameManager.Instance.CurrentGame.AssignCourse(player);
         }
 
-        public void StartNextRound()
+        public void StartNextLevel()
         {
-            GameManager.Instance.CurrentGame.StartNextRound();
+            GameManager.Instance.CurrentGame.StartNextLevel();
         }
 
 
@@ -165,13 +165,13 @@ namespace UdeS.Promoscience
         public void ReturnToGame()
         {
             if (GameManager.Instance.CurrentGame == null || 
-                GameManager.Instance.CurrentGame.CurrentRound == null)
+                GameManager.Instance.CurrentGame.CurrentLevel == null)
             {
                 ReturnToLobby();
             }
             else
             {
-                Instance.State.Value = GameManager.Instance.CurrentGame.RoundState;
+                Instance.State.Value = GameManager.Instance.CurrentGame.LevelState;
             }
         }
 

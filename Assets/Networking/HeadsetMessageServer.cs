@@ -113,8 +113,8 @@ namespace UdeS.Promoscience.Network
             headsetTools.CompassRotation.OnValueChangedHandler += SendCompassRotation;
 
 
-            gameManager.IsRoundCompleted.OnValueChangedHandler += OnRoundCompleted;
-            gameManager.Round.OnValueChangedHandler += OnRoundChanged;
+            gameManager.IsLevelCompleted.OnValueChangedHandler += OnRoundCompleted;
+            gameManager.Level.OnValueChangedHandler += OnRoundChanged;
 
 
             if (playerInformation.IsInitialize)
@@ -186,11 +186,11 @@ namespace UdeS.Promoscience.Network
 
             if (Client.Instance.State.Value == ClientGameState.Playing || 
                 Client.Instance.State.Value == ClientGameState.PlayingTutorial || 
-                Client.Instance.State.Value == ClientGameState.WaitingForNextRound)
+                Client.Instance.State.Value == ClientGameState.WaitingForNextLevel)
             {
-                if (gameRoundRequest == gameManager.Round.Value)
+                if (gameRoundRequest == gameManager.Level.Value)
                 {
-                    if (gameManager.IsRoundCompleted.Value)
+                    if (gameManager.IsLevelCompleted.Value)
                     {
                         SendEndReached();
                     }
@@ -219,11 +219,11 @@ namespace UdeS.Promoscience.Network
         {
             if (Client.Instance.State.Value == ClientGameState.Playing || 
                 Client.Instance.State.Value == ClientGameState.PlayingTutorial || 
-                Client.Instance.State.Value == ClientGameState.WaitingForNextRound)
+                Client.Instance.State.Value == ClientGameState.WaitingForNextLevel)
             {
-                if (gameRoundRequest == gameManager.Round.Value)
+                if (gameRoundRequest == gameManager.Level.Value)
                 {
-                    if (gameManager.IsRoundCompleted.Value)
+                    if (gameManager.IsLevelCompleted.Value)
                     {
                         SendEndReached();
                     }

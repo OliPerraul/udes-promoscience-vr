@@ -14,7 +14,7 @@ namespace UdeS.Promoscience
         private LocalizeInlineString quickPlayString = new LocalizeInlineString("Quickplay", "Partie rapide");
 
         [SerializeField]
-        private LocalizeInlineString roundString = new LocalizeInlineString("Round ", "Niveau ");
+        private LocalizeInlineString roundString = new LocalizeInlineString("Level ", "Niveau ");
 
         private Labyrinths.LabyrinthObject labyrinth;
 
@@ -35,7 +35,7 @@ namespace UdeS.Promoscience
             switch (state)
             {
                 case ServerState.Quickplay:
-                case ServerState.Round:
+                case ServerState.Level:
 
                     if (labyrinth != null)
                     {
@@ -44,8 +44,8 @@ namespace UdeS.Promoscience
                     }
 
                     labyrinth = Labyrinths.Resources.Instance
-                        .GetLabyrinthObject(GameManager.Instance.CurrentGame.CurrentRound.Labyrinth)
-                        .Create(GameManager.Instance.CurrentGame.CurrentRound.Labyrinth);
+                        .GetLabyrinthObject(GameManager.Instance.CurrentGame.CurrentLevel.Labyrinth)
+                        .Create(GameManager.Instance.CurrentGame.CurrentLevel.Labyrinth);
 
                     labyrinth.GenerateLabyrinthVisual();
 
@@ -56,9 +56,9 @@ namespace UdeS.Promoscience
                     roundText.gameObject.SetActive(true);
 
                     roundText.text =
-                        GameManager.Instance.CurrentGame.RoundState == ServerState.Quickplay ?
+                        GameManager.Instance.CurrentGame.LevelState == ServerState.Quickplay ?
                             quickPlayString.Value :
-                            roundString.Value + (GameManager.Instance.CurrentGame.CurrentRound.Number + 1).ToString();
+                            roundString.Value + (GameManager.Instance.CurrentGame.CurrentLevel.Number + 1).ToString();
 
                     break;
 

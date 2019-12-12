@@ -24,7 +24,7 @@ namespace UdeS.Promoscience.Algorithms
 
         public static Id Random => (Id)UnityEngine.Random.Range((int)Id.RightHand, (int)Id.Standard+1);
 
-        public static Id GetRoundAlgorithm(int round, int teamId=0)
+        public static Id GetLevelAlgorithm(int round, int teamId=0)
         {
             return (Id)(round + teamId).Mod(Algorithm.NumAlgorithms);
         }

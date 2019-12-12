@@ -31,7 +31,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             switch (state)
             {
-                case ServerState.RoundReplay:
+                case ServerState.LevelReplay:
                     display.SetActive(true);
                     //viewRawImage.texture = Server.Instance.CurrentLabyrinth.Camera.RenderTexture;
                     break;

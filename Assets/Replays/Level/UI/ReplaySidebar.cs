@@ -29,7 +29,7 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private GameObject content;
 
-        private RoundReplay replay;
+        private LevelReplay replay;
 
 
         public virtual void Awake()
@@ -75,7 +75,7 @@ namespace UdeS.Promoscience.Replays.UI
         {
             switch (state)
             {
-                case ServerState.RoundReplay:
+                case ServerState.LevelReplay:
                     Enabled = true;
                     break;
 
@@ -96,7 +96,7 @@ namespace UdeS.Promoscience.Replays.UI
 
             set
             {
-                if (Server.Instance.State.Value != ServerState.RoundReplay)
+                if (Server.Instance.State.Value != ServerState.LevelReplay)
                     return;
 
                 _enabled = value;

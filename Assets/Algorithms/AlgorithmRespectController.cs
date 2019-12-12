@@ -78,7 +78,7 @@ namespace UdeS.Promoscience.Algorithms
 
                     break;
 
-                case ClientGameState.WaitingForNextRound:
+                case ClientGameState.WaitingForNextLevel:
                     isAlgorithmRespectActive = false; isAlgorithmRespectActive = false;
                     break;
             }
@@ -166,11 +166,11 @@ namespace UdeS.Promoscience.Algorithms
             {
                 if (labyrinthPosition == Client.Instance.Labyrinth.Value.GetLabyrithEndPosition() && !(algorithmRespect.Respect < 1.0f))
                 {
-                    gameAction.SetAction(GameAction.CompletedRound);
+                    gameAction.SetAction(GameAction.CompletedLevel);
 
                     if (Client.Instance.State.Value == ClientGameState.Playing)
                     {
-                        gameManager.IsRoundCompleted.Value = true;
+                        gameManager.IsLevelCompleted.Value = true;
                     }
 
                     controls.OnPlayerReachedTheEndHandler?.Invoke();
