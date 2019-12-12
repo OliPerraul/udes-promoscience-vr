@@ -35,6 +35,8 @@ namespace UdeS.Promoscience.Replays
 
         List<Coroutine> started = new List<Coroutine>();
 
+        public Cirrus.Event OnAlgorithmChangedHandler;
+
         // TODO remove
         private bool isDirtyToggled = false;
 
@@ -78,7 +80,11 @@ namespace UdeS.Promoscience.Replays
 
             this.sidebar = sidebar;
 
+            algorithmSelection.Algorithm.OnValueChangedHandler += OnAlgorithmChanged;
+
             teamToggle.OnCourseSelectedHandler += OnCourseSelected;
+
+            teamToggle.OnCourseToggledHandler += OnCourseToggled;
 
             sidebar.IsToggleAlgorithm.OnValueChangedHandler += OnAlgorithmToggled;
 
@@ -87,6 +93,7 @@ namespace UdeS.Promoscience.Replays
 
         public override void Clear()
         {
+            algorithmSelection.Algorithm.OnValueChangedHandler -= OnAlgorithmChanged;
 
             teamToggle.OnCourseSelectedHandler -= OnCourseSelected;
 
@@ -103,6 +110,8 @@ namespace UdeS.Promoscience.Replays
 
             if (algorithmSequence != null)
             {
+                algorithmSequence.OnMoveIndexChangedHandler -= algorithmSelection.OnAlgorithmMoveIndexChanged;
+
                 algorithmSequence.gameObject.Destroy();
 
                 algorithmSequence = null;
@@ -137,6 +146,14 @@ namespace UdeS.Promoscience.Replays
             controls.ReplayMoveCount.Value = Mathf.Max(algMvCnt, teamMvCnt);
         }
 
+        public void OnAlgorithmChanged(Algorithms.Id algorithm)
+        {
+            MoveIndex = MoveIndex < MoveCount ? MoveIndex : MoveCount - 1;
+            algorithmSequence.Algorithm = algorithm;
+            OnAlgorithmChangedHandler?.Invoke();
+        }
+
+
         public override void Initialize()
         {
             base.Initialize();
@@ -167,13 +184,16 @@ namespace UdeS.Promoscience.Replays
                 lposition
                 );
 
+            algorithmSequence.OnMoveIndexChangedHandler += algorithmSelection.OnAlgorithmMoveIndexChanged;
+
+            //algorithmSelection.Algorithm.OnValueChangedHandler += (x) => algorithmSequence.Algorithm = x;
+
             foreach (Course course in level.Courses)
             {
                 AddCourse(course);
             }
 
         }
-
 
         public override void Start()
         {

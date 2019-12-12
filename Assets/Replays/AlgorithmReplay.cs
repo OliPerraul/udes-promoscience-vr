@@ -23,6 +23,21 @@ namespace UdeS.Promoscience.Replays
 
         public Cirrus.Event OnChangedHandler;
 
+        public Cirrus.Event<int> OnMoveIndexChangedHandler
+        {
+            get
+            {
+                return execution.OnMoveIndexChangedHandler;
+            }
+
+            set
+            {
+                execution.OnMoveIndexChangedHandler = value;
+            }
+
+        }
+
+
         public Algorithms.Id Algorithm {
             set
             {
