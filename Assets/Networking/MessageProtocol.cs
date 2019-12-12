@@ -28,10 +28,28 @@ namespace UdeS.Promoscience.Network
         ReturnToDivergencePointRequest = 113,
         PaintingColor = 114,
         ScannedDistance = 115,
-        CompassRot = 116
+        CompassRot = 116,
+            ForwardDirec = 117
     }
 
     // TODO use template type instead??
+
+    public class ForwardDirecMessage : MessageBase
+    {
+        static CustomMsgType type = CustomMsgType.ForwardDirec;
+
+        public static short GetCustomMsgType()
+        {
+            return (short)type;
+        }
+
+        public short GetMsgType()
+        {
+            return (short)type;
+        }
+
+        public int dir = 1;//.identity;/* = 0f;*/
+    }
 
     public class CompassRotationMessage : MessageBase
     {

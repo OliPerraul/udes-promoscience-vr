@@ -79,6 +79,8 @@ namespace UdeS.Promoscience.Network
                 client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
                 client.RegisterHandler(PlayerTilesToPaintMessage.GetCustomMsgType(), OnPlayerTilesToPaint);
 
+                client.RegisterHandler(ForwardDirecMessage.GetCustomMsgType(), OnForwardDirReceive);
+
 
                 client.RegisterHandler(ScannedDistanceMessage.GetCustomMsgType(), OnScannedDistance);
                 client.RegisterHandler(CompassRotationMessage.GetCustomMsgType(), OnCompassRotation);
@@ -92,6 +94,13 @@ namespace UdeS.Promoscience.Network
                 Client.Instance.State.Value = ClientGameState.Ready;
             }
         }
+
+        private void OnForwardDirReceive(NetworkMessage netMsg)
+        {
+            ForwardDirecMessage msg = netMsg.ReadMessage<ForwardDirecMessage>();
+            controls.ForwardDirection.Value = msg.dir;
+        }
+
 
         private void OnScannedDistance(NetworkMessage netMsg)
         {

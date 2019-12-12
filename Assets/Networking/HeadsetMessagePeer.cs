@@ -108,6 +108,8 @@ namespace UdeS.Promoscience.Network
             controls.PaintingColor.OnValueChangedHandler += SendPaintingColor;
 
 
+            controls.ForwardDirection.OnValueChangedHandler += SendForwardDirection;
+
             // For both type of scanner
             headsetTools.ScannedDistance.OnValueChangedHandler += SendToolScannedDistance;
             headsetTools.CompassRotation.OnValueChangedHandler += SendCompassRotation;
@@ -325,12 +327,22 @@ namespace UdeS.Promoscience.Network
         }
 
 
+        // TODO remove unused
                 // Tools
         // For both scanners
         public void SendCompassRotation(Quaternion rotation)
         {
             CompassRotationMessage msg = new CompassRotationMessage();
             msg.rot = rotation; // Client.Instance.Labyrinth.Value.GetTilesToPaint();
+
+            clientConnection.Send(msg.GetMsgType(), msg);
+        }
+
+
+        public void SendForwardDirection(int dir)
+        {
+            ForwardDirecMessage msg = new ForwardDirecMessage();
+            msg.dir = dir; // Client.Instance.Labyrinth.Value.GetTilesToPaint();
 
             clientConnection.Send(msg.GetMsgType(), msg);
         }

@@ -23,38 +23,55 @@ namespace UdeS.Promoscience.UI
         [SerializeField]
         Transform indicator;
 
-        //int direction = 0;
+        int direction = 0;
 
-        //private Quaternion startRotation;
+        private Quaternion startRotation;
 
-        //readonly int[] xByDirection = { 0, 1, 0, -1 };
-        //readonly int[] yByDirection = { -1, 0, 1, 0 };
+        readonly int[] xByDirection = { 0, 1, 0, -1 };
+        readonly int[] yByDirection = { -1, 0, 1, 0 };
 
         void Awake()
         {
             //Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;
 
-            tabletControls.CompassRotation.OnValueChangedHandler += OnCompassRotation;
+            //tabletControls.CompassRotation.OnValueChangedHandler += OnCompassRotation;
 
             //tabletControls.TabletCameraMode.OnValueChangedHandler += OnCompassENabled;
 
-            //startRotation = indicator.transform.rotation;
+            startRotation = indicator.transform.rotation;
 
             //OnClientStateChanged(Client.Instance.State.Value);
         }
 
 
-        void OnCompassRotation(Quaternion rot)
+        void Update()
         {
-            indicator.rotation = rot;
+            indicator.rotation = startRotation;
 
-            //if (indicator.gameObject.activeSelf)
-            //{
-            //    var rotation = Quaternion.LookRotation(indicator.position + new Vector3(100 * Labyrinths.Utils.TileSize * xByDirection[direction], 0, 100 * Labyrinths.Utils.TileSize * -yByDirection[direction]));
-            //    indicator.localRotation = rotation;
+            if (indicator.gameObject.activeSelf)
+            {
+                var rotation = Quaternion.LookRotation(
+                    indicator.position +
+                    new Vector3(100 * Labyrinths.Utils.TileSize * xByDirection[direction], 0, 100 * Labyrinths.Utils.TileSize * -yByDirection[direction]));
 
-            //}
+                indicator.rotation = rotation;
+
+                //headsetTools.CompassRotation.Value = rotation;
+
+            }
         }
+
+        //void OnCompassRotation(Quaternion rot)
+        //{
+        //    indicator.rotation = rot;
+
+        //    if (indicator.gameObject.activeSelf)
+        //    {
+        //        var rotation = Quaternion.LookRotation(indicator.position + new Vector3(100 * Labyrinths.Utils.TileSize * xByDirection[direction], 0, 100 * Labyrinths.Utils.TileSize * -yByDirection[direction]));
+        //        indicator.localRotation = rotation;
+
+        //    }
+        //}
 
     }
 }

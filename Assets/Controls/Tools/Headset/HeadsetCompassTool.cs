@@ -68,8 +68,12 @@ namespace UdeS.Promoscience.UI
 
             if (indicator.gameObject.activeSelf)
             {
-                var rotation = Quaternion.LookRotation(indicator.position + new Vector3(100 * Labyrinths.Utils.TileSize * xByDirection[direction], 0, 100 * Labyrinths.Utils.TileSize * -yByDirection[direction]));
+                var rotation = Quaternion.LookRotation(
+                    indicator.position + 
+                    new Vector3(100 * Labyrinths.Utils.TileSize * xByDirection[direction], 0, 100 * Labyrinths.Utils.TileSize * -yByDirection[direction]));
+
                 indicator.rotation = rotation;
+
                 headsetTools.CompassRotation.Value = rotation;
 
             }
