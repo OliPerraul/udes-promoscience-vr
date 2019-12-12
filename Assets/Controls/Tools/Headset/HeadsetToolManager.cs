@@ -91,13 +91,13 @@ namespace UdeS.Promoscience.Controls
                 currentToolIndex++;
                 currentToolIndex = currentToolIndex.Mod(ids.Length);
             }
-            else if(inputScheme.IsDownPressed)
+            else if (inputScheme.IsDownPressed)
             {
                 currentToolIndex--;
                 currentToolIndex = currentToolIndex.Mod(ids.Length);
             }
 
-            asset.CurrentTool.Value = ids[currentToolIndex]; 
+            asset.CurrentTool.Value = ids[currentToolIndex];
         }
 
         public void OnPreferenceChanged(bool preference)
@@ -105,7 +105,7 @@ namespace UdeS.Promoscience.Controls
             currentTools = controls.IsThirdPersonEnabled.Value ?
                 Client.Instance.Settings.IsLeftHanded.Value ?
                     leftHandedThirdPerson :
-                    rightHandedThirdPerson 
+                    rightHandedThirdPerson
                     :
                 Client.Instance.Settings.IsLeftHanded.Value ?
                         leftHandedFirstPerson :
@@ -131,7 +131,7 @@ namespace UdeS.Promoscience.Controls
 
             if (CurrentTools.TryGetValue(id, out HeadsetTool tool))
             {
-                if(currentTool != null) currentTool.gameObject.SetActive(false);
+                if (currentTool != null) currentTool.gameObject.SetActive(false);
                 currentTool = tool;
                 currentTool.gameObject.SetActive(true);
             }

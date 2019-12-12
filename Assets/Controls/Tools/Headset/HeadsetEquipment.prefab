@@ -313,11 +313,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4529007501091762060}
     m_Modifications:
-    - target: {fileID: 5333139496924793221, guid: 9c95c3c30f9db314ea8172a9609ef07a,
-        type: 3}
-      propertyPath: m_Name
-      value: FlightDistanceScannerTool.Headset
-      objectReference: {fileID: 0}
     - target: {fileID: 1336878668516519680, guid: 9c95c3c30f9db314ea8172a9609ef07a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -388,6 +383,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.0567948
       objectReference: {fileID: 0}
+    - target: {fileID: 5333139496924793221, guid: 9c95c3c30f9db314ea8172a9609ef07a,
+        type: 3}
+      propertyPath: m_Name
+      value: FlightDistanceScannerTool.Headset
+      objectReference: {fileID: 0}
     - target: {fileID: 4737322037317285342, guid: 9c95c3c30f9db314ea8172a9609ef07a,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -428,11 +428,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4529007501091762060}
     m_Modifications:
-    - target: {fileID: 2207423656712775288, guid: 257da3acd3da71a408c0e7a0926ddf99,
-        type: 3}
-      propertyPath: m_Name
-      value: CompassTool.Headset
-      objectReference: {fileID: 0}
     - target: {fileID: 5056638668549062909, guid: 257da3acd3da71a408c0e7a0926ddf99,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -503,6 +498,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.7225053
       objectReference: {fileID: 0}
+    - target: {fileID: 2207423656712775288, guid: 257da3acd3da71a408c0e7a0926ddf99,
+        type: 3}
+      propertyPath: m_Name
+      value: CompassTool.Headset
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 257da3acd3da71a408c0e7a0926ddf99, type: 3}
 --- !u!4 &361077291045949868 stripped
@@ -518,11 +518,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4529007501091762060}
     m_Modifications:
-    - target: {fileID: 6225122147082765026, guid: 8d803ee87ed7e7342952f3fcb67df2c9,
-        type: 3}
-      propertyPath: m_Name
-      value: WallDistanceScannerTool.Headset
-      objectReference: {fileID: 0}
     - target: {fileID: 1074813922852119655, guid: 8d803ee87ed7e7342952f3fcb67df2c9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -592,6 +587,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.0567948
+      objectReference: {fileID: 0}
+    - target: {fileID: 6225122147082765026, guid: 8d803ee87ed7e7342952f3fcb67df2c9,
+        type: 3}
+      propertyPath: m_Name
+      value: WallDistanceScannerTool.Headset
       objectReference: {fileID: 0}
     - target: {fileID: 6762529545043771065, guid: 8d803ee87ed7e7342952f3fcb67df2c9,
         type: 3}

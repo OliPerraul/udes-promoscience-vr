@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Controls
 {
-    public abstract  class ScannerResource : ScriptableObject
+    public abstract class ScannerResource : ScriptableObject
     {
         public abstract ToolId ToolId { get; }
 
@@ -38,7 +38,7 @@ namespace UdeS.Promoscience.Controls
 
         [SerializeField]
         private TMPro.TextMeshProUGUI distanceText;
-        
+
         private DistanceScannerModule module;
 
 

@@ -7,11 +7,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 7427682787668383323, guid: d5b19736c69c4904ebf3be9a46a35d50,
-        type: 3}
-      propertyPath: m_Name
-      value: BucketTool.Headset
-      objectReference: {fileID: 0}
     - target: {fileID: 4583252825642266846, guid: d5b19736c69c4904ebf3be9a46a35d50,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -66,6 +61,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7427682787668383323, guid: d5b19736c69c4904ebf3be9a46a35d50,
+        type: 3}
+      propertyPath: m_Name
+      value: BucketTool.Headset
       objectReference: {fileID: 0}
     - target: {fileID: 6216309531407996126, guid: d5b19736c69c4904ebf3be9a46a35d50,
         type: 3}
