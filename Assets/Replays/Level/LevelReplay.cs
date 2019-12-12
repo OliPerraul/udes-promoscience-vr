@@ -141,8 +141,11 @@ namespace UdeS.Promoscience.Replays
 
         public void SetMoveCount()
         {
-            int algMvCnt = algorithmSequence.MoveCount;
-            int teamMvCnt = activeSequences.Max(x => x.MoveCount);
+            
+            int algMvCnt = (algorithmSequence != null) ?  algorithmSequence.MoveCount : 0;
+
+
+            int teamMvCnt = activeSequences.Count == 0 ? 0 : activeSequences.Max(x => x.MoveCount);
             controls.ReplayMoveCount.Value = Mathf.Max(algMvCnt, teamMvCnt);
         }
 
@@ -151,6 +154,17 @@ namespace UdeS.Promoscience.Replays
             MoveIndex = MoveIndex < MoveCount ? MoveIndex : MoveCount - 1;
             algorithmSequence.Algorithm = algorithm;
             OnAlgorithmChangedHandler?.Invoke();
+
+            // TODO fix this is not clean
+            // We should lose the callback ref everytinme
+            algorithmSequence.OnMoveIndexChangedHandler += algorithmSelection.OnAlgorithmMoveIndexChanged;
+            algorithmSequence.OnMoveIndexChangedHandler?.Invoke(algorithmSequence.MoveIndex);
+
+            //if (algorithmSequence.OnChangedHandler != null)
+            //    algorithmSequence.OnChangedHandler -= OnAlgorithmChanged;
+
+            //algorithmSequence.OnChangedHandler += OnAlgorithmChanged;
+            //algorithmSequence.OnMoveIndexChangedHandler?.Invoke(algorithmSequence.MoveIndex);
         }
 
 
@@ -158,6 +172,7 @@ namespace UdeS.Promoscience.Replays
         {
             base.Initialize();
 
+            // TODO playback
             controls.PlaybackSpeed = 2f;
 
             labyrinthObject = Labyrinths.Resources.Instance
@@ -186,6 +201,10 @@ namespace UdeS.Promoscience.Replays
 
             algorithmSequence.OnMoveIndexChangedHandler += algorithmSelection.OnAlgorithmMoveIndexChanged;
 
+            //algorithmSequence.OnChangedHandler += OnAlgorithmChanged;
+
+            SetMoveCount();
+
             //algorithmSelection.Algorithm.OnValueChangedHandler += (x) => algorithmSequence.Algorithm = x;
 
             foreach (Course course in level.Courses)
@@ -194,6 +213,15 @@ namespace UdeS.Promoscience.Replays
             }
 
         }
+
+        //public void OnAlgorithmChanged()
+        //{
+        //    //if(algorithmSequence.OnChangedHandler != null)
+        //    //    algorithmSequence.OnChangedHandler -= OnAlgorithmChanged;
+
+        //    //algorithmSequence.OnChangedHandler += OnAlgorithmChanged;
+        //    //algorithmSequence.OnMoveIndexChangedHandler?.Invoke(algorithmSequence.MoveIndex);
+        //}
 
         public override void Start()
         {

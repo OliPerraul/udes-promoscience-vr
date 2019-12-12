@@ -15,6 +15,8 @@ namespace UdeS.Promoscience.Replays
         [SerializeField]
         private Algorithms.AlgorithmExecution execution;
 
+        public Algorithms.AlgorithmExecution Execution => execution;
+
         private BaseReplay parent;
 
         protected override BaseReplay Parent => parent;
