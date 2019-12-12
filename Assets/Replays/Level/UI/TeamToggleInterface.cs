@@ -72,6 +72,22 @@ namespace UdeS.Promoscience.Replays.UI
                 item.Value.OnDestroy();
             }
 
+            // FIX:
+            // Clear remaining entries...
+            // TODO remove ?? 
+            // We should not clear up like this
+            foreach (Transform child in toggleContentParent.transform)
+            {
+                if (child == null)
+                    continue;
+
+                if (child.gameObject == null)
+                    continue;
+
+                child.gameObject.Destroy();
+            }
+
+
             items.Clear();
         }
 
