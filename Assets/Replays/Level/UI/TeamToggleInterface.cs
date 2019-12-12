@@ -34,9 +34,12 @@ namespace UdeS.Promoscience.Replays.UI
             if (items.ContainsKey(course.Id))
                 return;
 
-            TeamToggleItem item = itemTemplate.Create(
+            /// TODO remove team toggle disabled template gobj
+            TeamToggleItem item = Resources.Instance.teamToggleItem.Create(
                 toggleContentParent,
                 course);
+
+            item.gameObject.SetActive(true);
 
             items.Add(course.Id, item);
         }

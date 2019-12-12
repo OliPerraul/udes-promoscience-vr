@@ -14,5 +14,8 @@ namespace UdeS.Promoscience.Replays
 
         [SerializeField]
         public AlgorithmReplay AlgorithmSequence;
+
+        [SerializeField]
+        public UI.TeamToggleItem teamToggleItem;
     }
 }
