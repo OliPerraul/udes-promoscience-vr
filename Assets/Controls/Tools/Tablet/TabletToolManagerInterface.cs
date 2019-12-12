@@ -36,6 +36,15 @@ namespace UdeS.Promoscience.Controls
         [SerializeField]
         private UnityEngine.UI.Text compassText;
 
+
+        [SerializeField]
+        private UnityEngine.UI.Image bucketImage;
+
+        [SerializeField]
+        private UnityEngine.UI.Text bucketText;
+
+
+        // TODO remove
         [SerializeField]
         private GameObject previewImage;
 
@@ -47,6 +56,8 @@ namespace UdeS.Promoscience.Controls
 
             controls.ForwardDirection.OnValueChangedHandler += OnForwardValueCHanged;
 
+            controls.PaintingColor.OnValueChangedHandler += OnColorValueCHanged;
+
 
             asset.CurrentTool.OnValueChangedHandler += OnCurrentToolChanged;
 
@@ -57,6 +68,9 @@ namespace UdeS.Promoscience.Controls
         public void Start()
         {
             OnScannedDistanceChanged(-1);
+
+            // TODO remove real world tool
+            previewImage.gameObject.SetActive(false);
         }
 
         // TODO 
@@ -74,6 +88,8 @@ namespace UdeS.Promoscience.Controls
             wallDistanceText.text = scanned.ToString() + " m";
         }
 
+
+
         public void OnForwardValueCHanged(int dir)
         {
             switch ((Direction)dir)
@@ -84,7 +100,6 @@ namespace UdeS.Promoscience.Controls
 
                 case Direction.Down:// North
                     compassText.text = "Sud";
-
                     break;
 
                 case Direction.Left:// North
@@ -98,6 +113,33 @@ namespace UdeS.Promoscience.Controls
         }
 
 
+        public void OnColorValueCHanged(TileColor dir)
+        {
+            switch (dir)
+            {
+                case TileColor.Red:// North
+                    bucketText.text = "Rouge";
+                    bucketImage.color = UnityEngine.Color.red;
+                    break;
+
+                case TileColor.Yellow:// North
+                    bucketText.text = "Jaune";
+                    bucketImage.color = UnityEngine.Color.yellow;
+                    break;
+
+                case TileColor.NoColor:// North
+                case TileColor.Grey:// North
+                    compassText.text = "Gris";
+                    bucketImage.color = UnityEngine.Color.gray;
+                    break;
+
+                //case Direction.Right:// North
+                //    compassText.text = "Ouest";
+                //    break;
+            }
+        }
+
+
         public void OnCurrentToolChanged(ToolId id)
         {
             switch (id)
@@ -106,6 +148,7 @@ namespace UdeS.Promoscience.Controls
                     wallDistanceDisplay.gameObject.SetActive(false);
                     flightDistanceDisplay.gameObject.SetActive(true);
                     compassDisplay.gameObject.SetActive(false);
+                    bucketImage.gameObject.SetActive(false);
                     previewImage.gameObject.SetActive(false);
                     break;
 
@@ -113,6 +156,7 @@ namespace UdeS.Promoscience.Controls
                     wallDistanceDisplay.gameObject.SetActive(true);
                     flightDistanceDisplay.gameObject.SetActive(false);
                     compassDisplay.gameObject.SetActive(false);
+                    bucketImage.gameObject.SetActive(false);
                     previewImage.gameObject.SetActive(false);
                     break;
 
@@ -121,15 +165,24 @@ namespace UdeS.Promoscience.Controls
                     wallDistanceDisplay.gameObject.SetActive(false);
                     flightDistanceDisplay.gameObject.SetActive(false);
                     compassDisplay.gameObject.SetActive(true);
+                    bucketImage.gameObject.SetActive(false);
                     previewImage.gameObject.SetActive(false);
                     break;
 
-                default:
+                case ToolId.PaintBucket:
                     wallDistanceDisplay.gameObject.SetActive(false);
                     flightDistanceDisplay.gameObject.SetActive(false);
                     compassDisplay.gameObject.SetActive(false);
-                    previewImage.gameObject.SetActive(true);
+                    bucketImage.gameObject.SetActive(true);
+                    previewImage.gameObject.SetActive(false);
                     break;
+
+                //default:
+                //    wallDistanceDisplay.gameObject.SetActive(false);
+                //    flightDistanceDisplay.gameObject.SetActive(false);
+                //    compassDisplay.gameObject.SetActive(false);
+                //    previewImage.gameObject.SetActive(true);
+                //    break;
 
             }
         }
