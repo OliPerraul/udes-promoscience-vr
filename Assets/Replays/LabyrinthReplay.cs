@@ -47,6 +47,8 @@ namespace UdeS.Promoscience.Replays
 
         public Coroutine ResumeCoroutineResult => resumeCoroutineResult;
 
+        //public Cirrus.Event<int> OnMoveIndexChangedHandler;
+
         protected abstract bool HasPrevious { get; }
 
         protected abstract bool HasNext { get; }

@@ -68,6 +68,8 @@ namespace UdeS.Promoscience.Algorithms
         [SerializeField]
         private int moveIndex = 0;
 
+        public Cirrus.Event<int> OnMoveIndexChangedHandler;
+
         public int MoveIndex => moveIndex > MoveCount - 1 ? MoveCount - 1 : moveIndex;
 
         public bool HasPrevious => moveIndex > 0;
@@ -97,6 +99,8 @@ namespace UdeS.Promoscience.Algorithms
 
         public bool Next()
         {
+            int prev = moveIndex;
+
             moveIndex = HasPrevious ?
                 (HasNext ?
                     moveIndex :
@@ -105,17 +109,27 @@ namespace UdeS.Promoscience.Algorithms
 
             moveIndex++;
 
+            if (prev != moveIndex)
+                OnMoveIndexChangedHandler?.Invoke(moveIndex);
+
+
             return true;
         }
 
         public bool Previous()
         {
+            int prev = moveIndex;
+
+
             moveIndex = HasPrevious ?
                 moveIndex :
                 0;
 
             // Clamp
             moveIndex--;
+
+            if (prev != moveIndex)
+                OnMoveIndexChangedHandler?.Invoke(moveIndex);
 
             return true;
         }
