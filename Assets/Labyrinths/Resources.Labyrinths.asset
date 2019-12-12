@@ -21,10 +21,8 @@ MonoBehaviour:
   Skins:
   - {fileID: 11400000, guid: 6b408ac85c4acce4c826dc0270f34286, type: 2}
   - {fileID: 11400000, guid: 0935aea091db8284d994d890b46556d2, type: 2}
-  - {fileID: 11400000, guid: 13706b901ba7e5d408691a92466f35d4, type: 2}
   - {fileID: 11400000, guid: fe0ff2477e9448a4295b3fc353c6e980, type: 2}
   - {fileID: 11400000, guid: 6b408ac85c4acce4c826dc0270f34286, type: 2}
-  - {fileID: 11400000, guid: bf57e4658919c964c83037d5bae8f15b, type: 2}
   GreyboxSkin: {fileID: 11400000, guid: bf57e4658919c964c83037d5bae8f15b, type: 2}
   LabyrinthsResources:
   - {fileID: 11400000, guid: 55d542535bc1ed24eb63cbdc744552d8, type: 2}

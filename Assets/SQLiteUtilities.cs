@@ -170,8 +170,8 @@ namespace UdeS.Promoscience
                         COURSE_STATUS + " INTEGER(10) NOT NULL, " +
                         COURSE_ROUND + " INTEGER(10) NOT NULL, " +
                         COURSE_GAME_ID + " INTEGER(10) NOT NULL, " +
-                        "PRIMARY KEY(" + COURSE_ID + "), " +
-                        "FOREIGN KEY(" + COURSE_TEAM_ID + ") REFERENCES " + TEAM + "(" + TEAM_ID + ")); ";
+                        "PRIMARY KEY(" + COURSE_ID + ")); ";
+                        //"FOREIGN KEY(" + COURSE_TEAM_ID + ") REFERENCES " + TEAM + "(" + TEAM_ID + ")); ";
                     //"FOREIGN KEY(" + COURSE_LABYRINTH_ID + ") REFERENCES " + LABYRINTH + "(" + LABYRINTH_ID + ")); ";
                     cmd.ExecuteNonQuery();
 
