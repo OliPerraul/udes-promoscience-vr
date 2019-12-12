@@ -136,6 +136,8 @@ namespace UdeS.Promoscience.Replays
             playerSequences.Clear();
 
             activeSequences.Clear();
+
+            teamToggle.OnReplayCourseRemoveAllHandler?.Invoke();
         }
 
 

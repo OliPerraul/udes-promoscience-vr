@@ -84,6 +84,9 @@ namespace UdeS.Promoscience
         // Otherwise assign new course
         //
         // Returns true if created a course
+
+        // Assumes ServerTeamId is set
+        // BUG
         public void AssignCourse(Player player)//, out Course course)
         {
             Course course = null;

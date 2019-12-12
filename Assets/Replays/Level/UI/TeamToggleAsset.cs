@@ -15,6 +15,8 @@ namespace UdeS.Promoscience.Replays
 
         public Cirrus.Event<Course> OnReplayCourseRemovedHandler;
 
+        public Cirrus.Event OnReplayCourseRemoveAllHandler;
+
 
     }
 }

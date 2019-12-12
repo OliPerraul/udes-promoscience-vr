@@ -37,6 +37,11 @@ namespace UdeS.Promoscience.Replays.UI
             asset.OnReplayCourseSelectedHandler += OnCourseSelected;
         }
 
+        public void OnDestroy()
+        {
+            asset.OnReplayCourseSelectedHandler -= OnCourseSelected;
+        }
+
 
         public void OnServerStateChanged(ServerState state)
         {

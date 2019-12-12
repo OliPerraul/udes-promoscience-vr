@@ -145,7 +145,8 @@ namespace UdeS.Promoscience.Controls
                     ids = new ToolId[] {
                         ToolId.None,
                         ToolId.PaintBucket,
-                        ToolId.AlgorithmClipboard,
+                        // TODO remove algorithm clipboard tool
+                        //ToolId.AlgorithmClipboard,
                         ToolId.Compass,
                         ToolId.FlightDistanceScanner };
                     break;
@@ -154,7 +155,7 @@ namespace UdeS.Promoscience.Controls
                     ids = new ToolId[] {
                         ToolId.None,
                         ToolId.PaintBucket,
-                        ToolId.AlgorithmClipboard,
+                        //ToolId.AlgorithmClipboard,
                         ToolId.Compass,
                         ToolId.WallDistanceScanner };
                     break;
@@ -163,7 +164,7 @@ namespace UdeS.Promoscience.Controls
                     ids = new ToolId[] {
                         ToolId.None,
                         ToolId.PaintBucket,
-                        ToolId.AlgorithmClipboard,
+                        //ToolId.AlgorithmClipboard,
                         ToolId.Compass };
                     break;
 
@@ -171,7 +172,7 @@ namespace UdeS.Promoscience.Controls
                     ids = new ToolId[] {
                         ToolId.None,
                         ToolId.PaintBucket,
-                        ToolId.AlgorithmClipboard
+                        //ToolId.AlgorithmClipboard
                     };
                     break;
             }

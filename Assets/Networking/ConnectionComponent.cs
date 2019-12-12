@@ -57,6 +57,8 @@ namespace UdeS.Promoscience.Network
                 }
                 else
                 {
+                    // BUG FIX??
+                    // Team Id not assigned to tablet on reconnect
                     if (player.serverDeviceType == Promoscience.DeviceType.Headset)
                     {
                         InitializeHeadsetInformation();
@@ -182,8 +184,18 @@ namespace UdeS.Promoscience.Network
                 {
                     otherPlayer = PlayerList.instance.GetPlayerWithId(i);
 
+                    //FIX: No team assigned if not in pairing state ?? wtf
+                    // obv not the right place to put this
+                    // Work around/ fix assign server team right here;
+
                     if (pairedId == otherPlayer.deviceUniqueIdentifier)
                     {
+                        player.ServerTeamId = otherPlayer.ServerTeamId;
+                        player.ServerCourseId = otherPlayer.ServerCourseId;
+                        player.ServerLevelNumber = otherPlayer.ServerLevelNumber;
+                        player.serverLabyrinthId = otherPlayer.serverLabyrinthId;
+                        //player.ser
+
                         pairedIpAdress = otherPlayer.connectionToClient.address;
                         break;
                     }
