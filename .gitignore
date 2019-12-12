@@ -60,8 +60,28 @@ crashlytics-build.properties
 
 
 
+/ProjectSettings/EditorBuildSettings.asset
 ProjectSettings/EditorBuildSettings.asset
 EditorBuildSettings.asset
 *EditorBuildSettings.asset
+
+/ProjectSettings/AudioManager.asset
+/ProjectSettings/ClusterInputManager.asset
+/ProjectSettings/DynamicsManager.asset
+/ProjectSettings/EditorBuildSettings.asset
+/ProjectSettings/EditorSettings.asset
+/ProjectSettings/GraphicsSettings.asset
+/ProjectSettings/InputManager.asset
+/ProjectSettings/NavMeshAreas.asset
+/ProjectSettings/NetworkManager.asset
+/ProjectSettings/Physics2DSettings.asset
+/ProjectSettings/ProjectSettings.asset
+/ProjectSettings/ProjectVersion.txt
+/ProjectSettings/QualitySettings.asset
+/ProjectSettings/TagManager.asset
+/ProjectSettings/TimeManager.asset
+/ProjectSettings/UnityAdsSettings.asset
+/ProjectSettings/UnityConnectSettings.asset
+
 
 
