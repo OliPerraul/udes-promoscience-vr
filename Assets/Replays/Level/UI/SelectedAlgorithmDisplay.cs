@@ -12,11 +12,18 @@ namespace UdeS.Promoscience.Replays.UI
         [SerializeField]
         private UnityEngine.UI.Text steps;
 
+        public void dosomthing(int x) => steps.text = x.ToString(); 
+
         public void Awake()
         {
-            asset.MoveIndex.OnValueChangedHandler += (x) => steps.text = x.ToString(); 
+            asset.MoveiNdexHandler += dosomthing;
         }
 
+
+        public void OnDestroy()
+        {
+            asset.MoveiNdexHandler -= dosomthing;
+        }
 
     }
 }
