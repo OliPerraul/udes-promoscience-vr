@@ -3887,7 +3887,7 @@ MonoBehaviour:
   previous: {fileID: 3890826065639657948}
   next: {fileID: 7048424931333015853}
   wallDistanceDisplay: {fileID: 4538965527719834841}
-  wallDistanceText: {fileID: 2976503522736249957}
+  wallDistanceText: {fileID: 6801085973445792303}
   flightDistanceDisplay: {fileID: 1864649743211637420}
   flightDistanceText: {fileID: 2976503522736249957}
   compassDisplay: {fileID: 7992098175062257423}
@@ -6339,6 +6339,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3386643011245192059}
     m_Modifications:
+    - target: {fileID: 1281450936111816, guid: 0b9da81d81d98dc408a7dcfd3ee3ae9d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 224910818808330038, guid: 0b9da81d81d98dc408a7dcfd3ee3ae9d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6428,10 +6432,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1281450936111816, guid: 0b9da81d81d98dc408a7dcfd3ee3ae9d, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224594302274424438, guid: 0b9da81d81d98dc408a7dcfd3ee3ae9d,
         type: 3}
@@ -6605,6 +6605,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3386643011245192059}
     m_Modifications:
+    - target: {fileID: 1117435917889494, guid: 2f9128decd559ab4fb6540bb4bc8358e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224734921745695540, guid: 2f9128decd559ab4fb6540bb4bc8358e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6694,10 +6698,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1117435917889494, guid: 2f9128decd559ab4fb6540bb4bc8358e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1188629173846712, guid: 2f9128decd559ab4fb6540bb4bc8358e, type: 3}
       propertyPath: m_IsActive
