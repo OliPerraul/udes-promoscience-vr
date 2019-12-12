@@ -23,7 +23,7 @@ namespace UdeS.Promoscience.Controls
 
         private ToolId[] ids = {
                         ToolId.None,
-                        ToolId.PaintBucket,
+                        ToolId.PaintBucket, // TODO should handle painting color not just visual
                         ToolId.AlgorithmClipboard,
                         ToolId.Compass,
                         ToolId.FlightDistanceScanner,

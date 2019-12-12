@@ -15,6 +15,9 @@ namespace UdeS.Promoscience.Controls
 
         public Cirrus.ObservableValue<Quaternion> TabletFirstPersonCameraRoation = new Cirrus.ObservableValue<Quaternion>(Quaternion.identity);
 
+        public Cirrus.ObservableValue<Quaternion> CompassRotation = new Cirrus.ObservableValue<Quaternion>();
+
+
 
 
     }

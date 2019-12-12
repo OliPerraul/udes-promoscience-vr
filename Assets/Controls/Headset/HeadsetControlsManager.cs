@@ -400,9 +400,9 @@ namespace UdeS.Promoscience.Controls
                     lastPosition = character.RootTransform.position;
                 }
 
-                if (character.RootTransform.rotation != lastRotation)
+                if (directionTransform.rotation != lastRotation)
                 {
-                    controls.PlayerRotation.Value = cameraRig.CameraRotation;
+                    controls.BroadcastPlayerRotation.Value = directionTransform.rotation;//.CameraRotation;
                     lastRotation = cameraRig.CameraRotation;
                 }
             }
@@ -529,26 +529,27 @@ namespace UdeS.Promoscience.Controls
 
         public void RequestMoveForward()
         {
-            Vector3 currentDirection = Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value);
+            //Vector3 currentDirection = Utils.GetDirectionVector((Direction)controls.ForwardDirection.Value);
 
-            if (Utils.IsSameDirection(
-                    cameraRig.CameraForward,
-                    currentDirection,
-                    angleLookatTurnThreshold))
+            //if (Utils.IsSameDirection(
+            //        cameraRig.CameraForward,
+            //        currentDirection,
+            //        angleLookatTurnThreshold))
             {
                 RequestMovementInDirection(controls.ForwardDirection.Value);
             }
-            else
-            {
-                if (Utils.AngleDir(currentDirection, cameraRig.CameraForward, Vector3.up) < 0)
-                {
-                    RequestTurnLeft(turnAvatar: false);
-                }
-                else
-                {
-                    RequestTurnRight(turnAvatar: false);
-                }
-            }
+            // TODO turn where you look
+            //else
+            //{
+            //    if (Utils.AngleDir(currentDirection, cameraRig.CameraForward, Vector3.up) < 0)
+            //    {
+            //        RequestTurnLeft(turnAvatar: false);
+            //    }
+            //    else
+            //    {
+            //        RequestTurnRight(turnAvatar: false);
+            //    }
+            //}
         }
 
 

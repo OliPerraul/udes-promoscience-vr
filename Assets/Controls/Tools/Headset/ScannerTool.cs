@@ -20,7 +20,7 @@ namespace UdeS.Promoscience.Controls
 
     public abstract class DistanceScannerModule
     {
-        public abstract void DoScan(ControlsAsset controller, RaycastHit[] hits);
+        public abstract void DoScan(HeadsetToolManagerAsset tools, RaycastHit[] hits);
     }
 
     //public class HeadsetDistanceScanner : MonoBehaviour
@@ -120,12 +120,18 @@ namespace UdeS.Promoscience.Controls
         private ControlsAsset controls;
 
         [SerializeField]
+        private Transform origin;
+
+        [SerializeField]
         private TMPro.TextMeshProUGUI distanceText;
         
         private DistanceScannerModule module;
 
+        //[SerializeField]
+        //private HeadsetCameraRig cameraRig;
+
         [SerializeField]
-        private HeadsetCameraRig cameraRig;
+        private HeadsetToolManagerAsset tools;
 
         public void EnableFlight()
         {
@@ -150,40 +156,34 @@ namespace UdeS.Promoscience.Controls
         // Start is called before the first frame update
         public void Awake()
         {
-            controls.ScannedDistance.OnValueChangedHandler += OnDistance;
+            tools.ScannedDistance.OnValueChangedHandler += OnDistance;
             module = resource.CreateModule();
         }
 
         public void FixedUpdate()
         {
-            if (cameraRig == null)
-                return;
+            //if (cameraRig == null)
+            //    return;
 
-            if (cameraRig == null ||
+            if (
             Client.Instance.Labyrinth.Value == null ||
             module == null)
             {
-                controls.ScannedDistance.Value = -1;
+                tools.ScannedDistance.Value = -1;
                 return;
             }
 
-            Ray ray = new Ray(cameraRig.PointerTransform.position, cameraRig.PointerTransform.forward);
+            Ray ray = new Ray(origin.position, origin.forward);
 
             var res = Physics.RaycastAll(ray, ScannerUtils.RaycastRange);
 
-            module.DoScan(controls, res);
+            module.DoScan(tools, res);
         }
 
         public override void OnValidate()
         {
             base.OnValidate();
-
-            if (cameraRig == null)
-                cameraRig = GetComponentInParent<HeadsetCameraRig>();
-
         }
-
-
 
         public void OnDistance(float distance)
         {

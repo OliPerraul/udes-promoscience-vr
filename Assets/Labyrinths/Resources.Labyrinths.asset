@@ -19,7 +19,7 @@ MonoBehaviour:
   LabyrinthLarge: {fileID: 1870247976304202809, guid: e5968c39a10e36e41a1ed7a981f515ec,
     type: 3}
   Skins:
-  - {fileID: 11400000, guid: da1963385689a074f87e5e7d6486ee60, type: 2}
+  - {fileID: 11400000, guid: 6b408ac85c4acce4c826dc0270f34286, type: 2}
   - {fileID: 11400000, guid: 0935aea091db8284d994d890b46556d2, type: 2}
   - {fileID: 11400000, guid: 13706b901ba7e5d408691a92466f35d4, type: 2}
   - {fileID: 11400000, guid: fe0ff2477e9448a4295b3fc353c6e980, type: 2}

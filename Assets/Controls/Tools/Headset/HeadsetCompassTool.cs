@@ -18,6 +18,9 @@ namespace UdeS.Promoscience.UI
         ControlsAsset controls;
 
         [SerializeField]
+        private HeadsetToolManagerAsset headsetTools;
+
+        [SerializeField]
         Transform indicator;
 
         int direction = 0;
@@ -67,6 +70,7 @@ namespace UdeS.Promoscience.UI
             {
                 var rotation = Quaternion.LookRotation(indicator.position + new Vector3(100 * Labyrinths.Utils.TileSize * xByDirection[direction], 0, 100 * Labyrinths.Utils.TileSize * -yByDirection[direction]));
                 indicator.rotation = rotation;
+                headsetTools.CompassRotation.Value = rotation;
 
             }
         }

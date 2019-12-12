@@ -9,7 +9,7 @@ namespace UdeS.Promoscience.Controls
     {
         private Algorithms.FloorPainter floor;
 
-        public override void DoScan(ControlsAsset controller, RaycastHit[] hits)
+        public override void DoScan(HeadsetToolManagerAsset tools, RaycastHit[] hits)
         {
             IEnumerable<RaycastHit> floors = hits.Where(x => x.collider.GetComponentInChildren<Algorithms.FloorPainter>() != null);
             if (floors.Count() != 0)
@@ -40,7 +40,7 @@ namespace UdeS.Promoscience.Controls
                                     Client.Instance.Labyrinth.Value.GetWorldPositionInLabyrinthPosition(hit.point.x, hit.point.z)).magnitude;
 
                             floor.Highlight();
-                            controller.ScannedDistance.Value = ((int)dist) / Labyrinths.Utils.TileSize;
+                            tools.ScannedDistance.Value = ((int)dist) / Labyrinths.Utils.TileSize;
                             return;
 
                         }

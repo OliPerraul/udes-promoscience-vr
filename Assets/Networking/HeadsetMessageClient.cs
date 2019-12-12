@@ -38,6 +38,11 @@ namespace UdeS.Promoscience.Network
         [SerializeField]
         ControlsAsset controls;
 
+
+        [SerializeField]
+        private TabletToolManagerAsset tabletTools;
+
+
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
@@ -73,6 +78,11 @@ namespace UdeS.Promoscience.Network
                 client.RegisterHandler(PlayerReachedTheEndMessage.GetCustomMsgType(), OnPlayerReachedTheEnd);
                 client.RegisterHandler(PlayerRotationMessage.GetCustomMsgType(), OnPlayerRotation);
                 client.RegisterHandler(PlayerTilesToPaintMessage.GetCustomMsgType(), OnPlayerTilesToPaint);
+
+
+                client.RegisterHandler(ScannedDistanceMessage.GetCustomMsgType(), OnScannedDistance);
+                client.RegisterHandler(CompassRotationMessage.GetCustomMsgType(), OnCompassRotation);
+
                 //client.RegisterHandler(ReturnToDivergencePointAnswerMessage.GetCustomMsgType(), OnReturnToDivergencePointAnswer);
 
                 client.Connect(pairedIpAdress.Value, serverPort);
@@ -81,6 +91,18 @@ namespace UdeS.Promoscience.Network
             {
                 Client.Instance.State.Value = ClientGameState.Ready;
             }
+        }
+
+        private void OnScannedDistance(NetworkMessage netMsg)
+        {
+            ScannedDistanceMessage msg = netMsg.ReadMessage<ScannedDistanceMessage>();
+            tabletTools.ScannedDistance.Value = msg.distance;
+        }
+
+        private void OnCompassRotation(NetworkMessage netMsg)
+        {
+            CompassRotationMessage msg = netMsg.ReadMessage<CompassRotationMessage>();
+            tabletTools.CompassRotation.Value = msg.rot;
         }
 
         private void OnPaintingColor(NetworkMessage netMsg)
@@ -187,7 +209,7 @@ namespace UdeS.Promoscience.Network
         void OnPlayerRotation(NetworkMessage netMsg)
         {
             PlayerRotationMessage msg = netMsg.ReadMessage<PlayerRotationMessage>();
-            controls.PlayerRotation.Value = msg.rotation;
+            controls.BroadcastPlayerRotation.Value = msg.rotation;
         }
 
         void OnPlayerTilesToPaint(NetworkMessage netMsg)

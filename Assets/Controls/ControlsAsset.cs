@@ -39,7 +39,7 @@ namespace UdeS.Promoscience.Controls
 
         public Cirrus.ObservableValue<Vector3> PlayerPosition = new Cirrus.ObservableValue<Vector3>();
 
-        public Cirrus.ObservableValue<Quaternion> PlayerRotation = new Cirrus.ObservableValue<Quaternion>();
+        public Cirrus.ObservableValue<Quaternion> BroadcastPlayerRotation = new Cirrus.ObservableValue<Quaternion>();
 
         public Cirrus.ObservableValue<Tile> PlayerPaintTile = new Cirrus.ObservableValue<Tile>();
 
@@ -52,11 +52,6 @@ namespace UdeS.Promoscience.Controls
         public Cirrus.ObservableValue<int> ForwardDirection = new Cirrus.ObservableValue<int>();
 
         public Cirrus.ObservableValue<AvatarAnimation> Animation = new Cirrus.ObservableValue<AvatarAnimation>();
-
-        public Cirrus.ObservableValue<float> WallDistance = new Cirrus.ObservableValue<float>();
-
-        public Cirrus.ObservableValue<float> ScannedDistance = new Cirrus.ObservableValue<float>();
-
 
         public void StopAllMovement()
         {

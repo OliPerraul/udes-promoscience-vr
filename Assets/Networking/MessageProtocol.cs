@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 using UdeS.Promoscience.ScriptableObjects;
 //using UdeS.Promoscience.Utils;
 using UdeS.Promoscience.Network;
+using System;
 
 namespace UdeS.Promoscience.Network
 {
@@ -26,9 +27,50 @@ namespace UdeS.Promoscience.Network
         ReturnToDivergencePointAnswer = 112,
         ReturnToDivergencePointRequest = 113,
 
-        PaintingColor = 114
+        PaintingColor = 114,
 
+
+        ScannedDistance = 124,
+            CompassRot = 125
     }
+
+    // TODO use template type instead??
+
+    public class CompassRotationMessage : MessageBase
+    {
+        static CustomMsgType type = CustomMsgType.CompassRot;
+
+        public static short GetCustomMsgType()
+        {
+            return (short)type;
+        }
+
+        public short GetMsgType()
+        {
+            return (short)type;
+        }
+
+        public Quaternion rot = Quaternion.identity;/* = 0f;*/
+    }
+
+
+    public class ScannedDistanceMessage : MessageBase
+    {
+        static CustomMsgType type = CustomMsgType.ScannedDistance;
+
+        public static short GetCustomMsgType()
+        {
+            return (short)type;
+        }
+
+        public short GetMsgType()
+        {
+            return (short)type;
+        }
+
+        public float distance = 0f; 
+    }
+
 
     public class AlgorithmMessage : MessageBase
     {

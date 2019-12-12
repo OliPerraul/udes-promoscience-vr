@@ -58,3 +58,10 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+
+
+ProjectSettings/EditorBuildSettings.asset
+EditorBuildSettings.asset
+*EditorBuildSettings.asset
+
+
