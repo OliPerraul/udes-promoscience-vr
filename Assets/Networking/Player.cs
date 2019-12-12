@@ -336,6 +336,7 @@ namespace UdeS.Promoscience.Network
         {
             pairedIpAdress.Value = ipAdress;
 
+            //FIX: No team assigned if not in pairing state ?? wtf
             if (Client.Instance.State.Value == ClientGameState.Pairing)
             {
                 Client.Instance.State.Value = ClientGameState.Paired;
