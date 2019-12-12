@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void Awake()
         {
-            
+            asset.MoveIndex.OnValueChangedHandler += (x) => steps.text = x.ToString(); 
         }
 
 
