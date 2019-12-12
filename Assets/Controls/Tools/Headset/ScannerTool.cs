@@ -23,92 +23,6 @@ namespace UdeS.Promoscience.Controls
         public abstract void DoScan(HeadsetToolManagerAsset tools, RaycastHit[] hits);
     }
 
-    //public class HeadsetDistanceScanner : MonoBehaviour
-    //{
-    //    [SerializeField]
-    //    private HeadsetCameraRig cameraRig;
-
-    //    [SerializeField]
-    //    private ControlsAsset controller;
-
-    //    [SerializeField]
-    //    private HeadsetToolManagerAsset tools;
-
-    //    private DistanceScannerModule module;
-
-
-    //    public void Awake()
-    //    {
-    //        Client.Instance.Algorithm.OnValueChangedHandler += OnAlgorithmChanged;
-    //        tools.CurrentEquipment.OnValueChangedHandler += OnToolChanged;
-    //    }
-
-    //    public void OnToolChanged(ToolId tool)
-    //    {
-    //        if (tool == ToolId.FlightDistanceScanner)
-    //        {
-    //            OnAlgorithmChanged(Client.Instance.Algorithm.Value);
-    //        }
-    //        else
-    //        {
-    //            Disable();
-    //        }
-    //    }
-
-    //    public void Disable()
-    //    {
-    //        Algorithms.FloorPainter.RemoveHighlight();
-    //        Labyrinths.Piece.RemoveHighlight();
-    //        enabled = false;
-    //    }
-
-    //    public void OnAlgorithmChanged(Algorithms.Algorithm algorithm)
-    //    {
-    //        if (algorithm == null)
-    //            return;
-
-    //        switch (algorithm.Id)
-    //        {
-    //            case Algorithms.Id.LongestStraight:
-    //                enabled = true;
-    //                module = new WallDistanceScannerModule();
-    //                break;
-
-    //            case Algorithms.Id.ShortestFlightDistance:
-    //                enabled = true;
-    //                module = new FlightDistanceScannerModule();
-    //                break;
-
-    //            default:
-    //                Disable();
-    //                module = null;
-    //                break;
-    //        }
-    //    }
-
-    //    public void FixedUpdate()
-    //    {
-    //        if (cameraRig == null)
-    //            return;
-
-    //        if (cameraRig == null ||
-    //        Client.Instance.Labyrinth.Value == null ||
-    //        module == null)
-    //        {
-    //            controller.WallDistance.Value = -1;
-    //            controller.FlightDistance.Value = -1;
-    //            return;
-    //        }
-
-    //        Ray ray = new Ray(cameraRig.PointerTransform.position, cameraRig.PointerTransform.forward);
-
-    //        var res = Physics.RaycastAll(ray, ScannerUtils.RaycastRange);
-
-    //        module.DoScan(controller, res);
-    //    }
-    //}
-
-
     public class ScannerTool : HeadsetTool
     {
         public override ToolId Id => resource.ToolId;
@@ -127,44 +41,30 @@ namespace UdeS.Promoscience.Controls
         
         private DistanceScannerModule module;
 
-        //[SerializeField]
-        //private HeadsetCameraRig cameraRig;
+
 
         [SerializeField]
         private HeadsetToolManagerAsset tools;
 
-        public void EnableFlight()
-        {
-            gameObject.SetActive(true);
-        }
-
-        public void EnableWall()
-        {
-            gameObject.SetActive(true);
-
-        }
-
-        public void Disable()
-        {
-            Algorithms.FloorPainter.RemoveHighlight();
-            Labyrinths.Piece.RemoveHighlight();
-            enabled = false;
-            gameObject.SetActive(false);
-        }
 
 
         // Start is called before the first frame update
         public void Awake()
         {
             tools.ScannedDistance.OnValueChangedHandler += OnDistance;
+            tools.CurrentTool.OnValueChangedHandler += OnCurrentToolChanged;
             module = resource.CreateModule();
         }
 
+        public void OnCurrentToolChanged(ToolId id)
+        {
+            Algorithms.FloorPainter.RemoveHighlight();
+            Labyrinths.Piece.RemoveHighlight();
+        }
+
+
         public void FixedUpdate()
         {
-            //if (cameraRig == null)
-            //    return;
-
             if (
             Client.Instance.Labyrinth.Value == null ||
             module == null)
