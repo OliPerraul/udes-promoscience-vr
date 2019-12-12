@@ -97,17 +97,18 @@ namespace UdeS.Promoscience.Controls
                 case Direction.Up:// North
                     compassText.text = "Nord";
                     break;
-
+                
+                // Inversed ?
                 case Direction.Down:// North
                     compassText.text = "Sud";
                     break;
 
                 case Direction.Left:// North
-                    compassText.text = "Est";
+                    compassText.text = "Ouest";
                     break;
 
                 case Direction.Right:// North
-                    compassText.text = "Ouest";
+                    compassText.text = "Est";
                     break;
             }
         }
@@ -119,23 +120,19 @@ namespace UdeS.Promoscience.Controls
             {
                 case TileColor.Red:// North
                     bucketText.text = "Rouge";
-                    bucketImage.color = UnityEngine.Color.red;
+                    bucketImage.color = Color.red;
                     break;
 
                 case TileColor.Yellow:// North
                     bucketText.text = "Jaune";
-                    bucketImage.color = UnityEngine.Color.yellow;
+                    bucketImage.color = Color.yellow;
                     break;
 
                 case TileColor.NoColor:// North
                 case TileColor.Grey:// North
-                    compassText.text = "Gris";
-                    bucketImage.color = UnityEngine.Color.gray;
+                    bucketText.text = "Gris";
+                    bucketImage.color = Color.gray;
                     break;
-
-                //case Direction.Right:// North
-                //    compassText.text = "Ouest";
-                //    break;
             }
         }
 
@@ -176,14 +173,6 @@ namespace UdeS.Promoscience.Controls
                     bucketImage.gameObject.SetActive(true);
                     previewImage.gameObject.SetActive(false);
                     break;
-
-                //default:
-                //    wallDistanceDisplay.gameObject.SetActive(false);
-                //    flightDistanceDisplay.gameObject.SetActive(false);
-                //    compassDisplay.gameObject.SetActive(false);
-                //    previewImage.gameObject.SetActive(true);
-                //    break;
-
             }
         }
 

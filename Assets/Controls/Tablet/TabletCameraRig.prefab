@@ -1261,9 +1261,7 @@ MonoBehaviour:
   - {fileID: 2867395991460879245}
   - {fileID: 1610348866399332243}
   - {fileID: 8148614597978068651}
-  - {fileID: 0}
   - {fileID: 8858696819078521210}
-  - {fileID: 0}
 --- !u!1 &2758831269045552146
 GameObject:
   m_ObjectHideFlags: 0
@@ -3894,8 +3892,8 @@ MonoBehaviour:
   flightDistanceText: {fileID: 2976503522736249957}
   compassDisplay: {fileID: 7992098175062257423}
   compassText: {fileID: 1609804698957614777}
-  bucketImage: {fileID: 0}
-  bucketText: {fileID: 0}
+  bucketImage: {fileID: 2763570645432181353}
+  bucketText: {fileID: 3520013558482351152}
   previewImage: {fileID: 2758831269045552146}
 --- !u!1 &4706839121703986772
 GameObject:

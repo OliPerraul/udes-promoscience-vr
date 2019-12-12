@@ -187,13 +187,13 @@ namespace UdeS.Promoscience
     {
         Unknown = -1,
         TurnLeft = 0,
-        MoveForward,        
-        UTurn,
-        TurnRight,
-        Grey,
-        Yellow,
-        Red,
-        Stop,
+        MoveForward = 1,        
+        UTurn = 2,
+        TurnRight = 3,
+        Grey = 4,
+        Yellow = 5,
+        Red = 6,
+        Stop = 7
     }
 
     [Serializable]
