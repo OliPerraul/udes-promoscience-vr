@@ -252,7 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
     CreateSampleLabyrinths:
-      _value: 0
+      _value: 1
     IsLevelOrderPredefined:
       _value: 0
     NumberOfRounds:
