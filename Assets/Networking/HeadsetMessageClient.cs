@@ -156,7 +156,7 @@ namespace UdeS.Promoscience.Network
             PlayerInformationMessage msg = netMsg.ReadMessage<PlayerInformationMessage>();
             playerInformation.SetPlayerInformation(msg.teamId);
 
-            DEbUGTEXT.Instance.text.text = "Player Info received";
+            //DEbUGTEXT.Instance.text.text = "Player Info received";
 
 
             Client.Instance.State.Value = ClientGameState.Ready;
