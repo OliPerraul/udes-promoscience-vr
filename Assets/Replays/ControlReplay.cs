@@ -157,12 +157,13 @@ namespace UdeS.Promoscience.Replays
 
         public void Pause()
         {
-
+            // TODO
+            Stop();
         }
 
-        public void Stop()
-        {
+        //public virtual void Stop()
+        //{
 
-        }
+        //}
     }
 }

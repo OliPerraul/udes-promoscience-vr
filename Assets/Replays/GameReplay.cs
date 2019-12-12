@@ -30,9 +30,7 @@ namespace UdeS.Promoscience.Replays
             for (int i = 0; i < levels.Count; i++)
             {
                 CreatePreviewReplay();
-            }
-
-            
+            }            
         }
 
         public override void Start()
@@ -101,6 +99,11 @@ namespace UdeS.Promoscience.Replays
             SetMoveCount();
         }
 
+
+        public override void Stop()
+        {
+            base.Stop();
+        }
 
 
     }

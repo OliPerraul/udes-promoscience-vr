@@ -33,6 +33,8 @@ namespace UdeS.Promoscience.Replays
 
         public Cirrus.Event OnResumeHandler;
 
+        public Cirrus.Event OnStopHandler;
+
         private float playbackSpeed;
 
         protected virtual float PlaybackSpeed
@@ -58,6 +60,26 @@ namespace UdeS.Promoscience.Replays
                 OnMoveIndexChangedHandler?.Invoke(moveIndex);
             }
         }
+
+        public void OnStop()
+        {
+            Resume();
+        }
+
+        public virtual void Stop()
+        {
+            // TODO distinguish stop and pause
+            MoveIndex = 0;
+
+            if (resumeCoroutineResult != null)
+            {
+                ReplayManager.Instance.StopCoroutine(resumeCoroutineResult);
+                resumeCoroutineResult = null;
+            }
+
+            OnStopHandler?.Invoke();
+        }
+
 
         public void OnResume()
         {

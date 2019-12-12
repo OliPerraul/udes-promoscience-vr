@@ -75,7 +75,9 @@ namespace UdeS.Promoscience
 
         public void OnGameStateChanged(ClientGameState state)
         {
-            if (State.Value == ClientGameState.Playing)
+            if (State.Value == ClientGameState.Playing ||
+                State.Value == ClientGameState.PlayingTutorial
+                )
             {
                 Labyrinth.Value.GenerateLabyrinthVisual();
                 Labyrinth.Value.Init(enableCamera:false);
@@ -97,15 +99,18 @@ namespace UdeS.Promoscience
                     controls.IsPlayerControlsEnabled.Value = true;
                 }
             }
-            else if (State.Value == ClientGameState.ViewingLocalReplay)
+            else if (
+                State.Value == ClientGameState.ViewingLocalReplay ||
+                State.Value == ClientGameState.WaitingForNextLevel ||
+                    State.Value == ClientGameState.ViewingGlobalReplay)
             {
-                //gameCamera.ChangeState(Camera.State.Topdown);
+                if (Labyrinth.Value != null)
+                {
+                    Labyrinth.Value.gameObject.Destroy();
+                    Labyrinth.Value = null; 
+                    //Labyrinth.Value.Init(enableCamera: false);
+                }
 
-                controls.IsPlayerControlsEnabled.Value = false;
-                controls.StopAllMovement();
-            }
-            else if (State.Value == ClientGameState.WaitingForNextLevel)
-            {
                 controls.IsPlayerControlsEnabled.Value = false;
                 controls.StopAllMovement();
                 controls.ResetPositionAndRotation();
@@ -115,6 +120,7 @@ namespace UdeS.Promoscience
                     waitingForNextRoundRoom.SetActive(true);
                 }
             }
+
         }
 
         void OnPlayerReachedTheEnd()
