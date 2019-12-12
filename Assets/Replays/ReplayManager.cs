@@ -81,7 +81,7 @@ namespace UdeS.Promoscience.Replays
         }
 
 
-        public void StartLevelReplay(Level round)
+        public void StartLevelReplay(Level level)
         {
             // TODO: Player should not refer to courseId anymore, maybe simply refer to course obj?               
             foreach (Player player in PlayerList.instance.list)
@@ -105,7 +105,7 @@ namespace UdeS.Promoscience.Replays
                 roundTeamToggle,
                 roundSelectedTeam, 
                 roundSidebar,
-                round);
+                level);
 
             LevelReplay.Value.Initialize();
 

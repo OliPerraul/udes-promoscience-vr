@@ -67,10 +67,10 @@ namespace UdeS.Promoscience.Replays
             TeamToggleAsset teamToggle,
             UI.SelectedTeamAsset selectedTeam,
             UI.SidebarAsset sidebar,
-            Level round) 
+            Level level) 
             : base(controls)
         {
-            this.level = round;
+            this.level = level;
 
             this.algorithmSelection = algorithmSelection;
 
