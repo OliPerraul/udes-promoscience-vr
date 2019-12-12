@@ -187,7 +187,7 @@ namespace UdeS.Promoscience.Network
         void OnPlayerRotation(NetworkMessage netMsg)
         {
             PlayerRotationMessage msg = netMsg.ReadMessage<PlayerRotationMessage>();
-            controls.PlayerRotation.Value = msg.rotation;
+            controls.BroadcastPlayerRotation.Value = msg.rotation;
         }
 
         void OnPlayerTilesToPaint(NetworkMessage netMsg)

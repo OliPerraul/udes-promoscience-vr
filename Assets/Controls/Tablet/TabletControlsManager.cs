@@ -60,7 +60,7 @@ namespace UdeS.Promoscience.Controls
         public void Awake()
         {
             controls.PlayerPosition.OnValueChangedHandler += OnNewPlayerPosition;
-            controls.PlayerRotation.OnValueChangedHandler += OnNewPlayerRotation;
+            controls.BroadcastPlayerRotation.OnValueChangedHandler += OnNewPlayerRotation;
 
             controls.PlayerPaintTile.OnValueChangedHandler += OnPlayerPaintTile;
             controls.PlayerTilesToPaint.OnValueChangedHandler += OnPlayerTilesToPaint;

@@ -101,7 +101,7 @@ namespace UdeS.Promoscience.Network
             controls.PlayerPaintTile.OnValueChangedHandler += SendPlayerPaintTile;
             controls.PlayerPosition.OnValueChangedHandler += SendPlayerPosition;
             controls.OnPlayerReachedTheEndHandler += SendEndReached;
-            controls.PlayerRotation.OnValueChangedHandler += SendPlayerRotation;
+            controls.BroadcastPlayerRotation.OnValueChangedHandler += SendPlayerRotation;
             controls.PaintingColor.OnValueChangedHandler += SendPaintingColor;
 
             gameManager.IsRoundCompleted.OnValueChangedHandler += OnRoundCompleted;
@@ -145,7 +145,7 @@ namespace UdeS.Promoscience.Network
             controls.PlayerPaintTile.OnValueChangedHandler -= SendPlayerPaintTile;
             controls.PlayerPosition.OnValueChangedHandler -= SendPlayerPosition;
             controls.OnPlayerReachedTheEndHandler -= SendEndReached;
-            controls.PlayerRotation.OnValueChangedHandler -= SendPlayerRotation;
+            controls.BroadcastPlayerRotation.OnValueChangedHandler -= SendPlayerRotation;
             
             playerInformation.playerInformationChangedEvent -= SendPlayerInformation;
         }
@@ -181,7 +181,7 @@ namespace UdeS.Promoscience.Network
                         SendAlgorithm();
                         SendAlgorithmRespect(algorithmRespect.Respect);
                         SendPlayerPosition(controls.PlayerPosition.Value);
-                        SendPlayerRotation(controls.PlayerRotation.Value);
+                        SendPlayerRotation(controls.BroadcastPlayerRotation.Value);
                         SendPlayerTilesToPaint(controls.PlayerTilesToPaint.Value);
                     }
 
@@ -214,7 +214,7 @@ namespace UdeS.Promoscience.Network
                         SendAlgorithm();
                         SendAlgorithmRespect(algorithmRespect.Respect);
                         SendPlayerPosition(controls.PlayerPosition.Value);
-                        SendPlayerRotation(controls.PlayerRotation.Value);
+                        SendPlayerRotation(controls.BroadcastPlayerRotation.Value);
                         SendPlayerTilesToPaint(controls.PlayerTilesToPaint.Value);
                     }
 
@@ -272,7 +272,7 @@ namespace UdeS.Promoscience.Network
         void SendPlayerRotation(Quaternion rotation)
         {
             PlayerRotationMessage msg = new PlayerRotationMessage();
-            msg.rotation = controls.PlayerRotation.Value;
+            msg.rotation = controls.BroadcastPlayerRotation.Value;
             clientConnection.Send(msg.GetMsgType(), msg);
         }
 
