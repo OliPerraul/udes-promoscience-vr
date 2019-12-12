@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8141698075286272254}
   - component: {fileID: 2587347273743500164}
   - component: {fileID: 185070353732285605}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sheet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 8510042868306421605}
   - component: {fileID: 1939938219464958496}
   - component: {fileID: 8267706654888964440}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 6842490580536693866}
   - component: {fileID: 2913131438049533828}
   - component: {fileID: 3544524137919677540}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Canvas (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,6 +374,10 @@ PrefabInstance:
     - target: {fileID: 1970706917394828, guid: 330194904884a2c4eac43cbf200ae4a7, type: 3}
       propertyPath: m_Name
       value: AlgorithRespectProgressionBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 1970706917394828, guid: 330194904884a2c4eac43cbf200ae4a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 224995878570132804, guid: 330194904884a2c4eac43cbf200ae4a7,
         type: 3}
@@ -480,6 +484,22 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1776364385542830, guid: 330194904884a2c4eac43cbf200ae4a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1009957625046434, guid: 330194904884a2c4eac43cbf200ae4a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030592236557782, guid: 330194904884a2c4eac43cbf200ae4a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1282106928318690, guid: 330194904884a2c4eac43cbf200ae4a7, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 330194904884a2c4eac43cbf200ae4a7, type: 3}
 --- !u!224 &1961264661382128988 stripped
@@ -499,6 +519,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ClipboardTool
+      objectReference: {fileID: 0}
+    - target: {fileID: 2839921808800121249, guid: 86a3ff5692fca494daf12f2d1bec86a2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9216616480783542052, guid: 86a3ff5692fca494daf12f2d1bec86a2,
         type: 3}
@@ -580,6 +605,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Clipboard
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 5370e4b07d90b5447829766765f2b9df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 5370e4b07d90b5447829766765f2b9df,
         type: 3}

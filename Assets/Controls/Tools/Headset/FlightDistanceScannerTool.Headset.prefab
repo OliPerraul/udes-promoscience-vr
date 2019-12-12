@@ -10,7 +10,12 @@ PrefabInstance:
     - target: {fileID: 2636786458113209926, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
         type: 3}
       propertyPath: m_Name
-      value: FlightDistanceScannerTool
+      value: FlightDistanceScannerTool.Headset
+      objectReference: {fileID: 0}
+    - target: {fileID: 2636786458113209926, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8942228413030224067, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
         type: 3}
@@ -66,6 +71,51 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7782060669592412481, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3887379573008320359, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2997106346209932884, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2997106346209932884, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6306165792250128994, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5247679935995282033, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8965349273188118237, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3147427879174707334, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5693777179975828583, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20a59f6f9dcb70c44a1ea6a76ff391cf, type: 3}
