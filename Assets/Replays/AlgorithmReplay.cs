@@ -87,7 +87,10 @@ namespace UdeS.Promoscience.Replays
 
         public void OnResume()
         {
-            resumeCoroutineResult = StartCoroutine(ResumeCoroutine());
+            if (HasNext)
+            {
+                resumeCoroutineResult = StartCoroutine(ResumeCoroutine());
+            }
         }
 
         public void OnStop()
