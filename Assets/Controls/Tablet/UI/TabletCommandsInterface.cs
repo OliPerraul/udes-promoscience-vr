@@ -23,6 +23,18 @@ namespace UdeS.Promoscience.UI
         private UnityEngine.UI.Button returnToDivergentButton;
 
         [SerializeField]
+        private UnityEngine.UI.Image returnToDivergentButtonBG;
+
+        private float initBGAslpha;
+
+        [SerializeField]
+        private UnityEngine.UI.Image returnToDivergentButtonICON;
+
+        private float initIconAlph;
+
+
+
+        [SerializeField]
         private UnityEngine.UI.Button howToButton;
 
         [SerializeField]
@@ -34,6 +46,10 @@ namespace UdeS.Promoscience.UI
 
         public void Awake()
         {
+            initBGAslpha = returnToDivergentButtonBG.color.a;
+            initIconAlph = returnToDivergentButtonICON.color.a;
+            algorithmRespect.IsDiverging.OnValueChangedHandler += OnIsDivergin;
+
             fixItButton.onClick.AddListener(
                 () =>
                     algorithmRespect.IsCorrectingEnabled.Value =
@@ -47,6 +63,24 @@ namespace UdeS.Promoscience.UI
             cameraButton.onClick.AddListener(
                 () =>
                     tabletControls.TabletCameraMode.Value = (TabletCameraMode)((int)tabletControls.TabletCameraMode.Value + 1).Mod(TabletUtils.NumCameraMode));
+
+
+            //contro
+
+        }
+
+
+        public void OnIsDivergin(bool divergin)
+        {
+            returnToDivergentButtonBG.color = !divergin ? 
+                returnToDivergentButtonBG.color.SetA(initBGAslpha / 3) :
+                returnToDivergentButtonBG.color.SetA(initBGAslpha);
+
+            returnToDivergentButtonICON.color = !divergin ?
+                returnToDivergentButtonICON.color.SetA(initIconAlph / 3) :
+                returnToDivergentButtonICON.color.SetA(initIconAlph);
+
+            returnToDivergentButton.interactable = divergin;
         }
 
 

@@ -219,7 +219,8 @@ namespace UdeS.Promoscience.Controls
                         primaryIndexTriggerHeldTime >= primaryIndexTriggerHeldTimeLimit)
                     {
                         primaryIndexTriggerHeldTime = 0;
-                        controls.IsThirdPersonEnabled.Value = !controls.IsThirdPersonEnabled.Value;
+                        //controls.IsThirdPersonEnabled.Value = !controls.IsThirdPersonEnabled.Value;
+                        controls.PaintingColor.Value = (TileColor.Grey);// ((int)controls.PaintingColor.Value + 1).Mod(Utils.NumColors);
                         isPrimaryIndexTriggerHeld = true;
                     }
                 }
@@ -227,7 +228,12 @@ namespace UdeS.Promoscience.Controls
                 if (inputScheme.IsPrimaryIndexTriggerUp && !isPrimaryIndexTriggerHeld)
                 {
                     primaryIndexTriggerHeldTime = 0;
-                    controls.PaintingColor.Value = (TileColor)((int)controls.PaintingColor.Value + 1).Mod(Utils.NumColors);
+
+                    controls.PaintingColor.Value =
+                        controls.PaintingColor.Value == TileColor.Red ?
+                        TileColor.Yellow :
+                        TileColor.Red;// (TileColor)((int)controls.PaintingColor.Value + 1).Mod(Utils.NumColors);
+
                     PaintCurrentPositionTile(true);
                     isPrimaryIndexTriggerHeld = false;
                 }
@@ -235,6 +241,12 @@ namespace UdeS.Promoscience.Controls
                 {
                     primaryIndexTriggerHeldTime = 0;
                     isPrimaryIndexTriggerHeld = false;
+                }
+
+                // Back key to toggle third person camera
+                if (inputScheme.IsCameraKeyPressed)
+                {
+                    controls.IsThirdPersonEnabled.Value = !controls.IsThirdPersonEnabled.Value;
                 }
             }
         }

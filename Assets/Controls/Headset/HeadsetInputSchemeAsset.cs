@@ -24,6 +24,8 @@ namespace UdeS.Promoscience.Controls
         bool IsDownPressed { get; }
 
         bool IsAnyPressed { get; }
+
+        bool IsCameraKeyPressed { get; }
     }
 
     public class SimulatedHeadsetInputScheme : IHeadsetInputScheme
@@ -47,6 +49,8 @@ namespace UdeS.Promoscience.Controls
         public bool IsDownPressed => Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S);
 
         public bool IsAnyPressed => Input.anyKeyDown;
+
+        public bool IsCameraKeyPressed => Input.GetKeyDown(KeyCode.K);
     }
 
     public class OVRInputScheme : IHeadsetInputScheme
@@ -72,6 +76,8 @@ namespace UdeS.Promoscience.Controls
         public bool IsDownPressed => OVRInput.GetUp(OVRInput.Button.Down);
 
         public bool IsAnyPressed => OVRInput.GetUp(OVRInput.Button.Any);
+
+        public bool IsCameraKeyPressed => OVRInput.GetUp(OVRInput.Button.Back);
     }
 
     public class HeadsetInputSchemeAsset : ScriptableObject, IHeadsetInputScheme
@@ -97,6 +103,8 @@ namespace UdeS.Promoscience.Controls
         public bool IsDownPressed => inputScheme.IsDownPressed;
 
         public bool IsAnyPressed => inputScheme.IsAnyPressed;
+
+        public bool IsCameraKeyPressed => inputScheme.IsCameraKeyPressed;
 
         public void OnEnable()
         {
