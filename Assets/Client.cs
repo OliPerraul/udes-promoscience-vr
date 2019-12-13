@@ -70,14 +70,34 @@ namespace UdeS.Promoscience
             respectController.Respect = 1;
 
             controls.OnPlayerReachedTheEndHandler += OnPlayerReachedTheEnd;
-            
+
+            Labyrinth.OnValueChangedHandler += OnLabyrinthChanged;
+
+
         }
+
+        // Set waiting room enabled when labyrinth disabled / destoryed
+        public void OnLabyrinthChanged(Labyrinths.LabyrinthObject labyrinth)
+        {
+            if (labyrinth == null)
+            {
+                waitingForNextRoundRoom.gameObject.SetActive(true);
+            }
+            else if (labyrinth.gameObject == null)
+            {
+                waitingForNextRoundRoom.gameObject.SetActive(true);
+            }
+            else
+            {
+                waitingForNextRoundRoom.gameObject.SetActive(false);
+            }
+        }
+
 
         public void OnGameStateChanged(ClientGameState state)
         {
             if (State.Value == ClientGameState.Playing ||
-                State.Value == ClientGameState.PlayingTutorial
-                )
+                State.Value == ClientGameState.PlayingTutorial)
             {
                 Labyrinth.Value.GenerateLabyrinthVisual();
                 Labyrinth.Value.Init(enableCamera:false);
@@ -102,7 +122,7 @@ namespace UdeS.Promoscience
             else if (
                 State.Value == ClientGameState.ViewingLocalReplay ||
                 State.Value == ClientGameState.WaitingForNextLevel ||
-                    State.Value == ClientGameState.ViewingGlobalReplay)
+                State.Value == ClientGameState.ViewingGlobalReplay)
             {
                 if (Labyrinth.Value != null)
                 {
