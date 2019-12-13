@@ -60,10 +60,10 @@ crashlytics-build.properties
 
 
 
-/ProjectSettings/EditorBuildSettings.asset
-ProjectSettings/EditorBuildSettings.asset
-EditorBuildSettings.asset
-*EditorBuildSettings.asset
+# /ProjectSettings/EditorBuildSettings.asset
+# ProjectSettings/EditorBuildSettings.asset
+# EditorBuildSettings.asset
+# *EditorBuildSettings.asset
 
 
 /ProjectSettings/EditorBuildSettings.asset
