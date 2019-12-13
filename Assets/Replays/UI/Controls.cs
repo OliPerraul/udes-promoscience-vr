@@ -80,6 +80,10 @@ namespace UdeS.Promoscience.Replays.UI
             }
         }
 
+        public void SetMaxValue(int value) => slider.maxValue = value;
+
+        public void SlideNoNotify(int value) => slider.SetValueWithoutNotify(value);
+
         // Use this for initialization
         private void Awake()
         {
@@ -90,9 +94,17 @@ namespace UdeS.Promoscience.Replays.UI
             fastfowardButton.onClick.AddListener(OnFastFowardClicked);
             slider.onValueChanged.AddListener(OnSliderMoved);
 
-            asset.ReplayMoveCount.OnValueChangedHandler += (x) => slider.maxValue = x;
-            asset.ReplayMoveIndexChangedHandler += (x) => slider.SetValueWithoutNotify(x);
+            asset.ReplayMoveCount.OnValueChangedHandler += SetMaxValue;
+            asset.ReplayMoveIndexChangedHandler += SlideNoNotify;
         }
+
+        public void OnDestroy()
+        {
+
+            asset.ReplayMoveCount.OnValueChangedHandler -= SetMaxValue;
+            asset.ReplayMoveIndexChangedHandler -= SlideNoNotify;
+        }
+
 
         public void OnPlaybackSpeedChanged(float value)
         {

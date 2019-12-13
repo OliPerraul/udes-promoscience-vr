@@ -32,5 +32,10 @@ namespace UdeS.Promoscience.Replays.UI
             algorithmPrevious.onClick.AddListener(() => Algorithm.Value = (Algorithms.Id)((int)Algorithm.Value - 1).Mod(Algorithms.Utils.NumAlgorithms));
             algorithmNext.onClick.AddListener(() => Algorithm.Value = (Algorithms.Id)((int)Algorithm.Value + 1).Mod(Algorithms.Utils.NumAlgorithms));            
         }
+
+        public void OnDestroy()
+        {
+            
+        }
     }
 }

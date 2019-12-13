@@ -176,6 +176,9 @@ namespace UdeS.Promoscience.UI
 
         void UpdateLobbyPlayerStatusText()
         {
+            if (gameObject == null)
+                return;
+
             if (playerInformation.Player == null)
             {
                 statusText.text = disconnectedString.Value;

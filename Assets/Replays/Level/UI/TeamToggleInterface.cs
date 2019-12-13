@@ -27,7 +27,17 @@ namespace UdeS.Promoscience.Replays.UI
 
             asset.OnReplayCourseAddedHandler += OnCourseAdded;
             asset.OnReplayCourseRemovedHandler += OnCourseRemoved;
+            asset.OnReplayCourseRemoveAllHandler += OnCourseRemovedAll;
         }
+
+        public void OnDestroy()
+        {
+            asset.OnReplayCourseAddedHandler -= OnCourseAdded;
+            asset.OnReplayCourseRemovedHandler -= OnCourseRemoved;
+            asset.OnReplayCourseRemoveAllHandler -= OnCourseRemovedAll;
+        }
+
+
 
         public void OnCourseAdded(Course course)
         {
@@ -46,11 +56,39 @@ namespace UdeS.Promoscience.Replays.UI
 
         public void OnCourseRemoved(Course course)
         {
-            TeamToggleItem item;
-            if (items.TryGetValue(course.Id, out item))
+            //TeamToggleItem item;
+            //if (items.TryGetValue(course.Id, out item))
+            //{
+            //    items.Remove(course.Id);
+            //    item.gameObject.Destroy();
+            //}
+        }
+
+        public void OnCourseRemovedAll()//Course course)
+        {
+            //TeamToggleItem item;
+            foreach (var item in items)
             {
-                item.gameObject.Destroy();
+                item.Value.OnDestroy();
             }
+
+            // FIX:
+            // Clear remaining entries...
+            // TODO remove ?? 
+            // We should not clear up like this
+            foreach (Transform child in toggleContentParent.transform)
+            {
+                if (child == null)
+                    continue;
+
+                if (child.gameObject == null)
+                    continue;
+
+                child.gameObject.Destroy();
+            }
+
+
+            items.Clear();
         }
 
     }

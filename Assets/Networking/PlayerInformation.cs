@@ -131,14 +131,12 @@ namespace UdeS.Promoscience.Network
             }
         }
 
-        // TODO remove
-        // This messes up because player connects first time in pairing screen
         public void OnPlayerReconnect(Player p)
         {
             player = p;
 
-            if (player.serverDeviceType == DeviceType.Headset && 
-                playerGameState != ClientGameState.Pairing && 
+            if (player.serverDeviceType == DeviceType.Headset &&
+               playerGameState != ClientGameState.Pairing && 
                 playerGameState != ClientGameState.NoAssociatedPair)
             {
                 player.ServerCourseId = playerCourseId;
