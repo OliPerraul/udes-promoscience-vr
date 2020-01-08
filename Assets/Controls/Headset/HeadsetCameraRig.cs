@@ -16,6 +16,9 @@ namespace UdeS.Promoscience.Controls
         TransitionCameraAnimatorWrapper TransitionCameraAnimator { get; }
     }
 
+    /// <summary>
+    /// Contient le code contrôlant les hiérarchie de camera propre au casque
+    /// </summary>
     public class HeadsetCameraRig : MonoBehaviour, IHeadsetCameraRig
     {
         [SerializeField]
@@ -25,16 +28,13 @@ namespace UdeS.Promoscience.Controls
         private OVRCameraRig thirdPersonCamera;
 
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private Animator transitionCameraAnimator;
 
         [SerializeField]
         private OVRCameraRig transitionCamera;
-
-        //[SerializeField]
-        //private UnityEngine.UI.Image paintingColorOverlay;
 
         private TransitionCameraAnimatorWrapper transitionCameraAnimatorWrapper;
 

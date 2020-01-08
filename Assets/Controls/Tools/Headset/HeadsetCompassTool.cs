@@ -6,16 +6,18 @@ using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Controls;
 using UdeS.Promoscience;
 using System;
-//using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.UI
 {
+    /// <summary>
+    /// Shows current direction
+    /// </summary>
     public class HeadsetCompassTool : HeadsetTool
     {
         public override ToolId Id => ToolId.Compass;
 
         [SerializeField]
-        ControlsAsset controls;
+        HeadsetControlsAsset controls;
 
         [SerializeField]
         private HeadsetToolManagerAsset headsetTools;

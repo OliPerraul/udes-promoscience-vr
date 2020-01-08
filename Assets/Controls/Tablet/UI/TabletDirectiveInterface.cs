@@ -1,17 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 using UdeS.Promoscience.ScriptableObjects;
 using UdeS.Promoscience.Controls;
-//using UdeS.Promoscience.Utils;
 
 namespace UdeS.Promoscience.Algorithms
 {
+    /// <summary>
+    /// Tablet directive scrollbar interface avaible to tablet user to help the headset user
+    /// </summary>
     public class TabletDirectiveInterface : MonoBehaviour
     {
         [SerializeField]
-        ControlsAsset controls;
+        HeadsetControlsAsset controls;
 
         [SerializeField]
         DirectiveManagerAsset directiveManager;
@@ -41,14 +40,6 @@ namespace UdeS.Promoscience.Algorithms
                 );
             }
         }
-
-        //public void OnCorrectingEnabled(bool enabled)
-        //{
-        //    buttons[(int)Directive.Stop].image.sprite =
-        //        enabled ?
-        //            directiveManager.GoDirectiveSprite :
-        //            directiveManager.StopDirectiveSprite;
-        //}
 
         public void OnValidate()
         {

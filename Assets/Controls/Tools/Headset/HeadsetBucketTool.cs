@@ -3,12 +3,15 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Controls
 {
+    /// <summary>
+    /// Shows currently selected color
+    /// </summary>
     public class HeadsetBucketTool : HeadsetTool
     {
         public override ToolId Id => ToolId.PaintBucket;
 
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private HeadsetToolManagerAsset headsetTools;

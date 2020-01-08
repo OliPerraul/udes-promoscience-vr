@@ -7,6 +7,9 @@ using Cirrus;
 
 namespace UdeS.Promoscience.Replays
 {
+    /// <summary>
+    /// Represents the replay for a level by multiple teams
+    /// </summary>
     public class LevelReplay : ControlReplay
     {
         private Level level;

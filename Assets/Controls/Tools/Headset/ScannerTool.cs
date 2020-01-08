@@ -23,6 +23,9 @@ namespace UdeS.Promoscience.Controls
         public abstract void DoScan(HeadsetToolManagerAsset tools, RaycastHit[] hits);
     }
 
+    /// <summary>
+    /// Scans distance specified by the module
+    /// </summary>
     public class ScannerTool : HeadsetTool
     {
         public override ToolId Id => resource.ToolId;
@@ -31,7 +34,7 @@ namespace UdeS.Promoscience.Controls
         private ScannerResource resource;
 
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private Transform origin;

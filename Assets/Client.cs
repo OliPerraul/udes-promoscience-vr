@@ -11,6 +11,9 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience
 {
+    /// <summary>
+    /// Main singleton class used by client program instance (Tablet, Headset)
+    /// </summary>
     public class Client : BaseSingleton<Client>
     {
         [SerializeField]
@@ -19,7 +22,7 @@ namespace UdeS.Promoscience
         public ClientSettings Settings => settings;
 
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset respectController;

@@ -24,12 +24,14 @@ namespace UdeS.Promoscience.Controls
         public const int NumCameraMode = 2;
     }
 
-
+    /// <summary>
+    /// Contient le code contrôlant les hiérarchie de camera propre a la tablette
+    /// </summary>
     public class TabletCameraRig : MonoBehaviour
     {
         [SerializeField]
         // TODO remove
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private TabletControlsAsset tabletControls;
@@ -37,9 +39,6 @@ namespace UdeS.Promoscience.Controls
 
         [SerializeField]
         private GameObject ThirdPersonCamera;
-
-        //[SerializeField]
-        //private GameObject TopdownCamera;
 
         [SerializeField]
         private GameObject FirstPersonCamera;

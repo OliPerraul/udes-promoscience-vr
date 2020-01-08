@@ -4,6 +4,9 @@ using System;
 
 namespace UdeS.Promoscience
 {
+    /// <summary>
+    /// Manages the currentl active game
+    /// </summary>
     public class GameManager : Cirrus.BaseSingleton<GameManager>
     {
         [SerializeField]

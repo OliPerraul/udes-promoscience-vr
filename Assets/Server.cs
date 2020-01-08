@@ -14,18 +14,11 @@ namespace UdeS.Promoscience
     [System.Serializable]
     public class ObservableServerState : ObservableValue<ServerState> { public ObservableServerState(ServerState state) : base(state) { } }
 
+    /// <summary>
+    /// Main singleton class used by server program instance
+    /// </summary>
     public class Server : BaseSingleton<Server>
     {
-        /// TODODODODODOO
-
-        // TODO Labyrinth manager??/
-
-
-        /// TODODODODODOO
-
-
-
-
         [SerializeField]
         private ServerSettings settings;
 

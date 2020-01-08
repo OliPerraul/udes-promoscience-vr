@@ -40,14 +40,16 @@ namespace UdeS.Promoscience.ScriptableObjects
         public int elapsedSeconds = 0;
     }
 
-    [CreateAssetMenu(fileName = "Data", menuName = "Data/GameAction", order = 1)]
+    /// <summary>
+    /// Shared state of the game action manager
+    /// </summary>
     public class GameActionManagerAsset : ScriptableObject
     {
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;
 
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
 
         [SerializeField]

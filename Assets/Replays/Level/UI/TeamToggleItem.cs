@@ -7,6 +7,9 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays.UI
 {
+    /// <summary>
+    /// Item pertaining to a single team in the team toggle interface
+    /// </summary>
     public class TeamToggleItem : MonoBehaviour
     {
         [SerializeField]

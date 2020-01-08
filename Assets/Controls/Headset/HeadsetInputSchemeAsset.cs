@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Controls
 {
+    /// <summary>
+    /// Contient le code définissant le schéma pour les entrées de l’utilisateur via la manette ou autre périphériques. 
+    /// </summary>
     public interface IHeadsetInputScheme
     {
         bool IsPrimaryTouchPadDown { get; }
@@ -28,6 +31,9 @@ namespace UdeS.Promoscience.Controls
         bool IsCameraKeyPressed { get; }
     }
 
+    /// <summary>
+    /// Desktop implementation of headset input used for debugging
+    /// </summary>
     public class SimulatedHeadsetInputScheme : IHeadsetInputScheme
     {
         public bool IsPrimaryTouchPadDown => Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Space);

@@ -7,7 +7,6 @@ using Cirrus;
 
 namespace UdeS.Promoscience
 {
-    // A timer cannot be created in Start(), or Wake() because it needs the Clock, instead to create duiring init use OnEnable
     public class Timer
     {
         bool _repeat = false;

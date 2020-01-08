@@ -15,7 +15,7 @@ namespace UdeS.Promoscience.UI
         public override ToolId Id => ToolId.Compass;
 
         [SerializeField]
-        ControlsAsset controls;
+        HeadsetControlsAsset controls;
 
         [SerializeField]
         private TabletControlsAsset tabletControls;

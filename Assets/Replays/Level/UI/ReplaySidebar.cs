@@ -6,6 +6,9 @@ using UdeS.Promoscience.UI;
 
 namespace UdeS.Promoscience.Replays.UI
 {
+    /// <summary>
+    /// Sidebar used to display selected tema detials in the level replay
+    /// </summary>
     public class ReplaySidebar : MonoBehaviour
     {
         [SerializeField]

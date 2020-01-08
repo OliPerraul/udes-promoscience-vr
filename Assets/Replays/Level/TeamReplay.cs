@@ -10,6 +10,9 @@ namespace UdeS.Promoscience.Replays
 {
     public delegate void OnSequenceEvent(TeamReplay sequence);
 
+    /// <summary>
+    /// Represents the replay for a specific team (arrows)
+    /// </summary>
     public class TeamReplay : LabyrinthReplay
     {
         public class State

@@ -3,7 +3,6 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Labyrinths.UI
 {
-
     public class LevelSection : BaseSection
     {
         [SerializeField]

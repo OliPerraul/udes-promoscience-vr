@@ -20,6 +20,9 @@ namespace UdeS.Promoscience
     public class ObservableGame : Cirrus.ObservableValue<Game> { }
 
     [System.Serializable]
+    /// <summary>
+    /// Consists of multiple levels
+    /// </summary>
     public class Game
     {
         [SerializeField]

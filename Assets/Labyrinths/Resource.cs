@@ -12,6 +12,10 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths
 {
+    /// <summary>
+    /// TODO remove
+    /// Asset representation of a labyrinth
+    /// </summary>
     [CreateAssetMenu(fileName = "Labyrinth", menuName = "Algorinthe/Labyrinths/Labyrinth", order = 1)]
     public class Resource : ScriptableObject, ILabyrinth
     {

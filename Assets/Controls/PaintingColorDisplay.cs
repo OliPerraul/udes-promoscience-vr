@@ -8,10 +8,13 @@ using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.UI
 {
+    /// <summary>
+    /// Colored ring under the avatar
+    /// </summary>
     public class PaintingColorDisplay : MonoBehaviour
     {
         [SerializeField]
-        ControlsAsset controls;
+        HeadsetControlsAsset controls;
 
         [SerializeField]
         GameObject colorRings;

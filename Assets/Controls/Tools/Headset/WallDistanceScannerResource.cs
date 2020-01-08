@@ -5,7 +5,9 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Controls
 {
-
+    /// <summary>
+    ///  Scans distance with the wall
+    /// </summary>
     public class WallDistanceScannerModule : DistanceScannerModule
     {
         private Labyrinths.Piece wall;

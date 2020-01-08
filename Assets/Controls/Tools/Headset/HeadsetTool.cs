@@ -4,7 +4,9 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Controls
 {
-
+    /// <summary>
+    /// Abstract class for tool used by the headset
+    /// </summary>
     public abstract class HeadsetTool : BaseTool
     {
         [SerializeField]

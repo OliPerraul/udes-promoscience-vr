@@ -4,16 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using UdeS.Promoscience.ScriptableObjects;
-//using UdeS.Promoscience.Utils;
 using UdeS.Promoscience;
 using System;
 
 namespace UdeS.Promoscience.UI
 {
+    /// <summary>
+    /// Interface component showing the directive given by the tablet User
+    /// </summary>
     public class DirectiveDisplay : MonoBehaviour
     {
         [SerializeField]
-        private Controls.ControlsAsset controls;
+        private Controls.HeadsetControlsAsset controls;
 
         [SerializeField]
         private Algorithms.AlgorithmRespectAsset algorithmRespect;

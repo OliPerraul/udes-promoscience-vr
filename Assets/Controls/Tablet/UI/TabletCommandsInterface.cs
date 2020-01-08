@@ -7,14 +7,16 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.UI
 {
-
+    /// <summary>
+    /// Tablet commands button interface located in the corner of the screen
+    /// </summary>
     public class TabletCommandsInterface : MonoBehaviour
     {
         [SerializeField]
         private TabletCommandsAsset asset;
 
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private TabletControlsAsset tabletControls;

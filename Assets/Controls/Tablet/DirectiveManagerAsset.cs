@@ -8,7 +8,9 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "Data", menuName = "Data/Directive", order = 1)]
+    /// <summary>
+    /// Holds directive values and dispatch directive related event
+    /// </summary>
     public class DirectiveManagerAsset : ScriptableObject
     {
         [SerializeField]

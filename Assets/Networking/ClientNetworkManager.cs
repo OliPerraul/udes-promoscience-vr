@@ -11,7 +11,7 @@ namespace UdeS.Promoscience.Network
     public class ClientNetworkManager : NetworkManager
     {
         [SerializeField]
-        ControlsAsset controls;
+        HeadsetControlsAsset controls;
 
         [SerializeField]
         ScriptableBoolean isConnectedToServer;

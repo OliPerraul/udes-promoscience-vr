@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Replays.UI
 {
+    /// <summary>
+    /// Shows which team information is displayed
+    /// </summary>
     public class SelectedTeamDisplay : MonoBehaviour
     {
         [SerializeField]

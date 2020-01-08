@@ -6,6 +6,9 @@ using System;
 
 namespace UdeS.Promoscience.Labyrinths
 {
+    /// <summary>
+    /// Represents a skin or theme used by a labyrinth (the visual aspect independent of the layout)
+    /// </summary>
     public interface ISkin
     {
         IEnumerable<Piece> Pieces { get; }

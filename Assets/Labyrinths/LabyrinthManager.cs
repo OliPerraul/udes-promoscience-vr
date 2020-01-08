@@ -6,6 +6,9 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths
 {
+    /// <summary>
+    /// Manages all of the availbalbe layrinths
+    /// </summary>
     [System.Serializable]
     public class LabyrinthManager : Cirrus.BaseSingleton<LabyrinthManager>
     {

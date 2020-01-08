@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Controls
 {
-
+    /// <summary>
+    /// Display shows warning when user should be listening to the presentation
+    /// </summary>
     public class HeadsetAttentionDisplay : MonoBehaviour
     {
-        // Start is called before the first frame update
         public void Awake()
         {
             Client.Instance.State.OnValueChangedHandler += OnClientStateChanged;

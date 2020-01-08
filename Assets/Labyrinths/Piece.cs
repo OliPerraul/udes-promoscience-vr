@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Labyrinths
 {
+    /// <summary>
+    /// 3d tile of the labyrinth (aka. a Block, a wall, a tower etc.)
+    /// </summary>
     public class Piece : MonoBehaviour
     {
         [SerializeField]
@@ -18,7 +21,7 @@ namespace UdeS.Promoscience.Labyrinths
         public GameObject[] highlights;
 
         [SerializeField]
-        private Controls.ControlsAsset controls;
+        private Controls.HeadsetControlsAsset controls;
 
         private bool highlighted = false;
 

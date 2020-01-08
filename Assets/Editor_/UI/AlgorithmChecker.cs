@@ -11,14 +11,13 @@ using Unity.EditorCoroutines.Editor;
 
 namespace UdeS.Promoscience.Labyrinths.Editor
 {
-
+    /// <summary>
+    /// Used to verify that the algorithm reaches the end of the level
+    /// </summary>
     public class AlgorithmChecker : MonoBehaviour
     {
         [SerializeField]
         private Algorithms.Algorithm algorithm;
-
-        //[SerializeField]
-        //private LabyrinthEditor editor;
 
         [SerializeField]
         private UnityEngine.Tilemaps.Tilemap templateTilemap;
@@ -43,8 +42,6 @@ namespace UdeS.Promoscience.Labyrinths.Editor
             {
                 state = new Algorithms.AlgorithmExecutionState();
                 dirtyTilemap = Instantiate(templateTilemap, templateTilemap.transform.parent);
-                //TODO
-                //SetTile(algorithm.ResetProgressState(state, editor.resource));
             }
 
             running = true;

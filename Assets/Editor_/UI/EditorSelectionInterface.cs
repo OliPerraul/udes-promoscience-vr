@@ -6,11 +6,11 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths.Editor.UI
 {
+    /// <summary>
+    /// Allow to select which labyrinth to edit
+    /// </summary>
     public class EditorSelectionInterface : BaseSelectionInterface
     {
-        //[SerializeField]
-        //private ControllerAsset controller;
-
         [SerializeField]
         private EditorSelectSection sectionTemplate;
 

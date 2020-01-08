@@ -8,7 +8,9 @@ using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.UI
 {
-
+    /// <summary>
+    /// 
+    /// </summary>
     public class ReturnToDivergenceControls : MonoBehaviour
     {
         [SerializeField]

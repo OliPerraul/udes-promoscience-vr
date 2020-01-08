@@ -7,7 +7,10 @@ using UdeS.Promoscience.Replays;
 
 namespace UdeS.Promoscience.Labyrinths.UI
 {
-    public class LevelSelectionInterface : BaseSelectionInterface//.UI.MainDisplay
+    /// <summary>
+    /// Interface allowing to select which level to play
+    /// </summary>
+    public class LevelSelectionInterface : BaseSelectionInterface
     {
         private List<LevelButton> labyrinthButtons = new List<LevelButton>();
 

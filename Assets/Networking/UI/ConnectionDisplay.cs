@@ -13,7 +13,7 @@ namespace UdeS.Promoscience.UI
     public class ConnectionDisplay : MonoBehaviour
     {
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         //[SerializeField]
         //private DeviceTypeManagerAsset deviceType;

@@ -9,6 +9,9 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Replays
 {
+    /// <summary>
+    /// Manages the currently active replays
+    /// </summary>
     public class ReplayManager : Cirrus.BaseSingleton<ReplayManager>
     {
         [SerializeField]

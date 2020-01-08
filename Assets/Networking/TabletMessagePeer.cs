@@ -36,7 +36,7 @@ namespace UdeS.Promoscience.Network
         //[SerializeField]
         //ScriptableAction returnToDivergencePointRequest;
         [SerializeField]
-        ControlsAsset controls;
+        HeadsetControlsAsset controls;
 
 
         [SerializeField]

@@ -5,6 +5,11 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience
 {
+    /// <summary>
+    /// Server side spectator view
+    /// CUrrently just displays the currently played labyrinth
+    /// It would be cool to display the player movement in real time
+    /// </summary>
     public class ServerSpectatorManager : MonoBehaviour
     {
         [SerializeField]
@@ -21,8 +26,6 @@ namespace UdeS.Promoscience
         public void Awake()
         {
             Server.Instance.State.OnValueChangedHandler += OnServerStateChanged;
-            //GameManager.Instance.OnGameCreatedHandler += OnGameStarted;
-            //GameManager.Instance.OnGameEndedHandler += OnGameEnded;
         }
 
         public void OnDestroy()

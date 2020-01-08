@@ -6,6 +6,9 @@ using UnityEngine.EventSystems;
 
 namespace UdeS.Promoscience.Labyrinths.UI
 {
+    /// <summary>
+    /// Click on this button to select which level/labyrinth to play
+    /// </summary>
     public class LevelButton : BaseButton
     {
         public override void Awake()

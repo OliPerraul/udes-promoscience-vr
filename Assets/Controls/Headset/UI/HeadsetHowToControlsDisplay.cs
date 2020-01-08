@@ -6,10 +6,13 @@ using UdeS.Promoscience.ScriptableObjects;
 
 namespace UdeS.Promoscience.Controls
 {
+    /// <summary>
+    /// Display showing headset inputs during the game
+    /// </summary>
     public class HeadsetHowToControlsDisplay : MonoBehaviour
     {
         [SerializeField]
-        private ControlsAsset controller;
+        private HeadsetControlsAsset controller;
 
         [SerializeField]
         private DirectiveManagerAsset directiveManager;
@@ -39,12 +42,7 @@ namespace UdeS.Promoscience.Controls
 
         void OnNewDirective(Directive directive)
         {
-            //// TODO handle somewhere else?
-            //// QUestion directive brings up the help
-            //if (directive == Directive.Question)
-            //{
-            //    gameObject.SetActive(true);
-            //}
+
         }
 
         public void Update()

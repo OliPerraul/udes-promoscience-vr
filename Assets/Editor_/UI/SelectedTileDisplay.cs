@@ -4,7 +4,10 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Labyrinths.Editor.UI
 {
-
+    /// <summary>
+    /// Display the name of the currently selected tile to draw
+    /// TODO visual display of the tile
+    /// </summary>
     public class SelectedTileDisplay : Cirrus.BaseSingleton<SelectedTileDisplay>
     {
         [SerializeField]

@@ -1,41 +1,107 @@
 fileFormatVersion: 2
 guid: f491e17ef4d154d5bbda86752609ea69
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: Armature
-    100002: Body
-    100004: Body_end
-    100006: //RootNode
-    100008: Cube
-    100010: Foot.L
-    100012: Foot.L_end
-    100014: Foot.R
-    100016: Foot.R_end
-    100018: Head
-    100020: Head_end
-    400000: Armature
-    400002: Body
-    400004: Body_end
-    400006: //RootNode
-    400008: Cube
-    400010: Foot.L
-    400012: Foot.L_end
-    400014: Foot.R
-    400016: Foot.R_end
-    400018: Head
-    400020: Head_end
-    2100000: BrokenRobo.Body
-    2100002: BrokenRobo.Neck
-    2100004: BrokenRobo.HeadScreen
-    2100006: BrokenRobo.BodyScreen
-    2100008: BrokenRobo.Feet
-    2100010: BrokenRobo.InsideFeet
-    4300000: Cube
-    7400000: Armature|ArmatureAction
-    9500000: //RootNode
-    13700000: Cube
-    2186277476908879412: ImportLogs
+  serializedVersion: 26
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: Armature
+  - first:
+      1: 100002
+    second: Body
+  - first:
+      1: 100004
+    second: Body_end
+  - first:
+      1: 100006
+    second: //RootNode
+  - first:
+      1: 100008
+    second: Cube
+  - first:
+      1: 100010
+    second: Foot.L
+  - first:
+      1: 100012
+    second: Foot.L_end
+  - first:
+      1: 100014
+    second: Foot.R
+  - first:
+      1: 100016
+    second: Foot.R_end
+  - first:
+      1: 100018
+    second: Head
+  - first:
+      1: 100020
+    second: Head_end
+  - first:
+      4: 400000
+    second: Armature
+  - first:
+      4: 400002
+    second: Body
+  - first:
+      4: 400004
+    second: Body_end
+  - first:
+      4: 400006
+    second: //RootNode
+  - first:
+      4: 400008
+    second: Cube
+  - first:
+      4: 400010
+    second: Foot.L
+  - first:
+      4: 400012
+    second: Foot.L_end
+  - first:
+      4: 400014
+    second: Foot.R
+  - first:
+      4: 400016
+    second: Foot.R_end
+  - first:
+      4: 400018
+    second: Head
+  - first:
+      4: 400020
+    second: Head_end
+  - first:
+      21: 2100000
+    second: BrokenRobo.Body
+  - first:
+      21: 2100002
+    second: BrokenRobo.Neck
+  - first:
+      21: 2100004
+    second: BrokenRobo.HeadScreen
+  - first:
+      21: 2100006
+    second: BrokenRobo.BodyScreen
+  - first:
+      21: 2100008
+    second: BrokenRobo.Feet
+  - first:
+      21: 2100010
+    second: BrokenRobo.InsideFeet
+  - first:
+      43: 4300000
+    second: Cube
+  - first:
+      74: 7400000
+    second: Armature|ArmatureAction
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Cube
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -100,6 +166,8 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -107,27 +175,32 @@ ModelImporter:
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -137,8 +210,8 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

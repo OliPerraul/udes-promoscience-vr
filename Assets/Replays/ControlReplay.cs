@@ -8,6 +8,9 @@ using Event = Cirrus.Event;
 
 namespace UdeS.Promoscience.Replays
 {
+    /// <summary>
+    /// Replay which drives one or more child replays
+    /// </summary>
     public abstract class ControlReplay : BaseReplay
     {
         protected ReplayControlsAsset controls;

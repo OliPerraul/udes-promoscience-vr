@@ -7,7 +7,9 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Replays
 {
-    // Preview the replay for a labyrinth via the selection interface (Algorithm only)
+    /// <summary>
+    ///  Preview the replay for a labyrinth via the selection interface (Algorithm only)
+    /// </summary>
     public class PreviewReplay : BaseReplay
     {
         private Level level;

@@ -5,11 +5,11 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Labyrinths.Editor.UI
 {
+    /// <summary>
+    /// Click on this button to select which labyrinth to edit
+    /// </summary>
     public class EditorSelectButton : BaseButton
     {
-        //[SerializeField]
-        //private ControllerAsset controller;
-
         public override BaseButton Create(
             Transform parent,
             LabyrinthObject labyrinth)

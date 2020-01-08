@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Labyrinths.Editor.UI
 {
-
+    /// <summary>
+    /// TODO: Allow this interface to change the skin of the currently edited labyrinth
+    /// </summary>
     public class ThemeSelectionInterface : Cirrus.BaseSingleton<ThemeSelectionInterface>
     {
         [SerializeField]
@@ -36,17 +38,6 @@ namespace UdeS.Promoscience.Labyrinths.Editor.UI
 
             dropdown.value = 0;
         }
-
-        //public bool IsValidTheme(SkinResource skin)
-        //{
-        //    foreach (var piece in skin.Pieces)
-        //    {
-
-        //    }
-
-        //    return true;
-        //}
-
 
         public void OnSelectedThemeChanged(int themeIdx)
         {

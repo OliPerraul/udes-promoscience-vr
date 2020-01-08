@@ -8,7 +8,9 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Labyrinths
 {
-
+    /// <summary>
+    /// Serialised represention of the labyrinth
+    /// </summary>
     public interface ILabyrinth
     {
         int Id { get; set; }

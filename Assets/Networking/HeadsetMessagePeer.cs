@@ -20,7 +20,7 @@ namespace UdeS.Promoscience.Network
         GameAsset gameManager;
 
         [SerializeField]
-        public ControlsAsset controls;
+        public HeadsetControlsAsset controls;
 
         [SerializeField]
         public HeadsetToolManagerAsset headsetTools;

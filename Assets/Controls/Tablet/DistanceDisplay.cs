@@ -6,6 +6,9 @@ using UnityEngine;
 namespace UdeS.Promoscience.Controls.UI
 {
     // TODO remove
+    /// <summary>
+    /// Shows the current distance from the wall or the to exit
+    /// </summary>
     public class DistanceDisplay : MonoBehaviour
     {
         [SerializeField]
@@ -21,7 +24,7 @@ namespace UdeS.Promoscience.Controls.UI
         private TMPro.TextMeshProUGUI west;
 
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private DistanceScanner distanceScanner;
@@ -34,16 +37,6 @@ namespace UdeS.Promoscience.Controls.UI
         private void OnCompassEnabled(TabletCameraMode value)
         {
             gameObject.SetActive(value == TabletCameraMode.ThirdPerson);
-        }
-
-        // TODO only on movement
-        public void Update()
-        {
-            //int dist = -1;
-            //north.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Up)) < 0 ? "?": dist.ToString();
-            //south.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Down)) < 0 ? "?" : dist.ToString();
-            //west.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Left)) < 0 ? "?" : dist.ToString();
-            //east.text = (dist = (int)distanceScanner.ExecuteDistanceScan(Direction.Right)) < 0 ? "?" : dist.ToString();
         }
     }
 }

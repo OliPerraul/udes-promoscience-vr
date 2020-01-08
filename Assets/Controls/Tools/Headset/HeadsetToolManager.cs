@@ -5,15 +5,13 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Controls
 {
-    //public static class ToolUtils
-    //{
-    //    public const int ToolCount = 4;
-    //}
-
+    /// <summary>
+    /// Manages tool activeness, handedness, and to which camera it is tied to 
+    /// </summary>
     public class HeadsetToolManager : MonoBehaviour
     {
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private HeadsetInputSchemeAsset inputScheme;

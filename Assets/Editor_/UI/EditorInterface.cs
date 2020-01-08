@@ -3,7 +3,9 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Labyrinths.Editor.UI
 {
-
+    /// <summary>
+    /// Manages sub interface for the editor
+    /// </summary>
     public class EditorInterface : Cirrus.BaseSingleton<EditorInterface>
     {
         public Cirrus.Event OnSaveHandler;

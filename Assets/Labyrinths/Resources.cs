@@ -7,7 +7,9 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Labyrinths
 {
-
+    /// <summary>
+    /// Contains all the resouses related to labyrinths
+    /// </summary>
     [CreateAssetMenu(fileName = "Data", menuName = "Data/Ressources", order = 1)]
     public class Resources : BaseResources<Resources>
     {

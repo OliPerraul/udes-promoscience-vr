@@ -50,6 +50,9 @@ namespace UdeS.Promoscience
         Teams.TeamResource Team { get; }
     }
 
+    /// <summary>
+    /// Consists of a team, a labyrinth and an algorithm
+    /// </summary>
     public class Course : ICourse
     {
         public int Id { get; set; }

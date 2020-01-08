@@ -8,6 +8,9 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays
 {
+    /// <summary>
+    /// Replay for an algorithm in a labyrinth
+    /// </summary>
     public class AlgorithmReplay : LabyrinthReplay
     {
         private bool isHidden = false;

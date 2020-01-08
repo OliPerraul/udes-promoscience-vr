@@ -11,6 +11,10 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         public ObservableTileType(TileType value) : base(value) { }
     }
 
+    /// <summary>
+    /// Paintbrush for the editor
+    /// Allows the user to mark or erase tiles
+    /// </summary>
     public class EditorDrawer : Cirrus.BaseSingleton<EditorDrawer>
     {
         private TileType[] palette = {

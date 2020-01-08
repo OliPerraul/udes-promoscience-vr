@@ -6,6 +6,9 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Replays.UI
 {
+    /// <summary>
+    /// Allows to toggle which teams are active or inactive
+    /// </summary>
     public class TeamToggleInterface : MonoBehaviour
     {
         [SerializeField]

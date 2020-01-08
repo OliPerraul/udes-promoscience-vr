@@ -12,6 +12,9 @@ using System;
 
 namespace UdeS.Promoscience.Labyrinths
 { 
+    /// <summary>
+    /// Topdown camera of the labyrinth
+    /// </summary>
     [System.Serializable]
     public class Camera
     {
@@ -62,6 +65,9 @@ namespace UdeS.Promoscience.Labyrinths
     }
 
 
+    /// <summary>
+    /// Instantiated and visualisable representation of the labyrinth
+    /// </summary>
     public class LabyrinthObject : MonoBehaviour, ISkin, ILabyrinth
     {
         [SerializeField]

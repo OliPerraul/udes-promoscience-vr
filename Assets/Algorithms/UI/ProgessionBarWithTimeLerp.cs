@@ -14,7 +14,7 @@ namespace UdeS.Promoscience.UI
         //ScriptableClientGameState clientState;
 
         [SerializeField]
-        ControlsAsset controls;
+        HeadsetControlsAsset controls;
 
         [SerializeField]
         Algorithms.AlgorithmRespectAsset algorithmRespect;

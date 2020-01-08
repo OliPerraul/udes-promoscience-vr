@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Algorithms.UI
 {
+    /// <summary>
+    /// Select which base algorithm should be used for a level
+    /// </summary>
     public class LevelAlgorithmSelectionInteface : MonoBehaviour
     {
         public LocalizeInlineString randomString = new LocalizeInlineString("Randomized");

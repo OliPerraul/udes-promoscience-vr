@@ -13,11 +13,11 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         Editor
     }
 
+    /// <summary>
+    /// Controls different aspects of the editor
+    /// </summary>
     public class EditorController : Cirrus.BaseSingleton<EditorController>
     {
-        //[SerializeField]
-        //public Tilemap tilemap;
-
         [SerializeField]
         private Cirrus.SceneWrapperAsset menuScene;
 
@@ -32,11 +32,6 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         public LabyrinthObject LabyrinthObject;
 
         public ILabyrinth Labyrinth;
-
-        //[SerializeField]
-        //public EditorDrawer Drawer;
-
-        // Use this for initialization
 
         public void Awake()
         {

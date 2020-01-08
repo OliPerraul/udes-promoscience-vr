@@ -9,11 +9,13 @@ using UdeS.Promoscience;
 
 namespace UdeS.Promoscience.UI
 {
-
+    /// <summary>
+    /// Shows the current direction (North, south, east, west)
+    /// </summary>
     public class DirectionDisplay : MonoBehaviour
     {
         [SerializeField]
-        ControlsAsset controls;
+        HeadsetControlsAsset controls;
 
         [SerializeField]
         GameObject directionDisplayer;

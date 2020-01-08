@@ -3,8 +3,10 @@ using System.Collections;
 
 namespace UdeS.Promoscience.Replays
 {
-    // Only one replaytoggle interface asset
-    // replay asset did not make sense because multiple replay exist
+
+    /// <summary>
+    /// Shared state of the team toggle interface
+    /// </summary>
     public class TeamToggleAsset : ScriptableObject
     {
         public Cirrus.Event<Course, bool> OnCourseToggledHandler;

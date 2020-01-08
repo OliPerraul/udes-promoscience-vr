@@ -30,6 +30,11 @@ namespace UdeS.Promoscience.Algorithms
         }
     }
 
+    /// <summary>
+    /// Représente la ressource de base pour développer un algorithme.
+    /// Les différents algorithmes varient de la classe de base uniquement par la méthode GetPrioritizedDirection.
+    /// En effet lorsque dans une intersection, chaque algorithme accordera une priorité différente aux différents choix de parcours.
+    /// </summary>
     public abstract class Algorithm : ScriptableObject
     {
         [SerializeField]
@@ -52,8 +57,6 @@ namespace UdeS.Promoscience.Algorithms
 
         public virtual List<Tile> GetAlgorithmSteps(Labyrinths.ILabyrinth labyrinth)
         {
-            //List<Tile> algorithmSteps = new List<Tile>();
-
             var state = new AlgorithmExecutionState();
 
             ResetProgressState(state, labyrinth);

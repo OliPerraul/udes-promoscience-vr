@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Labyrinths.Editor
 {
+    /// <summary>
+    /// Read-only resoures used by the editor
+    /// </summary>
     public class Resources : BaseResources<Resources>
     {
         [SerializeField]

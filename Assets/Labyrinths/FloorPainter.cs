@@ -8,6 +8,9 @@ using UdeS.Promoscience.Network;
 
 namespace UdeS.Promoscience.Algorithms
 {
+    /// <summary>
+    /// Allows to paint the floor different color
+    /// </summary>
     public class FloorPainter : MonoBehaviour
     {
         [SerializeField]

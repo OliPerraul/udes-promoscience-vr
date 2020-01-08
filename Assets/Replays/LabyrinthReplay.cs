@@ -10,7 +10,10 @@ public interface ISequence
 
 namespace UdeS.Promoscience.Replays
 {
-    // TODO do not derive mono behaviour
+    /// <summary>
+    /// Replay for a labyrinth
+    /// TODO do not derive mono behaviour
+    /// </summary>
     public abstract class LabyrinthReplay : MonoBehaviour, IReplayWorker
     {
         ////[SerializeField]

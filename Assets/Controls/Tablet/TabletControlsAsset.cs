@@ -4,7 +4,9 @@ using UdeS.Promoscience.Controls;
 
 namespace UdeS.Promoscience.Controls
 {
-
+    /// <summary>
+    /// Shared state of the tablet controls
+    /// </summary>
     public class TabletControlsAsset : ScriptableObject
     {
         // TODO split tablet vs headset avatar controller asset

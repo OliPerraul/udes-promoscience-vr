@@ -4,7 +4,9 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Labyrinths.Editor
 {
-
+    /// <summary>
+    /// Controls the different cameras used by the editor
+    /// </summary>
     public class EditorCameraController : Cirrus.BaseSingleton<EditorCameraController>
     {
         [SerializeField]

@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Controls
 {
+    /// <summary>
+    /// Scans distance from a floor tile to the end of the level
+    /// </summary>
     public class FlightDistanceScannerModule : DistanceScannerModule
     {
         private Algorithms.FloorPainter floor;

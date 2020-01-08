@@ -11,16 +11,13 @@ namespace UdeS.Promoscience
         [SerializeField]
         public Algorithms.Id Algorithm;
 
-        //[SerializeField]
-        //private int labyrinthId;
-
-        //public int LabyrinthId => labyrinthId.Mod(Server.Instance.Labyrinths.Count);
-
         public Labyrinths.ILabyrinth Labyrinth => Labyrinths.LabyrinthManager.Instance.GetNextLabyrinth();
     }
 
-    // Previously named Round
-    // TODO rename remaining round reference?
+    /// <summary>
+    /// Previously named Round 
+    /// Refers to a labyrinth and a base algorithm
+    /// </summary>
     public class Level
     {
         public int Number = 0;

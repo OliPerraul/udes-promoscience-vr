@@ -5,7 +5,9 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replays
 {
-    // TODO: inherit element
+    /// <summary>
+    /// Represents an error when return to divergent is used
+    /// </summary>
     public class Error : Segment
     {
         [SerializeField]

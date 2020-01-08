@@ -5,10 +5,14 @@ using UdeS.Promoscience.Controls;
 
 namespace UdeS.Promoscience.Characters
 {
+    /// <summary>
+    /// contrôle certains mécanisme par rapport au personnage. 
+    /// A titre d’exemple, AvatarCharacter represante la voiture et HeadsetControlsManager est le volant qui contrôle ce personnage.
+    /// </summary>
     public class AvatarCharacter : MonoBehaviour, IAvatarAnimatorWrapper
     {
         [SerializeField]
-        private ControlsAsset controller;
+        private HeadsetControlsAsset controller;
 
         [SerializeField]
         private TabletControlsAsset tabletControls;

@@ -5,10 +5,13 @@ using System.Collections.Generic;
 
 namespace UdeS.Promoscience.Controls
 {
+    /// <summary>
+    /// TODO remove
+    /// </summary>
     public class TabletToolManager : MonoBehaviour
     {
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private TabletToolManagerAsset asset;
@@ -30,7 +33,6 @@ namespace UdeS.Promoscience.Controls
         private BaseTool currentTool = null;
 
         private int currentToolIndex = 0;
-
 
         public void Awake()
         {

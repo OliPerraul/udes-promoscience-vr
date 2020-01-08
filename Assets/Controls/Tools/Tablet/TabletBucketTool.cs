@@ -9,7 +9,7 @@ namespace UdeS.Promoscience.Controls
         public override ToolId Id => ToolId.PaintBucket;
 
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private GameObject yellowColor;

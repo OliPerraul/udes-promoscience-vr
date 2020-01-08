@@ -6,6 +6,10 @@ using System.Linq;
 
 namespace UdeS.Promoscience.Replays
 {
+    /// <summary>
+    /// Replay for a whole game. 
+    /// Parent of multiple Level replay 
+    /// </summary>
     public class GameReplay : ControlReplay
     {
         public IList<Level> levels;

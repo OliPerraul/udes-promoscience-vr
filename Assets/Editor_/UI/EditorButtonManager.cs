@@ -15,8 +15,9 @@ namespace UdeS.Promoscience.Labyrinths.Editor
         BottomLeftSave = 1 << 6,
     }
 
-    // TODO remove: I think this is bad practice but im tired
-
+    /// <summary>
+    /// Manages editor main buttons
+    /// </summary>
     public class EditorButtonManager : Cirrus.BaseSingleton<EditorButtonManager>
     {
         [SerializeField]

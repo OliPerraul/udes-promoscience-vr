@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace UdeS.Promoscience.Replays
 {
+    /// <summary>
+    /// Arrow segment used by the team replay
+    /// </summary>
     public class Segment : MonoBehaviour
     {
         //[SerializeField]

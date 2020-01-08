@@ -7,7 +7,7 @@ namespace UdeS.Promoscience.Controls
     public class TabletToolManagerInterface : MonoBehaviour
     {
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private TabletToolManagerAsset asset;

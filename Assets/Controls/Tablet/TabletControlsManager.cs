@@ -13,6 +13,9 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Controls
 {
+    /// <summary>
+    /// Handles controls received from headset user
+    /// </summary>
     public class TabletControlsManager : MonoBehaviour
     {
         [SerializeField]
@@ -20,7 +23,7 @@ namespace UdeS.Promoscience.Controls
 
         [SerializeField]
         // TODO remove
-        ControlsAsset controls;
+        HeadsetControlsAsset controls;
 
         [SerializeField]
         private TabletControlsAsset tabletControls;

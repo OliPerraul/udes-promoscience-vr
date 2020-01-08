@@ -8,6 +8,9 @@ namespace UdeS.Promoscience.UI
 {
 
     // TODO remove unused
+    /// <summary>
+    /// Title of the algorithm when the game starts
+    /// </summary>
     public class Announcement : MonoBehaviour
     {
         //[SerializeField]

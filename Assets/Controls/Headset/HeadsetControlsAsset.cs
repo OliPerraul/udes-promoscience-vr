@@ -6,10 +6,11 @@ using UdeS.Promoscience.Characters;
 
 namespace UdeS.Promoscience.Controls
 {
-    [CreateAssetMenu(fileName = "Data", menuName = "Data/Avatar Controler", order = 1)]
-    public class ControlsAsset : ScriptableObject
-    {
-
+    /// <summary>
+    /// Shared state for the headset controls
+    /// </summary>
+    public class HeadsetControlsAsset : ScriptableObject
+    {    
 
         public Cirrus.ObservableValue<bool> IsPlayerControlsEnabled = new Cirrus.ObservableValue<bool>(true);
 

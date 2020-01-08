@@ -11,16 +11,13 @@ using Cirrus.Extensions;
 
 namespace UdeS.Promoscience.Controls
 {
-    // FOR REAL WHY IS THIS CHARACTER CONTROLLER SO GODDAM COMPLICATED
-    // Our guy is just moving on a grid...
-
+    /// <summary>
+    /// Polls and handles input from the headset user 
+    /// </summary>
     public class HeadsetControlsManager : MonoBehaviour
     {
         [SerializeField]
         private float angleLookatTurnThreshold = 65;
-
-        //[SerializeField]
-        //private float changeHandednessTimeLimit = 5;
 
         [SerializeField]
         [UnityEngine.Serialization.FormerlySerializedAs("transitionTime")]
@@ -53,7 +50,7 @@ namespace UdeS.Promoscience.Controls
         private HeadsetInputSchemeAsset inputScheme;
 
         [SerializeField]
-        private ControlsAsset controls;
+        private HeadsetControlsAsset controls;
 
         [SerializeField]
         private Characters.AvatarCharacter character;

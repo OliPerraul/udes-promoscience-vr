@@ -8,7 +8,7 @@ using UdeS.Promoscience.Controls;
 
 namespace UdeS.Promoscience.Editor
 {
-    [CustomEditor(typeof(ControlsAsset))]
+    [CustomEditor(typeof(HeadsetControlsAsset))]
     public class ScriptableControlerEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -17,7 +17,7 @@ namespace UdeS.Promoscience.Editor
 
             GUI.enabled = Application.isPlaying;
 
-            ControlsAsset scriptableControler = target as ControlsAsset;
+            HeadsetControlsAsset scriptableControler = target as HeadsetControlsAsset;
 
             if (GUILayout.Button("On Controls Enable Value Changed"))
             {

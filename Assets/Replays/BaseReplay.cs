@@ -11,6 +11,10 @@ namespace UdeS.Promoscience.Replays
 
     }
 
+    /// <summary>
+    /// Base class for most replay
+    /// TODO base class for all replay
+    /// </summary>
     public abstract class BaseReplay : IReplayWorker
     {
         public abstract int MoveCount { get;}

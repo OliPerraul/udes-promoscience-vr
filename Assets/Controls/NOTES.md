@@ -1,0 +1,1 @@
+﻿* Contient le code portant au contrôle du personnage, soit le mode d’interaction principal avec le jeu.
